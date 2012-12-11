@@ -32,12 +32,15 @@ commit:
 	make --always-make test    # Force rebuild and test.
 	git commit -a
 
-README.html: README
-	node ./bin/rimuc.js README > README.html
+README.html: README.md
+	node ./bin/rimuc.js README.md > README.html
 
 samples: samples/showcase.html
 
 samples/showcase.html: samples/showcase.rmu
 	cat samples/bootstrap-header.html samples/showcase.rmu samples/footer.html | node ./bin/rimuc.js > samples/showcase.html
 
-.PHONY: all lint test build commit samples
+push:
+	git push -u --tags origin master
+
+.PHONY: all lint test build commit samples push
