@@ -1,0 +1,228 @@
+module Rimu.Lists {
+
+  interface Definition {
+    filter: (match: RegExpExecArray, block: Definition) => string;
+    match: RegExp;
+    listOpenTag: string;
+    listCloseTag: string;
+    itemOpenTag: string;
+    itemCloseTag: string;
+    termOpenTag?: string;   // Definition lists only.
+    termCloseTag?: string;  // Definition lists only.
+  }
+    
+  // Information about a matched list item element.
+  interface ItemState {
+    match: RegExpExecArray;
+    def: Definition;
+    id: string;
+    isListItem: bool;
+    isContinuation: bool;
+    isIndented: bool;
+  }
+
+  var defs: Definition[] = [
+    // Prefix match with backslash to allow escaping.
+
+    // Unordered lists.
+    // $1 is list ID $2 is item text.
+    {
+      match: /^\\?\s*(-|\*{1,4})\s+(.*)$/,
+      listOpenTag: '<ul>',
+      listCloseTag: '</ul>',
+      itemOpenTag: '<li>',
+      itemCloseTag: '</li>',
+    },
+    // Ordered lists.
+    // $1 is list ID $2 is item text.
+    {
+      match: /^\\?\s*(?:\d*)(\.{1,4})\s+(.*)$/,
+      listOpenTag: '<ol>',
+      listCloseTag: '</ol>',
+      itemOpenTag: '<li>',
+      itemCloseTag: '</li>',
+    },
+    // Definition lists.
+    // $1 is term, $2 is list ID, $3 is definition.
+    {
+      match: /^\\?\s*(.*[^:])(\:{2,4})(|\s+.*)$/,
+      listOpenTag: '<dl>',
+      listCloseTag: '</dl>',
+      itemOpenTag: '<dd>',
+      itemCloseTag: '</dd>',
+      termOpenTag: '<dt>',
+      termCloseTag: '</dt>',
+    },
+  ];
+
+  var ids: string[];  // Stack of open list IDs.
+
+  export function render(reader: Reader, writer: Writer): bool {
+    if (reader.eof()) throw 'premature eof';
+    var startItem: ItemState;
+    if (!(startItem = matchItem(reader))) {
+      return false;
+    }
+    ids = [];
+    renderList(startItem, reader, writer);
+    // ids should now be empty.
+    return true;
+  }
+
+  function renderList(startItem: ItemState,
+      reader: Reader, writer: Writer): ItemState
+  {
+    ids.push(startItem.id);
+    writer.write(injectAttributes(startItem.def.listOpenTag));
+    var nextItem: ItemState;
+    while (true) {
+      nextItem = renderListItem(startItem, reader, writer);
+      if (!nextItem || nextItem.id !== startItem.id) {
+        // End of list or next item belongs to ancestor.
+        writer.write(startItem.def.listCloseTag);
+        ids.pop();
+        return nextItem;
+      }
+      startItem = nextItem; 
+    }
+  }
+
+  function renderListItem(startItem: ItemState,
+      reader: Reader, writer: Writer): ItemState
+  {
+    var def = startItem.def;
+    var match = startItem.match;
+    var text: string;
+    if (match.length === 4) { // 3 match groups => definition list.
+      writer.write(def.termOpenTag);
+      text = replaceOptions(match[1], {variables: true, spans: true});
+      writer.write(text);
+      writer.write(def.termCloseTag);
+    } 
+    writer.write(def.itemOpenTag);
+    // Process of item text.
+    var lines = new Writer();
+    lines.write(match[match.length - 1]); // Item text from first line.
+    lines.write('\n');
+    reader.next();
+    var nextItem: ItemState;
+    nextItem = readToNext(startItem, reader, lines);
+    text = lines.toString();
+    text = replaceOptions(text, {variables: true, spans: true});
+    writer.write(text);
+    while (true) {
+      if (!nextItem) {
+        // EOF or non-list related item.
+        writer.write(def.itemCloseTag);
+        return null;
+      }
+      else if (nextItem.isListItem) {
+        if (ids.indexOf(nextItem.id) !== -1) {
+          // Item belongs to current list or an ancestor list.
+          writer.write(def.itemCloseTag);
+          return nextItem;
+        }
+        else {
+          // Render new child list.
+          nextItem = renderList(nextItem, reader, writer);
+          writer.write(def.itemCloseTag);
+          return nextItem;
+        }
+      }
+      else if (nextItem.isContinuation || nextItem.isIndented) {
+        // Continuation blocks and Indented blocks attach to list items.
+        DelimitedBlocks.render(reader, writer);
+        reader.skipBlankLines();
+        if (reader.eof()) {
+          writer.write(def.itemCloseTag);
+          return null;
+        }
+        else {
+          nextItem = matchItem(reader);
+        }
+      }
+    }
+    // Should never arrive here.
+  }
+
+  // Translate the list item in the reader to the writer until the next element
+  // is encountered. Return 'next' containing the next element's match and
+  // identity information.
+  function readToNext(item: ItemState,
+      reader: Reader, writer: Writer): ItemState
+  {
+    // The reader should be at the line following the first line of the list
+    // item (or EOF).
+    var next: ItemState;
+    while (true) {
+      if (reader.eof()) return null;
+      if (reader.cursor() === '') {
+        // The list item has ended, check what follows.
+        reader.skipBlankLines();
+        if (reader.eof()) return null;
+        return matchItem(reader, {continuation: true, indented: true});
+      }
+      next = matchItem(reader, {continuation: true});
+      if (next) {
+        return next;
+      }
+      writer.write(reader.cursor());
+      writer.write('\n');
+      reader.next();
+    }
+  }
+
+  // Check if the line at the reader cursor matches a list related element. If
+  // does return list item information else return null.  By default it matches
+  // list item elements but 'options' can be included to include continuation
+  // blocks or indented paragraphs.
+  function matchItem(reader: Reader,
+      options: {continuation?: bool; indented?: bool;} = {}): ItemState
+  {
+    // Consume any HTML attributes elements.
+    var attrRe = LineBlocks.getDefinition('attributes').match;
+    if (attrRe.test(reader.cursor())) {
+        LineBlocks.render(reader, new Writer());
+    }
+    // Check if the line matches a list definition.
+    var line = reader.cursor();
+    var item = <ItemState>{};   // ItemState factory.
+    var def: DelimitedBlocks.Definition;
+    for (var i in defs) {
+      var match = defs[i].match.exec(line);
+      if (match) {
+        if (match[0][0] === '\\') {
+          reader.cursor(reader.cursor().slice(1));  // Drop backslash.
+          return null;
+        }
+        item.match = match
+        item.def = defs[i];
+        item.id = match[match.length - 2];
+        item.isListItem = true;
+        return item;
+      }
+    }
+    if (options.continuation) {
+      def = DelimitedBlocks.getDefinition('continuation');
+      if (def.openMatch.test(line)) {
+        item.isContinuation = true;
+        return item;
+      }
+    }
+    if (options.indented) {
+      def = DelimitedBlocks.getDefinition('indented');
+      if (def.openMatch.test(line)) {
+        item.isIndented = true;
+        return item;
+      }
+    }
+    return null;
+  }
+
+  // CommonJS module exports.
+  declare var exports: any;
+  if (typeof exports !== 'undefined') {
+    exports.Lists = Lists;
+  }
+
+}

@@ -1,0 +1,632 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style type="text/css">
+    /*<![CDATA[*/
+    body {
+      margin: 1em;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+    h1, h2, h3, h4, h5, h6, th {
+      color: #527bbd;
+    }
+    h1 {
+      margin-bottom: 0.2em;
+    }
+    table#view {
+      table-layout: fixed;
+      border-collapse:collapse;
+      width: 100%;
+      text-align:left;
+    }
+    #view td, #view th {
+      border: 2px solid #ddd;
+      width: 33%;
+      padding: 0.5em;
+    }
+    #view td {
+      height: 200px;
+      vertical-align:top;
+    }
+    #rimu {
+      height: 100%;
+      width: 100%;
+      background-color: #ffe;
+      border: 1px solid #ddd;
+    }
+    #html {
+      white-space: pre-wrap;
+      margin: 0;
+    }
+    #preview em, #preview strong {
+      color: #295bad;
+    }
+    #preview code, pre {
+      color: #474747;
+      white-space: pre-wrap;
+    }
+    #preview pre {
+      margin-left: 1em;
+      /*background-color: #f8f8f8;*/
+    }
+    /*]]>*/
+  </style>
+</head>
+<body>
+  <h1>Rimu Playground</h1>
+
+  <p>
+    <select onchange="if (this.selectedIndex) renderCommentFrom(this.value);"
+            onclick="if (this.selectedIndex) renderCommentFrom(this.value);">
+      <option value="">Rimu topics...</option>
+      <option value="topic-anchors-and-links">Anchors and links</option>
+      <option value="topic-api">API</option>
+      <option value="topic-character-entities">Character entities</option>
+      <option value="topic-comments">Comments</option>
+      <option value="topic-delimited-blocks">Delimited blocks</option>
+      <option value="topic-headers">Headers</option>
+      <option value="topic-html-markup">HTML Markup</option>
+      <option value="topic-html-attributes">HTML Attributes</option>
+      <option value="topic-images">Images</option>
+      <option value="topic-lists">Lists</option>
+      <option value="topic-paragraphs">Paragraphs</option>
+      <option value="topic-playground">Playground</option>
+      <option value="topic-text-formatting">Text formatting</option>
+      <option value="topic-tools">Tools</option>
+      <option value="topic-urls-and-email">URLs and email addresses</option>
+      <option value="topic-variables">Variables</option>
+    </select>
+    <button onclick="convert();">Convert</button>
+    <button onclick="stash();">Stash</button>
+    <button onclick="unstash();">Unstash</button>
+  </p>
+
+  <table id="view">
+    <thead>
+      <tr>
+        <th>Rimu</th>
+        <th>Preview</th>
+        <th>HTML</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <textarea id="rimu"></textarea>
+        </td>
+        <td id="preview">
+        </td>
+        <td>
+          <pre id="html"></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+<div id="topic-anchors-and-links">
+<!--
+Anchors are jump targets for links within the document.
+
+Syntax:
+
+  Role            Rimu            HTML
+  _________________________________________________________
+  Inline anchor   <<#id>>         <span id="id"></span>
+  Block anchor    <<#id>>         <div id="id"></div>
+  Link            <#id|caption>   <a href="#id">caption</a>
+  Link            <#id>           <a href="#id">url</a>
+  _________________________________________________________
+
+- <<#x1>>There are block and inline anchor elements, both have the
+  same syntax.
+- <#x1|Links> are inline elements.
+
+See also the _URLs and email addresses_ topic.
+
+-->
+</div>
+
+<div id="topic-api">
+<!--
+Rimu has just one API:
+
+  render(source [, options])
+
+Where `source` is a string containing Rimu markup and `options` is an
+optional object argument with zero or more of the following
+properties:
+
+`safeMode`:: This option has a number value that controls how Rimu
+renders HTML embedded HTML:
+
+  0 => Render the raw HTML (default behavior).
+  1 => Delete the HTML.
+  2 => Replace the HTML with the 'htmlReplacement' option string.
+  3 => Render HTML as text.
+
+`htmlReplacement`:: A string that replaces embedded HTML when
+`safeMode` is set to `2`. Defaults to `<mark>replaced HTML<mark>`.
+
+Example:
+
+  Rimu.render('Hello *Rimu*!', {safeMode: 1});
+
+See `rimuc.js` and `rimuplayground.html` for examples of `render()`
+in action.
+
+-->
+</div>
+
+<div id="topic-character-entities">
+<!--
+HTML character entities are can be included in Rimu source.
+
+Examples: &copy; &reg; &alpha; &omega;
+
+-->
+</div>
+
+<div id="topic-comments">
+<!--
+A _comment block_ is any text between a line containing `/*` and a
+line containing `*/`
+
+  /*
+    The comments do not appear in the rendered HTML.
+  */
+
+A _comment line_ is any line of text starting with `//`.
+
+  // The comment does not appear in the rendered HTML.
+
+- Comments are block elements and cannot be used inline, for example
+  mid-paragraph.
+- Comment delimiters must start at the left margin.
+- Use HTML comments if you want comments to appear in the rendered
+  HTML.
+
+-->
+</div>
+
+<div id="topic-delimited-blocks">
+<!--
+Delimited blocks are blocks of one or more lines bounded by opening
+and closing delimiter lines.
+
+*Code Block*
+
+- -
+A code block expands variable references but all other span
+elements are rendered verbatim. Rendered with  HTML <pre><code>
+elements.
+
+The delimiter lines are two or more dash characters starting at the
+left margin.
+- -
+
+*Quote Block*
+
+""
+A _Quote Block_ renders the enclosed block elements inside an HTML
+`<blockquote>` element.
+
+The delimiter lines are two or more double-quote characters starting
+at the left margin.
+""
+
+*Continuation Block*
+
+..
+A _Continuation Block_ is a container for other block elements, the
+contained elements are enveloped in an HTML `div` element.
+
+- The delimiter lines are two or more period characters starting at
+  the left margin.
+- The _Continuation Block_ is commonly used to group block elements so
+  they can be attached to a list item.
+..
+
+-->
+</div>
+
+<div id="topic-headers">
+<!--
+Single line header titles are prefixed by 1 to 6 `=` or `#`
+characters (the header ID). A postfixed header ID is
+optional. The header ID is separated from the title text by
+whitespace. Inline elements are allowed in header titles.
+
+# h1 header
+== h2 header ==
+#### h3 header
+#### =h3= h4 _header_ ####
+===== h5 header
+====== h6 header
+
+-->
+</div>
+
+<div id="topic-html-markup">
+<!--
+HTML markup can be mixed with Rimu markup as
+<span style='font-size: 2em'>inline elements</span> or as block
+elements:
+
+<table>
+  <tr>
+    <td>Montes adipiscing sodales.</td>
+    <td>Magna placerat posuere.</td>
+  </tr>
+  <tr>
+    <td>Nulla suspendisse egestas nulla libero sed.</td>
+    <td>Wisi ullamcorper eget.</td>
+  </tr>
+</table>
+
+- An HTML block must be followed by a blank line so cannot contain
+  blank lines.
+- Inline HTML tags cannot be broken across line boundaries.
+- Inline HTML tags can be escaped with a backslash character prefix.
+- HTML can be suppressed using the API _safeMode_ option (see the
+  _API_ topic).
+
+-->
+</div>
+
+<div id="topic-html-attributes">
+<!--
+The _HTML Attributes_ block element injects HTML attributes into the
+opening tag of the next block element. You can specify class names, an
+element ID and any other HTML attributes.
+
+Syntax:
+
+  .[class names][#id][[attributes]]
+
+- `class names` is one or more HTML _class_ attribute names (separated
+  by spaces).
+- `id` is a unique HTML _id_ attribute value.
+- `attributes` is one or more HTML attribute name/value pairs.
+- HTML attributes can be applied any block element that renders HTML.
+- The leading period character must start at the left margin.
+- The `[attributes]` section is skipped if the API _safeMode_ option
+  is not zero (see the _API_ topic).
+
+Here are a couple of examples of attribute elements applied to the
+paragraph block elements:
+
+.error [style="color:red"]
+Lorum ipsum.
+
+.info #ref2 [style="color:green"]
+Ac curabitur elementum.
+
+{quote-style} = '.[style="padding-left: 10px; border-left: 4px solid silver;"]'
+
+{quote-style}
+""
+Lorem ipsum dolor sit amet sapien. Nascetur et mattis maecenas morbi
+porttitor. Vitae vestibulum voluptate. Quam elit id. In eu wisi.
+Imperdiet pellentesque minim. Metus mauris tortor. Torquent leo vel.
+""
+
+-->
+</div>
+
+<div id="topic-images">
+<!--
+Syntax:
+
+  Rimu              HTML
+  ____________________________________________
+  <image:url|alt>   <img href="url" alt="alt">
+  <image:url>       <img href="url" alt="url">
+  ____________________________________________
+
+An image can be rendered as a block element:
+
+<image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
+
+Or an image can be <image:http://www.w3.org/Icons/w3c_home.png> an
+inline element.
+
+-->
+</div>
+
+<div id="topic-lists">
+<!--
+List items are prefixed with a list ID which identifies the list type
+and groups list items.
+
+  List IDs             List type
+  __________________________________
+  -, *, **, ***, ****  Bullet list
+  ., .., ..., ....     Numbered list
+  ::, :::, ::::        Labeled list
+  __________________________________
+
+- Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu
+\- lorem dolor fusce nec.
+  * Sit pretium quisque in wisi lobortis.
+  * Ac curabitur elementum.
+    ** Platea ad diam arcu vitae fermentum.
+       1. Eu lorem nulla.
+       2. In suspendisse at dapibus nostra est.
+          .. Montes adipiscing sodales.
+    ** Pellentesque nibh sit.
+- Augue et dui malesuada purus.
+
+  If a list item is followed by an indented paragraph the indented
+  paragraph is included in the list item.
+
+- Viverra pede turpis.
+  Esse et dui:: nonummy modi.
+  Wisi ad diam:: sapien porttitor.
+    Condimentum::: lacus maecenas neque dolor habitant tellus eu vitae sed
+
+- List items can be escaped with a backslash at the beginning of the
+  line.
+- List items can be indented but this has no semantic significance.
+..
+A _Continuation Block_ immediately following a list item is rendered
+with the list item.
+
+This allows arbitrarily complex list items.
+..
+
+- Number list IDs can be prefixed with numbers but they have no
+  semantic significance.
+
+  If a list item is followed by an indented paragraph the indented
+  paragraph is rendered with the list item.
+
+- There are no explicit numbering or bullet styles, this is best left
+  to CSS which can apply a consistent set of list styles.
+
+-->
+</div>
+
+<div id="topic-paragraphs">
+<!--
+Paragraphs are always followed by a blank line. There are two
+paragraph types:
+
+==== Normal paragraphs
+Normal paragraphs can contain inline elements, the first line must
+start at the left margin.
+
+Normal paragraphs have the lowest processing priority.  To begin a
+normal paragraph with text that would otherwise match another block
+element start it with a Zero Width Space character entity
+(`&ZeroWidthSpace;`).
+
+You can force line breaks +
+in normal paragraphs by   +
+putting a space followed  +
+by a plus character at    +
+the end of a line.
+
+==== Indented paragraphs
+  _Indented paragraphs_ expand variable references but all other
+  inline elements are rendered verbatim. Indented paragraphs are
+  rendered with an HTML <pre> element.
+
+-->
+</div>
+
+<div id="topic-playground">
+<!--
+This is the _Rimu Playground_, it's an interactive sandbox
+for learning and experimenting with Rimu markup:
+
+- Stand-alone HTML application, all processing in the browser (no
+  data is sent from the browser).
+- Enter Rimu source in the _Rimu_ text area then press the _Convert_
+  button to see and preview generated HTML.
+- Select from the _Rimu topics_ dropdown to view Rimu documentation.
+- Resize the playground by dragging the text area handle (on
+  the text area bottom-right corner (not all browsers
+  support this feature).
+- Use _Stash_ to save the current Rimu source and _Unstash_
+  to restore it later.
+
+-->
+</div>
+
+<div id="topic-text-formatting">
+<!--
+Formatted text is enclosed with quote characters. There are quote
+characters for _emphasized text_, *bold text*, "quoted text", =deleted
+text=, +inserted text+, #marked text#, ~subscripts~ and
+^superscripts^.
+
+  Rimu            HTML                      Common style
+  ___________________________________________________________
+  _emphasis_      <em>emphasis</em>         Italic
+  *strong*        <strong>strong</strong>   Bold
+  "quote"         <q>quote</q>
+  `code`          <code>code</code>         Monospaced
+  =deleted=       <del>deleted</del>        Strikethrough
+  +inserted+      <ins>inserted</ins>       Underlined
+  #marked#        <mark>marked</mark>       Yellow background
+  ~subscript~     <sub>subscript</sub>
+  ^superscript^   <sup>superscript</sup>
+  ___________________________________________________________
+
+- Other quotes and inline elements are allowed between quotes with the
+  exception of the _code_ quote which displays enclosed elements
+  verbatim.
+- Quotes can be escpaed with backslash character prefixes.
+- Quoted text must begin and end with non-whitespace characters and
+  cannot end with a backslash character.
+
+-->
+</div>
+
+<div id="topic-variables">
+<!--
+Variables contain Rimu markup and can be inserted anywhere you would
+use an inline or block element.  They are used to parameterize
+documents, promote clarity and eliminate repetition.
+
+Assignment syntax:
+
+  {variable-name} = 'variable-value'
+
+Reference syntax:
+
+  {variable-name}
+
+- Variable values are enclosed by single quotes and can extend over
+  multiple lines.
+- A variable name consist of one or more alphanumeric, underscore or
+  dash characters.
+- Variable assignment must start at the left margin.
+- Variables values can contain references to previously defined
+  variables.
+- Variable references can be escaped with a backslash character
+  prefix.
+
+Examples:
+
+  {homepage} = '<http://www.example.com|Foobar home page>'
+  {description} = 'Sapiente nec vestibulum integer sit qui. Libero pede
+  posuere.  Erat ullamcorper enim per fusce aliquam interdum penatibus
+  et sed auctor ac.  Lectus consectetuer neque.'
+  {-} = '&ndash;'
+
+  Visit the {homepage}.
+
+-->
+</div>
+
+<div id="topic-tools">
+<!--
+==== Rimuc
+_rimuc_ is a Node.js command-line tool that converts Rimu source to
+HTML.
+
+- -
+NAME
+  rimuc - convert Rimu source to HTML
+
+SYNOPSIS
+  rimuc [OPTIONS...] [FILE]
+
+DESCRIPTION
+Reads Rimu source markup from stdin, converts it to HTML then writes the HTML
+to stdout. If FILE is specified reads Rimu source from FILE.
+
+OPTIONS
+  - -safe-mode
+    Specifies how to process inline and block HTML elements.
+    - -safe-mode 0 renders raw HTML (default),
+    - -safe-mode 1 drops raw HTML,
+    - -safe-mode 2 replaces raw HTML with text 'replaced HTML'.
+    - -safe-mode 3 renders raw HTML as text.
+
+  -h, - -help
+    Display help message.
+- -
+
+Example usage:
+
+  echo 'Hello *Rimu*!' | rimuc
+  cat bootstrap-header.html showcase.rmu footer.html | rimuc > showcase.html
+
+The second example generates an HTML Web page styled with Bootstrap,
+you can run this command from the Rimu `samples` directory.
+
+==== Vim syntax file
+#TODO#
+
+-->
+</div>
+
+<div id="topic-urls-and-email">
+<!--
+Syntax:
+
+  Rimu              HTML
+  ____________________________________________________
+  <url|caption>     <a href="url">caption</a>
+  <url>             <a href="url">url</a>
+  <email|caption>   <a href="mailto:email">caption</a>
+  <email>           <a href="mailto:email">email</a>
+  ____________________________________________________
+
+Handles _file_, _http_, _https_, _ftp_, _mailto_ and _#id_ URLs.
+
+Examples:
+
+  <http://example.com|Foo home>
+  <http://example.com>
+  <#x1|the preface>
+  <file:///home/joe/doc/user-guide.pdf|user guide>
+  <file:///home/joe/downloads/>
+  <ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt>
+  <joe@example.org|Joe Bloggs>
+  <joe@example.com>
+
+-->
+</div>
+
+  <script type="text/javascript" src="rimu.js"></script>
+  <script type="text/javascript">
+    // <![CDATA[
+    function escapeSpecialChars(s) {
+      return s.replace(/&/g, '&amp;')
+              .replace(/>/g, '&gt;')
+              .replace(/</g, '&lt;');
+    }
+    // Strip leading and trailing whitespace.
+    function trim(s) { return s.replace(/^\s+|\s+$/g,''); }
+    function convert() {
+      var source = document.getElementById('rimu').value;
+      var htmlRaw = Rimu.render(source);
+      var htmlEscaped = escapeSpecialChars(htmlRaw);
+      var htmlElement = document.getElementById('html');
+      var previewElement = document.getElementById('preview');
+      htmlElement.innerHTML = htmlEscaped;
+      previewElement.innerHTML = htmlRaw;
+    }
+    var stashText = '';
+    function stash() {
+      var rimuElement = document.getElementById('rimu');
+      stashText = rimuElement.value;
+    }
+    function unstash() {
+      var rimuElement = document.getElementById('rimu');
+      rimuElement.value = stashText;
+    }
+    // Render Rimu source stored in comment inside div with id.
+    function renderCommentFrom(id) {
+      var commentDiv = document.getElementById(id);
+      if (!commentDiv) {
+        alert('Missing div: ' + id);
+        return;
+      }
+      var rimuElement = document.getElementById('rimu');
+      var htmlElement = document.getElementById('html');
+      var previewElement = document.getElementById('preview');
+      // Retrieve comment from topic divs.
+      var source;
+      for (var i in commentDiv.childNodes) {
+        if (commentDiv.childNodes[i].nodeType === 8) {
+          source = commentDiv.childNodes[i].nodeValue;
+          break;
+        }
+      }
+      source = trim(source);
+      source = source.replace(/- -/mg, '--'); // Because -- is illegal in an HTML comment.
+      var html = Rimu.render(source);
+      rimuElement.value = source;
+      htmlElement.innerHTML = escapeSpecialChars(html);
+      previewElement.innerHTML = html;
+    }
+    // ]]>
+  </script>
+</body>
+</html>
