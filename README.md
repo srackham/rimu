@@ -23,7 +23,7 @@ and Markdown.
 Read the documentation and experiment with Rimu in the _Rimu
 Playground_.
 
-Play with it here <http://rimumarkup.org/rimu/rimuplayground.html> or
+Play with it here <http://rimumarkup.org/rimuplayground.html> or
 open the `rimuplayground.html` locally in in your browser.
 
 
