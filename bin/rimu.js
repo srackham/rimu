@@ -442,16 +442,13 @@ var Rimu;
                 specials: true
             }, 
             {
-                openMatch: /^(<!.*|<[a-zA-Z]+(?:[ >].*)?)$/,
+                openMatch: /^(<!.*|(?:<\/?(?:address|article|aside|audio|blockquote|body|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|html|noscript|ol|output|p|pre|section|table|tfoot|ul|video)(?:[ >].*)?))$/i,
                 closeMatch: /^$/,
                 openTag: '',
                 closeTag: '',
                 variables: true,
                 filter: function (text) {
                     return Rimu.Options.safeModeFilter(text);
-                },
-                verify: function (match) {
-                    return /^<(!|address|article|aside|audio|blockquote|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|noscript|ol|output|p|pre|section|table|tfoot|ul|video)/i.test(match[0]);
                 }
             }, 
             {

@@ -201,6 +201,9 @@ exports['Documents'] = function(test) {
   testDocuments(test,
       '<div>a block</div>\n\n<span>not a block</span>',
       '<div>a block</div>\n<p><span>not a block</span></p>');
+  testDocuments(test,
+      '</body></html>',
+      '</body></html>');
 
   // Block anchor.
   testDocuments(test,
