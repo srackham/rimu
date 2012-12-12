@@ -30,11 +30,8 @@ exports['Quotes'] = function(test) {
         '00 _ `_11_` _2*2*_ _2*2\\*_'),
         '00 _ <code>_11_</code> <em>2<strong>2</strong></em> <em>2*2*</em>');
   test.equal(Rimu.Spans.render(
-        '=11= +22+ "33" #4# H~2~O e^2^ _\\_'),
-        '<del>11</del> <ins>22</ins> <q>33</q> <mark>4</mark> H<sub>2</sub>O e<sup>2</sup> __');
-  test.equal(Rimu.Spans.render(
-        '"to be _or_..." \\"that" is...'),
-        '<q>to be <em>or</em>...</q> "that" is...');
+        '=11= +22+ #4# H~2~O e^2^ _\\_'),
+        '<del>11</del> <ins>22</ins> <mark>4</mark> H<sub>2</sub>O e<sup>2</sup> __');
   test.equal(Rimu.Spans.render(
         '_\\#xyz# abc_'),
         '<em>#xyz# abc</em>');
@@ -44,6 +41,10 @@ exports['Quotes'] = function(test) {
   test.equal(Rimu.Spans.render(
         '__xyz abc\\__'),
         '<em>_xyz abc_</em>');
+  // Nested quotes.
+  test.equal(Rimu.Spans.render(
+        '_*abc #efg#* h^i^_ j'),
+        '<em><strong>abc <mark>efg</mark></strong> h<sup>i</sup></em> j');
   // Code quote.
   test.equal(Rimu.Spans.render(
         '`<http://example.com> \\``'),
@@ -121,7 +122,7 @@ exports['Replacements'] = function(test) {
         '<u>underlined *text*</u>\\<hr>'),
         '<u>underlined <strong>text</strong></u>&lt;hr&gt;');
   test.equal(Rimu.Spans.render(
-        '<span style=\\"font-size:\n2em">inline elements</span>'),
+        '<span style="font-size:\n2em">inline elements</span>'),
         '<span style="font-size:\n2em">inline elements</span>');
   test.equal(Rimu.Spans.render(
         '<a href=\'http://example.com\'><image:tiger.png></a>'),

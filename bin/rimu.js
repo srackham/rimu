@@ -916,12 +916,6 @@ var Rimu;
                 spans: false
             }, 
             {
-                quote: '"',
-                openTag: '<q>',
-                closeTag: '</q>',
-                spans: true
-            }, 
-            {
                 quote: '=',
                 openTag: '<del>',
                 closeTag: '</del>',

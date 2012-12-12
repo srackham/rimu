@@ -48,13 +48,6 @@ module Rimu.Quotes {
       closeTag: '</code>',
       spans: false,
     },
-
-    {
-      quote: '"',
-      openTag: '<q>',
-      closeTag: '</q>',
-      spans: true,
-    },
     {
       quote: '=',
       openTag: '<del>',
