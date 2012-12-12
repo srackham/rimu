@@ -855,18 +855,13 @@ var Rimu;
                     }
                     continue;
                 }
-                if(match[0][0] === '\\') {
-                    fragment.text = match.input.slice(0, match.index) + match.input.slice(match.index + 1);
-                    findRe.lastIndex--;
-                    continue;
-                }
                 var before = match.input.slice(0, match.index);
                 var after = match.input.slice(findRe.lastIndex);
                 fragments.splice(fragmentIndex, 1, {
                     text: before,
                     done: false
                 }, {
-                    text: 'placeholder',
+                    text: '',
                     done: true
                 }, {
                     text: after,
@@ -874,10 +869,15 @@ var Rimu;
                 });
                 fragmentIndex++;
                 fragment = fragments[fragmentIndex];
-                if(!def.filter) {
-                    fragment.text = Rimu.replaceMatch(match, def.replacement, def);
+                if(match[0][0] === '\\') {
+                    fragment.text = match.input.slice(match.index + 1, findRe.lastIndex);
+                    fragment.text = Rimu.replaceSpecialChars(fragment.text);
                 } else {
-                    fragment.text = def.filter(match, def);
+                    if(!def.filter) {
+                        fragment.text = Rimu.replaceMatch(match, def.replacement, def);
+                    } else {
+                        fragment.text = def.filter(match, def);
+                    }
                 }
                 fragmentIndex++;
                 fragment = fragments[fragmentIndex];
@@ -1002,16 +1002,6 @@ var Rimu;
                 specials: true
             }, 
             {
-                match: /\\?<((?:(?:file|https?|ftp):\/\/|mailto:|#)[^\s\|]+)\|([\s\S]+?)>/g,
-                replacement: '<a href="$1">$2</a>',
-                specials: true
-            }, 
-            {
-                match: /\\?<((?:(?:file|https?|ftp):\/\/|mailto:|#)[^\s\|]+?)>/g,
-                replacement: '<a href="$1">$1</a>',
-                specials: true
-            }, 
-            {
                 match: /\\?<image:([^\s\|]+)\|([\s\S]+?)>/g,
                 replacement: '<img src="$1" alt="$2">',
                 specials: true
@@ -1039,6 +1029,16 @@ var Rimu;
                 match: /\\?(<[!\/]?[a-zA-Z\-]+(:?\s+[^<>&]+)?>)/g,
                 replacement: '$1',
                 specials: false
+            }, 
+            {
+                match: /\\?<(\S+?)\|([\s\S]+?)>/g,
+                replacement: '<a href="$1">$2</a>',
+                specials: true
+            }, 
+            {
+                match: /\\?<(\S+?)>/g,
+                replacement: '<a href="$1">$1</a>',
+                specials: true
             }, 
             
         ];

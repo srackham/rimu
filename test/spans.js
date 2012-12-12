@@ -95,7 +95,7 @@ exports['Replacements'] = function(test) {
 
   // Anchors and links.
   test.equal(Rimu.Spans.render(
-        'Lorum <<\\#x1>>ipsum <#x1|lorum link> <\\<#x1>>'),
+        'Lorum <<\\#x1>>ipsum <#x1|lorum link> \\<<#x1>>'),
         'Lorum <span id="x1"></span>ipsum <a href="#x1">lorum link</a> &lt;&lt;#x1&gt;&gt;');
 
   // Images.
@@ -123,6 +123,14 @@ exports['Replacements'] = function(test) {
   test.equal(Rimu.Spans.render(
         '<span style=\\"font-size: 2em">inline elements</span>'),
         '<span style="font-size: 2em">inline elements</span>');
+
+  // Relative URLs.
+  test.equal(Rimu.Spans.render(
+        '<chapter1.html>'),
+        '<a href="chapter1.html">chapter1.html</a>');
+  test.equal(Rimu.Spans.render(
+        '<./chapter1.html#x1|Foo bar>'),
+        '<a href="./chapter1.html#x1">Foo bar</a>');
 
   test.done();
 };

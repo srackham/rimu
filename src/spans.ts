@@ -133,30 +133,30 @@ module Rimu.Spans {
         }
         continue;
       }
-      if (match[0][0] === '\\') {
-        // Remove leading backslash.
-        fragment.text = match.input.slice(0, match.index)
-                      + match.input.slice(match.index + 1);
-        findRe.lastIndex--;
-        continue;
-      }
       // Arrive here if we have a matched replacement.
       // The replacement splits the fragment into 3 fragments.
       var before = match.input.slice(0, match.index);
       var after = match.input.slice(findRe.lastIndex);
       fragments.splice(fragmentIndex, 1,
         {text: before, done: false},
-        {text: 'placeholder', done: true},
+        {text: '', done: true},
         {text: after, done: false}
       );
       // Advance to 'matched' fragment and fill in the replacement text.
       fragmentIndex++;
       fragment = fragments[fragmentIndex];
-      if (!def.filter) {
-        fragment.text = replaceMatch(match, def.replacement, def);
+      if (match[0][0] === '\\') {
+        // Remove leading backslash.
+        fragment.text = match.input.slice(match.index + 1, findRe.lastIndex);
+        fragment.text = replaceSpecialChars(fragment.text);
       }
       else {
-        fragment.text = def.filter(match, def);
+        if (!def.filter) {
+          fragment.text = replaceMatch(match, def.replacement, def);
+        }
+        else {
+          fragment.text = def.filter(match, def);
+        }
       }
       fragmentIndex++;
       fragment = fragments[fragmentIndex];

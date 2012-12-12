@@ -35,22 +35,6 @@ module Rimu.Replacements {
       specials: true,
     },
 
-    // Link: <url|caption>
-    // url = $1, caption = $2
-    {
-      match: /\\?<((?:(?:file|https?|ftp):\/\/|mailto:|#)[^\s\|]+)\|([\s\S]+?)>/g,
-      replacement: '<a href="$1">$2</a>',
-      specials: true,
-    },
-
-    // Link: <url>
-    // url = $1
-    {
-      match: /\\?<((?:(?:file|https?|ftp):\/\/|mailto:|#)[^\s\|]+?)>/g,
-      replacement: '<a href="$1">$1</a>',
-      specials: true,
-    },
-
     // Image: <image:src|alt>
     // src = $1, alt = $2
     {
@@ -92,6 +76,22 @@ module Rimu.Replacements {
       match: /\\?(<[!\/]?[a-zA-Z\-]+(:?\s+[^<>&]+)?>)/g,
       replacement: '$1',
       specials: false,
+    },
+
+    // Link: <url|caption>
+    // url = $1, caption = $2
+    {
+      match: /\\?<(\S+?)\|([\s\S]+?)>/g,
+      replacement: '<a href="$1">$2</a>',
+      specials: true,
+    },
+
+    // Link: <url>
+    // url = $1
+    {
+      match: /\\?<(\S+?)>/g,
+      replacement: '<a href="$1">$1</a>',
+      specials: true,
     },
 
   ];
