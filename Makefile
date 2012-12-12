@@ -35,10 +35,19 @@ commit:
 README.html: README.md
 	node ./bin/rimuc.js README.md > README.html
 
-samples: samples/showcase.html
+samples: samples/showcase.html samples/index.html
 
 samples/showcase.html: samples/showcase.rmu
-	cat samples/bootstrap-header.html samples/showcase.rmu samples/footer.html | node ./bin/rimuc.js > samples/showcase.html
+	cat samples/bootstrap-header.html \
+		samples/showcase.rmu \
+		samples/footer.html \
+		| node ./bin/rimuc.js > samples/showcase.html
+
+samples/index.html: samples/index.rmu
+	cat samples/bootstrap-header.html \
+		samples/index.rmu \
+		samples/footer.html \
+		| node ./bin/rimuc.js > samples/index.html
 
 push:
 	git push -u --tags origin master

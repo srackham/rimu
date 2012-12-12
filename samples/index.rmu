@@ -1,0 +1,21 @@
+.hero-unit
+..
+= Rimu Markup
+Rimu is a readable text to HTML markup language inspired by AsciiDoc
+and Markdown.
+
+<a class="btn btn-primary btn-large" href="rimuplayground.html">Playground and Docs</a>
+<a class="btn btn-primary btn-large" href="http://github.com/srackham/rimu">Source on GitHub</a>
+<a class="btn btn-primary btn-large" href="https://npmjs.org/package/rimu">npm install rimu</a>
+
+- Single lightweight JavaScript file (less than 14KB minified) that
+  can be dropped onto a Web page or used as a Node module.
+- No dependencies.
+- Simple one-function API.
+- Raw HTML can be mixed in (a la Markdown).
+- HTML attributes can be applied to Rimu block elements.
+- Written in TypeScript.
+- Available from Github and as an npm module.
+- Includes command-line compiler and playground GUI.
+- MIT license.
+..
