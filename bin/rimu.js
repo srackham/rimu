@@ -919,7 +919,12 @@ var Rimu;
                 quote: '=',
                 openTag: '<del>',
                 closeTag: '</del>',
-                spans: true
+                spans: true,
+                verify: function (match, re) {
+                    var precedingChar = match.input[match.index - 1] || '';
+                    var followingChar = match.input[re.lastIndex] || '';
+                    return !(/[a-zA-Z]/.test(precedingChar) && /["']/.test(followingChar));
+                }
             }, 
             {
                 quote: '+',

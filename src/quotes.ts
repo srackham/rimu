@@ -15,27 +15,6 @@ module Rimu.Quotes {
       closeTag: '</em>',
       spans: true,
     },
-
-    /* Alternative emphasis dropped, just not a convincing
-       enough argument to justify two syntaxes for emaphasis.
-
-    // Alternative emphasis.
-    {
-      quote: '/',
-      openTag: '<em>',
-      closeTag: '</em>',
-      spans: true,
-      verify: function(match, re) {
-        // The forward slash is used a lot (e.g. URLs, path names) so need to
-        // be a bit more nuanced.
-        var precedingChar = match.input[match.index - 1] || '';
-        var followingChar = match.input[re.lastIndex] || '';
-        var illegal = /[a-zA-Z\-\/:]/   // Can't be bounded by these characters.
-        return !illegal.test(precedingChar + followingChar);
-      },
-    },
-    */
-
     {
       quote: '*',
       openTag: '<strong>',
@@ -53,6 +32,14 @@ module Rimu.Quotes {
       openTag: '<del>',
       closeTag: '</del>',
       spans: true,
+      verify: function(match, re) {
+        // Heuristic to suppress quoting an HTML attribute assignment.
+        // Skip if = is preceded by an alpha character and followed by a " or '
+        // character.
+        var precedingChar = match.input[match.index - 1] || '';
+        var followingChar = match.input[re.lastIndex] || '';
+        return !(/[a-zA-Z]/.test(precedingChar) && /["']/.test(followingChar));
+      },
     },
     {
       quote: '+',

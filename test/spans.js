@@ -49,11 +49,10 @@ exports['Quotes'] = function(test) {
   test.equal(Rimu.Spans.render(
         '`<http://example.com> \\``'),
         '<code>&lt;http://example.com&gt; `</code>');
-  /*
+  // Don't quote = in HTML attributes.
   test.equal(Rimu.Spans.render(
-        'Some /emphasized/ text this/is/not'),
-        'Some <em>emphasized</em> text this/is/not');
-  */
+        '<a class="btn">abc</a> <a class="btn">xyz</a>'),
+        '<a class="btn">abc</a> <a class="btn">xyz</a>');
 
   test.done();
 };
