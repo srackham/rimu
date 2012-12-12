@@ -3,13 +3,13 @@ module Rimu.Spans {
   This module renders text containing Quote and Replacement span elements.
 
   Quote and replacement processing involves spliting the source text into
-  fragments where a quote or a replacement occurs then inserting fragments
-  containing HTML markup at theses breaks.  A fragment is flagged as 'done' to
+  fragments where a quote or a replacement occurs then splicing the fragments
+  containing HTML markup into the breaks.  A fragment is flagged as 'done' to
   exclude it from further substitutions.
 
   Once all quotes and replacements are processed fragments not yet flagged as
   'done' are escaped with special character entities and the fragments are
-  reassembled (defraged) into a resultant HTML string.
+  reassembled (defraged) into the resultant HTML string.
 */
 
   interface Fragment {

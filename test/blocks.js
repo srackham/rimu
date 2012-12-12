@@ -204,6 +204,10 @@ exports['Documents'] = function(test) {
   testDocuments(test,
       '</body></html>',
       '</body></html>');
+  testDocuments(test,
+      '<!--comment-->\n\nx <!--comment-->y`<!--comment-->`',
+      '<!--comment-->\n<p>x <!--comment-->y<code>&lt;!--comment--&gt;</code></p>');
+
 
   // Block anchor.
   testDocuments(test,

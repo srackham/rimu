@@ -71,9 +71,9 @@ module Rimu.DelimitedBlocks {
     },
     // HTML block.
     {
-      // $1 is first line of block.
       // Must start with  an <! or a block-level element start or end tag.
-      openMatch: /^(<!.*|(?:<\/?(?:address|article|aside|audio|blockquote|body|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|html|noscript|ol|output|p|pre|section|table|tfoot|ul|video)(?:[ >].*)?))$/i,
+      // $1 is first line of block.
+      openMatch: /^(<!.*|(?:<\/?(?:html|head|body|script|style|address|article|aside|audio|blockquote|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|noscript|ol|output|p|pre|section|table|tfoot|ul|video)(?:[ >].*)?))$/i,
       closeMatch: /^$/, // Blank line or EOF.
       openTag: '',
       closeTag: '',

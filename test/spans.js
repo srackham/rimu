@@ -121,8 +121,11 @@ exports['Replacements'] = function(test) {
         '<u>underlined *text*</u>\\<hr>'),
         '<u>underlined <strong>text</strong></u>&lt;hr&gt;');
   test.equal(Rimu.Spans.render(
-        '<span style=\\"font-size: 2em">inline elements</span>'),
-        '<span style="font-size: 2em">inline elements</span>');
+        '<span style=\\"font-size:\n2em">inline elements</span>'),
+        '<span style="font-size:\n2em">inline elements</span>');
+  test.equal(Rimu.Spans.render(
+        '<a href=\'http://example.com\'><image:tiger.png></a>'),
+        '<a href=\'http://example.com\'><img src="tiger.png" alt="tiger.png"></a>');
 
   // Relative URLs.
   test.equal(Rimu.Spans.render(
