@@ -193,8 +193,14 @@ exports['Documents'] = function(test) {
 
   // HTML blocks and spans.
   testDocuments(test,
-      '<hr>\n<br>\n\n\\<br><hr>',
-      '<hr>\n<br>\n<p>&lt;br&gt;<hr></p>');
+      '<hr>\n<br>\n\n\\<br><HR>',
+      '<hr>\n<br>\n<p>&lt;br&gt;<HR></p>');
+  testDocuments(test,
+      '<chapter1.html>',
+      '<p><a href="chapter1.html">chapter1.html</a></p>');
+  testDocuments(test,
+      '<div>a block</div>\n\n<span>not a block</span>',
+      '<div>a block</div>\n<p><span>not a block</span></p>');
 
   // Block anchor.
   testDocuments(test,

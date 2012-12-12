@@ -71,8 +71,8 @@ module Rimu.DelimitedBlocks {
     },
     // HTML block.
     {
-      openMatch: /^(<[a-zA-Z!\/].*)$/,  // $1 is first line of block.
-      closeMatch: /^$/,                 // Blank line or EOF.
+      openMatch: /^(<!.*|<[a-zA-Z]+(?:[ >].*)?)$/, // $1 is first line of block.
+      closeMatch: /^$/,                            // Blank line or EOF.
       openTag: '',
       closeTag: '',
       variables: true,
@@ -80,11 +80,8 @@ module Rimu.DelimitedBlocks {
         return Options.safeModeFilter(text);
       },
       verify: function(match) {
-        // Don't mistake a URL or email address for an opening tag.
-        if (match[0].match(/^<(file:|https?:|ftp:|mailto:|image:|\S+@)/)) {
-          return false;
-        }
-        return true;
+        // Must start with  an <! or a block-level element.
+        return /^<(!|address|article|aside|audio|blockquote|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|noscript|ol|output|p|pre|section|table|tfoot|ul|video)/i.test(match[0]);
       },
     },
     // Indented paragraph.

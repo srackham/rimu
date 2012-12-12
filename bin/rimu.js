@@ -442,7 +442,7 @@ var Rimu;
                 specials: true
             }, 
             {
-                openMatch: /^(<[a-zA-Z!\/].*)$/,
+                openMatch: /^(<!.*|<[a-zA-Z]+(?:[ >].*)?)$/,
                 closeMatch: /^$/,
                 openTag: '',
                 closeTag: '',
@@ -451,10 +451,7 @@ var Rimu;
                     return Rimu.Options.safeModeFilter(text);
                 },
                 verify: function (match) {
-                    if(match[0].match(/^<(file:|https?:|ftp:|mailto:|image:|\S+@)/)) {
-                        return false;
-                    }
-                    return true;
+                    return /^<(!|address|article|aside|audio|blockquote|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|noscript|ol|output|p|pre|section|table|tfoot|ul|video)/i.test(match[0]);
                 }
             }, 
             {
