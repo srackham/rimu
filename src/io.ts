@@ -7,7 +7,7 @@ module Rimu {
     constructor(text: string) {
       // Split lines on newline boundaries and trim trailing white space.
       // http://stackoverflow.com/questions/1155678/javascript-string-newline-character
-      // TODO split split is broken on IE8 e.g.
+      // TODO split is broken on IE8 e.g.
       // 'X\n\nX'.split(/\n/g).length) returns 2 but should return 3.
       var lines = text.split(/\r\n|\r|\n/g);
       for (var i in lines) {
