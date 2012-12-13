@@ -249,13 +249,21 @@ var Rimu;
         function render(text) {
             for(var i in Variables.list) {
                 var variable = Variables.list[i];
-                var re = RegExp('\\\\?\\{' + Rimu.escapeRegExp(variable.name) + '\\}', 'g');
-                text = text.replace(re, function (match) {
+                var re = RegExp('\\\\?\\{' + Rimu.escapeRegExp(variable.name) + '(\\|[\\s\\S]*?)?\\}', 'g');
+                text = text.replace(re, function (match, params) {
                     if(match[0] === '\\') {
                         return match.slice(1);
-                    } else {
-                        return variable.value;
                     }
+                    if(!params) {
+                        return variable.value.replace(/\$\d+/g, '');
+                    }
+                    var result = variable.value;
+                    var paramsList = params.slice(1).split('|');
+                    for(var i in paramsList) {
+                        result = result.replace('$' + (parseInt(i) + 1), paramsList[i]);
+                    }
+                    result = result.replace(/\$\d+/g, '');
+                    return result;
                 });
             }
             return text;

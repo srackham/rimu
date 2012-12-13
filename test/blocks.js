@@ -236,6 +236,14 @@ exports['Documents'] = function(test) {
       "{v1}='1\n2'\n{v2}='3\n4'\n{v1} and {v2}",
       '<p>1\n2 and 3\n4</p>');
 
+  // Parameterized variables.
+  testDocuments(test,
+      "{v}='$1 and $2'\n{v|a|b_c_} {v|d|e\nfg}.",
+      '<p>a and b<em>c</em> d and e\nfg.</p>');
+  testDocuments(test,
+      "{v}='$1 and $2 and $3 and $42'\n{v}{v|} {v|1|2}",
+      '<p> and  and  and  and  and  and  1 and 2 and  and </p>');
+
   // Single quotes are OK inside variable values.
   testDocuments(test,
       "{v}='This \'and\' that'\n{v}",
