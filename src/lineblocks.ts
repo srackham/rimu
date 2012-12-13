@@ -37,7 +37,7 @@ module Rimu.LineBlocks {
       filter: function (match, block, reader) {
         var value = Variables.render(match[1]);
         if (value === match[1]) {
-          // Variable does not exists so pass it through.
+          // Variable does not exist so pass it on.
           value = '\\' +  value;
         }
         // Insert the variable value into the reader just ahead of the cursor.

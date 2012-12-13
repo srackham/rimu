@@ -37,10 +37,7 @@ samples/showcase.html: samples/showcase.rmu
 		| node ./bin/rimuc.js > samples/showcase.html
 
 samples/index.html: samples/index.rmu
-	cat samples/bootstrap-header.html \
-		samples/index.rmu \
-		samples/footer.html \
-		| node ./bin/rimuc.js > samples/index.html
+	node ./bin/rimuc.js samples/index.rmu > samples/index.html
 
 commit:
 	make --always-make test    # Force rebuild and test.

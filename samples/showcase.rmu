@@ -9,7 +9,8 @@
 */
 
 // Variables.
-{heads-up} = '<span class='label label-info'>Heads up!</span>'
+{info} = '<span class='label label-info'>$1</span>'
+{heads-up} = '{info|Heads up!}'
 {playground} = '<http://www.methods.co.nz/rimu/rimuplayground.html|Rimu Playground>'
 
 {heads-up} #This document is not yet finished.#
