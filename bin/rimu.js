@@ -292,13 +292,12 @@ var Rimu;
                 }
             }, 
             {
-                match: /^\\?\{([\w\-]+)\}$/,
+                match: /^\\?(\{[\w\-]+(?:\|.*)?\})$/,
                 replacement: '',
                 filter: function (match, block, reader) {
-                    var name = match[1];
-                    var value = Rimu.Variables.get(name);
-                    if(!value) {
-                        value = '\\{' + name + '}';
+                    var value = Rimu.Variables.render(match[1]);
+                    if(value === match[1]) {
+                        value = '\\' + value;
                     }
                     reader.lines = [].concat(reader.lines.slice(0, reader.pos + 1), value.split('\n'), reader.lines.slice(reader.pos + 1));
                     return '';

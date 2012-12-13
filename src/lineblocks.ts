@@ -32,14 +32,13 @@ module Rimu.LineBlocks {
     // Variable reference.
     // name = $1
     {
-      match: /^\\?\{([\w\-]+)\}$/,
+      match: /^\\?(\{[\w\-]+(?:\|.*)?\})$/,
       replacement: '',
       filter: function (match, block, reader) {
-        var name = match[1];
-        var value = Variables.get(name);
-        if (!value) {
+        var value = Variables.render(match[1]);
+        if (value === match[1]) {
           // Variable does not exists so pass it through.
-          value = '\\{' + name + '}';
+          value = '\\' +  value;
         }
         // Insert the variable value into the reader just ahead of the cursor.
         reader.lines = [].concat(
