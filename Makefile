@@ -22,18 +22,11 @@ lint:
 test: build lint
 	nodeunit $(TESTS)
 
-build: bin/rimu.js samples README.html
+build: bin/rimu.js samples
 
 bin/rimu.js: $(SOURCE)
 	tsc --declaration --out bin/rimu.js $(SOURCE)
 	uglifyjs bin/rimu.js > bin/rimu.min.js
-
-commit:
-	make --always-make test    # Force rebuild and test.
-	git commit -a
-
-README.html: README.md
-	node ./bin/rimuc.js README.md > README.html
 
 samples: samples/showcase.html samples/index.html
 
@@ -48,6 +41,10 @@ samples/index.html: samples/index.rmu
 		samples/index.rmu \
 		samples/footer.html \
 		| node ./bin/rimuc.js > samples/index.html
+
+commit:
+	make --always-make test    # Force rebuild and test.
+	git commit -a
 
 push:
 	git push -u --tags origin master
