@@ -17,7 +17,7 @@ module Rimu.Lists {
     def: Definition;
     id: string;
     isListItem: bool;
-    isContinuation: bool;
+    isDivision: bool;
     isIndented: bool;
   }
 
@@ -129,8 +129,8 @@ module Rimu.Lists {
           return nextItem;
         }
       }
-      else if (nextItem.isContinuation || nextItem.isIndented) {
-        // Continuation blocks and Indented blocks attach to list items.
+      else if (nextItem.isDivision || nextItem.isIndented) {
+        // Division blocks and Indented blocks attach to list items.
         DelimitedBlocks.render(reader, writer);
         reader.skipBlankLines();
         if (reader.eof()) {
@@ -160,9 +160,9 @@ module Rimu.Lists {
         // The list item has ended, check what follows.
         reader.skipBlankLines();
         if (reader.eof()) return null;
-        return matchItem(reader, {continuation: true, indented: true});
+        return matchItem(reader, {division: true, indented: true});
       }
-      next = matchItem(reader, {continuation: true});
+      next = matchItem(reader, {division: true});
       if (next) {
         return next;
       }
@@ -174,10 +174,10 @@ module Rimu.Lists {
 
   // Check if the line at the reader cursor matches a list related element. If
   // does return list item information else return null.  By default it matches
-  // list item elements but 'options' can be included to include continuation
+  // list item elements but 'options' can be included to include division
   // blocks or indented paragraphs.
   function matchItem(reader: Reader,
-      options: {continuation?: bool; indented?: bool;} = {}): ItemState
+      options: {division?: bool; indented?: bool;} = {}): ItemState
   {
     // Consume any HTML attributes elements.
     var attrRe = LineBlocks.getDefinition('attributes').match;
@@ -202,10 +202,10 @@ module Rimu.Lists {
         return item;
       }
     }
-    if (options.continuation) {
-      def = DelimitedBlocks.getDefinition('continuation');
+    if (options.division) {
+      def = DelimitedBlocks.getDefinition('division');
       if (def.openMatch.test(line)) {
-        item.isContinuation = true;
+        item.isDivision = true;
         return item;
       }
     }

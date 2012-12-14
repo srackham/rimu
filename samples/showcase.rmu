@@ -101,7 +101,7 @@ You can have inline images <image:smallnew.png> or block images:
   line.
 - List items can be indented but this has no semantic significance.
 ..
-A _Continuation Block_ immediately following a list item is rendered
+A _Division Block_ immediately following a list item is rendered
 with the list item.
 
 This allows arbitrarily complex list items.

@@ -9,7 +9,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <meta name="description" content="Rimu is a readable text to HTML
+    markup language inspired by AsciiDoc and Markdown.">
+  <title>Rimu Markup</title>
   <link href="bootstrap.css" rel="stylesheet">
   <style>
     body {
@@ -34,8 +36,8 @@ and Markdown.
   can be dropped onto a Web page or used as a Node module.
 - No dependencies.
 - Simple one-function API.
-- Raw HTML can be mixed in (a la Markdown).
-- HTML attributes can be applied to Rimu block elements.
+- Features include raw HTML (a la Markdown), HTML attribute injection
+  and parameterized variables.
 - Written in TypeScript.
 - Available from Github and as an npm module.
 - Includes command-line compiler and playground GUI.

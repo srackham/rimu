@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <meta name="description" content="An interactive sandbox for learning and
+    experimenting with Rimu markup plus documentation.">
+  <title>Rimu Markup Playground</title>
   <style type="text/css">
     /*<![CDATA[*/
     body {
@@ -217,15 +219,15 @@ The delimiter lines are two or more double-quote characters starting
 at the left margin.
 ""
 
-*Continuation Block*
+*Division Block*
 
 ..
-A _Continuation Block_ is a container for other block elements, the
+A _Division Block_ is a container for other block elements, the
 contained elements are enveloped in an HTML `div` element.
 
 - The delimiter lines are two or more period characters starting at
   the left margin.
-- The _Continuation Block_ is commonly used to group block elements so
+- The _Division Block_ is commonly used to group block elements so
   they can be attached to a list item.
 ..
 
@@ -372,7 +374,7 @@ and groups list items.
   line.
 - List items can be indented but this has no semantic significance.
 ..
-A _Continuation Block_ immediately following a list item is rendered
+A _Division Block_ immediately following a list item is rendered
 with the list item.
 
 This allows arbitrarily complex list items.

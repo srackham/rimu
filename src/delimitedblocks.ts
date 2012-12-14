@@ -43,9 +43,9 @@ module Rimu.DelimitedBlocks {
       closeTag: '',
       skip: true,
     },
-    // Continuation block.
+    // Division block.
     {
-      id: 'continuation',
+      id: 'division',
       openMatch: /^\.{2,}$/,
       closeMatch: /^\.{2,}$/,
       openTag: '<div>',

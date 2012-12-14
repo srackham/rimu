@@ -426,7 +426,7 @@ var Rimu;
                 skip: true
             }, 
             {
-                id: 'continuation',
+                id: 'division',
                 openMatch: /^\.{2,}$/,
                 closeMatch: /^\.{2,}$/,
                 openTag: '<div>',
@@ -646,7 +646,7 @@ var Rimu;
                             return nextItem;
                         }
                     } else {
-                        if(nextItem.isContinuation || nextItem.isIndented) {
+                        if(nextItem.isDivision || nextItem.isIndented) {
                             Rimu.DelimitedBlocks.render(reader, writer);
                             reader.skipBlankLines();
                             if(reader.eof()) {
@@ -672,12 +672,12 @@ var Rimu;
                         return null;
                     }
                     return matchItem(reader, {
-                        continuation: true,
+                        division: true,
                         indented: true
                     });
                 }
                 next = matchItem(reader, {
-                    continuation: true
+                    division: true
                 });
                 if(next) {
                     return next;
@@ -712,10 +712,10 @@ var Rimu;
                     return item;
                 }
             }
-            if(options.continuation) {
-                def = Rimu.DelimitedBlocks.getDefinition('continuation');
+            if(options.division) {
+                def = Rimu.DelimitedBlocks.getDefinition('division');
                 if(def.openMatch.test(line)) {
-                    item.isContinuation = true;
+                    item.isDivision = true;
                     return item;
                 }
             }

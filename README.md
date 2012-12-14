@@ -10,8 +10,8 @@ and Markdown.
   can be dropped onto a Web page or used as a Node module.
 - No dependencies.
 - Simple one-function API.
-- Raw HTML can be mixed in (a la Markdown).
-- HTML attributes can be applied to Rimu block elements.
+- Features include raw HTML (a la Markdown), HTML attribute injection
+  and parameterized variables.
 - Written in TypeScript.
 - Available from Github and as an npm module.
 - Includes command-line compiler and playground GUI.

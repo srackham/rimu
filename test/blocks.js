@@ -101,7 +101,7 @@ exports['Delimited blocks'] = function(test) {
       '{var}',
       '<p>variable\n value2</p>');
 
-  // Continuation Block.
+  // Division Block.
   testDelimitedBlock(test,
       '..\nTo be...\n\nor not to be!\n..',
       '<div><p>To be...</p>\n<p>or not to be!</p></div>');
@@ -290,8 +290,8 @@ exports['Documents'] = function(test) {
       '.dl-horizontal\nterm:: definition\nterm::: definition'),
       '<dl class="dl-horizontal"><dt>term</dt><dd> definition\n<dl><dt>term</dt><dd> definition\n</dd></dl></dd></dl>');
   test.equal(Rimu.render(
-      '.class1\n- Item\n.class2\n..\nContinuation\n..\nParagraph'),
-      '<ul class="class1"><li>Item\n<div class="class2"><p>Continuation</p></div>\n</li></ul><p>Paragraph</p>');
+      '.class1\n- Item\n.class2\n..\nDivision\n..\nParagraph'),
+      '<ul class="class1"><li>Item\n<div class="class2"><p>Division</p></div>\n</li></ul><p>Paragraph</p>');
 
   // Variable reference blocks.
   test.equal(Rimu.render(
