@@ -33,7 +33,7 @@ module Rimu.Quotes {
       closeTag: '</del>',
       spans: true,
       verify: function(match, re) {
-        // Heuristic to suppress quoting an HTML attribute assignment.
+        // Heuristic to suppress '=' quoting across HTML attribute assignments.
         // Skip if = is preceded by an alpha character and followed by a " or '
         // character.
         var precedingChar = match.input[match.index - 1] || '';
@@ -52,6 +52,14 @@ module Rimu.Quotes {
       openTag: '<mark>',
       closeTag: '</mark>',
       spans: true,
+      verify: function(match, re) {
+        // Heuristic to suppress '#' quoting acrosse anchors and links.
+        // Skip if = is preceded by a < character and followed by an alpha
+        // character.
+        var precedingChar = match.input[match.index - 1] || '';
+        var followingChar = match.input[re.lastIndex] || '';
+        return !(/</.test(precedingChar) && /[a-zA-Z]/.test(followingChar));
+      },
     },
     {
       quote: '~',

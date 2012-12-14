@@ -122,9 +122,23 @@ Syntax:
   Link            <#id>           <a href="#id">url</a>
   _________________________________________________________
 
-- <<#x1>>There are block and inline anchor elements, both have the
-  same syntax.
-- <#x1|Links> are inline elements.
+- Block and inline anchor elements share the same syntax.
+- Links are inline elements.
+
+Examples:
+
+- -
+Refer to the <#x1|next paragraph> or the <#x2|second list item
+below>.
+
+<<#x1>>
+Nisl curabitur donec. Vel porttitor et. Et amet vitae. Quam
+porttitor integer. Bibendum neque quis quisque ac commodo. Non et
+cumque. Sit et a consequat.
+
+- Viverra pede turpis.
+- <<#x2>>Esse et dui nonummy modi.
+- -
 
 See also the _URLs and email addresses_ topic.
 
@@ -236,10 +250,11 @@ contained elements are enveloped in an HTML `div` element.
 
 <div id="topic-headers">
 <!--
-Single line header titles are prefixed by 1 to 6 `=` or `#`
-characters (the header ID). A postfixed header ID is
-optional. The header ID is separated from the title text by
-whitespace. Inline elements are allowed in header titles.
+A _Header_ is a single line block element conataining a title which is
+prefixed by 1 to 6 `=` or `#` characters (the header ID). A postfixed
+header ID is optional.
+
+Examples:
 
 # h1 header
 == h2 header ==
@@ -247,6 +262,9 @@ whitespace. Inline elements are allowed in header titles.
 #### =h3= h4 _header_ ####
 ===== h5 header
 ====== h6 header
+
+- The header ID is separated from the title text by whitespace.
+- Inline elements are allowed in the header title.
 
 -->
 </div>

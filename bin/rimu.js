@@ -943,7 +943,12 @@ var Rimu;
                 quote: '#',
                 openTag: '<mark>',
                 closeTag: '</mark>',
-                spans: true
+                spans: true,
+                verify: function (match, re) {
+                    var precedingChar = match.input[match.index - 1] || '';
+                    var followingChar = match.input[re.lastIndex] || '';
+                    return !(/</.test(precedingChar) && /[a-zA-Z]/.test(followingChar));
+                }
             }, 
             {
                 quote: '~',

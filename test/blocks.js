@@ -209,10 +209,28 @@ exports['Documents'] = function(test) {
       '<!--comment-->\n<p>x <!--comment-->y<code>&lt;!--comment--&gt;</code></p>');
 
 
-  // Block anchor.
+  // Anchors and links.
   testDocuments(test,
-      '<<#x1>>\n<#x1>',
-      '<div id="x1"></div>\n<p><a href="#x1">#x1</a></p>');
+    'Refer to the <#x1|next paragraph> or the <#x2|second list item\n' +
+    'below>.\n' +
+    '\n' +
+    '<<#x1>>\n' +
+    'Nisl curabitur donec. Vel porttitor et. Et amet vitae. Quam\n' +
+    'porttitor integer. Bibendum neque quis quisque ac commodo. Non et\n' +
+    'cumque. Sit et a consequat.\n' +
+    '\n' +
+    '- Viverra pede turpis.\n' +
+    '- <<#x2>>Esse et dui nonummy modi.\n',
+
+    '<p>Refer to the <a href="#x1">next paragraph</a> or the <a href="#x2">second list item\n' +
+    'below</a>.</p>\n' +
+    '<div id="x1"></div>\n' +
+    '<p>Nisl curabitur donec. Vel porttitor et. Et amet vitae. Quam\n' +
+    'porttitor integer. Bibendum neque quis quisque ac commodo. Non et\n' +
+    'cumque. Sit et a consequat.</p>\n' +
+    '<ul><li>Viverra pede turpis.\n' +
+    '</li><li><span id="x2"></span>Esse et dui nonummy modi.\n' +
+    '</li></ul>');
 
   // Options.
   test.equal(Rimu.render('<hr>'), '<hr>');
