@@ -266,7 +266,7 @@ var Rimu;
                     return result;
                 });
             }
-            text = text.replace(/\\(\{[\w\-]+(?:\|.*)?\})/, '$1');
+            text = text.replace(/\\(\{[\w\-]+(?:\|[\s\S]*?)?\})/, '$1');
             return text;
         }
         Variables.render = render;
