@@ -314,7 +314,7 @@ var Rimu;
                 }
             }, 
             {
-                match: /^\/{2}(.*)$/,
+                match: /^\\?\/{2}(.*)$/,
                 replacement: ''
             }, 
             {
@@ -407,7 +407,7 @@ var Rimu;
     (function (DelimitedBlocks) {
         var defs = [
             {
-                openMatch: /^\{[\w\-]+\}\s*=\s*'(.*)$/,
+                openMatch: /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/,
                 closeMatch: /^(.*)'$/,
                 openTag: '',
                 closeTag: '',
@@ -419,7 +419,7 @@ var Rimu;
                 }
             }, 
             {
-                openMatch: /^\/\*+$/,
+                openMatch: /^\\?\/\*+$/,
                 closeMatch: /^\*+\/$/,
                 openTag: '',
                 closeTag: '',
@@ -427,21 +427,21 @@ var Rimu;
             }, 
             {
                 id: 'division',
-                openMatch: /^\.{2,}$/,
+                openMatch: /^\\?\.{2,}$/,
                 closeMatch: /^\.{2,}$/,
                 openTag: '<div>',
                 closeTag: '</div>',
                 container: true
             }, 
             {
-                openMatch: /^"{2,}$/,
+                openMatch: /^\\?"{2,}$/,
                 closeMatch: /^"{2,}$/,
                 openTag: '<blockquote>',
                 closeTag: '</blockquote>',
                 container: true
             }, 
             {
-                openMatch: /^\-{2,}$/,
+                openMatch: /^\\?\-{2,}$/,
                 closeMatch: /^\-{2,}$/,
                 openTag: '<pre><code>',
                 closeTag: '</code></pre>',
@@ -449,7 +449,7 @@ var Rimu;
                 specials: true
             }, 
             {
-                openMatch: /^(<!.*|(?:<\/?(?:html|head|body|script|style|address|article|aside|audio|blockquote|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|noscript|ol|output|p|pre|section|table|tfoot|ul|video)(?:[ >].*)?))$/i,
+                openMatch: /^\\?(<!.*|(?:<\/?(?:html|head|body|script|style|address|article|aside|audio|blockquote|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|noscript|ol|output|p|pre|section|table|tfoot|ul|video)(?:[ >].*)?))$/i,
                 closeMatch: /^$/,
                 openTag: '',
                 closeTag: '',
@@ -460,7 +460,7 @@ var Rimu;
             }, 
             {
                 id: 'indented',
-                openMatch: /^(\s+.*)$/,
+                openMatch: /^\\?(\s+.*)$/,
                 closeMatch: /^$/,
                 openTag: '<pre>',
                 closeTag: '</pre>',
@@ -497,6 +497,10 @@ var Rimu;
                 var def = defs[i];
                 var match = reader.cursor().match(def.openMatch);
                 if(match) {
+                    if(match[0][0] === '\\' && parseInt(i) !== defs.length - 1) {
+                        reader.cursor(reader.cursor().slice(1));
+                        continue;
+                    }
                     if(def.verify && !def.verify(match)) {
                         continue;
                     }

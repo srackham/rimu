@@ -22,7 +22,7 @@ module Rimu.DelimitedBlocks {
 
     // Variable assignment block.
     {
-      openMatch: /^\{[\w\-]+\}\s*=\s*'(.*)$/, // $1 is first line of variable.
+      openMatch: /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/, // $1 is first line of variable.
       closeMatch: /^(.*)'$/,                  // $1 is last line of variable.
       openTag: '',
       closeTag: '',
@@ -37,7 +37,7 @@ module Rimu.DelimitedBlocks {
     },
     // Comment block.
     {
-      openMatch: /^\/\*+$/,
+      openMatch: /^\\?\/\*+$/,
       closeMatch: /^\*+\/$/,
       openTag: '',
       closeTag: '',
@@ -46,7 +46,7 @@ module Rimu.DelimitedBlocks {
     // Division block.
     {
       id: 'division',
-      openMatch: /^\.{2,}$/,
+      openMatch: /^\\?\.{2,}$/,
       closeMatch: /^\.{2,}$/,
       openTag: '<div>',
       closeTag: '</div>',
@@ -54,7 +54,7 @@ module Rimu.DelimitedBlocks {
     },
     // Quote block.
     {
-      openMatch: /^"{2,}$/,
+      openMatch: /^\\?"{2,}$/,
       closeMatch: /^"{2,}$/,
       openTag: '<blockquote>',
       closeTag: '</blockquote>',
@@ -62,7 +62,7 @@ module Rimu.DelimitedBlocks {
     },
     // Code block.
     {
-      openMatch: /^\-{2,}$/,
+      openMatch: /^\\?\-{2,}$/,
       closeMatch: /^\-{2,}$/,
       openTag: '<pre><code>',
       closeTag: '</code></pre>',
@@ -73,7 +73,7 @@ module Rimu.DelimitedBlocks {
     {
       // Must start with  an <! or a block-level element start or end tag.
       // $1 is first line of block.
-      openMatch: /^(<!.*|(?:<\/?(?:html|head|body|script|style|address|article|aside|audio|blockquote|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|noscript|ol|output|p|pre|section|table|tfoot|ul|video)(?:[ >].*)?))$/i,
+      openMatch: /^\\?(<!.*|(?:<\/?(?:html|head|body|script|style|address|article|aside|audio|blockquote|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|noscript|ol|output|p|pre|section|table|tfoot|ul|video)(?:[ >].*)?))$/i,
       closeMatch: /^$/, // Blank line or EOF.
       openTag: '',
       closeTag: '',
@@ -85,8 +85,8 @@ module Rimu.DelimitedBlocks {
     // Indented paragraph.
     {
       id: 'indented',
-      openMatch: /^(\s+.*)$/, // $1 is first line of block.
-      closeMatch: /^$/,       // Blank line or EOF.
+      openMatch: /^\\?(\s+.*)$/,  // $1 is first line of block.
+      closeMatch: /^$/,           // Blank line or EOF.
       openTag: '<pre>',
       closeTag: '</pre>',
       variables: true,
@@ -104,7 +104,7 @@ module Rimu.DelimitedBlocks {
         return buffer.join('\n');
       },
     },
-    // Paragraph (lowest priority cannot be escaped).
+    // Paragraph (lowest priority, cannot be escaped).
     {
       openMatch: /^(.*)$/,  // $1 is first line of block.
       closeMatch: /^$/,     // Blank line or EOF.
@@ -121,6 +121,12 @@ module Rimu.DelimitedBlocks {
       var def = defs[i];
       var match = reader.cursor().match(def.openMatch);
       if (match) {
+        // Escape non-paragraphs.
+        if (match[0][0] === '\\' && parseInt(i) !== defs.length - 1) {
+          // Drop backslash escape and continue.
+          reader.cursor(reader.cursor().slice(1));
+          continue;
+        }
         if (def.verify && !def.verify(match)) {
           continue;
         }

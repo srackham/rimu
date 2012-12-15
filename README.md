@@ -24,7 +24,7 @@ Read the documentation and experiment with Rimu in the _Rimu
 Playground_.
 
 Play with it here <http://rimumarkup.org/rimuplayground.html> or
-open the `rimuplayground.html` locally in in your browser.
+open `rimuplayground.html` locally in in your browser.
 
 
 ## Installing Rimu

@@ -5,8 +5,8 @@
   "description": "Readable text to HTML markup language",
   "keywords": [
     "rimu",
-    "text",
     "markup",
+    "asciidoc",
     "markdown"
   ],
   "licenses": [

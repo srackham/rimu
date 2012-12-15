@@ -119,7 +119,7 @@ Syntax:
   Inline anchor   <<#id>>         <span id="id"></span>
   Block anchor    <<#id>>         <div id="id"></div>
   Link            <#id|caption>   <a href="#id">caption</a>
-  Link            <#id>           <a href="#id">url</a>
+  Link            <#id>           <a href="#id">#id</a>
   _________________________________________________________
 
 - Block and inline anchor elements share the same syntax.
@@ -203,6 +203,7 @@ A _comment line_ is any line of text starting with `//`.
 - Comment delimiters must start at the left margin.
 - Use HTML comments if you want comments to appear in the rendered
   HTML.
+- Comment blocks can be escaped with a backslash character prefix.
 
 -->
 </div>
@@ -210,7 +211,8 @@ A _comment line_ is any line of text starting with `//`.
 <div id="topic-delimited-blocks">
 <!--
 Delimited blocks are blocks of one or more lines bounded by opening
-and closing delimiter lines.
+and closing delimiter lines. Delimited blocks can be escaped with a
+backslash character prefix.
 
 *Code Block*
 
@@ -271,9 +273,8 @@ Examples:
 
 <div id="topic-html-markup">
 <!--
-HTML markup can be mixed with Rimu markup as
-<span style="font-size: 2em">inline elements</span> or as block
-elements:
+HTML markup can be mixed with Rimu markup as <span style="font-size:
+2em">inline elements</span> or as block elements:
 
 <table>
   <tr>
@@ -288,8 +289,8 @@ elements:
 
 - The leading `<` character in the first line must start at the left
   margin.
-- An HTML block must be followed by a blank line so cannot contain
-  blank lines.
+- An HTML block is terminated with a blank line (cannot contain
+  blank lines).
 - Inline HTML tags can be escaped with a backslash character prefix.
 - HTML can be suppressed using the API _safeMode_ option (see the
   _API_ topic).
@@ -420,17 +421,12 @@ This allows arbitrarily complex list items.
 
 <div id="topic-paragraphs">
 <!--
-Paragraphs are always followed by a blank line. There are two
-paragraph types:
+Paragraph block elements are always followed by a blank line. There
+are two paragraph types:
 
 ==== Normal paragraphs
 Normal paragraphs can contain inline elements, the first line must
 start at the left margin.
-
-Normal paragraphs have the lowest processing priority.  To begin a
-normal paragraph with text that would otherwise match another block
-element start it with a Zero Width Space character entity
-(`&ZeroWidthSpace;`).
 
 You can force line breaks +
 in normal paragraphs by   +
@@ -514,10 +510,10 @@ Reference syntax:
 - A variable name consists of one or more alphanumeric, underscore or
   dash characters.
 - Variable assignment must start at the left margin.
-- Variables values can contain references to previously defined
+- Variable values can contain references to previously defined
   variables.
-- Variable references can be escaped with a backslash character
-  prefix.
+- Variable assignments and references can be escaped with a backslash
+  character prefix.
 - Parameterized references replace the `$1`, `$2` ... strings in the
   variable value with the `param1`, `param2` ... values.
 - Variable parameters contain inline Rimu markup and inline

@@ -37,7 +37,7 @@ module Rimu.LineBlocks {
       filter: function (match, block, reader) {
         var value = Variables.render(match[1]);
         if (value === match[1]) {
-          // Variable does not exist so pass it on.
+          // Variable does not exist so pass it through.
           value = '\\' +  value;
         }
         // Insert the variable value into the reader just ahead of the cursor.
@@ -62,7 +62,7 @@ module Rimu.LineBlocks {
     },
     // Comment line.
     {
-      match: /^\/{2}(.*)$/,
+      match: /^\\?\/{2}(.*)$/,
       replacement: '',
     },
     // Block image: <image:src|alt>
