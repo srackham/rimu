@@ -53,6 +53,8 @@ module Rimu.Variables {
         return result;
       });
     } 
+    // Unescape undefined variables.
+    text = text.replace(/\\(\{[\w\-]+(?:\|.*)?\})/, '$1');
     return text;
   }
 

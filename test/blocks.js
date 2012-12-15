@@ -283,10 +283,20 @@ exports['Documents'] = function(test) {
       "{src}='tiger.png'\n{caption}='Tiger'\n<image:{src}|{caption}>",
       '<img src="tiger.png" alt="Tiger">');
 
+  // Escaped comments.
+  testDocuments(test,
+      '\\/*\nabc\n*/\n\n\\// xyz',
+      '<p>/*\nabc\n*/</p>\n<p>// xyz</p>');
+
   // Single quotes are OK inside variable values.
   testDocuments(test,
       "{v}='This \'and\' that'\n{v}",
       "<p>This 'and' that</p>");
+
+  // Escaped undefined variables are unescaped.
+  testDocuments(test,
+      'A \\{v}',
+      '<p>A {v}</p>');
 
   // HTML attributes.
   test.equal(Rimu.render(
