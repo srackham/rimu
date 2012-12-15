@@ -172,6 +172,21 @@ exports['Lists'] = function(test) {
       '- Item 1\n..\nA\nparagraph\n..\n- Item 2\n\n  Indented',
       '<ul><li>Item 1\n<div><p>A\nparagraph</p></div>\n</li><li>Item 2\n<pre>Indented</pre></li></ul>');
 
+  // Nested list in division block.
+  testList(test,
+      'a::\n' +
+      '..\n' +
+      '- b\n' +
+      '..\n' +
+      'c::\n' +
+      'd',
+      '<dl><dt>a</dt><dd>\n' +
+      '<div><ul><li>b\n' +
+      '</li></ul></div>\n' +
+      '</dd><dt>c</dt><dd>\n' +
+      'd\n' +
+      '</dd></dl>');
+
   test.done();
 };
 

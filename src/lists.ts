@@ -131,7 +131,10 @@ module Rimu.Lists {
       }
       else if (nextItem.isDivision || nextItem.isIndented) {
         // Division blocks and Indented blocks attach to list items.
+        var savedIds = ids;
+        ids = [];
         DelimitedBlocks.render(reader, writer);
+        ids = savedIds;
         reader.skipBlankLines();
         if (reader.eof()) {
           writer.write(def.itemCloseTag);

@@ -652,7 +652,10 @@ var Rimu;
                         }
                     } else {
                         if(nextItem.isDivision || nextItem.isIndented) {
+                            var savedIds = ids;
+                            ids = [];
                             Rimu.DelimitedBlocks.render(reader, writer);
+                            ids = savedIds;
                             reader.skipBlankLines();
                             if(reader.eof()) {
                                 writer.write(def.itemCloseTag);
