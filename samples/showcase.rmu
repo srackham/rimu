@@ -9,7 +9,7 @@
 */
 
 // Variables.
-{info} = '<span class='label label-info'>$1</span>'
+{info} = '<span class="label label-info">$1</span>'
 {heads-up} = '{info|Heads up!}'
 {playground} = '<http://www.methods.co.nz/rimu/rimuplayground.html|Rimu Playground>'
 
@@ -52,6 +52,8 @@ _\_Emphasized text\__ +
 `\`Code text\``       +
 =\=Deleted text\==    +
 #\#Marked text\##     +
+^\^Superscript\^^     +
+~\~Subscript\~~       +
 +\+Inserted text\++
 
 ===== Quote block
