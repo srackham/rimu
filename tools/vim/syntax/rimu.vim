@@ -20,13 +20,10 @@ syn match rimuBar /|/
 syn match rimuBackslash /\\/
 syn match rimuSpanLineBreak / +$/
 syn match rimuSpanEntity /\\\@<!&[#a-zA-Z]\w\{-1,};/
-syn match rimuSpanAnchor /<<#[a-zA-Z_-].*>>/
-
 syn region rimuSpanURLandHTML matchgroup=rimuURLandHTMLStartEnd start=/\\\@<!\zs<\_[^|>]\+\ze|\?/ end=/>/ contains=rimuBar
 syn region rimuVariableRef matchgroup=rimuVariableRefStartEnd start=/\\\@<!\zs{[0-9A-Za-z_-]\+\ze|\?/ end=/}/ contains=rimuBar,rimuSpan.*
+syn match rimuSpanAnchor /<<#[a-zA-Z_-].*>>/
 
-"TODO other quotes.
-" As a damage control measure quoted patterns always terminate at a blank.
 syn region rimuSpanCode start=/\\\@<!`\s\@!/ end=/[ \t\\]\@<!\(`\|\n\n\)/ contains=rimuBackslash,rimuVariableRef,rimuSpan.* keepend
 syn region rimuSpanInserted start=/\\\@<!+\s\@!/ end=/[ \t\\]\@<!\(+\|\n\n\)/ contains=rimuBackslash,rimuVariableRef,rimuSpan.* keepend
 syn region rimuSpanDeleted start=/\\\@<!=\s\@!/ end=/[ \t\\]\@<!\(=\|\n\n\)/ contains=rimuBackslash,rimuVariableRef,rimuSpan.* keepend
@@ -36,15 +33,10 @@ syn region rimuSpanStrong start=/\\\@<!\*\s\@!/ end=/[ \t\\]\@<!\(\*\|\n\n\)/ co
 syn region rimuSpanMarked start=/\\\@<!#\s\@!/ end=/[ \t\\]\@<!\(#\|\n\n\)/ contains=rimuBackslash,rimuVariableRef,rimuSpan.* keepend
 syn region rimuSpanEmphasized start=/\\\@<!_\s\@!/ end=/[ \t\\]\@<!\(_\|\n\n\)/ contains=rimuBackslash,rimuVariableRef,rimuSpan.* keepend
 
-"syn match rimuHeader /^\(=\|#\)\{1,6}\s\+/
-"syn region rimuHeader start=/^\(=\|#\)\{1,6}\s\+/ end=/\(\s\+\(=\|#\)\{1,6}\)\?\_$/ contains=rimuBackslash,rimuVariableRef,rimuSpan.* oneline keepend
-syn region rimuHeader start=/^\(=\|#\)\{1,6}\s\+/ end=/\(\s\+\(=\|#\)\{1,6}\)\?\_$/ contains=rimuBackslash,rimuVariableRef,rimuSpan.* oneline keepend
-
+syn region rimuHeader matchgroup=rimuHeaderStartEnd start=/^\(=\|#\)\{1,6}\s\+/ end=/\(\s\+\(=\|#\)\{1,6}\)\?\_$/ contains=rimuBackslash,rimuVariableRef,rimuSpan.* oneline keepend
 syn match rimuBlockDelimiter /^\("\|\.\)\{2,}$/
-
 syn region rimuCodeBlock start=/^-\{2,}$/ end=/^-\{2,}$/ contains=rimuTodo,rimuVariableRef keepend
 syn region rimuCodeBlock start=/\(\%^\|\_^\n\)\@<=\s\+\ze\S/ end=/\n\n/ contains=rimuTodo,rimuVariableRef keepend
-
 syn match rimuComment "^\\\@<!//.*$" contains=rimuTodo
 syn region rimuComment start=/^\/\*$/ end=/^\*\/$/ contains=rimuTodo keepend
 
@@ -61,6 +53,7 @@ highlight link rimuBlockDelimiter Label
 highlight link rimuCodeBlock Identifier
 highlight link rimuComment Comment
 highlight link rimuHeader Label
+highlight link rimuHeaderStartEnd Label
 highlight link rimuHTMLAttributes Title
 highlight link rimuListId Label
 highlight link rimuSpanAnchor Title
@@ -75,12 +68,11 @@ highlight link rimuSpanQuote Label
 highlight link rimuSpanStrong Special
 highlight link rimuSpanSubscript Type
 highlight link rimuSpanSuperscript Type
-highlight link rimuURLandHTMLStartEnd Title
 highlight link rimuTodo Todo
+highlight link rimuURLandHTMLStartEnd Title
 highlight link rimuVariableRefStartEnd Special
 
 let b:current_syntax = "rimu"
-
 
 " Formatting preferences.
 setlocal autoindent expandtab tabstop=8 softtabstop=2 shiftwidth=2
