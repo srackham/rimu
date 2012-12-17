@@ -20,8 +20,8 @@ syn match rimuBar /|/
 syn match rimuBackslash /\\/
 syn match rimuSpanLineBreak / +$/
 syn match rimuSpanEntity /\\\@<!&[#a-zA-Z]\w\{-1,};/
-syn region rimuSpanHTML start=/\\\@<!<[!\/]\?[a-zA-Z-]\+/ end=/>/ contains=rimuBar,rimuHTMLAttributeValue
 syn region rimuSpanURL matchgroup=rimuURLStartEnd start=/\\\@<!<[^|>]\+\ze|\?/ end=/>/ contains=rimuBar
+syn match rimuSpanHTML /\\\@<!<[!\/]\?[a-zA-Z-]\+\(\_s\_.\{-}\|\)>/ contains=rimuBackslash,rimuVariableRef,rimuVariableParam,rimuHTMLAttributeValue
 syn region rimuVariableRef matchgroup=rimuVariableRefStartEnd start=/\\\@<!\zs{[0-9A-Za-z_-]\+\ze|\?/ end=/}/ contains=rimuBar,rimuSpan.*
 syn match rimuSpanAnchor /<<#[a-zA-Z_-].*>>/
 
@@ -36,21 +36,19 @@ syn region rimuSpanEmphasized start=/\\\@<!_\s\@!/ end=/[ \t\\]\@<!\(_\|\n\n\)/ 
 
 syn region rimuHeader matchgroup=rimuHeaderStartEnd start=/^\(=\|#\)\{1,6}\s\+/ end=/\(\s\+\(=\|#\)\{1,6}\)\?\_$/ contains=rimuBackslash,rimuVariableRef,rimuSpan.* oneline keepend
 syn match rimuBlockDelimiter /^\("\|\.\)\{2,}$/
-syn region rimuCodeBlock start=/^-\{2,}$/ end=/^-\{2,}$/ contains=rimuTodo,rimuVariableRef keepend
-syn region rimuCodeBlock start=/\(\%^\|\_^\n\)\@<=\s\+\ze\S/ end=/\n\n/ contains=rimuTodo,rimuVariableRef keepend
+syn region rimuCodeBlock start=/^-\{2,}$/ end=/^-\{2,}$/ contains=rimuVariableRef keepend
+syn region rimuCodeBlock start=/\(\%^\|\_^\n\)\@<=\s\+\ze\S/ end=/\n\n/ contains=rimuVariableRef keepend
 syn match rimuComment "^\\\@<!//.*$" contains=rimuTodo
 syn region rimuComment start=/^\/\*$/ end=/^\*\/$/ contains=rimuTodo keepend
-
-syn region rimuHTMLBlock start=/<!\|\(<\/\?\(html\|head\|body\|script\|style\|address\|article\|aside\|audio\|blockquote\|canvas\|dd\|div\|dl\|fieldset\|figcaption\|figure\|figcaption\|footer\|form\|h1\|h2\|h3\|h4\|h5\|h6\|header\|hgroup\|hr\|noscript\|ol\|output\|p\|pre\|section\|table\|tfoot\|ul\|video\)[ >\n]\?\)/ end=/\n\n/ contains=rimuBackslash,rimuTodo,rimuVariableRef,rimuSpanHTML keepend
-syn match rimuHTMLAttributeValue /=\zs".\{-1,}"/ contained
-
+syn region rimuHTMLBlock start=/<!\|\(<\/\?\(html\|head\|body\|script\|style\|address\|article\|aside\|audio\|blockquote\|canvas\|dd\|div\|dl\|fieldset\|figcaption\|figure\|figcaption\|footer\|form\|h1\|h2\|h3\|h4\|h5\|h6\|header\|hgroup\|hr\|noscript\|ol\|output\|p\|pre\|section\|table\|tfoot\|ul\|video\)[ >\n]\?\)/ end=/\n\n/ contains=rimuBackslash,rimuVariableRef,rimuSpanHTML keepend
+syn match rimuHTMLAttributeValue /=\zs".\{-1,}"/ containedin=rimuSpanHTML contains=rimuBackslash,rimuVariableRef,rimuVariableParam
+syn region rimuVariableAssign matchgroup=rimuVariableAssignStartEnd start=/^{[0-9A-Za-z_-]\+}\s*=\s*'/ end=/'\n/ contains==rimuBackslash,rimuVariableParam,rimuVariableRef,rimuSpan.*
+syn match rimuVariableParam /$\d\+/
 syn match rimuListId /^\s*\(-\|\*\{1,4}\)\ze\s/
 syn match rimuListId /^\s*\(\(\d\+\.\)\|\.\{1,4}\)\ze\s/
 syn region rimuListLabel matchgroup=rimuListId start=/^\s*/ end=/:\{2,4}/ contains=rimuBackslash,rimuVariableRef,rimuSpan.* oneline keepend
-
 syn match rimuHTMLAttributes /^\.[a-zA-Z#\[].*$/
 
-highlight link rimuAnchor Macro
 highlight link rimuBackslash Special
 highlight link rimuBar Label
 highlight link rimuBlockDelimiter Label
@@ -66,6 +64,7 @@ highlight link rimuSpanCode Identifier
 highlight link rimuSpanDeleted Special
 highlight link rimuSpanEmphasized Type
 highlight link rimuSpanEntity Special
+highlight link rimuSpanHTML Title
 highlight link rimuSpanInserted Title
 highlight link rimuSpanLineBreak Special
 highlight link rimuSpanMarked Label
@@ -74,9 +73,9 @@ highlight link rimuSpanStrong Special
 highlight link rimuSpanSubscript Type
 highlight link rimuSpanSuperscript Type
 highlight link rimuTodo Todo
-"highlight link rimuHTMLStartEnd Title
-highlight link rimuSpanHTML Title
 highlight link rimuURLStartEnd Title
+highlight link rimuVariableAssignStartEnd Special
+highlight link rimuVariableParam Macro
 highlight link rimuVariableRefStartEnd Special
 
 let b:current_syntax = "rimu"
