@@ -41,7 +41,7 @@ syn region rimuCodeBlock start=/\(\%^\|\_^\n\)\@<=\s\+\ze\S/ end=/\n\n/ contains
 syn match rimuComment "^\\\@<!//.*$" contains=rimuTodo
 syn region rimuComment start=/^\/\*$/ end=/^\*\/$/ contains=rimuTodo keepend
 
-syn region rimuHTMLBlock start=/<!\|\(<\/\?\(html\|head\|body\|script\|style\|address\|article\|aside\|audio\|blockquote\|canvas\|dd\|div\|dl\|fieldset\|figcaption\|figure\|figcaption\|footer\|form\|h1\|h2\|h3\|h4\|h5\|h6\|header\|hgroup\|hr\|noscript\|ol\|output\|p\|pre\|section\|table\|tfoot\|ul\|video\)[ >\n]\?\)/ end=/\n\n/ contains=rimuTodo,rimuVariableRef,rimuSpanHTML keepend
+syn region rimuHTMLBlock start=/<!\|\(<\/\?\(html\|head\|body\|script\|style\|address\|article\|aside\|audio\|blockquote\|canvas\|dd\|div\|dl\|fieldset\|figcaption\|figure\|figcaption\|footer\|form\|h1\|h2\|h3\|h4\|h5\|h6\|header\|hgroup\|hr\|noscript\|ol\|output\|p\|pre\|section\|table\|tfoot\|ul\|video\)[ >\n]\?\)/ end=/\n\n/ contains=rimuBackslash,rimuTodo,rimuVariableRef,rimuSpanHTML keepend
 syn match rimuHTMLAttributeValue /=\zs".\{-1,}"/ contained
 
 syn match rimuListId /^\s*\(-\|\*\{1,4}\)\ze\s/
