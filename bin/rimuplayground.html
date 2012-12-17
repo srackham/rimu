@@ -363,7 +363,7 @@ inline element.
 <div id="topic-lists">
 <!--
 List items are prefixed with a list ID which identifies the list type
-and groups list items.
+and groups list items into lists.
 
   List IDs             List type
   __________________________________
@@ -371,6 +371,20 @@ and groups list items.
   ., .., ..., ....     Numbered list
   ::, :::, ::::        Labeled list
   __________________________________
+
+- List items can be indented but this has no semantic significance.
+- Number list IDs can be prefixed with numbers but they have no
+  semantic significance.
+- List items can be escaped with a backslash at the beginning of the
+  line.
+- If a list item is followed by an indented paragraph the indented
+  paragraph is rendered with the list item.
+- A _Division Block_ immediately following a list item is rendered
+  with the list item. This allows arbitrarily complex list items.
+- There are no explicit numbering or bullet styles, this is best left
+  to CSS which can apply a consistent set of list styles.
+
+Examples:
 
 - Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu
 \- lorem dolor fusce nec.
@@ -381,34 +395,25 @@ and groups list items.
        2. In suspendisse at dapibus nostra est.
           .. Montes adipiscing sodales.
     ** Pellentesque nibh sit.
+- Viverra pede turpis.
+  Esse et dui:: Nonummy modi.
+  Wisi ad diam:: Sapien porttitor.
+    Condimentum::: Lacus maecenas neque dolor habitant tellus eu vitae sed
 - Augue et dui malesuada purus.
 
-  If a list item is followed by an indented paragraph the indented
-  paragraph is included in the list item.
+  Purus aliquam mauris a aliquam orci. Massa sit sit. Quis eget
+  penatibus. Maecenas at tellus. Sapien quam mauris. Sapien arcu nisl.
+  Non a pede in.
 
-- Viverra pede turpis.
-  Esse et dui:: nonummy modi.
-  Wisi ad diam:: sapien porttitor.
-    Condimentum::: lacus maecenas neque dolor habitant tellus eu vitae sed
-
-- List items can be escaped with a backslash at the beginning of the
-  line.
-- List items can be indented but this has no semantic significance.
+- Facilisi vestibulum montes quam eget donec.
 ..
-A _Division Block_ immediately following a list item is rendered
-with the list item.
+Cras proin molestie quam sem conubia. Ligula vel elit. Elit a earum.
+Arcu eget magna. Class vivamus morbi.
 
-This allows arbitrarily complex list items.
+Ac lacinia mi. Mi in enim. Dui sed ut. Egestas congue quam. Facilisis
+non magnis facilisi scelerisque luctus. Quis praesent pulvinar.
 ..
-
-- Number list IDs can be prefixed with numbers but they have no
-  semantic significance.
-
-  If a list item is followed by an indented paragraph the indented
-  paragraph is rendered with the list item.
-
-- There are no explicit numbering or bullet styles, this is best left
-  to CSS which can apply a consistent set of list styles.
+- Integer quisque hendrerit. Arcu nunc lorem posuere.
 
 -->
 </div>

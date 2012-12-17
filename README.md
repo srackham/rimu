@@ -14,7 +14,8 @@ and Markdown.
   and parameterized variables.
 - Written in TypeScript.
 - Available from Github and as an npm module.
-- Includes command-line compiler, playground GUI and unit test suite.
+- Includes command-line compiler, playground GUI, Vim syntax
+  highlighter and a unit test suite.
 - MIT license.
 
 

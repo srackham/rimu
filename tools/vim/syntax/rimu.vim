@@ -16,12 +16,12 @@ syn sync linebreaks=100
 
 syn keyword rimuTodo TODO FIXME XXX ZZZ DEPRECATED
 
-syn match rimuBar /|/
+syn match rimuBar /|/ contained containedin=rimuURLParams,rimuVariableParams
 syn match rimuBackslash /\\/
 syn match rimuSpanLineBreak / +$/
 syn match rimuSpanEntity /\\\@<!&[#a-zA-Z]\w\{-1,};/
-syn match rimuSpanURL /\\\@<!<\S\+\(|\_.\{-}\)\?>/ contains=rimuURLParams
-syn match rimuURLParams /|[^>]*/ contains=rimuBar
+syn match rimuSpanURL /\\\@<!<\S\+\(|\_.\{-}\)\?>/ contains=rimuURLParams,rimuVariableRef,rimuVariableParam
+syn match rimuURLParams /|[^>]*/ contains=rimuBar,rimuVariableRef
 syn match rimuSpanHTML /\\\@<!<[!\/]\?[a-zA-Z-]\+\(\_s\_.\{-}\|\)>/ contains=rimuBackslash,rimuVariableRef,rimuVariableParam
 syn match rimuVariableRef /\\\@<!\zs{[0-9A-Za-z_-]\+\(|\_.\{-}\)\?}/ contains=rimuVariableParams
 syn match rimuVariableParams /|[^}]*/ contains=rimuBar,rimuSpan.*
