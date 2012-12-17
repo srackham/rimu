@@ -20,9 +20,11 @@ syn match rimuBar /|/
 syn match rimuBackslash /\\/
 syn match rimuSpanLineBreak / +$/
 syn match rimuSpanEntity /\\\@<!&[#a-zA-Z]\w\{-1,};/
-syn region rimuSpanURL matchgroup=rimuURLStartEnd start=/\\\@<!<[^|>]\+\ze|\?/ end=/>/ contains=rimuBar keepend
-syn match rimuSpanHTML /\\\@<!<[!\/]\?[a-zA-Z-]\+\(\_s\_.\{-}\|\)>/ contains=rimuBackslash,rimuVariableRef,rimuVariableParam,rimuHTMLAttributeValue
-syn region rimuVariableRef matchgroup=rimuVariableRefStartEnd start=/\\\@<!\zs{[0-9A-Za-z_-]\+\ze|\?/ end=/}/ contains=rimuBar,rimuSpan.* keepend
+syn match rimuSpanURL /\\\@<!<\S\+\(|\_.\{-}\)\?>/ contains=rimuURLParams
+syn match rimuURLParams /|[^>]*/ contains=rimuBar
+syn match rimuSpanHTML /\\\@<!<[!\/]\?[a-zA-Z-]\+\(\_s\_.\{-}\|\)>/ contains=rimuBackslash,rimuVariableRef,rimuVariableParam
+syn match rimuVariableRef /\\\@<!\zs{[0-9A-Za-z_-]\+\(|\_.\{-}\)\?}/ contains=rimuVariableParams
+syn match rimuVariableParams /|[^}]*/ contains=rimuBar,rimuSpan.*
 syn match rimuSpanAnchor /<<#[a-zA-Z_-].*>>/
 
 syn region rimuSpanCode start=/\\\@<!`\s\@!/ end=/[ \t\\]\@<!\(`\|\n\n\)/ contains=rimuBackslash,rimuVariableRef keepend
@@ -36,14 +38,13 @@ syn region rimuSpanEmphasized start=/\\\@<!_\s\@!/ end=/[ \t\\]\@<!\(_\|\n\n\)/ 
 
 syn region rimuHeader matchgroup=rimuHeaderStartEnd start=/^\(=\|#\)\{1,6}\s\+/ end=/\(\s\+\(=\|#\)\{1,6}\)\?\_$/ contains=rimuBackslash,rimuVariableRef,rimuSpan.* oneline keepend
 syn match rimuBlockDelimiter /^\("\|\.\)\{2,}$/
-syn region rimuCodeBlock start=/^-\{2,}$/ end=/^-\{2,}$/ contains=rimuVariableRef keepend
-syn region rimuCodeBlock start=/\(\%^\|\_^\n\)\@<=\s\+\ze\S/ end=/\n\n/ contains=rimuVariableRef keepend
+syn region rimuCodeBlock start=/^-\{2,}$/ end=/^-\{2,}$/ contains=rimuBackslash,rimuVariableRef keepend
+syn region rimuIndentedParagraph start=/\(\%^\|\_^\n\)\@<=\s\+\ze\S/ end=/\n\n/ contains=rimuBackslash,rimuVariableRef keepend
 syn match rimuComment "^\\\@<!//.*$" contains=rimuTodo
 syn region rimuComment start=/^\/\*$/ end=/^\*\/$/ contains=rimuTodo keepend
 syn region rimuHTMLBlock start=/<!\|\(<\/\?\(html\|head\|body\|script\|style\|address\|article\|aside\|audio\|blockquote\|canvas\|dd\|div\|dl\|fieldset\|figcaption\|figure\|figcaption\|footer\|form\|h1\|h2\|h3\|h4\|h5\|h6\|header\|hgroup\|hr\|noscript\|ol\|output\|p\|pre\|section\|table\|tfoot\|ul\|video\)[ >\n]\?\)/ end=/\n\n/ contains=rimuBackslash,rimuVariableRef,rimuSpanHTML keepend
-syn match rimuHTMLAttributeValue /=\zs".\{-1,}"/ containedin=rimuSpanHTML contains=rimuBackslash,rimuVariableRef,rimuVariableParam
 syn region rimuVariableAssign matchgroup=rimuVariableAssignStartEnd start=/^{[0-9A-Za-z_-]\+}\s*=\s*'/ end=/'\n/ contains=ALL keepend
-syn match rimuVariableParam /$\d\+/
+syn match rimuVariableParam /$\d\+/ contained
 syn match rimuHTMLAttributes /\.[a-zA-Z#\[].*$/ contained containedin=rimuVariableAssign
 syn match rimuHTMLAttributes /^\.[a-zA-Z#\[].*$/
 
@@ -55,12 +56,11 @@ highlight link rimuBackslash Special
 highlight link rimuBar Label
 highlight link rimuBlockDelimiter Label
 highlight link rimuCodeBlock Identifier
+highlight link rimuIndentedParagraph Identifier
 highlight link rimuComment Comment
 highlight link rimuHeader Label
 highlight link rimuHeaderStartEnd Label
 highlight link rimuHTMLAttributes Title
-" HTML attribute values same color as surrounding (effectively disabled).
-highlight link rimuHTMLAttributeValue Title
 highlight link rimuListId Label
 highlight link rimuSpanAnchor Title
 highlight link rimuSpanCode Identifier
@@ -76,10 +76,10 @@ highlight link rimuSpanStrong Special
 highlight link rimuSpanSubscript Type
 highlight link rimuSpanSuperscript Type
 highlight link rimuTodo Todo
-highlight link rimuURLStartEnd Title
+highlight link rimuSpanURL Title
 highlight link rimuVariableAssignStartEnd Special
 highlight link rimuVariableParam Macro
-highlight link rimuVariableRefStartEnd Special
+highlight link rimuVariableRef Special
 
 let b:current_syntax = "rimu"
 
