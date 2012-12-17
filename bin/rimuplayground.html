@@ -578,7 +578,17 @@ The second example generates an HTML Web page styled with Bootstrap,
 you can run this command from the Rimu `samples` directory.
 
 ==== Vim syntax file
-#TODO#
+The Rimu distribution includes a
+<https://raw.github.com/srackham/rimu/master/tools/vim/syntax/rimu.vim|syntax
+highlighter> for the Vim editor. Copy `rimu.vim` to your
+`$HOME/.vim/syntax` directory and then use the Vim `:set syn=rimu`
+command or put this line in your `$HOME/.vimrc` file to enable Rimu
+syntax highlighting:
+
+  autocmd BufRead,BufNewFile *.rmu setlocal filetype=rimu
+
+The syntax file also sets Vim text formatting options, if they're not
+to your taste delete them from the end of the file.
 
 -->
 </div>

@@ -5,7 +5,7 @@
 " Licence:      MIT
 " Limitations:
 " - An indented paragraph preceded by a non-blank line is not highlighted.
-
+ 
 if exists("b:current_syntax")
   finish
 endif
@@ -20,11 +20,12 @@ syn match rimuBar /|/
 syn match rimuBackslash /\\/
 syn match rimuSpanLineBreak / +$/
 syn match rimuSpanEntity /\\\@<!&[#a-zA-Z]\w\{-1,};/
-syn region rimuSpanURLandHTML matchgroup=rimuURLandHTMLStartEnd start=/\\\@<!\zs<\_[^|>]\+\ze|\?/ end=/>/ contains=rimuBar
+syn region rimuSpanHTML start=/\\\@<!<[!\/]\?[a-zA-Z-]\+/ end=/>/ contains=rimuBar,rimuHTMLAttributeValue
+syn region rimuSpanURL matchgroup=rimuURLStartEnd start=/\\\@<!<[^|>]\+\ze|\?/ end=/>/ contains=rimuBar
 syn region rimuVariableRef matchgroup=rimuVariableRefStartEnd start=/\\\@<!\zs{[0-9A-Za-z_-]\+\ze|\?/ end=/}/ contains=rimuBar,rimuSpan.*
 syn match rimuSpanAnchor /<<#[a-zA-Z_-].*>>/
 
-syn region rimuSpanCode start=/\\\@<!`\s\@!/ end=/[ \t\\]\@<!\(`\|\n\n\)/ contains=rimuBackslash,rimuVariableRef,rimuSpan.* keepend
+syn region rimuSpanCode start=/\\\@<!`\s\@!/ end=/[ \t\\]\@<!\(`\|\n\n\)/ contains=rimuBackslash,rimuVariableRef keepend
 syn region rimuSpanInserted start=/\\\@<!+\s\@!/ end=/[ \t\\]\@<!\(+\|\n\n\)/ contains=rimuBackslash,rimuVariableRef,rimuSpan.* keepend
 syn region rimuSpanDeleted start=/\\\@<!=\s\@!/ end=/[ \t\\]\@<!\(=\|\n\n\)/ contains=rimuBackslash,rimuVariableRef,rimuSpan.* keepend
 syn region rimuSpanSuperScript start=/\\\@<!\^\s\@!/ end=/[ \t\\]\@<!\(\^\|\n\n\)/ contains=rimuBackslash,rimuVariableRef,rimuSpan.* keepend
@@ -39,6 +40,9 @@ syn region rimuCodeBlock start=/^-\{2,}$/ end=/^-\{2,}$/ contains=rimuTodo,rimuV
 syn region rimuCodeBlock start=/\(\%^\|\_^\n\)\@<=\s\+\ze\S/ end=/\n\n/ contains=rimuTodo,rimuVariableRef keepend
 syn match rimuComment "^\\\@<!//.*$" contains=rimuTodo
 syn region rimuComment start=/^\/\*$/ end=/^\*\/$/ contains=rimuTodo keepend
+
+syn region rimuHTMLBlock start=/<!\|\(<\/\?\(html\|head\|body\|script\|style\|address\|article\|aside\|audio\|blockquote\|canvas\|dd\|div\|dl\|fieldset\|figcaption\|figure\|figcaption\|footer\|form\|h1\|h2\|h3\|h4\|h5\|h6\|header\|hgroup\|hr\|noscript\|ol\|output\|p\|pre\|section\|table\|tfoot\|ul\|video\)[ >\n]\?\)/ end=/\n\n/ contains=rimuTodo,rimuVariableRef,rimuSpanHTML keepend
+syn match rimuHTMLAttributeValue /=\zs".\{-1,}"/ contained
 
 syn match rimuListId /^\s*\(-\|\*\{1,4}\)\ze\s/
 syn match rimuListId /^\s*\(\(\d\+\.\)\|\.\{1,4}\)\ze\s/
@@ -55,6 +59,7 @@ highlight link rimuComment Comment
 highlight link rimuHeader Label
 highlight link rimuHeaderStartEnd Label
 highlight link rimuHTMLAttributes Title
+highlight link rimuHTMLAttributeValue Label
 highlight link rimuListId Label
 highlight link rimuSpanAnchor Title
 highlight link rimuSpanCode Identifier
@@ -69,7 +74,9 @@ highlight link rimuSpanStrong Special
 highlight link rimuSpanSubscript Type
 highlight link rimuSpanSuperscript Type
 highlight link rimuTodo Todo
-highlight link rimuURLandHTMLStartEnd Title
+"highlight link rimuHTMLStartEnd Title
+highlight link rimuSpanHTML Title
+highlight link rimuURLStartEnd Title
 highlight link rimuVariableRefStartEnd Special
 
 let b:current_syntax = "rimu"
