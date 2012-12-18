@@ -21,10 +21,10 @@ syn match rimuBackslash /\\/ containedin=ALL
 syn match rimuSpanLineBreak / +$/
 syn match rimuSpanEntity /\\\@<!&[#a-zA-Z]\w\{-1,};/
 syn match rimuSpanURL /\\\@<!<\S\+\(|\_.\{-}\)\?>/ contains=rimuURLParams
-syn match rimuURLParams /|[^>]*/ contains=rimuVariableRef
+syn match rimuURLParams /|\_[^>]*/ contains=rimuVariableRef
 syn match rimuSpanHTML /\\\@<!<[!\/]\?[a-zA-Z-]\+\(\_s\_.\{-}\|\)>/
 syn match rimuVariableRef /\\\@<!{[0-9A-Za-z_-]\+\(|\_.\{-}\)\?}/ contains=rimuVariableParams containedin=ALL
-syn match rimuVariableParams /|[^}]*/ contains=rimuSpan.*
+syn match rimuVariableParams /|\_[^}]*/ contains=rimuSpan.*
 syn match rimuSpanAnchor /<<#[a-zA-Z_-].*>>/
 
 syn region rimuSpanCode start=/\\\@<!`\s\@!/ end=/[ \t\\]\@<!\(`\|\n\n\)/ keepend
