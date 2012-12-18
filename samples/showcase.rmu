@@ -11,7 +11,7 @@
 // Variables.
 {info} = '<span class="label label-info">$1</span>'
 {heads-up} = '{info|Heads up!}'
-{playground} = '<http://www.methods.co.nz/rimu/rimuplayground.html|Rimu Playground>'
+{playground} = '<http://rimumarkup.org/rimuplayground.html|Rimu Playground>'
 
 {heads-up} #This document is not yet finished.#
 
