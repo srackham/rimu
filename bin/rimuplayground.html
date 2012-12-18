@@ -17,6 +17,10 @@
     h1 {
       margin-bottom: 0.2em;
     }
+    h1 a {
+      color: #527bbd;
+      text-decoration: none;
+    }
     table#view {
       table-layout: fixed;
       border-collapse:collapse;
@@ -58,7 +62,7 @@
   </style>
 </head>
 <body>
-  <h1>Rimu Playground</h1>
+  <h1><a href="http://rimumarkup.org/">Rimu Playground</a></h1>
 
   <p>
     <select onchange="if (this.selectedIndex) renderCommentFrom(this.value);"
@@ -82,7 +86,6 @@
       <option value="topic-urls-and-email">URLs and email addresses</option>
       <option value="topic-variables">Variables</option>
     </select>
-    <button onclick="convert();">Convert</button>
     <button onclick="stash();">Stash</button>
     <button onclick="unstash();">Unstash</button>
   </p>
@@ -98,7 +101,7 @@
     <tbody>
       <tr>
         <td>
-          <textarea id="rimu"></textarea>
+          <textarea id="rimu" onkeyup="convert();">Enter markup here.</textarea>
         </td>
         <td id="preview">
         </td>
@@ -457,13 +460,10 @@ for learning and experimenting with Rimu markup:
 
 - Stand-alone HTML application, all processing in the browser (no
   data is sent from the browser).
-- Enter Rimu source in the _Rimu_ text area then press the _Convert_
-  button to see and preview generated HTML.
+- Enter Rimu source in the _Rimu_ text area, the _Preview_ and _HTML_
+  are displayed as you type.
 - Select from the _Rimu topics_ drop-down list to view Rimu
   documentation.
-- Resize the playground by dragging the text area handle (on
-  the text area bottom-right corner (not all browsers
-  support this feature).
 - Use _Stash_ to save the current Rimu source and _Unstash_
   to restore it later.
 
@@ -655,6 +655,7 @@ Examples:
     function unstash() {
       var rimuElement = document.getElementById('rimu');
       rimuElement.value = stashText;
+      convert();
     }
     // Render Rimu source stored in comment inside div with id.
     function renderCommentFrom(id) {
