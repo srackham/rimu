@@ -64,8 +64,10 @@ syn region rimuIndentedParagraph start=/\(\%^\|\_^\n\)\@<=\s\+\S/ end=/\n\n/ kee
 syn match rimuComment "^\\\@<!//.*$" contains=rimuTodo
 syn region rimuComment start=/^\/\*$/ end=/^\*\/$/ contains=rimuTodo keepend
 syn region rimuHTMLBlock start=/<!\|\(<\/\?\(html\|head\|body\|script\|style\|address\|article\|aside\|audio\|blockquote\|canvas\|dd\|div\|dl\|fieldset\|figcaption\|figure\|figcaption\|footer\|form\|h1\|h2\|h3\|h4\|h5\|h6\|header\|hgroup\|hr\|noscript\|ol\|output\|p\|pre\|section\|table\|tfoot\|ul\|video\)[ >\n]\?\)/ end=/\n\n/ contains=rimuSpanHTML keepend
-syn region rimuVariableAssign matchgroup=rimuVariableAssignStartEnd start=/^{[0-9A-Za-z_-]\+}\s*=\s*'/ end=/'\n/ keepend
-syn match rimuVariableParam /$\d\+/ contained containedin=rimuVariableAssign
+"syn region rimuVariableAssign matchgroup=rimuVariableAssignStartEnd start=/^{[0-9A-Za-z_-]\+}\s*=\s*'/ end=/'\n/ keepend
+syn match rimuVariableAssign /^{[0-9A-Za-z_-]\+}\s*=\s*'\_.\{-}'\n/
+syn match rimuVariableValue /'\_.\{-}'\n/ contained containedin=rimuVariableAssign
+syn match rimuVariableParam /$\d\+/ contained containedin=rimuVariableValue
 syn match rimuHTMLAttributes /^\.[a-zA-Z#\[].*$/
 
 syn match rimuListId /^\s*\(-\|\*\{1,4}\)\s/
@@ -97,7 +99,8 @@ highlight link rimuSpanSubscript Type
 highlight link rimuSpanSuperscript Type
 highlight link rimuSpanURL Title
 highlight link rimuTodo Todo
-highlight link rimuVariableAssignStartEnd Special
+"highlight link rimuVariableAssignStartEnd Special
+highlight link rimuVariableValue Type
 highlight link rimuVariableParam Macro
 highlight link rimuVariableRef Special
 
