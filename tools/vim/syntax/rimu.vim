@@ -27,14 +27,35 @@ syn match rimuVariableRef /\\\@<!{[0-9A-Za-z_-]\+\(|\_.\{-}\)\?}/ contains=rimuV
 syn match rimuVariableParams /|\_[^}]*/ contains=rimuSpan.*
 syn match rimuSpanAnchor /<<#[a-zA-Z_-].*>>/
 
-syn match rimuSpanInserted /\\\@<!+\s\@!.*[ \t\\]\@<!+/ contains=rimuSpan.*
-syn match rimuSpanDeleted /\\\@<!=\s\@!.*[ \t\\]\@<!=/ contains=rimuSpan.*
-syn match rimuSpanMarked /\\\@<!#\s\@!.*[ \t\\]\@<!#/ contains=rimuSpan.*
-syn match rimuSpanSuperScript /\\\@<!\^\s\@!.*[ \t\\]\@<!\^/ contains=rimuSpan.*
-syn match rimuSpanSubScript /\\\@<!\~\s\@!.*[ \t\\]\@<!\~/ contains=rimuSpan.*
-syn match rimuSpanStrong /\\\@<!\*\s\@!.*[ \t\\]\@<!\*/ contains=rimuSpan.*
-syn match rimuSpanEmphasized /\\\@<!_\s\@!.*[ \t\\]\@<!_/ contains=rimuSpan.*
-syn match rimuSpanCode /\\\@<!`\s\@!.*[ \t\\]\@!<`/
+"syn region rimuSpanInserted start=/\\\@<!+\s\@!/ end=/[ \t\\]\@<!\(+\|\n\n\)/ contains=rimuSpan.* keepend
+"syn region rimuSpanDeleted start=/\\\@<!=\s\@!/ end=/[ \t\\]\@<!\(=\|\n\n\)/ contains=rimuSpan.* keepend
+"syn region rimuSpanMarked start=/\\\@<!#\s\@!/ end=/[ \t\\]\@<!\(#\|\n\n\)/ contains=rimuSpan.* keepend
+"syn region rimuSpanSuperScript start=/\\\@<!\^\s\@!/ end=/[ \t\\]\@<!\(\^\|\n\n\)/ contains=rimuSpan.* keepend
+"syn region rimuSpanSubScript start=/\\\@<!\~\s\@!/ end=/[ \t\\]\@<!\(\~\|\n\n\)/ contains=rimuSpan.* keepend
+"syn region rimuSpanStrong start=/\\\@<!\*\s\@!/ end=/[ \t\\]\@<!\(\*\|\n\n\)/ contains=rimuSpan.* keepend
+"syn region rimuSpanEmphasized start=/\\\@<!_\s\@!/ end=/[ \t\\]\@<!\(_\|\n\n\)/ contains=rimuSpan.* keepend
+"syn region rimuSpanCode start=/\\\@<!`\s\@!/ end=/[ \t\\]\@<!\(`\|\n\n\)/ keepend
+
+"" Back to the same problem as above -- if we dont stop matching at end of
+"" paragraph then the block coloring is very jarring.
+""
+"syn match rimuSpanInserted /\\\@<!+\s\@!\_.\{-1,}[ \t\\]\@<!+/ contains=rimuSpan\(Inserted\)\@!.*
+"syn match rimuSpanDeleted /\\\@<!=\s\@!\_.\{-1,}[ \t\\]\@<!=/ contains=rimuSpan\(Deleted\)\@!.*
+"syn match rimuSpanMarked /\\\@<!#\s\@!\_.\{-1,}[ \t\\]\@<!#/ contains=rimuSpan\(Marked\)\@!.*
+"syn match rimuSpanSuperScript /\\\@<!\^\s\@!\_.\{-1,}[ \t\\]\@<!\^/ contains=rimuSpan\(SuperScript\)\@!.*
+"syn match rimuSpanSubScript /\\\@<!\~\s\@!\_.\{-1,}[ \t\\]\@<!\~/ contains=rimuSpan\(SubScript\)\@!.*
+"syn match rimuSpanStrong /\\\@<!\*\s\@!\_.\{-1,}[ \t\\]\@<!\*/ contains=rimuSpan\(Strong\)\@!.*
+"syn match rimuSpanEmphasized /\\\@<!_\s\@!\_.\{-1,}[ \t\\]\@<!_/ contains=rimuSpan\(Emphasized\)\@!.*
+"syn match rimuSpanCode /\\\@<!`\s\@!\_.\{-1,}[ \t\\]\@<!`/
+
+syn match rimuSpanInserted /\\\@<!+[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!+/ contains=rimuSpan\(Inserted\)\@!.*
+syn match rimuSpanDeleted /\\\@<!=[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!=/ contains=rimuSpan\(Deleted\)\@!.*
+syn match rimuSpanMarked /\\\@<!#[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!#/ contains=rimuSpan\(Marked\)\@!.*
+syn match rimuSpanSuperScript /\\\@<!\^[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\^/ contains=rimuSpan\(SuperScript\)\@!.*
+syn match rimuSpanSubScript /\\\@<!\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\~/ contains=rimuSpan\(SubScript\)\@!.*
+syn match rimuSpanStrong /\\\@<!\*[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\*/ contains=rimuSpan\(Strong\)\@!.*
+syn match rimuSpanEmphasized /\\\@<!_[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!_/ contains=rimuSpan\(Emphasized\)\@!.*
+syn match rimuSpanCode /\\\@<!`[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!`/
 
 syn region rimuHeader matchgroup=rimuHeaderStartEnd start=/^\(=\|#\)\{1,6}\s\+/ end=/\(\s\+\(=\|#\)\{1,6}\)\?\_$/ contains=rimuSpan.* oneline keepend
 syn match rimuBlockDelimiter /^\("\|\.\)\{2,}$/
