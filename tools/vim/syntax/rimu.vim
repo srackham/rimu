@@ -27,14 +27,14 @@ syn match rimuVariableRef /\\\@<!{[0-9A-Za-z_-]\+\(|\_.\{-}\)\?}/ contains=rimuV
 syn match rimuVariableParams /|\_[^}]*/ contains=rimuSpan.*
 syn match rimuSpanAnchor /<<#[a-zA-Z_-].*>>/
 
-syn region rimuSpanCode start=/\\\@<!`\s\@!/ end=/[ \t\\]\@<!\(`\|\n\n\)/ keepend
-syn region rimuSpanInserted start=/\\\@<!+\s\@!/ end=/[ \t\\]\@<!\(+\|\n\n\)/ contains=rimuSpan.* keepend
-syn region rimuSpanDeleted start=/\\\@<!=\s\@!/ end=/[ \t\\]\@<!\(=\|\n\n\)/ contains=rimuSpan.* keepend
-syn region rimuSpanSuperScript start=/\\\@<!\^\s\@!/ end=/[ \t\\]\@<!\(\^\|\n\n\)/ contains=rimuSpan.* keepend
-syn region rimuSpanSubScript start=/\\\@<!\~\s\@!/ end=/[ \t\\]\@<!\(\~\|\n\n\)/ contains=rimuSpan.* keepend
-syn region rimuSpanStrong start=/\\\@<!\*\s\@!/ end=/[ \t\\]\@<!\(\*\|\n\n\)/ contains=rimuSpan.* keepend
-syn region rimuSpanMarked start=/\\\@<!#\s\@!/ end=/[ \t\\]\@<!\(#\|\n\n\)/ contains=rimuSpan.* keepend
-syn region rimuSpanEmphasized start=/\\\@<!_\s\@!/ end=/[ \t\\]\@<!\(_\|\n\n\)/ contains=rimuSpan.* keepend
+syn match rimuSpanInserted /\\\@<!+\s\@!.*[ \t\\]\@<!+/ contains=rimuSpan.*
+syn match rimuSpanDeleted /\\\@<!=\s\@!.*[ \t\\]\@<!=/ contains=rimuSpan.*
+syn match rimuSpanMarked /\\\@<!#\s\@!.*[ \t\\]\@<!#/ contains=rimuSpan.*
+syn match rimuSpanSuperScript /\\\@<!\^\s\@!.*[ \t\\]\@<!\^/ contains=rimuSpan.*
+syn match rimuSpanSubScript /\\\@<!\~\s\@!.*[ \t\\]\@<!\~/ contains=rimuSpan.*
+syn match rimuSpanStrong /\\\@<!\*\s\@!.*[ \t\\]\@<!\*/ contains=rimuSpan.*
+syn match rimuSpanEmphasized /\\\@<!_\s\@!.*[ \t\\]\@<!_/ contains=rimuSpan.*
+syn match rimuSpanCode /\\\@<!`\s\@!.*[ \t\\]\@!<`/
 
 syn region rimuHeader matchgroup=rimuHeaderStartEnd start=/^\(=\|#\)\{1,6}\s\+/ end=/\(\s\+\(=\|#\)\{1,6}\)\?\_$/ contains=rimuSpan.* oneline keepend
 syn match rimuBlockDelimiter /^\("\|\.\)\{2,}$/
