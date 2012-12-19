@@ -77,7 +77,7 @@ highlight link rimuSpanSuperscript Type
 highlight link rimuSpanURL Title
 highlight link rimuTodo Todo
 highlight link rimuVariableAssignStartEnd Special
-highlight link rimuVariableParam Special
+highlight link rimuVariableParam Macro
 highlight link rimuVariableRef Special
 
 let b:current_syntax = "rimu"

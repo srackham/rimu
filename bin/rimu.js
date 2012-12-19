@@ -931,6 +931,18 @@ var Rimu;
                 spans: false
             }, 
             {
+                quote: '~',
+                openTag: '<sub>',
+                closeTag: '</sub>',
+                spans: true
+            }, 
+            {
+                quote: '^',
+                openTag: '<sup>',
+                closeTag: '</sup>',
+                spans: true
+            }, 
+            {
                 quote: '=',
                 openTag: '<del>',
                 closeTag: '</del>',
@@ -957,18 +969,6 @@ var Rimu;
                     var followingChar = match.input[re.lastIndex] || '';
                     return !(/</.test(precedingChar) && /[a-zA-Z]/.test(followingChar));
                 }
-            }, 
-            {
-                quote: '~',
-                openTag: '<sub>',
-                closeTag: '</sub>',
-                spans: true
-            }, 
-            {
-                quote: '^',
-                openTag: '<sup>',
-                closeTag: '</sup>',
-                spans: true
             }, 
             
         ];
