@@ -71,6 +71,9 @@ while (!!(arg = process.argv.shift())) {
       }
       break;
     default:
+      if (arg[0] === '-') {
+        die('illegal option: ' + arg);
+      }
       inFile = arg;
       if (!fs.existsSync(inFile)) {
         die('source file does not exist: ' + inFile);
