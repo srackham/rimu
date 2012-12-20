@@ -424,8 +424,8 @@ non magnis facilisi scelerisque luctus. Quis praesent pulvinar.
 
 <div id="topic-other">
 <!--
-- Rimu markup files can have either a `.rmu` or a `.txt` file name
-  extension (this is just a convention).
+- By convention Rimu markup text files have a `.rmu` file name
+  extension.
 
 -->
 </div>
@@ -559,22 +559,26 @@ NAME
   rimuc - convert Rimu source to HTML
 
 SYNOPSIS
-  rimuc [OPTIONS...] [FILE]
+  rimuc [OPTIONS...] [FILES...]
 
 DESCRIPTION
-Reads Rimu source markup from stdin, converts it to HTML then writes the HTML
-to stdout. If FILE is specified reads Rimu source from FILE.
+  Reads Rimu source markup from stdin, converts it to HTML
+  then writes the HTML to stdout. If FILES are specified
+  the Rimu source is read from FILES.
 
 OPTIONS
+  -h, - -help
+    Display help message.
+
+  -o, - -output OUTFILE
+    Write output to file OUTFILE instead of stdout.
+
   - -safe-mode
     Specifies how to process inline and block HTML elements.
     - -safe-mode 0 renders raw HTML (default),
     - -safe-mode 1 drops raw HTML,
     - -safe-mode 2 replaces raw HTML with text 'replaced HTML'.
     - -safe-mode 3 renders raw HTML as text.
-
-  -h, - -help
-    Display help message.
 - -
 
 Example usage:

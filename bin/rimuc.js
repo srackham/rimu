@@ -12,22 +12,26 @@ var MANPAGE = 'NAME\n' +
 '  rimuc - convert Rimu source to HTML\n' +
 '\n' +
 'SYNOPSIS\n' +
-'  rimuc [OPTIONS...] [FILE]\n' +
+'  rimuc [OPTIONS...] [FILES...]\n' +
 '\n' +
 'DESCRIPTION\n' +
-'Reads Rimu source markup from stdin, converts it to HTML then writes the HTML\n' +
-'to stdout. If FILE is specified reads Rimu source from FILE.\n' +
+'  Reads Rimu source markup from stdin, converts them to HTML\n' +
+'  then writes the HTML to stdout. If FILES are specified\n' +
+'  the Rimu source is read from FILES.\n' +
 '\n' +
 'OPTIONS\n' +
+'  -h, --help\n' +
+'    Display help message.\n' +
+'\n' +
+'  -o, --output OUTFILE\n' +
+'    Write output to file OUTFILE instead of stdout.\n' +
+'\n' +
 '  --safe-mode\n' +
 '    Specifies how to process inline and block HTML elements.\n' +
 '    --safe-mode 0 renders raw HTML (default),\n' +
 '    --safe-mode 1 drops raw HTML,\n' +
 '    --safe-mode 2 replaces raw HTML with text \'replaced HTML\'.\n' +
-'    --safe-mode 3 renders raw HTML as text.\n' +
-'\n' +
-'  -h, --help\n' +
-'    Display help message.\n';
+'    --safe-mode 3 renders raw HTML as text.\n';
 
 // Helpers.
 function die(message) {
@@ -44,12 +48,21 @@ if (process.argv.shift() === 'node') {
   process.argv.shift();
 }
 // Parse command-line options.
+var source = '';
+var outFile;
 while (!!(arg = process.argv.shift())) {
   switch (arg) {
     case '--help':
     case '-h':
       console.log('\n' + MANPAGE);
       process.exit();
+      break;
+    case '--output':
+    case '-o':
+      outFile = process.argv.shift();
+      if (!outFile) {
+        die('missing --output file name');
+      }
       break;
     case '--safe-mode':
       safeMode = parseInt(process.argv.shift() || 99, 10);
@@ -58,20 +71,21 @@ while (!!(arg = process.argv.shift())) {
       }
       break;
     default:
-      if (process.argv.length === 0) { // Last argument.
-        inFile = arg;
-        if (!fs.existsSync(inFile)) {
-          die('source file does not exist: ' + inFile);
-        }
+      inFile = arg;
+      if (!fs.existsSync(inFile)) {
+        die('source file does not exist: ' + inFile);
       }
-      else {
-        die('illegal option: ' + arg);
-      }
+      source += fs.readFileSync(inFile).toString();
+      source += '\n\n';  // Separate sources with blank line.
       break;
   }
 }
 
 // Convert Rimu to HTML.
-var source = fs.readFileSync(inFile).toString();
 var html = Rimu.render(source, {safeMode: safeMode});
-console.log(html);
+if (outFile) {
+  fs.writeFileSync(outFile, html);
+}
+else {
+  console.log(html);
+}

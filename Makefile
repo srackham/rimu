@@ -31,13 +31,14 @@ bin/rimu.js: $(SOURCE)
 samples: samples/showcase.html samples/index.html
 
 samples/showcase.html: samples/showcase.rmu
-	cat samples/bootstrap-header.html \
+	node ./bin/rimuc.js --output samples/showcase.html \
+		samples/bootstrap-header.html \
 		samples/showcase.rmu \
-		samples/footer.html \
-		| node ./bin/rimuc.js > samples/showcase.html
+		samples/footer.html
+
 
 samples/index.html: samples/index.rmu
-	node ./bin/rimuc.js samples/index.rmu > samples/index.html
+	node ./bin/rimuc.js --output samples/index.html samples/index.rmu
 
 commit:
 	make --always-make test    # Force rebuild and test.
