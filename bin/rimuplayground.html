@@ -473,20 +473,23 @@ for learning and experimenting with Rimu markup:
 <div id="topic-text-formatting">
 <!--
 Formatted text is enclosed with quote characters. There are quote
-characters for _emphasized text_, *bold text*, =deleted text=,
-+inserted text+, #marked text#, ~subscripts~ and ^superscripts^.
+characters for _emphasized text_, *bold text*, =deleted text= ^[1]^,
++inserted text+ ^[1]^, #marked text# ^[1]^, ~subscripts~ and ^superscripts^.
 
   Rimu            HTML                      Common style
   ___________________________________________________________
   _emphasis_      <em>emphasis</em>         Italic
   *strong*        <strong>strong</strong>   Bold
   `code`          <code>code</code>         Monospaced
-  =deleted=       <del>deleted</del>        Strikethrough
-  +inserted+      <ins>inserted</ins>       Underlined
-  #marked#        <mark>marked</mark>       Yellow background
+  =deleted=       <del>deleted</del>        Strikethrough [1]
+  +inserted+      <ins>inserted</ins>       Underlined [1]
+  #marked#        <mark>marked</mark>       Yellow background [1]
   ~subscript~     <sub>subscript</sub>
   ^superscript^   <sup>superscript</sup>
   ___________________________________________________________
+
+*[1]* Provisional, may be dropped before the 1.0 feature freeze.
+Do the use cases really  justify the effort and the 'escape' burden?
 
 - Other quotes and inline elements are allowed between quotes with the
   exception of the _code_ quote which displays enclosed elements
