@@ -920,17 +920,6 @@ var Rimu;
                 spans: true
             }, 
             {
-                quote: "'",
-                openTag: '<em>',
-                closeTag: '</em>',
-                spans: true,
-                verify: function (match, re) {
-                    var precedingChar = match.input[match.index - 1] || '';
-                    var followingChar = match.input[re.lastIndex] || '';
-                    return !(/[a-zA-Z]/.test(precedingChar) || /[a-zA-Z]/.test(followingChar));
-                }
-            }, 
-            {
                 quote: '*',
                 openTag: '<strong>',
                 closeTag: '</strong>',

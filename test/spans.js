@@ -53,10 +53,6 @@ exports['Quotes'] = function(test) {
   test.equal(Rimu.Spans.render(
         '<a class="btn">abc</a> <a class="btn">xyz</a>'),
         '<a class="btn">abc</a> <a class="btn">xyz</a>');
-  // Alternative emphasis quotes.
-  test.equal(Rimu.Spans.render(
-        "It's a 'nice' day"),
-        "It's a <em>nice</em> day");
 
   test.done();
 };
@@ -128,7 +124,7 @@ exports['Replacements'] = function(test) {
         '<span style="font-size:\n2em">inline elements</span>'),
         '<span style="font-size:\n2em">inline elements</span>');
   test.equal(Rimu.Spans.render(
-        "<a href=\\'http://example.com\\'><image:tiger.png></a>"),
+        "<a href='http://example.com'><image:tiger.png></a>"),
         "<a href='http://example.com'><img src=\"tiger.png\" alt=\"tiger.png\"></a>");
 
   // Relative URLs.

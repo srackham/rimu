@@ -16,18 +16,6 @@ module Rimu.Quotes {
       spans: true,
     },
     {
-      quote: "'",
-      openTag: '<em>',
-      closeTag: '</em>',
-      spans: true,
-      verify: function(match, re) {
-        // Heuristic to suppress quoting within words e.g. it's.
-        var precedingChar = match.input[match.index - 1] || '';
-        var followingChar = match.input[re.lastIndex] || '';
-        return !(/[a-zA-Z]/.test(precedingChar) || /[a-zA-Z]/.test(followingChar));
-      },
-    },
-    {
       quote: '*',
       openTag: '<strong>',
       closeTag: '</strong>',
