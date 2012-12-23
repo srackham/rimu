@@ -16,6 +16,18 @@ module Rimu.Quotes {
       spans: true,
     },
     {
+      quote: "'",
+      openTag: '<em>',
+      closeTag: '</em>',
+      spans: true,
+      verify: function(match, re) {
+        // Heuristic to suppress quoting within words e.g. it's.
+        var precedingChar = match.input[match.index - 1] || '';
+        var followingChar = match.input[re.lastIndex] || '';
+        return !(/[a-zA-Z]/.test(precedingChar) || /[a-zA-Z]/.test(followingChar));
+      },
+    },
+    {
       quote: '*',
       openTag: '<strong>',
       closeTag: '</strong>',
@@ -45,7 +57,7 @@ module Rimu.Quotes {
       closeTag: '</mark>',
       spans: true,
       verify: function(match, re) {
-        // Heuristic to suppress '#' quoting acrosse anchors and links.
+        // Heuristic to suppress '#' quoting across anchors and links.
         // Skip if = is preceded by a < character and followed by an alpha
         // character.
         var precedingChar = match.input[match.index - 1] || '';
@@ -60,11 +72,11 @@ module Rimu.Quotes {
       spans: true,
       verify: function(match, re) {
         // Heuristic to suppress '=' quoting across HTML attribute assignments.
-        // Skip if = is preceded by an alpha character and followed by a " or '
+        // Skip if = is preceded by an alpha character and followed by a "
         // character.
         var precedingChar = match.input[match.index - 1] || '';
         var followingChar = match.input[re.lastIndex] || '';
-        return !(/[a-zA-Z]/.test(precedingChar) && /["']/.test(followingChar));
+        return !(/[a-zA-Z]/.test(precedingChar) && /"/.test(followingChar));
       },
     },
     {

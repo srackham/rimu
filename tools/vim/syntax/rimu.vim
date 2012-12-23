@@ -27,13 +27,14 @@ syn match rimuVariableRef /\\\@<!{[0-9A-Za-z_-]\+\(|\_.\{-}\)\?}/ contains=rimuV
 syn match rimuVariableParams /|\_[^}]*/ contains=rimuSpan.*
 syn match rimuSpanAnchor /<<#[a-zA-Z_-].*>>/
 
-syn match rimuSpanInserted /\\\@<!+[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!+/ contains=rimuSpan\(Inserted\)\@!.*
-syn match rimuSpanDeleted /\\\@<!=[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!=/ contains=rimuSpan\(Deleted\)\@!.*
-syn match rimuSpanMarked /\\\@<!#[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!#/ contains=rimuSpan\(Marked\)\@!.*
-syn match rimuSpanSuperScript /\\\@<!\^[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\^/ contains=rimuSpan\(SuperScript\)\@!.*
-syn match rimuSpanSubScript /\\\@<!\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\~/ contains=rimuSpan\(SubScript\)\@!.*
-syn match rimuSpanStrong /\\\@<!\*[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\*/ contains=rimuSpan\(Strong\)\@!.*
-syn match rimuSpanEmphasized /\\\@<!_[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!_/ contains=rimuSpan\(Emphasized\)\@!.*
+syn match rimuSpanInserted /\\\@<!+[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!+/ contains=rimuSpan\(Inserted\)\@!.*,rimuSpanCode,rimuSpanEmphasized,rimuSpanSubScript,rimuSpanSuperScript,rimuSpanMarked,rimuSpanDeleted
+syn match rimuSpanDeleted /\\\@<!=[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!=/ contains=rimuSpan\(Deleted\)\@!.*,rimuSpanCode,rimuSpanEmphasized,rimuSpanSubScript,rimuSpanSuperScript,rimuSpanMarked
+syn match rimuSpanMarked /\\\@<!#[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!#/ contains=rimuSpan\(Marked\)\@!.*,rimuSpanCode,rimuSpanEmphasized,rimuSpanSubScript,rimuSpanSuperScript
+syn match rimuSpanSuperScript /\\\@<!\^[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\^/ contains=rimuSpan\(SuperScript\)\@!.*,rimuSpanCode,rimuSpanEmphasized
+syn match rimuSpanSubScript /\\\@<!\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\~/ contains=rimuSpan\(SubScript\)\@!.*,rimuSpanCode,rimuSpanEmphasized
+syn match rimuSpanStrong /\\\@<!\*[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\*/ contains=rimuSpan\(Strong\)\@!.*,rimuSpanCode,rimuSpanEmphasized
+syn match rimuSpanEmphasized /\\\@<!_[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!_/ contains=rimuSpan\(Emphasized\)\@!.*,rimuSpanCode
+syn match rimuSpanEmphasized /[\\a-zA-Z]\@<!'[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!'[a-zA-Z]\@!/ contains=rimuSpan\(Emphasized\)\@!.*,rimuSpanCode
 syn match rimuSpanCode /\\\@<!`[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!`/
 
 syn region rimuHeader matchgroup=rimuHeaderStartEnd start=/^\(=\|#\)\{1,6}\s\+/ end=/\(\s\+\(=\|#\)\{1,6}\)\?\_$/ contains=rimuSpan.* oneline keepend

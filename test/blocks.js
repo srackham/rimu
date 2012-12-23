@@ -44,8 +44,8 @@ exports['Line blocks'] = function(test) {
   test.equal(Rimu.Variables.list.length, 1);
   // Escaped.
   testDelimitedBlock(test,
-      '&ZeroWidthSpace;\\{var}=\'value\'\n{var} \\{var}',
-      '<p>&ZeroWidthSpace;{var}=\'value\'\nvariable value2 {var}</p>');
+      "&ZeroWidthSpace;\\{var}=\\'value\\'\n{var} \\{var}",
+      "<p>&ZeroWidthSpace;{var}='value'\nvariable value2 {var}</p>");
   // Nested.
   testLineBlock(test, "{var2} = 'nested var: {var}'", '');
   test.equal(Rimu.Variables.list.length, 2);
@@ -305,8 +305,8 @@ exports['Documents'] = function(test) {
 
   // Single quotes are OK inside variable values.
   testDocuments(test,
-      "{v}='This \'and\' that'\n{v}",
-      "<p>This 'and' that</p>");
+      "{v}='This 'and' that'\n{v}",
+      "<p>This <em>and</em> that</p>");
 
   // Escaped undefined variables are unescaped.
   testDocuments(test,

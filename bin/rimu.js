@@ -795,6 +795,7 @@ var Rimu;
                 }
                 var def = Rimu.Quotes.find(match[1]);
                 if(def.verify && !def.verify(match, findRe)) {
+                    findRe.lastIndex = match.index + 1;
                     continue;
                 }
                 var before = match.input.slice(0, match.index);
@@ -919,6 +920,17 @@ var Rimu;
                 spans: true
             }, 
             {
+                quote: "'",
+                openTag: '<em>',
+                closeTag: '</em>',
+                spans: true,
+                verify: function (match, re) {
+                    var precedingChar = match.input[match.index - 1] || '';
+                    var followingChar = match.input[re.lastIndex] || '';
+                    return !(/[a-zA-Z]/.test(precedingChar) || /[a-zA-Z]/.test(followingChar));
+                }
+            }, 
+            {
                 quote: '*',
                 openTag: '<strong>',
                 closeTag: '</strong>',
@@ -961,7 +973,7 @@ var Rimu;
                 verify: function (match, re) {
                     var precedingChar = match.input[match.index - 1] || '';
                     var followingChar = match.input[re.lastIndex] || '';
-                    return !(/[a-zA-Z]/.test(precedingChar) && /["']/.test(followingChar));
+                    return !(/[a-zA-Z]/.test(precedingChar) && /"/.test(followingChar));
                 }
             }, 
             {

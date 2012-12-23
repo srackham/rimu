@@ -479,6 +479,7 @@ characters for _emphasized text_, *bold text*, =deleted text= ^[1]^,
   Rimu            HTML                      Common style
   ___________________________________________________________
   _emphasis_      <em>emphasis</em>         Italic
+  'emphasis'      <em>emphasis</em>         Italic [1]
   *strong*        <strong>strong</strong>   Bold
   `code`          <code>code</code>         Monospaced
   =deleted=       <del>deleted</del>        Strikethrough [1]
@@ -491,9 +492,8 @@ characters for _emphasized text_, *bold text*, =deleted text= ^[1]^,
 *[1]* Provisional, may be dropped before the 1.0 feature freeze.
 Do the use cases really  justify the effort and the 'escape' burden?
 
-- Other quotes and inline elements are allowed between quotes with the
-  exception of the _code_ quote which displays enclosed elements
-  verbatim.
+- Other quotes and inline elements can be nested within a quote with the
+  exception of the _code_ quote which displays enclosed elements verbatim.
 - Quotes can be escaped with backslash character prefixes.
 - Quoted text must begin and end with non-whitespace characters and
   cannot end with a backslash character.

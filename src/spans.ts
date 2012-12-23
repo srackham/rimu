@@ -66,6 +66,8 @@ module Rimu.Spans {
       // Arrive here if we have a matched quote.
       var def = Quotes.find(match[1]);
       if (def.verify && !def.verify(match, findRe)) {
+        // Next search starts after the opening quote (not the closing quote).
+        findRe.lastIndex = match.index + 1;
         continue;
       }
       // The quotes splits the fragment into 5 fragments.
