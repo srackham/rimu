@@ -65,12 +65,10 @@ exports['Quotes'] = function(test) {
         '<a class="btn">abc</a> <a class="btn">xyz</a>'),
         '<a class="btn">abc</a> <a class="btn">xyz</a>',
         'two HTML attributes do not generate delete quote');
-
   test.done();
 };
 
 exports['Replacements'] = function(test) {
-
   test.equal(Spans.render(
         'http://foobar.com \\<http://foobar.com>'),
         'http://foobar.com &lt;http://foobar.com&gt;',
@@ -80,12 +78,10 @@ exports['Replacements'] = function(test) {
         '<strong><a href="http://foobar.com">http://foobar.com</a></strong> ' +
         '<a href="http://foobar.com">Foo\n&amp; Bar</a>',
         'quoted and parameterized http urls');
-
   test.equal(Spans.render(
         '<ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt>'),
         '<a href="ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt">ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt</a>',
         'ftp url');
-
   test.equal(Spans.render(
         '<file:///home/joe/downloads/> ' +
         '<file:///home/joe/doc/user-guide.pdf|User Guide> ' +
@@ -94,22 +90,18 @@ exports['Replacements'] = function(test) {
         '<a href="file:///home/joe/doc/user-guide.pdf">User Guide</a> ' +
         '&lt;file:///home/joe/downloads/&gt;',
         'file urls');
-
   test.equal(Spans.render(
         '&copy; &reg;\\&para;'),
         '&copy; &reg;&amp;para;',
         'character entities');
-
   test.equal(Spans.render(
         'Lorum +\nipsum \\ +\nvestibulum  +'),
         'Lorum<br>\nipsum  +\nvestibulum <br>\n',
         'line breaks');
-
   test.equal(Spans.render(
         'Lorum <<#x1>>ipsum <#x1|lorum link> \\<<#x1>>'),
         'Lorum <span id="x1"></span>ipsum <a href="#x1">lorum link</a> &lt;&lt;#x1&gt;&gt;',
         'inline anchors and links');
-
   test.equal(Spans.render(
         '<image:./images/tiger.png> ' +
         '<image:http://foobar.com|Tiger\n& Bar> ' +
@@ -118,7 +110,6 @@ exports['Replacements'] = function(test) {
         '<img src="http://foobar.com" alt="Tiger\n&amp; Bar"> ' +
         '&lt;image:tiger.png&gt;',
         'inline images');
-
   test.equal(Spans.render(
         '<joe.bloggs@foobar.com> ' +
         '<joe.bloggs@foobar.com|Joe\n Bloggs> ' +
@@ -127,31 +118,25 @@ exports['Replacements'] = function(test) {
         '<a href="mailto:joe.bloggs@foobar.com">Joe\n Bloggs</a> ' +
         '&lt;joe.bloggs@foobar.com&gt;',
         'email addresses');
-
   test.equal(Spans.render(
         '<u>underlined *text*</u>\\<hr>'),
         '<u>underlined <strong>text</strong></u>&lt;hr&gt;',
         'HTML tags');
-
   test.equal(Spans.render(
         '<span style="font-size:\n2em">inline elements</span>'),
         '<span style="font-size:\n2em">inline elements</span>',
         'HTML tags across line boundary');
-
   test.equal(Spans.render(
         "<a href='http://example.com'><image:tiger.png></a>"),
         "<a href='http://example.com'><img src=\"tiger.png\" alt=\"tiger.png\"></a>",
         'HTML element enveloping image');
-
   test.equal(Spans.render(
         '<chapter1.html>'),
         '<a href="chapter1.html">chapter1.html</a>',
         'relative url');
-
   test.equal(Spans.render(
         '<./chapter1.html#x1|Foo bar>'),
         '<a href="./chapter1.html#x1">Foo bar</a>',
         'parameterized relative url');
-
   test.done();
 };
