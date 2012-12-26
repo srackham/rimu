@@ -1,0 +1,116 @@
+= Rimu Tips
+
+== Syntax highlighting
+<https://github.com/isagalaev/highlight.js|Highlight.js> is a nice
+syntax highlighter that makes it trivial to add syntax highlighting to
+Rimu code blocks.
+<http://softwaremaniacs.org/soft/highlight/en/download/|Download
+Highlight.js>, unzip it and link the CSS and JavaScript files to your
+web page, for example:
+
+--
+<link rel="stylesheet" href="highlight.js/styles/default.css">
+<script src="highlight.js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+--
+
+- In the above example the `default.css` theme is used but you are free to
+  choose any of the available styles.
+- The `hljs.initHighlightingOnLoad();` function applies highlighting
+  to all `<pre><code>..</code></pre>` blocks on a page.
+- _Highlight.js_ automatically detects the language in the code block,
+  but you can also set the language explicitly by setting the code block
+  class, for example:
+
+  .javascript
+  --
+    function die(message) {
+      console.error(message);
+      process.exit(1);
+    }
+  --
+
+- Take a look at the source for this web page to see how Highlight.js
+  is used with Twitter Bootstrap.
+- You could also link to CSS and JavaScript files on the
+  _Highlight.js_ website, for example:
+
+--
+<link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
+<script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+--
+
+
+== Syntax shared with Markdown
+The following subset of _Rimu_ elements is compatible with Markdown:
+
+Headers:: Single-line headers using `#` character header IDs.
+
+Code blocks:: Indented paragraphs (at least four spaces)
+render like Markdown code blocks.
+
+Text formatting:: `_emphasis_` and `\`code\`` quotes.
+
+Lists::
+- Bullet lists with `-` and `*` IDs.
+- Numbered lists with explicit numbering.
+
+URLs and Email addresses:: Using the `<url>` and `<email>` syntaxes.
+
+The Rimu _README_ uses this subset for compatibility with _GitHub_ and
+_npmjs.org_ README formats.
+
+
+== Escaping Rimu syntax
+If you have text you don't want interpreted as a Rimu element then
+you can disable (escape) it by prefixing the element with a backslash
+character. An escaped a block element will be interpreted as a normal
+paragraph (paragraphs have the lowest precedence).
+
+There are some corner cases to be aware of:
+
+- Escaping variable assignments and references in a block context
+  using a backslash will result in them being expanded in an inline
+  (paragraph) context, if you want them rendered literally in the
+  paragraph context prefix a `&ZeroWidthSpace;` character entity e.g.
+
+  &ZeroWidthSpace;\{info}
+
+- If you escape an HTML block element with a backslash the HTML tags
+  will be rendered in an inline (paragraph) context, which is probably
+  not what you want -- use a `&ZeroWidthSpace;` character entity
+  instead of a backslash character.
+
+- References to undefined variables are printed verbatim and don't
+  need to be escaped, but it's good practice to escape them anyway
+  so they won't be expanded if you do define the variable some time in
+  the future.
+
+
+== Putting | and } characters in variable parameter values
+Use the corresponding character entities `&vert;` and `&rbrace;`.
+
+
+== Syntax checker
+The Vim editor syntax highlighter is a big help when writing (and
+reading) Rimu markup.
+
+
+== The Rimu markup looks ok but the generated HTML is wrong
+Using an editor with Rimu syntax highlighting support (see previous
+topic) makes it much easier to spot syntax errors.
+
+
+== Display contiguous block images vertically
+Unless they are separated by other block elements, multiple block
+image elements flow inline like text (this is because the HTML `img`
+element is an "inline block" element), you can flow them vertically by
+enclosing them in a _Division Block_ (HTML `div` element), for
+example:
+
+  <image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
+  ..
+  .#big-logo [width="150"]
+  <image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
+  ..
