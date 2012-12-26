@@ -1,0 +1,70 @@
+/*
+  Rimu Markup documentation HTML header.
+  Styled using Bootstrap.
+  Syntax highlighting with Highlight.js.
+*/
+
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Rimu is a readable text to HTML
+    markup language inspired by AsciiDoc and Markdown.">
+  <title>Rimu Markup</title>
+  <link rel="stylesheet" href="highlight.js/styles/default.css">
+  <script src="highlight.js/highlight.pack.js"></script>
+  <link href="bootstrap.css" rel="stylesheet">
+  <script>hljs.initHighlightingOnLoad();</script>
+  <style>
+    body {
+      margin: 1em;
+      max-width: 50em;
+    }
+    h1, h2, h3, h4, h5, h6, a {
+      color: #527bbd;
+    }
+    h1 {
+      font-size: 2.2em;
+    }
+    h2 {
+      font-size: 1.3em;
+      line-height: normal;
+      margin-top: 1.5em;
+      margin-bottom: 0.2em;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    }
+    em, strong {
+      color: #295bad;
+    }
+    dt {
+      margin-top: 1em;
+    }
+    dd, li, pre {
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+    }
+    .breadcrumb {
+      font-weight: bold;
+      background-color: white;
+      margin: 0;
+      margin-top: 5px;
+      padding: 0;
+    }
+    /* highlight.js tweaks */
+    pre {
+      background-color: #fcfcf8;
+    }
+    pre span {
+      opacity: 1 !important;
+    }
+  </style>
+</head>
+<body>
+  <ul class="breadcrumb pull-right">
+    <li><a href="index.html">Home</a> <span class="divider">|</span></li>
+    <li><a href="rimuplayground.html">Playground and Docs</a> <span class="divider">|</span></li>
+    <li><a href="tips.html">Tips</a> <span class="divider">|</span></li>
+    <li><a href="http://github.com/srackham/rimu">Github</a> <span class="divider">|</span></li>
+    <li><a href="https://npmjs.org/package/rimu">npm</a></li>
+  </ul>
+
