@@ -435,6 +435,7 @@ var Rimu;
                 container: true
             }, 
             {
+                id: 'quote',
                 openMatch: /^\\?"{2,}$/,
                 closeMatch: /^"{2,}$/,
                 openTag: '<blockquote>',
@@ -442,6 +443,7 @@ var Rimu;
                 container: true
             }, 
             {
+                id: 'code',
                 openMatch: /^\\?\-{2,}$/,
                 closeMatch: /^\-{2,}$/,
                 openTag: '<pre><code>',
@@ -651,7 +653,7 @@ var Rimu;
                             return nextItem;
                         }
                     } else {
-                        if(nextItem.isDivision || nextItem.isIndented) {
+                        if(nextItem.isDelimited || nextItem.isIndented) {
                             var savedIds = ids;
                             ids = [];
                             Rimu.DelimitedBlocks.render(reader, writer);
@@ -680,12 +682,12 @@ var Rimu;
                         return null;
                     }
                     return matchItem(reader, {
-                        division: true,
+                        delimited: true,
                         indented: true
                     });
                 }
                 next = matchItem(reader, {
-                    division: true
+                    delimited: true
                 });
                 if(next) {
                     return next;
@@ -720,11 +722,17 @@ var Rimu;
                     return item;
                 }
             }
-            if(options.division) {
-                def = Rimu.DelimitedBlocks.getDefinition('division');
-                if(def.openMatch.test(line)) {
-                    item.isDivision = true;
-                    return item;
+            if(options.delimited) {
+                for(var id in {
+                    quote: 0,
+                    code: 0,
+                    division: 0
+                }) {
+                    def = Rimu.DelimitedBlocks.getDefinition(id);
+                    if(def.openMatch.test(line)) {
+                        item.isDelimited = true;
+                        return item;
+                    }
                 }
             }
             if(options.indented) {

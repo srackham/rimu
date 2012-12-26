@@ -1,30 +1,28 @@
 var Rimu = require('../bin/rimu.js');
 
+// Helpers.
 function testBlock(renderer, test, source, expected, message) {
   var writer = new Rimu.Writer();
   renderer(new Rimu.Reader(source), writer);
   var actual = writer.toString();
   test.equal(actual, expected, message);
 }
-
 function testLineBlock(test, source, expected, message) {
   testBlock(Rimu.LineBlocks.render.bind(Rimu.LineBlocks), test, source, expected);
 }
-
 function testDelimitedBlock(test, source, expected, message) {
   testBlock(Rimu.DelimitedBlocks.render.bind(Rimu.DelimitedBlocks), test, source, expected);
 }
-
 function testList(test, source, expected, message) {
   testBlock(Rimu.Lists.render.bind(Rimu.Lists), test, source, expected);
 }
-
 function testDocument(test, source, expected, message) {
   var actual = Rimu.render(source);
   test.equal(actual, expected, message);
 }
 
 
+// Tests.
 exports['Line blocks'] = function(test) {
   Rimu.Variables.list = [];
   testLineBlock(test,
@@ -204,12 +202,18 @@ exports['Lists'] = function(test) {
       '- List item1.\n  - List item2.\n  * List item3.\n  ** List item4.\nTerm:: List\n item5\n\n- List item6.',
       '<ul><li>List item1.\n</li><li>List item2.\n<ul><li>List item3.\n<ul><li>List item4.\n<dl><dt>Term</dt><dd> List\n item5\n</dd></dl></li></ul></li></ul></li><li>List item6.\n</li></ul>',
       'Mixed nested lists');
-
   testList(test,
       '- Item 1\n..\nA\nparagraph\n..\n- Item 2\n\n  Indented',
       '<ul><li>Item 1\n<div><p>A\nparagraph</p></div>\n</li><li>Item 2\n<pre>Indented</pre></li></ul>',
-      'list item with attached division block');
-
+      'list item with attached division block and indented paragraph');
+  testList(test,
+      '- Item 1\n""\nA\nparagraph\n""',
+      '<ul><li>Item 1\n<blockquote><p>A\nparagraph</p></blockquote></li></ul>',
+      'list item with attached quote block');
+  testList(test,
+      '- Item 1\n--\nA\nparagraph\n--',
+      '<ul><li>Item 1\n<pre><code>A\nparagraph</code></pre></li></ul>',
+      'list item with attached code block');
   testList(test,
       'a::\n' +
       '..\n' +
@@ -224,7 +228,6 @@ exports['Lists'] = function(test) {
       'd\n' +
       '</dd></dl>',
       'nested list in attached division block');
-
   test.done();
 };
 

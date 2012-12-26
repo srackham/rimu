@@ -54,6 +54,7 @@ module Rimu.DelimitedBlocks {
     },
     // Quote block.
     {
+      id: 'quote',
       openMatch: /^\\?"{2,}$/,
       closeMatch: /^"{2,}$/,
       openTag: '<blockquote>',
@@ -62,6 +63,7 @@ module Rimu.DelimitedBlocks {
     },
     // Code block.
     {
+      id: 'code',
       openMatch: /^\\?\-{2,}$/,
       closeMatch: /^\-{2,}$/,
       openTag: '<pre><code>',

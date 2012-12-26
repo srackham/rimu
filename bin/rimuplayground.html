@@ -250,7 +250,8 @@ contained elements are enveloped in an HTML `div` element.
 - The delimiter lines are two or more period characters starting at
   the left margin.
 - The _Division Block_ is commonly used to group block elements so
-  they can be attached to a list item.
+  they can be attached to a list item (this allows arbitrarily complex
+  list items).
 ..
 
 -->
@@ -381,10 +382,9 @@ and groups list items into lists.
   semantic significance.
 - List items can be escaped with a backslash at the beginning of the
   line.
-- If a list item is followed by an indented paragraph the indented
-  paragraph is rendered with the list item.
-- A _Division Block_ immediately following a list item is rendered
-  with the list item. This allows arbitrarily complex list items.
+- If a delimited block (_Code_, _Quote_ or _Division_ block) or an
+  _Indented_ paragraph immediately follows a list item then it is
+  rendered with the list item.
 - There are no explicit numbering or bullet styles, this is best left
   to CSS which can apply a consistent set of list styles.
 
