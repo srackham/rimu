@@ -1,4 +1,4 @@
-# Rimu
+# Rimu Markup
 
 Rimu is a readable text to HTML markup language inspired by AsciiDoc
 and Markdown.

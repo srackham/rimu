@@ -28,17 +28,26 @@ bin/rimu.js: $(SOURCE)
 	tsc --declaration --out bin/rimu.js $(SOURCE)
 	uglifyjs bin/rimu.js > bin/rimu.min.js
 
-doc: doc/showcase.html doc/index.html
+doc: doc/index.html doc/tips.html doc/showcase.html 
 
-doc/showcase.html: doc/showcase.rmu
+doc/index.html: README.md doc/doc-header.rmu doc/footer.rmu
+	node ./bin/rimuc.js --output doc/index.html \
+		doc/doc-header.rmu \
+		README.md \
+		doc/footer.rmu
+
+doc/tips.html: doc/tips.rmu doc/doc-header.rmu doc/footer.rmu
+	node ./bin/rimuc.js --output doc/tips.html \
+		doc/doc-header.rmu \
+		doc/tips.rmu \
+		doc/footer.rmu
+
+doc/showcase.html: doc/showcase.rmu doc/bootstrap-header.rmu doc/footer.rmu
 	node ./bin/rimuc.js --output doc/showcase.html \
-		doc/bootstrap-header.html \
+		doc/bootstrap-header.rmu \
 		doc/showcase.rmu \
-		doc/footer.html
+		doc/footer.rmu
 
-
-doc/index.html: doc/index.rmu
-	node ./bin/rimuc.js --output doc/index.html doc/index.rmu
 
 commit:
 	make --always-make test    # Force rebuild and test.
