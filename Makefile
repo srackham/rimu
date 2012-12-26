@@ -22,23 +22,23 @@ lint:
 test: build lint
 	nodeunit $(TESTS)
 
-build: bin/rimu.js samples
+build: bin/rimu.js doc
 
 bin/rimu.js: $(SOURCE)
 	tsc --declaration --out bin/rimu.js $(SOURCE)
 	uglifyjs bin/rimu.js > bin/rimu.min.js
 
-samples: samples/showcase.html samples/index.html
+doc: doc/showcase.html doc/index.html
 
-samples/showcase.html: samples/showcase.rmu
-	node ./bin/rimuc.js --output samples/showcase.html \
-		samples/bootstrap-header.html \
-		samples/showcase.rmu \
-		samples/footer.html
+doc/showcase.html: doc/showcase.rmu
+	node ./bin/rimuc.js --output doc/showcase.html \
+		doc/bootstrap-header.html \
+		doc/showcase.rmu \
+		doc/footer.html
 
 
-samples/index.html: samples/index.rmu
-	node ./bin/rimuc.js --output samples/index.html samples/index.rmu
+doc/index.html: doc/index.rmu
+	node ./bin/rimuc.js --output doc/index.html doc/index.rmu
 
 commit:
 	make --always-make test    # Force rebuild and test.
@@ -47,4 +47,4 @@ commit:
 push:
 	git push -u --tags origin master
 
-.PHONY: all lint test build commit samples push
+.PHONY: all lint test build commit doc push
