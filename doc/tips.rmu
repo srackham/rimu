@@ -62,6 +62,14 @@ The Rimu _README_ uses this subset for compatibility with _GitHub_ and
 _npmjs.org_ README formats.
 
 
+== Converting Rimu to PDF
+Use an HTML to PDF conversion program.
+<http://www.htmldoc.org/|HTMLDOC> makes an excellent job, here is
+<tips.pdf> generated with this command:
+
+  htmldoc -f doc/tips.pdf  doc/tips.html
+
+
 == Escaping Rimu syntax
 If you have text you don't want interpreted as a Rimu element then
 you can disable (escape) it by prefixing the element with a backslash
