@@ -9,9 +9,11 @@ your document using the `rimuc` tool. The following example compiles
 
   rimuc -o mydoc.html header.rmu mydoc1.rmu mydoc2.rmu footer.rmu
 
-*NOTE*: The Bootstrap and Highlight.js files are sourced from external
-CDNs so you do no need local copies (though you do need an Internet
-connection to source them).
+- You can enable <#syntax-highlighting|syntax highlighting> by
+  uncommenting the HTML tags in the header file.
+- Bootstrap and Highlight.js files are sourced from external CDNs so
+  you do no need local copies (though you do need an Internet
+  connection to source them).
 
 
 == Converting Rimu to PDF
@@ -22,6 +24,7 @@ Use an HTML to PDF conversion program.
   htmldoc -f doc/tips.pdf  doc/tips.html
 
 
+.#syntax-highlighting
 == Syntax highlighting
 <https://github.com/isagalaev/highlight.js|Highlight.js> is a nice
 syntax highlighter that makes it trivial to add syntax highlighting to
@@ -52,6 +55,8 @@ web page, for example:
     }
   --
 
+- Set the `no-highlight` class too disable syntax highlighting for a
+  code block.
 - Take a look at the source for this web page to see how Highlight.js
   is used with Twitter Bootstrap.
 - You could also link to CSS and JavaScript files on the

@@ -1,8 +1,9 @@
 /*
   Example Rimu Markup HTML header for generating stand-alone HTML.
   Styled using Bootstrap.
-  Syntax highlighting with Highlight.js.
-  Bootstrap and Highlight.js source from CDNs.
+  Optional syntax highlighting with Highlight.js (remove the HTML comment
+  tags to enable).
+  Bootstrap and Highlight.js sourced from CDNs.
 */
 
 <!DOCTYPE HTML>
@@ -10,9 +11,11 @@
 <head>
   <meta charset="UTF-8">
   <title></title>
+<!--
   <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
   <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script>
+-->
   <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css">
   <style>
     /* Bootstrap tweaks. */

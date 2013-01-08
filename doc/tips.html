@@ -69,16 +69,18 @@ your document using the <code>rimuc</code> tool. The following example compiles
 <code>mydoc1.rmu</code> and <code>mydoc2.rmu</code> Rimu source files to a single
 <code>mydoc.html</code> HTML file:</p>
 <pre>rimuc -o mydoc.html header.rmu mydoc1.rmu mydoc2.rmu footer.rmu</pre>
-<p><strong>NOTE</strong>: The Bootstrap and Highlight.js files are sourced from external
-CDNs so you do no need local copies (though you do need an Internet
-connection to source them).</p>
-<h2>Converting Rimu to PDF</h2>
+<ul><li>You can enable <a href="#syntax-highlighting">syntax highlighting</a> by
+  uncommenting the HTML tags in the header file.
+</li><li>Bootstrap and Highlight.js files are sourced from external CDNs so
+  you do no need local copies (though you do need an Internet
+  connection to source them).
+</li></ul><h2>Converting Rimu to PDF</h2>
 <p>Use an HTML to PDF conversion program.
 <a href="http://www.htmldoc.org/">HTMLDOC</a> makes an excellent job, here is
 <a href="tips.pdf">tips.pdf</a> generated with this command:</p>
 <pre>htmldoc -f doc/tips.pdf  doc/tips.html</pre>
 <h2>Syntax highlighting</h2>
-<p><a href="https://github.com/isagalaev/highlight.js">Highlight.js</a> is a nice
+<p id="syntax-highlighting"><a href="https://github.com/isagalaev/highlight.js">Highlight.js</a> is a nice
 syntax highlighter that makes it trivial to add syntax highlighting to
 Rimu code blocks.
 <a href="http://softwaremaniacs.org/soft/highlight/en/download/">Download
@@ -101,6 +103,8 @@ web page, for example:</p>
     process.exit(1);
   }
 --</pre>
+</li><li>Set the <code>no-highlight</code> class too disable syntax highlighting for a
+  code block.
 </li><li>Take a look at the source for this web page to see how Highlight.js
   is used with Twitter Bootstrap.
 </li><li>You could also link to CSS and JavaScript files on the
