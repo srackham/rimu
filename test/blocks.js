@@ -359,6 +359,10 @@ exports['Documents'] = function(test) {
       '<p class="large error" id="x1">Error message</p>',
       'html attributes skipped by safeMode=1');
   test.equal(Rimu.render(
+      '.#preface\n== Preface'),
+      '<h2 id="preface">Preface</h2>',
+      'header attributes');
+  test.equal(Rimu.render(
       '.polaroid [width="800"]\n<image:tiger.png>'),
       '<img class="polaroid" width="800" src="tiger.png" alt="tiger.png">',
       'block image html attributes');

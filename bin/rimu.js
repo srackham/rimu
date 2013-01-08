@@ -85,7 +85,7 @@ var Rimu;
         if(!tag || !Rimu.LineBlocks.htmlAttributes) {
             return tag;
         }
-        var match = tag.match(/^<[a-zA-Z]+(?=[ >])/);
+        var match = tag.match(/^<([a-zA-Z]+|h[1-6])(?=[ >])/);
         if(!match) {
             return tag;
         }
