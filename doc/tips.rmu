@@ -1,5 +1,27 @@
 = Rimu Tips
 
+== Generating Bootstrap styled stand-alone HTML documents
+The Rimu distribution include example HTML header and footer files
+(`./doc/header.rmu` and `./doc/footer.rmu`) that you can combine with
+your document using the `rimuc` tool. The following example compiles
+`mydoc1.rmu` and `mydoc2.rmu` Rimu source files to a single
+`mydoc.html` HTML file:
+
+  rimuc -o mydoc.html header.rmu mydoc1.rmu mydoc2.rmu footer.rmu
+
+*NOTE*: The Bootstrap and Highlight.js files are sourced from external
+CDNs so you do no need local copies (though you do need an Internet
+connection to source them).
+
+
+== Converting Rimu to PDF
+Use an HTML to PDF conversion program.
+<http://www.htmldoc.org/|HTMLDOC> makes an excellent job, here is
+<tips.pdf> generated with this command:
+
+  htmldoc -f doc/tips.pdf  doc/tips.html
+
+
 == Syntax highlighting
 <https://github.com/isagalaev/highlight.js|Highlight.js> is a nice
 syntax highlighter that makes it trivial to add syntax highlighting to
@@ -60,14 +82,6 @@ URLs and Email addresses:: Using the `<url>` and `<email>` syntaxes.
 
 The Rimu _README_ uses this subset for compatibility with _GitHub_ and
 _npmjs.org_ README formats.
-
-
-== Converting Rimu to PDF
-Use an HTML to PDF conversion program.
-<http://www.htmldoc.org/|HTMLDOC> makes an excellent job, here is
-<tips.pdf> generated with this command:
-
-  htmldoc -f doc/tips.pdf  doc/tips.html
 
 
 == Escaping Rimu syntax

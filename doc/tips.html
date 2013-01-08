@@ -62,6 +62,21 @@
     <li><a href="https://npmjs.org/package/rimu">npm</a></li>
   </ul>
 <h1>Rimu Tips</h1>
+<h2>Generating Bootstrap styled stand-alone HTML documents</h2>
+<p>The Rimu distribution include example HTML header and footer files
+(<code>./doc/header.rmu</code> and <code>./doc/footer.rmu</code>) that you can combine with
+your document using the <code>rimuc</code> tool. The following example compiles
+<code>mydoc1.rmu</code> and <code>mydoc2.rmu</code> Rimu source files to a single
+<code>mydoc.html</code> HTML file:</p>
+<pre>rimuc -o mydoc.html header.rmu mydoc1.rmu mydoc2.rmu footer.rmu</pre>
+<p><strong>NOTE</strong>: The Bootstrap and Highlight.js files are sourced from external
+CDNs so you do no need local copies (though you do need an Internet
+connection to source them).</p>
+<h2>Converting Rimu to PDF</h2>
+<p>Use an HTML to PDF conversion program.
+<a href="http://www.htmldoc.org/">HTMLDOC</a> makes an excellent job, here is
+<a href="tips.pdf">tips.pdf</a> generated with this command:</p>
+<pre>htmldoc -f doc/tips.pdf  doc/tips.html</pre>
 <h2>Syntax highlighting</h2>
 <p><a href="https://github.com/isagalaev/highlight.js">Highlight.js</a> is a nice
 syntax highlighter that makes it trivial to add syntax highlighting to
@@ -105,11 +120,6 @@ render like Markdown code blocks.
 </li></ul></dd><dt>URLs and Email addresses</dt><dd> Using the <code>&lt;url&gt;</code> and <code>&lt;email&gt;</code> syntaxes.
 </dd></dl><p>The Rimu <em>README</em> uses this subset for compatibility with <em>GitHub</em> and
 <em>npmjs.org</em> README formats.</p>
-<h2>Converting Rimu to PDF</h2>
-<p>Use an HTML to PDF conversion program.
-<a href="http://www.htmldoc.org/">HTMLDOC</a> makes an excellent job, here is
-<a href="tips.pdf">tips.pdf</a> generated with this command:</p>
-<pre>htmldoc -f doc/tips.pdf  doc/tips.html</pre>
 <h2>Escaping Rimu syntax</h2>
 <p>If you have text you don't want interpreted as a Rimu element then
 you can disable (escape) it by prefixing the element with a backslash

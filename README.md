@@ -31,7 +31,7 @@ open `rimuplayground.html` locally in in your browser.
 ## Installing Rimu
 
 - Install Rimu as a Node.js module (includes the `rimuc` command-line
-  tool, run `rimuc --help`)):
+  tool, run `rimuc --help`):
 
   npm install rimu
 
