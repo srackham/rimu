@@ -39,9 +39,8 @@ function die(message) {
   process.exit(1);
 }
 
-// Options.
 var safeMode = 0;
-var inFile = '/dev/stdin';
+var inFile = '';
 
 // Skip command name.
 if (process.argv.shift() === 'node') {
@@ -83,8 +82,8 @@ while (!!(arg = process.argv.shift())) {
       break;
   }
 }
-if (inFile === '/dev/stdin') {
-  source = fs.readFileSync(inFile).toString();
+if (!inFile) {
+  source = fs.readFileSync('/dev/stdin').toString();
 }
 
 // Convert Rimu to HTML.
