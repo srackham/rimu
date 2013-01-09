@@ -83,6 +83,9 @@ while (!!(arg = process.argv.shift())) {
       break;
   }
 }
+if (inFile === '/dev/stdin') {
+  source = fs.readFileSync(inFile).toString();
+}
 
 // Convert Rimu to HTML.
 var html = Rimu.render(source, {safeMode: safeMode});
