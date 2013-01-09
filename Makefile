@@ -53,6 +53,9 @@ commit:
 	make --always-make test    # Force rebuild and test.
 	git commit -a
 
+publish:
+	npm publish
+
 push:
 	git push -u --tags origin master
 
