@@ -90,7 +90,7 @@ while (!!(arg = process.argv.shift())) {
   }
 }
 if (!inFile) {
-  source = fs.readFileSync('/dev/stdin').toString();
+  source += fs.readFileSync('/dev/stdin').toString();
 }
 
 // Convert Rimu to HTML.
