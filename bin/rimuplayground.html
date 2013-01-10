@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="description" content="An interactive sandbox for learning and
     experimenting with Rimu markup plus documentation.">
-  <title>Rimu Markup Playground</title>
+  <title>Rimu Playground</title>
   <style type="text/css">
     /*<![CDATA[*/
     body {
@@ -509,12 +509,13 @@ documents, promote clarity and eliminate repetition.
 
 Assignment syntax:
 
-  {variable-name} = 'variable-value'
+  \{variable-name} = 'variable-value'
 
 Reference syntax:
 
-  {variable-name}
-  {variable-name|param1[|param2...]}
+  \{variable-name}
+  \{variable-name?default-value}
+  \{variable-name|param1[|param2...]}
 
 - Variable values are enclosed by single quotes and can extend over
   multiple lines.
@@ -525,27 +526,30 @@ Reference syntax:
   variables.
 - Variable assignments and references can be escaped with a backslash
   character prefix.
-- Parameterized references replace the `$1`, `$2` ... strings in the
+- _Parameterized_ references replace the `$1`, `$2` ... strings in the
   variable value with the `param1`, `param2` ... values.
 - Variable parameters contain inline Rimu markup and inline
   parameterized references can span multiple lines.
+- References to undefined variables are replaced with a blank string
+  or the `default-value` if the `\{variable-name?default-value}`
+  _existential_ syntax is used.
 - Unspecified parameter values default to an empty string.
 
 Examples:
 
 - -
-{description} = 'Sapiente nec vestibulum integer sit qui. Libero pede
+\{description} = 'Sapiente nec vestibulum integer sit qui. Libero pede
 posuere.  Erat ullamcorper enim per fusce aliquam interdum penatibus
 et sed auctor ac.  Lectus consectetuer neque.'
-{-} = '&ndash;'
-{homepage} = '<http://www.example.com|Foobar home page>'
+\{-} = '&ndash;'
+\{homepage} = '<http://www.example.com|Foobar home page>'
 
-Visit the {homepage}.
+Visit the \{homepage}.
 
-{info} = '<span class="label label-info">$1</span>'
+\{info} = '<span class="label label-info">$1</span>'
 
-{info|Heads up!}
-{info|As you were!}
+\{info|Heads up!}
+\{info|As you were!}
 - -
 
 -->
@@ -575,6 +579,10 @@ OPTIONS
 
   -o, - -output OUTFILE
     Write output to file OUTFILE instead of stdout.
+
+  -p, - -prepend SOURCE
+    Prepend the SOURCE text to the Rimu source.
+
 
   - -safe-mode
     Specifies how to process inline and block HTML elements.

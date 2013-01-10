@@ -33,28 +33,36 @@ module Rimu.Variables {
   }
 
   export function render(text: string): string {
-    for (var i in list) {
-      var variable = list[i];
-      var re = RegExp('\\\\?\\{' + escapeRegExp(variable.name) + '(\\|[\\s\\S]*?)?\\}', 'g');
-      text = text.replace(re, function(match, params) {
-        if (match[0] === '\\') {
-          return match.slice(1);
+    var re = /\\?\{([\w\-]+)([|?][\s\S]*?)?\}/g;  // $1 = name, $2 = params.
+    text = text.replace(re, function(match, name, params) {
+      if (match[0] === '\\') {
+        return match.slice(1);
+      }
+      var value = get(name);
+      if (value === null) {
+        // Variable is undefined.
+        if (params && params[0] === '?') {
+          return params.slice(1);
         }
-        if (!params) {
-          return variable.value.replace(/\$\d+/g, '');
+        else {
+          return '';
         }
+      }
+      if (!params) {
+        return value.replace(/\$\d+/g, '');
+      }
+      if (params[0] === '|') {
         // Substitute variable parameters.
-        var result = variable.value;
+        var result = value;
         var paramsList = params.slice(1).split('|');
         for (var i in paramsList) {
           result = result.replace('$'+(parseInt(i)+1), paramsList[i]);
         }
         result = result.replace(/\$\d+/g, '');
         return result;
-      });
-    } 
-    // Unescape undefined variables.
-    text = text.replace(/\\(\{[\w\-]+(?:\|[\s\S]*?)?\})/, '$1');
+      }
+      return value;
+    });
     return text;
   }
 

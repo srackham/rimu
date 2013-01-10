@@ -299,8 +299,8 @@ exports['Documents'] = function(test) {
   test.equal(Rimu.render('<hr>', {safeMode: 2, htmlReplacement: 'XXX'}), 'XXX', 'htmlReplacement option');
   // The {blockref} is passed through and gets picked up as a paragraph.
   testDocument(test,
-      '{blockref}\n\nAn {inlineref}',
-      '<p>{blockref}</p>\n<p>An {inlineref}</p>',
+      '{blockref}=\'BLOCKREF\'\n{inlineref}=\'INLINEREF\'\n{blockref}\n\nAn {inlineref}',
+      '<p>BLOCKREF</p>\n<p>An INLINEREF</p>',
       'non-existant variable references are rendered verbatim');
   testDocument(test,
       "{v1}='1'\n{v2}='2'\n{v1} and {v2}\n\n- {v1}\n\n{v2}",
@@ -343,6 +343,14 @@ exports['Documents'] = function(test) {
       '<p>A {v}</p>',
       'escaped undefined variables are unescaped');
   test.equal(Rimu.render(
+      'Hello {undefined}'),
+      '<p>Hello </p>',
+      'undefined variable');
+  test.equal(Rimu.render(
+      'Hello {undefined?undefined variable.}'),
+      '<p>Hello undefined variable.</p>',
+      'default variable value');
+  test.equal(Rimu.render(
       '.error\nError message\n\nNormal paragraph'),
       '<p class="error">Error message</p>\n<p>Normal paragraph</p>',
       'html class');
@@ -375,8 +383,8 @@ exports['Documents'] = function(test) {
       '<ul class="class1"><li>Item\n<div class="class2"><p>Division</p></div>\n</li></ul><p>Paragraph</p>',
       'list item and attached division block html attributes');
   test.equal(Rimu.render(
-      '{info}= \'.info #ref2 [style="color:green"]\'\n{info}\ngreeny\n\n{xyz}\n\n{2paragraphs} =\'paragraph 1\n\nparagraph2\'\n{2paragraphs}'),
-      '<p class="info" id="ref2" style="color:green">greeny</p>\n<p>{xyz}</p>\n<p>paragraph 1</p>\n<p>paragraph2</p>',
+      '{info}= \'.info #ref2 [style="color:green"]\'\n{info}\ngreeny\n\nnormal\n\n{2paragraphs} =\'paragraph 1\n\nparagraph2\'\n{2paragraphs}'),
+      '<p class="info" id="ref2" style="color:green">greeny</p>\n<p>normal</p>\n<p>paragraph 1</p>\n<p>paragraph2</p>',
       'html attributes assigned to variable');
   test.done();
 };

@@ -26,6 +26,9 @@ var MANPAGE = 'NAME\n' +
 '  -o, --output OUTFILE\n' +
 '    Write output to file OUTFILE instead of stdout.\n' +
 '\n' +
+'  -p, --prepend SOURCE\n' +
+'    Prepend the SOURCE text to the Rimu source.\n' +
+'\n' +
 '  --safe-mode\n' +
 '    Specifies how to process inline and block HTML elements.\n' +
 '    --safe-mode 0 renders raw HTML (default),\n' +
@@ -62,6 +65,10 @@ while (!!(arg = process.argv.shift())) {
       if (!outFile) {
         die('missing --output file name');
       }
+      break;
+    case '--prepend':
+    case '-p':
+      source += process.argv.shift() + '\n\n';
       break;
     case '--safe-mode':
       safeMode = parseInt(process.argv.shift() || 99, 10);

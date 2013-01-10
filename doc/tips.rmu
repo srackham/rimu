@@ -109,10 +109,17 @@ There are some corner cases to be aware of:
   not what you want -- use a `&ZeroWidthSpace;` character entity
   instead of a backslash character.
 
-- References to undefined variables are printed verbatim and don't
-  need to be escaped, but it's good practice to escape them anyway
-  so they won't be expanded if you do define the variable some time in
-  the future.
+- To render a variable reference verbatim it must be escaped with a
+  leading backslash character.
+
+
+== Passing variable values into Rimu documents
+You can do this by prepending text containing variable assignments to
+Rimu source before rendering the source. The _rimuc_ command has a
+`--prepend` option that can be used to do this, for example:
+
+  rimuc --output tips.html --prepend "\{title}='Rimu Tips'" \
+          header.rmu tips.rmu footer.rmu
 
 
 == Putting | and } characters in variable parameter values

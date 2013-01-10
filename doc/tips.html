@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="description" content="Rimu is a readable text to HTML
     markup language inspired by AsciiDoc and Markdown.">
-  <title></title>
+  <title>Rimu Tips</title>
   <link rel="stylesheet" href="highlight.js/styles/default.css">
   <script src="highlight.js/highlight.pack.js"></script>
   <link href="bootstrap.css" rel="stylesheet">
@@ -150,11 +150,15 @@ paragraph (paragraphs have the lowest precedence).</p>
   will be rendered in an inline (paragraph) context, which is probably
   not what you want -- use a <code>&amp;ZeroWidthSpace;</code> character entity
   instead of a backslash character.
-</li><li>References to undefined variables are printed verbatim and don't
-  need to be escaped, but it's good practice to escape them anyway
-  so they won't be expanded if you do define the variable some time in
-  the future.
-</li></ul><h2>Putting | and } characters in variable parameter values</h2>
+</li><li>To render a variable reference verbatim it must be escaped with a
+  leading backslash character.
+</li></ul><h2>Passing variable values into Rimu documents</h2>
+<p>You can do this by prepending text containing variable assignments to
+Rimu source before rendering the source. The <em>rimuc</em> command has a
+<code>--prepend</code> option that can be used to do this, for example:</p>
+<pre>rimuc --output tips.html --prepend "{title}='Rimu Tips'" \
+        header.rmu tips.rmu footer.rmu</pre>
+<h2>Putting | and } characters in variable parameter values</h2>
 <p>Use the corresponding character entities <code>&amp;vert;</code> and <code>&amp;rbrace;</code>.</p>
 <h2>Syntax checker</h2>
 <p>The Vim editor syntax highlighter is a big help when writing (and

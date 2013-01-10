@@ -30,9 +30,9 @@ module Rimu.LineBlocks {
       },
     },
     // Variable reference.
-    // name = $1
+    // reference = $1
     {
-      match: /^\\?(\{[\w\-]+(?:\|.*)?\})$/,
+      match: /^\\?(\{[\w\-]+(?:[|?].*)?\})$/,
       replacement: '',
       filter: function (match, block, reader) {
         var value = Variables.render(match[1]);

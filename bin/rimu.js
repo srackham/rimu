@@ -247,26 +247,33 @@ var Rimu;
         }
         Variables.set = set;
         function render(text) {
-            for(var i in Variables.list) {
-                var variable = Variables.list[i];
-                var re = RegExp('\\\\?\\{' + Rimu.escapeRegExp(variable.name) + '(\\|[\\s\\S]*?)?\\}', 'g');
-                text = text.replace(re, function (match, params) {
-                    if(match[0] === '\\') {
-                        return match.slice(1);
+            var re = /\\?\{([\w\-]+)([|?][\s\S]*?)?\}/g;
+            text = text.replace(re, function (match, name, params) {
+                if(match[0] === '\\') {
+                    return match.slice(1);
+                }
+                var value = get(name);
+                if(value === null) {
+                    if(params && params[0] === '?') {
+                        return params.slice(1);
+                    } else {
+                        return '';
                     }
-                    if(!params) {
-                        return variable.value.replace(/\$\d+/g, '');
-                    }
-                    var result = variable.value;
+                }
+                if(!params) {
+                    return value.replace(/\$\d+/g, '');
+                }
+                if(params[0] === '|') {
+                    var result = value;
                     var paramsList = params.slice(1).split('|');
                     for(var i in paramsList) {
                         result = result.replace('$' + (parseInt(i) + 1), paramsList[i]);
                     }
                     result = result.replace(/\$\d+/g, '');
                     return result;
-                });
-            }
-            text = text.replace(/\\(\{[\w\-]+(?:\|[\s\S]*?)?\})/, '$1');
+                }
+                return value;
+            });
             return text;
         }
         Variables.render = render;
@@ -293,7 +300,7 @@ var Rimu;
                 }
             }, 
             {
-                match: /^\\?(\{[\w\-]+(?:\|.*)?\})$/,
+                match: /^\\?(\{[\w\-]+(?:[|?].*)?\})$/,
                 replacement: '',
                 filter: function (match, block, reader) {
                     var value = Rimu.Variables.render(match[1]);
