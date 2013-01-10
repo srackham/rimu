@@ -50,15 +50,15 @@
     code {
       font-size: 13px;
     }
-    pre > code {
-      background-color: WhiteSmoke;
-    }
     *:not(pre) > code {
       white-space: normal;
       border: none;
       background-color: #fafafa;
     }
     /* highlight.js tweaks */
+    pre > code {
+      background-color: WhiteSmoke;
+    }
     pre span {
       opacity: 1 !important;
     }
@@ -158,6 +158,9 @@ Rimu source before rendering the source. The <em>rimuc</em> command has a
 <code>--prepend</code> option that can be used to do this, for example:</p>
 <pre>rimuc --output tips.html --prepend "{title}='Rimu Tips'" \
         header.rmu tips.rmu footer.rmu</pre>
+<p>Alternatively you could also put put customization source in a
+separate file and specify it as the first Rimu source file in the
+<em>rimu</em> command.</p>
 <h2>Putting | and } characters in variable parameter values</h2>
 <p>Use the corresponding character entities <code>&amp;vert;</code> and <code>&amp;rbrace;</code>.</p>
 <h2>Syntax checker</h2>
