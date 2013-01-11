@@ -44,7 +44,7 @@ doc/tips.html: doc/tips.rmu doc/doc-header.rmu doc/footer.rmu
 		doc/tips.rmu \
 		doc/footer.rmu
 
-doc/showcase.html: doc/showcase.rmu doc/bootstrap-header.rmu doc/footer.rmu
+doc/showcase.html: doc/showcase.rmu doc/doc-header.rmu doc/footer.rmu
 	node ./bin/rimuc.js --output doc/showcase.html \
 		--prepend "{title}='Rimu Showcase'" \
 		doc/doc-header.rmu \
