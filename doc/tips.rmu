@@ -123,7 +123,7 @@ Rimu source before rendering the source. The _rimuc_ command has a
 
 Alternatively you could also put put customization source in a
 separate file and specify it as the first Rimu source file in the
-_rimu_ command.
+_rimuc_ command.
 
 
 == Putting | and } characters in variable parameter values
