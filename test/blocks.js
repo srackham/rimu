@@ -261,6 +261,10 @@ exports['Documents'] = function(test) {
       '</body></html>',
       'html block starting with closing tag');
   testDocument(test,
+      '<!DOCTYPE HTML>',
+      '<!DOCTYPE HTML>',
+      'HTML doctype element');
+  testDocument(test,
       '<!--comment-->\n\nx <!--comment-->y`<!--comment-->`',
       '<!--comment-->\n<p>x <!--comment-->y<code>&lt;!--comment--&gt;</code></p>',
       'html block comment and html span comment');

@@ -138,5 +138,9 @@ exports['Replacements'] = function(test) {
         '<./chapter1.html#x1|Foo bar>'),
         '<a href="./chapter1.html#x1">Foo bar</a>',
         'parameterized relative url');
+  test.equal(Spans.render(
+        '<!-- comment -->'),
+        '<!-- comment -->',
+        'HTML comment');
   test.done();
 };
