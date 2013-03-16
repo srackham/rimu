@@ -54,34 +54,34 @@ syn match rimuListId /^\s*\(-\|\*\{1,4}\)\s/
 syn match rimuListId /^\s*\(\(\d\+\.\)\|\.\{1,4}\)\s/
 syn region rimuListLabel matchgroup=rimuListId start=/^\s*/ end=/:\{2,4}/ contains=rimuSpan.* oneline keepend
 
-highlight link rimuBackslash Special
-highlight link rimuBar Label
-highlight link rimuBlockDelimiter Label
-highlight link rimuCodeBlock Identifier
-highlight link rimuComment Comment
-highlight link rimuHeader Label
-highlight link rimuHeaderStartEnd Label
-highlight link rimuHTMLAttributes Title
-highlight link rimuIndentedParagraph Identifier
-highlight link rimuListId Label
-highlight link rimuSpanAnchor Title
-highlight link rimuSpanCode Identifier
-highlight link rimuSpanDeleted Special
-highlight link rimuSpanEmphasized Type
-highlight link rimuSpanEntity Special
-highlight link rimuSpanHTML Title
-highlight link rimuSpanInserted Title
-highlight link rimuSpanLineBreak Special
-highlight link rimuSpanMarked Label
-highlight link rimuSpanQuote Label
-highlight link rimuSpanStrong Special
-highlight link rimuSpanSubscript Type
-highlight link rimuSpanSuperscript Type
-highlight link rimuSpanURL Title
-highlight link rimuTodo Todo
-highlight link rimuVariableValue Type
-highlight link rimuVariableParam Macro
-highlight link rimuVariableRef Special
+hi def link rimuBackslash Special
+hi def link rimuBar Label
+hi def link rimuBlockDelimiter Label
+hi def link rimuCodeBlock Identifier
+hi def link rimuComment Comment
+hi def link rimuHeader Label
+hi def link rimuHeaderStartEnd Label
+hi def link rimuHTMLAttributes Title
+hi def link rimuIndentedParagraph Identifier
+hi def link rimuListId Label
+hi def link rimuSpanAnchor Title
+hi def link rimuSpanCode Identifier
+hi def link rimuSpanDeleted Special
+hi def link rimuSpanEmphasized Type
+hi def link rimuSpanEntity Special
+hi def link rimuSpanHTML Title
+hi def link rimuSpanInserted Title
+hi def link rimuSpanLineBreak Special
+hi def link rimuSpanMarked Label
+hi def link rimuSpanQuote Label
+hi def link rimuSpanStrong Special
+hi def link rimuSpanSubscript Type
+hi def link rimuSpanSuperscript Type
+hi def link rimuSpanURL Title
+hi def link rimuTodo Todo
+hi def link rimuVariableValue Type
+hi def link rimuVariableParam Macro
+hi def link rimuVariableRef Special
 
 let b:current_syntax = "rimu"
 
