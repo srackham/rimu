@@ -10,10 +10,10 @@ module Rimu {
     function replaceSpecialChars(s: string): string;
     function replaceMatch(match: RegExpExecArray, replacement: string, options?: {}): string;
     function replaceOptions(text: string, options: {
-        variables?: bool;
-        spans?: bool;
-        specials?: bool;
-    }): string;
+            variables?: bool;
+            spans?: bool;
+            specials?: bool;
+        }): string;
     function injectAttributes(tag: string): string;
 }
 module Rimu.Options {
@@ -30,7 +30,7 @@ module Rimu {
     class Reader {
         public lines: string[];
         public pos: number;
-        constructor (text: string);
+        constructor(text: string);
         public cursor(value?: string): string;
         public eof(): bool;
         public next(): string;
@@ -39,7 +39,7 @@ module Rimu {
     }
     class Writer {
         public buffer: string[];
-        constructor ();
+        constructor();
         public write(s: string): void;
         public toString(): string;
     }

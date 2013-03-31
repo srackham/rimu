@@ -51,7 +51,7 @@ var Rimu;
         return s.replace(/[\-\/\\\^$*+?.()|\[\]{}]/g, '\\$&');
     }
     Rimu.escapeRegExp = escapeRegExp;
-    ; ;
+    ;
     function replaceSpecialChars(s) {
         return s.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;");
     }
@@ -72,12 +72,10 @@ var Rimu;
         }
         if(options.spans) {
             return Rimu.Spans.render(text);
+        } else if(options.specials) {
+            return replaceSpecialChars(text);
         } else {
-            if(options.specials) {
-                return replaceSpecialChars(text);
-            } else {
-                return text;
-            }
+            return text;
         }
     }
     Rimu.replaceOptions = replaceOptions;
@@ -109,22 +107,14 @@ var Rimu;
         Options.update = update;
         function safeModeFilter(text) {
             switch(Options.safeMode) {
-                case 0: {
+                case 0:
                     return text;
-
-                }
-                case 1: {
+                case 1:
                     return '';
-
-                }
-                case 2: {
+                case 2:
                     return Options.htmlReplacement;
-
-                }
-                case 3: {
+                case 3:
                     return Rimu.replaceSpecialChars(text);
-
-                }
                 default:
             }
         }
@@ -649,30 +639,26 @@ var Rimu;
                 if(!nextItem) {
                     writer.write(def.itemCloseTag);
                     return null;
-                } else {
-                    if(nextItem.isListItem) {
-                        if(ids.indexOf(nextItem.id) !== -1) {
-                            writer.write(def.itemCloseTag);
-                            return nextItem;
-                        } else {
-                            nextItem = renderList(nextItem, reader, writer);
-                            writer.write(def.itemCloseTag);
-                            return nextItem;
-                        }
+                } else if(nextItem.isListItem) {
+                    if(ids.indexOf(nextItem.id) !== -1) {
+                        writer.write(def.itemCloseTag);
+                        return nextItem;
                     } else {
-                        if(nextItem.isDelimited || nextItem.isIndented) {
-                            var savedIds = ids;
-                            ids = [];
-                            Rimu.DelimitedBlocks.render(reader, writer);
-                            ids = savedIds;
-                            reader.skipBlankLines();
-                            if(reader.eof()) {
-                                writer.write(def.itemCloseTag);
-                                return null;
-                            } else {
-                                nextItem = matchItem(reader);
-                            }
-                        }
+                        nextItem = renderList(nextItem, reader, writer);
+                        writer.write(def.itemCloseTag);
+                        return nextItem;
+                    }
+                } else if(nextItem.isDelimited || nextItem.isIndented) {
+                    var savedIds = ids;
+                    ids = [];
+                    Rimu.DelimitedBlocks.render(reader, writer);
+                    ids = savedIds;
+                    reader.skipBlankLines();
+                    if(reader.eof()) {
+                        writer.write(def.itemCloseTag);
+                        return null;
+                    } else {
+                        nextItem = matchItem(reader);
                     }
                 }
             }

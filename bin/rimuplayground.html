@@ -595,8 +595,13 @@ OPTIONS
 
 Example usage:
 
+1. Use 'rimu' as a filter:
+
   echo 'Hello *Rimu*!' | rimuc
-  rimuc -o showcase.html header.rmu showcase.rmu footer.rmu
+
+2. Compile three files to a single output file and pass in the `\{title}` variable:
+
+  rimuc -o showcase.html -p "\{title}='Rimu Showcase'" header.rmu showcase.rmu footer.rmu
 
 The second example generates an HTML Web page styled with Bootstrap,
 you can run this command from the Rimu `doc` directory.
