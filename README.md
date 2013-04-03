@@ -13,7 +13,7 @@ and Markdown.
 - Features include raw HTML (a la Markdown), HTML attribute injection
   and parameterized variables.
 - Written in TypeScript.
-- Available from Github and as an npm module.
+- Available from Github and as an npm module or a Meteor smart package.
 - Includes command-line compiler, playground GUI, Vim syntax
   highlighter and a unit test suite.
 - MIT license.
@@ -43,6 +43,9 @@ open `rimuplayground.html` locally in in your browser.
 - See the _API_ documentation topic in the _Rimu Playground_.
 - Take a look at `./bin/rimuc.js` and `./bin/rimuplayground.html` for
   examples of using Rimu with Node.js and in the browser respectively.
+- The `meteor-example` directory contains a simple Meteor application
+  that uses the _rimumarkup_ smart package
+  (<https://atmosphere.meteor.com/package/rimumarkup>).
 
 
 ## Browser compatibility
