@@ -1,5 +1,5 @@
 Package.describe({
-  summary: 'Readable text to HTML markup language'
+  summary: 'Readable text to HTML markup'
 });
 
 Package.on_use(function (api) {

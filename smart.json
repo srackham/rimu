@@ -1,8 +1,8 @@
 {
-  "name": "toastjs",
-  "description": "Readable text to HTML markup language",
-  "homepage": "https://github.com/srackham/toast.js",
+  "name": "rimumarkup",
+  "description": "Readable text to HTML markup",
+  "homepage": "https://github.com/srackham/rimu",
   "author": "Stuart Rackham",
-  "version": "2.0.2",
+  "version": "0.8.2",
   "git": "https://github.com/srackham/rimu.git"
 }
