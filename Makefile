@@ -56,10 +56,13 @@ commit:
 	make --always-make test    # Force rebuild and test.
 	git commit -a
 
-publish:
-	npm publish
-
 push:
 	git push -u --tags origin master
 
-.PHONY: all lint test build commit doc push
+publish-npm:
+	npm publish
+
+release-meteor:
+	mrt release .
+
+.PHONY: all lint test build commit doc push publish-npm release-meteor
