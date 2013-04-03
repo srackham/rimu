@@ -1,0 +1,43 @@
+<head>
+  <title>Meteor Rimu Markup Example</title>
+</head>
+<body>
+  <h1>Meteor Rimu Example</h1>
+  <p>
+    Example Meteor application demonstrating rendering
+    <a href="http://rimumarkup.org/">Rimu Markup</a> from the client and the server
+    using the <a href="https://atmosphere.meteor.com/package/rimumarkup">rimumarkup smart package</a>.
+  </p>
+  <p>
+    See the project <code>README</code> file.
+  </p>
+  {{> main}}
+</body>
+
+<template name="main">
+  <table id="view">
+    <thead>
+    <tr>
+      <th>Rimu source
+        <button id="render-on-client">Render on Client</button>
+        <button id="render-on-server">Render on Server</button>
+        <button id="reset">Reset</button>
+      </th>
+      <th>Preview</th>
+      <th>HTML</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>
+        <textarea id="source" >Enter _Rimu Markup_ here.</textarea>
+      </td>
+      <td id="preview">
+      </td>
+      <td>
+        <pre id="html"></pre>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</template>
