@@ -33,7 +33,7 @@ open `rimuplayground.html` locally in in your browser.
 - Install Rimu as a Node.js module (includes the `rimuc` command-line
   tool, run `rimuc --help`):
 
-  npm install rimu
+        npm install rimu
 
 - Get the source from Github: <https://github.com/srackham/rimu>
 
@@ -49,8 +49,8 @@ open `rimuplayground.html` locally in in your browser.
   _Meteorite_ (<https://github.com/oortcloud/meteorite>) to install
   and run the example:
 
-  cd meteor-example
-  mrt
+        cd meteor-example
+        mrt
 
 
 ## Browser compatibility
