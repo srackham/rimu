@@ -45,7 +45,12 @@ open `rimuplayground.html` locally in in your browser.
   examples of using Rimu with Node.js and in the browser respectively.
 - The `meteor-example` directory contains a simple Meteor application
   that uses the _rimumarkup_ smart package
-  (<https://atmosphere.meteor.com/package/rimumarkup>).
+  (<https://atmosphere.meteor.com/package/rimumarkup>). Use
+  _Meteorite_ (<https://github.com/oortcloud/meteorite>) to install
+  and run the example:
+
+  cd meteor-example
+  mrt
 
 
 ## Browser compatibility

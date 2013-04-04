@@ -51,7 +51,6 @@ doc/showcase.html: doc/showcase.rmu doc/doc-header.rmu doc/footer.rmu
 		doc/showcase.rmu \
 		doc/footer.rmu
 
-
 commit:
 	make --always-make test    # Force rebuild and test.
 	git commit -a
@@ -62,7 +61,7 @@ push:
 publish-npm:
 	npm publish
 
-release-meteor:
+tag-and-release-meteor:
 	mrt release .
 
-.PHONY: all lint test build commit doc push publish-npm release-meteor
+.PHONY: all lint test build commit doc push publish-npm tag-and-release-meteor
