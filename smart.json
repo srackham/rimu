@@ -3,6 +3,6 @@
   "description": "Readable text to HTML markup",
   "homepage": "https://github.com/srackham/rimu",
   "author": "Stuart Rackham",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "git": "https://github.com/srackham/rimu.git"
 }

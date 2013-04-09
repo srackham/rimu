@@ -37,3 +37,5 @@ declare var exports: any;
 if (typeof exports !== 'undefined') {
   exports.render = Rimu.render;
 }
+
+this.Rimu = Rimu; // Fix Meteor 0.6.0 var scope incompatibility.

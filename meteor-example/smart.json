@@ -1,11 +1,9 @@
 {
   "meteor": {
-    "git": "https://github.com/meteor/meteor.git",
-    "tag": "v0.5.9"
   },
   "packages": {
     "rimumarkup": {
-      "tag": "v0.8.3"
+      "tag": "v0.8.4"
     }
   }
 }

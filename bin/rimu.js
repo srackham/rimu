@@ -33,6 +33,7 @@ var Rimu;
 if(typeof exports !== 'undefined') {
     exports.render = Rimu.render;
 }
+this.Rimu = Rimu;
 var Rimu;
 (function (Rimu) {
     function trimLeft(s) {
