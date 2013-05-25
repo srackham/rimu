@@ -196,8 +196,7 @@ var Rimu;
             this.buffer.push(s);
         };
         Writer.prototype.toString = function () {
-            var text = this.buffer.join('');
-            return text;
+            return this.buffer.join('');
         };
         return Writer;
     })();

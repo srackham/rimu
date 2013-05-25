@@ -1,18 +1,18 @@
 {
   "meteor": {
     "git": "https://github.com/meteor/meteor.git",
-    "branch": "master",
-    "commit": "cab491f3650fffc85661bca6b3cecf583410e05d"
+    "tag": "release/0.6.2",
+    "commit": "777e36650d30f4faae62fc5c5a38d3b9ede80f23"
   },
   "dependencies": {
     "basePackages": {
-      "rimumarkup": {
-        "path": ".."
-      }
+      "rimumarkup": {}
     },
     "packages": {
       "rimumarkup": {
-        "path": ".."
+        "git": "https://github.com/srackham/rimu.git",
+        "tag": "v0.8.4",
+        "commit": "cf7d1698d82ff9da4553ddd31738f492fd2a5bf6"
       }
     }
   }
