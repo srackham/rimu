@@ -584,13 +584,18 @@ OPTIONS
   -p, - -prepend SOURCE
     Prepend the SOURCE text to the Rimu source.
 
-
   - -safe-mode
     Specifies how to process inline and block HTML elements.
     - -safe-mode 0 renders raw HTML (default),
     - -safe-mode 1 drops raw HTML,
     - -safe-mode 2 replaces raw HTML with text 'replaced HTML'.
     - -safe-mode 3 renders raw HTML as text.
+
+  -s, - -styled
+    Include HTML header and footer and CSS styling in output.
+    If one source file is specified the output is written to
+    same-named file with .html extension.
+    Styled using Bootstrap; syntax highlighting with Highlight.js.
 - -
 
 Example usage:
@@ -599,12 +604,13 @@ Example usage:
 
   echo 'Hello *Rimu*!' | rimuc
 
-2. Compile three Rimu source files to a single output file and pass in the `\{title}` variable:
+2. Generate styled HTML Web page:
 
-  rimuc -o showcase.html -p "\{title}='Rimu Showcase'" header.rmu showcase.rmu footer.rmu
+  rimuc - -styled showcase.rmu
 
-The second example generates an HTML Web page styled with Bootstrap,
-you can run this command from the Rimu `doc` directory.
+3. Compile multiple source files to single output file:
+
+  rimuc -o book.html frontmatter.rmu chapter*.rmu backmatter.rmu
 
 ==== Vim syntax file
 The Rimu distribution includes a

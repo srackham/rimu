@@ -6,7 +6,7 @@ and Markdown.
 
 ## Implementation
 
-- Single lightweight JavaScript file (less than 14KB minified) that
+- Single lightweight JavaScript file (less than 20KB minified) that
   can be dropped onto a Web page or used as a Node module.
 - No dependencies.
 - Simple one-function API.

@@ -1,7 +1,7 @@
 {
   "name": "rimu",
   "author": "Stuart Rackham <srackham@gmail.com>",
-  "version": "0.8.3",
+  "version": "0.9.0",
   "description": "Readable text to HTML markup language",
   "keywords": [
     "rimu",
@@ -25,7 +25,9 @@
   "files": [
     "bin/rimu.js",
     "bin/rimuc.js",
-    "bin/rimuplayground.html"
+    "bin/rimuplayground.html",
+    "bin/header.rmu",
+    "bin/footer.rmu"
   ],
   "repository": {
     "type": "git",

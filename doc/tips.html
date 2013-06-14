@@ -73,19 +73,7 @@
     <li><a href="https://npmjs.org/package/rimu">npm</a></li>
   </ul>
 <h1>Rimu Tips</h1>
-<h2>Generating Bootstrap styled stand-alone HTML documents</h2>
-<p>The Rimu distribution include example HTML header and footer files
-(<code>./doc/header.rmu</code> and <code>./doc/footer.rmu</code>) that you can combine with
-your document using the <code>rimuc</code> tool. The following example compiles
-<code>mydoc1.rmu</code> and <code>mydoc2.rmu</code> Rimu source files to a single
-<code>mydoc.html</code> HTML file:</p>
-<pre>rimuc -o mydoc.html header.rmu mydoc1.rmu mydoc2.rmu footer.rmu</pre>
-<ul><li>You can enable <a href="#syntax-highlighting">syntax highlighting</a> by
-  uncommenting the HTML tags in the header file.
-</li><li>Bootstrap and Highlight.js files are sourced from external CDNs so
-  you do not need local copies (though you do need an Internet
-  connection to source them).
-</li></ul><h2>Converting Rimu to PDF</h2>
+<h2>Converting Rimu to PDF</h2>
 <p>Use an HTML to PDF conversion program.
 <a href="http://www.htmldoc.org/">HTMLDOC</a> makes an excellent job, here is
 <a href="tips.pdf">tips.pdf</a> generated with this command:</p>
@@ -93,20 +81,12 @@ your document using the <code>rimuc</code> tool. The following example compiles
 <h2 id="syntax-highlighting">Syntax highlighting</h2>
 <p><a href="https://github.com/isagalaev/highlight.js">Highlight.js</a> is a nice
 syntax highlighter that makes it trivial to add syntax highlighting to
-Rimu code blocks.
-<a href="http://softwaremaniacs.org/soft/highlight/en/download/">Download
-Highlight.js</a>, unzip it and link the CSS and JavaScript files to your
-web page, for example:</p>
-<pre><code>&lt;link rel="stylesheet" href="highlight.js/styles/default.css"&gt;
-&lt;script src="highlight.js/highlight.pack.js"&gt;&lt;/script&gt;
-&lt;script&gt;hljs.initHighlightingOnLoad();&lt;/script&gt;</code></pre>
-<ul><li>In the above example the <code>default.css</code> theme is used but you are free to
-  choose any of the available styles.
-</li><li>The <code>hljs.initHighlightingOnLoad();</code> function applies highlighting
-  to all <code>&lt;pre&gt;&lt;code&gt;..&lt;/code&gt;&lt;/pre&gt;</code> blocks on a page.
-</li><li><em>Highlight.js</em> automatically detects the language in the code block,
-  but you can also set the language explicitly by setting the code block
-  class, for example:
+Rimu code blocks.  The <em>rimuc</em> tool includes Highlight.js when you use
+the <code>--styled</code> option, it does this by linking to CSS and JavaScript
+files on the <em>Highlight.js</em> website.</p>
+<p><em>Highlight.js</em> automatically detects the language in the code block,
+but you can also set the language explicitly by setting the code block
+class, for example:</p>
 <pre>.javascript
 --
   function die(message) {
@@ -114,16 +94,9 @@ web page, for example:</p>
     process.exit(1);
   }
 --</pre>
-</li><li>Set the <code>no-highlight</code> class too disable syntax highlighting for a
-  code block.
-</li><li>Take a look at the source for this web page to see how Highlight.js
-  is used with Twitter Bootstrap.
-</li><li>You could also link to CSS and JavaScript files on the
-  <em>Highlight.js</em> website, for example:
-<pre><code>&lt;link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css"&gt;
-&lt;script src="http://yandex.st/highlightjs/7.3/highlight.min.js"&gt;&lt;/script&gt;
-&lt;script&gt;hljs.initHighlightingOnLoad();&lt;/script&gt;</code></pre>
-</li></ul><h2>Syntax shared with Markdown</h2>
+<p>Set the <code>no-highlight</code> class too disable syntax highlighting for a
+code block.</p>
+<h2>Syntax shared with Markdown</h2>
 <p>The following subset of <em>Rimu</em> elements is compatible with Markdown:</p>
 <dl><dt>Headers</dt><dd> Single-line headers using <code>#</code> character header IDs.
 </dd><dt>Code blocks</dt><dd> Indented paragraphs (at least four spaces)
@@ -155,10 +128,8 @@ paragraph (paragraphs have the lowest precedence).</p>
 </li></ul><h2>Passing variable values into Rimu documents</h2>
 <p>You can do this by prepending text containing variable assignments to
 Rimu source before rendering the source. The <em>rimuc</em> command has a
-<code>--prepend</code> option that can be used to do this, for example:</p>
-<pre>rimuc --output tips.html --prepend "{title}='Rimu Tips'" \
-        header.rmu tips.rmu footer.rmu</pre>
-<p>Alternatively you could also put put customization source in a
+<code>--prepend</code> option that can be used to do this.</p>
+<p>Alternatively you could also put variable assignment statements in a
 separate file and specify it as the first Rimu source file in the
 <em>rimuc</em> command.</p>
 <h2>Putting | and } characters in variable parameter values</h2>

@@ -9,32 +9,38 @@ var fs = require('fs');
 var Rimu = require('./rimu.js');
 
 var MANPAGE = 'NAME\n' +
-'  rimuc - convert Rimu source to HTML\n' +
-'\n' +
-'SYNOPSIS\n' +
-'  rimuc [OPTIONS...] [FILES...]\n' +
-'\n' +
-'DESCRIPTION\n' +
-'  Reads Rimu source markup from stdin, converts them to HTML\n' +
-'  then writes the HTML to stdout. If FILES are specified\n' +
-'  the Rimu source is read from FILES.\n' +
-'\n' +
-'OPTIONS\n' +
-'  -h, --help\n' +
-'    Display help message.\n' +
-'\n' +
-'  -o, --output OUTFILE\n' +
-'    Write output to file OUTFILE instead of stdout.\n' +
-'\n' +
-'  -p, --prepend SOURCE\n' +
-'    Prepend the SOURCE text to the Rimu source.\n' +
-'\n' +
-'  --safe-mode\n' +
-'    Specifies how to process inline and block HTML elements.\n' +
-'    --safe-mode 0 renders raw HTML (default),\n' +
-'    --safe-mode 1 drops raw HTML,\n' +
-'    --safe-mode 2 replaces raw HTML with text \'replaced HTML\'.\n' +
-'    --safe-mode 3 renders raw HTML as text.\n';
+    '  rimuc - convert Rimu source to HTML\n' +
+    '\n' +
+    'SYNOPSIS\n' +
+    '  rimuc [OPTIONS...] [FILES...]\n' +
+    '\n' +
+    'DESCRIPTION\n' +
+    '  Reads Rimu source markup from stdin, converts them to HTML\n' +
+    '  then writes the HTML to stdout. If FILES are specified\n' +
+    '  the Rimu source is read from FILES.\n' +
+    '\n' +
+    'OPTIONS\n' +
+    '  -h, --help\n' +
+    '    Display help message.\n' +
+    '\n' +
+    '  -o, --output OUTFILE\n' +
+    '    Write output to file OUTFILE instead of stdout.\n' +
+    '\n' +
+    '  -p, --prepend SOURCE\n' +
+    '    Prepend the SOURCE text to the Rimu source.\n' +
+    '\n' +
+    '  --safe-mode\n' +
+    '    Specifies how to process inline and block HTML elements.\n' +
+    '    --safe-mode 0 renders raw HTML (default),\n' +
+    '    --safe-mode 1 drops raw HTML,\n' +
+    '    --safe-mode 2 replaces raw HTML with text \'replaced HTML\'.\n' +
+    '    --safe-mode 3 renders raw HTML as text.\n' +
+    '\n' +
+    '  -s, --styled\n' +
+    '    Include HTML header and footer and CSS styling in output.\n' +
+    '    If one source file is specified the output is written to\n' +
+    '    same-named file with .html extension.\n' +
+    '    Styled using Bootstrap; syntax highlighting with Highlight.js.\n';
 
 // Helpers.
 function die(message) {
@@ -43,7 +49,7 @@ function die(message) {
 }
 
 var safeMode = 0;
-var inFile = '';
+var styled = false;
 
 // Skip command name.
 if (process.argv.shift() === 'node') {
@@ -52,45 +58,66 @@ if (process.argv.shift() === 'node') {
 // Parse command-line options.
 var source = '';
 var outFile;
-while (!!(arg = process.argv.shift())) {
-  switch (arg) {
-    case '--help':
-    case '-h':
-      console.log('\n' + MANPAGE);
-      process.exit();
-      break;
-    case '--output':
-    case '-o':
-      outFile = process.argv.shift();
-      if (!outFile) {
-        die('missing --output file name');
+outer:
+    while (!!(arg = process.argv.shift())) {
+      switch (arg) {
+        case '--help':
+        case '-h':
+          console.log('\n' + MANPAGE);
+          process.exit();
+          break;
+        case '--output':
+        case '-o':
+          outFile = process.argv.shift();
+          if (!outFile) {
+            die('missing --output file name');
+          }
+          break;
+        case '--prepend':
+        case '-p':
+          source += process.argv.shift() + '\n\n';
+          break;
+        case '--safe-mode':
+          safeMode = parseInt(process.argv.shift() || 99, 10);
+          if (safeMode < 0 || safeMode > 3) {
+            die('illegal --safe-mode option value');
+          }
+          break;
+        case '--styled':
+        case '-s':
+          styled = true;
+          break;
+        default:
+          if (arg[0] === '-') {
+            die('illegal option: ' + arg);
+          }
+          process.argv.unshift(arg); // List of source files.
+          break outer;
       }
-      break;
-    case '--prepend':
-    case '-p':
-      source += process.argv.shift() + '\n\n';
-      break;
-    case '--safe-mode':
-      safeMode = parseInt(process.argv.shift() || 99, 10);
-      if (safeMode < 0 || safeMode > 3) {
-        die('illegal --safe-mode option value');
-      }
-      break;
-    default:
-      if (arg[0] === '-') {
-        die('illegal option: ' + arg);
-      }
-      inFile = arg;
-      if (!fs.existsSync(inFile)) {
-        die('source file does not exist: ' + inFile);
-      }
-      source += fs.readFileSync(inFile).toString();
-      source += '\n\n';  // Separate sources with blank line.
-      break;
-  }
+    }
+
+// process.argv contains the list of source files.
+if (process.argv.length === 0) {
+  process.argv.push('/dev/stdin');
 }
-if (!inFile) {
-  source += fs.readFileSync('/dev/stdin').toString();
+else if (styled && !outFile && process.argv.length === 1) {
+  // Use the source file name with .html extension for the output file.
+  var inFile = process.argv[0];
+  outFile = inFile.substr(0, inFile.lastIndexOf('.')) + '.html';
+}
+
+if (styled) {
+  process.argv.unshift(path.resolve(__dirname, 'header.rmu'));
+  process.argv.push(path.resolve(__dirname, 'footer.rmu'));
+}
+
+// Concatenate source files.
+while (!!(arg = process.argv.shift())) {
+  if (!fs.existsSync(arg)) {
+    die('source file does not exist: ' + arg);
+  }
+  source += fs.readFileSync(arg).toString();
+  source += '\n\n';  // Separate sources with blank line.
 }
 
 // Convert Rimu to HTML.
