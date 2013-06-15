@@ -29,11 +29,6 @@ syn match rimuVariableRef /\\\@<!{[0-9A-Za-z_-]\+\(|\_.\{-}\)\?}/ contains=rimuV
 syn match rimuVariableParams /|\_[^}]*/ contains=rimuSpan.*
 syn match rimuSpanAnchor /<<#[a-zA-Z_-].*>>/
 
-syn match rimuSpanInserted /\\\@<!+[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!+/
-syn match rimuSpanDeleted /\\\@<!=[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!=/
-syn match rimuSpanMarked /\\\@<!#[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!#/
-syn match rimuSpanSuperScript /\\\@<!\^[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\^/
-syn match rimuSpanSubScript /\\\@<!\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\~/
 syn match rimuSpanStrong /\\\@<!\*[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\*/
 syn match rimuSpanEmphasized /\\\@<!_[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!_/
 syn match rimuSpanCode /\\\@<!`[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!`/
@@ -66,17 +61,12 @@ hi def link rimuIndentedParagraph Identifier
 hi def link rimuListId Label
 hi def link rimuSpanAnchor Title
 hi def link rimuSpanCode Identifier
-hi def link rimuSpanDeleted Special
 hi def link rimuSpanEmphasized Type
 hi def link rimuSpanEntity Special
 hi def link rimuSpanHTML Title
-hi def link rimuSpanInserted Title
 hi def link rimuSpanLineBreak Special
-hi def link rimuSpanMarked Label
 hi def link rimuSpanQuote Label
 hi def link rimuSpanStrong Special
-hi def link rimuSpanSubscript Type
-hi def link rimuSpanSuperscript Type
 hi def link rimuSpanURL Title
 hi def link rimuTodo Todo
 hi def link rimuVariableValue Type

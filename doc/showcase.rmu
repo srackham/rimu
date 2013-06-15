@@ -11,9 +11,15 @@
 // Variables.
 {info} = '<span class="label label-info">$1</span>'
 {heads-up} = '{info|Heads up!}'
+{mark} = '<mark>$1</mark>'
+{del} = '<del>$1</del>'
+{ins} = '<ins>$1</ins>'
+{red} = '<span style="color:red">$1</span>'
+{sup} = '<sup>$1</sup>'
+{sub} = '<sub>$1</sub>'
 {playground} = '<http://rimumarkup.org/rimuplayground.html|Rimu Playground>'
 
-{heads-up} #This document is not yet finished.#
+{heads-up} {mark|This document is not yet finished.}
 
 {heads-up} See the {playground} for documentation and hands-on
 experimentation.
@@ -29,7 +35,7 @@ experimentation.
 
 ===== Normal paragraph
 Lorem ipsum dolor. Sit `amet venenatis`. Erat nulla arcu. Lorem luctus
-sem. _Mauris vitae_ ipsum. Donec dui ac ridiculus #quisque# proin.
+sem. _Mauris vitae_ ipsum. Donec dui ac ridiculus {mark|quisque} proin.
 Lobortis lacus vestibulum sem.
 
 .text-info
@@ -45,15 +51,13 @@ Lobortis lacus vestibulum sem.
 
 
 ===== Text formatting
-.dl-horizontal
 _\_Emphasized text\__ +
 *\*Strong text\**     +
-`\`Code text\``       +
-=\=Deleted text\==    +
-#\#Marked text\##     +
-^\^Superscript\^^     +
-~\~Subscript\~~       +
-+\+Inserted text\++
+`\`Code text\``
+
+Additional text formatting can be added with <mark>HTML markup</mark>
+or {ins|parameterized} {red|variables}. H{sub|2}O and mc{sup|2}.
+
 
 ===== Quote block
 ""

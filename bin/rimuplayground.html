@@ -474,20 +474,13 @@ for learning and experimenting with Rimu markup:
 <div id="topic-text-formatting">
 <!--
 Formatted text is enclosed with quote characters. There are quote
-characters for _emphasized text_, *bold text*, `monospaced text`, =deleted
-text= ^[1]^, +inserted text+ ^[1]^, #marked text# ^[1]^, ~subscripts~ and
-^superscripts^.
+characters for _emphasized text_, *bold text*, `monospaced text`.
 
   Rimu            HTML                      Common style
   ___________________________________________________________
   _emphasis_      <em>emphasis</em>         Italic
   *strong*        <strong>strong</strong>   Bold
   `code`          <code>code</code>         Monospaced
-  =deleted=       <del>deleted</del>        Strikethrough [1]
-  +inserted+      <ins>inserted</ins>       Underlined [1]
-  #marked#        <mark>marked</mark>       Yellow background [1]
-  ~subscript~     <sub>subscript</sub>
-  ^superscript^   <sup>superscript</sup>
   ___________________________________________________________
 
 - Other quotes and inline elements can be nested within a quote with the
@@ -495,9 +488,6 @@ text= ^[1]^, +inserted text+ ^[1]^, #marked text# ^[1]^, ~subscripts~ and
 - Quotes can be escaped with backslash character prefixes.
 - Quoted text must begin and end with non-whitespace characters and
   cannot end with a backslash character.
-
-*[1]* Provisional, may be dropped before the 1.0 feature freeze.
-Do the use cases really  justify the effort and the 'escape' burden?
 
 -->
 </div>

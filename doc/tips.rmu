@@ -1,5 +1,37 @@
 = Rimu Tips
 
+== Additional text formatting
+You are not restricted to Rimu's built-in _emphasis_, *bold*, and
+`code` text formats, you can employ any HTML formatting using inline
+HTML tags or parameterized variables. For example the following Rimu
+markup:
+
+.no-highlight
+--
+\{mark} = '<mark>$1</mark>'
+\{del} = '<del>$1</del>'
+\{ins} = '<ins>$1</ins>'
+\{red} = '<span style="color:red">$1</span>'
+\{sup} = '<sup>$1</sup>'
+\{sub} = '<sub>$1</sub>'
+
+<b style="font-size:1.5em">Inline HTML</b> and \{ins|parameterized}
+\{mark|variable} \{del|valeus} \{red|values}. H\{sub|2}O and mc\{sup|2}.
+--
+
+renders:
+
+{mark} = '<mark>$1</mark>'
+{del} = '<del>$1</del>'
+{ins} = '<ins>$1</ins>'
+{red} = '<span style="color:red">$1</span>'
+{sup} = '<sup>$1</sup>'
+{sub} = '<sub>$1</sub>'
+
+<b style="font-size:1.5em">Inline HTML</b> and {ins|parameterized}
+{mark|variable} {del|valeus} {red|values}. H{sub|2}O and mc{sup|2}.
+
+
 == Converting Rimu to PDF
 Use an HTML to PDF conversion program.
 <http://www.htmldoc.org/|HTMLDOC> makes an excellent job, here is

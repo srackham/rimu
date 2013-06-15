@@ -73,6 +73,23 @@
     <li><a href="https://npmjs.org/package/rimu">npm</a></li>
   </ul>
 <h1>Rimu Tips</h1>
+<h2>Additional text formatting</h2>
+<p>You are not restricted to Rimu's built-in <em>emphasis</em>, <strong>bold</strong>, and
+<code>code</code> text formats, you can employ any HTML formatting using inline
+HTML tags or parameterized variables. For example the following Rimu
+markup:</p>
+<pre class="no-highlight"><code>{mark} = '&lt;mark&gt;$1&lt;/mark&gt;'
+{del} = '&lt;del&gt;$1&lt;/del&gt;'
+{ins} = '&lt;ins&gt;$1&lt;/ins&gt;'
+{red} = '&lt;span style="color:red"&gt;$1&lt;/span&gt;'
+{sup} = '&lt;sup&gt;$1&lt;/sup&gt;'
+{sub} = '&lt;sub&gt;$1&lt;/sub&gt;'
+
+&lt;b style="font-size:1.5em"&gt;Inline HTML&lt;/b&gt; and {ins|parameterized}
+{mark|variable} {del|valeus} {red|values}. H{sub|2}O and mc{sup|2}.</code></pre>
+<p>renders:</p>
+<p><b style="font-size:1.5em">Inline HTML</b> and <ins>parameterized</ins>
+<mark>variable</mark> <del>valeus</del> <span style="color:red">values</span>. H<sub>2</sub>O and mc<sup>2</sup>.</p>
 <h2>Converting Rimu to PDF</h2>
 <p>Use an HTML to PDF conversion program.
 <a href="http://www.htmldoc.org/">HTMLDOC</a> makes an excellent job, here is

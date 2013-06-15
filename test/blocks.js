@@ -331,6 +331,10 @@ exports['Documents'] = function(test) {
       '<div>1 2 3 4</div>',
       'nested parameterized variables');
   testDocument(test,
+      "{mark}='<mark>$1</mark>'\n{sub}='<sub>$1</sub>'\n{mark|Note}: H{sub|2}O",
+      '<p><mark>Note</mark>: H<sub>2</sub>O</p>',
+      'text format parameterized variables');
+  testDocument(test,
       "{src}='tiger.png'\n{caption}='Tiger'\n<image:{src}|{caption}>",
       '<img src="tiger.png" alt="Tiger">',
       'variable substitution in block image');

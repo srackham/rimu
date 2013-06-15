@@ -38,14 +38,6 @@ exports['Quotes'] = function(test) {
         '00 _ <code>_11_</code> <em>2<strong>2</strong></em> <em>2*2*</em>',
         'nested quotes');
   test.equal(Spans.render(
-        '=11= +22+ #4# H~2~O e^2^ _\\_'),
-        '<del>11</del> <ins>22</ins> <mark>4</mark> H<sub>2</sub>O e<sup>2</sup> __',
-        'delete, insert, marked, subscript and superscript quotes');
-  test.equal(Spans.render(
-        '_\\#xyz# abc_'),
-        '<em>#xyz# abc</em>',
-        'escaped nested quote');
-  test.equal(Spans.render(
         '__xyz\\_ abc_'),
         '<em>_xyz_ abc</em>',
         'quote containing quote characters');
@@ -54,8 +46,8 @@ exports['Quotes'] = function(test) {
         '<em>_xyz abc_</em>',
         'quote containing quote characters');
   test.equal(Spans.render(
-        '_*abc #efg#* h^i^_ j'),
-        '<em><strong>abc <mark>efg</mark></strong> h<sup>i</sup></em> j',
+        '_*abc `efg`* h<sup>i</sup>_ j'),
+        '<em><strong>abc <code>efg</code></strong> h<sup>i</sup></em> j',
         'nested quotes');
   test.equal(Spans.render(
         '`<http://example.com> \\``'),

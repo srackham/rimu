@@ -27,52 +27,6 @@ module Rimu.Quotes {
       closeTag: '</code>',
       spans: false,
     },
-    {
-      quote: '~',
-      openTag: '<sub>',
-      closeTag: '</sub>',
-      spans: true,
-    },
-    {
-      quote: '^',
-      openTag: '<sup>',
-      closeTag: '</sup>',
-      spans: true,
-    },
-    {
-      quote: '#',
-      openTag: '<mark>',
-      closeTag: '</mark>',
-      spans: true,
-      verify: function(match, re) {
-        // Heuristic to suppress '#' quoting across anchors and links.
-        // Skip if = is preceded by a < character and followed by an alpha
-        // character.
-        var precedingChar = match.input[match.index - 1] || '';
-        var followingChar = match.input[re.lastIndex] || '';
-        return !(/</.test(precedingChar) && /[a-zA-Z]/.test(followingChar));
-      },
-    },
-    {
-      quote: '=',
-      openTag: '<del>',
-      closeTag: '</del>',
-      spans: true,
-      verify: function(match, re) {
-        // Heuristic to suppress '=' quoting across HTML attribute assignments.
-        // Skip if = is preceded by an alpha character and followed by a "
-        // character.
-        var precedingChar = match.input[match.index - 1] || '';
-        var followingChar = match.input[re.lastIndex] || '';
-        return !(/[a-zA-Z]/.test(precedingChar) && /"/.test(followingChar));
-      },
-    },
-    {
-      quote: '+',
-      openTag: '<ins>',
-      closeTag: '</ins>',
-      spans: true,
-    },
   ];
 
   export var findRe: RegExp;  // Searches for quoted text.
