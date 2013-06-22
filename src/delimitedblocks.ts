@@ -6,7 +6,7 @@ module Rimu.DelimitedBlocks {
     closeMatch: RegExp; // $1 (if defined) is appended to block content.
     openTag: string;
     closeTag: string;
-    variables: bool;  // Not applicable to container or skipped elements.
+    variables?: bool;  // Not applicable to container or skipped elements.
     filter?: (text: string, match: RegExpExecArray) => string;
     verify?: (match: string[]) => bool; // Additional match verification checks.
     // container, skip, spans and specials properties are mutually exclusive,

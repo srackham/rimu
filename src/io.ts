@@ -91,12 +91,12 @@ module Rimu {
 
   }
 
-}
+  // CommonJS module exports.
+  declare var exports: any;
+  if (typeof exports !== 'undefined') {
+    exports.Reader = Rimu.Reader;
+    exports.Writer = Rimu.Writer;
+  }
 
-// CommonJS module exports.
-declare var exports: any;
-if (typeof exports !== 'undefined') {
-  exports.Reader = Rimu.Reader;
-  exports.Writer = Rimu.Writer;
 }
 

@@ -1,8 +1,8 @@
-module Rimu {
+declare module Rimu {
     function render(source: string, options?: Options.Values): string;
     function renderSource(source: string): string;
 }
-module Rimu {
+declare module Rimu {
     function trimLeft(s: string): string;
     function trimRight(s: string): string;
     function trim(s: string): string;
@@ -10,13 +10,13 @@ module Rimu {
     function replaceSpecialChars(s: string): string;
     function replaceMatch(match: RegExpExecArray, replacement: string, options?: {}): string;
     function replaceOptions(text: string, options: {
-            variables?: bool;
-            spans?: bool;
-            specials?: bool;
-        }): string;
+        variables?: boolean;
+        spans?: boolean;
+        specials?: boolean;
+    }): string;
     function injectAttributes(tag: string): string;
 }
-module Rimu.Options {
+declare module Rimu.Options {
     interface Values {
         safeMode?: number;
         htmlReplacement?: string;
@@ -26,13 +26,13 @@ module Rimu.Options {
     function update(options: Values): void;
     function safeModeFilter(text: string): string;
 }
-module Rimu {
+declare module Rimu {
     class Reader {
         public lines: string[];
         public pos: number;
         constructor(text: string);
         public cursor(value?: string): string;
-        public eof(): bool;
+        public eof(): boolean;
         public next(): string;
         public readTo(find: RegExp): string[];
         public skipBlankLines(): void;
@@ -44,7 +44,7 @@ module Rimu {
         public toString(): string;
     }
 }
-module Rimu.Variables {
+declare module Rimu.Variables {
     interface Variable {
         name: string;
         value: string;
@@ -55,62 +55,62 @@ module Rimu.Variables {
     function set(name: string, value: string): void;
     function render(text: string): string;
 }
-module Rimu.LineBlocks {
+declare module Rimu.LineBlocks {
     interface Definition {
         id?: string;
-        filter: (match: RegExpExecArray, block: Definition) => string;
+        filter?: (match: RegExpExecArray, block: Definition, reader?: Rimu.Reader) => string;
         match: RegExp;
         replacement: string;
-        variables?: bool;
-        spans?: bool;
-        specials?: bool;
+        variables?: boolean;
+        spans?: boolean;
+        specials?: boolean;
     }
     var htmlAttributes: string;
-    function render(reader: Reader, writer: Writer): bool;
+    function render(reader: Rimu.Reader, writer: Rimu.Writer): boolean;
     function getDefinition(id: string): Definition;
 }
-module Rimu.DelimitedBlocks {
+declare module Rimu.DelimitedBlocks {
     interface Definition {
         id?: string;
         openMatch: RegExp;
         closeMatch: RegExp;
         openTag: string;
         closeTag: string;
-        variables: bool;
+        variables?: boolean;
         filter?: (text: string, match: RegExpExecArray) => string;
-        verify?: (match: string[]) => bool;
-        container?: bool;
-        skip?: bool;
-        spans?: bool;
-        specials?: bool;
+        verify?: (match: string[]) => boolean;
+        container?: boolean;
+        skip?: boolean;
+        spans?: boolean;
+        specials?: boolean;
     }
-    function render(reader: Reader, writer: Writer): bool;
+    function render(reader: Rimu.Reader, writer: Rimu.Writer): boolean;
     function getDefinition(id: string): Definition;
 }
-module Rimu.Lists {
-    function render(reader: Reader, writer: Writer): bool;
+declare module Rimu.Lists {
+    function render(reader: Rimu.Reader, writer: Rimu.Writer): boolean;
 }
-module Rimu.Spans {
+declare module Rimu.Spans {
     function render(source: string): string;
 }
-module Rimu.Quotes {
+declare module Rimu.Quotes {
     interface Definition {
         quote: string;
         openTag: string;
         closeTag: string;
-        spans: bool;
-        verify?: (match: RegExpExecArray, re: RegExp) => bool;
+        spans: boolean;
+        verify?: (match: RegExpExecArray, re: RegExp) => boolean;
     }
     var findRe: RegExp;
     function find(quote: string): Definition;
     function unescape(s: string): string;
 }
-module Rimu.Replacements {
+declare module Rimu.Replacements {
     interface Definition {
-        filter: (match: RegExpExecArray, replacement: Definition) => string;
+        filter?: (match: RegExpExecArray, replacement: Definition) => string;
         match: RegExp;
         replacement: string;
-        specials: bool;
+        specials: boolean;
     }
     var defs: Definition[];
 }

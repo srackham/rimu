@@ -2,7 +2,7 @@ module Rimu.LineBlocks {
 
   export interface Definition {
     id?: string;  // Optional unique identifier.
-    filter: (match: RegExpExecArray, block: Definition) => string;
+    filter?: (match: RegExpExecArray, block: Definition, reader?: Reader) => string;
     match: RegExp;
     replacement: string;
     variables?: bool;
@@ -34,7 +34,7 @@ module Rimu.LineBlocks {
     {
       match: /^\\?(\{[\w\-]+(?:[|?].*)?\})$/,
       replacement: '',
-      filter: function (match, block, reader) {
+      filter: function (match, block, reader?) {
         var value = Variables.render(match[1]);
         if (value === match[1]) {
           // Variable does not exist so pass it through.

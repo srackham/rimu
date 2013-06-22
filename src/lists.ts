@@ -1,7 +1,6 @@
 module Rimu.Lists {
 
   interface Definition {
-    filter: (match: RegExpExecArray, block: Definition) => string;
     match: RegExp;
     listOpenTag: string;
     listCloseTag: string;

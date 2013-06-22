@@ -1,7 +1,7 @@
 module Rimu.Replacements {
 
   export interface Definition {
-    filter: (match: RegExpExecArray, replacement: Definition) => string;
+    filter?: (match: RegExpExecArray, replacement: Definition) => string;
     match: RegExp;
     replacement: string;
     specials: bool;
