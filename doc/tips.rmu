@@ -157,3 +157,37 @@ example:
   .#big-logo [width="150"]
   <image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
   ..
+
+
+== Entering non-ASCII characters
+A number of non-ASCII Unicode characters are commonly used for
+punctuation e.g.  em dash, ellipsis and quotation characters. You can
+enter these characters (or any Unicode character) as HTML character
+entities or you can enter them literally.
+
+For example, to enter an ellipsis you could either enter `&hellip;` or
+you could enter the actual … character directly. The mechanism for
+entering Unicode characters directly will dictated your editor:
+
+Vim:: Enter _Ctrl+V_ followed by the the character _u_ followed by the
+hexidecimal character code e.g. to enter an em dash enter _Ctrl+V_
+followed by _u2014_
+
+Linux console input:: Enter _Ctrl+Shift+U_ followed by the hexadecimal
+character code followed by the _Enter_ key.
+
+Common Unicode punctuation characters:
+
+  Character     HTML entity    Hexadecimal code
+  ---------     -----------    ----------------
+  —             &mdash;        2014
+  …             &hellip;       2026
+  “             &ldquo;        201c
+  ”             &rdquo;        201d
+
+
+== Whitespace in URLs
+Whitespace characters are illegal in URL paths, use _%20_ in place of
+spaces, for example:
+
+  <file:///home/srackham/books/War%20and%20Peace.pdf|War and Peace>

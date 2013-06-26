@@ -176,5 +176,29 @@ example:</p>
 .#big-logo [width="150"]
 &lt;image:http://www.w3.org/Icons/w3c_home.png|W3C logo&gt;
 ..</pre>
+<h2>Entering non-ASCII characters</h2>
+<p>A number of non-ASCII Unicode characters are commonly used for
+punctuation e.g.  em dash, ellipsis and quotation characters. You can
+enter these characters (or any Unicode character) as HTML character
+entities or you can enter them literally.</p>
+<p>For example, to enter an ellipsis you could either enter <code>&amp;hellip;</code> or
+you could enter the actual … character directly. The mechanism for
+entering Unicode characters directly will dictated your editor:</p>
+<dl><dt>Vim</dt><dd> Enter <em>Ctrl+V</em> followed by the the character <em>u</em> followed by the
+hexidecimal character code e.g. to enter an em dash enter <em>Ctrl+V</em>
+followed by <em>u2014</em>
+</dd><dt>Linux console input</dt><dd> Enter <em>Ctrl+Shift+U</em> followed by the hexadecimal
+character code followed by the <em>Enter</em> key.
+</dd></dl><p>Common Unicode punctuation characters:</p>
+<pre>Character     HTML entity    Hexadecimal code
+---------     -----------    ----------------
+—             &amp;mdash;        2014
+…             &amp;hellip;       2026
+“             &amp;ldquo;        201c
+”             &amp;rdquo;        201d</pre>
+<h2>Whitespace in URLs</h2>
+<p>Whitespace characters are illegal in URL paths, use <em>%20</em> in place of
+spaces, for example:</p>
+<pre>&lt;file:///home/srackham/books/War%20and%20Peace.pdf|War and Peace&gt;</pre>
 </body>
 </html>
