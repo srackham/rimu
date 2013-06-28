@@ -9,12 +9,12 @@ module Rimu {
 
   // Rimu public API.
   export function render(source: string, options: Options.Values = {}): string {
-    Variables.reset();
+    Macros.reset();
     Options.update(options);
     return renderSource(source);
   }
 
-  // Same as render() but does not reset variables or update options.
+  // Same as render() but does not reset macros or update options.
   export function renderSource(source: string): string {
     var reader = new Reader(source);
     var writer = new Writer();

@@ -69,7 +69,7 @@ exports['Replacements'] = function(test) {
         '*<http://foobar.com>* <http://foobar.com|Foo\n& Bar>'),
         '<strong><a href="http://foobar.com">http://foobar.com</a></strong> ' +
         '<a href="http://foobar.com">Foo\n&amp; Bar</a>',
-        'quoted and parameterized http urls');
+        'quoted and parametrized http urls');
   test.equal(Spans.render(
         '<ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt>'),
         '<a href="ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt">ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt</a>',
@@ -129,7 +129,7 @@ exports['Replacements'] = function(test) {
   test.equal(Spans.render(
         '<./chapter1.html#x1|Foo bar>'),
         '<a href="./chapter1.html#x1">Foo bar</a>',
-        'parameterized relative url');
+        'parametrized relative url');
   test.equal(Spans.render(
         '<!-- comment -->'),
         '<!-- comment -->',

@@ -82,8 +82,8 @@ thought of as an HTML superset).</p>
 <a href="http://www.htmldoc.org/">HTMLDOC</a> makes an excellent job, here is
 <a href="tips.pdf">tips.pdf</a> generated with this command:</p>
 <pre>htmldoc -f doc/tips.pdf  doc/tips.html</pre>
-<h2>Extend Rimu with parameterized variables</h2>
-<p>Parameterized variables provide a simple, consistent mechanism for
+<h2>Extend Rimu with parametrized macros</h2>
+<p>Parametrized macros provide a simple, consistent mechanism for
 extending the Rimu markup vocabulary. For example the following
 sidebar:</p>
 <div style="padding-left: 10px; border-left: 4px solid silver;"><p><span class="label label-info">Heads up!</span> See the <a href="http://rimumarkup.org/rimuplayground.html">Rimu Playground</a> for documentation and hands-on
@@ -139,7 +139,7 @@ you can disable (escape) it by prefixing the element with a backslash
 character. An escaped a block element will be interpreted as a normal
 paragraph (paragraphs have the lowest precedence).</p>
 <p>There are some corner cases to be aware of:</p>
-<ul><li>Escaping variable assignments and references in a block context
+<ul><li>Escaping macro definitions and invocations in a block context
   using a backslash will result in them being expanded in an inline
   (paragraph) context, if you want them rendered literally in the
   paragraph context prefix a <code>&amp;ZeroWidthSpace;</code> character entity e.g.
@@ -148,16 +148,16 @@ paragraph (paragraphs have the lowest precedence).</p>
   will be rendered in an inline (paragraph) context, which is probably
   not what you want -- use a <code>&amp;ZeroWidthSpace;</code> character entity
   instead of a backslash character.
-</li><li>To render a variable reference verbatim it must be escaped with a
+</li><li>To render a macro invocation verbatim it must be escaped with a
   leading backslash character.
-</li></ul><h2>Passing variable values into Rimu documents</h2>
-<p>You can do this by prepending text containing variable assignments to
+</li></ul><h2>Passing macro values into Rimu documents</h2>
+<p>You can do this by prepending text containing macro definitions to
 Rimu source before rendering the source. The <em>rimuc</em> command has a
 <code>--prepend</code> option that can be used to do this.</p>
-<p>Alternatively you could also put variable assignment statements in a
+<p>Alternatively you could also put macro definitions in a
 separate file and specify it as the first Rimu source file in the
 <em>rimuc</em> command.</p>
-<h2>Putting | and } characters in variable parameter values</h2>
+<h2>Putting | and } characters in macro parameter values</h2>
 <p>Use the corresponding character entities <code>&amp;vert;</code> and <code>&amp;rbrace;</code>.</p>
 <h2>Syntax checker</h2>
 <p>The Vim editor syntax highlighter is a big help when writing (and

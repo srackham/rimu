@@ -1,17 +1,17 @@
-module Rimu.Variables {
+module Rimu.Macros {
 
-  export interface Variable {
+  export interface Macro {
     name: string;
     value: string;
   }
     
-  export var list: Variable[] = [];
+  export var list: Macro[] = [];
 
   export function reset(): void {
     list = [];
   }
 
-  // Return named variable value or null if it doesn't exist.
+  // Return named macro value or null if it doesn't exist.
   export function get(name: string): string {
     for (var i in list) {
       if (list[i].name === name) {
@@ -21,7 +21,7 @@ module Rimu.Variables {
     return null;
   }
 
-  // Set named variable value or add it if it doesn't exist.
+  // Set named macro value or add it if it doesn't exist.
   export function set(name: string, value: string): void {
     for (var i in list) {
       if (list[i].name === name) {
@@ -40,7 +40,7 @@ module Rimu.Variables {
       }
       var value = get(name);
       if (value === null) {
-        // Variable is undefined.
+        // Macro is undefined.
         if (params && params[0] === '?') {
           return params.slice(1);
         }
@@ -52,7 +52,7 @@ module Rimu.Variables {
         return value.replace(/\$\d+/g, '');
       }
       if (params[0] === '|') {
-        // Substitute variable parameters.
+        // Substitute macro parameters.
         var result = value;
         var paramsList = params.slice(1).split('|');
         for (var i in paramsList) {
@@ -69,7 +69,7 @@ module Rimu.Variables {
   // CommonJS module exports.
   declare var exports: any;
   if (typeof exports !== 'undefined') {
-    exports.Variables = Rimu.Variables;
+    exports.Macros = Rimu.Macros;
   }
 
 }

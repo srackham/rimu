@@ -17,7 +17,7 @@ module Rimu {
   }
 
   // Replace match groups, optionally substituting the replacement groups with
-  // variables, spans or special characters.
+  // macros, spans or special characters.
   export function replaceMatch(
       match: RegExpExecArray,
       replacement: string,
@@ -33,10 +33,10 @@ module Rimu {
 
   // Replace the entities specified in options in text and return the result.
   export function replaceOptions(text: string,
-      options: {variables?: bool; spans?: bool; specials?: bool;}): string
+      options: {macros?: bool; spans?: bool; specials?: bool;}): string
   {
-    if (options.variables) {
-      text = Variables.render(text);
+    if (options.macros) {
+      text = Macros.render(text);
     }
     if (options.spans) {
       return Spans.render(text);

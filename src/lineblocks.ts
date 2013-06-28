@@ -5,7 +5,7 @@ module Rimu.LineBlocks {
     filter?: (match: RegExpExecArray, block: Definition, reader?: Reader) => string;
     match: RegExp;
     replacement: string;
-    variables?: bool;
+    macros?: bool;
     // spans and specials properties are mutually exclusive,
     // they are assumed false if they are not explicitly defined.
     spans?: bool;
@@ -15,32 +15,32 @@ module Rimu.LineBlocks {
   var defs: Definition[] = [
     // Prefix match with backslash to allow escaping.
 
-    // Variable assignment.
+    // Macro definition.
     // name = $1, value = $2
     {
       match: /^\\?\{([\w\-]+)\}\s*=\s*'(.*)'$/,
       replacement: '',
-      variables: true,
+      macros: true,
       filter: function (match, block) {
         var name = match[1];
         var value = match[2];
         value = replaceOptions(value, block);
-        Variables.set(name, value);
+        Macros.set(name, value);
         return '';
       },
     },
-    // Variable reference.
+    // Macro invocation.
     // reference = $1
     {
       match: /^\\?(\{[\w\-]+(?:[|?].*)?\})$/,
       replacement: '',
       filter: function (match, block, reader?) {
-        var value = Variables.render(match[1]);
+        var value = Macros.render(match[1]);
         if (value === match[1]) {
-          // Variable does not exist so pass it through.
+          // Macro does not exist so pass it through.
           value = '\\' +  value;
         }
-        // Insert the variable value into the reader just ahead of the cursor.
+        // Insert the macro value into the reader just ahead of the cursor.
         reader.lines = [].concat(
             reader.lines.slice(0, reader.pos + 1),
             value.split('\n'),
@@ -53,7 +53,7 @@ module Rimu.LineBlocks {
     {
       match: /^\\?((?:#|=){1,6})\s+(.+?)(?:\s+(?:#|=){1,6})?$/,
       replacement: '<h$1>$2</h$1>',
-      variables: true,
+      macros: true,
       spans: true,
       filter: function (match, block) {
         match[1] = match[1].length.toString(); // Replace $1 with header number.
@@ -70,7 +70,7 @@ module Rimu.LineBlocks {
     {
       match: /^\\?<image:([^\s\|]+)\|([\s\S]+?)>$/,
       replacement: '<img src="$1" alt="$2">',
-      variables: true,
+      macros: true,
       specials: true,
     },
     // Block image: <image:src>
@@ -78,7 +78,7 @@ module Rimu.LineBlocks {
     {
       match: /^\\?<image:([^\s\|]+?)>$/,
       replacement: '<img src="$1" alt="$1">',
-      variables: true,
+      macros: true,
       specials: true,
     },
     // Block anchor: <<#id>>
@@ -86,7 +86,7 @@ module Rimu.LineBlocks {
     {
       match: /^\\?<<#([a-zA-Z][\w\-]*)>>$/,
       replacement: '<div id="$1"></div>',
-      variables: true,
+      macros: true,
       specials: true,
     },
     // HTML attributes.

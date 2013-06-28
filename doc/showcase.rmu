@@ -7,7 +7,7 @@
 
 */
 
-// Variables.
+// Macros.
 {info} = '<span class="label label-info">$1</span>'
 {heads-up} = '{info|Heads up!}'
 {mark} = '<mark>$1</mark>'
@@ -55,7 +55,7 @@ _\_Emphasized text\__ +
 `\`Code text\``
 
 Additional text formatting can be added with <mark>HTML markup</mark>
-or {ins|parameterized} {red|variables}. H{sub|2}O and mc{sup|2}.
+or {ins|parametrized} {red|macros}. H{sub|2}O and mc{sup|2}.
 
 
 ===== Quote block

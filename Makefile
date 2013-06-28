@@ -2,7 +2,7 @@ SOURCE = src/rimu.ts \
 	src/helpers.ts \
 	src/options.ts \
 	src/io.ts \
-	src/variables.ts \
+	src/macros.ts \
 	src/lineblocks.ts \
 	src/delimitedblocks.ts \
 	src/lists.ts \

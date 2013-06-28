@@ -6,7 +6,7 @@ module Rimu.DelimitedBlocks {
     closeMatch: RegExp; // $1 (if defined) is appended to block content.
     openTag: string;
     closeTag: string;
-    variables?: bool;  // Not applicable to container or skipped elements.
+    macros?: bool;  // Not applicable to container or skipped elements.
     filter?: (text: string, match: RegExpExecArray) => string;
     verify?: (match: string[]) => bool; // Additional match verification checks.
     // container, skip, spans and specials properties are mutually exclusive,
@@ -20,18 +20,18 @@ module Rimu.DelimitedBlocks {
   var defs: Definition[] = [
     // Delimited blocks cannot be escaped with a backslash.
 
-    // Variable assignment block.
+    // Macro definition block.
     {
-      openMatch: /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/, // $1 is first line of variable.
-      closeMatch: /^(.*)'$/,                  // $1 is last line of variable.
+      openMatch: /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/, // $1 is first line of macro.
+      closeMatch: /^(.*)'$/,                  // $1 is last line of macro.
       openTag: '',
       closeTag: '',
-      variables: true,
+      macros: true,
       filter: function (text, match): string {
-        // Set variable.
-        // Get the variable name from the match in the first line of the block.
+        // Set macro.
+        // Get the macro name from the match in the first line of the block.
         var name = match[0].match(/^\{([\w\-]+)\}/)[1];
-        Variables.set(name, text);
+        Macros.set(name, text);
         return '';
       },
     },
@@ -68,7 +68,7 @@ module Rimu.DelimitedBlocks {
       closeMatch: /^\-{2,}$/,
       openTag: '<pre><code>',
       closeTag: '</code></pre>',
-      variables: true,
+      macros: true,
       specials: true,
     },
     // HTML block.
@@ -80,7 +80,7 @@ module Rimu.DelimitedBlocks {
       closeMatch: /^$/, // Blank line or EOF.
       openTag: '',
       closeTag: '',
-      variables: true,
+      macros: true,
       filter: function (text) {
         return Options.safeModeFilter(text);
       },
@@ -92,7 +92,7 @@ module Rimu.DelimitedBlocks {
       closeMatch: /^$/,           // Blank line or EOF.
       openTag: '<pre>',
       closeTag: '</pre>',
-      variables: true,
+      macros: true,
       specials: true,
       filter: function (text): string {
         // Strip indent from start of each line.
@@ -113,7 +113,7 @@ module Rimu.DelimitedBlocks {
       closeMatch: /^$/,     // Blank line or EOF.
       openTag: '<p>',
       closeTag: '</p>',
-      variables: true,
+      macros: true,
       spans: true,
     },
   ];

@@ -78,13 +78,13 @@
       <option value="topic-html-attributes">HTML Attributes</option>
       <option value="topic-images">Images</option>
       <option value="topic-lists">Lists</option>
+      <option value="topic-macros">Macros</option>
       <option value="topic-other">Other</option>
       <option value="topic-paragraphs">Paragraphs</option>
       <option value="topic-playground">Playground</option>
       <option value="topic-text-formatting">Text formatting</option>
       <option value="topic-tools">Tools</option>
       <option value="topic-urls-and-email">URLs and email addresses</option>
-      <option value="topic-variables">Variables</option>
     </select>
     <button onclick="stash();">Stash</button>
     <button onclick="unstash();">Unstash</button>
@@ -224,7 +224,7 @@ backslash character prefix.
 *Code Block*
 
 - -
-A code block expands variable references but all other span
+A code block expands macro invocations but all other span
 elements are rendered verbatim. Rendered with  HTML <pre><code>
 elements.
 
@@ -447,7 +447,7 @@ by a plus character at    +
 the end of a line.
 
 ==== Indented paragraphs
-  _Indented paragraphs_ expand variable references but all other
+  _Indented paragraphs_ expand macro invocations but all other
   inline elements are rendered verbatim. Indented paragraphs are
   rendered with an HTML <pre> element.
 
@@ -492,39 +492,41 @@ characters for _emphasized text_, *bold text*, `monospaced text`.
 -->
 </div>
 
-<div id="topic-variables">
+<div id="topic-macros">
 <!--
-Variables contain Rimu markup and can be inserted anywhere you would
-use an inline or block element.  They are used to parameterize
-documents, promote clarity and eliminate repetition.
+Macros provide a mechanism for creating shortcuts for repeatedly used markup.
+They are used to parametrize documents, promote clarity and eliminate repetition.
 
-Assignment syntax:
+Macro definitions contain Rimu markup and can be invoked anywhere you
+would use an inline or block element.
 
-  \{variable-name} = 'variable-value'
+Definition syntax:
 
-Reference syntax:
+  \{macro-name} = 'macro-value'
 
-  \{variable-name}
-  \{variable-name?default-value}
-  \{variable-name|param1[|param2...]}
+Invocation syntax:
 
-- Variable values are enclosed by single quotes and can extend over
+  \{macro-name}
+  \{macro-name?default-value}
+  \{macro-name|param1[|param2...]}
+
+- Macro definition values are enclosed by single quotes and can extend over
   multiple lines.
-- A variable name consists of one or more alphanumeric, underscore or
+- A macro name consists of one or more alphanumeric, underscore or
   dash characters.
-- Variable assignment must start at the left margin.
-- Assigned variable values can contain references to previously defined
-  variables but variable references cannot be nested.
-- Variable assignments and references can be escaped with a backslash
+- A macro definition must start at the left margin.
+- Macro definition values can invoke previously defined macros but
+  macro invocations cannot be nested.
+- Macro definitions and invocations can be escaped with a backslash
   character prefix.
-- _Parameterized_ references replace the `$1`, `$2` ... strings in the
-  variable value with the `param1`, `param2` ... values.
-- Variable parameters contain inline Rimu markup and inline
-  parameterized references can span multiple lines.
-- References to undefined variables are replaced with a blank string
-  or the `default-value` if the `\{variable-name?default-value}`
-  _Existential_ syntax is used.
-- Unspecified parameter values default to an empty string.
+- _Parametrized_ macro invocations replace the `$1`, `$2` ... strings
+  in the macro definition with the `param1`, `param2` ... values.
+- Macro invocation parameters contain inline Rimu markup; inline
+  parameter values can span multiple lines.
+- Invocations of undefined macros are replaced with a blank string
+  or the `default-value` if the `\{macro-name?default-value}`
+  _Existential_ invocation syntax is used.
+- Omitted parameter values default to an empty string.
 
 Examples:
 

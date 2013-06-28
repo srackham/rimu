@@ -2,7 +2,7 @@ var Rimu;
 (function (Rimu) {
     function render(source, options) {
         if (typeof options === "undefined") { options = {}; }
-        Rimu.Variables.reset();
+        Rimu.Macros.reset();
         Rimu.Options.update(options);
         return renderSource(source);
     }
@@ -69,8 +69,8 @@ var Rimu;
     Rimu.replaceMatch = replaceMatch;
 
     function replaceOptions(text, options) {
-        if (options.variables) {
-            text = Rimu.Variables.render(text);
+        if (options.macros) {
+            text = Rimu.Macros.render(text);
         }
         if (options.spans) {
             return Rimu.Spans.render(text);
@@ -217,34 +217,34 @@ var Rimu;
 })(Rimu || (Rimu = {}));
 var Rimu;
 (function (Rimu) {
-    (function (Variables) {
-        Variables.list = [];
+    (function (Macros) {
+        Macros.list = [];
 
         function reset() {
-            Variables.list = [];
+            Macros.list = [];
         }
-        Variables.reset = reset;
+        Macros.reset = reset;
 
         function get(name) {
-            for (var i in Variables.list) {
-                if (Variables.list[i].name === name) {
-                    return Variables.list[i].value;
+            for (var i in Macros.list) {
+                if (Macros.list[i].name === name) {
+                    return Macros.list[i].value;
                 }
             }
             return null;
         }
-        Variables.get = get;
+        Macros.get = get;
 
         function set(name, value) {
-            for (var i in Variables.list) {
-                if (Variables.list[i].name === name) {
-                    Variables.list[i].value = value;
+            for (var i in Macros.list) {
+                if (Macros.list[i].name === name) {
+                    Macros.list[i].value = value;
                     return;
                 }
             }
-            Variables.list.push({ name: name, value: value });
+            Macros.list.push({ name: name, value: value });
         }
-        Variables.set = set;
+        Macros.set = set;
 
         function render(text) {
             var re = /\\?\{([\w\-]+)([|?][\s\S]*?)?\}/g;
@@ -276,13 +276,13 @@ var Rimu;
             });
             return text;
         }
-        Variables.render = render;
+        Macros.render = render;
 
         if (typeof exports !== 'undefined') {
-            exports.Variables = Rimu.Variables;
+            exports.Macros = Rimu.Macros;
         }
-    })(Rimu.Variables || (Rimu.Variables = {}));
-    var Variables = Rimu.Variables;
+    })(Rimu.Macros || (Rimu.Macros = {}));
+    var Macros = Rimu.Macros;
 })(Rimu || (Rimu = {}));
 var Rimu;
 (function (Rimu) {
@@ -291,12 +291,12 @@ var Rimu;
             {
                 match: /^\\?\{([\w\-]+)\}\s*=\s*'(.*)'$/,
                 replacement: '',
-                variables: true,
+                macros: true,
                 filter: function (match, block) {
                     var name = match[1];
                     var value = match[2];
                     value = Rimu.replaceOptions(value, block);
-                    Rimu.Variables.set(name, value);
+                    Rimu.Macros.set(name, value);
                     return '';
                 }
             },
@@ -304,7 +304,7 @@ var Rimu;
                 match: /^\\?(\{[\w\-]+(?:[|?].*)?\})$/,
                 replacement: '',
                 filter: function (match, block, reader) {
-                    var value = Rimu.Variables.render(match[1]);
+                    var value = Rimu.Macros.render(match[1]);
                     if (value === match[1]) {
                         value = '\\' + value;
                     }
@@ -316,7 +316,7 @@ var Rimu;
             {
                 match: /^\\?((?:#|=){1,6})\s+(.+?)(?:\s+(?:#|=){1,6})?$/,
                 replacement: '<h$1>$2</h$1>',
-                variables: true,
+                macros: true,
                 spans: true,
                 filter: function (match, block) {
                     match[1] = match[1].length.toString();
@@ -330,19 +330,19 @@ var Rimu;
             {
                 match: /^\\?<image:([^\s\|]+)\|([\s\S]+?)>$/,
                 replacement: '<img src="$1" alt="$2">',
-                variables: true,
+                macros: true,
                 specials: true
             },
             {
                 match: /^\\?<image:([^\s\|]+?)>$/,
                 replacement: '<img src="$1" alt="$1">',
-                variables: true,
+                macros: true,
                 specials: true
             },
             {
                 match: /^\\?<<#([a-zA-Z][\w\-]*)>>$/,
                 replacement: '<div id="$1"></div>',
-                variables: true,
+                macros: true,
                 specials: true
             },
             {
@@ -423,10 +423,10 @@ var Rimu;
                 closeMatch: /^(.*)'$/,
                 openTag: '',
                 closeTag: '',
-                variables: true,
+                macros: true,
                 filter: function (text, match) {
                     var name = match[0].match(/^\{([\w\-]+)\}/)[1];
-                    Rimu.Variables.set(name, text);
+                    Rimu.Macros.set(name, text);
                     return '';
                 }
             },
@@ -459,7 +459,7 @@ var Rimu;
                 closeMatch: /^\-{2,}$/,
                 openTag: '<pre><code>',
                 closeTag: '</code></pre>',
-                variables: true,
+                macros: true,
                 specials: true
             },
             {
@@ -467,7 +467,7 @@ var Rimu;
                 closeMatch: /^$/,
                 openTag: '',
                 closeTag: '',
-                variables: true,
+                macros: true,
                 filter: function (text) {
                     return Rimu.Options.safeModeFilter(text);
                 }
@@ -478,7 +478,7 @@ var Rimu;
                 closeMatch: /^$/,
                 openTag: '<pre>',
                 closeTag: '</pre>',
-                variables: true,
+                macros: true,
                 specials: true,
                 filter: function (text) {
                     var first_indent = text.search(/\S/);
@@ -497,7 +497,7 @@ var Rimu;
                 closeMatch: /^$/,
                 openTag: '<p>',
                 closeTag: '</p>',
-                variables: true,
+                macros: true,
                 spans: true
             }
         ];
@@ -634,7 +634,7 @@ var Rimu;
             var text;
             if (match.length === 4) {
                 writer.write(def.termOpenTag);
-                text = Rimu.replaceOptions(match[1], { variables: true, spans: true });
+                text = Rimu.replaceOptions(match[1], { macros: true, spans: true });
                 writer.write(text);
                 writer.write(def.termCloseTag);
             }
@@ -647,7 +647,7 @@ var Rimu;
             var nextItem;
             nextItem = readToNext(startItem, reader, lines);
             text = lines.toString();
-            text = Rimu.replaceOptions(text, { variables: true, spans: true });
+            text = Rimu.replaceOptions(text, { macros: true, spans: true });
             writer.write(text);
             while (true) {
                 if (!nextItem) {

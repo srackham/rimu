@@ -10,7 +10,7 @@ declare module Rimu {
     function replaceSpecialChars(s: string): string;
     function replaceMatch(match: RegExpExecArray, replacement: string, options?: {}): string;
     function replaceOptions(text: string, options: {
-        variables?: boolean;
+        macros?: boolean;
         spans?: boolean;
         specials?: boolean;
     }): string;
@@ -44,12 +44,12 @@ declare module Rimu {
         public toString(): string;
     }
 }
-declare module Rimu.Variables {
-    interface Variable {
+declare module Rimu.Macros {
+    interface Macro {
         name: string;
         value: string;
     }
-    var list: Variable[];
+    var list: Macro[];
     function reset(): void;
     function get(name: string): string;
     function set(name: string, value: string): void;
@@ -61,7 +61,7 @@ declare module Rimu.LineBlocks {
         filter?: (match: RegExpExecArray, block: Definition, reader?: Rimu.Reader) => string;
         match: RegExp;
         replacement: string;
-        variables?: boolean;
+        macros?: boolean;
         spans?: boolean;
         specials?: boolean;
     }
@@ -76,7 +76,7 @@ declare module Rimu.DelimitedBlocks {
         closeMatch: RegExp;
         openTag: string;
         closeTag: string;
-        variables?: boolean;
+        macros?: boolean;
         filter?: (text: string, match: RegExpExecArray) => string;
         verify?: (match: string[]) => boolean;
         container?: boolean;

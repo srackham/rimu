@@ -24,55 +24,55 @@ function testDocument(test, source, expected, message) {
 
 // Tests.
 exports['Line blocks'] = function(test) {
-  Rimu.Variables.list = [];
+  Rimu.Macros.list = [];
   testLineBlock(test,
-      "{var} = 'variable value'",
+      "{macro} = 'macro value'",
       '',
-      'variable assignment');
+      'macro definition');
   test.equal(
-      Rimu.Variables.get('var'),
-      'variable value',
-      'variable value');
+      Rimu.Macros.get('macro'),
+      'macro value',
+      'macro value');
   test.equal(
-      Rimu.Variables.list.length,
+      Rimu.Macros.list.length,
       1,
-      'variables count');
+      'macros count');
   testLineBlock(test,
-      "{var} = 'variable value2'",
+      "{macro} = 'macro value2'",
       '',
-      'variable assignment');
+      'macro definition');
   test.equal(
-      Rimu.Variables.get('var'),
-      'variable value2',
-      'variable value');
+      Rimu.Macros.get('macro'),
+      'macro value2',
+      'macro value');
   test.equal(
-      Rimu.Variables.list.length,
+      Rimu.Macros.list.length,
       1,
-      'variables count');
+      'macros count');
   testDelimitedBlock(test,
-      "&ZeroWidthSpace;\\{var}='value'\n{var} \\{var}",
-      "<p>&ZeroWidthSpace;{var}='value'\nvariable value2 {var}</p>",
-      'escaped variable assignment and references');
+      "&ZeroWidthSpace;\\{macro}='value'\n{macro} \\{macro}",
+      "<p>&ZeroWidthSpace;{macro}='value'\nmacro value2 {macro}</p>",
+      'escaped macro definitions and invocations');
   testLineBlock(test,
-      "{var2} = 'nested var: {var}'",
+      "{macro2} = 'nested macro: {macro}'",
       '',
-      'nested variable assignment');
+      'nested macro definition');
   test.equal(
-      Rimu.Variables.list.length,
+      Rimu.Macros.list.length,
       2,
-      'variables count');
+      'macros count');
   test.equal(
-      Rimu.Variables.list[1].value,
-      'nested var: variable value2',
-      'variable list value');
+      Rimu.Macros.list[1].value,
+      'nested macro: macro value2',
+      'macro list value');
   testLineBlock(test,
       "{tiger} = './images/tiger.png'",
       '',
-      'variable assignment');
+      'macro definition');
   testLineBlock(test,
       '<image:{tiger}>',
       '<img src="./images/tiger.png" alt="./images/tiger.png">',
-      'variable reference in image url');
+      'macro invocation in image url');
   testLineBlock(test,
       '# Hello World!',
       '<h1>Hello World!</h1>',
@@ -101,36 +101,36 @@ exports['Line blocks'] = function(test) {
 };
 
 exports['Delimited blocks'] = function(test) {
-  // Block variables.
-  Rimu.Variables.list = [];
+  // Block macros.
+  Rimu.Macros.list = [];
   testDelimitedBlock(test,
-      "{var} = 'variable\n value'",
+      "{macro} = 'macro\n value'",
       '',
-      'multi-line variable value');
+      'multi-line macro value');
   test.equal(
-      Rimu.Variables.get('var'),
-      'variable\n value',
-      'variable value');
+      Rimu.Macros.get('macro'),
+      'macro\n value',
+      'macro value');
   test.equal(
-      Rimu.Variables.list.length,
+      Rimu.Macros.list.length,
       1,
-      'variables count');
+      'macros count');
   testDelimitedBlock(test,
-      "{var} = 'variable\n value2'",
+      "{macro} = 'macro\n value2'",
       '',
-      'reassign variable');
+      'redefine macro');
   test.equal(
-      Rimu.Variables.get('var'),
-      'variable\n value2',
-      'variable value');
+      Rimu.Macros.get('macro'),
+      'macro\n value2',
+      'macro value');
   test.equal(
-      Rimu.Variables.list.length,
+      Rimu.Macros.list.length,
       1,
-      'variables count');
+      'macros count');
   testDelimitedBlock(test,
-      '{var}',
-      '<p>variable\n value2</p>',
-      'variable reference renders paragraph');
+      '{macro}',
+      '<p>macro\n value2</p>',
+      'macro invocation renders paragraph');
   testDelimitedBlock(test,
       '..\nTo be...\n\nor not to be!\n..',
       '<div><p>To be...</p>\n<p>or not to be!</p></div>',
@@ -305,39 +305,39 @@ exports['Documents'] = function(test) {
   testDocument(test,
       '{blockref}=\'BLOCKREF\'\n{inlineref}=\'INLINEREF\'\n{blockref}\n\nAn {inlineref}',
       '<p>BLOCKREF</p>\n<p>An INLINEREF</p>',
-      'non-existant variable references are rendered verbatim');
+      'non-existant macro invocations are rendered verbatim');
   testDocument(test,
       "{v1}='1'\n{v2}='2'\n{v1} and {v2}\n\n- {v1}\n\n{v2}",
       '<p>1 and 2</p>\n<ul><li>1\n</li></ul><p>2</p>',
-      'variables reference in list');
+      'macro invocation in list');
   testDocument(test,
       "{v1}='1\n2'\n{v2}='3\n4'\n{v1} and {v2}",
       '<p>1\n2 and 3\n4</p>',
-      'multi-line variable values rendered inline');
+      'multi-line macro values rendered inline');
   testDocument(test,
       "{v}='$1 and $2'\n{v|a|b_c_} {v|d|e\nfg}.",
       '<p>a and b<em>c</em> d and e\nfg.</p>',
-      'parameterized variables');
+      'parametrized macros');
   testDocument(test,
       "{v}='$1 and $2 and $3 and $42'\n{v}{v|} {v|1|2}",
       '<p> and  and  and  and  and  and  1 and 2 and  and </p>',
-      'parameterized variables');
+      'parametrized macros');
   testDocument(test,
       "{v1}='$1 $2'\n{v2}='{v1|1|2} $1 $2'\n{v2|3|4} {v1|5|6}",
       '<p>1 2 3 4 5 6</p>',
-      'nested parameterized variables');
+      'nested parametrized macros');
   testDocument(test,
       "{v1}='$1 $2'\n{v2}='<div>{v1|1|2} $1 $2</div>'\n{v2|3|4}",
       '<div>1 2 3 4</div>',
-      'nested parameterized variables');
+      'nested parametrized macros');
   testDocument(test,
       "{mark}='<mark>$1</mark>'\n{sub}='<sub>$1</sub>'\n{mark|Note}: H{sub|2}O",
       '<p><mark>Note</mark>: H<sub>2</sub>O</p>',
-      'text format parameterized variables');
+      'text format parametrized macros');
   testDocument(test,
       "{src}='tiger.png'\n{caption}='Tiger'\n<image:{src}|{caption}>",
       '<img src="tiger.png" alt="Tiger">',
-      'variable substitution in block image');
+      'macro substitution in block image');
   testDocument(test,
       '\\/*\nabc\n*/\n\n\\// xyz',
       '<p>/*\nabc\n*/</p>\n<p>// xyz</p>',
@@ -345,19 +345,19 @@ exports['Documents'] = function(test) {
   testDocument(test,
       "{v}='This 'and' that'\n{v}",
       "<p>This 'and' that</p>",
-      'single quotes are ok inside variables values');
+      'single quotes are ok inside macros values');
   testDocument(test,
       'A \\{v}',
       '<p>A {v}</p>',
-      'escaped undefined variables are unescaped');
+      'escaped undefined macros are unescaped');
   test.equal(Rimu.render(
       'Hello {undefined}'),
       '<p>Hello </p>',
-      'undefined variable');
+      'undefined macro');
   test.equal(Rimu.render(
-      'Hello {undefined?undefined variable.}'),
-      '<p>Hello undefined variable.</p>',
-      'default variable value');
+      'Hello {undefined?undefined macro.}'),
+      '<p>Hello undefined macro.</p>',
+      'default macro value');
   test.equal(Rimu.render(
       '.error\nError message\n\nNormal paragraph'),
       '<p class="error">Error message</p>\n<p>Normal paragraph</p>',
@@ -393,6 +393,6 @@ exports['Documents'] = function(test) {
   test.equal(Rimu.render(
       '{info}= \'.info #ref2 [style="color:green"]\'\n{info}\ngreeny\n\nnormal\n\n{2paragraphs} =\'paragraph 1\n\nparagraph2\'\n{2paragraphs}'),
       '<p class="info" id="ref2" style="color:green">greeny</p>\n<p>normal</p>\n<p>paragraph 1</p>\n<p>paragraph2</p>',
-      'html attributes assigned to variable');
+      'html attributes assigned to macro');
   test.done();
 };
