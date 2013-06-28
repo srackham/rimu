@@ -513,8 +513,8 @@ Reference syntax:
 - A variable name consists of one or more alphanumeric, underscore or
   dash characters.
 - Variable assignment must start at the left margin.
-- Variable values can contain references to previously defined
-  variables.
+- Assigned variable values can contain references to previously defined
+  variables but variable references cannot be nested.
 - Variable assignments and references can be escaped with a backslash
   character prefix.
 - _Parameterized_ references replace the `$1`, `$2` ... strings in the
@@ -525,7 +525,6 @@ Reference syntax:
   or the `default-value` if the `\{variable-name?default-value}`
   _Existential_ syntax is used.
 - Unspecified parameter values default to an empty string.
-- Nested variable references are not allowed.
 
 Examples:
 

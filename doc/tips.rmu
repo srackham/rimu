@@ -167,7 +167,7 @@ entities or you can enter them literally.
 
 For example, to enter an ellipsis you could either enter `&hellip;` or
 you could enter the actual … character directly. The mechanism for
-entering Unicode characters directly will dictated your editor:
+entering Unicode characters directly will be dictated your editor:
 
 Vim:: Enter _Ctrl+V_ followed by the the character _u_ followed by the
 hexidecimal character code e.g. to enter an em dash enter _Ctrl+V_
