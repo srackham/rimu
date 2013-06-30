@@ -281,8 +281,8 @@ Examples:
 
 <div id="topic-html-markup">
 <!--
-HTML markup can be mixed with Rimu markup as <span style="font-size:
-2em">inline elements</span> or as block elements:
+Block and inline HTML elements can be <span style="font-size:
+2em">mixed with</span> Rimu markup.
 
 <table>
   <tr>
@@ -295,13 +295,13 @@ HTML markup can be mixed with Rimu markup as <span style="font-size:
   </tr>
 </table>
 
-- The leading `<` character in the first line must start at the left
+- The opening tag of an HTML block element must start at the left
   margin.
-- An HTML block is terminated with a blank line (cannot contain
-  blank lines).
+- An HTML block element is terminated with a blank line (it cannot
+  contain blank lines).
 - Inline HTML tags can be escaped with a backslash character prefix.
-- HTML can be suppressed using the API _safeMode_ option (see the
-  _API_ topic).
+- HTML elements can be excluded from the output using the API
+  _safeMode_ option (see the _API_ topic).
 
 -->
 </div>
@@ -534,7 +534,6 @@ Examples:
 \{description} = 'Sapiente nec vestibulum integer sit qui. Libero pede
 posuere.  Erat ullamcorper enim per fusce aliquam interdum penatibus
 et sed auctor ac.  Lectus consectetuer neque.'
-\{-} = '&ndash;'
 \{homepage} = '<http://www.example.com|Foobar home page>'
 
 Visit the \{homepage}.

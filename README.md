@@ -11,7 +11,7 @@ and Markdown.
 - No dependencies.
 - Simple one-function API.
 - Features include raw HTML (a la Markdown), HTML attribute injection
-  and parameterized macros.
+  and parametrized macros.
 - Written in TypeScript.
 - Available from Github and as an npm module or a Meteor smart package.
 - Includes command-line compiler, playground GUI, Vim syntax
