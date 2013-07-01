@@ -32,7 +32,7 @@ module Rimu.LineBlocks {
     // Macro invocation.
     // reference = $1
     {
-      match: /^\\?(\{[\w\-]+(?:[|?].*)?\})$/,
+      match: /^(\{[\w\-]+(?:[|?].*)?\})$/,
       replacement: '',
       filter: function (match, block, reader?) {
         var value = Macros.render(match[1]);

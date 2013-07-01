@@ -98,27 +98,9 @@ _npmjs.org_ README formats.
 
 
 == Escaping Rimu syntax
-If you have text you don't want interpreted as a Rimu element then
-you can disable (escape) it by prefixing the element with a backslash
-character. An escaped a block element will be interpreted as a normal
-paragraph (paragraphs have the lowest precedence).
-
-There are some corner cases to be aware of:
-
-- Escaping macro definitions and invocations in a block context
-  using a backslash will result in them being expanded in an inline
-  (paragraph) context, if you want them rendered literally in the
-  paragraph context prefix a `&ZeroWidthSpace;` character entity e.g.
-
-  &ZeroWidthSpace;\{info}
-
-- If you escape an HTML block element with a backslash the HTML tags
-  will be rendered in an inline (paragraph) context, which is probably
-  not what you want -- use a `&ZeroWidthSpace;` character entity
-  instead of a backslash character.
-
-- To render a macro invocation verbatim it must be escaped with a
-  leading backslash character.
+If you have text that you don't want interpreted as a Rimu element
+then you can render it literally (escape it) by prefixing the element
+with a backslash character.
 
 
 == Passing macro values into Rimu documents
@@ -157,6 +139,14 @@ example:
   .#big-logo [width="150"]
   <image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
   ..
+
+Renders:
+
+<image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
+..
+.#big-logo [width="150"]
+<image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
+..
 
 
 == Entering non-ASCII characters

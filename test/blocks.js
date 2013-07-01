@@ -303,6 +303,18 @@ exports['Documents'] = function(test) {
   test.equal(Rimu.render('<hr>', {safeMode: 2, htmlReplacement: 'XXX'}), 'XXX', 'htmlReplacement option');
   // The {blockref} is passed through and gets picked up as a paragraph.
   testDocument(test,
+      '{v1}=\'1\'\n\n{v1}',
+      '<p>1</p>',
+      'stand-alone macro invocation');
+  testDocument(test,
+      '{v1}=\'1\'\n\n\\{v1}',
+      '<p>{v1}</p>',
+      'escaped stand-alone macro invocation');
+  testDocument(test,
+      '\\<img href="url" alt="alt">',
+      '<p>&lt;img href="url" alt="alt"&gt;</p>',
+      'escaped HTML block');
+  testDocument(test,
       '{blockref}=\'BLOCKREF\'\n{inlineref}=\'INLINEREF\'\n{blockref}\n\nAn {inlineref}',
       '<p>BLOCKREF</p>\n<p>An INLINEREF</p>',
       'non-existant macro invocations are rendered verbatim');

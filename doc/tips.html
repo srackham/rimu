@@ -134,23 +134,10 @@ render like Markdown code blocks.
 </dd></dl><p>The Rimu <em>README</em> uses this subset for compatibility with <em>GitHub</em> and
 <em>npmjs.org</em> README formats.</p>
 <h2>Escaping Rimu syntax</h2>
-<p>If you have text you don't want interpreted as a Rimu element then
-you can disable (escape) it by prefixing the element with a backslash
-character. An escaped a block element will be interpreted as a normal
-paragraph (paragraphs have the lowest precedence).</p>
-<p>There are some corner cases to be aware of:</p>
-<ul><li>Escaping macro definitions and invocations in a block context
-  using a backslash will result in them being expanded in an inline
-  (paragraph) context, if you want them rendered literally in the
-  paragraph context prefix a <code>&amp;ZeroWidthSpace;</code> character entity e.g.
-<pre>&amp;ZeroWidthSpace;{info}</pre>
-</li><li>If you escape an HTML block element with a backslash the HTML tags
-  will be rendered in an inline (paragraph) context, which is probably
-  not what you want -- use a <code>&amp;ZeroWidthSpace;</code> character entity
-  instead of a backslash character.
-</li><li>To render a macro invocation verbatim it must be escaped with a
-  leading backslash character.
-</li></ul><h2>Passing macro values into Rimu documents</h2>
+<p>If you have text that you don't want interpreted as a Rimu element
+then you can render it literally (escape it) by prefixing the element
+with a backslash character.</p>
+<h2>Passing macro values into Rimu documents</h2>
 <p>You can do this by prepending text containing macro definitions to
 Rimu source before rendering the source. The <em>rimuc</em> command has a
 <code>--prepend</code> option that can be used to do this.</p>
@@ -176,6 +163,9 @@ example:</p>
 .#big-logo [width="150"]
 &lt;image:http://www.w3.org/Icons/w3c_home.png|W3C logo&gt;
 ..</pre>
+<p>Renders:</p>
+<img src="http://www.w3.org/Icons/w3c_home.png" alt="W3C logo">
+<div><img id="big-logo" width="150" src="http://www.w3.org/Icons/w3c_home.png" alt="W3C logo"></div>
 <h2>Entering non-ASCII characters</h2>
 <p>A number of non-ASCII Unicode characters are commonly used for
 punctuation e.g.  em dash, ellipsis and quotation characters. You can

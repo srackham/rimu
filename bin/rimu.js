@@ -301,7 +301,7 @@ var Rimu;
                 }
             },
             {
-                match: /^\\?(\{[\w\-]+(?:[|?].*)?\})$/,
+                match: /^(\{[\w\-]+(?:[|?].*)?\})$/,
                 replacement: '',
                 filter: function (match, block, reader) {
                     var value = Rimu.Macros.render(match[1]);
@@ -463,7 +463,7 @@ var Rimu;
                 specials: true
             },
             {
-                openMatch: /^\\?(<!.*|(?:<\/?(?:html|head|body|iframe|script|style|address|article|aside|audio|blockquote|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|img|math|nav|noscript|ol|output|p|pre|section|table|tfoot|ul|video)(?:[ >].*)?))$/i,
+                openMatch: /^(<!.*|(?:<\/?(?:html|head|body|iframe|script|style|address|article|aside|audio|blockquote|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|img|math|nav|noscript|ol|output|p|pre|section|table|tfoot|ul|video)(?:[ >].*)?))$/i,
                 closeMatch: /^$/,
                 openTag: '',
                 closeTag: '',
