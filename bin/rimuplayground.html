@@ -459,8 +459,7 @@ the end of a line.
 This is the _Rimu Playground_, it's an interactive sandbox
 for learning and experimenting with Rimu markup:
 
-- Select from the _Rimu topics_ drop-down list to view Rimu
-  documentation.
+- Select from the drop-down list to view Rimu documentation topics.
 - Enter Rimu source in the _Rimu_ text area, the _Preview_ and _HTML_
   are displayed as you type.
 - Use _Stash_ to save the current Rimu source and _Unstash_
@@ -670,12 +669,16 @@ Examples:
     }
     var stashText = '';
     function stash() {
+      if (!window.sessionStorage) {
+        alert('This browser does not support local sessionStorage.'); // IE, I'm talking to you!
+        return;
+      }
       var rimuElement = document.getElementById('rimu');
-      stashText = rimuElement.value;
+      sessionStorage['stash'] = rimuElement.value;
     }
     function unstash() {
       var rimuElement = document.getElementById('rimu');
-      rimuElement.value = stashText;
+      rimuElement.value = sessionStorage['stash'];
       convert();
     }
     // Render documentation topic stored in comment inside div with topic id.
