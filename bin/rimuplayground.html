@@ -65,9 +65,9 @@
   <h1><a href="http://rimumarkup.org/">Rimu Playground</a></h1>
 
   <p>
-    <select onchange="if (this.selectedIndex) renderCommentFrom(this.value);"
-            onclick="if (this.selectedIndex) renderCommentFrom(this.value);">
-      <option value="">Rimu topics...</option>
+    <select id="topic"
+            onchange="renderTopic(this.value)"
+            onclick="renderTopic(this.value)">
       <option value="topic-anchors-and-links">Anchors and links</option>
       <option value="topic-api">API</option>
       <option value="topic-character-entities">Character entities</option>
@@ -81,7 +81,7 @@
       <option value="topic-macros">Macros</option>
       <option value="topic-other">Other</option>
       <option value="topic-paragraphs">Paragraphs</option>
-      <option value="topic-playground">Playground</option>
+      <option selected value="topic-playground">Playground</option>
       <option value="topic-text-formatting">Text formatting</option>
       <option value="topic-tools">Tools</option>
       <option value="topic-urls-and-email">URLs and email addresses</option>
@@ -299,7 +299,7 @@ Block and inline HTML elements can be <span style="font-size:
   margin.
 - An HTML block element is terminated with a blank line (it cannot
   contain blank lines).
-- Inline HTML tags can be escaped with a backslash character prefix.
+- HTML tags can be escaped with a backslash character prefix.
 - HTML elements can be excluded from the output using the API
   _safeMode_ option (see the _API_ topic).
 
@@ -459,14 +459,16 @@ the end of a line.
 This is the _Rimu Playground_, it's an interactive sandbox
 for learning and experimenting with Rimu markup:
 
-- Stand-alone HTML application, all processing in the browser (no
-  data is sent from the browser).
-- Enter Rimu source in the _Rimu_ text area, the _Preview_ and _HTML_
-  are displayed as you type.
 - Select from the _Rimu topics_ drop-down list to view Rimu
   documentation.
+- Enter Rimu source in the _Rimu_ text area, the _Preview_ and _HTML_
+  are displayed as you type.
 - Use _Stash_ to save the current Rimu source and _Unstash_
   to restore it later.
+- The Playground is a single file stand-alone HTML application,
+  all processing in the browser (no data is sent from the browser).
+- You can find out more about Rimu Markup at
+  <http://rimumarkup.org|rimumarkup.org>
 
 -->
 </div>
@@ -676,11 +678,14 @@ Examples:
       rimuElement.value = stashText;
       convert();
     }
-    // Render Rimu source stored in comment inside div with id.
-    function renderCommentFrom(id) {
-      var commentDiv = document.getElementById(id);
+    // Render documentation topic stored in comment inside div with topic id.
+    function renderTopic(topicId) {
+      if (!topicId) {
+        topicId = document.getElementById('topic').value;
+      }
+      var commentDiv = document.getElementById(topicId);
       if (!commentDiv) {
-        alert('Missing div: ' + id);
+        alert('Missing topic: ' + topicId);
         return;
       }
       var rimuElement = document.getElementById('rimu');
@@ -701,6 +706,7 @@ Examples:
       htmlElement.innerHTML = escapeSpecialChars(html);
       previewElement.innerHTML = html;
     }
+    window.onload = function () { renderTopic(); };
     // ]]>
   </script>
 </body>

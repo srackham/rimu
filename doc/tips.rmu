@@ -80,7 +80,7 @@ code block.
 == Syntax shared with Markdown
 The following subset of _Rimu_ elements is compatible with Markdown:
 
-Headers:: Single-line headers using `#` character header IDs.
+Headers:: Headers using `#` character header IDs.
 
 Code blocks:: Indented paragraphs (at least four spaces)
 render like Markdown code blocks.
