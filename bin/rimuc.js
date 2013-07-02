@@ -29,7 +29,7 @@ var MANPAGE = 'NAME\n' +
     '  -p, --prepend SOURCE\n' +
     '    Prepend the SOURCE text to the Rimu source.\n' +
     '\n' +
-    '  --safe-mode\n' +
+    '  --safe-mode NUMBER\n' +
     '    Specifies how to process inline and block HTML elements.\n' +
     '    --safe-mode 0 renders raw HTML (default),\n' +
     '    --safe-mode 1 drops raw HTML,\n' +
