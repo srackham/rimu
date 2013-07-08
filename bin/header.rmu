@@ -9,7 +9,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <title>{title}</title>
   <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
   <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script>
@@ -20,7 +20,7 @@
       margin: 1em;
       max-width: 50em;
     }
-    h1, h2, h3, h4, h5, h6, a { color: #527bbd; }
+    h1, h2, h3, h4, h5, h6 { color: #527bbd; }
     h1 { font-size: 2.2em; }
     h2 { font-size: 1.5em; }
     h3 { font-size: 1.2em; }
@@ -35,9 +35,7 @@
     h2 {
       border-bottom: 1px solid rgba(0, 0, 0, 0.15);
     }
-    em, strong {
-      color: #295bad;
-    }
+    a, a:hover { color: #527bbd; }
     dt {
       margin-top: 1em;
     }
@@ -46,7 +44,8 @@
       margin-bottom: 0.5em;
     }
     code {
-      font-size: 13px;
+      color: inherit;
+      font-size: inherit;
     }
     *:not(pre) > code {
       white-space: normal;

@@ -15,7 +15,7 @@
       margin: 1em;
       max-width: 50em;
     }
-    h1, h2, h3, h4, h5, h6, a { color: #527bbd; }
+    h1, h2, h3, h4, h5, h6 { color: #527bbd; }
     h1 { font-size: 2.2em; }
     h2 { font-size: 1.5em; }
     h3 { font-size: 1.3em; }
@@ -30,9 +30,7 @@
     h2 {
       border-bottom: 1px solid rgba(0, 0, 0, 0.15);
     }
-    em, strong {
-      color: #295bad;
-    }
+    a, a:hover { color: #527bbd; }
     dt {
       margin-top: 1em;
     }
@@ -48,14 +46,14 @@
       padding: 0;
     }
     code {
-      font-size: 13px;
+      color: inherit;
+      font-size: inherit;
     }
     *:not(pre) > code {
       white-space: normal;
       border: none;
       background-color: #fafafa;
     }
-    /* highlight.js tweaks */
     pre > code {
       background-color: WhiteSmoke;
     }
@@ -149,6 +147,9 @@ Rimu source before rendering the source. The <em>rimuc</em> command has a
 <p>Alternatively you could also put macro definitions in a
 separate file and specify it as the first Rimu source file in the
 <em>rimuc</em> command.</p>
+<p>The following example sets the HTML <em>title</em> in the <code>kotlin-notes.html</code>
+output document:</p>
+<pre>rimuc --styled --prepend "{title}='Kotlin Notes'" kotlin-notes.rmu</pre>
 <h2>Putting | and } characters in macro parameter values</h2>
 <p>Use the corresponding character entities <code>&amp;vert;</code> and <code>&amp;rbrace;</code>.</p>
 <h2>Syntax checker</h2>

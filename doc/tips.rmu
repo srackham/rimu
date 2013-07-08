@@ -118,6 +118,11 @@ Alternatively you could also put macro definitions in a
 separate file and specify it as the first Rimu source file in the
 _rimuc_ command.
 
+The following example sets the HTML _title_ in the `kotlin-notes.html`
+output document:
+
+  rimuc --styled --prepend "\{title}='Kotlin Notes'" kotlin-notes.rmu
+
 
 == Putting | and } characters in macro parameter values
 Use the corresponding character entities `&vert;` and `&rbrace;`.

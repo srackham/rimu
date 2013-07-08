@@ -21,7 +21,7 @@
       margin: 1em;
       max-width: 50em;
     }
-    h1, h2, h3, h4, h5, h6, a { color: #527bbd; }
+    h1, h2, h3, h4, h5, h6 { color: #527bbd; }
     h1 { font-size: 2.2em; }
     h2 { font-size: 1.5em; }
     h3 { font-size: 1.3em; }
@@ -36,9 +36,7 @@
     h2 {
       border-bottom: 1px solid rgba(0, 0, 0, 0.15);
     }
-    em, strong {
-      color: #295bad;
-    }
+    a, a:hover { color: #527bbd; }
     dt {
       margin-top: 1em;
     }
@@ -54,14 +52,14 @@
       padding: 0;
     }
     code {
-      font-size: 13px;
+      color: inherit;
+      font-size: inherit;
     }
     *:not(pre) > code {
       white-space: normal;
       border: none;
       background-color: #fafafa;
     }
-    /* highlight.js tweaks */
     pre > code {
       background-color: WhiteSmoke;
     }
