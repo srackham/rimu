@@ -185,6 +185,11 @@ Common Unicode punctuation characters:
   …             &hellip;       2026
   “             &ldquo;        201c
   ”             &rdquo;        201d
+  →             &rightarrow;   2192
+
+Here's a full list of
+<http://dev.w3.org/html5/html-author/charref|HTML5 character
+entities>.
 
 
 == Whitespace in URLs
