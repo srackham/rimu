@@ -185,7 +185,7 @@ hexidecimal character code e.g. to enter an em dash enter <em>Ctrl+V</em>
 followed by <em>u2014</em>
 </dd><dt>Linux console input</dt><dd> Enter <em>Ctrl+Shift+U</em> followed by the hexadecimal
 character code followed by the <em>Enter</em> key.
-</dd></dl><p>Common Unicode punctuation characters:</p>
+</dd></dl><p>Common Unicode characters:</p>
 <pre>Character     HTML entity    Hexadecimal code
 ---------     -----------    ----------------
 —             &amp;mdash;        2014
@@ -196,9 +196,12 @@ character code followed by the <em>Enter</em> key.
 <p>Here's a full list of
 <a href="http://dev.w3.org/html5/html-author/charref">HTML5 character
 entities</a>.</p>
-<h2>Whitespace in URLs</h2>
+<h2>Whitespace and Underscores in URLs</h2>
 <p>Whitespace characters are illegal in URL paths, use <em>%20</em> in place of
 spaces, for example:</p>
 <pre>&lt;file:///home/srackham/books/War%20and%20Peace.pdf|War and Peace&gt;</pre>
+<p>Underscore characters are legal in URL paths but they may be
+interpreted as Rimu emphasis quotes, you can use <em>%5F</em> in place of
+underscores or escape them with backslashes.</p>
 </body>
 </html>
