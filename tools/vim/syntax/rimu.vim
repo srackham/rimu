@@ -22,6 +22,7 @@ syn match rimuBar /|/ contained containedin=rimuURLParams,rimuVariableParams
 syn match rimuBackslash /\\/ containedin=ALL
 syn match rimuSpanLineBreak / +$/
 syn match rimuSpanEntity /\\\@<!&[#a-zA-Z]\w\{-1,};/
+syn match rimuBadURLChars /\\\@<!_/ contained containedin=rimuSpanURL
 syn match rimuSpanURL /\\\@<!<\S\+\(|\_.\{-}\)\?>/ contains=rimuURLParams
 syn match rimuURLParams /|\_[^>]*/
 syn match rimuSpanHTML /\\\@<!<[!\/]\?[a-zA-Z-]\+\(\_s\_.\{-}\|\)>/
@@ -51,6 +52,7 @@ syn match rimuListId /:\{2,4}/ contained containedin=rimuListLabel
 syn region rimuListLabel start=/^/ end=/:\{2,4}/ contains=rimuSpan.* oneline keepend
 
 hi def link rimuBackslash Special
+hi def link rimuBadURLChars Todo
 hi def link rimuBar Label
 hi def link rimuBlockDelimiter Label
 hi def link rimuCodeBlock Identifier
