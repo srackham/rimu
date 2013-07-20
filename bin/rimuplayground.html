@@ -443,8 +443,14 @@ start at the left margin.
 You can force line breaks +
 in normal paragraphs by   +
 putting a space followed  +
-by a plus character at    +
-the end of a line.
+by a \+ character at the  +
+end of a line.
+
+- Line breaks can be escaped by prefixing the trailing plus character
+  with a backslash.
+- All stand-alone `\+` _safe pluses_ are replaced by a single
+  `+` character (a _safe plus_ will not be interpreted as a line
+  break if wrapped to the end of a line).
 
 ==== Indented paragraphs
   _Indented paragraphs_ expand macro invocations but all other

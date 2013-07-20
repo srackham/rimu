@@ -21,10 +21,18 @@ module Rimu.Replacements {
       specials: false,
     },
 
-    // Line break (space followed by + at end of line.
+    // Line break (space followed by + at end of line).
     {
-      match: /\\? \+(?:\n|$)/g,
-      replacement: '<br>\n',
+      match: /[\\ ]\+(\n|$)/g,
+      replacement: '<br>$1',
+      specials: false,
+    },
+
+    // Stand-alone \+ "safe plus" replaced by +.
+    // A "safe plus" cannot become a line break if wrapped to end-of-line.
+    {
+      match: /(^|\s)\\\+(\s|$)/g,
+      replacement: '$1+$2',
       specials: false,
     },
 

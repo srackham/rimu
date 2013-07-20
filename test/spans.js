@@ -87,9 +87,13 @@ exports['Replacements'] = function(test) {
         '&copy; &reg;&amp;para;',
         'character entities');
   test.equal(Spans.render(
-        'Lorum +\nipsum \\ +\nvestibulum  +'),
-        'Lorum<br>\nipsum  +\nvestibulum <br>\n',
+        'Lorum +\nipsum \\+\nvestibulum  +'),
+        'Lorum<br>\nipsum +\nvestibulum <br>',
         'line breaks');
+  test.equal(Spans.render(
+      '\\+ Lorum \\+\nipsum \\+ + \\+vestibulum \\+'),
+      '+ Lorum +\nipsum + + \\+vestibulum +',
+      'safe plus');
   test.equal(Spans.render(
         'Lorum <<#x1>>ipsum <#x1|lorum link> \\<<#x1>>'),
         'Lorum <span id="x1"></span>ipsum <a href="#x1">lorum link</a> &lt;&lt;#x1&gt;&gt;',

@@ -960,8 +960,13 @@ var Rimu;
                 specials: false
             },
             {
-                match: /\\? \+(?:\n|$)/g,
-                replacement: '<br>\n',
+                match: /[\\ ]\+(\n|$)/g,
+                replacement: '<br>$1',
+                specials: false
+            },
+            {
+                match: /(^|\s)\\\+(\s|$)/g,
+                replacement: '$1+$2',
                 specials: false
             },
             {
