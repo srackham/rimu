@@ -25,10 +25,10 @@ syn match rimuSpanEntity /\\\@<!&[#a-zA-Z]\w\{-1,};/
 syn match rimuUnsafeUnderscore /\\\@<!_/ contained containedin=rimuSpanURL
 syn match rimuUnsafePlus /[ \t\n]\@<=+[ \t]\@=/ containedin=ALLBUT,rimuSpanCode,rimuCodeBlock,rimuComment,rimuHTMLBlock,rimuHeader
 syn match rimuSpanURL /\\\@<!<\S\+\(|\_.\{-}\)\?>/ contains=rimuURLParams
-syn match rimuURLParams /|\_[^>]*/
+syn match rimuURLParams /|\_[^>]*/ contained
 syn match rimuSpanHTML /\\\@<!<[!\/]\?[a-zA-Z-]\+\(\_s\_.\{-}\|\)>/
 syn match rimuMacroRef /\\\@<!{[0-9A-Za-z_-]\+\(|\_.\{-}\)\?}/ contains=rimuMacroParams containedin=ALLBUT,rimuComment
-syn match rimuMacroParams /|\_[^}]*/ contains=rimuSpan.*
+syn match rimuMacroParams /|\_[^}]*/ contained contains=rimuSpan.*
 syn match rimuSpanAnchor /<<#[a-zA-Z_-].*>>/
 
 syn match rimuSpanStrong /\\\@<!\*[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\*/ contains=rimuSpanEntity

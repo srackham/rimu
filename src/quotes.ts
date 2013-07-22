@@ -52,7 +52,7 @@ module Rimu.Quotes {
     }
   }
 
-  // Strip backslashs from quote characters.
+  // Strip backslashes from quote characters.
   export function unescape(s: string): string {
     return s.replace(unescapeRe, '$1');
   }

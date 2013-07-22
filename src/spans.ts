@@ -2,7 +2,7 @@ module Rimu.Spans {
 /*
   This module renders text containing Quote and Replacement span elements.
 
-  Quote and replacement processing involves spliting the source text into
+  Quote and replacement processing involves splitting the source text into
   fragments where a quote or a replacement occurs then splicing the fragments
   containing HTML markup into the breaks.  A fragment is flagged as 'done' to
   exclude it from further substitutions.
