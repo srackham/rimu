@@ -9,7 +9,7 @@ declare module Rimu {
     function escapeRegExp(s: string): string;
     function replaceSpecialChars(s: string): string;
     function replaceMatch(match: RegExpExecArray, replacement: string, options?: {}): string;
-    function replaceOptions(text: string, options: {
+    function replaceInline(text: string, options: {
         macros?: boolean;
         spans?: boolean;
         specials?: boolean;

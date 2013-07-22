@@ -94,7 +94,7 @@ module Rimu.Lists {
     var text: string;
     if (match.length === 4) { // 3 match groups => definition list.
       writer.write(def.termOpenTag);
-      text = replaceOptions(match[1], {macros: true, spans: true});
+      text = replaceInline(match[1], {macros: true, spans: true});
       writer.write(text);
       writer.write(def.termCloseTag);
     } 
@@ -107,7 +107,7 @@ module Rimu.Lists {
     var nextItem: ItemState;
     nextItem = readToNext(startItem, reader, lines);
     text = lines.toString();
-    text = replaceOptions(text, {macros: true, spans: true});
+    text = replaceInline(text, {macros: true, spans: true});
     writer.write(text);
     while (true) {
       if (!nextItem) {

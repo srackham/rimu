@@ -155,7 +155,7 @@ module Rimu.DelimitedBlocks {
           text = Rimu.renderSource(text);
         }
         else {
-          text = replaceOptions(text, def);
+          text = replaceInline(text, def);
         }
         writer.write(text);
         writer.write(def.closeTag);

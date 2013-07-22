@@ -27,12 +27,12 @@ module Rimu {
       // Replace $1, $2 ... with corresponding match groups.
       var i = parseInt(arguments[0][1]);  // match group number.
       var text = match[i];                // match group text.
-      return replaceOptions(text, options);
+      return replaceInline(text, options);
     });
   }
 
   // Replace the entities specified in options in text and return the result.
-  export function replaceOptions(text: string,
+  export function replaceInline(text: string,
       options: {macros?: bool; spans?: bool; specials?: bool;}): string
   {
     if (options.macros) {

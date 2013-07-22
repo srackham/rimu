@@ -63,12 +63,12 @@ var Rimu;
         return replacement.replace(/\$\d/g, function () {
             var i = parseInt(arguments[0][1]);
             var text = match[i];
-            return replaceOptions(text, options);
+            return replaceInline(text, options);
         });
     }
     Rimu.replaceMatch = replaceMatch;
 
-    function replaceOptions(text, options) {
+    function replaceInline(text, options) {
         if (options.macros) {
             text = Rimu.Macros.render(text);
         }
@@ -80,7 +80,7 @@ var Rimu;
             return text;
         }
     }
-    Rimu.replaceOptions = replaceOptions;
+    Rimu.replaceInline = replaceInline;
 
     function injectAttributes(tag) {
         if (!tag || !Rimu.LineBlocks.htmlAttributes) {
@@ -295,7 +295,7 @@ var Rimu;
                 filter: function (match, block) {
                     var name = match[1];
                     var value = match[2];
-                    value = Rimu.replaceOptions(value, block);
+                    value = Rimu.replaceInline(value, block);
                     Rimu.Macros.set(name, value);
                     return '';
                 }
@@ -538,7 +538,7 @@ var Rimu;
                     if (def.container) {
                         text = Rimu.renderSource(text);
                     } else {
-                        text = Rimu.replaceOptions(text, def);
+                        text = Rimu.replaceInline(text, def);
                     }
                     writer.write(text);
                     writer.write(def.closeTag);
@@ -634,7 +634,7 @@ var Rimu;
             var text;
             if (match.length === 4) {
                 writer.write(def.termOpenTag);
-                text = Rimu.replaceOptions(match[1], { macros: true, spans: true });
+                text = Rimu.replaceInline(match[1], { macros: true, spans: true });
                 writer.write(text);
                 writer.write(def.termCloseTag);
             }
@@ -647,7 +647,7 @@ var Rimu;
             var nextItem;
             nextItem = readToNext(startItem, reader, lines);
             text = lines.toString();
-            text = Rimu.replaceOptions(text, { macros: true, spans: true });
+            text = Rimu.replaceInline(text, { macros: true, spans: true });
             writer.write(text);
             while (true) {
                 if (!nextItem) {

@@ -24,7 +24,7 @@ module Rimu.LineBlocks {
       filter: function (match, block) {
         var name = match[1];
         var value = match[2];
-        value = replaceOptions(value, block);
+        value = replaceInline(value, block);
         Macros.set(name, value);
         return '';
       },
