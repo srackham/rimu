@@ -19,6 +19,9 @@ var MANPAGE = 'NAME\n' +
     '  then writes the HTML to stdout. If FILES are specified\n' +
     '  the Rimu source is read from FILES.\n' +
     '\n' +
+    '  If a file named .rimurc exists in the user\'s home directory\n' +
+    '  then its contents is processed before any other inputs.\n' +
+    '\n' +
     'OPTIONS\n' +
     '  -h, --help\n' +
     '    Display help message.\n' +
@@ -109,6 +112,13 @@ else if (styled && !outFile && process.argv.length === 1) {
 if (styled) {
   process.argv.unshift(path.resolve(__dirname, 'header.rmu'));
   process.argv.push(path.resolve(__dirname, 'footer.rmu'));
+}
+
+// Include $HOME/.rimurc file if it exists.
+var homeDir = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
+var rimurc =  path.resolve(homeDir, '.rimurc');
+if (fs.existsSync(rimurc)) {
+  process.argv.unshift(rimurc);
 }
 
 // Concatenate source files.
