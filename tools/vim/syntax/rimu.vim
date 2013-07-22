@@ -27,7 +27,7 @@ syn match rimuUnsafePlus /[ \t\n]\@<=+[ \t]\@=/ containedin=ALLBUT,rimuSpanCode,
 syn match rimuSpanURL /\\\@<!<\S\+\(|\_.\{-}\)\?>/ contains=rimuURLParams
 syn match rimuURLParams /|\_[^>]*/ contained
 syn match rimuSpanHTML /\\\@<!<[!\/]\?[a-zA-Z-]\+\(\_s\_.\{-}\|\)>/
-syn match rimuMacroRef /\\\@<!{[0-9A-Za-z_-]\+\(|\_.\{-}\)\?}/ contains=rimuMacroParams containedin=ALLBUT,rimuComment
+syn match rimuMacroInvocation /\\\@<!{[0-9A-Za-z_-]\+\(|\_.\{-}\)\?}/ contains=rimuMacroParams containedin=ALLBUT,rimuComment
 syn match rimuMacroParams /|\_[^}]*/ contained contains=rimuSpan.*
 syn match rimuSpanAnchor /<<#[a-zA-Z_-].*>>/
 
@@ -76,7 +76,7 @@ hi def link rimuUnsafePlus Todo
 hi def link rimuUnsafeUnderscore Todo
 hi def link rimuMacroValue Type
 hi def link rimuMacroParam Macro
-hi def link rimuMacroRef Special
+hi def link rimuMacroInvocation Special
 
 let b:current_syntax = "rimu"
 
