@@ -9,7 +9,7 @@ module Rimu.Replacements {
     
   export var defs: Definition[] = [
     // Begin match with \\? to allow the replacement to be escaped.
-    // Global flag must be set on match re's.
+    // Global flag must be set on match re's so that the RegExp lastIndex property is set.
     // Replacement order is important.
     // If 'specials' is true source text in replacement groups is escaped with
     // special character entities.
@@ -104,7 +104,23 @@ module Rimu.Replacements {
 
   ];
 
+  // Update existing or add new replacement definition.
+  export function set(regexp: string, flags: string, replacement: string): void {
+    if (!/g/.test(flags)) {
+      flags += 'g';
+    }
+    for (var i in defs) {
+      if (defs[i].match.source === regexp) {
+        // Update existing definition.
+        defs[i].match.ignoreCase = /i/.test(flags);
+        defs[i].match.multiline = /m/.test(flags);
+        defs[i].replacement = replacement;
+        return;
+      }
+    }
+    // Add new definition at start of defs list.
+    defs.unshift({match: new RegExp(regexp, flags), replacement: replacement, specials: true});
+  }
+
 }
-
-
 

@@ -5,17 +5,17 @@ module Rimu.Macros {
     value: string;
   }
     
-  export var list: Macro[] = [];
+  export var defs: Macro[] = [];
 
   export function reset(): void {
-    list = [];
+    defs = [];
   }
 
   // Return named macro value or null if it doesn't exist.
   export function get(name: string): string {
-    for (var i in list) {
-      if (list[i].name === name) {
-        return list[i].value;
+    for (var i in defs) {
+      if (defs[i].name === name) {
+        return defs[i].value;
       }
     }
     return null;
@@ -23,13 +23,13 @@ module Rimu.Macros {
 
   // Set named macro value or add it if it doesn't exist.
   export function set(name: string, value: string): void {
-    for (var i in list) {
-      if (list[i].name === name) {
-        list[i].value = value;
+    for (var i in defs) {
+      if (defs[i].name === name) {
+        defs[i].value = value;
         return;
       }
     }
-    list.push({name: name, value: value});
+    defs.push({name: name, value: value});
   }
 
   export function render(text: string): string {

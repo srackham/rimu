@@ -15,6 +15,21 @@ module Rimu.LineBlocks {
   var defs: Definition[] = [
     // Prefix match with backslash to allow escaping.
 
+    // Replacement definition.
+    // regexp = $1, flags = $2, replacement = $2
+    {
+      match: /^\\?\/(.+)\/([igm]*)\s*=\s*'(.*)'$/,
+      replacement: '',
+      macros: true,
+      filter: function (match, block) {
+        var regexp = match[1];
+        var flags = match[2];
+        var replacement = match[3];
+        replacement = replaceInline(replacement, block);
+        Replacements.set(regexp, flags, replacement);
+        return '';
+      },
+    },
     // Macro definition.
     // name = $1, value = $2
     {

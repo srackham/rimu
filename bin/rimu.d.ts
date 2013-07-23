@@ -49,7 +49,7 @@ declare module Rimu.Macros {
         name: string;
         value: string;
     }
-    var list: Macro[];
+    var defs: Macro[];
     function reset(): void;
     function get(name: string): string;
     function set(name: string, value: string): void;
@@ -113,4 +113,5 @@ declare module Rimu.Replacements {
         specials: boolean;
     }
     var defs: Definition[];
+    function set(regexp: string, flags: string, replacement: string): void;
 }

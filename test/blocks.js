@@ -24,7 +24,7 @@ function testDocument(test, source, expected, message) {
 
 // Tests.
 exports['Line blocks'] = function(test) {
-  Rimu.Macros.list = [];
+  Rimu.Macros.defs = [];
   testLineBlock(test,
       "{macro} = 'macro value'",
       '',
@@ -34,7 +34,7 @@ exports['Line blocks'] = function(test) {
       'macro value',
       'macro value');
   test.equal(
-      Rimu.Macros.list.length,
+      Rimu.Macros.defs.length,
       1,
       'macros count');
   testLineBlock(test,
@@ -46,7 +46,7 @@ exports['Line blocks'] = function(test) {
       'macro value2',
       'macro value');
   test.equal(
-      Rimu.Macros.list.length,
+      Rimu.Macros.defs.length,
       1,
       'macros count');
   testDelimitedBlock(test,
@@ -58,11 +58,11 @@ exports['Line blocks'] = function(test) {
       '',
       'nested macro definition');
   test.equal(
-      Rimu.Macros.list.length,
+      Rimu.Macros.defs.length,
       2,
       'macros count');
   test.equal(
-      Rimu.Macros.list[1].value,
+      Rimu.Macros.defs[1].value,
       'nested macro: macro value2',
       'macro list value');
   testLineBlock(test,
@@ -102,7 +102,7 @@ exports['Line blocks'] = function(test) {
 
 exports['Delimited blocks'] = function(test) {
   // Block macros.
-  Rimu.Macros.list = [];
+  Rimu.Macros.defs = [];
   testDelimitedBlock(test,
       "{macro} = 'macro\n value'",
       '',
@@ -112,7 +112,7 @@ exports['Delimited blocks'] = function(test) {
       'macro\n value',
       'macro value');
   test.equal(
-      Rimu.Macros.list.length,
+      Rimu.Macros.defs.length,
       1,
       'macros count');
   testDelimitedBlock(test,
@@ -124,7 +124,7 @@ exports['Delimited blocks'] = function(test) {
       'macro\n value2',
       'macro value');
   test.equal(
-      Rimu.Macros.list.length,
+      Rimu.Macros.defs.length,
       1,
       'macros count');
   testDelimitedBlock(test,

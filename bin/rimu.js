@@ -218,17 +218,17 @@ var Rimu;
 var Rimu;
 (function (Rimu) {
     (function (Macros) {
-        Macros.list = [];
+        Macros.defs = [];
 
         function reset() {
-            Macros.list = [];
+            Macros.defs = [];
         }
         Macros.reset = reset;
 
         function get(name) {
-            for (var i in Macros.list) {
-                if (Macros.list[i].name === name) {
-                    return Macros.list[i].value;
+            for (var i in Macros.defs) {
+                if (Macros.defs[i].name === name) {
+                    return Macros.defs[i].value;
                 }
             }
             return null;
@@ -236,13 +236,13 @@ var Rimu;
         Macros.get = get;
 
         function set(name, value) {
-            for (var i in Macros.list) {
-                if (Macros.list[i].name === name) {
-                    Macros.list[i].value = value;
+            for (var i in Macros.defs) {
+                if (Macros.defs[i].name === name) {
+                    Macros.defs[i].value = value;
                     return;
                 }
             }
-            Macros.list.push({ name: name, value: value });
+            Macros.defs.push({ name: name, value: value });
         }
         Macros.set = set;
 
@@ -288,6 +288,19 @@ var Rimu;
 (function (Rimu) {
     (function (LineBlocks) {
         var defs = [
+            {
+                match: /^\\?\/(.+)\/([igm]*)\s*=\s*'(.*)'$/,
+                replacement: '',
+                macros: true,
+                filter: function (match, block) {
+                    var regexp = match[1];
+                    var flags = match[2];
+                    var replacement = match[3];
+                    replacement = Rimu.replaceInline(replacement, block);
+                    Rimu.Replacements.set(regexp, flags, replacement);
+                    return '';
+                }
+            },
             {
                 match: /^\\?\{([\w\-]+)\}\s*=\s*'(.*)'$/,
                 replacement: '',
@@ -1014,6 +1027,23 @@ var Rimu;
                 specials: true
             }
         ];
+
+        function set(regexp, flags, replacement) {
+            if (!/g/.test(flags)) {
+                flags += 'g';
+            }
+            for (var i in Replacements.defs) {
+                if (Replacements.defs[i].match.source === regexp) {
+                    Replacements.defs[i].match.ignoreCase = /i/.test(flags);
+                    Replacements.defs[i].match.multiline = /m/.test(flags);
+                    Replacements.defs[i].replacement = replacement;
+                    return;
+                }
+            }
+
+            Replacements.defs.unshift({ match: new RegExp(regexp, flags), replacement: replacement, specials: true });
+        }
+        Replacements.set = set;
     })(Rimu.Replacements || (Rimu.Replacements = {}));
     var Replacements = Rimu.Replacements;
 })(Rimu || (Rimu = {}));
