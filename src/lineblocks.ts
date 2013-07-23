@@ -16,17 +16,17 @@ module Rimu.LineBlocks {
     // Prefix match with backslash to allow escaping.
 
     // Replacement definition.
-    // regexp = $1, flags = $2, replacement = $3
+    // pattern = $1, flags = $2, replacement = $3
     {
       match: /^\\?\/(.+)\/([igm]*)\s*=\s*'(.*)'$/,
       replacement: '',
       macros: true,
       filter: function (match) {
-        var regexp = match[1];
+        var pattern = match[1];
         var flags = match[2];
         var replacement = match[3];
         replacement = replaceInline(replacement, this);
-        Replacements.set(regexp, flags, replacement);
+        Replacements.set(pattern, flags, replacement);
         return '';
       },
     },

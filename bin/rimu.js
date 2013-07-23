@@ -293,11 +293,11 @@ var Rimu;
                 replacement: '',
                 macros: true,
                 filter: function (match) {
-                    var regexp = match[1];
+                    var pattern = match[1];
                     var flags = match[2];
                     var replacement = match[3];
                     replacement = Rimu.replaceInline(replacement, this);
-                    Rimu.Replacements.set(regexp, flags, replacement);
+                    Rimu.Replacements.set(pattern, flags, replacement);
                     return '';
                 }
             },
