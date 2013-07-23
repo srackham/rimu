@@ -292,11 +292,11 @@ var Rimu;
                 match: /^\\?\/(.+)\/([igm]*)\s*=\s*'(.*)'$/,
                 replacement: '',
                 macros: true,
-                filter: function (match, block) {
+                filter: function (match) {
                     var regexp = match[1];
                     var flags = match[2];
                     var replacement = match[3];
-                    replacement = Rimu.replaceInline(replacement, block);
+                    replacement = Rimu.replaceInline(replacement, this);
                     Rimu.Replacements.set(regexp, flags, replacement);
                     return '';
                 }
@@ -305,10 +305,10 @@ var Rimu;
                 match: /^\\?\{([\w\-]+)\}\s*=\s*'(.*)'$/,
                 replacement: '',
                 macros: true,
-                filter: function (match, block) {
+                filter: function (match) {
                     var name = match[1];
                     var value = match[2];
-                    value = Rimu.replaceInline(value, block);
+                    value = Rimu.replaceInline(value, this);
                     Rimu.Macros.set(name, value);
                     return '';
                 }
@@ -316,7 +316,7 @@ var Rimu;
             {
                 match: /^(\{[\w\-]+(?:[|?].*)?\})$/,
                 replacement: '',
-                filter: function (match, block, reader) {
+                filter: function (match, reader) {
                     var value = Rimu.Macros.render(match[1]);
                     if (value === match[1]) {
                         value = '\\' + value;
@@ -331,9 +331,9 @@ var Rimu;
                 replacement: '<h$1>$2</h$1>',
                 macros: true,
                 spans: true,
-                filter: function (match, block) {
+                filter: function (match) {
                     match[1] = match[1].length.toString();
-                    return Rimu.replaceMatch(match, block.replacement, block);
+                    return Rimu.replaceMatch(match, this.replacement, this);
                 }
             },
             {
@@ -362,7 +362,7 @@ var Rimu;
                 id: 'attributes',
                 match: /^\\?\.([a-zA-Z][\w\- ]*)?(#[a-zA-Z][\w\-]*)?(?:\s*)?(\[.+\])?$/,
                 replacement: '',
-                filter: function (match, block) {
+                filter: function (match) {
                     LineBlocks.htmlAttributes = '';
                     if (match[1]) {
                         LineBlocks.htmlAttributes += 'class="' + Rimu.trim(match[1]) + '"';
@@ -396,7 +396,7 @@ var Rimu;
                     if (!def.filter) {
                         text = Rimu.replaceMatch(match, def.replacement, def);
                     } else {
-                        text = def.filter(match, def, reader);
+                        text = def.filter(match, reader);
                     }
                     text = Rimu.injectAttributes(text);
                     writer.write(text);
@@ -887,7 +887,7 @@ var Rimu;
                     if (!def.filter) {
                         fragment.text = Rimu.replaceMatch(match, def.replacement, def);
                     } else {
-                        fragment.text = def.filter(match, def);
+                        fragment.text = def.filter(match);
                     }
                 }
                 fragmentIndex++;
@@ -1008,8 +1008,8 @@ var Rimu;
                 specials: true
             },
             {
-                filter: function (match, replacement) {
-                    var text = Rimu.replaceMatch(match, replacement.replacement, replacement);
+                filter: function (match) {
+                    var text = Rimu.replaceMatch(match, this.replacement, this);
                     return Rimu.Options.safeModeFilter(text);
                 },
                 match: /\\?(<[!\/]?[a-zA-Z\-]+(:?\s+[^<>&]+)?>)/g,

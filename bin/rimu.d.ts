@@ -58,7 +58,7 @@ declare module Rimu.Macros {
 declare module Rimu.LineBlocks {
     interface Definition {
         id?: string;
-        filter?: (match: RegExpExecArray, block: Definition, reader?: Rimu.Reader) => string;
+        filter?: (match: RegExpExecArray, reader?: Rimu.Reader) => string;
         match: RegExp;
         replacement: string;
         macros?: boolean;
@@ -107,7 +107,7 @@ declare module Rimu.Quotes {
 }
 declare module Rimu.Replacements {
     interface Definition {
-        filter?: (match: RegExpExecArray, replacement: Definition) => string;
+        filter?: (match: RegExpExecArray) => string;
         match: RegExp;
         replacement: string;
         specials: boolean;

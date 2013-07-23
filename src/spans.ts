@@ -157,7 +157,7 @@ module Rimu.Spans {
           fragment.text = replaceMatch(match, def.replacement, def);
         }
         else {
-          fragment.text = def.filter(match, def);
+          fragment.text = def.filter(match);
         }
       }
       fragmentIndex++;

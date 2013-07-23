@@ -2,7 +2,7 @@ module Rimu.LineBlocks {
 
   export interface Definition {
     id?: string;  // Optional unique identifier.
-    filter?: (match: RegExpExecArray, block: Definition, reader?: Reader) => string;
+    filter?: (match: RegExpExecArray, reader?: Reader) => string;
     match: RegExp;
     replacement: string;
     macros?: bool;
@@ -21,11 +21,11 @@ module Rimu.LineBlocks {
       match: /^\\?\/(.+)\/([igm]*)\s*=\s*'(.*)'$/,
       replacement: '',
       macros: true,
-      filter: function (match, block) {
+      filter: function (match) {
         var regexp = match[1];
         var flags = match[2];
         var replacement = match[3];
-        replacement = replaceInline(replacement, block);
+        replacement = replaceInline(replacement, this);
         Replacements.set(regexp, flags, replacement);
         return '';
       },
@@ -36,10 +36,10 @@ module Rimu.LineBlocks {
       match: /^\\?\{([\w\-]+)\}\s*=\s*'(.*)'$/,
       replacement: '',
       macros: true,
-      filter: function (match, block) {
+      filter: function (match) {
         var name = match[1];
         var value = match[2];
-        value = replaceInline(value, block);
+        value = replaceInline(value, this);
         Macros.set(name, value);
         return '';
       },
@@ -49,7 +49,7 @@ module Rimu.LineBlocks {
     {
       match: /^(\{[\w\-]+(?:[|?].*)?\})$/,
       replacement: '',
-      filter: function (match, block, reader?) {
+      filter: function (match, reader?) {
         var value = Macros.render(match[1]);
         if (value === match[1]) {
           // Macro does not exist so pass it through.
@@ -70,9 +70,9 @@ module Rimu.LineBlocks {
       replacement: '<h$1>$2</h$1>',
       macros: true,
       spans: true,
-      filter: function (match, block) {
+      filter: function (match) {
         match[1] = match[1].length.toString(); // Replace $1 with header number.
-        return replaceMatch(match, block.replacement, block);
+        return replaceMatch(match, this.replacement, this);
       },
     },
     // Comment line.
@@ -111,7 +111,7 @@ module Rimu.LineBlocks {
       id: 'attributes',
       match: /^\\?\.([a-zA-Z][\w\- ]*)?(#[a-zA-Z][\w\-]*)?(?:\s*)?(\[.+\])?$/,
       replacement: '',
-      filter: function (match, block) {
+      filter: function (match) {
         htmlAttributes = '';
         if (match[1]) { // Class names.
           htmlAttributes += 'class="' + trim(match[1]) + '"';
@@ -146,7 +146,7 @@ module Rimu.LineBlocks {
           text = replaceMatch(match, def.replacement, def);
         }
         else {
-          text = def.filter(match, def, reader);
+          text = def.filter(match, reader);
         }
         text = injectAttributes(text);
         writer.write(text);
@@ -160,7 +160,7 @@ module Rimu.LineBlocks {
     return false;
   }
 
-  // Return block definition or null if not found.
+  // Return def definition or null if not found.
   export function getDefinition(id: string): Definition {
     for (var i in defs) {
       if (defs[i].id === id) {

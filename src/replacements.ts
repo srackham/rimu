@@ -1,7 +1,7 @@
 module Rimu.Replacements {
 
   export interface Definition {
-    filter?: (match: RegExpExecArray, replacement: Definition) => string;
+    filter?: (match: RegExpExecArray) => string;
     match: RegExp;
     replacement: string;
     specials: bool;
@@ -77,8 +77,8 @@ module Rimu.Replacements {
 
     // HTML tags.
     {
-      filter: function (match, replacement) {
-        var text = replaceMatch(match, replacement.replacement, replacement);
+      filter: function (match) {
+        var text = replaceMatch(match, this.replacement, this);
         return Options.safeModeFilter(text);
       },
       match: /\\?(<[!\/]?[a-zA-Z\-]+(:?\s+[^<>&]+)?>)/g,
