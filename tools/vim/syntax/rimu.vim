@@ -40,8 +40,6 @@ syn region rimuHeader matchgroup=rimuHeaderStartEnd start=/^\(=\|#\)\{1,6}\s\+/ 
 syn match rimuBlockDelimiter /^\("\|\.\)\{2,}$/
 syn region rimuCodeBlock start=/^-\{2,}$/ end=/^-\{2,}$/ keepend
 syn region rimuIndentedParagraph start=/\(\%^\|\_^\n\)\@<=\s\+\S/ end=/\n\n/ keepend
-syn match rimuComment "^\\\@<!//.*$" contains=rimuTodo
-syn region rimuComment start=/^\/\*$/ end=/^\*\/$/ contains=rimuTodo keepend
 syn region rimuHTMLBlock start=/<!\|\(<\/\?\(html\|head\|body\|script\|style\|address\|article\|aside\|audio\|blockquote\|canvas\|dd\|div\|dl\|fieldset\|figcaption\|figure\|figcaption\|footer\|form\|h1\|h2\|h3\|h4\|h5\|h6\|header\|hgroup\|hr\|noscript\|ol\|output\|p\|pre\|section\|table\|tfoot\|ul\|video\)[ >\n]\?\)/ end=/\n\n/ contains=rimuSpanHTML keepend
 syn match rimuMacroDefinition /^{[0-9A-Za-z_-]\+}\s*=\s*'\_.\{-}'\n/
 syn match rimuReplacementDefinition /^\/.\+\/[igm]*\s*=\s*'\_.\{-}'\n/
@@ -49,6 +47,8 @@ syn match rimuReplacementRegExp /\/.\+\/[igm]*[\t =]\@=/ contained containedin=r
 syn match rimuDefinitionValue /'\_.\{-}'\n/ contained containedin=rimuMacroDefinition,rimuReplacementDefinition
 syn match rimuDefinitionParam /$\d\+/ contained containedin=rimuDefinitionValue
 syn match rimuHTMLAttributes /^\.[a-zA-Z#\[].*$/
+syn match rimuComment "^\\\@<!//.*$" contains=rimuTodo
+syn region rimuComment start=/^\/\*$/ end=/^\*\/$/ contains=rimuTodo keepend
 
 syn match rimuListId /^\s*\(-\|\*\{1,4}\)\s/
 syn match rimuListId /^\s*\(\(\d\+\.\)\|\.\{1,4}\)\s/

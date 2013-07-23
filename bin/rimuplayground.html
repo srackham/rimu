@@ -82,6 +82,7 @@
       <option value="topic-other">Other</option>
       <option value="topic-paragraphs">Paragraphs</option>
       <option selected value="topic-playground">Playground</option>
+      <option value="topic-replacements">Replacements</option>
       <option value="topic-text-formatting">Text formatting</option>
       <option value="topic-tools">Tools</option>
       <option value="topic-urls-and-email">URLs and email addresses</option>
@@ -551,6 +552,39 @@ Visit the \{homepage}.
 
 \{info|Heads up!}
 \{info|As you were!}
+- -
+
+-->
+</div>
+
+<div id="topic-replacements">
+<!--
+A _Replacement_ replaces matched source text with some other text
+(usually HTML markup). A replacement is defined by a regular
+expression (to find the matched text) and the text to be replaced.
+
+Definition syntax:
+
+  /pattern/flags = 'replacement'
+
+- The regular expression syntax is identical to JavaScripts
+  <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/RegExp|RegExp
+  literal> syntax.
+- `$1`, `$2`... in `replacement` are replaced by the corresponding
+  regular expression match groups.
+- Replacements are only expanded in inline contexts and they are not
+  expanded inside _Code quotes_, _Code blocks_ or _Indented paragraphs_.
+- If the first matched character is a backslash then replacement will
+  be escaped i.e. starting the regular expresssion with `\\?` will
+  ensure it can be escaped.
+- A replacement definition must start at the left margin.
+- The `replacement` text can invoke previously defined macros.
+
+Example replacement definitions:
+
+- -
+/\.\{3}/ = '&hellip;'
+/\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
 - -
 
 -->

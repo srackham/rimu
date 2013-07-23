@@ -16,7 +16,7 @@ module Rimu.LineBlocks {
     // Prefix match with backslash to allow escaping.
 
     // Replacement definition.
-    // regexp = $1, flags = $2, replacement = $2
+    // regexp = $1, flags = $2, replacement = $3
     {
       match: /^\\?\/(.+)\/([igm]*)\s*=\s*'(.*)'$/,
       replacement: '',
