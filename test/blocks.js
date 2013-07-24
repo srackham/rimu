@@ -406,5 +406,31 @@ exports['Documents'] = function(test) {
       '{info}= \'.info #ref2 [style="color:green"]\'\n{info}\ngreeny\n\nnormal\n\n{2paragraphs} =\'paragraph 1\n\nparagraph2\'\n{2paragraphs}'),
       '<p class="info" id="ref2" style="color:green">greeny</p>\n<p>normal</p>\n<p>paragraph 1</p>\n<p>paragraph2</p>',
       'html attributes assigned to macro');
+  // Replacements
+  Rimu.Replacements.defs = [];
+  test.equal(Rimu.render(
+      '/\\\\?\\.{3}/=\'&hellip;\'\nTesting...'),
+      '<p>Testing&hellip;</p>',
+      'new replacement');
+  test.equal(Rimu.render(
+      'Testing\\...'),
+      '<p>Testing...</p>',
+      'escaped replacement');
+  test.equal(Rimu.render(
+      '/\\\\?\\.{3}/=\'...\'\nTesting...'),
+      '<p>Testing...</p>',
+      'update replacement');
+  test.equal(
+      Rimu.Replacements.defs.length,
+      1,
+      'replacments length');
+  test.equal(Rimu.render(
+      "/\\\\?\\B'\\b(.+?)\\b'\\B/g = '<em>$1</em>'\n'emphasized'"),
+      '<p><em>emphasized</em></p>',
+      'replacement with match groups');
+  test.equal(
+      Rimu.Replacements.defs.length,
+      2,
+      'replacments length');
   test.done();
 };

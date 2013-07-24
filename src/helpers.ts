@@ -31,7 +31,7 @@ module Rimu {
     });
   }
 
-  // Replace the entities specified in options in text and return the result.
+  // Replace the inline elements specified in options in text and return the result.
   export function replaceInline(text: string,
       options: {macros?: bool; spans?: bool; specials?: bool;}): string
   {

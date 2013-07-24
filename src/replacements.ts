@@ -122,5 +122,11 @@ module Rimu.Replacements {
     defs.unshift({match: new RegExp(regexp, flags), replacement: replacement, specials: true});
   }
 
+  // CommonJS module exports.
+  declare var exports: any;
+  if (typeof exports !== 'undefined') {
+    exports.Replacements = Rimu.Replacements;
+  }
+
 }
 

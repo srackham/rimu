@@ -1044,6 +1044,10 @@ var Rimu;
             Replacements.defs.unshift({ match: new RegExp(regexp, flags), replacement: replacement, specials: true });
         }
         Replacements.set = set;
+
+        if (typeof exports !== 'undefined') {
+            exports.Replacements = Rimu.Replacements;
+        }
     })(Rimu.Replacements || (Rimu.Replacements = {}));
     var Replacements = Rimu.Replacements;
 })(Rimu || (Rimu = {}));
