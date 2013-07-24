@@ -225,7 +225,7 @@ backslash character prefix.
 *Code Block*
 
 - -
-A code block expands macro invocations but all other span
+A code block expands macro invocations but all other inline
 elements are rendered verbatim. Rendered with  HTML <pre><code>
 elements.
 
@@ -555,8 +555,6 @@ Invocation syntax:
   inside _code quotes_ and _code blocks_.
 - _Parametrized_ macro invocations replace the `$1`, `$2` ... strings
   in the macro definition with the `param1`, `param2` ... values.
-- You can escape `$1`, `$2`... in the macro definition by substituting
-  the `&dollar;` character entity for the dollar character.
 - Macro invocation parameters contain inline Rimu markup; inline
   parameter values can span multiple lines.
 - Invocations of undefined macros are replaced with a blank string
@@ -600,8 +598,6 @@ Definition syntax:
   literal> syntax.
 - `$1`, `$2`... in `replacement` are replaced by the corresponding
   regular expression match groups.
-- You can escape `$1`, `$2`... in `replacement` by substituting the
-  `&dollar;` character entity for the dollar character.
 - Replacements are only expanded in inline contexts and they are not
   expanded inside _Code quotes_, _Code blocks_ or _Indented paragraphs_.
 - If the first matched character is a backslash then replacement will
