@@ -4,6 +4,7 @@ module Rimu.Replacements {
     filter?: (match: RegExpExecArray) => string;
     match: RegExp;
     replacement: string;
+    // TODO Why can't we substitute spans?
     specials: bool;
   }
     

@@ -82,8 +82,8 @@
       <option value="topic-other">Other</option>
       <option value="topic-paragraphs">Paragraphs</option>
       <option selected value="topic-playground">Playground</option>
+      <option value="topic-quotes">Quotes</option>
       <option value="topic-replacements">Replacements</option>
-      <option value="topic-text-formatting">Text formatting</option>
       <option value="topic-tools">Tools</option>
       <option value="topic-urls-and-email">URLs and email addresses</option>
     </select>
@@ -309,9 +309,9 @@ Block and inline HTML elements can be <span style="font-size:
 
 <div id="topic-html-attributes">
 <!--
-The _HTML Attributes_ block element injects HTML attributes into the
-opening tag of the next block element. You can specify class names, an
-element ID and any other HTML attributes.
+The _HTML Attributes_ single-line block element injects HTML
+attributes into the opening tag of the next block element. You can
+specify class names, an element ID and any other HTML attributes.
 
 Syntax:
 
@@ -479,10 +479,11 @@ for learning and experimenting with Rimu markup:
 -->
 </div>
 
-<div id="topic-text-formatting">
+<div id="topic-quotes">
 <!--
-Formatted text is enclosed with quote characters. There are quote
-characters for _emphasized text_, *bold text*, `monospaced text`.
+Text can be formatted by enclosing it with quote characters. There are
+quote characters for _emphasized text_, *bold text*, `monospaced
+text`.
 
   Rimu            HTML                      Common style
   ___________________________________________________________
@@ -491,11 +492,33 @@ characters for _emphasized text_, *bold text*, `monospaced text`.
   `code`          <code>code</code>         Monospaced
   ___________________________________________________________
 
-- Other quotes and inline elements can be nested within a quote with the
+- Quotes and inline elements can be nested within a quote with the
   exception of the _code_ quote which displays enclosed elements verbatim.
 - Quotes can be escaped with backslash character prefixes.
 - Quoted text must begin and end with non-whitespace characters and
   cannot end with a backslash character.
+
+You can modify existing quote behavior or add new quotes using _Quote
+definitions_.
+
+Definition syntax:
+
+  quote-character = 'quote-template'
+
+Where `quote-character` a single character and `quote-template`
+specifies the markup tags that envelope the quoted output text.
+For example:
+
+  ~ = '<del>|</del>'
+
+The `|` character separates the open and close tags. If a two-bar `||`
+separator is used the quoted text is displayed verbatim like the
+built-in _code quote_.
+
+- A quote definition must start at the left margin and cannot extend
+  beyond the end of the line.
+- The `quote-template` can invoke previously defined macros.
+- Quote definitions are not processed if the _Safe Mode_ is non-zero.
 
 -->
 </div>
@@ -522,7 +545,8 @@ Invocation syntax:
   multiple lines.
 - A macro name consists of one or more alphanumeric, underscore or
   dash characters.
-- A macro definition must start at the left margin.
+- A macro definition must start at the left margin and cannot extend
+  beyond the end of the line.
 - Macro definition values can invoke previously defined macros but
   macro invocations cannot be nested.
 - Macro definitions and invocations can be escaped with a backslash
@@ -583,7 +607,8 @@ Definition syntax:
 - If the first matched character is a backslash then replacement will
   be escaped i.e. starting the regular expresssion with `\\?` will
   ensure it can be escaped.
-- A replacement definition must start at the left margin.
+- A replacement definition must start at the left margin and cannot
+  extend beyond the end of the line.
 - The `replacement` text can invoke previously defined macros.
 - Replacement definitions are not processed if the _Safe Mode_ is
   non-zero.
