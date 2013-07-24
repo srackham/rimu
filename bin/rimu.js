@@ -289,6 +289,23 @@ var Rimu;
     (function (LineBlocks) {
         var defs = [
             {
+                match: /^(\S)\s*=\s*'([^\|]*)(\|{1,2})(.*)'$/,
+                replacement: '',
+                macros: true,
+                filter: function (match) {
+                    if (Rimu.Options.safeMode !== 0) {
+                        return '';
+                    }
+                    Rimu.Quotes.set({
+                        quote: match[1],
+                        openTag: match[2],
+                        closeTag: match[4],
+                        spans: match[3] === '|'
+                    });
+                    return '';
+                }
+            },
+            {
                 match: /^\\?\/(.+)\/([igm]*)\s*=\s*'(.*)'$/,
                 replacement: '',
                 macros: true,
@@ -921,7 +938,7 @@ var Rimu;
 var Rimu;
 (function (Rimu) {
     (function (Quotes) {
-        var defs = [
+        Quotes.defs = [
             {
                 quote: '_',
                 openTag: '<em>',
@@ -945,19 +962,23 @@ var Rimu;
         Quotes.findRe;
         var unescapeRe;
 
-        var s = [];
-        for (var i in defs) {
-            s.push(Rimu.escapeRegExp(defs[i].quote));
+        initialize();
+
+        function initialize() {
+            var s = [];
+            for (var i in Quotes.defs) {
+                s.push(Rimu.escapeRegExp(Quotes.defs[i].quote));
+            }
+
+            Quotes.findRe = RegExp('\\\\?(' + s.join('|') + ')([^\\s\\\\]|\\S[\\s\\S]*?[^\\s\\\\])\\1', 'g');
+
+            unescapeRe = RegExp('\\\\(' + s.join('|') + ')', 'g');
         }
 
-        Quotes.findRe = RegExp('\\\\?(' + s.join('|') + ')([^\\s\\\\]|\\S[\\s\\S]*?[^\\s\\\\])\\1', 'g');
-
-        unescapeRe = RegExp('\\\\(' + s.join('|') + ')', 'g');
-
         function find(quote) {
-            for (var i in defs) {
-                if (defs[i].quote === quote)
-                    return defs[i];
+            for (var i in Quotes.defs) {
+                if (Quotes.defs[i].quote === quote)
+                    return Quotes.defs[i];
             }
         }
         Quotes.find = find;
@@ -966,6 +987,25 @@ var Rimu;
             return s.replace(unescapeRe, '$1');
         }
         Quotes.unescape = unescape;
+
+        function set(def) {
+            for (var i in Quotes.defs) {
+                if (Quotes.defs[i].quote === def.quote) {
+                    Quotes.defs[i].openTag = def.openTag;
+                    Quotes.defs[i].closeTag = def.closeTag;
+                    Quotes.defs[i].spans = def.spans;
+                    return;
+                }
+            }
+
+            Quotes.defs.unshift(def);
+            initialize();
+        }
+        Quotes.set = set;
+
+        if (typeof exports !== 'undefined') {
+            exports.Quotes = Rimu.Quotes;
+        }
     })(Rimu.Quotes || (Rimu.Quotes = {}));
     var Quotes = Rimu.Quotes;
 })(Rimu || (Rimu = {}));
@@ -1040,8 +1080,7 @@ var Rimu;
             }
             for (var i in Replacements.defs) {
                 if (Replacements.defs[i].match.source === regexp) {
-                    Replacements.defs[i].match.ignoreCase = /i/.test(flags);
-                    Replacements.defs[i].match.multiline = /m/.test(flags);
+                    Replacements.defs[i].match = new RegExp(regexp, flags);
                     Replacements.defs[i].replacement = replacement;
                     return;
                 }

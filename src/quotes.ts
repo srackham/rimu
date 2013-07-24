@@ -8,7 +8,7 @@ module Rimu.Quotes {
     verify?: (match: RegExpExecArray, re: RegExp) => bool; // Additional match verification checks.
   }
     
-  var defs: Definition[] = [
+  export var defs: Definition[] = [
     {
       quote: '_',
       openTag: '<em>',
@@ -32,18 +32,22 @@ module Rimu.Quotes {
   export var findRe: RegExp;  // Searches for quoted text.
   var unescapeRe: RegExp;     // Searches for escaped quotes.
 
+  initialize();
+
   // Synthesise re's to find and unescape quotes.
-  var s: string[] = [];
-  for (var i in defs) {
-    s.push(escapeRegExp(defs[i].quote));
+  function initialize() {
+    var s: string[] = [];
+    for (var i in defs) {
+      s.push(escapeRegExp(defs[i].quote));
+    }
+    // $1 is quote character, $2 is quoted text.
+    // Quoted text cannot begin or end with whitespace.
+    // Quoted can span multiple lines.
+    // Quoted text cannot end with a backslash.
+    findRe = RegExp('\\\\?(' + s.join('|') + ')([^\\s\\\\]|\\S[\\s\\S]*?[^\\s\\\\])\\1', 'g');
+    // $1 is quote character.
+    unescapeRe = RegExp('\\\\(' + s.join('|') + ')', 'g');
   }
-  // $1 is quote character, $2 is quoted text.
-  // Quoted text cannot begin or end with whitespace.
-  // Quoted can span multiple lines.
-  // Quoted text cannot end with a backslash.
-  findRe = RegExp('\\\\?(' + s.join('|') + ')([^\\s\\\\]|\\S[\\s\\S]*?[^\\s\\\\])\\1', 'g');
-  // $1 is quote character.
-  unescapeRe = RegExp('\\\\(' + s.join('|') + ')', 'g');
 
   // Return the quote definition corresponding to 'quote' character.
   export function find(quote: string): Definition {
@@ -57,5 +61,26 @@ module Rimu.Quotes {
     return s.replace(unescapeRe, '$1');
   }
 
+  // Update existing or add new quote definition.
+  export function set(def: Definition): void {
+    for (var i in defs) {
+      if (defs[i].quote === def.quote) {
+        // Update existing definition.
+        defs[i].openTag = def.openTag;
+        defs[i].closeTag = def.closeTag;
+        defs[i].spans = def.spans;
+        return;
+      }
+    }
+    // Add new definition at start of defs list.
+    defs.unshift(def);
+    initialize();
+  }
+
+  // CommonJS module exports.
+  declare var exports: any;
+  if (typeof exports !== 'undefined') {
+    exports.Quotes = Rimu.Quotes;
+  }
 
 }

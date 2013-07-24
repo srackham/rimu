@@ -410,12 +410,50 @@ exports['Documents'] = function(test) {
       '{info}= \'.info #ref2 [style="color:green"]\'\n{info}\ngreeny\n\nnormal\n\n{2paragraphs} =\'paragraph 1\n\nparagraph2\'\n{2paragraphs}'),
       '<p class="info" id="ref2" style="color:green">greeny</p>\n<p>normal</p>\n<p>paragraph 1</p>\n<p>paragraph2</p>',
       'html attributes assigned to macro');
+  // Quote definitions.
+  Rimu.Quotes.defs = [];
+  test.equal(Rimu.render(
+      '= = \'<del>|</del>\'\n=Testing *123*='),
+      '<p><del>Testing *123*</del></p>',
+      'new quote');
+  test.equal(Rimu.render(
+      '\\=Testing= 123'),
+      '<p>=Testing= 123</p>',
+      'escaped quote');
+  test.equal(Rimu.render(
+      '#=\'<ins>|</ins>\'\n#skipped#', {safeMode:1}),
+      '<p>#skipped#</p>',
+      'quote definition skipped in safe mode');
+  test.equal(Rimu.render(
+      '=Testing= 123', {safeMode:1}),
+      '<p><del>Testing</del> 123</p>',
+      'existing quotes work in safe mode');
+  test.equal(
+      Rimu.Quotes.defs.length,
+      1,
+      'quotes length');
+  test.equal(Rimu.render(
+      '#=\'<ins>|</ins>\'\n#Quote 2#', {safeMode:0}),
+      '<p><ins>Quote 2</ins></p>',
+      'second quote definition');
+  test.equal(Rimu.render(
+      '==\'<code>||</code>\'\n=Testing #123#='),
+      '<p><code>Testing #123#</code></p>',
+      'update quote with no spans');
+  test.equal(
+      Rimu.Quotes.defs.length,
+      2,
+      'quotes length');
   // Replacement definitions.
   Rimu.Replacements.defs = [];
   test.equal(Rimu.render(
       '/\\\\?\\.{3}/=\'&hellip;\'\nTesting...'),
       '<p>Testing&hellip;</p>',
       'new replacement');
+  test.equal(
+      Rimu.Replacements.defs[0].match.ignoreCase,
+      false,
+      'replacement flag');
   test.equal(Rimu.render(
       'Testing\\...'),
       '<p>Testing...</p>',
@@ -429,9 +467,13 @@ exports['Documents'] = function(test) {
       '<p>Testing&hellip;</p>',
       'existing replacements work in safe mode');
   test.equal(Rimu.render(
-      '/\\\\?\\.{3}/=\'...\'\nTesting...'),
+      '/\\\\?\\.{3}/i=\'...\'\nTesting...'),
       '<p>Testing...</p>',
       'update replacement');
+  test.equal(
+      Rimu.Replacements.defs[0].match.ignoreCase,
+      true,
+      'replacement flag updated');
   test.equal(
       Rimu.Replacements.defs.length,
       1,

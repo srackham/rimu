@@ -112,8 +112,8 @@ module Rimu.Replacements {
     for (var i in defs) {
       if (defs[i].match.source === regexp) {
         // Update existing definition.
-        defs[i].match.ignoreCase = /i/.test(flags);
-        defs[i].match.multiline = /m/.test(flags);
+        // Flag properties are read-only so have to create new RegExp.
+        defs[i].match = new RegExp(regexp, flags);
         defs[i].replacement = replacement;
         return;
       }

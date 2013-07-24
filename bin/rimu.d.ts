@@ -101,9 +101,11 @@ declare module Rimu.Quotes {
         spans: boolean;
         verify?: (match: RegExpExecArray, re: RegExp) => boolean;
     }
+    var defs: Definition[];
     var findRe: RegExp;
     function find(quote: string): Definition;
     function unescape(s: string): string;
+    function set(def: Definition): void;
 }
 declare module Rimu.Replacements {
     interface Definition {

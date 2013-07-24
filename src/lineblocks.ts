@@ -15,6 +15,23 @@ module Rimu.LineBlocks {
   var defs: Definition[] = [
     // Prefix match with backslash to allow escaping.
 
+    // Quote definition.
+    // quote = $1, openTag = $2, separator = $3, closeTag = $4
+    {
+      match: /^(\S)\s*=\s*'([^\|]*)(\|{1,2})(.*)'$/,
+      replacement: '',
+      macros: true,
+      filter: function (match) {
+        if (Options.safeMode !== 0) {
+          return '';  // Skip if a safe mode is set.
+        }
+        Quotes.set({quote: match[1],
+          openTag: match[2],
+          closeTag: match[4],
+          spans: match[3] === '|'});
+        return '';
+      },
+    },
     // Replacement definition.
     // pattern = $1, flags = $2, replacement = $3
     {
@@ -59,7 +76,7 @@ module Rimu.LineBlocks {
         var value = Macros.render(match[1]);
         if (value === match[1]) {
           // Macro does not exist so pass it through.
-          value = '\\' +  value;
+          value = '\\' + value;
         }
         // Insert the macro value into the reader just ahead of the cursor.
         reader.lines = [].concat(
