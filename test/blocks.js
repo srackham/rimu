@@ -410,7 +410,7 @@ exports['Documents'] = function(test) {
       '{info}= \'.info #ref2 [style="color:green"]\'\n{info}\ngreeny\n\nnormal\n\n{2paragraphs} =\'paragraph 1\n\nparagraph2\'\n{2paragraphs}'),
       '<p class="info" id="ref2" style="color:green">greeny</p>\n<p>normal</p>\n<p>paragraph 1</p>\n<p>paragraph2</p>',
       'html attributes assigned to macro');
-  // Replacements
+  // Replacement definitions.
   Rimu.Replacements.defs = [];
   test.equal(Rimu.render(
       '/\\\\?\\.{3}/=\'&hellip;\'\nTesting...'),
@@ -421,9 +421,13 @@ exports['Documents'] = function(test) {
       '<p>Testing...</p>',
       'escaped replacement');
   test.equal(Rimu.render(
-      '/skipped/=\'SKIPPED\'\nfoobar', {safeMode: 1}),
-      '<p>foobar</p>',
+      '/skipped/=\'SKIPPED\'\nskipped', {safeMode:1}),
+      '<p>skipped</p>',
       'replacement definition skipped in safe mode');
+  test.equal(Rimu.render(
+      'Testing...', {safeMode:1}),
+      '<p>Testing&hellip;</p>',
+      'existing replacements work in safe mode');
   test.equal(Rimu.render(
       '/\\\\?\\.{3}/=\'...\'\nTesting...'),
       '<p>Testing...</p>',
