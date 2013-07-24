@@ -22,6 +22,9 @@ module Rimu.LineBlocks {
       replacement: '',
       macros: true,
       filter: function (match) {
+        if (Options.safeMode !== 0) {
+          return '';  // Skip if a safe mode is set.
+        }
         var pattern = match[1];
         var flags = match[2];
         var replacement = match[3];
@@ -37,6 +40,9 @@ module Rimu.LineBlocks {
       replacement: '',
       macros: true,
       filter: function (match) {
+        if (Options.safeMode !== 0) {
+          return '';  // Skip if a safe mode is set.
+        }
         var name = match[1];
         var value = match[2];
         value = replaceInline(value, this);

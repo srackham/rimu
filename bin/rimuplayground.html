@@ -539,6 +539,8 @@ Invocation syntax:
   or the `default-value` if the `\{macro-name?default-value}`
   _Existential_ invocation syntax is used.
 - Omitted parameter values default to an empty string.
+- Macro definitions are not processed if the _safe mode_ is
+  non-zero.
 
 Examples:
 
@@ -583,6 +585,8 @@ Definition syntax:
   ensure it can be escaped.
 - A replacement definition must start at the left margin.
 - The `replacement` text can invoke previously defined macros.
+- Replacement definitions are not processed if the _safe mode_ is
+  non-zero.
 
 Example replacement definitions:
 

@@ -293,6 +293,9 @@ var Rimu;
                 replacement: '',
                 macros: true,
                 filter: function (match) {
+                    if (Rimu.Options.safeMode !== 0) {
+                        return '';
+                    }
                     var pattern = match[1];
                     var flags = match[2];
                     var replacement = match[3];
@@ -306,6 +309,9 @@ var Rimu;
                 replacement: '',
                 macros: true,
                 filter: function (match) {
+                    if (Rimu.Options.safeMode !== 0) {
+                        return '';
+                    }
                     var name = match[1];
                     var value = match[2];
                     value = Rimu.replaceInline(value, this);

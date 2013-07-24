@@ -371,6 +371,10 @@ exports['Documents'] = function(test) {
       '<p>Hello undefined macro.</p>',
       'default macro value');
   test.equal(Rimu.render(
+      '{skipped} = \'SKIPPED\'\n{skipped?foobar}', {safeMode:1}),
+      '<p>foobar</p>',
+      'skip macro definitions in safe mode');
+  test.equal(Rimu.render(
       '.error\nError message\n\nNormal paragraph'),
       '<p class="error">Error message</p>\n<p>Normal paragraph</p>',
       'html class');
@@ -417,13 +421,17 @@ exports['Documents'] = function(test) {
       '<p>Testing...</p>',
       'escaped replacement');
   test.equal(Rimu.render(
+      '/skipped/=\'SKIPPED\'\nfoobar', {safeMode: 1}),
+      '<p>foobar</p>',
+      'replacement definition skipped in safe mode');
+  test.equal(Rimu.render(
       '/\\\\?\\.{3}/=\'...\'\nTesting...'),
       '<p>Testing...</p>',
       'update replacement');
   test.equal(
       Rimu.Replacements.defs.length,
       1,
-      'replacments length');
+      'replacements length');
   test.equal(Rimu.render(
       "/\\\\?\\B'\\b(.+?)\\b'\\B/g = '<em>$1</em>'\n'emphasized'"),
       '<p><em>emphasized</em></p>',
@@ -431,6 +439,6 @@ exports['Documents'] = function(test) {
   test.equal(
       Rimu.Replacements.defs.length,
       2,
-      'replacments length');
+      'replacements length');
   test.done();
 };
