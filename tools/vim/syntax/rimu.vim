@@ -41,11 +41,14 @@ syn match rimuBlockDelimiter /^\("\|\.\)\{2,}$/
 syn region rimuCodeBlock start=/^-\{2,}$/ end=/^-\{2,}$/ keepend
 syn region rimuIndentedParagraph start=/\(\%^\|\_^\n\)\@<=\s\+\S/ end=/\n\n/ keepend
 syn region rimuHTMLBlock start=/<!\|\(<\/\?\(html\|head\|body\|script\|style\|address\|article\|aside\|audio\|blockquote\|canvas\|dd\|div\|dl\|fieldset\|figcaption\|figure\|figcaption\|footer\|form\|h1\|h2\|h3\|h4\|h5\|h6\|header\|hgroup\|hr\|noscript\|ol\|output\|p\|pre\|section\|table\|tfoot\|ul\|video\)[ >\n]\?\)/ end=/\n\n/ contains=rimuSpanHTML keepend
+
 syn match rimuMacroDefinition /^{[0-9A-Za-z_-]\+}\s*=\s*'\_.\{-}'\n/
 syn match rimuReplacementDefinition /^\/.\+\/[igm]*\s*=\s*'\_.\{-}'\n/
 syn match rimuReplacementRegExp /^\/.\+\/[igm]*[\t =]\@=/ contained containedin=rimuReplacementDefinition
-syn match rimuDefinitionValue /'\_.\{-}'\n/ contained containedin=rimuMacroDefinition,rimuReplacementDefinition
-syn match rimuDefinitionParam /$\d\+/ contained containedin=rimuDefinitionValue
+syn match rimuQuoteDefinition /^\S\s*=\s*'\_.\{-}'\n/
+syn match rimuQuoteQuote /^\S/ contained containedin=rimuQuoteDefinition
+syn match rimuDefinitionValue /'\_.\{-}'\n/ contained containedin=rimuMacroDefinition,rimuReplacementDefinition,rimuQuoteDefinition
+syn match rimuDefinitionParam /\($\d\+\)\|\(|\{1,2}\)/ contained containedin=rimuDefinitionValue
 syn match rimuHTMLAttributes /^\.[a-zA-Z#\[].*$/
 syn match rimuComment "^\\\@<!//.*$" contains=rimuTodo
 syn region rimuComment start=/^\/\*$/ end=/^\*\/$/ contains=rimuTodo keepend
@@ -65,6 +68,7 @@ hi def link rimuHeaderStartEnd Label
 hi def link rimuHTMLAttributes Title
 hi def link rimuIndentedParagraph Identifier
 hi def link rimuListId Label
+hi def link rimuQuoteQuote Special
 hi def link rimuReplacementRegExp Special
 hi def link rimuSpanAnchor Title
 hi def link rimuSpanCode Identifier
