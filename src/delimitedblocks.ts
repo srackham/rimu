@@ -22,8 +22,8 @@ module Rimu.DelimitedBlocks {
 
     // Macro definition block.
     {
-      openMatch: /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/, // $1 is first line of macro.
-      closeMatch: /^(.*)'$/,                  // $1 is last line of macro.
+      openMatch: /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/,  // $1 is first line of macro.
+      closeMatch: /^(.*)'$/,                      // $1 is last line of macro.
       openTag: '',
       closeTag: '',
       macros: true,

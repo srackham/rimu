@@ -19,8 +19,11 @@ lint:
 	jshint $(TESTS) bin/rimuc.js
 	jsonlint --quiet package.json
 
-test: build lint
-	nodeunit $(TESTS)
+test_spans:
+	nodeunit test/spans.js
+test_blocks:
+	nodeunit test/blocks.js
+test: build lint test_spans test_blocks
 
 build: bin/rimu.js doc
 

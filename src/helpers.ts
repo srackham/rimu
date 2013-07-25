@@ -17,7 +17,7 @@ module Rimu {
   }
 
   // Replace match groups, optionally substituting the replacement groups with
-  // macros, spans or special characters.
+  // the inline elements specified in options.
   export function replaceMatch(
       match: RegExpExecArray,
       replacement: string,
@@ -42,7 +42,6 @@ module Rimu {
       return Spans.render(text);
     }
     else if (options.specials) {
-      // TODO should specials be implicitly true? NO! don't want specials with macro subs.
       return replaceSpecialChars(text);
     }
     else {

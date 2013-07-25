@@ -1,6 +1,6 @@
 module Rimu.Spans {
 /*
-  This module renders text containing Quote and Replacement span elements.
+  This module renders text containing Quote and Replacement elements.
 
   Quote and replacement processing involves splitting the source text into
   fragments where a quote or a replacement occurs then splicing the fragments
@@ -8,8 +8,9 @@ module Rimu.Spans {
   exclude it from further substitutions.
 
   Once all quotes and replacements are processed fragments not yet flagged as
-  'done' are escaped with special character entities and the fragments are
-  reassembled (defraged) into the resultant HTML string.
+  'done' have special characters (&, <, >) replaced with corresponding special
+  character entities. The fragments are then reassembled (defraged) into a
+  resultant HTML string.
 */
 
   interface Fragment {

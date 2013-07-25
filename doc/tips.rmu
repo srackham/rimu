@@ -167,7 +167,9 @@ enter these characters (or any Unicode character) as HTML character
 entities or you can enter them literally.
 
 For example, to enter an ellipsis you could either enter `&hellip;` or
-you could enter the actual … character directly. The mechanism for
+you could enter the actual … character directly (alternatively you
+could define a _Replacement_ for the ellipsis, see the
+<#example-rimurc|Example .rimurc file> below). The mechanism for
 entering Unicode characters directly will be dictated your editor:
 
 Vim:: Enter _Ctrl+V_ followed by the the character _u_ followed by the
@@ -201,3 +203,90 @@ spaces, for example:
 Underscore characters are legal in URL paths but they may be
 interpreted as Rimu emphasis quotes, you can use _%5F_ in place of
 underscores or escape them with backslashes.
+
+
+<<#defs-warning>>
+== Use Replacement and Quote definitions sparingly
+Adding new Replacement and Quote definitions changes the Rimu syntax
+which can produce unexpected results. It can also make your Rimu
+source non-portable and less readable.
+
+
+<<#example-rimurc>>
+== Example .rimurc file
+Here is an example `.rimurc` file containing _Macro_, _Quote_ and
+_Replacement_ definitions (refer to the Rimu documentation under
+_Tools_):
+
+.no-highlight
+--
+/*
+  Replacements
+*/
+// Don't match HTML comment tags.
+/(^|[^!])--(?!>)/ = '$1&mdash;'
+/\.\{3}/ = '&hellip;'
+/``/ = '&ldquo;'
+/''/ = '&rdquo;'
+// Don't match HTML close comment tag.
+/(^|[^-])->/ = '$1&rightarrow;'
+/<-/ = '&leftarrow;'
+/\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
+/^NOTE:/ = '<b>NOTE</b>:'
+
+/*
+  Macros
+*/
+\{mark} = '<mark>$1</mark>'
+\{del} = '<del>$1</del>'
+\{ins} = '<ins>$1</ins>'
+\{sup} = '<sup>$1</sup>'
+\{sub} = '<sub>$1</sub>'
+
+/*
+  Quotes
+*/
+~ = '<del>|</del>'
+--
+
+== Understanding substitution priorities
+Inline elements are processed in the following order (first to last):
+
+. Macros
+. Quotes
+. Replacements
+. Special characters
+
+
+== Using Macro, Replacement and Quote definitions in Safe Mode
+_Macro_, _Replacement_ and _Quote_ definitions are not processed in
+Safe Mode. To apply Macro, Replacement or Quote definitions to Rimu
+markup processed in Safe Mode you need to load the definitions with a
+separate API call, for example:
+
+--
+Rimu.render(trusted_rimu_definitions); // safeMode is off by default.
+Rimu.render(untrusted_rimu_markup, {safeMode: 1});
+--
+
+
+== Escaping Macro and Replacement parameters
+You can escape `$1`, `$2`... parameters in _Macro_ and _Replacement_
+definitions by using the `&dollar;` character entity instead of the
+dollar character.
+
+
+== Modifying built-in Quotes and Replacements
+You can (with <#defs-warning|caveats>) redefine built-in _Quotes_ and
+_Replacements_, here are a couple of examples:
+
+.no-highlight
+--
+_ = '<em class="emphasis">|</em>'
+/\\?<(\S+@[\w\.\-]+)>/g = '<a class="mailto" href="mailto:$1">$1</a>'
+--
+
+Refer to the Rimu source files
+<https://github.com/srackham/rimu/blob/master/src/quotes.ts|quotes.ts>
+and
+<https://github.com/srackham/rimu/blob/master/src/replacements.ts|replacements.ts>.

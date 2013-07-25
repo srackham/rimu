@@ -322,7 +322,8 @@ Syntax:
 - `id` is a unique HTML _id_ attribute value.
 - `attributes` is one or more HTML attribute name/value pairs.
 - HTML attributes can be applied any block element that renders HTML.
-- The leading period character must start at the left margin.
+- The leading period character must start at the left margin and
+  must not extend beyond the end of the line.
 - The `[attributes]` section is skipped if the API _safeMode_ option
   is not zero (see the _API_ topic).
 
@@ -515,7 +516,7 @@ The `|` character separates the open and close tags. If a two-bar `||`
 separator is used the quoted text is displayed verbatim like the
 built-in _code quote_.
 
-- A quote definition must start at the left margin and cannot extend
+- A quote definition must start at the left margin and must not
   beyond the end of the line.
 - The `quote-template` can invoke previously defined macros.
 - Quote definitions are not processed if the _Safe Mode_ is non-zero.
@@ -541,8 +542,8 @@ Invocation syntax:
   \{macro-name?default-value}
   \{macro-name|param1[|param2...]}
 
-- Macro definition values are enclosed by single quotes and can extend over
-  multiple lines.
+- Macro definition values are enclosed by single quotes and can extend
+  over multiple lines.
 - A macro name consists of one or more alphanumeric, underscore or
   dash characters.
 - A macro definition must start at the left margin.
@@ -602,7 +603,7 @@ Definition syntax:
 - If the first matched character is a backslash then replacement will
   be escaped i.e. starting the regular expresssion with `\\?` will
   ensure it can be escaped.
-- A replacement definition must start at the left margin and cannot
+- A replacement definition must start at the left margin and must not
   extend beyond the end of the line.
 - The `replacement` text can invoke previously defined macros.
 - Replacement definitions are not processed if the _Safe Mode_ is

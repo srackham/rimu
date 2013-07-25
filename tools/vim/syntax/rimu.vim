@@ -49,6 +49,7 @@ syn match rimuQuoteDefinition /^\S\s*=\s*'\_.\{-}'\n/
 syn match rimuQuoteQuote /^\S/ contained containedin=rimuQuoteDefinition
 syn match rimuDefinitionValue /'\_.\{-}'\n/ contained containedin=rimuMacroDefinition,rimuReplacementDefinition,rimuQuoteDefinition
 syn match rimuDefinitionParam /\($\d\+\)\|\(|\{1,2}\)/ contained containedin=rimuDefinitionValue
+
 syn match rimuHTMLAttributes /^\.[a-zA-Z#\[].*$/
 syn match rimuComment "^\\\@<!//.*$" contains=rimuTodo
 syn region rimuComment start=/^\/\*$/ end=/^\*\/$/ contains=rimuTodo keepend
