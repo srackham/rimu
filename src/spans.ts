@@ -154,7 +154,7 @@ module Rimu.Spans {
       }
       else {
         if (!def.filter) {
-          fragment.text = replaceMatch(match, def.replacement, def);
+          fragment.text = replaceMatch(match, def.replacement, {spans: true});
         }
         else {
           fragment.text = def.filter(match);

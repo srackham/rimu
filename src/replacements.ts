@@ -1,32 +1,30 @@
 module Rimu.Replacements {
 
   export interface Definition {
-    filter?: (match: RegExpExecArray) => string;
     match: RegExp;
     replacement: string;
-    // TODO Why can't we substitute spans?
-    specials: bool;
+    filter?: (match: RegExpExecArray) => string;
   }
     
   export var defs: Definition[] = [
     // Begin match with \\? to allow the replacement to be escaped.
     // Global flag must be set on match re's so that the RegExp lastIndex property is set.
+    // Replacements and special characters are expanded in replacement groups ($1..).
     // Replacement order is important.
-    // If 'specials' is true source text in replacement groups is escaped with
-    // special character entities.
 
-    // Pass through character entities.
+    // Character entity.
     {
       match: /\\?(&[\w#][\w]+;)/g,
-      replacement: '$1',
-      specials: false,
+      replacement: '',
+      filter: function (match) {
+        return match[1];  // Pass the entity through verbatim.
+      },
     },
 
     // Line break (space followed by + at end of line).
     {
       match: /[\\ ]\+(\n|$)/g,
       replacement: '<br>$1',
-      specials: false,
     },
 
     // Stand-alone \+ "safe plus" replaced by +.
@@ -34,14 +32,12 @@ module Rimu.Replacements {
     {
       match: /(^|\s)\\\+(\s|$)/g,
       replacement: '$1+$2',
-      specials: false,
     },
 
     // Anchor: <<#id>>
     {
       match: /\\?<<#([a-zA-Z][\w\-]*)>>/g,
       replacement: '<span id="$1"></span>',
-      specials: true,
     },
 
     // Image: <image:src|alt>
@@ -49,7 +45,6 @@ module Rimu.Replacements {
     {
       match: /\\?<image:([^\s\|]+)\|([\s\S]+?)>/g,
       replacement: '<img src="$1" alt="$2">',
-      specials: true,
     },
 
     // Image: <image:src>
@@ -57,7 +52,6 @@ module Rimu.Replacements {
     {
       match: /\\?<image:([^\s\|]+?)>/g,
       replacement: '<img src="$1" alt="$1">',
-      specials: true,
     },
 
     // Email: <address|caption>
@@ -65,7 +59,6 @@ module Rimu.Replacements {
     {
       match: /\\?<(\S+@[\w\.\-]+)\|([\s\S]+?)>/g,
       replacement: '<a href="mailto:$1">$2</a>',
-      specials: true,
     },
 
     // Email: <address>
@@ -73,18 +66,15 @@ module Rimu.Replacements {
     {
       match: /\\?<(\S+@[\w\.\-]+)>/g,
       replacement: '<a href="mailto:$1">$1</a>',
-      specials: true,
     },
 
     // HTML tags.
     {
-      filter: function (match) {
-        var text = replaceMatch(match, this.replacement, this);
-        return Options.safeModeFilter(text);
-      },
       match: /\\?(<[!\/]?[a-zA-Z\-]+(:?\s+[^<>&]+)?>)/g,
-      replacement: '$1',
-      specials: false,
+      replacement: '',
+      filter: function (match) {
+        return Options.safeModeFilter(match[1]);
+      },
     },
 
     // Link: <url|caption>
@@ -92,7 +82,6 @@ module Rimu.Replacements {
     {
       match: /\\?<(\S+?)\|([\s\S]+?)>/g,
       replacement: '<a href="$1">$2</a>',
-      specials: true,
     },
 
     // Link: <url>
@@ -100,7 +89,6 @@ module Rimu.Replacements {
     {
       match: /\\?<(\S+?)>/g,
       replacement: '<a href="$1">$1</a>',
-      specials: true,
     },
 
   ];
@@ -120,7 +108,7 @@ module Rimu.Replacements {
       }
     }
     // Add new definition at start of defs list.
-    defs.unshift({match: new RegExp(regexp, flags), replacement: replacement, specials: true});
+    defs.unshift({match: new RegExp(regexp, flags), replacement: replacement});
   }
 
   // CommonJS module exports.

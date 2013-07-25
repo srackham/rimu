@@ -21,7 +21,7 @@ module Rimu {
   export function replaceMatch(
       match: RegExpExecArray,
       replacement: string,
-      options = {})
+      options: {macros?: bool; spans?: bool; specials?: bool})
   {
     return replacement.replace(/\$\d/g, function () {
       // Replace $1, $2 ... with corresponding match groups.
@@ -42,6 +42,7 @@ module Rimu {
       return Spans.render(text);
     }
     else if (options.specials) {
+      // TODO should specials be implicitly true? NO! don't want specials with macro subs.
       return replaceSpecialChars(text);
     }
     else {

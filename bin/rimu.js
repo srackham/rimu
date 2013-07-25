@@ -59,7 +59,6 @@ var Rimu;
     Rimu.replaceSpecialChars = replaceSpecialChars;
 
     function replaceMatch(match, replacement, options) {
-        if (typeof options === "undefined") { options = {}; }
         return replacement.replace(/\$\d/g, function () {
             var i = parseInt(arguments[0][1]);
             var text = match[i];
@@ -908,7 +907,7 @@ var Rimu;
                     fragment.text = Rimu.replaceSpecialChars(fragment.text);
                 } else {
                     if (!def.filter) {
-                        fragment.text = Rimu.replaceMatch(match, def.replacement, def);
+                        fragment.text = Rimu.replaceMatch(match, def.replacement, { spans: true });
                     } else {
                         fragment.text = def.filter(match);
                     }
@@ -1015,62 +1014,53 @@ var Rimu;
         Replacements.defs = [
             {
                 match: /\\?(&[\w#][\w]+;)/g,
-                replacement: '$1',
-                specials: false
+                replacement: '',
+                filter: function (match) {
+                    return match[1];
+                }
             },
             {
                 match: /[\\ ]\+(\n|$)/g,
-                replacement: '<br>$1',
-                specials: false
+                replacement: '<br>$1'
             },
             {
                 match: /(^|\s)\\\+(\s|$)/g,
-                replacement: '$1+$2',
-                specials: false
+                replacement: '$1+$2'
             },
             {
                 match: /\\?<<#([a-zA-Z][\w\-]*)>>/g,
-                replacement: '<span id="$1"></span>',
-                specials: true
+                replacement: '<span id="$1"></span>'
             },
             {
                 match: /\\?<image:([^\s\|]+)\|([\s\S]+?)>/g,
-                replacement: '<img src="$1" alt="$2">',
-                specials: true
+                replacement: '<img src="$1" alt="$2">'
             },
             {
                 match: /\\?<image:([^\s\|]+?)>/g,
-                replacement: '<img src="$1" alt="$1">',
-                specials: true
+                replacement: '<img src="$1" alt="$1">'
             },
             {
                 match: /\\?<(\S+@[\w\.\-]+)\|([\s\S]+?)>/g,
-                replacement: '<a href="mailto:$1">$2</a>',
-                specials: true
+                replacement: '<a href="mailto:$1">$2</a>'
             },
             {
                 match: /\\?<(\S+@[\w\.\-]+)>/g,
-                replacement: '<a href="mailto:$1">$1</a>',
-                specials: true
+                replacement: '<a href="mailto:$1">$1</a>'
             },
             {
-                filter: function (match) {
-                    var text = Rimu.replaceMatch(match, this.replacement, this);
-                    return Rimu.Options.safeModeFilter(text);
-                },
                 match: /\\?(<[!\/]?[a-zA-Z\-]+(:?\s+[^<>&]+)?>)/g,
-                replacement: '$1',
-                specials: false
+                replacement: '',
+                filter: function (match) {
+                    return Rimu.Options.safeModeFilter(match[1]);
+                }
             },
             {
                 match: /\\?<(\S+?)\|([\s\S]+?)>/g,
-                replacement: '<a href="$1">$2</a>',
-                specials: true
+                replacement: '<a href="$1">$2</a>'
             },
             {
                 match: /\\?<(\S+?)>/g,
-                replacement: '<a href="$1">$1</a>',
-                specials: true
+                replacement: '<a href="$1">$1</a>'
             }
         ];
 
@@ -1086,7 +1076,7 @@ var Rimu;
                 }
             }
 
-            Replacements.defs.unshift({ match: new RegExp(regexp, flags), replacement: replacement, specials: true });
+            Replacements.defs.unshift({ match: new RegExp(regexp, flags), replacement: replacement });
         }
         Replacements.set = set;
 

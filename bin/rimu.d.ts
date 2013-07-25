@@ -8,7 +8,11 @@ declare module Rimu {
     function trim(s: string): string;
     function escapeRegExp(s: string): string;
     function replaceSpecialChars(s: string): string;
-    function replaceMatch(match: RegExpExecArray, replacement: string, options?: {}): string;
+    function replaceMatch(match: RegExpExecArray, replacement: string, options: {
+        macros?: boolean;
+        spans?: boolean;
+        specials?: boolean;
+    }): string;
     function replaceInline(text: string, options: {
         macros?: boolean;
         spans?: boolean;
@@ -109,10 +113,9 @@ declare module Rimu.Quotes {
 }
 declare module Rimu.Replacements {
     interface Definition {
-        filter?: (match: RegExpExecArray) => string;
         match: RegExp;
         replacement: string;
-        specials: boolean;
+        filter?: (match: RegExpExecArray) => string;
     }
     var defs: Definition[];
     function set(regexp: string, flags: string, replacement: string): void;
