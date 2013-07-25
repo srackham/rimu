@@ -907,7 +907,7 @@ var Rimu;
                     fragment.text = Rimu.replaceSpecialChars(fragment.text);
                 } else {
                     if (!def.filter) {
-                        fragment.text = Rimu.replaceMatch(match, def.replacement, { spans: true });
+                        fragment.text = Rimu.replaceMatch(match, def.replacement, { specials: true });
                     } else {
                         fragment.text = def.filter(match);
                     }

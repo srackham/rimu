@@ -6,9 +6,7 @@ module Rimu.LineBlocks {
     match: RegExp;
     replacement: string;
     macros?: bool;
-    // spans and specials properties are mutually exclusive,
-    // they are assumed false if they are not explicitly defined.
-    spans?: bool;
+    spans?: bool;   // Span substitution also expands special characters.
     specials?: bool;
   }
 
