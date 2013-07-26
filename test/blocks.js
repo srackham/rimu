@@ -362,6 +362,10 @@ exports['Documents'] = function(test) {
       'A \\{v}',
       '<p>A {v}</p>',
       'escaped undefined macros are unescaped');
+  testDocument(test,
+      '{v}',
+      "<p>This 'and' that</p>",
+      'macros are preserved across Rimu.render() invocations');
   test.equal(Rimu.render(
       'Hello {undefined}'),
       '<p>Hello </p>',

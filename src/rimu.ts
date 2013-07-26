@@ -9,7 +9,6 @@ module Rimu {
 
   // Rimu public API.
   export function render(source: string, options: Options.Values = {}): string {
-    Macros.reset();
     Options.update(options);
     return renderSource(source);
   }

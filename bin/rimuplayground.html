@@ -639,7 +639,8 @@ DESCRIPTION
   the Rimu source is read from FILES.
 
   If a file named .rimurc exists in the user's home directory
-  then its contents is processed before any other inputs.
+  then its contents is processed after - -prepend sources but before
+  any other inputs. Rendered with safe-mode 0.
 
 OPTIONS
   -h, - -help
@@ -649,7 +650,8 @@ OPTIONS
     Write output to file OUTFILE instead of stdout.
 
   -p, - -prepend SOURCE
-    Prepend the SOURCE text to the Rimu source.
+    Process the SOURCE text before other inputs.
+    Rendered with safe-mode 0.
 
   - -safe-mode NUMBER
     Specifies how to process inline and block HTML elements.

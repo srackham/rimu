@@ -2,7 +2,6 @@ var Rimu;
 (function (Rimu) {
     function render(source, options) {
         if (typeof options === "undefined") { options = {}; }
-        Rimu.Macros.reset();
         Rimu.Options.update(options);
         return renderSource(source);
     }
@@ -218,11 +217,6 @@ var Rimu;
 (function (Rimu) {
     (function (Macros) {
         Macros.defs = [];
-
-        function reset() {
-            Macros.defs = [];
-        }
-        Macros.reset = reset;
 
         function get(name) {
             for (var i in Macros.defs) {

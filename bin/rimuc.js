@@ -20,7 +20,8 @@ var MANPAGE = 'NAME\n' +
     '  the Rimu source is read from FILES.\n' +
     '\n' +
     '  If a file named .rimurc exists in the user\'s home directory\n' +
-    '  then its contents is processed before any other inputs.\n' +
+    '  then its contents is processed after --prepend sources but before\n' +
+    '  any other inputs. Rendered with safe-mode 0.\n' +
     '\n' +
     'OPTIONS\n' +
     '  -h, --help\n' +
@@ -30,7 +31,8 @@ var MANPAGE = 'NAME\n' +
     '    Write output to file OUTFILE instead of stdout.\n' +
     '\n' +
     '  -p, --prepend SOURCE\n' +
-    '    Prepend the SOURCE text to the Rimu source.\n' +
+    '    Process the SOURCE text before other inputs.\n' +
+    '    Rendered with safe-mode 0.\n' +
     '\n' +
     '  --safe-mode NUMBER\n' +
     '    Specifies how to process inline and block HTML elements.\n' +
@@ -78,7 +80,7 @@ outer:
           break;
         case '--prepend':
         case '-p':
-          source += process.argv.shift() + '\n\n';
+          source += process.argv.shift() + '\n';
           break;
         case '--safe-mode':
           safeMode = parseInt(process.argv.shift() || 99, 10);
@@ -121,17 +123,19 @@ if (fs.existsSync(rimurc)) {
   process.argv.unshift(rimurc);
 }
 
-// Concatenate source files.
+// Convert Rimu source files to HTML.
+var html = '';
+if (source !== '') {
+  html += Rimu.render(source) + '\n'; // --prepend option source.
+}
 while (!!(arg = process.argv.shift())) {
   if (!fs.existsSync(arg)) {
     die('source file does not exist: ' + arg);
   }
-  source += fs.readFileSync(arg).toString();
-  source += '\n\n';  // Separate sources with blank line.
+  source = fs.readFileSync(arg).toString();
+  html += Rimu.render(source, {safeMode: arg === rimurc ? 0 : safeMode}) + '\n';
 }
-
-// Convert Rimu to HTML.
-var html = Rimu.render(source, {safeMode: safeMode});
+html = html.trim() + '\n';
 if (outFile) {
   fs.writeFileSync(outFile, html);
 }

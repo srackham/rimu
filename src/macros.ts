@@ -7,10 +7,6 @@ module Rimu.Macros {
     
   export var defs: Macro[] = [];
 
-  export function reset(): void {
-    defs = [];
-  }
-
   // Return named macro value or null if it doesn't exist.
   export function get(name: string): string {
     for (var i in defs) {
