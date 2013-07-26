@@ -482,11 +482,11 @@ for learning and experimenting with Rimu markup:
 
 <div id="topic-quotes">
 <!--
-Text can be formatted by enclosing it with quote characters. There are
-quote characters for _emphasized text_, *bold text*, `monospaced
-text`.
+Text can be formatted by enclosing it with quote characters. The
+built-in quote characters are: underscore for _emphasized text_;
+asterisk for *bold text*; back-tick for `monospaced text`.
 
-  Rimu            HTML                      Common style
+  Rimu            HTML                      Font style
   ___________________________________________________________
   _emphasis_      <em>emphasis</em>         Italic
   *strong*        <strong>strong</strong>   Bold
@@ -517,7 +517,7 @@ separator is used the quoted text is displayed verbatim like the
 built-in _code quote_.
 
 - A quote definition must start at the left margin and must not
-  beyond the end of the line.
+  extend beyond the end of the line.
 - The `quote-template` can invoke previously defined macros.
 - Quote definitions are not processed if the _Safe Mode_ is non-zero.
 
@@ -551,8 +551,8 @@ Invocation syntax:
   macro invocations cannot be nested.
 - Macro definitions and invocations can be escaped with a backslash
   character prefix.
-- Unescaped macro invokations are expanded everywhere, including
-  inside _code quotes_ and _code blocks_.
+- Macro invokations are expanded everywhere, including inside
+  _code quotes_ and _code blocks_.
 - _Parametrized_ macro invocations replace the `$1`, `$2` ... strings
   in the macro definition with the `param1`, `param2` ... values.
 - Macro invocation parameters contain inline Rimu markup; inline
@@ -593,13 +593,14 @@ Definition syntax:
 
   /pattern/flags = 'replacement'
 
-- The regular expression syntax is identical to JavaScripts
+- The `/pattern/flags` regular expression syntax is identical to JavaScript's
   <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/RegExp|RegExp
   literal> syntax.
 - `$1`, `$2`... in `replacement` are replaced by the corresponding
   regular expression match groups.
-- Replacements are only expanded in inline contexts and they are not
-  expanded inside _Code quotes_, _Code blocks_ or _Indented paragraphs_.
+- Replacements are only expanded in inline contexts.
+- Replacements are not expanded inside _Code quotes_, _Code blocks_
+  or _Indented paragraphs_.
 - If the first matched character is a backslash then replacement will
   be escaped i.e. starting the regular expresssion with `\\?` will
   ensure it can be escaped.

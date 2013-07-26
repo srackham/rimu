@@ -254,7 +254,7 @@ Safe Mode. To apply Macro, Replacement or Quote definitions to Rimu
 markup processed in Safe Mode you need to load the definitions with a
 separate API call, for example:</p>
 <pre><code>Rimu.render(trusted_rimu_definitions); // safeMode is off by default.
-Rimu.render(untrusted_rimu_markup, {safeMode: 1});</code></pre>
+var html = Rimu.render(untrusted_rimu_markup, {safeMode: 1});</code></pre>
 <h2>Escaping Macro and Replacement parameters</h2>
 <p>You can escape <code>$1</code>, <code>$2</code>&hellip; parameters in <em>Macro</em> and <em>Replacement</em>
 definitions by using the <code>&amp;dollar;</code> character entity instead of the

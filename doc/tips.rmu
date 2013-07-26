@@ -266,7 +266,7 @@ separate API call, for example:
 
 --
 Rimu.render(trusted_rimu_definitions); // safeMode is off by default.
-Rimu.render(untrusted_rimu_markup, {safeMode: 1});
+var html = Rimu.render(untrusted_rimu_markup, {safeMode: 1});
 --
 
 
