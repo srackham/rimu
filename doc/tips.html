@@ -229,6 +229,8 @@ source non-portable and less readable.</p>
 /&lt;-/ = '&amp;leftarrow;'
 /\bTODO\b/ = '&lt;b style="color: red; background-color: yellow;"&gt;TODO&lt;/b&gt;'
 /^NOTE:/ = '&lt;b&gt;NOTE&lt;/b&gt;:'
+// Do not process the  deprecated + line break.
+/[\\ ]\+(\n|$)/g = ' +$1'
 
 /*
   Macros

@@ -1014,12 +1014,12 @@ var Rimu;
                 }
             },
             {
-                match: /[\\ ]\+(\n|$)/g,
+                match: /[\\ ]\\(\n|$)/g,
                 replacement: '<br>$1'
             },
             {
-                match: /(^|\s)\\\+(\s|$)/g,
-                replacement: '$1+$2'
+                match: /[\\ ]\+(\n|$)/g,
+                replacement: '<br>$1'
             },
             {
                 match: /\\?<<#([a-zA-Z][\w\-]*)>>/g,

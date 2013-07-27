@@ -50,8 +50,8 @@ Lobortis lacus vestibulum sem.
 
 
 ===== Text formatting
-_\_Emphasized text\__ +
-*\*Strong text\**     +
+_\_Emphasized text\__ \
+*\*Strong text\**     \
 `\`Code text\``
 
 Additional text formatting can be added with <mark>HTML markup</mark>

@@ -24,7 +24,6 @@ syn match rimuBackslash /\\/ containedin=ALLBUT,rimuComment
 syn match rimuSpanLineBreak / +$/
 syn match rimuSpanEntity /\\\@<!&[#a-zA-Z]\w\{-1,};/
 syn match rimuUnsafeUnderscore /\\\@<!_/ contained containedin=rimuSpanURL
-syn match rimuUnsafePlus /[ \t\n]\@<=+[ \t]\@=/ containedin=ALLBUT,rimuSpanCode,rimuCodeBlock,rimuComment,rimuHTMLBlock,rimuHeader
 syn match rimuSpanURL /\\\@<!<\S\+\(|\_.\{-}\)\?>/ contains=rimuURLParams
 syn match rimuURLParams /|\_[^>]*/ contained
 syn match rimuSpanHTML /\\\@<!<[!\/]\?[a-zA-Z-]\+\(\_s\_.\{-}\|\)>/
@@ -81,7 +80,6 @@ hi def link rimuSpanQuote Label
 hi def link rimuSpanStrong Special
 hi def link rimuSpanURL Title
 hi def link rimuTodo Todo
-hi def link rimuUnsafePlus Todo
 hi def link rimuUnsafeUnderscore Todo
 hi def link rimuDefinitionValue Type
 hi def link rimuDefinitionParam Macro

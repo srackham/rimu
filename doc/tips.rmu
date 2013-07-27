@@ -233,6 +233,8 @@ _Tools_):
 /<-/ = '&leftarrow;'
 /\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
 /^NOTE:/ = '<b>NOTE</b>:'
+// Do not process the  deprecated + line break.
+/[\\ ]\+(\n|$)/g = ' +$1'
 
 /*
   Macros
