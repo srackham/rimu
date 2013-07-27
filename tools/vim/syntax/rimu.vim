@@ -20,8 +20,8 @@ syn keyword rimuTodo TODO FIXME XXX ZZZ DEPRECATED
 
 syn match rimuParamSeparator /|/ contained containedin=rimuURLParams,rimuDefinitionParams
 syn match rimuParamSeparator /?/ contained containedin=rimuDefinitionParams
-syn match rimuBackslash /\\/ containedin=ALLBUT,rimuComment
-syn match rimuSpanLineBreak / +$/
+syn match rimuBackslash /\\\@<!\\/ containedin=ALLBUT,rimuComment
+syn match rimuSpanLineBreak / \\$/
 syn match rimuSpanEntity /\\\@<!&[#a-zA-Z]\w\{-1,};/
 syn match rimuUnsafeUnderscore /\\\@<!_/ contained containedin=rimuSpanURL
 syn match rimuSpanURL /\\\@<!<\S\+\(|\_.\{-}\)\?>/ contains=rimuURLParams
