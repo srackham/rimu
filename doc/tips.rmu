@@ -232,7 +232,7 @@ _Tools_):
 /(^|[^-])->/ = '$1&rightarrow;'
 /<-/ = '&leftarrow;'
 /\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
-/^NOTE:/ = '<b>NOTE</b>:'
+/^(NOTE|IMPORTANT|WARNING|TIP):/ = '<b>$1</b>:'
 // Do not process the  deprecated + line break.
 /[\\ ]\+(\n|$)/g = ' +$1'
 
@@ -250,6 +250,25 @@ _Tools_):
 */
 ~ = '<del>|</del>'
 --
+
+== Extending the Vim syntax highligher
+If you've added custom replacements and quotes you can highlight them
+in Vim by creating a custom `~/.vim/after/syntax/rimu.vim` syntax
+file. Vim loads this file after the distributed
+`~/.vim/syntax/rimu.vim` file. The following example
+`~/.vim/after/syntax/rimu.vim` syntax file highlights the admonitions
+replacement and the strike-through quote definitions from the previous
+example `.rimurc` file:
+
+.no-highlight
+--
+syn match rimuAdmonition /^\(NOTE\|IMPORTANT\|WARNING\|TIP\):/ containedin=ALLBUT,rimuComment,rimuCodeBlock
+hi def link rimuAdmonition Special
+
+syn match rimuSpanDeleted /\\\@<!\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\~/ contains=rimuSpanEntity
+hi def link rimuSpanDeleted Todo
+--
+
 
 == Understanding substitution priorities
 Inline elements are processed in the following order (first to last):
