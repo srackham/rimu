@@ -2,5 +2,9 @@
   Used by rimuc.js --styled option.
 */
 
+<script {highlightjs!} src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script> <script>hljs.initHighlightingOnLoad();</script>
+
+<script {mathjax!} type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
 </body>
 </html>

@@ -373,7 +373,23 @@ exports['Documents'] = function(test) {
   test.equal(Rimu.render(
       'Hello {undefined?undefined macro.}'),
       '<p>Hello undefined macro.</p>',
-      'default macro value');
+      'existential macro invocation');
+  test.equal(Rimu.render(
+      'foo\n{undefined!}bar\nmacro'),
+      '<p>foo\nmacro</p>',
+      'inclusion macro: undefined invocation');
+  test.equal(Rimu.render(
+      "{v}='xxx'\nfoo\n{v!}bar\nmacro"),
+      '<p>foo\nbar\nmacro</p>',
+      'inclusion macro: defined invocation');
+  test.equal(Rimu.render(
+      "{v}=''\nfoo\n{v!}bar\nmacro"),
+      '<p>foo\nmacro</p>',
+      'inclusion macro: blank invocation');
+  test.equal(Rimu.render(
+      '<div>{undefined!}</div>'),
+      '',
+      'inclusion macro: HTML block');
   test.equal(Rimu.render(
       '{skipped} = \'SKIPPED\'\n{skipped?foobar}', {safeMode:1}),
       '<p>foobar</p>',

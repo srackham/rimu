@@ -29,23 +29,14 @@ module Rimu.Macros {
   }
 
   export function render(text: string): string {
-    var re = /\\?\{([\w\-]+)([|?][\s\S]*?)?\}/g;  // $1 = name, $2 = params.
+    var re = /\\?\{([\w\-]+)([|?!][\s\S]*?)?\}/g;  // $1 = name, $2 = params.
     text = text.replace(re, function(match, name, params) {
       if (match[0] === '\\') {
         return match.slice(1);
       }
-      var value = get(name);
-      if (value === null) {
-        // Macro is undefined.
-        if (params && params[0] === '?') {
-          return params.slice(1);
-        }
-        else {
-          return '';
-        }
-      }
+      var value = get(name);  // value is null if macro is undefined.
       if (!params) {
-        return value.replace(/\$\d+/g, '');
+        return (value === null) ? '' : value.replace(/\$\d+/g, '');
       }
       if (params[0] === '|') {
         // Substitute macro parameters.
@@ -57,8 +48,36 @@ module Rimu.Macros {
         result = result.replace(/\$\d+/g, '');
         return result;
       }
-      return value;
+      else if (params[0] === '?') {
+        if (value === null) {
+          return params.slice(1);
+        }
+      }
+      else if (params[0] === '!') {
+        if (value === null || value === '') {
+          return '\0';  // Flag line for deletion.
+        }
+        else {
+//          return params.slice(1);
+          return '';
+        }
+      }
+      else if (value === null) {
+        return '';
+      }
+      else {
+        return value;
+      }
     });
+    if (text.indexOf('\0') !== -1) {
+      var lines = text.split('\n');
+      for (var i = lines.length - 1; i >= 0; --i) {
+        if (lines[i].indexOf('\0') !== -1) {
+          lines.splice(i, 1);
+        }
+      }
+      text = lines.join('\n');
+    }
     return text;
   }
 

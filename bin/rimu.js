@@ -240,21 +240,14 @@ var Rimu;
         Macros.set = set;
 
         function render(text) {
-            var re = /\\?\{([\w\-]+)([|?][\s\S]*?)?\}/g;
+            var re = /\\?\{([\w\-]+)([|?!][\s\S]*?)?\}/g;
             text = text.replace(re, function (match, name, params) {
                 if (match[0] === '\\') {
                     return match.slice(1);
                 }
                 var value = get(name);
-                if (value === null) {
-                    if (params && params[0] === '?') {
-                        return params.slice(1);
-                    } else {
-                        return '';
-                    }
-                }
                 if (!params) {
-                    return value.replace(/\$\d+/g, '');
+                    return (value === null) ? '' : value.replace(/\$\d+/g, '');
                 }
                 if (params[0] === '|') {
                     var result = value;
@@ -264,9 +257,31 @@ var Rimu;
                     }
                     result = result.replace(/\$\d+/g, '');
                     return result;
+                } else if (params[0] === '?') {
+                    if (value === null) {
+                        return params.slice(1);
+                    }
+                } else if (params[0] === '!') {
+                    if (value === null || value === '') {
+                        return '\0';
+                    } else {
+                        return '';
+                    }
+                } else if (value === null) {
+                    return '';
+                } else {
+                    return value;
                 }
-                return value;
             });
+            if (text.indexOf('\0') !== -1) {
+                var lines = text.split('\n');
+                for (var i = lines.length - 1; i >= 0; --i) {
+                    if (lines[i].indexOf('\0') !== -1) {
+                        lines.splice(i, 1);
+                    }
+                }
+                text = lines.join('\n');
+            }
             return text;
         }
         Macros.render = render;
