@@ -549,12 +549,13 @@ Invocation syntax:
   macro invocations cannot be nested.
 - Macro definitions and invocations can be escaped with a backslash
   character prefix.
-- Macro invokations are expanded everywhere, including inside
+- Macro invocations are expanded everywhere, including inside
   _code quotes_ and _code blocks_.
 - _Parametrized_ macro invocations replace the `$1`, `$2` ... strings
   in the macro definition with the `param1`, `param2` ... values.
 - Macro invocation parameters contain inline Rimu markup; inline
   parameter values can span multiple lines.
+- Omitted parameter values default to an empty string.
 - Invocations of undefined macros are replaced with a blank string
   or the `default-value` if the `\{macro-name?default-value}`
   _Existential_ invocation syntax is used.
@@ -563,7 +564,6 @@ Invocation syntax:
   the macro value is not blank the invocation is replaced with
   a blank string. This feature can be used to conditionally include
   lines of source text.
-- Omitted parameter values default to an empty string.
 - Macro definitions are not processed if the _Safe Mode_ is
   non-zero.
 
@@ -668,9 +668,9 @@ OPTIONS
     If one source file is specified the output is written to
     same-named file with .html extension.
     Styled using Bootstrap.
-    Set the {highlightjs} macro to a non-blank value to enable
+    Set the \{highlightjs} macro to a non-blank value to enable
     syntax highlighting with Highlight.js.
-    Set the {mathjax} macro to a non-blank value to enable MathJax.
+    Set the \{mathjax} macro to a non-blank value to enable MathJax.
 
 - -
 
