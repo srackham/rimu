@@ -14,6 +14,8 @@ var Rimu;
             reader.skipBlankLines();
             if (reader.eof())
                 break;
+            if (Rimu.Macros.renderInclusions(reader))
+                continue;
             if (Rimu.LineBlocks.render(reader, writer))
                 continue;
             if (Rimu.Lists.render(reader, writer))
@@ -239,8 +241,13 @@ var Rimu;
         }
         Macros.set = set;
 
-        function render(text) {
-            var re = /\\?\{([\w\-]+)([|?!][\s\S]*?)?\}/g;
+        function render(text, options) {
+            if (typeof options === "undefined") { options = {}; }
+            if (options.inclusionsOnly) {
+                var re = /\\?\{([\w\-]+)(!)\}/g;
+            } else {
+                var re = /\\?\{([\w\-]+)([|?!][\s\S]*?)?\}/g;
+            }
             text = text.replace(re, function (match, name, params) {
                 if (match[0] === '\\') {
                     return match.slice(1);
@@ -285,6 +292,26 @@ var Rimu;
             return text;
         }
         Macros.render = render;
+
+        function renderInclusions(reader) {
+            var line = reader.cursor();
+            if (!line) {
+                return false;
+            }
+            if (!/^\{[\w\-]+!\}/.test(line)) {
+                return false;
+            }
+
+            line = render(line, { inclusionsOnly: true });
+            if (line !== '') {
+                reader.cursor(line);
+                return false;
+            } else {
+                reader.next();
+                return true;
+            }
+        }
+        Macros.renderInclusions = renderInclusions;
 
         if (typeof exports !== 'undefined') {
             exports.Macros = Rimu.Macros;

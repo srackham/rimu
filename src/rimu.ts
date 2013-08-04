@@ -20,6 +20,7 @@ module Rimu {
     while (!reader.eof()) {
       reader.skipBlankLines();
       if (reader.eof()) break;
+      if (Macros.renderInclusions(reader)) continue;
       if (LineBlocks.render(reader, writer)) continue;
       if (Lists.render(reader, writer)) continue;
       if (DelimitedBlocks.render(reader, writer)) continue;

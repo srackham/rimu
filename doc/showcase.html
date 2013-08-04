@@ -5,10 +5,8 @@
   <meta name="description" content="Rimu is a readable text to HTML
     markup language inspired by AsciiDoc and Markdown.">
   <title>Rimu Showcase</title>
-  <link rel="stylesheet" href="highlight.js/styles/default.css">
-  <script src="highlight.js/highlight.pack.js"></script>
   <link href="bootstrap.css" rel="stylesheet">
-  <script>hljs.initHighlightingOnLoad();</script>
+  <link rel="stylesheet" href="highlight.js/styles/default.css">
   <style>
     /* Bootstrap tweaks. */
     body {
@@ -162,8 +160,8 @@ paragraph is rendered with the list item.</pre>
   </tbody>
 </table>
 <h2>MathML</h2>
-<p><strong>NOTE</strong>: The Microsoft Internet Explorer browser does not support
-MathML (as of IE10).</p>
+<p><strong>NOTE</strong>: Browser support for MathML is patchy, you're better of using
+<a href="http://www.mathjax.org/">MathJax</a>. Examples:</p>
 <math display="block">
   <mrow>
     <munderover>
@@ -203,5 +201,6 @@ MathML (as of IE10).</p>
     </msup>
   </mrow>
 </math></p>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

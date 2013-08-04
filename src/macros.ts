@@ -28,8 +28,13 @@ module Rimu.Macros {
     defs.push({name: name, value: value});
   }
 
-  export function render(text: string): string {
-    var re = /\\?\{([\w\-]+)([|?!][\s\S]*?)?\}/g;  // $1 = name, $2 = params.
+  export function render(text: string, options: {inclusionsOnly?: bool} = {}): string {
+    if (options.inclusionsOnly) {
+      var re = /\\?\{([\w\-]+)(!)\}/g;  // $1 = name, $2 = '!'.
+    }
+    else {
+      var re = /\\?\{([\w\-]+)([|?!][\s\S]*?)?\}/g;  // $1 = name, $2 = params.
+    }
     text = text.replace(re, function(match, name, params) {
       if (match[0] === '\\') {
         return match.slice(1);
@@ -58,7 +63,6 @@ module Rimu.Macros {
           return '\0';  // Flag line for deletion.
         }
         else {
-//          return params.slice(1);
           return '';
         }
       }
@@ -79,6 +83,29 @@ module Rimu.Macros {
       text = lines.join('\n');
     }
     return text;
+  }
+
+  // If the current line on the reader begins with an inclusion macro invocation
+  // then render inclusions and skip to the next line if any are undefined.
+  // Return true if the line at the cursor was skipped else return false.
+  export function renderInclusions(reader: Reader): bool {
+    var line = reader.cursor();
+    if (!line) {
+      return false;
+    }
+    if (!/^\{[\w\-]+!\}/.test(line)) {
+      return false;
+    }
+    // Arrive here if the line at the cursor starts with an inclusion macro invocation.
+    line = render(line, {inclusionsOnly: true});
+    if (line !== '') {
+      reader.cursor(line);  // Retain the line at the cursor.
+      return false;
+    }
+    else {
+      reader.next();  // Skip the line at the cursor.
+      return true;
+    }
   }
 
   // CommonJS module exports.

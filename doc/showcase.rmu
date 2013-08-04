@@ -149,8 +149,10 @@ This allows arbitrarily complex list items.
 
 
 == MathML
-*NOTE*: The Microsoft Internet Explorer browser does not support
-MathML (as of IE10).
+*NOTE*: Browser support for MathML is patchy, you're better of using
+<http://www.mathjax.org/|MathJax>. Examples:
+
+{mathjax} = 'yes'
 
 <math display="block">
   <mrow>

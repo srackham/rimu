@@ -45,7 +45,10 @@ var MANPAGE = 'NAME\n' +
     '    Include HTML header and footer and CSS styling in output.\n' +
     '    If one source file is specified the output is written to\n' +
     '    same-named file with .html extension.\n' +
-    '    Styled using Bootstrap; syntax highlighting with Highlight.js.\n';
+    '    Styled using Bootstrap.\n' +
+    '    Set the {highlightjs} macro to a non-blank value to enable\n' +
+    '    syntax highlighting with Highlight.js.\n' +
+    '    Set the {mathjax} macro to a non-blank value to enable MathJax.\n';
 
 // Helpers.
 function die(message) {

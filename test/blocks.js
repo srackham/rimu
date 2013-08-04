@@ -391,6 +391,10 @@ exports['Documents'] = function(test) {
       '',
       'inclusion macro: HTML block');
   test.equal(Rimu.render(
+      "{v}='xxx'\n{v!}<div>foobar</div>"),
+      '<div>foobar</div>',
+      'inclusion macro: at start of line');
+  test.equal(Rimu.render(
       '{skipped} = \'SKIPPED\'\n{skipped?foobar}', {safeMode:1}),
       '<p>foobar</p>',
       'skip macro definitions in safe mode');
