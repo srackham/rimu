@@ -140,7 +140,7 @@ module Rimu.LineBlocks {
         if (match[2]) { // id.
           htmlAttributes += ' id="' + trim(match[2]).slice(1) + '"';
         }
-        if (match[3] && Options.safeMode === 0) { // Atributes.
+        if (match[3] && Options.safeMode === 0) { // Attributes.
           htmlAttributes += ' ' + trim(match[3].slice(1, match[3].length - 1));
         }
         htmlAttributes = trim(htmlAttributes);
