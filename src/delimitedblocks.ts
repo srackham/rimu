@@ -6,15 +6,15 @@ module Rimu.DelimitedBlocks {
     closeMatch: RegExp; // $1 (if defined) is appended to block content.
     openTag: string;
     closeTag: string;
-    macros?: bool;  // Not applicable to container or skipped elements.
-    filter?: (text: string, match: RegExpExecArray) => string;
-    verify?: (match: string[]) => bool; // Additional match verification checks.
+    macros?: boolean;  // Not applicable to container or skipped elements.
+    filter?: (text: string, match: string[]) => string;
+    verify?: (match: string[]) => boolean; // Additional match verification checks.
     // container, skip, spans and specials properties are mutually exclusive,
     // they are assumed false if they are not explicitly defined.
-    container?: bool;
-    skip?: bool;
-    spans?: bool;
-    specials?: bool;
+    container?: boolean;
+    skip?: boolean;
+    spans?: boolean;
+    specials?: boolean;
   }
     
   var defs: Definition[] = [
@@ -118,7 +118,7 @@ module Rimu.DelimitedBlocks {
     },
   ];
 
-  export function render(reader: Reader, writer: Writer): bool {
+  export function render(reader: Reader, writer: Writer): boolean {
     if (reader.eof()) throw 'premature eof';
     for (var i in defs) {
       var def = defs[i];

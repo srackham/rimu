@@ -4,8 +4,8 @@ module Rimu.Quotes {
     quote: string;    // Single quote character.
     openTag: string;
     closeTag: string;
-    spans: bool;      // Allow span elements inside quotes.
-    verify?: (match: RegExpExecArray, re: RegExp) => bool; // Additional match verification checks.
+    spans: boolean;      // Allow span elements inside quotes.
+    verify?: (match: RegExpExecArray, re: RegExp) => boolean; // Additional match verification checks.
   }
     
   export var defs: Definition[] = [

@@ -83,7 +83,7 @@ declare module Rimu.DelimitedBlocks {
         openTag: string;
         closeTag: string;
         macros?: boolean;
-        filter?: (text: string, match: RegExpExecArray) => string;
+        filter?: (text: string, match: string[]) => string;
         verify?: (match: string[]) => boolean;
         container?: boolean;
         skip?: boolean;

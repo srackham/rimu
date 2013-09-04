@@ -28,7 +28,7 @@ module Rimu.Macros {
     defs.push({name: name, value: value});
   }
 
-  export function render(text: string, options: {inclusionsOnly?: bool} = {}): string {
+  export function render(text: string, options: {inclusionsOnly?: boolean} = {}): string {
     if (options.inclusionsOnly) {
       var re = /\\?\{([\w\-]+)(!)\}/g;  // $1 = name, $2 = '!'.
     }
@@ -88,7 +88,7 @@ module Rimu.Macros {
   // If the current line on the reader begins with an inclusion macro invocation
   // then render inclusions and skip to the next line if any are undefined.
   // Return true if the line at the cursor was skipped else return false.
-  export function renderInclusions(reader: Reader): bool {
+  export function renderInclusions(reader: Reader): boolean {
     var line = reader.cursor();
     if (!line) {
       return false;

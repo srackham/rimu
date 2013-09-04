@@ -25,7 +25,7 @@ module Rimu {
       return this.lines[this.pos];
     }
 
-    eof(): bool {
+    eof(): boolean {
       return this.pos >= this.lines.length;
     }
 

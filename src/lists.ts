@@ -15,9 +15,9 @@ module Rimu.Lists {
     match: RegExpExecArray;
     def: Definition;
     id: string;
-    isListItem: bool;
-    isDelimited: bool;
-    isIndented: bool;
+    isListItem: boolean;
+    isDelimited: boolean;
+    isIndented: boolean;
   }
 
   var defs: Definition[] = [
@@ -56,7 +56,7 @@ module Rimu.Lists {
 
   var ids: string[];  // Stack of open list IDs.
 
-  export function render(reader: Reader, writer: Writer): bool {
+  export function render(reader: Reader, writer: Writer): boolean {
     if (reader.eof()) throw 'premature eof';
     var startItem: ItemState;
     if (!(startItem = matchItem(reader))) {
@@ -179,7 +179,7 @@ module Rimu.Lists {
   // list item elements but 'options' can be included to include delimited
   // blocks or indented paragraphs.
   function matchItem(reader: Reader,
-      options: {delimited?: bool; indented?: bool;} = {}): ItemState
+      options: {delimited?: boolean; indented?: boolean;} = {}): ItemState
   {
     // Consume any HTML attributes elements.
     var attrRe = LineBlocks.getDefinition('attributes').match;

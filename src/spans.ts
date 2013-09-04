@@ -15,7 +15,7 @@ module Rimu.Spans {
 
   interface Fragment {
     text: string;
-    done: bool;
+    done: boolean;
   }
 
   export function render(source: string): string {
@@ -39,7 +39,7 @@ module Rimu.Spans {
     var findRe = Quotes.findRe;
     var fragmentIndex = 0;
     var fragment = fragments[fragmentIndex];
-    var nextFragment: bool;
+    var nextFragment: boolean;
     var match: RegExpExecArray;
     findRe.lastIndex = 0;
     while (true) {
@@ -114,7 +114,7 @@ module Rimu.Spans {
     var findRe = def.match;
     var fragmentIndex = 0;
     var fragment = fragments[fragmentIndex];
-    var nextFragment: bool;
+    var nextFragment: boolean;
     var match: RegExpExecArray;
     findRe.lastIndex = 0;
     while (true) {

@@ -21,7 +21,7 @@ module Rimu {
   export function replaceMatch(
       match: RegExpExecArray,
       replacement: string,
-      options: {macros?: bool; spans?: bool; specials?: bool})
+      options: {macros?: boolean; spans?: boolean; specials?: boolean})
   {
     return replacement.replace(/\$\d/g, function () {
       // Replace $1, $2 ... with corresponding match groups.
@@ -33,7 +33,7 @@ module Rimu {
 
   // Replace the inline elements specified in options in text and return the result.
   export function replaceInline(text: string,
-      options: {macros?: bool; spans?: bool; specials?: bool;}): string
+      options: {macros?: boolean; spans?: boolean; specials?: boolean;}): string
   {
     if (options.macros) {
       text = Macros.render(text);

@@ -5,9 +5,9 @@ module Rimu.LineBlocks {
     filter?: (match: RegExpExecArray, reader?: Reader) => string;
     match: RegExp;
     replacement: string;
-    macros?: bool;
-    spans?: bool;   // Span substitution also expands special characters.
-    specials?: bool;
+    macros?: boolean;
+    spans?: boolean;   // Span substitution also expands special characters.
+    specials?: boolean;
   }
 
   var defs: Definition[] = [
@@ -151,7 +151,7 @@ module Rimu.LineBlocks {
 
   export var htmlAttributes: string = '';
 
-  export function render(reader: Reader, writer: Writer): bool {
+  export function render(reader: Reader, writer: Writer): boolean {
     if (reader.eof()) throw 'premature eof';
     for (var i in defs) {
       var def = defs[i];
