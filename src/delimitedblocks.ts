@@ -31,7 +31,7 @@ module Rimu.DelimitedBlocks {
         // Set macro.
         // Get the macro name from the match in the first line of the block.
         var name = match[0].match(/^\{([\w\-]+)\}/)[1];
-        Macros.set(name, text);
+        Macros.setValue(name, text);
         return '';
       },
     },

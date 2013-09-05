@@ -8,7 +8,7 @@ module Rimu.Macros {
   export var defs: Macro[] = [];
 
   // Return named macro value or null if it doesn't exist.
-  export function get(name: string): string {
+  export function getValue(name: string): string {
     for (var i in defs) {
       if (defs[i].name === name) {
         return defs[i].value;
@@ -18,7 +18,7 @@ module Rimu.Macros {
   }
 
   // Set named macro value or add it if it doesn't exist.
-  export function set(name: string, value: string): void {
+  export function setValue(name: string, value: string): void {
     for (var i in defs) {
       if (defs[i].name === name) {
         defs[i].value = value;
@@ -39,7 +39,7 @@ module Rimu.Macros {
       if (match[0] === '\\') {
         return match.slice(1);
       }
-      var value = get(name);  // value is null if macro is undefined.
+      var value = getValue(name);  // value is null if macro is undefined.
       if (!params) {
         return (value === null) ? '' : value.replace(/\$\d+/g, '');
       }

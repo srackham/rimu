@@ -54,8 +54,8 @@ declare module Rimu.Macros {
         value: string;
     }
     var defs: Macro[];
-    function get(name: string): string;
-    function set(name: string, value: string): void;
+    function getValue(name: string): string;
+    function setValue(name: string, value: string): void;
     function render(text: string, options?: {
         inclusionsOnly?: boolean;
     }): string;

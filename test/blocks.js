@@ -30,7 +30,7 @@ exports['Line blocks'] = function(test) {
       '',
       'macro definition');
   test.equal(
-      Rimu.Macros.get('macro'),
+      Rimu.Macros.getValue('macro'),
       'macro value',
       'macro value');
   test.equal(
@@ -42,7 +42,7 @@ exports['Line blocks'] = function(test) {
       '',
       'macro definition');
   test.equal(
-      Rimu.Macros.get('macro'),
+      Rimu.Macros.getValue('macro'),
       'macro value2',
       'macro value');
   test.equal(
@@ -108,7 +108,7 @@ exports['Delimited blocks'] = function(test) {
       '',
       'multi-line macro value');
   test.equal(
-      Rimu.Macros.get('macro'),
+      Rimu.Macros.getValue('macro'),
       'macro\n value',
       'macro value');
   test.equal(
@@ -120,7 +120,7 @@ exports['Delimited blocks'] = function(test) {
       '',
       'redefine macro');
   test.equal(
-      Rimu.Macros.get('macro'),
+      Rimu.Macros.getValue('macro'),
       'macro\n value2',
       'macro value');
   test.equal(

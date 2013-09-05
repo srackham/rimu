@@ -252,7 +252,7 @@ var Rimu;
         Macros.defs = [];
 
         // Return named macro value or null if it doesn't exist.
-        function get(name) {
+        function getValue(name) {
             for (var i in Macros.defs) {
                 if (Macros.defs[i].name === name) {
                     return Macros.defs[i].value;
@@ -260,10 +260,10 @@ var Rimu;
             }
             return null;
         }
-        Macros.get = get;
+        Macros.getValue = getValue;
 
         // Set named macro value or add it if it doesn't exist.
-        function set(name, value) {
+        function setValue(name, value) {
             for (var i in Macros.defs) {
                 if (Macros.defs[i].name === name) {
                     Macros.defs[i].value = value;
@@ -272,7 +272,7 @@ var Rimu;
             }
             Macros.defs.push({ name: name, value: value });
         }
-        Macros.set = set;
+        Macros.setValue = setValue;
 
         function render(text, options) {
             if (typeof options === "undefined") { options = {}; }
@@ -285,7 +285,7 @@ var Rimu;
                 if (match[0] === '\\') {
                     return match.slice(1);
                 }
-                var value = get(name);
+                var value = getValue(name);
                 if (!params) {
                     return (value === null) ? '' : value.replace(/\$\d+/g, '');
                 }
@@ -412,7 +412,7 @@ var Rimu;
                     var name = match[1];
                     var value = match[2];
                     value = Rimu.replaceInline(value, this);
-                    Rimu.Macros.set(name, value);
+                    Rimu.Macros.setValue(name, value);
                     return '';
                 }
             },
@@ -564,7 +564,7 @@ var Rimu;
                     // Set macro.
                     // Get the macro name from the match in the first line of the block.
                     var name = match[0].match(/^\{([\w\-]+)\}/)[1];
-                    Rimu.Macros.set(name, text);
+                    Rimu.Macros.setValue(name, text);
                     return '';
                 }
             },

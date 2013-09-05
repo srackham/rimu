@@ -61,7 +61,7 @@ module Rimu.LineBlocks {
         var name = match[1];
         var value = match[2];
         value = replaceInline(value, this);
-        Macros.set(name, value);
+        Macros.setValue(name, value);
         return '';
       },
     },
