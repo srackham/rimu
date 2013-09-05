@@ -308,3 +308,37 @@ Refer to the Rimu source files
 <https://github.com/srackham/rimu/blob/master/src/quotes.ts|quotes.ts>
 and
 <https://github.com/srackham/rimu/blob/master/src/replacements.ts|replacements.ts>.
+
+
+== Mathematical formulae using MathJax
+You can include math formulas written in LaTeX or MathML using
+<http://www.mathjax.org/|MathJax>. The `rimuc` command `--styled`
+option will include MathJax support if the `\{mathjax}` macro is
+defined. For example, this Rimu source:
+
+--
+\{mathjax} = 'yes'
+
+A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m\{2}\)
+
+A LaTeX block formula:
+
+\[\sum_{i=0}^n i^2 = \frac{n^2+n}m\{2}\]
+--
+
+Renders:
+
+{mathjax} = 'yes'
+
+A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m\{2}\)
+
+A LaTeX block formula:
+
+\[\sum_{i=0}^n i^2 = \frac{n^2+n}m\{2}\]
+
+NOTE: Don't forget to escape any Rimu macro invocations in the math
+formulas (for example, the `\{2}` in the above formula).
+
+See the <http://docs.mathjax.org/en/latest/|latest MathJax
+documentation> to learn how to use MathJax.
+

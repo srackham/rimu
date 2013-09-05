@@ -283,5 +283,27 @@ dollar character.</p>
 <a href="https://github.com/srackham/rimu/blob/master/src/quotes.ts">quotes.ts</a>
 and
 <a href="https://github.com/srackham/rimu/blob/master/src/replacements.ts">replacements.ts</a>.</p>
+<h2>Mathematical formulae using MathJax</h2>
+<p>You can include math formulas written in LaTeX or MathML using
+<a href="http://www.mathjax.org/">MathJax</a>. The <code>rimuc</code> command <code>--styled</code>
+option will include MathJax support if the <code>{mathjax}</code> macro is
+defined. For example, this Rimu source:</p>
+<pre><code>{mathjax} = 'yes'
+
+A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\)
+
+A LaTeX block formula:
+
+\[\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\]</code></pre>
+<p>Renders:</p>
+<p>A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\)</p>
+<p>A LaTeX block formula:</p>
+<p>\[\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\]</p>
+<p><b>NOTE</b>: Don't forget to escape any Rimu macro invocations in the math
+formulas (for example, the <code>{2}</code> in the above formula).</p>
+<p>See the <a href="http://docs.mathjax.org/en/latest/">latest MathJax
+documentation</a> to learn how to use MathJax.</p>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
