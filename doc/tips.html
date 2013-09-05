@@ -294,11 +294,30 @@ A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\)
 
 A LaTeX block formula:
 
-\[\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\]</code></pre>
+\[\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\]
+
+A MathML inline formula:
+&lt;math&gt;
+  &lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mrow&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;msup&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;/mrow&gt;
+&lt;/math&gt;
+
+A MathML block formula:
+
+&lt;math display="block"&gt;
+  &lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mrow&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;msup&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;/mrow&gt;
+&lt;/math&gt;</code></pre>
 <p>Renders:</p>
 <p>A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\)</p>
 <p>A LaTeX block formula:</p>
 <p>\[\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\]</p>
+<p>A MathML inline formula:
+<math>
+  <mi>E</mi><mo>=</mo><mrow><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow>
+</math></p>
+<p>A MathML block formula:</p>
+<math display="block">
+  <mi>E</mi><mo>=</mo><mrow><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow>
+</math>
 <p><b>NOTE</b>: Don't forget to escape any Rimu macro invocations in the math
 formulas (for example, the <code>{2}</code> in the above formula).</p>
 <p>See the <a href="http://docs.mathjax.org/en/latest/">latest MathJax

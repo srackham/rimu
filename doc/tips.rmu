@@ -324,6 +324,17 @@ A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m\{2}\)
 A LaTeX block formula:
 
 \[\sum_{i=0}^n i^2 = \frac{n^2+n}m\{2}\]
+
+A MathML inline formula:
+<math>
+  <mi>E</mi><mo>=</mo><mrow><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow>
+</math>
+
+A MathML block formula:
+
+<math display="block">
+  <mi>E</mi><mo>=</mo><mrow><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow>
+</math>
 --
 
 Renders:
@@ -336,8 +347,19 @@ A LaTeX block formula:
 
 \[\sum_{i=0}^n i^2 = \frac{n^2+n}m\{2}\]
 
+A MathML inline formula:
+<math>
+  <mi>E</mi><mo>=</mo><mrow><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow>
+</math>
+
+A MathML block formula:
+
+<math display="block">
+  <mi>E</mi><mo>=</mo><mrow><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow>
+</math>
+
 NOTE: Don't forget to escape any Rimu macro invocations in the math
-formulas (for example, the `\{2}` in the above formula).
+formulas (for example, the `\{2}` in the LaTeX formula).
 
 See the <http://docs.mathjax.org/en/latest/|latest MathJax
 documentation> to learn how to use MathJax.
