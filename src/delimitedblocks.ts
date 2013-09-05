@@ -1,7 +1,7 @@
 module Rimu.DelimitedBlocks {
 
   export interface Definition {
-    id?: string;  // Optional unique identifier.
+    name?: string;  // Optional unique identifier.
     openMatch: RegExp;  // $1 (if defined) is prepended to block content.
     closeMatch: RegExp; // $1 (if defined) is appended to block content.
     openTag: string;
@@ -45,7 +45,7 @@ module Rimu.DelimitedBlocks {
     },
     // Division block.
     {
-      id: 'division',
+      name: 'division',
       openMatch: /^\\?\.{2,}$/,
       closeMatch: /^\.{2,}$/,
       openTag: '<div>',
@@ -54,7 +54,7 @@ module Rimu.DelimitedBlocks {
     },
     // Quote block.
     {
-      id: 'quote',
+      name: 'quote',
       openMatch: /^\\?"{2,}$/,
       closeMatch: /^"{2,}$/,
       openTag: '<blockquote>',
@@ -63,7 +63,7 @@ module Rimu.DelimitedBlocks {
     },
     // Code block.
     {
-      id: 'code',
+      name: 'code',
       openMatch: /^\\?\-{2,}$/,
       closeMatch: /^\-{2,}$/,
       openTag: '<pre><code>',
@@ -87,7 +87,7 @@ module Rimu.DelimitedBlocks {
     },
     // Indented paragraph.
     {
-      id: 'indented',
+      name: 'indented',
       openMatch: /^\\?(\s+.*)$/,  // $1 is first line of block.
       closeMatch: /^$/,           // Blank line or EOF.
       openTag: '<pre>',
@@ -169,9 +169,9 @@ module Rimu.DelimitedBlocks {
   }
 
   // Return block definition or null if not found.
-  export function getDefinition(id: string): Definition {
+  export function getDefinition(name: string): Definition {
     for (var i in defs) {
-      if (defs[i].id === id) {
+      if (defs[i].name === name) {
         return defs[i]
       }
     }

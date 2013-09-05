@@ -63,7 +63,7 @@ declare module Rimu.Macros {
 }
 declare module Rimu.LineBlocks {
     interface Definition {
-        id?: string;
+        name?: string;
         filter?: (match: RegExpExecArray, reader?: Rimu.Reader) => string;
         match: RegExp;
         replacement: string;
@@ -73,11 +73,11 @@ declare module Rimu.LineBlocks {
     }
     var htmlAttributes: string;
     function render(reader: Rimu.Reader, writer: Rimu.Writer): boolean;
-    function getDefinition(id: string): Definition;
+    function getDefinition(name: string): Definition;
 }
 declare module Rimu.DelimitedBlocks {
     interface Definition {
-        id?: string;
+        name?: string;
         openMatch: RegExp;
         closeMatch: RegExp;
         openTag: string;
@@ -91,7 +91,7 @@ declare module Rimu.DelimitedBlocks {
         specials?: boolean;
     }
     function render(reader: Rimu.Reader, writer: Rimu.Writer): boolean;
-    function getDefinition(id: string): Definition;
+    function getDefinition(name: string): Definition;
 }
 declare module Rimu.Lists {
     function render(reader: Rimu.Reader, writer: Rimu.Writer): boolean;

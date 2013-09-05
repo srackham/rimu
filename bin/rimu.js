@@ -478,7 +478,7 @@ var Rimu;
             // Syntax: .[class names][#id][[attributes]]
             // class names = $1, id = $2, attributes = $3
             {
-                id: 'attributes',
+                name: 'attributes',
                 match: /^\\?\.([a-zA-Z][\w\- ]*)?(#[a-zA-Z][\w\-]*)?(?:\s*)?(\[.+\])?$/,
                 replacement: '',
                 filter: function (match) {
@@ -532,9 +532,9 @@ var Rimu;
         LineBlocks.render = render;
 
         // Return def definition or null if not found.
-        function getDefinition(id) {
+        function getDefinition(name) {
             for (var i in defs) {
-                if (defs[i].id === id) {
+                if (defs[i].name === name) {
                     return defs[i];
                 }
             }
@@ -578,7 +578,7 @@ var Rimu;
             },
             // Division block.
             {
-                id: 'division',
+                name: 'division',
                 openMatch: /^\\?\.{2,}$/,
                 closeMatch: /^\.{2,}$/,
                 openTag: '<div>',
@@ -587,7 +587,7 @@ var Rimu;
             },
             // Quote block.
             {
-                id: 'quote',
+                name: 'quote',
                 openMatch: /^\\?"{2,}$/,
                 closeMatch: /^"{2,}$/,
                 openTag: '<blockquote>',
@@ -596,7 +596,7 @@ var Rimu;
             },
             // Code block.
             {
-                id: 'code',
+                name: 'code',
                 openMatch: /^\\?\-{2,}$/,
                 closeMatch: /^\-{2,}$/,
                 openTag: '<pre><code>',
@@ -619,7 +619,7 @@ var Rimu;
             },
             // Indented paragraph.
             {
-                id: 'indented',
+                name: 'indented',
                 openMatch: /^\\?(\s+.*)$/,
                 closeMatch: /^$/,
                 openTag: '<pre>',
@@ -704,9 +704,9 @@ var Rimu;
         DelimitedBlocks.render = render;
 
         // Return block definition or null if not found.
-        function getDefinition(id) {
+        function getDefinition(name) {
             for (var i in defs) {
-                if (defs[i].id === id) {
+                if (defs[i].name === name) {
                     return defs[i];
                 }
             }

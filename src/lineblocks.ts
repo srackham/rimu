@@ -1,7 +1,7 @@
 module Rimu.LineBlocks {
 
   export interface Definition {
-    id?: string;  // Optional unique identifier.
+    name?: string;  // Optional unique identifier.
     filter?: (match: RegExpExecArray, reader?: Reader) => string;
     match: RegExp;
     replacement: string;
@@ -129,7 +129,7 @@ module Rimu.LineBlocks {
     // Syntax: .[class names][#id][[attributes]]
     // class names = $1, id = $2, attributes = $3
     {
-      id: 'attributes',
+      name: 'attributes',
       match: /^\\?\.([a-zA-Z][\w\- ]*)?(#[a-zA-Z][\w\-]*)?(?:\s*)?(\[.+\])?$/,
       replacement: '',
       filter: function (match) {
@@ -182,9 +182,9 @@ module Rimu.LineBlocks {
   }
 
   // Return def definition or null if not found.
-  export function getDefinition(id: string): Definition {
+  export function getDefinition(name: string): Definition {
     for (var i in defs) {
-      if (defs[i].id === id) {
+      if (defs[i].name === name) {
         return defs[i]
       }
     }
