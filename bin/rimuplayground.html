@@ -538,6 +538,7 @@ Invocation syntax:
   \{macro-name}
   \{macro-name?default-value}
   \{macro-name|param1[|param2...]}
+  \{macro-name=pattern}
   \{macro-name!}
 
 - Macro definition values are enclosed by single quotes and can extend
@@ -559,11 +560,19 @@ Invocation syntax:
 - Invocations of undefined macros are replaced with a blank string
   or the `default-value` if the `\{macro-name?default-value}`
   _Existential_ invocation syntax is used.
+- The `\{macro-name=pattern}` _Inclusion_ invocation is replaced by a
+  blank string if the macro value contains text that matches the `pattern`
+  where `pattern` is a JavaScript regular expression pattern.
+  If the macro value does not contain a match the containing line is skipped.
+  This feature can be used to conditionally include lines of source text.
+  * If the macro is undefined its value is treated as a blank string for the
+    purpose of pattern matching.
+  * `pattern` cannot contain the `}` character.
 - The `\{macro-name!}` _Inclusion_ invocation syntax causes the
   containing line to be skipped if the macro is undefined or blank; if
   the macro value is not blank the invocation is replaced with
-  a blank string. This feature can be used to conditionally include
-  lines of source text.
+  a blank string.
+  This syntax is a shortcut for `\{macro-name=.+}`.
 - Macro definitions are not processed if the _Safe Mode_ is
   non-zero.
 

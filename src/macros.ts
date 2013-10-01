@@ -30,10 +30,10 @@ module Rimu.Macros {
 
   export function render(text: string, options: {inclusionsOnly?: boolean} = {}): string {
     if (options.inclusionsOnly) {
-      var re = /\\?\{([\w\-]+)(!)\}/g;  // $1 = name, $2 = '!'.
+      var re = /\\?\{([\w\-]+)(!|=[\s\S]*?)\}/g;      // $1 = name, $2 = params.
     }
     else {
-      var re = /\\?\{([\w\-]+)([|?!][\s\S]*?)?\}/g;  // $1 = name, $2 = params.
+      var re = /\\?\{([\w\-]+)(!|[=|?][\s\S]*?)?\}/g; // $1 = name, $2 = params.
     }
     text = text.replace(re, function(match, name, params) {
       if (match[0] === '\\') {
@@ -58,21 +58,32 @@ module Rimu.Macros {
           return params.slice(1);
         }
       }
-      else if (params[0] === '!') {
-        if (value === null || value === '') {
-          return '\0';  // Flag line for deletion.
+      else if (params[0] === '!' || params[0] === '=') {
+        var pattern: string;
+        if (params[0] === '!') {
+          pattern = '.+';
         }
         else {
+          pattern = params.slice(1);
+        }
+        if (value === null ) {
+          value = '';   // null matches an empty string.
+        }
+        if (RegExp(pattern).test(value)) {
           return '';
+        }
+        else {
+          return '\0';    // Flag line for deletion.
         }
       }
       else if (value === null) {
-        return '';
+        return '';      // Undefined macro replaced by empty string.
       }
       else {
         return value;
       }
     });
+    // Delete lines marked for deletion by inclusion macros.
     if (text.indexOf('\0') !== -1) {
       var lines = text.split('\n');
       for (var i = lines.length - 1; i >= 0; --i) {
@@ -93,7 +104,7 @@ module Rimu.Macros {
     if (!line) {
       return false;
     }
-    if (!/^\{[\w\-]+!\}/.test(line)) {
+    if (!/^\{[\w\-]+(!|=[\s\S]*?)\}/.test(line)) {
       return false;
     }
     // Arrive here if the line at the cursor starts with an inclusion macro invocation.

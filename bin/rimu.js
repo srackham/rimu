@@ -277,9 +277,9 @@ var Rimu;
         function render(text, options) {
             if (typeof options === "undefined") { options = {}; }
             if (options.inclusionsOnly) {
-                var re = /\\?\{([\w\-]+)(!)\}/g;
+                var re = /\\?\{([\w\-]+)(!|=[\s\S]*?)\}/g;
             } else {
-                var re = /\\?\{([\w\-]+)([|?!][\s\S]*?)?\}/g;
+                var re = /\\?\{([\w\-]+)(!|[=|?][\s\S]*?)?\}/g;
             }
             text = text.replace(re, function (match, name, params) {
                 if (match[0] === '\\') {
@@ -302,11 +302,20 @@ var Rimu;
                     if (value === null) {
                         return params.slice(1);
                     }
-                } else if (params[0] === '!') {
-                    if (value === null || value === '') {
-                        return '\0';
+                } else if (params[0] === '!' || params[0] === '=') {
+                    var pattern;
+                    if (params[0] === '!') {
+                        pattern = '.+';
                     } else {
+                        pattern = params.slice(1);
+                    }
+                    if (value === null) {
+                        value = '';
+                    }
+                    if (RegExp(pattern).test(value)) {
                         return '';
+                    } else {
+                        return '\0';
                     }
                 } else if (value === null) {
                     return '';
@@ -314,6 +323,7 @@ var Rimu;
                     return value;
                 }
             });
+
             if (text.indexOf('\0') !== -1) {
                 var lines = text.split('\n');
                 for (var i = lines.length - 1; i >= 0; --i) {
@@ -335,7 +345,7 @@ var Rimu;
             if (!line) {
                 return false;
             }
-            if (!/^\{[\w\-]+!\}/.test(line)) {
+            if (!/^\{[\w\-]+(!|=[\s\S]*?)\}/.test(line)) {
                 return false;
             }
 

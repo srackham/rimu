@@ -377,23 +377,55 @@ exports['Documents'] = function(test) {
   test.equal(Rimu.render(
       'foo\n{undefined!}bar\nmacro'),
       '<p>foo\nmacro</p>',
-      'inclusion macro: undefined invocation');
+      'inclusion macro: ! syntax: undefined value');
   test.equal(Rimu.render(
       "{v}='xxx'\nfoo\n{v!}bar\nmacro"),
       '<p>foo\nbar\nmacro</p>',
-      'inclusion macro: defined invocation');
+      'inclusion macro: ! syntax: defined value');
   test.equal(Rimu.render(
       "{v}=''\nfoo\n{v!}bar\nmacro"),
       '<p>foo\nmacro</p>',
-      'inclusion macro: blank invocation');
+      'inclusion macro: ! syntax: blank value');
+  test.equal(Rimu.render(
+      'foo\n{undefined=}bar\nmacro'),
+      '<p>foo\nbar\nmacro</p>',
+      'inclusion macro: = syntax: undefined value');
+  test.equal(Rimu.render(
+      'foo\n{undefined=xxx}bar\nmacro'),
+      '<p>foo\nmacro</p>',
+      'inclusion macro: = syntax: undefined value');
+  test.equal(Rimu.render(
+      "{v}=''\nfoo\n{v=}bar\nmacro"),
+      '<p>foo\nbar\nmacro</p>',
+      'inclusion macro: = syntax: blank value');
+  test.equal(Rimu.render(
+      "{v}=''\nfoo\n{v=xxx}bar\nmacro"),
+      '<p>foo\nmacro</p>',
+      'inclusion macro: = syntax: blank value');
+  test.equal(Rimu.render(
+      "{v}='xyz'\nfoo\n{v=.*z$}bar\nmacro"),
+      '<p>foo\nbar\nmacro</p>',
+      'inclusion macro: = syntax: matched value');
+  test.equal(Rimu.render(
+      "{v}='xxyz'\nfoo\n{v=^x.z$}bar\nmacro"),
+      '<p>foo\nmacro</p>',
+      'inclusion macro: = syntax: unmatched value');
   test.equal(Rimu.render(
       '<div>{undefined!}</div>'),
       '',
-      'inclusion macro: HTML block');
+      'inclusion macro: ! syntax: HTML block');
+  test.equal(Rimu.render(
+      '<div>{undefined=xxx}</div>'),
+      '',
+      'inclusion macro: = syntax: HTML block');
   test.equal(Rimu.render(
       "{v}='xxx'\n{v!}<div>foobar</div>"),
       '<div>foobar</div>',
-      'inclusion macro: at start of line');
+      'inclusion macro: ! syntax: at start of line');
+  test.equal(Rimu.render(
+      "{v}='xxx'\n{v=..x}<div>foobar</div>"),
+      '<div>foobar</div>',
+      'inclusion macro: = syntax: at start of line');
   test.equal(Rimu.render(
       '{skipped} = \'SKIPPED\'\n{skipped?foobar}', {safeMode:1}),
       '<p>foobar</p>',
