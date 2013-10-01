@@ -290,11 +290,11 @@ option will include MathJax support if the <code>{mathjax}</code> macro is
 defined. For example, this Rimu source:</p>
 <pre><code>{mathjax} = 'yes'
 
-A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\)
+A LaTeX inline formula: \(\sum_\{i=0}^n i^2 = \frac{n^2+n}m\{2}\)
 
 A LaTeX block formula:
 
-\[\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\]
+\[\sum_\{i=0}^n i^2 = \frac{n^2+n}m\{2}\]
 
 A MathML inline formula:
 &lt;math&gt;
@@ -319,7 +319,7 @@ A MathML block formula:
   <mi>E</mi><mo>=</mo><mrow><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow>
 </math>
 <p><b>NOTE</b>: Don't forget to escape any Rimu macro invocations in the math
-formulas (for example, the <code>{2}</code> in the LaTeX formula).</p>
+formulas (for example, <code>{i=0}</code> and <code>{2}</code> in the LaTeX formula).</p>
 <p>See the <a href="http://docs.mathjax.org/en/latest/">latest MathJax
 documentation</a> to learn how to use MathJax.</p>
 

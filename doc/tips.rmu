@@ -319,11 +319,11 @@ defined. For example, this Rimu source:
 --
 \{mathjax} = 'yes'
 
-A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m\{2}\)
+A LaTeX inline formula: \(\sum_\\{i=0}^n i^2 = \frac{n^2+n}m\\{2}\)
 
 A LaTeX block formula:
 
-\[\sum_{i=0}^n i^2 = \frac{n^2+n}m\{2}\]
+\[\sum_\\{i=0}^n i^2 = \frac{n^2+n}m\\{2}\]
 
 A MathML inline formula:
 <math>
@@ -341,11 +341,11 @@ Renders:
 
 {mathjax} = 'yes'
 
-A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m\{2}\)
+A LaTeX inline formula: \(\sum_\{i=0}^n i^2 = \frac{n^2+n}m\{2}\)
 
 A LaTeX block formula:
 
-\[\sum_{i=0}^n i^2 = \frac{n^2+n}m\{2}\]
+\[\sum_\{i=0}^n i^2 = \frac{n^2+n}m\{2}\]
 
 A MathML inline formula:
 <math>
@@ -359,7 +359,7 @@ A MathML block formula:
 </math>
 
 NOTE: Don't forget to escape any Rimu macro invocations in the math
-formulas (for example, the `\{2}` in the LaTeX formula).
+formulas (for example, `\{i=0}` and `\{2}` in the LaTeX formula).
 
 See the <http://docs.mathjax.org/en/latest/|latest MathJax
 documentation> to learn how to use MathJax.
