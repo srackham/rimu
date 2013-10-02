@@ -393,7 +393,11 @@ exports['Documents'] = function(test) {
   test.equal(Rimu.render(
       'foo\n{undefined=xxx}bar\nmacro'),
       '<p>foo\nmacro</p>',
-      'inclusion macro: = syntax: undefined value');
+      'inclusion macro: = syntax: undefined does not match');
+  test.equal(Rimu.render(
+      'foo\n{undefined=}bar\nmacro'),
+      '<p>foo\nbar\nmacro</p>',
+      'inclusion macro: = syntax: undefined value matches empty pattern');
   test.equal(Rimu.render(
       "{v}=''\nfoo\n{v=}bar\nmacro"),
       '<p>foo\nbar\nmacro</p>',

@@ -313,7 +313,7 @@ var Rimu;
                     if (value === null) {
                         value = '';
                     }
-                    if (RegExp(pattern).test(value)) {
+                    if (RegExp('^' + pattern + '$').test(value)) {
                         return '';
                     } else {
                         return '\0';

@@ -70,7 +70,7 @@ module Rimu.Macros {
         if (value === null ) {
           value = '';   // null matches an empty string.
         }
-        if (RegExp(pattern).test(value)) {
+        if (RegExp('^' + pattern + '$').test(value)) {
           return '';
         }
         else {
