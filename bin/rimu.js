@@ -277,9 +277,9 @@ var Rimu;
         function render(text, options) {
             if (typeof options === "undefined") { options = {}; }
             if (options.inclusionsOnly) {
-                var re = /\\?\{([\w\-]+)(!|=[\s\S]*?)\}/g;
+                var re = /\\?\{([\w\-]+)(!|=(?:|[\s\S]*?[^\\]))\}/g;
             } else {
-                var re = /\\?\{([\w\-]+)(!|[=|?][\s\S]*?)?\}/g;
+                var re = /\\?\{([\w\-]+)(!|[=|?](?:|[\s\S]*?[^\\]))?\}/g;
             }
             text = text.replace(re, function (match, name, params) {
                 if (match[0] === '\\') {
@@ -289,6 +289,7 @@ var Rimu;
                 if (!params) {
                     return (value === null) ? '' : value.replace(/\$\d+/g, '');
                 }
+                params = params.replace(/\\\}/g, '}');
                 if (params[0] === '|') {
                     // Substitute macro parameters.
                     var result = value;
@@ -345,7 +346,7 @@ var Rimu;
             if (!line) {
                 return false;
             }
-            if (!/^\{[\w\-]+(!|=[\s\S]*?)\}/.test(line)) {
+            if (!/^\{[\w\-]+(!|=(|[\s\S]*?[^\\]))\}/.test(line)) {
                 return false;
             }
 

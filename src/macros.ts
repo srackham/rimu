@@ -30,10 +30,10 @@ module Rimu.Macros {
 
   export function render(text: string, options: {inclusionsOnly?: boolean} = {}): string {
     if (options.inclusionsOnly) {
-      var re = /\\?\{([\w\-]+)(!|=[\s\S]*?)\}/g;      // $1 = name, $2 = params.
+      var re = /\\?\{([\w\-]+)(!|=(?:|[\s\S]*?[^\\]))\}/g;      // $1 = name, $2 = params.
     }
     else {
-      var re = /\\?\{([\w\-]+)(!|[=|?][\s\S]*?)?\}/g; // $1 = name, $2 = params.
+      var re = /\\?\{([\w\-]+)(!|[=|?](?:|[\s\S]*?[^\\]))?\}/g; // $1 = name, $2 = params.
     }
     text = text.replace(re, function(match, name, params) {
       if (match[0] === '\\') {
@@ -43,6 +43,7 @@ module Rimu.Macros {
       if (!params) {
         return (value === null) ? '' : value.replace(/\$\d+/g, '');
       }
+      params = params.replace(/\\\}/g, '}');  // Unescape escaped } characters.
       if (params[0] === '|') {
         // Substitute macro parameters.
         var result = value;
@@ -104,7 +105,7 @@ module Rimu.Macros {
     if (!line) {
       return false;
     }
-    if (!/^\{[\w\-]+(!|=[\s\S]*?)\}/.test(line)) {
+    if (!/^\{[\w\-]+(!|=(|[\s\S]*?[^\\]))\}/.test(line)) {
       return false;
     }
     // Arrive here if the line at the cursor starts with an inclusion macro invocation.

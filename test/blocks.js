@@ -411,6 +411,10 @@ exports['Documents'] = function(test) {
       '<p>foo\nmacro</p>',
       'inclusion macro: = syntax: unmatched value');
   test.equal(Rimu.render(
+      "{v}='xxyz'\nfoo\n{v=^x{2,\\}yz$}bar\nmacro"),
+      '<p>foo\nbar\nmacro</p>',
+      'inclusion macro: = syntax: pattern with escaped } character');
+  test.equal(Rimu.render(
       '<div>{undefined!}</div>'),
       '',
       'inclusion macro: ! syntax: HTML block');

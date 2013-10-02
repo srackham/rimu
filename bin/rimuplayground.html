@@ -567,7 +567,9 @@ Invocation syntax:
   This feature can be used to conditionally include lines of source text.
   * If the macro is undefined its value is treated as a blank string for the
     purpose of pattern matching.
-  * `pattern` cannot contain the `}` character.
+  * If the `pattern` contains `}` characters they must be escaped with a
+    backslash character (otherwise they will be mistaken for the macro
+    invocation closing brace).
 - The `\{macro-name!}` _Inclusion_ invocation syntax causes the
   containing line to be skipped if the macro is undefined or blank; if
   the macro value is not blank the invocation is replaced with
