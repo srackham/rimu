@@ -326,12 +326,12 @@ documentation</a> to learn how to use MathJax.</p>
 <p><em>Inclusion</em> macro invocations can be used to conditionally include and
 exclude lines of source text:</p>
 <ul><li>If-then-else logic:
-<pre>{macro=} Included if macro is undefined or blank.
-{macro!} Included if macro is defined and not blank.</pre>
+<pre>{macro=} Included if macro is undefined or value is blank.
+{macro!} Included if macro is defined and value not blank.</pre>
 </li><li>Case statement logic:
-<pre>{macro=one} Included if macro is value is 'one'.
-{macro=two} Included if macro is value is 'two'.
-{macro=\d+} Included if macro is value is a number.</pre>
+<pre>{macro=one} Included if macro value is 'one'.
+{macro=two} Included if macro value is 'two'.
+{macro=\d+} Included if macro value is a number.</pre>
 </li></ul>
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>

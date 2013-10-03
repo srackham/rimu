@@ -371,12 +371,12 @@ exclude lines of source text:
 
 - If-then-else logic:
 
-  \{macro=} Included if macro is undefined or blank.
-  \{macro!} Included if macro is defined and not blank.
+  \{macro=} Included if macro is undefined or value is blank.
+  \{macro!} Included if macro is defined and value not blank.
 
 - Case statement logic:
 
-  \{macro=one} Included if macro is value is 'one'.
-  \{macro=two} Included if macro is value is 'two'.
-  \{macro=\d+} Included if macro is value is a number.
+  \{macro=one} Included if macro value is 'one'.
+  \{macro=two} Included if macro value is 'two'.
+  \{macro=\d+} Included if macro value is a number.
 
