@@ -377,47 +377,55 @@ exports['Documents'] = function(test) {
   test.equal(Rimu.render(
       'foo\n{undefined!}bar\nmacro'),
       '<p>foo\nmacro</p>',
-      'inclusion macro: ! syntax: undefined value');
+      'inclusion macro: ! syntax: undefined macro and empty pattern: skipped');
   test.equal(Rimu.render(
       "{v}='xxx'\nfoo\n{v!}bar\nmacro"),
       '<p>foo\nbar\nmacro</p>',
-      'inclusion macro: ! syntax: defined value');
+      'inclusion macro: ! syntax: defined macro and empty pattern: included');
   test.equal(Rimu.render(
       "{v}=''\nfoo\n{v!}bar\nmacro"),
       '<p>foo\nmacro</p>',
-      'inclusion macro: ! syntax: blank value');
+      'inclusion macro: ! syntax: blank value and empty pattern: skipped');
   test.equal(Rimu.render(
       'foo\n{undefined=}bar\nmacro'),
       '<p>foo\nbar\nmacro</p>',
-      'inclusion macro: = syntax: undefined value');
+      'inclusion macro: = syntax: undefined macro and empty pattern: included');
   test.equal(Rimu.render(
       'foo\n{undefined=xxx}bar\nmacro'),
       '<p>foo\nmacro</p>',
-      'inclusion macro: = syntax: undefined does not match');
+      'inclusion macro: = syntax: undefined macro and non-empty pattern: skipped');
   test.equal(Rimu.render(
       'foo\n{undefined=}bar\nmacro'),
       '<p>foo\nbar\nmacro</p>',
-      'inclusion macro: = syntax: undefined value matches empty pattern');
+      'inclusion macro: = syntax: undefined macro and empty pattern: included');
   test.equal(Rimu.render(
       "{v}=''\nfoo\n{v=}bar\nmacro"),
       '<p>foo\nbar\nmacro</p>',
-      'inclusion macro: = syntax: blank value');
+      'inclusion macro: = syntax: blank value and empty pattern: included');
   test.equal(Rimu.render(
       "{v}=''\nfoo\n{v=xxx}bar\nmacro"),
       '<p>foo\nmacro</p>',
-      'inclusion macro: = syntax: blank value');
+      'inclusion macro: = syntax: blank value and non-empty pattern: skipped');
   test.equal(Rimu.render(
-      "{v}='xyz'\nfoo\n{v=.*z$}bar\nmacro"),
+      "{v}='xyz'\nfoo\n{v=.*z}bar\nmacro"),
       '<p>foo\nbar\nmacro</p>',
-      'inclusion macro: = syntax: matched value');
+      'inclusion macro: = syntax: value matches pattern: included');
   test.equal(Rimu.render(
-      "{v}='xxyz'\nfoo\n{v=^x.z$}bar\nmacro"),
+      "{v}='xyz'\nfoo\n{v!.*z}bar\nmacro"),
       '<p>foo\nmacro</p>',
-      'inclusion macro: = syntax: unmatched value');
+      'inclusion macro: ! syntax: value matches pattern: skipped');
   test.equal(Rimu.render(
-      "{v}='xxyz'\nfoo\n{v=^x{2,\\}yz$}bar\nmacro"),
+      "{v}='xxyz'\nfoo\n{v=x.z}bar\nmacro"),
+      '<p>foo\nmacro</p>',
+      'inclusion macro: = syntax: value does not match pattern: skipped');
+  test.equal(Rimu.render(
+      "{v}='xxyz'\nfoo\n{v!x.z}bar\nmacro"),
       '<p>foo\nbar\nmacro</p>',
-      'inclusion macro: = syntax: pattern with escaped } character');
+      'inclusion macro: ! syntax: value does not match pattern: included');
+  test.equal(Rimu.render(
+      "{v}='xxyz'\nfoo\n{v=x{2,\\}yz}bar\nmacro"),
+      '<p>foo\nbar\nmacro</p>',
+      'inclusion macro: = syntax: matched pattern with escaped } character');
   test.equal(Rimu.render(
       '<div>{undefined!}</div>'),
       '',

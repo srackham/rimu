@@ -1,5 +1,10 @@
 module Rimu.Macros {
 
+  // Matches all macro invocations. $1 = name, $2 = params.
+  var MATCH_MACROS = /\\?\{([\w\-]+)([!=|?](?:|[\s\S]*?[^\\]))?\}/g;
+  // Matches start-of-line Inclusion macro invocation. $1 = name, $2 = params.
+  var MATCH_LEADING_INCLUSION = /^\{([\w\-]+)([!=](?:|[\s\S]*?[^\\]))\}/;
+
   export interface Macro {
     name: string;
     value: string;
@@ -28,14 +33,8 @@ module Rimu.Macros {
     defs.push({name: name, value: value});
   }
 
-  export function render(text: string, options: {inclusionsOnly?: boolean} = {}): string {
-    if (options.inclusionsOnly) {
-      var re = /\\?\{([\w\-]+)(!|=(?:|[\s\S]*?[^\\]))\}/g;      // $1 = name, $2 = params.
-    }
-    else {
-      var re = /\\?\{([\w\-]+)(!|[=|?](?:|[\s\S]*?[^\\]))?\}/g; // $1 = name, $2 = params.
-    }
-    text = text.replace(re, function(match, name, params) {
+  export function render(text: string, regexp = MATCH_MACROS): string {
+    text = text.replace(regexp, function(match, name /* $1 */, params /* $2 */) {
       if (match[0] === '\\') {
         return match.slice(1);
       }
@@ -60,21 +59,19 @@ module Rimu.Macros {
         }
       }
       else if (params[0] === '!' || params[0] === '=') {
-        var pattern: string;
-        if (params[0] === '!') {
-          pattern = '.+';
-        }
-        else {
-          pattern = params.slice(1);
-        }
         if (value === null ) {
           value = '';   // null matches an empty string.
         }
-        if (RegExp('^' + pattern + '$').test(value)) {
-          return '';
+        var pattern = params.slice(1);
+        var skip = !RegExp('^' + pattern + '$').test(value);
+        if (params[0] === '!') {
+          skip = !skip;
+        }
+        if (skip) {
+          return '\0';    // Flag line for deletion.
         }
         else {
-          return '\0';    // Flag line for deletion.
+          return '';
         }
       }
       else if (value === null) {
@@ -98,25 +95,25 @@ module Rimu.Macros {
   }
 
   // If the current line on the reader begins with an inclusion macro invocation
-  // then render inclusions and skip to the next line if any are undefined.
-  // Return true if the line at the cursor was skipped else return false.
-  export function renderInclusions(reader: Reader): boolean {
+  // then render the leading inclusion. If the inclusion skips the line then
+  // move the reader cursor to the next line and return true, else return false.
+  export function renderLeadingInclusion(reader: Reader): boolean {
     var line = reader.cursor();
     if (!line) {
       return false;
     }
-    if (!/^\{[\w\-]+(!|=(|[\s\S]*?[^\\]))\}/.test(line)) {
+    if (!MATCH_LEADING_INCLUSION.test(line)) {
       return false;
     }
     // Arrive here if the line at the cursor starts with an inclusion macro invocation.
-    line = render(line, {inclusionsOnly: true});
-    if (line !== '') {
-      reader.cursor(line);  // Retain the line at the cursor.
-      return false;
-    }
-    else {
+    line = render(line, MATCH_LEADING_INCLUSION);
+    if (line == '') {
       reader.next();  // Skip the line at the cursor.
       return true;
+    }
+    else {
+      reader.cursor(line);  // Retain the line at the cursor.
+      return false;
     }
   }
 

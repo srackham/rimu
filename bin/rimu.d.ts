@@ -56,10 +56,8 @@ declare module Rimu.Macros {
     var defs: Macro[];
     function getValue(name: string): string;
     function setValue(name: string, value: string): void;
-    function render(text: string, options?: {
-        inclusionsOnly?: boolean;
-    }): string;
-    function renderInclusions(reader: Rimu.Reader): boolean;
+    function render(text: string, regexp?: RegExp): string;
+    function renderLeadingInclusion(reader: Rimu.Reader): boolean;
 }
 declare module Rimu.LineBlocks {
     interface Definition {
