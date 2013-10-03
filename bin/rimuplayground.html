@@ -194,24 +194,27 @@ Character entities can be escaped with a backslash character prefix.
 
 <div id="topic-comments">
 <!--
-A _comment block_ is any text between a line containing `/*` and a
-line containing `*/`
+A _multi-line comment_ starts with a line containing only `/*` and
+ends with a line containing only `*/` for example:
 
   /*
-    The comments do not appear in the rendered HTML.
+    This comment does not appear in the
+    rendered HTML.
   */
 
-A _comment line_ is any line of text starting with `//`.
+A _single-line comment_ is any line of text starting with `//`
+for example:
 
-  // The comment does not appear in the rendered HTML.
+  // This comment does not appear in the rendered HTML.
 
-- Commented text is not included in the HTML output.
+- Comments are not included in the HTML output.
 - Comments are block elements and cannot be used inline, for example
   mid-paragraph.
 - Comment delimiters must start at the left margin.
 - Use HTML comments if you want comments to appear in the rendered
   HTML.
-- Comment blocks can be escaped with a backslash character prefix.
+- Comments can be escaped by prefixing the opening delimiter with a
+  backslash character.
 
 -->
 </div>
