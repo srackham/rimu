@@ -411,6 +411,10 @@ exports['Documents'] = function(test) {
       '<p>foo\nbar\nmacro</p>',
       'inclusion macro: = syntax: value matches pattern: included');
   test.equal(Rimu.render(
+      "{v}='1234'\nfoo\n{v=\\d+}bar\nmacro"),
+      '<p>foo\nbar\nmacro</p>',
+      'inclusion macro: = syntax: value matches pattern: included');
+  test.equal(Rimu.render(
       "{v}='xyz'\nfoo\n{v!.*z}bar\nmacro"),
       '<p>foo\nmacro</p>',
       'inclusion macro: ! syntax: value matches pattern: skipped');

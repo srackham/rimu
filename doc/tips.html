@@ -322,7 +322,17 @@ A MathML block formula:
 formulas (for example, <code>{i=0}</code> and <code>{2}</code> in the LaTeX formula).</p>
 <p>See the <a href="http://docs.mathjax.org/en/latest/">latest MathJax
 documentation</a> to learn how to use MathJax.</p>
-
+<h2>Conditional inclusion</h2>
+<p><em>Inclusion</em> macro invocations can be used to conditionally include and
+exclude lines of source text:</p>
+<ul><li>If-then-else logic:
+<pre>{macro=} Included if macro is undefined or blank.
+{macro!} Included if macro is defined and not blank.</pre>
+</li><li>Case statement logic:
+<pre>{macro=one} Included if macro is value is 'one'.
+{macro=two} Included if macro is value is 'two'.
+{macro=\d+} Included if macro is value is a number.</pre>
+</li></ul>
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
