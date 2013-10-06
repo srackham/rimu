@@ -336,7 +336,73 @@ exclude lines of source text:</p>
 <pre>{macro=one} Included if macro value is 'one'.
 {macro=two} Included if macro value is 'two'.
 {macro=\d+} Included if macro value is a number.</pre>
-</li></ul>
+</li></ul><h2>Tables</h2>
+<p>Create tables using the HTML table syntax (Rimu has no special syntax
+for tables).  The <code>rimuc</code> <code>--styled</code> option includes
+<a href="http://getbootstrap.com/">Bootstrap</a> so you can use
+<a href="http://getbootstrap.com/css/#tables">Bootstrap tables classes</a> to
+create nicely formatted tables. For example, this Rimu souce:</p>
+<pre><code>&lt;table class="table table-striped table-bordered"&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;#&lt;/th&gt;
+      &lt;th&gt;First Name&lt;/th&gt;
+      &lt;th&gt;Last Name&lt;/th&gt;
+      &lt;th&gt;Username&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;Mark&lt;/td&gt;
+      &lt;td&gt;Otto&lt;/td&gt;
+      &lt;td&gt;@mdo&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;Jacob&lt;/td&gt;
+      &lt;td&gt;Thornton&lt;/td&gt;
+      &lt;td&gt;@fat&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;Larry&lt;/td&gt;
+      &lt;td&gt;the Bird&lt;/td&gt;
+      &lt;td&gt;@twitter&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+<p>Renders:</p>
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Username</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Larry</td>
+      <td>the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+</table>
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
