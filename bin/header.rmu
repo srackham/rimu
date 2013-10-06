@@ -35,7 +35,7 @@
     }
     a, a:hover { color: #527bbd; }
     li, dd {
-      margin-bottom: 0.5em;
+      margin-bottom: 0.25em;
     }
     p, pre, ul, ol, dl {
       margin-top: 0.5em;
@@ -51,11 +51,11 @@
     *:not(pre) > code {
       white-space: normal;
       border: none;
-      background-color: #fafafa;
+      background: #fafafa;
     }
     /* highlight.js tweaks. */
     pre > code {
-      background-color: WhiteSmoke;
+      background: WhiteSmoke;
       padding: 0;
     }
     pre span {
