@@ -389,75 +389,104 @@ exclude lines of source text:
 
 == Tables
 Create tables using the HTML table syntax (Rimu has no special syntax
-for tables).  The `rimuc` `--styled` option includes
+for tables).
+
+You can use Rimu markup in table cells, just remember that HTML blocks
+must start at the left margin and end with a blank line.
+
+The `rimuc` `--styled` option includes
 <http://getbootstrap.com/|Bootstrap> so you can use
 <http://getbootstrap.com/css/#tables|Bootstrap tables classes> to
 create nicely formatted tables.
 
-For example, this Rimu source:
+For example, this table:
 
---
-<table class="table table-striped table-bordered">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Username</th>
-    </tr>
-  </thead>
+<table class="table table-bordered">
   <tbody>
     <tr>
-      <td>1</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+<td style="width: 50%;">
+
+.text-info
+*Lorem ipsum dolor*. Sit amet venenatis. Erat nulla arcu. Lorem luctus
+sem. Mauris vitae ipsum. Donec dui ac ridiculus quisque proin.
+Lobortis lacus vestibulum sem.
+
+===== Normal paragraph
+Lorem ipsum dolor. Sit `amet venenatis`. Erat nulla arcu. Lorem luctus
+sem. _Mauris vitae_ ipsum. Donec dui ac ridiculus {mark|quisque} proin.
+Lobortis lacus vestibulum sem.
+
+===== Indented paragraph
+  Neque a massa. Porttitor consectetuer commodo. Nunc nulla tempor
+  tempor enim ornare. Mi nam id. Ornare mauris tempor. Pede mauris
+  sed.  Scelerisque feugiat massa alias.
+
+</td>
+<td style="width: 50%;">
+
+- Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu
+- lorem dolor fusce nec.
+  * Sit pretium quisque in wisi lobortis.
+  * Ac curabitur elementum.
+    ** Platea ad diam arcu vitae fermentum.
+       1. Eu lorem nulla.
+       2. In suspendisse at dapibus nostra est.
+          .. Montes adipiscing sodales.
+    ** Pellentesque nibh sit.
+
+- Augue et dui malesuada purus.
+
+  If a list item is followed by an indented paragraph the indented
+  paragraph is included in the list item.
+
+</td>
     </tr>
+  </tbody>
+</table>
+
+Was generated from this Rimu source:
+
+--
+<table class="table table-bordered">
+  <tbody>
     <tr>
-      <td>2</td>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
+<td style="width: 50%;">
+
+.text-info
+*Lorem ipsum dolor*. Sit amet venenatis. Erat nulla arcu. Lorem luctus
+sem. Mauris vitae ipsum. Donec dui ac ridiculus quisque proin.
+Lobortis lacus vestibulum sem.
+
+===== Normal paragraph
+Lorem ipsum dolor. Sit `amet venenatis`. Erat nulla arcu. Lorem luctus
+sem. _Mauris vitae_ ipsum. Donec dui ac ridiculus {mark|quisque} proin.
+Lobortis lacus vestibulum sem.
+
+===== Indented paragraph
+  Neque a massa. Porttitor consectetuer commodo. Nunc nulla tempor
+  tempor enim ornare. Mi nam id. Ornare mauris tempor. Pede mauris
+  sed.  Scelerisque feugiat massa alias.
+
+</td>
+<td style="width: 50%;">
+
+- Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu
+- lorem dolor fusce nec.
+  * Sit pretium quisque in wisi lobortis.
+  * Ac curabitur elementum.
+    ** Platea ad diam arcu vitae fermentum.
+       1. Eu lorem nulla.
+       2. In suspendisse at dapibus nostra est.
+          .. Montes adipiscing sodales.
+    ** Pellentesque nibh sit.
+
+- Augue et dui malesuada purus.
+
+  If a list item is followed by an indented paragraph the indented
+  paragraph is included in the list item.
+
+</td>
     </tr>
   </tbody>
 </table>
 --
-
-Renders:
-
-<table class="table table-striped table-bordered">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Username</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-</table>

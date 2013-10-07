@@ -5,8 +5,8 @@
   <meta name="description" content="Rimu is a readable text to HTML
     markup language inspired by AsciiDoc and Markdown.">
   <title>Rimu Tips</title>
-  <link href="bootstrap.css" rel="stylesheet">
-  <link rel="stylesheet" href="highlight.js/styles/default.css">
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
+  <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
   <style>
     /* Bootstrap tweaks. */
     body {
@@ -342,72 +342,91 @@ exclude lines of source text:</p>
 {macro=\d+} Included if macro value is a number.</pre>
 </li></ul><h2>Tables</h2>
 <p>Create tables using the HTML table syntax (Rimu has no special syntax
-for tables).  The <code>rimuc</code> <code>--styled</code> option includes
+for tables).</p>
+<p>You can use Rimu markup in table cells, just remember that HTML blocks
+must start at the left margin and end with a blank line.</p>
+<p>The <code>rimuc</code> <code>--styled</code> option includes
 <a href="http://getbootstrap.com/">Bootstrap</a> so you can use
 <a href="http://getbootstrap.com/css/#tables">Bootstrap tables classes</a> to
 create nicely formatted tables.</p>
-<p>For example, this Rimu source:</p>
-<pre><code>&lt;table class="table table-striped table-bordered"&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;#&lt;/th&gt;
-      &lt;th&gt;First Name&lt;/th&gt;
-      &lt;th&gt;Last Name&lt;/th&gt;
-      &lt;th&gt;Username&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;Mark&lt;/td&gt;
-      &lt;td&gt;Otto&lt;/td&gt;
-      &lt;td&gt;@mdo&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;2&lt;/td&gt;
-      &lt;td&gt;Jacob&lt;/td&gt;
-      &lt;td&gt;Thornton&lt;/td&gt;
-      &lt;td&gt;@fat&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;3&lt;/td&gt;
-      &lt;td&gt;Larry&lt;/td&gt;
-      &lt;td&gt;the Bird&lt;/td&gt;
-      &lt;td&gt;@twitter&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;</code></pre>
-<p>Renders:</p>
-<table class="table table-striped table-bordered">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Username</th>
-    </tr>
-  </thead>
+<p>For example, this table:</p>
+<table class="table table-bordered">
   <tbody>
     <tr>
-      <td>1</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
+<td style="width: 50%;">
+<p class="text-info"><strong>Lorem ipsum dolor</strong>. Sit amet venenatis. Erat nulla arcu. Lorem luctus
+sem. Mauris vitae ipsum. Donec dui ac ridiculus quisque proin.
+Lobortis lacus vestibulum sem.</p>
+<h5>Normal paragraph</h5>
+<p>Lorem ipsum dolor. Sit <code>amet venenatis</code>. Erat nulla arcu. Lorem luctus
+sem. <em>Mauris vitae</em> ipsum. Donec dui ac ridiculus <mark>quisque</mark> proin.
+Lobortis lacus vestibulum sem.</p>
+<h5>Indented paragraph</h5>
+<pre>Neque a massa. Porttitor consectetuer commodo. Nunc nulla tempor
+tempor enim ornare. Mi nam id. Ornare mauris tempor. Pede mauris
+sed.  Scelerisque feugiat massa alias.</pre>
+</td>
+<td style="width: 50%;">
+<ul><li>Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu
+</li><li>lorem dolor fusce nec.
+<ul><li>Sit pretium quisque in wisi lobortis.
+</li><li>Ac curabitur elementum.
+<ul><li>Platea ad diam arcu vitae fermentum.
+<ol><li>Eu lorem nulla.
+</li><li>In suspendisse at dapibus nostra est.
+<ol><li>Montes adipiscing sodales.
+</li></ol></li></ol></li><li>Pellentesque nibh sit.
+</li></ul></li></ul></li><li>Augue et dui malesuada purus.
+<pre>If a list item is followed by an indented paragraph the indented
+paragraph is included in the list item.</pre>
+</li></ul></td>
     </tr>
   </tbody>
 </table>
+<p>Was generated from this Rimu source:</p>
+<pre><code>&lt;table class="table table-bordered"&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+&lt;td style="width: 50%;"&gt;
+
+.text-info
+*Lorem ipsum dolor*. Sit amet venenatis. Erat nulla arcu. Lorem luctus
+sem. Mauris vitae ipsum. Donec dui ac ridiculus quisque proin.
+Lobortis lacus vestibulum sem.
+
+===== Normal paragraph
+Lorem ipsum dolor. Sit `amet venenatis`. Erat nulla arcu. Lorem luctus
+sem. _Mauris vitae_ ipsum. Donec dui ac ridiculus &lt;mark&gt;quisque&lt;/mark&gt; proin.
+Lobortis lacus vestibulum sem.
+
+===== Indented paragraph
+  Neque a massa. Porttitor consectetuer commodo. Nunc nulla tempor
+  tempor enim ornare. Mi nam id. Ornare mauris tempor. Pede mauris
+  sed.  Scelerisque feugiat massa alias.
+
+&lt;/td&gt;
+&lt;td style="width: 50%;"&gt;
+
+- Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu
+- lorem dolor fusce nec.
+  * Sit pretium quisque in wisi lobortis.
+  * Ac curabitur elementum.
+    ** Platea ad diam arcu vitae fermentum.
+       1. Eu lorem nulla.
+       2. In suspendisse at dapibus nostra est.
+          .. Montes adipiscing sodales.
+    ** Pellentesque nibh sit.
+
+- Augue et dui malesuada purus.
+
+  If a list item is followed by an indented paragraph the indented
+  paragraph is included in the list item.
+
+&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
