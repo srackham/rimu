@@ -7,9 +7,15 @@ thought of as an HTML superset).
 
 
 == Converting Rimu to PDF
-Use an HTML to PDF conversion program.
-<http://www.htmldoc.org/|HTMLDOC> makes an excellent job, here is
-<tips.pdf> generated with this command:
+First convert Rimu markup to HTML and then convert the HTML to PDF.
+
+Google's Chrome web browser has an option to print HTML to a PDF file,
+other browsers have PDF add-ons that perform the same function.
+
+Alternatively use an HTML to PDF conversion program, here is
+<tips.pdf> generated with this <http://www.htmldoc.org/|HTMLDOC>
+command (it generates a title page and a table of contents but the
+fidelity is not as good as printing HTML to PDF from the browser):
 
   htmldoc -f doc/tips.pdf  doc/tips.html
 
@@ -386,7 +392,9 @@ Create tables using the HTML table syntax (Rimu has no special syntax
 for tables).  The `rimuc` `--styled` option includes
 <http://getbootstrap.com/|Bootstrap> so you can use
 <http://getbootstrap.com/css/#tables|Bootstrap tables classes> to
-create nicely formatted tables. For example, this Rimu souce:
+create nicely formatted tables.
+
+For example, this Rimu souce:
 
 --
 <table class="table table-striped table-bordered">

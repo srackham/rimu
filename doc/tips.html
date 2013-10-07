@@ -79,9 +79,13 @@
 special syntax or relearning  is required (in this sense Rimu can be
 thought of as an HTML superset).</p>
 <h2>Converting Rimu to PDF</h2>
-<p>Use an HTML to PDF conversion program.
-<a href="http://www.htmldoc.org/">HTMLDOC</a> makes an excellent job, here is
-<a href="tips.pdf">tips.pdf</a> generated with this command:</p>
+<p>First convert Rimu markup to HTML and then convert the HTML to PDF.</p>
+<p>Google's Chrome web browser has an option to print to a PDF file,
+other browsers have PDF add-ons that perform the same function.</p>
+<p>Alternatively use an HTML to PDF conversion program, here is
+<a href="tips.pdf">tips.pdf</a> generated with this <a href="http://www.htmldoc.org/">HTMLDOC</a>
+command (it generates table of contents but the fidelity is not as
+good as printing HTML to PDF from the browser):</p>
 <pre>htmldoc -f doc/tips.pdf  doc/tips.html</pre>
 <h2>Extend Rimu with Macros</h2>
 <p>Macros provide a simple, consistent mechanism for extending the Rimu
@@ -341,7 +345,8 @@ exclude lines of source text:</p>
 for tables).  The <code>rimuc</code> <code>--styled</code> option includes
 <a href="http://getbootstrap.com/">Bootstrap</a> so you can use
 <a href="http://getbootstrap.com/css/#tables">Bootstrap tables classes</a> to
-create nicely formatted tables. For example, this Rimu souce:</p>
+create nicely formatted tables.</p>
+<p>For example, this Rimu souce:</p>
 <pre><code>&lt;table class="table table-striped table-bordered"&gt;
   &lt;thead&gt;
     &lt;tr&gt;

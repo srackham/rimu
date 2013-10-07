@@ -58,11 +58,22 @@
       margin-left: 1em;
       /*background-color: #f8f8f8;*/
     }
+    #navbar {
+      margin-left: 0.5em;
+      font-weight: bold;
+    }
+    #navbar a {
+      color: #527bbd;
+      text-decoration: none;
+    }
+    #navbar .divider {
+      color: silver;
+    }
     /*]]>*/
   </style>
 </head>
 <body>
-  <h1><a href="http://rimumarkup.org/">Rimu Markup Playground and Reference</a></h1>
+  <h1><a href="http://rimumarkup.org/">Rimu Playground and Reference</a></h1>
 
   <p>
     <select id="topic"
@@ -89,6 +100,12 @@
     </select>
     <button onclick="stash();">Stash</button>
     <button onclick="unstash();">Unstash</button>
+    <span id="navbar">
+      <a href="http://rimumarkup.org/">Home</a> <span class="divider">|</span>
+      <a href="http://rimumarkup.org/tips.html">Tips</a> <span class="divider">|</span>
+      <a href="http://github.com/srackham/rimu">Github</a> <span class="divider">|</span>
+      <a href="https://npmjs.org/package/rimu">npm</a>
+    </span>
   </p>
 
   <table id="view">
