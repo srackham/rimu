@@ -394,7 +394,7 @@ for tables).  The `rimuc` `--styled` option includes
 <http://getbootstrap.com/css/#tables|Bootstrap tables classes> to
 create nicely formatted tables.
 
-For example, this Rimu souce:
+For example, this Rimu source:
 
 --
 <table class="table table-striped table-bordered">
