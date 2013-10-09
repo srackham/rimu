@@ -22,6 +22,7 @@ module Rimu {
       if (value !== null) {
         this.lines[this.pos] = value;
       }
+      Macros.renderCursor(this);
       return this.lines[this.pos];
     }
 
@@ -34,7 +35,7 @@ module Rimu {
       if (this.eof()) return null;
       this.pos++;
       if (this.eof()) return null;
-      return this.cursor();
+      return this.lines[this.pos];
     }
 
     // Read to the first line matching the re.
@@ -70,6 +71,11 @@ module Rimu {
       while (this.cursor() === '') {
         this.next();
       }
+    }
+
+    // Replace the line at the cursor with the array of lines.
+    replaceCursor(lines: string[]) {
+      Array.prototype.splice.apply(this.lines, [this.pos, 1].concat(lines));
     }
 
   }

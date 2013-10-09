@@ -65,25 +65,6 @@ module Rimu.LineBlocks {
         return '';
       },
     },
-    // Macro invocation.
-    // reference = $1
-    {
-      match: /^(\{[\w\-]+(?:[|?].*)?\})$/,
-      replacement: '',
-      filter: function (match, reader?) {
-        var value = Macros.render(match[1]);
-        if (value === match[1]) {
-          // Macro does not exist so pass it through.
-          value = '\\' + value;
-        }
-        // Insert the macro value into the reader just ahead of the cursor.
-        reader.lines = [].concat(
-            reader.lines.slice(0, reader.pos + 1),
-            value.split('\n'),
-            reader.lines.slice(reader.pos + 1));
-        return '';
-      },
-    },
     // Headers.
     // $1 is ID, $2 is header text.
     {

@@ -243,7 +243,7 @@ exports['Documents'] = function(test) {
   testDocument(test,
       '\\# I am not a header',
       '<p># I am not a header</p>',
-      'escapted header');
+      'escaped header');
   testDocument(test,
       '<hr>\n<br>\n\n\\<br><HR>\n\n&ZeroWidthSpace;\\<div>',
       '<hr>\n<br>\n<p>&lt;br&gt;<HR></p>\n<p>&ZeroWidthSpace;&lt;div&gt;</p>',
@@ -331,8 +331,8 @@ exports['Documents'] = function(test) {
       '<p>a and b<em>c</em> d and e\nfg.</p>',
       'parametrized macros');
   testDocument(test,
-      "{v}='$1 and $2 and $3 and $42'\n{v}{v|} {v|1|2}",
-      '<p> and  and  and  and  and  and  1 and 2 and  and </p>',
+      "{v}='This $1 and $2 and $3 and $42'\n{v}{v|} {v|1|2}",
+      '<p>This  and  and  and This  and  and  and  This 1 and 2 and  and </p>',
       'parametrized macros');
   testDocument(test,
       "{v1}='$1 $2'\n{v2}='{v1|1|2} $1 $2'\n{v2|3|4} {v1|5|6}",

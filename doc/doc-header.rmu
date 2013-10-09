@@ -47,7 +47,7 @@
     }
     .breadcrumb {
       font-weight: bold;
-      background: white;
+      background-color: white;
       margin: 0;
       margin-top: 5px;
       padding: 0;
@@ -59,10 +59,10 @@
     *:not(pre) > code {
       white-space: normal;
       border: none;
-      background: #fafafa;
+      background-color: #fafafa;
     }
     pre > code {
-      background: WhiteSmoke;
+      background-color: inherit;
       padding: 0;
     }
     pre span {

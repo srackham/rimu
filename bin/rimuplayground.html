@@ -567,6 +567,12 @@ Invocation syntax:
   character prefix.
 - Macro invocations are expanded everywhere, including inside
   _code quotes_ and _code blocks_.
+- Inline macro invocations are expanded before other inline elements
+  are processed.
+- Any line beginning with a macro invocation is expanded
+  before any other processing takes place. This allows
+  block elements to begin with an Inclusion macro
+  and macro definitions to contain arbitrary Rimu markup.
 - _Parametrized_ macro invocations replace the `$1`, `$2` ... strings
   in the macro definition with the `param1`, `param2` ... values.
 - Macro invocation parameters contain inline Rimu markup; inline

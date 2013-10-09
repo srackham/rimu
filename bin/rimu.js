@@ -22,8 +22,6 @@ var Rimu;
             reader.skipBlankLines();
             if (reader.eof())
                 break;
-            if (Rimu.Macros.renderLeadingInclusion(reader))
-                continue;
             if (Rimu.LineBlocks.render(reader, writer))
                 continue;
             if (Rimu.Lists.render(reader, writer))
@@ -172,6 +170,7 @@ var Rimu;
             if (value !== null) {
                 this.lines[this.pos] = value;
             }
+            Rimu.Macros.renderCursor(this);
             return this.lines[this.pos];
         };
 
@@ -186,7 +185,7 @@ var Rimu;
             this.pos++;
             if (this.eof())
                 return null;
-            return this.cursor();
+            return this.lines[this.pos];
         };
 
         // Read to the first line matching the re.
@@ -222,6 +221,11 @@ var Rimu;
                 this.next();
             }
         };
+
+        // Replace the line at the cursor with the array of lines.
+        Reader.prototype.replaceCursor = function (lines) {
+            Array.prototype.splice.apply(this.lines, [this.pos, 1].concat(lines));
+        };
         return Reader;
     })();
     Rimu.Reader = Reader;
@@ -249,11 +253,17 @@ var Rimu;
 var Rimu;
 (function (Rimu) {
     (function (Macros) {
-        // Matches all macro invocations. $1 = name, $2 = params.
-        var MATCH_MACROS = /\\?\{([\w\-]+)([!=|?](?:|[\s\S]*?[^\\]))?\}/g;
+        // Matches macro invocation. $1 = name, $2 = params.
+        var MACRO_RE = /\{([\w\-]+)([!=|?](?:|[\s\S]*?[^\\]))?\}/;
 
-        // Matches start-of-line Inclusion macro invocation. $1 = name, $2 = params.
-        var MATCH_LEADING_INCLUSION = /^\{([\w\-]+)([!=](?:|[\s\S]*?[^\\]))\}/;
+        // Matches all macro invocations. $1 = name, $2 = params.
+        var MATCH_MACROS = RegExp('\\\\?' + MACRO_RE.source, 'g');
+
+        // Matches lines starting with a macro invocation. $1 = name, $2 = params.
+        var MATCH_MACRO_LINE = RegExp('^' + MACRO_RE.source);
+
+        // Match start of macro definition.
+        var MATCH_MACRO_DEF = /^\{[\w\-]+\}\s*=\s*'/;
 
         Macros.defs = [];
 
@@ -280,11 +290,17 @@ var Rimu;
         }
         Macros.setValue = setValue;
 
-        function render(text, regexp) {
-            if (typeof regexp === "undefined") { regexp = MATCH_MACROS; }
-            text = text.replace(regexp, function (match, name/* $1 */ , params/* $2 */ ) {
+        // Render all macro invocations in text.
+        // If leaveBackslash is true then the leading backslash is not removed from escaped invocations.
+        function render(text, leaveBackslash) {
+            if (typeof leaveBackslash === "undefined") { leaveBackslash = false; }
+            text = text.replace(MATCH_MACROS, function (match, name/* $1 */ , params/* $2 */ ) {
                 if (match[0] === '\\') {
-                    return match.slice(1);
+                    if (leaveBackslash) {
+                        return match;
+                    } else {
+                        return match.slice(1);
+                    }
                 }
                 var value = getValue(name);
                 if (!params) {
@@ -338,29 +354,31 @@ var Rimu;
         }
         Macros.render = render;
 
-        // If the current line on the reader begins with an inclusion macro invocation
-        // then render the leading inclusion. If the inclusion skips the line then
-        // move the reader cursor to the next line and return true, else return false.
-        function renderLeadingInclusion(reader) {
-            var line = reader.cursor();
-            if (!line) {
-                return false;
+        // If the reader cursor begins with a macro invocation
+        // then render macro invocations in the cursor.
+        function renderCursor(reader) {
+            if (reader.eof()) {
+                return;
             }
-            if (!MATCH_LEADING_INCLUSION.test(line)) {
-                return false;
+            var line = reader.lines[reader.pos];
+            if (MATCH_MACRO_DEF.test(line)) {
+                return;
+            }
+            if (!MATCH_MACRO_LINE.test(line)) {
+                return;
             }
 
-            // Arrive here if the line at the cursor starts with an inclusion macro invocation.
-            line = render(line, MATCH_LEADING_INCLUSION);
+            // Arrive here if the line at the cursor starts with a macro invocation.
+            // Escaped invocations are left intact -- the leading backslash will be removed
+            // by subsequent macro expansion.
+            line = render(line, true);
             if (line == '') {
                 reader.next();
-                return true;
             } else {
-                reader.cursor(line);
-                return false;
+                reader.replaceCursor(line.split('\n'));
             }
         }
-        Macros.renderLeadingInclusion = renderLeadingInclusion;
+        Macros.renderCursor = renderCursor;
 
         if (typeof exports !== 'undefined') {
             exports.Macros = Rimu.Macros;
@@ -424,23 +442,6 @@ var Rimu;
                     var value = match[2];
                     value = Rimu.replaceInline(value, this);
                     Rimu.Macros.setValue(name, value);
-                    return '';
-                }
-            },
-            // Macro invocation.
-            // reference = $1
-            {
-                match: /^(\{[\w\-]+(?:[|?].*)?\})$/,
-                replacement: '',
-                filter: function (match, reader) {
-                    var value = Rimu.Macros.render(match[1]);
-                    if (value === match[1]) {
-                        // Macro does not exist so pass it through.
-                        value = '\\' + value;
-                    }
-
-                    // Insert the macro value into the reader just ahead of the cursor.
-                    reader.lines = [].concat(reader.lines.slice(0, reader.pos + 1), value.split('\n'), reader.lines.slice(reader.pos + 1));
                     return '';
                 }
             },

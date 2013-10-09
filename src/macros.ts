@@ -1,9 +1,13 @@
 module Rimu.Macros {
 
+  // Matches macro invocation. $1 = name, $2 = params.
+  var MACRO_RE = /\{([\w\-]+)([!=|?](?:|[\s\S]*?[^\\]))?\}/;
   // Matches all macro invocations. $1 = name, $2 = params.
-  var MATCH_MACROS = /\\?\{([\w\-]+)([!=|?](?:|[\s\S]*?[^\\]))?\}/g;
-  // Matches start-of-line Inclusion macro invocation. $1 = name, $2 = params.
-  var MATCH_LEADING_INCLUSION = /^\{([\w\-]+)([!=](?:|[\s\S]*?[^\\]))\}/;
+  var MATCH_MACROS = RegExp('\\\\?' + MACRO_RE.source, 'g');
+  // Matches lines starting with a macro invocation. $1 = name, $2 = params.
+  var MATCH_MACRO_LINE = RegExp('^' + MACRO_RE.source);
+  // Match start of macro definition.
+  var MATCH_MACRO_DEF = /^\{[\w\-]+\}\s*=\s*'/;
 
   export interface Macro {
     name: string;
@@ -33,10 +37,17 @@ module Rimu.Macros {
     defs.push({name: name, value: value});
   }
 
-  export function render(text: string, regexp = MATCH_MACROS): string {
-    text = text.replace(regexp, function(match, name /* $1 */, params /* $2 */) {
-      if (match[0] === '\\') {
-        return match.slice(1);
+  // Render all macro invocations in text.
+  // If leaveBackslash is true then the leading backslash is not removed from escaped invocations.
+  export function render(text: string, leaveBackslash = false): string {
+    text = text.replace(MATCH_MACROS, function(match, name /* $1 */, params /* $2 */) {
+     if (match[0] === '\\') {
+        if (leaveBackslash) {
+          return match;
+        }
+        else {
+          return match.slice(1);
+        }
       }
       var value = getValue(name);  // value is null if macro is undefined.
       if (!params) {
@@ -94,26 +105,28 @@ module Rimu.Macros {
     return text;
   }
 
-  // If the current line on the reader begins with an inclusion macro invocation
-  // then render the leading inclusion. If the inclusion skips the line then
-  // move the reader cursor to the next line and return true, else return false.
-  export function renderLeadingInclusion(reader: Reader): boolean {
-    var line = reader.cursor();
-    if (!line) {
-      return false;
+  // If the reader cursor begins with a macro invocation
+  // then render macro invocations in the cursor.
+  export function renderCursor(reader: Reader): void {
+    if (reader.eof()) {
+      return;
     }
-    if (!MATCH_LEADING_INCLUSION.test(line)) {
-      return false;
+    var line = reader.lines[reader.pos];
+    if (MATCH_MACRO_DEF.test(line)) {  // Skip macro definitions.
+      return;
     }
-    // Arrive here if the line at the cursor starts with an inclusion macro invocation.
-    line = render(line, MATCH_LEADING_INCLUSION);
-    if (line == '') {
-      reader.next();  // Skip the line at the cursor.
-      return true;
+    if (!MATCH_MACRO_LINE.test(line)) {
+      return;
     }
-    else {
-      reader.cursor(line);  // Retain the line at the cursor.
-      return false;
+    // Arrive here if the line at the cursor starts with a macro invocation.
+    // Escaped invocations are left intact -- the leading backslash will be removed
+    // by subsequent macro expansion.
+    line = render(line, true);
+    if (line == '') { // Skip line (deleted by Inclusion macro).
+      reader.next();
+    }
+    else {  // Replace the line at cursor with expanded macro line.
+      reader.replaceCursor(line.split('\n'));
     }
   }
 

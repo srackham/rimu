@@ -40,6 +40,7 @@ declare module Rimu {
         public next(): string;
         public readTo(find: RegExp): string[];
         public skipBlankLines(): void;
+        public replaceCursor(lines: string[]): void;
     }
     class Writer {
         public buffer: string[];
@@ -56,8 +57,8 @@ declare module Rimu.Macros {
     var defs: Macro[];
     function getValue(name: string): string;
     function setValue(name: string, value: string): void;
-    function render(text: string, regexp?: RegExp): string;
-    function renderLeadingInclusion(reader: Rimu.Reader): boolean;
+    function render(text: string, leaveBackslash?: boolean): string;
+    function renderCursor(reader: Rimu.Reader): void;
 }
 declare module Rimu.LineBlocks {
     interface Definition {

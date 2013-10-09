@@ -51,11 +51,11 @@
     *:not(pre) > code {
       white-space: normal;
       border: none;
-      background: #fafafa;
+      background-color: #fafafa;
     }
     /* highlight.js tweaks. */
     pre > code {
-      background: WhiteSmoke;
+      background-color: inherit;
       padding: 0;
     }
     pre span {
