@@ -311,13 +311,17 @@ exports['Documents'] = function(test) {
       '<p>{v1}</p>',
       'escaped stand-alone macro invocation');
   testDocument(test,
+      '{undefined!}Drop me!',
+      '',
+      'inclusion macro: empty document corner case');
+  testDocument(test,
       '\\<img href="url" alt="alt">',
       '<p>&lt;img href="url" alt="alt"&gt;</p>',
       'escaped HTML block');
   testDocument(test,
       '{blockref}=\'BLOCKREF\'\n{inlineref}=\'INLINEREF\'\n{blockref}\n\nAn {inlineref}',
       '<p>BLOCKREF</p>\n<p>An INLINEREF</p>',
-      'non-existant macro invocations are rendered verbatim');
+      'block and inline macro expansion');
   testDocument(test,
       "{v1}='1'\n{v2}='2'\n{v1} and {v2}\n\n- {v1}\n\n{v2}",
       '<p>1 and 2</p>\n<ul><li>1\n</li></ul><p>2</p>',
@@ -374,6 +378,14 @@ exports['Documents'] = function(test) {
       'Hello {undefined?undefined macro.}'),
       '<p>Hello undefined macro.</p>',
       'existential macro invocation');
+  test.equal(Rimu.render(
+      "{v}='..'\n{v}\nfoo\n{v}"),
+      '<div><p>foo</p></div>',
+      'macros with Rimu block source');
+  test.equal(Rimu.render(
+      "{v1}='<div>\n\n'\n{v2}='\n\n</div>\n\n'\n{v1}\nfoo\n{v2}\nbar"),
+      '<div>\n<p>foo</p>\n</div>\n<p>bar</p>',
+      'macros with blank lines');
   test.equal(Rimu.render(
       'foo\n{undefined!}bar\nmacro'),
       '<p>foo\nmacro</p>',
