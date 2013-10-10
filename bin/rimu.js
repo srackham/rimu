@@ -592,7 +592,7 @@ var Rimu;
             {
                 name: 'division',
                 openMatch: /^\\?\.{2,}$/,
-                closeMatch: /^\.{2,}$/,
+                closeMatch: null,
                 openTag: '<div>',
                 closeTag: '</div>',
                 container: true
@@ -601,7 +601,7 @@ var Rimu;
             {
                 name: 'quote',
                 openMatch: /^\\?"{2,}$/,
-                closeMatch: /^"{2,}$/,
+                closeMatch: null,
                 openTag: '<blockquote>',
                 closeTag: '</blockquote>',
                 container: true
@@ -610,7 +610,7 @@ var Rimu;
             {
                 name: 'code',
                 openMatch: /^\\?\-{2,}$/,
-                closeMatch: /^\-{2,}$/,
+                closeMatch: null,
                 openTag: '<pre><code>',
                 closeTag: '</code></pre>',
                 macros: true,
@@ -686,7 +686,13 @@ var Rimu;
 
                     // Read content up to the closing delimiter.
                     reader.next();
-                    var content = reader.readTo(def.closeMatch);
+                    var closeMatch;
+                    if (def.closeMatch === null) {
+                        closeMatch = RegExp('^' + Rimu.escapeRegExp(match[0]) + '$');
+                    } else {
+                        closeMatch = def.closeMatch;
+                    }
+                    var content = reader.readTo(closeMatch);
                     if (content !== null) {
                         lines = lines.concat(content);
                     }

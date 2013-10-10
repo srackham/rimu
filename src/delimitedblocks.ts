@@ -3,7 +3,7 @@ module Rimu.DelimitedBlocks {
   export interface Definition {
     name?: string;  // Optional unique identifier.
     openMatch: RegExp;  // $1 (if defined) is prepended to block content.
-    closeMatch: RegExp; // $1 (if defined) is appended to block content.
+    closeMatch: RegExp; // $1 (if defined) is appended to block content. If null then must match opening delimiter.
     openTag: string;
     closeTag: string;
     macros?: boolean;  // Not applicable to container or skipped elements.
@@ -47,7 +47,7 @@ module Rimu.DelimitedBlocks {
     {
       name: 'division',
       openMatch: /^\\?\.{2,}$/,
-      closeMatch: /^\.{2,}$/,
+      closeMatch: null,
       openTag: '<div>',
       closeTag: '</div>',
       container: true,
@@ -56,7 +56,7 @@ module Rimu.DelimitedBlocks {
     {
       name: 'quote',
       openMatch: /^\\?"{2,}$/,
-      closeMatch: /^"{2,}$/,
+      closeMatch: null,
       openTag: '<blockquote>',
       closeTag: '</blockquote>',
       container: true,
@@ -65,7 +65,7 @@ module Rimu.DelimitedBlocks {
     {
       name: 'code',
       openMatch: /^\\?\-{2,}$/,
-      closeMatch: /^\-{2,}$/,
+      closeMatch: null,
       openTag: '<pre><code>',
       closeTag: '</code></pre>',
       macros: true,
@@ -140,7 +140,14 @@ module Rimu.DelimitedBlocks {
         }
         // Read content up to the closing delimiter.
         reader.next();
-        var content = reader.readTo(def.closeMatch);
+        var closeMatch: RegExp;
+        if (def.closeMatch === null) {  // Close delimiter must match opening delimiter.
+          closeMatch = RegExp('^' + escapeRegExp(match[0]) + '$');
+        }
+        else {
+          closeMatch = def.closeMatch;
+        }
+        var content = reader.readTo(closeMatch);
         if (content !== null) {
           lines = lines.concat(content);
         }

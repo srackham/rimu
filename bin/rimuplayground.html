@@ -234,8 +234,13 @@ for example:
 <div id="topic-delimited-blocks">
 <!--
 Delimited blocks are blocks of one or more lines bounded by opening
-and closing delimiter lines. Delimited blocks can be escaped with a
-backslash character prefix.
+and closing delimiter lines.
+
+- Delimited blocks can be escaped by prefixing the opening delimiter
+  with a backslash character.
+- The number of characters in the closing delimiter must exactly match
+  the number in the he opening delimiter, this feature allows
+  delimited blocks of the same type to be nested.
 
 *Code Block*
 

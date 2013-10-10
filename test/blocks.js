@@ -171,6 +171,10 @@ exports['Delimited blocks'] = function(test) {
       '<joe@foo.com|Joe & Jim>',
       '<p><a href="mailto:joe@foo.com">Joe &amp; Jim</a></p>',
       'do not mistake url for HTML block');
+  testDelimitedBlock(test,
+      '..\nTo be...\n\n...\nTo be...\n\nor not to be!\n...\n\nor not to be!\n..',
+      '<div><p>To be...</p>\n<div><p>To be...</p>\n<p>or not to be!</p></div>\n<p>or not to be!</p></div>',
+      'nested delimited block of the same type');
   test.done();
 };
 
