@@ -59,7 +59,7 @@ module Rimu.Macros {
         var result = value;
         var paramsList = params.slice(1).split('|');
         for (var i in paramsList) {
-          result = result.replace('$'+(parseInt(i)+1), paramsList[i]);
+          result = result.replace(RegExp('\\$' + (parseInt(i)+1) + '(?!\\d)', 'g'), paramsList[i]);
         }
         result = result.replace(/\$\d+/g, '');
         return result;

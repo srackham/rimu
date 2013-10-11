@@ -468,8 +468,8 @@ putting a space followed  \
 by a backslash character  \
 at the end of a line.
 
-Line breaks can be escaped by prefixing the trailing backslash
-character with a backslash.
+Line breaks can be escaped by prefixing a space character followed
+by a backslash character to the end of the line.
 
 ==== Indented paragraphs
   _Indented paragraphs_ expand macro invocations but all other
@@ -561,15 +561,17 @@ Invocation syntax:
   \{macro-name=pattern}
   \{macro-name!pattern}
 
-- Macro definition values are enclosed by single quotes and can extend
-  over multiple lines.
+- Macro definition values are enclosed by single-quote characters
+  and can extend over multiple lines.
 - A macro name consists of one or more alphanumeric, underscore or
   dash characters.
 - A macro definition must start at the left margin.
+- Macro definition lines ending with a single-quote character can be
+  continued to the next line by appending a backslash character.
 - Macro definition values can invoke previously defined macros but
   macro invocations cannot be nested.
-- Macro definitions and invocations can be escaped with a backslash
-  character prefix.
+- Macro definitions and invocations can be escaped with a leading
+  backslash character prefix.
 - Macro invocations are expanded everywhere, including inside
   _code quotes_ and _code blocks_.
 - Inline macro invocations are expanded before other inline elements

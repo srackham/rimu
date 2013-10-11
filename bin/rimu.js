@@ -312,7 +312,7 @@ var Rimu;
                     var result = value;
                     var paramsList = params.slice(1).split('|');
                     for (var i in paramsList) {
-                        result = result.replace('$' + (parseInt(i) + 1), paramsList[i]);
+                        result = result.replace(RegExp('\\$' + (parseInt(i) + 1) + '(?!\\d)', 'g'), paramsList[i]);
                     }
                     result = result.replace(/\$\d+/g, '');
                     return result;
@@ -576,6 +576,8 @@ var Rimu;
                     // Set macro.
                     // Get the macro name from the match in the first line of the block.
                     var name = match[0].match(/^\{([\w\-]+)\}/)[1];
+                    text = text.replace(/'\s*\\\n/g, "'\n");
+                    text = Rimu.replaceInline(text, this);
                     Rimu.Macros.setValue(name, text);
                     return '';
                 }

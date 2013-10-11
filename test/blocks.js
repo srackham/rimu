@@ -355,6 +355,10 @@ exports['Documents'] = function(test) {
       '<p><mark>Note</mark>: H<sub>2</sub>O</p>',
       'text format parametrized macros');
   testDocument(test,
+      "{v1}='$1 and $10 and $2'\n{v1|one}\n{v1}",
+      '<p>one and  and \n and  and </p>',
+      'undefined parametrized arguments replaced by an empty string');
+  testDocument(test,
       "{src}='tiger.png'\n{caption}='Tiger'\n<image:{src}|{caption}>",
       '<img src="tiger.png" alt="Tiger">',
       'macro substitution in block image');
