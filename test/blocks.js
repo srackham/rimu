@@ -359,6 +359,10 @@ exports['Documents'] = function(test) {
       '<p>one and  and \n and  and </p>',
       'undefined parametrized arguments replaced by an empty string');
   testDocument(test,
+      '{undefined|one|two}',
+      '',
+      'undefined macro invoked with aguments');
+  testDocument(test,
       "{src}='tiger.png'\n{caption}='Tiger'\n<image:{src}|{caption}>",
       '<img src="tiger.png" alt="Tiger">',
       'macro substitution in block image');

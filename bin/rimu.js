@@ -14,7 +14,7 @@ var Rimu;
     }
     Rimu.render = render;
 
-    // Same as render() but does not reset macros or update options.
+    // Same as render() but does not update options.
     function renderSource(source) {
         var reader = new Rimu.Reader(source);
         var writer = new Rimu.Writer();
@@ -308,6 +308,10 @@ var Rimu;
                 }
                 params = params.replace(/\\\}/g, '}');
                 if (params[0] === '|') {
+                    if (value === null) {
+                        return '';
+                    }
+
                     // Substitute macro parameters.
                     var result = value;
                     var paramsList = params.slice(1).split('|');

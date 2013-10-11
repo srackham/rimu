@@ -13,7 +13,7 @@ module Rimu {
     return renderSource(source);
   }
 
-  // Same as render() but does not reset macros or update options.
+  // Same as render() but does not update options.
   export function renderSource(source: string): string {
     var reader = new Reader(source);
     var writer = new Writer();

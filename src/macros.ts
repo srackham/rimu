@@ -55,6 +55,9 @@ module Rimu.Macros {
       }
       params = params.replace(/\\\}/g, '}');  // Unescape escaped } characters.
       if (params[0] === '|') {
+        if (value === null) {
+          return '';
+        }
         // Substitute macro parameters.
         var result = value;
         var paramsList = params.slice(1).split('|');
