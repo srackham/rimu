@@ -490,3 +490,72 @@ Lobortis lacus vestibulum sem.
   </tbody>
 </table>
 --
+
+
+== Macro meta-programming
+You can define macros which, when invoked, generate other macros. A
+good example of this is the generation of document section headers,
+links and table of contents entries from a section identifier and
+title.
+
+The following Rimu markup:
+
+--
+// Macro to generate section link, header and TOC entry macros.
+// $1 = section ID, $2 = section title.
+\{section-definition} = '
+{$1} = '<#$1|$2>' \
+{$1-header} = '<<#$1>>
+== $2' \
+{$1-toc} = '{$1} \' \
+'
+// Generate section macros.
+\{section-definition|section1|Section One}
+\{section-definition|section2|Section Two}
+
+// Table of contents.
+\{section1-toc}
+\{section2-toc}
+
+// Section One section.
+\{section1-header}
+Link to \{section2}.
+
+// Section Two section.
+\{section2-header}
+Link to \{section1}.
+--
+
+Renders:
+
+// Macro to generate section link, header and TOC entry macros.
+// $1 = section ID, $2 = section title.
+{section-definition} = '
+{$1} = '<#$1|$2>' \
+{$1-header} = '<<#$1>>
+== $2' \
+{$1-toc} = '{$1} \' \
+'
+// Generate section macros.
+{section-definition|section1|Section One}
+{section-definition|section2|Section Two}
+
+{examples}
+""
+==== Table of Contents
+{section1-toc}
+{section2-toc}
+
+// Section One section.
+{section1-header}
+Link to {section2}.
+
+// Section Two section.
+{section2-header}
+Link to {section1}.
+
+""
+
+Note the use of the backslash character to continue macro definition
+lines that end with a single-quote.
+

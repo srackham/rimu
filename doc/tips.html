@@ -426,6 +426,47 @@ Lobortis lacus vestibulum sem.
     &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;</code></pre>
+<h2>Macro meta-programming</h2>
+<p>You can define macros which, when invoked, generate other macros. A
+good example of this is the generation of document section headers,
+links and table of contents entries from a section identifier and
+title.</p>
+<p>The following Rimu markup:</p>
+<pre><code>// Macro to generate section link, header and TOC entry macros.
+// $1 = section ID, $2 = section title.
+{section-definition} = '
+{$1} = '&lt;#$1|$2&gt;' \
+{$1-header} = '&lt;&lt;#$1&gt;&gt;
+== $2' \
+{$1-toc} = '{$1} \' \
+'
+// Generate section macros.
+{section-definition|section1|Section One}
+{section-definition|section2|Section Two}
+
+// Table of contents.
+{section1-toc}
+{section2-toc}
+
+// Section One section.
+{section1-header}
+Link to {section2}.
+
+// Section Two section.
+{section2-header}
+Link to {section1}.</code></pre>
+<p>Renders:</p>
+<blockquote><h4>Table of Contents</h4>
+<p><a href="#section1">Section One</a><br>
+<a href="#section2">Section Two</a><br></p>
+<div id="section1"></div>
+<h2>Section One</h2>
+<p>Link to <a href="#section2">Section Two</a>.</p>
+<div id="section2"></div>
+<h2>Section Two</h2>
+<p>Link to <a href="#section1">Section One</a>.</p></blockquote>
+<p>Note the use of the backslash character to continue macro definition
+lines that end with a single-quote.</p>
 
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
