@@ -513,7 +513,7 @@ The following Rimu markup:
 \{section-definition|section1|Section One}
 \{section-definition|section2|Section Two}
 
-// Table of contents.
+==== Table of Contents
 \{section1-toc}
 \{section2-toc}
 
@@ -540,7 +540,6 @@ Renders:
 {section-definition|section1|Section One}
 {section-definition|section2|Section Two}
 
-{examples}
 ""
 ==== Table of Contents
 {section1-toc}
