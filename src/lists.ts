@@ -72,7 +72,7 @@ module Rimu.Lists {
       reader: Reader, writer: Writer): ItemState
   {
     ids.push(startItem.id);
-    writer.write(injectAttributes(startItem.def.listOpenTag));
+    writer.write(injectHtmlAttributes(startItem.def.listOpenTag));
     var nextItem: ItemState;
     while (true) {
       nextItem = renderListItem(startItem, reader, writer);

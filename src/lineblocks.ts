@@ -106,14 +106,15 @@ module Rimu.LineBlocks {
       macros: true,
       specials: true,
     },
-    // HTML attributes.
-    // Syntax: .[class names][#id][[attributes]]
-    // class names = $1, id = $2, attributes = $3
+    // Block Attributes.
+    // Syntax: .[class names][#id][[html-attributes]][expansion-options...]
+    // class names = $1, id = $2, html-attributes = $3, expansion-options = $4
     {
       name: 'attributes',
-      match: /^\\?\.([a-zA-Z][\w\- ]*)?(#[a-zA-Z][\w\-]*)?(?:\s*)?(\[.+\])?$/,
+      match: /^\\?\.([a-zA-Z][\w\- ]*)?(#[a-zA-Z][\w\-]*)?(?:\s*)?(\[.+\])?([ \w+-]+)?$/,
       replacement: '',
       filter: function (match) {
+        // Process HTML attributes.
         htmlAttributes = '';
         if (match[1]) { // Class names.
           htmlAttributes += 'class="' + trim(match[1]) + '"';
@@ -125,12 +126,25 @@ module Rimu.LineBlocks {
           htmlAttributes += ' ' + trim(match[3].slice(1, match[3].length - 1));
         }
         htmlAttributes = trim(htmlAttributes);
+        // Process delimited block expansion options.
+        blockOptions = {};
+        if (match[4]) { // expansion options.
+          var options = match[4].trim().split(/\s+/);
+          for (var i in options) {
+            switch (options[i]) {
+              case '+macros': blockOptions.macros = true; break;
+              case '-macros': blockOptions.macros = false; break;
+            }
+          }
+        }
         return '';
       },
     },
   ];
 
+  // Globals set by Block Attributes filter.
   export var htmlAttributes: string = '';
+  export var blockOptions: ExpansionOptions = {};
 
   export function render(reader: Reader, writer: Writer): boolean {
     if (reader.eof()) throw 'premature eof';
@@ -150,7 +164,7 @@ module Rimu.LineBlocks {
         else {
           text = def.filter(match, reader);
         }
-        text = injectAttributes(text);
+        text = injectHtmlAttributes(text);
         writer.write(text);
         reader.next();
         if (text && !reader.eof()) {

@@ -1,9 +1,20 @@
 module Rimu {
 
+  export interface ExpansionOptions {macros?: boolean; spans?: boolean; specials?: boolean;};
+
   // Whitespace strippers.
   export function trimLeft(s: string): string { return s.replace(/^\s+/g,''); }
   export function trimRight(s: string): string { return s.replace(/\s+$/g,''); }
   export function trim(s: string): string { return s.replace(/^\s+|\s+$/g,''); }
+
+  // Overwrite properties in to object with same-named properties from from object.
+  export function merge(to: Object, from: Object) {
+    for (var key in to) {
+      if (key in from) {
+        to[key] = from[key];
+      }
+    }
+  }
 
   // http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
   export function escapeRegExp(s: string): string {
@@ -21,27 +32,29 @@ module Rimu {
   export function replaceMatch(
       match: RegExpExecArray,
       replacement: string,
-      options: {macros?: boolean; spans?: boolean; specials?: boolean})
+      expansionOptions: ExpansionOptions)
   {
     return replacement.replace(/\$\d/g, function () {
       // Replace $1, $2 ... with corresponding match groups.
       var i = parseInt(arguments[0][1]);  // match group number.
       var text = match[i];                // match group text.
-      return replaceInline(text, options);
+      return replaceInline(text, expansionOptions);
     });
   }
 
   // Replace the inline elements specified in options in text and return the result.
   export function replaceInline(text: string,
-      options: {macros?: boolean; spans?: boolean; specials?: boolean;}): string
+      expansionOptions: ExpansionOptions): string
   {
-    if (options.macros) {
+    if (expansionOptions.macros) {
       text = Macros.render(text);
+      text = text === null ? '' : text;
     }
-    if (options.spans) {
+    // Spans also expand special characters.
+    if (expansionOptions.spans) {
       return Spans.render(text);
     }
-    else if (options.specials) {
+    else if (expansionOptions.specials) {
       return replaceSpecialChars(text);
     }
     else {
@@ -51,7 +64,7 @@ module Rimu {
 
   // Inject HTML attributes from LineBlocks.htmlAttributes into the opening tag.
   // Reset LineBlocks.htmlAttributes if the injection is successful.
-  export function injectAttributes(tag: string): string {
+  export function injectHtmlAttributes(tag: string): string {
     if (!tag || !LineBlocks.htmlAttributes) {
       return tag;
     }

@@ -6,8 +6,10 @@ module Rimu.Macros {
   var MATCH_MACROS = RegExp('\\\\?' + MACRO_RE.source, 'g');
   // Matches lines starting with a macro invocation. $1 = name, $2 = params.
   var MATCH_MACRO_LINE = RegExp('^' + MACRO_RE.source);
-  // Match start of macro definition.
-  var MATCH_MACRO_DEF = /^\{[\w\-]+\}\s*=\s*'/;
+  // Match macro definition open delimiter.
+  export var MACRO_DEF_OPEN = /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/;  // $1 is first line of macro.
+  // Match macro definition open delimiter.
+  export var MACRO_DEF_CLOSE = /^(.*)'$/;                      // $1 is last line of macro.
 
   export interface Macro {
     name: string;
@@ -39,6 +41,7 @@ module Rimu.Macros {
 
   // Render all macro invocations in text.
   // If leaveBackslash is true then the leading backslash is not removed from escaped invocations.
+  // Return rendered string, if all text has bee deleted by Inclusion macros return null.
   export function render(text: string, leaveBackslash = false): string {
     text = text.replace(MATCH_MACROS, function(match, name /* $1 */, params /* $2 */) {
      if (match[0] === '\\') {
@@ -103,7 +106,12 @@ module Rimu.Macros {
           lines.splice(i, 1);
         }
       }
-      text = lines.join('\n');
+      if (lines.length === 0) {
+        text = null;  // Inclusion macros have deleted all lines of text.
+      }
+      else {
+        text = lines.join('\n');
+      }
     }
     return text;
   }
@@ -115,7 +123,7 @@ module Rimu.Macros {
       return;
     }
     var line = reader.lines[reader.pos];
-    if (MATCH_MACRO_DEF.test(line)) {  // Skip macro definitions.
+    if (MACRO_DEF_OPEN.test(line)) {  // Skip macro definitions.
       return;
     }
     if (!MATCH_MACRO_LINE.test(line)) {
@@ -125,7 +133,7 @@ module Rimu.Macros {
     // Escaped invocations are left intact -- the leading backslash will be removed
     // by subsequent macro expansion.
     line = render(line, true);
-    if (line == '') { // Skip line (deleted by Inclusion macro).
+    if (line === null) { // Skip line (deleted by Inclusion macro).
       reader.next();
     }
     else {  // Replace the line at cursor with expanded macro line.

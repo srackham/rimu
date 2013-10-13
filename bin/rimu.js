@@ -43,6 +43,8 @@ if (typeof exports !== 'undefined') {
 this.Rimu = Rimu;
 var Rimu;
 (function (Rimu) {
+    ;
+
     // Whitespace strippers.
     function trimLeft(s) {
         return s.replace(/^\s+/g, '');
@@ -56,6 +58,16 @@ var Rimu;
         return s.replace(/^\s+|\s+$/g, '');
     }
     Rimu.trim = trim;
+
+    // Overwrite properties in to object with same-named properties from from object.
+    function merge(to, from) {
+        for (var key in to) {
+            if (key in from) {
+                to[key] = from[key];
+            }
+        }
+    }
+    Rimu.merge = merge;
 
     // http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
     function escapeRegExp(s) {
@@ -71,24 +83,26 @@ var Rimu;
 
     // Replace match groups, optionally substituting the replacement groups with
     // the inline elements specified in options.
-    function replaceMatch(match, replacement, options) {
+    function replaceMatch(match, replacement, expansionOptions) {
         return replacement.replace(/\$\d/g, function () {
             // Replace $1, $2 ... with corresponding match groups.
             var i = parseInt(arguments[0][1]);
             var text = match[i];
-            return replaceInline(text, options);
+            return replaceInline(text, expansionOptions);
         });
     }
     Rimu.replaceMatch = replaceMatch;
 
     // Replace the inline elements specified in options in text and return the result.
-    function replaceInline(text, options) {
-        if (options.macros) {
+    function replaceInline(text, expansionOptions) {
+        if (expansionOptions.macros) {
             text = Rimu.Macros.render(text);
+            text = text === null ? '' : text;
         }
-        if (options.spans) {
+
+        if (expansionOptions.spans) {
             return Rimu.Spans.render(text);
-        } else if (options.specials) {
+        } else if (expansionOptions.specials) {
             return replaceSpecialChars(text);
         } else {
             return text;
@@ -98,7 +112,7 @@ var Rimu;
 
     // Inject HTML attributes from LineBlocks.htmlAttributes into the opening tag.
     // Reset LineBlocks.htmlAttributes if the injection is successful.
-    function injectAttributes(tag) {
+    function injectHtmlAttributes(tag) {
         if (!tag || !Rimu.LineBlocks.htmlAttributes) {
             return tag;
         }
@@ -112,7 +126,7 @@ var Rimu;
         Rimu.LineBlocks.htmlAttributes = '';
         return result;
     }
-    Rimu.injectAttributes = injectAttributes;
+    Rimu.injectHtmlAttributes = injectHtmlAttributes;
 })(Rimu || (Rimu = {}));
 var Rimu;
 (function (Rimu) {
@@ -150,6 +164,8 @@ var Rimu;
 })(Rimu || (Rimu = {}));
 var Rimu;
 (function (Rimu) {
+    Rimu.expandLineMacros = true;
+
     var Reader = (function () {
         function Reader(text) {
             // Split lines on newline boundaries and trim trailing white space.
@@ -170,7 +186,9 @@ var Rimu;
             if (value !== null) {
                 this.lines[this.pos] = value;
             }
-            Rimu.Macros.renderCursor(this);
+            if (Rimu.expandLineMacros) {
+                Rimu.Macros.renderCursor(this);
+            }
             return this.lines[this.pos];
         };
 
@@ -262,8 +280,11 @@ var Rimu;
         // Matches lines starting with a macro invocation. $1 = name, $2 = params.
         var MATCH_MACRO_LINE = RegExp('^' + MACRO_RE.source);
 
-        // Match start of macro definition.
-        var MATCH_MACRO_DEF = /^\{[\w\-]+\}\s*=\s*'/;
+        // Match macro definition open delimiter.
+        Macros.MACRO_DEF_OPEN = /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/;
+
+        // Match macro definition open delimiter.
+        Macros.MACRO_DEF_CLOSE = /^(.*)'$/;
 
         Macros.defs = [];
 
@@ -292,6 +313,7 @@ var Rimu;
 
         // Render all macro invocations in text.
         // If leaveBackslash is true then the leading backslash is not removed from escaped invocations.
+        // Return rendered string, if all text has bee deleted by Inclusion macros return null.
         function render(text, leaveBackslash) {
             if (typeof leaveBackslash === "undefined") { leaveBackslash = false; }
             text = text.replace(MATCH_MACROS, function (match, name/* $1 */ , params/* $2 */ ) {
@@ -352,7 +374,11 @@ var Rimu;
                         lines.splice(i, 1);
                     }
                 }
-                text = lines.join('\n');
+                if (lines.length === 0) {
+                    text = null;
+                } else {
+                    text = lines.join('\n');
+                }
             }
             return text;
         }
@@ -365,7 +391,7 @@ var Rimu;
                 return;
             }
             var line = reader.lines[reader.pos];
-            if (MATCH_MACRO_DEF.test(line)) {
+            if (Macros.MACRO_DEF_OPEN.test(line)) {
                 return;
             }
             if (!MATCH_MACRO_LINE.test(line)) {
@@ -376,7 +402,7 @@ var Rimu;
             // Escaped invocations are left intact -- the leading backslash will be removed
             // by subsequent macro expansion.
             line = render(line, true);
-            if (line == '') {
+            if (line === null) {
                 reader.next();
             } else {
                 reader.replaceCursor(line.split('\n'));
@@ -490,14 +516,15 @@ var Rimu;
                 macros: true,
                 specials: true
             },
-            // HTML attributes.
-            // Syntax: .[class names][#id][[attributes]]
-            // class names = $1, id = $2, attributes = $3
+            // Block Attributes.
+            // Syntax: .[class names][#id][[html-attributes]][expansion-options...]
+            // class names = $1, id = $2, html-attributes = $3, expansion-options = $4
             {
                 name: 'attributes',
-                match: /^\\?\.([a-zA-Z][\w\- ]*)?(#[a-zA-Z][\w\-]*)?(?:\s*)?(\[.+\])?$/,
+                match: /^\\?\.([a-zA-Z][\w\- ]*)?(#[a-zA-Z][\w\-]*)?(?:\s*)?(\[.+\])?([ \w+-]+)?$/,
                 replacement: '',
                 filter: function (match) {
+                    // Process HTML attributes.
                     LineBlocks.htmlAttributes = '';
                     if (match[1]) {
                         LineBlocks.htmlAttributes += 'class="' + Rimu.trim(match[1]) + '"';
@@ -509,12 +536,30 @@ var Rimu;
                         LineBlocks.htmlAttributes += ' ' + Rimu.trim(match[3].slice(1, match[3].length - 1));
                     }
                     LineBlocks.htmlAttributes = Rimu.trim(LineBlocks.htmlAttributes);
+
+                    // Process delimited block expansion options.
+                    LineBlocks.blockOptions = {};
+                    if (match[4]) {
+                        var options = match[4].trim().split(/\s+/);
+                        for (var i in options) {
+                            switch (options[i]) {
+                                case '+macros':
+                                    LineBlocks.blockOptions.macros = true;
+                                    break;
+                                case '-macros':
+                                    LineBlocks.blockOptions.macros = false;
+                                    break;
+                            }
+                        }
+                    }
                     return '';
                 }
             }
         ];
 
+        // Globals set by Block Attributes filter.
         LineBlocks.htmlAttributes = '';
+        LineBlocks.blockOptions = {};
 
         function render(reader, writer) {
             if (reader.eof())
@@ -534,7 +579,7 @@ var Rimu;
                     } else {
                         text = def.filter(match, reader);
                     }
-                    text = Rimu.injectAttributes(text);
+                    text = Rimu.injectHtmlAttributes(text);
                     writer.write(text);
                     reader.next();
                     if (text && !reader.eof()) {
@@ -571,8 +616,8 @@ var Rimu;
             // Delimited blocks cannot be escaped with a backslash.
             // Macro definition block.
             {
-                openMatch: /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/,
-                closeMatch: /^(.*)'$/,
+                openMatch: Rimu.Macros.MACRO_DEF_OPEN,
+                closeMatch: Rimu.Macros.MACRO_DEF_CLOSE,
                 openTag: '',
                 closeTag: '',
                 macros: true,
@@ -592,7 +637,8 @@ var Rimu;
                 closeMatch: /^\*+\/$/,
                 openTag: '',
                 closeTag: '',
-                skip: true
+                skip: true,
+                macros: false
             },
             // Division block.
             {
@@ -624,6 +670,7 @@ var Rimu;
             },
             // HTML block.
             {
+                name: 'html',
                 // Must start with  an <! or a block-level element start or end tag.
                 // $1 is first line of block.
                 openMatch: /^(<!.*|(?:<\/?(?:html|head|body|iframe|script|style|address|article|aside|audio|blockquote|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|img|math|nav|noscript|ol|output|p|pre|section|table|tfoot|td|th|tr|ul|video)(?:[ >].*)?))$/i,
@@ -660,6 +707,7 @@ var Rimu;
             },
             // Paragraph (lowest priority, cannot be escaped).
             {
+                name: 'paragraph',
                 openMatch: /^(.*)$/,
                 closeMatch: /^$/,
                 openTag: '<p>',
@@ -669,6 +717,8 @@ var Rimu;
             }
         ];
 
+        // If the next element in the reader is a valid delimited block render it
+        // and return true, else return false.
         function render(reader, writer) {
             if (reader.eof())
                 throw 'premature eof';
@@ -676,7 +726,7 @@ var Rimu;
                 var def = defs[i];
                 var match = reader.cursor().match(def.openMatch);
                 if (match) {
-                    if (match[0][0] === '\\' && parseInt(i) !== defs.length - 1) {
+                    if (match[0][0] === '\\' && def.name !== 'paragraph') {
                         // Drop backslash escape and continue.
                         reader.cursor(reader.cursor().slice(1));
                         continue;
@@ -688,6 +738,17 @@ var Rimu;
 
                     if (match.length > 1) {
                         lines.push(match[1]);
+                    }
+
+                    // Load macro expansion options.
+                    var saveMacrosProperty = def.macros;
+                    if (['code', 'html', 'indented'].indexOf(def.name) !== -1) {
+                        if ('macros' in Rimu.LineBlocks.blockOptions) {
+                            def.macros = Rimu.LineBlocks.blockOptions.macros;
+                        }
+                        if ('macros' in def) {
+                            Rimu.expandLineMacros = def.macros;
+                        }
                     }
 
                     // Read content up to the closing delimiter.
@@ -703,22 +764,29 @@ var Rimu;
                         lines = lines.concat(content);
                     }
 
-                    if (def.skip)
-                        return true;
-                    writer.write(Rimu.injectAttributes(def.openTag));
-                    var text = lines.join('\n');
-                    if (def.filter) {
-                        text = def.filter(text, match);
-                    }
-                    if (def.container) {
-                        text = Rimu.renderSource(text);
-                    } else {
-                        text = Rimu.replaceInline(text, def);
+                    if (!def.skip) {
+                        writer.write(Rimu.injectHtmlAttributes(def.openTag));
+                        var text = lines.join('\n');
+                        if (def.filter) {
+                            text = def.filter(text, match);
+                        }
+                        if (def.container) {
+                            text = Rimu.renderSource(text);
+                        } else {
+                            text = Rimu.replaceInline(text, def);
+                        }
                     }
                     writer.write(text);
                     writer.write(def.closeTag);
                     if (text && !reader.eof()) {
                         writer.write('\n');
+                    }
+
+                    // Restore macro expansion options to default state.
+                    Rimu.LineBlocks.blockOptions = {};
+                    Rimu.expandLineMacros = true;
+                    if (saveMacrosProperty !== undefined) {
+                        def.macros = saveMacrosProperty;
                     }
                     return true;
                 }
@@ -799,7 +867,7 @@ var Rimu;
 
         function renderList(startItem, reader, writer) {
             ids.push(startItem.id);
-            writer.write(Rimu.injectAttributes(startItem.def.listOpenTag));
+            writer.write(Rimu.injectHtmlAttributes(startItem.def.listOpenTag));
             var nextItem;
             while (true) {
                 nextItem = renderListItem(startItem, reader, writer);

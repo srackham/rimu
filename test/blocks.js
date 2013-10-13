@@ -510,6 +510,26 @@ exports['Documents'] = function(test) {
       '{info}= \'.info #ref2 [style="color:green"]\'\n{info}\ngreeny\n\nnormal\n\n{2paragraphs} =\'paragraph 1\n\nparagraph2\'\n{2paragraphs}'),
       '<p class="info" id="ref2" style="color:green">greeny</p>\n<p>normal</p>\n<p>paragraph 1</p>\n<p>paragraph2</p>',
       'html attributes assigned to macro');
+  test.equal(Rimu.render(
+      '{undefined}'),
+      '',
+      'Single undefined macro');
+  test.equal(Rimu.render(
+      '{undefined=}'),
+      '',
+      'Single undefined inclusion macro');
+  test.equal(Rimu.render(
+      '.-macros\n {undefined}\n\n {undefined}'),
+      '<pre>{undefined}</pre>\n<pre></pre>',
+      'disable macro expansion in Indented paragraph');
+  test.equal(Rimu.render(
+      '.-macros\n--\n{undefined}\n--\n--\n{undefined}\n--'),
+      '<pre><code>{undefined}</code></pre>\n<pre><code></code></pre>',
+      'disable macro expansion in Code Block');
+  test.equal(Rimu.render(
+      '.-macros\n<div>{undefined}</div>\n\n<div>{undefined}</div>'),
+      '<div>{undefined}</div>\n<div></div>',
+      'disable macro expansion in HTML Block');
   // Quote definitions.
   Rimu.Quotes.defs = [];
   test.equal(Rimu.render(

@@ -1,5 +1,7 @@
 module Rimu {
 
+  export var expandLineMacros: boolean = true;
+
   export class Reader {
     lines: string[];
     pos: number;      // line index of current line.
@@ -22,7 +24,9 @@ module Rimu {
       if (value !== null) {
         this.lines[this.pos] = value;
       }
-      Macros.renderCursor(this);
+      if (expandLineMacros) {
+        Macros.renderCursor(this);
+      }
       return this.lines[this.pos];
     }
 

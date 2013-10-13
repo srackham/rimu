@@ -1,29 +1,29 @@
 module Rimu.DelimitedBlocks {
 
   export interface Definition {
-    name?: string;  // Optional unique identifier.
+    name?: string;      // Optional unique identifier.
     openMatch: RegExp;  // $1 (if defined) is prepended to block content.
     closeMatch: RegExp; // $1 (if defined) is appended to block content. If null then must match opening delimiter.
     openTag: string;
     closeTag: string;
-    macros?: boolean;  // Not applicable to container or skipped elements.
     filter?: (text: string, match: string[]) => string;
     verify?: (match: string[]) => boolean; // Additional match verification checks.
+    macros?: boolean;  // Not applicable to container or skipped elements.
     // container, skip, spans and specials properties are mutually exclusive,
     // they are assumed false if they are not explicitly defined.
     container?: boolean;
     skip?: boolean;
-    spans?: boolean;
+    spans?: boolean;  // Span substitution also expands special characters.
     specials?: boolean;
   }
-    
+
   var defs: Definition[] = [
     // Delimited blocks cannot be escaped with a backslash.
 
     // Macro definition block.
     {
-      openMatch: /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/,  // $1 is first line of macro.
-      closeMatch: /^(.*)'$/,                      // $1 is last line of macro.
+      openMatch: Macros.MACRO_DEF_OPEN,    // $1 is first line of macro.
+      closeMatch: Macros.MACRO_DEF_CLOSE,  // $1 is last line of macro.
       openTag: '',
       closeTag: '',
       macros: true,
@@ -44,6 +44,7 @@ module Rimu.DelimitedBlocks {
       openTag: '',
       closeTag: '',
       skip: true,
+      macros: false,
     },
     // Division block.
     {
@@ -75,6 +76,7 @@ module Rimu.DelimitedBlocks {
     },
     // HTML block.
     {
+      name: 'html',
       // Must start with  an <! or a block-level element start or end tag.
       // $1 is first line of block.
       openMatch:
@@ -111,6 +113,7 @@ module Rimu.DelimitedBlocks {
     },
     // Paragraph (lowest priority, cannot be escaped).
     {
+      name: 'paragraph',
       openMatch: /^(.*)$/,  // $1 is first line of block.
       closeMatch: /^$/,     // Blank line or EOF.
       openTag: '<p>',
@@ -120,6 +123,8 @@ module Rimu.DelimitedBlocks {
     },
   ];
 
+  // If the next element in the reader is a valid delimited block render it
+  // and return true, else return false.
   export function render(reader: Reader, writer: Writer): boolean {
     if (reader.eof()) throw 'premature eof';
     for (var i in defs) {
@@ -127,7 +132,7 @@ module Rimu.DelimitedBlocks {
       var match = reader.cursor().match(def.openMatch);
       if (match) {
         // Escape non-paragraphs.
-        if (match[0][0] === '\\' && parseInt(i) !== defs.length - 1) {
+        if (match[0][0] === '\\' && def.name !== 'paragraph') {
           // Drop backslash escape and continue.
           reader.cursor(reader.cursor().slice(1));
           continue;
@@ -139,6 +144,16 @@ module Rimu.DelimitedBlocks {
         // Prepend delimiter text.
         if (match.length > 1) {
           lines.push(match[1]);   // $1
+        }
+        // Load macro expansion options.
+        var saveMacrosProperty = def.macros;
+        if (['code','html','indented'].indexOf(def.name) !== -1) {
+          if ('macros' in LineBlocks.blockOptions) {
+            def.macros = LineBlocks.blockOptions.macros;
+          }
+          if ('macros' in def) {
+            Rimu.expandLineMacros = def.macros;
+          }
         }
         // Read content up to the closing delimiter.
         reader.next();
@@ -154,22 +169,29 @@ module Rimu.DelimitedBlocks {
           lines = lines.concat(content);
         }
         // Process block.
-        if (def.skip) return true;
-        writer.write(injectAttributes(def.openTag));
-        var text = lines.join('\n');
-        if (def.filter) {
-          text = def.filter(text, match);
-        }
-        if (def.container) {
-          text = Rimu.renderSource(text);
-        }
-        else {
-          text = replaceInline(text, def);
+        if (!def.skip) {
+          writer.write(injectHtmlAttributes(def.openTag));
+          var text = lines.join('\n');
+          if (def.filter) {
+            text = def.filter(text, match);
+          }
+          if (def.container) {
+            text = Rimu.renderSource(text);
+          }
+          else {
+            text = replaceInline(text, def);
+          }
         }
         writer.write(text);
         writer.write(def.closeTag);
         if (text && !reader.eof()) {
           writer.write('\n'); // Add a trailing '\n' if there are more lines.
+        }
+        // Restore macro expansion options to default state.
+        LineBlocks.blockOptions = {};
+        Rimu.expandLineMacros = true;
+        if (saveMacrosProperty !== undefined) {
+          def.macros = saveMacrosProperty;
         }
         return true;
       }

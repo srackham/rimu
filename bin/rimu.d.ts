@@ -3,22 +3,20 @@ declare module Rimu {
     function renderSource(source: string): string;
 }
 declare module Rimu {
+    interface ExpansionOptions {
+        macros?: boolean;
+        spans?: boolean;
+        specials?: boolean;
+    }
     function trimLeft(s: string): string;
     function trimRight(s: string): string;
     function trim(s: string): string;
+    function merge(to: Object, from: Object): void;
     function escapeRegExp(s: string): string;
     function replaceSpecialChars(s: string): string;
-    function replaceMatch(match: RegExpExecArray, replacement: string, options: {
-        macros?: boolean;
-        spans?: boolean;
-        specials?: boolean;
-    }): string;
-    function replaceInline(text: string, options: {
-        macros?: boolean;
-        spans?: boolean;
-        specials?: boolean;
-    }): string;
-    function injectAttributes(tag: string): string;
+    function replaceMatch(match: RegExpExecArray, replacement: string, expansionOptions: ExpansionOptions): string;
+    function replaceInline(text: string, expansionOptions: ExpansionOptions): string;
+    function injectHtmlAttributes(tag: string): string;
 }
 declare module Rimu.Options {
     interface Values {
@@ -31,6 +29,7 @@ declare module Rimu.Options {
     function safeModeFilter(text: string): string;
 }
 declare module Rimu {
+    var expandLineMacros: boolean;
     class Reader {
         public lines: string[];
         public pos: number;
@@ -50,6 +49,8 @@ declare module Rimu {
     }
 }
 declare module Rimu.Macros {
+    var MACRO_DEF_OPEN: RegExp;
+    var MACRO_DEF_CLOSE: RegExp;
     interface Macro {
         name: string;
         value: string;
@@ -71,6 +72,7 @@ declare module Rimu.LineBlocks {
         specials?: boolean;
     }
     var htmlAttributes: string;
+    var blockOptions: Rimu.ExpansionOptions;
     function render(reader: Rimu.Reader, writer: Rimu.Writer): boolean;
     function getDefinition(name: string): Definition;
 }
@@ -81,9 +83,9 @@ declare module Rimu.DelimitedBlocks {
         closeMatch: RegExp;
         openTag: string;
         closeTag: string;
-        macros?: boolean;
         filter?: (text: string, match: string[]) => string;
         verify?: (match: string[]) => boolean;
+        macros?: boolean;
         container?: boolean;
         skip?: boolean;
         spans?: boolean;
