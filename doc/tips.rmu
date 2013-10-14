@@ -568,5 +568,26 @@ lines that end with a single-quote.
 == Macro gotchas
 - A block starting with a line containing a single macro invocation
   is a _Line Block_, not the start of a normal paragraph.
-- Block delimiters must be explicit and cannot be contained in a macro
-  value.
+- Block delimiters must be explicit and cannot be sourced from a macro
+  invocation.
+- Macro invocations inside macro values are expanded when the macro
+  is declared not when it is invoked, you can defer evaluation until
+  the macro is invoked by escaping the macro invocation. For example
+  this Rimu markup:
+..
+--
+{m2} = 'foo'
+{m1} = '{m2} \{m2}'
+{m1}
+
+{m2} = 'bar'
+{m1}
+--
+
+Generates:
+
+--
+<p>foo foo</p>
+<p>foo bar</p>
+--
+..

@@ -273,7 +273,11 @@ syn match rimuSpanDeleted /\\\@&lt;!\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \
 hi def link rimuSpanDeleted Todo</code></pre>
 <h2>Understanding substitution priorities</h2>
 <p>Inline elements are processed in the following order (first to last):</p>
-<h2>Using Macro, Replacement and Quote definitions in Safe Mode</h2>
+<ol><li>Macros
+</li><li>Quotes
+</li><li>Replacements
+</li><li>Special characters
+</li></ol><h2>Using Macro, Replacement and Quote definitions in Safe Mode</h2>
 <p><em>Macro</em>, <em>Replacement</em> and <em>Quote</em> definitions are not processed in
 Safe Mode. To apply Macro, Replacement or Quote definitions to Rimu
 markup processed in Safe Mode you need to load the definitions with a
@@ -472,8 +476,21 @@ lines that end with a single-quote.</p>
 <h2>Macro gotchas</h2>
 <ul><li>A block starting with a line containing a single macro invocation
   is a <em>Line Block</em>, not the start of a normal paragraph.
-</li><li>Block delimiters must be explicit and cannot be contained in a macro
-  value.
+</li><li>Block delimiters must be explicit and cannot be sourced from a macro
+  invocation.
+</li><li>Macro invocations inside macro values are expanded when the macro
+  is declared not when it is invoked, you can defer evaluation until
+  the macro is invoked by escaping the macro invocation. For example
+  this Rimu markup:
+<div><pre><code>{m2} = 'foo'
+{m1} = '{m2} \{m2}'
+{m1}
+
+{m2} = 'bar'
+{m1}</code></pre>
+<p>Generates:</p>
+<pre><code>&lt;p&gt;foo foo&lt;/p&gt;
+&lt;p&gt;foo bar&lt;/p&gt;</code></pre></div>
 </li></ul>
 <script  type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>

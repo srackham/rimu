@@ -122,7 +122,7 @@ module Rimu.LineBlocks {
     // class names = $1, id = $2, html-attributes = $3, block-options = $4
     {
       name: 'attributes',
-      match: /^\\?\.([a-zA-Z][\w\- ]*)?(#[a-zA-Z][\w\-]*)?(?:\s*)?(\[.+\])?([ \w+-]+)?$/,
+      match: /^\\?\.([a-zA-Z][\w\- ]*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/,
       replacement: '',
       filter: function (match) {
         // Process HTML attributes.

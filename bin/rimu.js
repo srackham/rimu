@@ -479,7 +479,7 @@ var Rimu;
             // class names = $1, id = $2, html-attributes = $3, block-options = $4
             {
                 name: 'attributes',
-                match: /^\\?\.([a-zA-Z][\w\- ]*)?(#[a-zA-Z][\w\-]*)?(?:\s*)?(\[.+\])?([ \w+-]+)?$/,
+                match: /^\\?\.([a-zA-Z][\w\- ]*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/,
                 replacement: '',
                 filter: function (match) {
                     // Process HTML attributes.
@@ -735,6 +735,7 @@ var Rimu;
                     writer.write(text);
                     writer.write(def.closeTag);
                     if ((def.openTag || text || def.closeTag) && !reader.eof()) {
+                        // Add a trailing '\n' if we've written a non-blank line and there are more source lines left.
                         writer.write('\n');
                     }
 
