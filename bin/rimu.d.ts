@@ -11,7 +11,6 @@ declare module Rimu {
     function trimLeft(s: string): string;
     function trimRight(s: string): string;
     function trim(s: string): string;
-    function merge(to: Object, from: Object): void;
     function escapeRegExp(s: string): string;
     function replaceSpecialChars(s: string): string;
     function replaceMatch(match: RegExpExecArray, replacement: string, expansionOptions: ExpansionOptions): string;
@@ -29,7 +28,6 @@ declare module Rimu.Options {
     function safeModeFilter(text: string): string;
 }
 declare module Rimu {
-    var expandLineMacros: boolean;
     class Reader {
         public lines: string[];
         public pos: number;
@@ -39,7 +37,6 @@ declare module Rimu {
         public next(): string;
         public readTo(find: RegExp): string[];
         public skipBlankLines(): void;
-        public replaceCursor(lines: string[]): void;
     }
     class Writer {
         public buffer: string[];
@@ -49,8 +46,10 @@ declare module Rimu {
     }
 }
 declare module Rimu.Macros {
+    var MACRO_LINE: RegExp;
     var MACRO_DEF_OPEN: RegExp;
     var MACRO_DEF_CLOSE: RegExp;
+    var MACRO_DEF: RegExp;
     interface Macro {
         name: string;
         value: string;
@@ -58,8 +57,7 @@ declare module Rimu.Macros {
     var defs: Macro[];
     function getValue(name: string): string;
     function setValue(name: string, value: string): void;
-    function render(text: string, leaveBackslash?: boolean): string;
-    function renderCursor(reader: Rimu.Reader): void;
+    function render(text: string): string;
 }
 declare module Rimu.LineBlocks {
     interface Definition {

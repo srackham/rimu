@@ -1,15 +1,17 @@
 module Rimu.Macros {
 
   // Matches macro invocation. $1 = name, $2 = params.
-  var MACRO_RE = /\{([\w\-]+)([!=|?](?:|[\s\S]*?[^\\]))?\}/;
+  var MATCH_MACRO = /\{([\w\-]+)([!=|?](?:|[\s\S]*?[^\\]))?\}/;
   // Matches all macro invocations. $1 = name, $2 = params.
-  var MATCH_MACROS = RegExp('\\\\?' + MACRO_RE.source, 'g');
-  // Matches lines starting with a macro invocation. $1 = name, $2 = params.
-  var MATCH_MACRO_LINE = RegExp('^' + MACRO_RE.source);
-  // Match macro definition open delimiter.
-  export var MACRO_DEF_OPEN = /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/;  // $1 is first line of macro.
-  // Match macro definition open delimiter.
-  export var MACRO_DEF_CLOSE = /^(.*)'$/;                      // $1 is last line of macro.
+  var MATCH_MACROS = RegExp('\\\\?' + MATCH_MACRO.source, 'g');
+  // Matches a line containing a single macro invocation.
+  export var MACRO_LINE = RegExp('^' + MATCH_MACRO.source + '$');
+  // Match multi-line macro definition open delimiter. $1 is first line of macro.
+  export var MACRO_DEF_OPEN = /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/;
+  // Match multi-line macro definition open delimiter. $1 is last line of macro.
+  export var MACRO_DEF_CLOSE = /^(.*)'$/;
+  // Match single-line macro definition. $1 = name, $2 = value.
+  export var MACRO_DEF = /^\\?\{([\w\-]+)\}\s*=\s*'(.*)'$/;
 
   export interface Macro {
     name: string;
@@ -39,18 +41,11 @@ module Rimu.Macros {
     defs.push({name: name, value: value});
   }
 
-  // Render all macro invocations in text.
-  // If leaveBackslash is true then the leading backslash is not removed from escaped invocations.
-  // Return rendered string, if all text has bee deleted by Inclusion macros return null.
-  export function render(text: string, leaveBackslash = false): string {
+  // Render all macro invocations in text string.
+  export function render(text: string): string {
     text = text.replace(MATCH_MACROS, function(match, name /* $1 */, params /* $2 */) {
      if (match[0] === '\\') {
-        if (leaveBackslash) {
-          return match;
-        }
-        else {
           return match.slice(1);
-        }
       }
       var value = getValue(name);  // value is null if macro is undefined.
       if (!params) {
@@ -106,39 +101,9 @@ module Rimu.Macros {
           lines.splice(i, 1);
         }
       }
-      if (lines.length === 0) {
-        text = null;  // Inclusion macros have deleted all lines of text.
-      }
-      else {
-        text = lines.join('\n');
-      }
+      text = lines.join('\n');
     }
     return text;
-  }
-
-  // If the reader cursor begins with a macro invocation
-  // then render macro invocations in the cursor.
-  export function renderCursor(reader: Reader): void {
-    if (reader.eof()) {
-      return;
-    }
-    var line = reader.lines[reader.pos];
-    if (MACRO_DEF_OPEN.test(line)) {  // Skip macro definitions.
-      return;
-    }
-    if (!MATCH_MACRO_LINE.test(line)) {
-      return;
-    }
-    // Arrive here if the line at the cursor starts with a macro invocation.
-    // Escaped invocations are left intact -- the leading backslash will be removed
-    // by subsequent macro expansion.
-    line = render(line, true);
-    if (line === null) { // Skip line (deleted by Inclusion macro).
-      reader.next();
-    }
-    else {  // Replace the line at cursor with expanded macro line.
-      reader.replaceCursor(line.split('\n'));
-    }
   }
 
   // CommonJS module exports.

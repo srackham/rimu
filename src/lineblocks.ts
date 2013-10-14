@@ -51,7 +51,7 @@ module Rimu.LineBlocks {
     // Macro definition.
     // name = $1, value = $2
     {
-      match: /^\\?\{([\w\-]+)\}\s*=\s*'(.*)'$/,
+      match: Macros.MACRO_DEF,
       replacement: '',
       macros: true,
       filter: function (match) {
@@ -62,6 +62,17 @@ module Rimu.LineBlocks {
         var value = match[2];
         value = replaceInline(value, this);
         Macros.setValue(name, value);
+        return '';
+      },
+    },
+    // Macro invocation block.
+    {
+      match: Macros.MACRO_LINE,
+      replacement: '',
+      filter: function (match, reader?) {
+        var value = Macros.render(match[0]);
+        // Insert the macro value into the reader just ahead of the cursor.
+        Array.prototype.splice.apply(reader.lines, [reader.pos + 1, 0].concat(value.split('\n')));
         return '';
       },
     },
@@ -107,8 +118,8 @@ module Rimu.LineBlocks {
       specials: true,
     },
     // Block Attributes.
-    // Syntax: .[class names][#id][[html-attributes]][expansion-options...]
-    // class names = $1, id = $2, html-attributes = $3, expansion-options = $4
+    // Syntax: .[class names][#id][[html-attributes]][block-options...]
+    // class names = $1, id = $2, html-attributes = $3, block-options = $4
     {
       name: 'attributes',
       match: /^\\?\.([a-zA-Z][\w\- ]*)?(#[a-zA-Z][\w\-]*)?(?:\s*)?(\[.+\])?([ \w+-]+)?$/,

@@ -44,7 +44,6 @@ module Rimu.DelimitedBlocks {
       openTag: '',
       closeTag: '',
       skip: true,
-      macros: false,
     },
     // Division block.
     {
@@ -145,16 +144,6 @@ module Rimu.DelimitedBlocks {
         if (match.length > 1) {
           lines.push(match[1]);   // $1
         }
-        // Load macro expansion options.
-        var saveMacrosProperty = def.macros;
-        if (['code','html','indented'].indexOf(def.name) !== -1) {
-          if ('macros' in LineBlocks.blockOptions) {
-            def.macros = LineBlocks.blockOptions.macros;
-          }
-          if ('macros' in def) {
-            Rimu.expandLineMacros = def.macros;
-          }
-        }
         // Read content up to the closing delimiter.
         reader.next();
         var closeMatch: RegExp;
@@ -168,31 +157,39 @@ module Rimu.DelimitedBlocks {
         if (content !== null) {
           lines = lines.concat(content);
         }
+        if (def.skip) {
+          break;
+        }
+        // Load block expansion options.
+        var saveMacrosProperty = def.macros;
+        if (['code','html','indented','paragraph'].indexOf(def.name) !== -1) {
+          if ('macros' in LineBlocks.blockOptions) {
+            def.macros = LineBlocks.blockOptions.macros;
+          }
+        }
         // Process block.
-        if (!def.skip) {
-          writer.write(injectHtmlAttributes(def.openTag));
-          var text = lines.join('\n');
-          if (def.filter) {
-            text = def.filter(text, match);
-          }
-          if (def.container) {
-            text = Rimu.renderSource(text);
-          }
-          else {
-            text = replaceInline(text, def);
-          }
+        writer.write(injectHtmlAttributes(def.openTag));
+        var text = lines.join('\n');
+        if (def.filter) {
+          text = def.filter(text, match);
+        }
+        if (def.container) {
+          text = Rimu.renderSource(text);
+        }
+        else {
+          text = replaceInline(text, def);
         }
         writer.write(text);
         writer.write(def.closeTag);
         if (text && !reader.eof()) {
           writer.write('\n'); // Add a trailing '\n' if there are more lines.
         }
-        // Restore macro expansion options to default state.
-        LineBlocks.blockOptions = {};
-        Rimu.expandLineMacros = true;
+        // Restore block expansion options to default state.
         if (saveMacrosProperty !== undefined) {
           def.macros = saveMacrosProperty;
         }
+        LineBlocks.blockOptions = {};
+
         return true;
       }
     }

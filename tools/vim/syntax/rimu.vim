@@ -49,7 +49,7 @@ syn match rimuQuoteQuote /^\S/ contained containedin=rimuQuoteDefinition
 syn match rimuDefinitionValue /'\_.\{-}'\n/ contained containedin=rimuMacroDefinition,rimuReplacementDefinition,rimuQuoteDefinition
 syn match rimuDefinitionParam /\($\d\+\)\|\(|\{1,2}\)/ contained containedin=rimuDefinitionValue
 
-syn match rimuHTMLAttributes /^\.[a-zA-Z#\[].*$/
+syn match rimuBlockAttributes /^\.[a-zA-Z#\[+\-].*$/
 syn match rimuComment "^\\\@<!//.*$" contains=rimuTodo
 syn region rimuComment start=/^\/\*$/ end=/^\*\/$/ contains=rimuTodo keepend
 
@@ -65,7 +65,7 @@ hi def link rimuCodeBlock Identifier
 hi def link rimuComment Comment
 hi def link rimuHeader Label
 hi def link rimuHeaderStartEnd Label
-hi def link rimuHTMLAttributes Title
+hi def link rimuBlockAttributes Title
 hi def link rimuIndentedParagraph Identifier
 hi def link rimuListId Label
 hi def link rimuQuoteQuote Special

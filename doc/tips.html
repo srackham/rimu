@@ -463,7 +463,12 @@ Link to {section1}.</code></pre>
 <p>Link to <a href="#section1">Section One</a>.</p></blockquote>
 <p>Note the use of the backslash character to continue macro definition
 lines that end with a single-quote.</p>
-
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<h2>Macro gotchas</h2>
+<ul><li>A block starting with a line containing a single macro invocation
+  is a <em>Line Block</em>, not the start of a normal paragraph.
+</li><li>Block delimiters must be explicit and cannot be contained in a macro
+  value.
+</li></ul>
+<script  type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

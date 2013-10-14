@@ -96,7 +96,7 @@ exports['Line blocks'] = function(test) {
   testLineBlock(test,
       '<image:http://foobar.com|Tiger & Bar>',
       '<img src="http://foobar.com" alt="Tiger &amp; Bar">',
-      'block imagei with caption');
+      'block image with caption');
   test.done();
 };
 
@@ -315,7 +315,7 @@ exports['Documents'] = function(test) {
       '<p>{v1}</p>',
       'escaped stand-alone macro invocation');
   testDocument(test,
-      '{undefined!}Drop me!',
+      '{undefined!}',
       '',
       'inclusion macro: empty document corner case');
   testDocument(test,
@@ -391,11 +391,7 @@ exports['Documents'] = function(test) {
       '<p>Hello undefined macro.</p>',
       'existential macro invocation');
   test.equal(Rimu.render(
-      "{v}='..'\n{v}\nfoo\n{v}"),
-      '<div><p>foo</p></div>',
-      'macros with Rimu block source');
-  test.equal(Rimu.render(
-      "{v1}='<div>\n\n'\n{v2}='\n\n</div>\n\n'\n{v1}\nfoo\n{v2}\nbar"),
+      "{v1}='<div>\n\n'\n{v2}='\n\n</div>\n\n'\n{v1}\nfoo\n\n{v2}\nbar"),
       '<div>\n<p>foo</p>\n</div>\n<p>bar</p>',
       'macros with blank lines');
   test.equal(Rimu.render(
@@ -463,13 +459,13 @@ exports['Documents'] = function(test) {
       '',
       'inclusion macro: = syntax: HTML block');
   test.equal(Rimu.render(
-      "{v}='xxx'\n{v!}<div>foobar</div>"),
+      "{v}='xxx'\n<div>{v!}foobar</div>"),
       '<div>foobar</div>',
-      'inclusion macro: ! syntax: at start of line');
+      'inclusion macro: ! syntax: in html block');
   test.equal(Rimu.render(
-      "{v}='xxx'\n{v=..x}<div>foobar</div>"),
+      "{v}='xxx'\n<div>{v=..x}foobar</div>"),
       '<div>foobar</div>',
-      'inclusion macro: = syntax: at start of line');
+      'inclusion macro: = syntax: in html block');
   test.equal(Rimu.render(
       '{skipped} = \'SKIPPED\'\n{skipped?foobar}', {safeMode:1}),
       '<p>foobar</p>',
@@ -522,6 +518,10 @@ exports['Documents'] = function(test) {
       '.-macros\n {undefined}\n\n {undefined}'),
       '<pre>{undefined}</pre>\n<pre></pre>',
       'disable macro expansion in Indented paragraph');
+  test.equal(Rimu.render(
+      '.-macros\nThis is `{undefined}`\n\nThis is `{undefined}`'),
+      '<p>This is <code>{undefined}</code></p>\n<p>This is ``</p>',
+      'disable macro expansion in normal paragraph');
   test.equal(Rimu.render(
       '.-macros\n--\n{undefined}\n--\n--\n{undefined}\n--'),
       '<pre><code>{undefined}</code></pre>\n<pre><code></code></pre>',

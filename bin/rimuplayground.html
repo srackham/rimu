@@ -76,12 +76,12 @@
             onclick="renderTopic(this.value)">
       <option value="topic-anchors-and-links">Anchors and links</option>
       <option value="topic-api">API</option>
+      <option value="topic-block-attributes">Block Attributes</option>
       <option value="topic-character-entities">Character entities</option>
       <option value="topic-comments">Comments</option>
       <option value="topic-delimited-blocks">Delimited blocks</option>
       <option value="topic-headers">Headers</option>
       <option value="topic-html-markup">HTML Markup</option>
-      <option value="topic-html-attributes">HTML Attributes</option>
       <option value="topic-images">Images</option>
       <option value="topic-lists">Lists</option>
       <option value="topic-macros">Macros</option>
@@ -327,25 +327,30 @@ Block and inline HTML elements can be <span style="font-size:
 -->
 </div>
 
-<div id="topic-html-attributes">
+<div id="topic-block-attributes">
 <!--
-The _HTML Attributes_ single-line block element injects HTML
+The _Block Attributes_ single-line block element injects HTML
 attributes into the opening tag of the next block element. You can
-specify class names, an element ID and any other HTML attributes.
+specify class names, an element ID and any other HTML attributes.  It
+also has options to disable and enable macro expansion in paragraph
+and code blocks.
 
 Syntax:
 
-  .[class names][#id][[attributes]]
+  .[class names][#id][[attributes]] options
 
 - `class names` is one or more HTML _class_ attribute names (separated
   by spaces).
 - `id` is a unique HTML _id_ attribute value.
 - `attributes` is one or more HTML attribute name/value pairs.
 - HTML attributes can be applied any block element that renders HTML.
-- The leading period character must start at the left margin and
+- The leading period characpter must start at the left margin and
   must not extend beyond the end of the line.
 - The `[attributes]` section is skipped if the API _safeMode_ option
   is not zero (see the _API_ topic).
+- `options` can be `+macros` (to enable macro expansion) or `-macros`
+  (to disable macro expansion) in _Code_ and _HTML_ blocks and in
+  _Indented_ and _Normal_ paragraphs.
 
 Here are a couple of examples of attribute elements applied to the
 paragraph block elements:
@@ -364,6 +369,10 @@ Lorem ipsum dolor sit amet sapien. Nascetur et mattis maecenas morbi
 porttitor. Vitae vestibulum voluptate. Quam elit id. In eu wisi.
 Imperdiet pellentesque minim. Metus mauris tortor. Torquent leo vel.
 ""
+
+.-macros
+Macro {invocations} are not expanded when the `-macros` block option
+is set.
 
 -->
 </div>
@@ -566,8 +575,6 @@ Invocation syntax:
 - A macro name consists of one or more alphanumeric, underscore or
   dash characters.
 - A macro definition must start at the left margin.
-- Macro definitions are top-level block elements, do not nest them
-  inside other elements e.g. inside _Quote_ or _Division_ blocks.
 - Macro definition lines ending with a single-quote character can be
   continued to the next line by appending a backslash character.
 - Macro definition values can invoke previously defined macros but
@@ -578,10 +585,10 @@ Invocation syntax:
   _code quotes_ and _code blocks_.
 - Inline macro invocations are expanded before other inline elements
   are processed.
-- Any line beginning with a macro invocation is expanded
-  before any other processing takes place. This allows
-  block elements to begin with an Inclusion macro
-  and macro definitions to contain arbitrary Rimu markup.
+- A _Macro Line_ block element is a line containing a single macro
+  invocation, the line is replaced its macro value. This feature
+  allows macros to inject arbitrary Rimu markup into the source
+  stream.
 - _Parametrized_ macro invocations replace the `$1`, `$2` ... strings
   in the macro definition with the `param1`, `param2` ... values.
 - Macro invocation parameters contain inline Rimu markup; inline

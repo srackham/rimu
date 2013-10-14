@@ -7,15 +7,6 @@ module Rimu {
   export function trimRight(s: string): string { return s.replace(/\s+$/g,''); }
   export function trim(s: string): string { return s.replace(/^\s+|\s+$/g,''); }
 
-  // Overwrite properties in to object with same-named properties from from object.
-  export function merge(to: Object, from: Object) {
-    for (var key in to) {
-      if (key in from) {
-        to[key] = from[key];
-      }
-    }
-  }
-
   // http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
   export function escapeRegExp(s: string): string {
     return s.replace(/[\-\/\\\^$*+?.()|\[\]{}]/g, '\\$&');

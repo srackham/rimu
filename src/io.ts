@@ -1,7 +1,5 @@
 module Rimu {
 
-  export var expandLineMacros: boolean = true;
-
   export class Reader {
     lines: string[];
     pos: number;      // line index of current line.
@@ -23,9 +21,6 @@ module Rimu {
       if (this.eof()) return null;
       if (value !== null) {
         this.lines[this.pos] = value;
-      }
-      if (expandLineMacros) {
-        Macros.renderCursor(this);
       }
       return this.lines[this.pos];
     }
@@ -75,11 +70,6 @@ module Rimu {
       while (this.cursor() === '') {
         this.next();
       }
-    }
-
-    // Replace the line at the cursor with the array of lines.
-    replaceCursor(lines: string[]) {
-      Array.prototype.splice.apply(this.lines, [this.pos, 1].concat(lines));
     }
 
   }
