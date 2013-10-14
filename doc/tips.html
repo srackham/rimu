@@ -236,8 +236,14 @@ source non-portable and less readable.</p>
 /&lt;-/ = '&amp;leftarrow;'
 /\bTODO\b/ = '&lt;b style="color: red; background-color: yellow;"&gt;TODO&lt;/b&gt;'
 /^(NOTE|IMPORTANT|WARNING|TIP):/ = '&lt;b&gt;$1&lt;/b&gt;:'
+// Alternative (typing friendly) emphasis, works for most cases but
+// can't contain quotes.
+/\B'\b(.+?)\b'\B/g = '&lt;em&gt;$1&lt;/em&gt;'
 // Do not process the  deprecated + line break.
 /[\\ ]\+(\n|$)/g = ' +$1'
+// Open URLs in a new browser tab.
+// /\\?&lt;(\S+?)&gt;/ = '&lt;a href="$1" target="_blank"&gt;$1&lt;/a&gt;'
+// /\\?&lt;(\S+?)\|([\s\S]+?)&gt;/ = '&lt;a href="$1" target="_blank"&gt;$2&lt;/a&gt;'
 
 /*
   Macros
@@ -392,7 +398,7 @@ Lobortis lacus vestibulum sem.
 
 ===== Normal paragraph
 Lorem ipsum dolor. Sit `amet venenatis`. Erat nulla arcu. Lorem luctus
-sem. _Mauris vitae_ ipsum. Donec dui ac ridiculus &lt;mark&gt;quisque&lt;/mark&gt; proin.
+sem. _Mauris vitae_ ipsum. Donec dui ac ridiculus {mark|quisque} proin.
 Lobortis lacus vestibulum sem.
 
 ===== Indented paragraph

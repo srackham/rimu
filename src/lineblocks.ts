@@ -139,7 +139,7 @@ module Rimu.LineBlocks {
         htmlAttributes = trim(htmlAttributes);
         // Process delimited block expansion options.
         blockOptions = {};
-        if (match[4]) { // expansion options.
+        if (match[4]) { // block-options.
           var options = match[4].trim().split(/\s+/);
           for (var i in options) {
             switch (options[i]) {

@@ -337,20 +337,20 @@ and code blocks.
 
 Syntax:
 
-  .[class names][#id][[attributes]] options
+  .[class names][#id][[html-attributes]] block-options
 
 - `class names` is one or more HTML _class_ attribute names (separated
   by spaces).
 - `id` is a unique HTML _id_ attribute value.
-- `attributes` is one or more HTML attribute name/value pairs.
+- `html-attributes` is one or more HTML attribute name/value pairs.
 - HTML attributes can be applied any block element that renders HTML.
-- The leading period characpter must start at the left margin and
-  must not extend beyond the end of the line.
-- The `[attributes]` section is skipped if the API _safeMode_ option
-  is not zero (see the _API_ topic).
-- `options` can be `+macros` (to enable macro expansion) or `-macros`
-  (to disable macro expansion) in _Code_ and _HTML_ blocks and in
-  _Indented_ and _Normal_ paragraphs.
+- The leading period characpter must start at the left margin and must
+  not extend beyond the end of the line.
+- The `[html-attributes]` section is skipped if the API _safeMode_
+  option is not zero (see the _API_ topic).
+- `block-options` can be `+macros` (to enable macro expansion) or
+  `-macros` (to disable macro expansion) in _Code_ and _HTML_ blocks
+  and in _Indented_ and _Normal_ paragraphs.
 
 Here are a couple of examples of attribute elements applied to the
 paragraph block elements:
@@ -560,15 +560,15 @@ would use an inline or block element.
 
 Definition syntax:
 
-  \{macro-name} = 'macro-value'
+  {macro-name} = 'macro-value'
 
 Invocation syntax:
 
-  \{macro-name}
-  \{macro-name?default-value}
-  \{macro-name|param1[|param2...]}
-  \{macro-name=pattern}
-  \{macro-name!pattern}
+  {macro-name}
+  {macro-name?default-value}
+  {macro-name|param1[|param2...]}
+  {macro-name=pattern}
+  {macro-name!pattern}
 
 - Macro definition values are enclosed by single-quote characters
   and can extend over multiple lines.
@@ -581,8 +581,10 @@ Invocation syntax:
   macro invocations cannot be nested.
 - Macro definitions and invocations can be escaped with a leading
   backslash character prefix.
-- Macro invocations are expanded everywhere, including inside
-  _code quotes_ and _code blocks_.
+- By default macro invocations are expanded everywhere except
+  inside _Code_ blocks and _Indented_ paragraphs. Use the _Block
+  Attributes_ `+macros` option to enable expansion inside _Code_
+  blocks and _Indented_ paragraphs.
 - Inline macro invocations are expanded before other inline elements
   are processed.
 - A _Macro Line_ block element is a line containing a single macro
@@ -618,17 +620,17 @@ Invocation syntax:
 Examples:
 
 - -
-\{description} = 'Sapiente nec vestibulum integer sit qui. Libero pede
+{description} = 'Sapiente nec vestibulum integer sit qui. Libero pede
 posuere.  Erat ullamcorper enim per fusce aliquam interdum penatibus
 et sed auctor ac.  Lectus consectetuer neque.'
-\{homepage} = '<http://www.example.com|Foobar home page>'
+{homepage} = '<http://www.example.com|Foobar home page>'
 
-Visit the \{homepage}.
+Visit the {homepage}.
 
-\{info} = '<span class="label label-info">$1</span>'
+{info} = '<span class="label label-info">$1</span>'
 
-\{info|Heads up!}
-\{info|As you were!}
+{info|Heads up!}
+{info|As you were!}
 - -
 
 -->
@@ -664,7 +666,7 @@ Definition syntax:
 Example replacement definitions:
 
 - -
-/\.\{3}/ = '&hellip;'
+/\.{3}/ = '&hellip;'
 /\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
 - -
 
@@ -716,9 +718,9 @@ OPTIONS
     If one source file is specified the output is written to
     same-named file with .html extension.
     Styled using Bootstrap.
-    Set the \{highlightjs} macro to a non-blank value to enable
+    Set the {highlightjs} macro to a non-blank value to enable
     syntax highlighting with Highlight.js.
-    Set the \{mathjax} macro to a non-blank value to enable MathJax.
+    Set the {mathjax} macro to a non-blank value to enable MathJax.
 
 - -
 
@@ -730,7 +732,7 @@ Example usage:
 
 2. Generate styled HTML Web page and use MathJax to process MathML:
 
-  rimuc - -styled - -prepend "\{mathjax}='yes'" showcase.rmu
+  rimuc - -styled - -prepend "{mathjax}='yes'" showcase.rmu
 
 3. Compile multiple source files to single output file:
 

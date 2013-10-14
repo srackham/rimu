@@ -622,7 +622,7 @@ var Rimu;
                 closeMatch: null,
                 openTag: '<pre><code>',
                 closeTag: '</code></pre>',
-                macros: true,
+                macros: false,
                 specials: true
             },
             // HTML block.
@@ -646,7 +646,7 @@ var Rimu;
                 closeMatch: /^$/,
                 openTag: '<pre>',
                 closeTag: '</pre>',
-                macros: true,
+                macros: false,
                 specials: true,
                 filter: function (text) {
                     // Strip indent from start of each line.
@@ -734,11 +734,13 @@ var Rimu;
                     }
                     writer.write(text);
                     writer.write(def.closeTag);
-                    if (text && !reader.eof()) {
+                    if ((def.openTag || text || def.closeTag) && !reader.eof()) {
                         writer.write('\n');
                     }
 
-                    if (saveMacrosProperty !== undefined) {
+                    if (saveMacrosProperty === undefined) {
+                        delete def.macros;
+                    } else {
                         def.macros = saveMacrosProperty;
                     }
                     Rimu.LineBlocks.blockOptions = {};

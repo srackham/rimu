@@ -361,7 +361,7 @@ exports['Documents'] = function(test) {
   testDocument(test,
       '{undefined|one|two}',
       '',
-      'undefined macro invoked with aguments');
+      'undefined macro invoked with arguments');
   testDocument(test,
       "{src}='tiger.png'\n{caption}='Tiger'\n<image:{src}|{caption}>",
       '<img src="tiger.png" alt="Tiger">',
@@ -467,6 +467,18 @@ exports['Documents'] = function(test) {
       '<div>foobar</div>',
       'inclusion macro: = syntax: in html block');
   test.equal(Rimu.render(
+      "{v}='{$1} = 'foobar''\n{v|v1}\n{v1}"),
+      '<p>foobar</p>',
+      'meta-macro (macro definition that generates macro definitions)');
+  test.equal(Rimu.render(
+      "{v}='foo'\\\nbar'\n{v}"),
+      "<p>foo'\nbar</p>",
+      'macro definition with backslash continuation');
+  test.equal(Rimu.render(
+      "{v}='foo'\n{v1}='\\{v} {v}'\n{v1}\n\n{v}='bar'\n{v1}"),
+      "<p>foo foo</p>\n<p>bar foo</p>",
+      'meta-macro with deferred evaluation');
+  test.equal(Rimu.render(
       '{skipped} = \'SKIPPED\'\n{skipped?foobar}', {safeMode:1}),
       '<p>foobar</p>',
       'skip macro definitions in safe mode');
@@ -515,17 +527,17 @@ exports['Documents'] = function(test) {
       '',
       'Single undefined inclusion macro');
   test.equal(Rimu.render(
-      '.-macros\n {undefined}\n\n {undefined}'),
-      '<pre>{undefined}</pre>\n<pre></pre>',
-      'disable macro expansion in Indented paragraph');
+      '.+macros\n {undefined}\n\n {undefined}'),
+      '<pre></pre>\n<pre>{undefined}</pre>',
+      'enable macro expansion in Indented paragraph');
   test.equal(Rimu.render(
       '.-macros\nThis is `{undefined}`\n\nThis is `{undefined}`'),
       '<p>This is <code>{undefined}</code></p>\n<p>This is ``</p>',
       'disable macro expansion in normal paragraph');
   test.equal(Rimu.render(
-      '.-macros\n--\n{undefined}\n--\n--\n{undefined}\n--'),
-      '<pre><code>{undefined}</code></pre>\n<pre><code></code></pre>',
-      'disable macro expansion in Code Block');
+      '.+macros\n--\n{undefined}\n--\n--\n{undefined}\n--'),
+      '<pre><code></code></pre>\n<pre><code>{undefined}</code></pre>',
+      'enable macro expansion in Code Block');
   test.equal(Rimu.render(
       '.-macros\n<div>{undefined}</div>\n\n<div>{undefined}</div>'),
       '<div>{undefined}</div>\n<div></div>',

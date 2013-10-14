@@ -70,7 +70,7 @@ module Rimu.DelimitedBlocks {
       closeMatch: null,
       openTag: '<pre><code>',
       closeTag: '</code></pre>',
-      macros: true,
+      macros: false,
       specials: true,
     },
     // HTML block.
@@ -95,7 +95,7 @@ module Rimu.DelimitedBlocks {
       closeMatch: /^$/,           // Blank line or EOF.
       openTag: '<pre>',
       closeTag: '</pre>',
-      macros: true,
+      macros: false,
       specials: true,
       filter: function (text): string {
         // Strip indent from start of each line.
@@ -181,11 +181,15 @@ module Rimu.DelimitedBlocks {
         }
         writer.write(text);
         writer.write(def.closeTag);
-        if (text && !reader.eof()) {
-          writer.write('\n'); // Add a trailing '\n' if there are more lines.
+        if ((def.openTag || text || def.closeTag) && !reader.eof()) {
+          // Add a trailing '\n' if we've written a non-blank line and there are more source lines left.
+          writer.write('\n');
         }
         // Restore block expansion options to default state.
-        if (saveMacrosProperty !== undefined) {
+        if (saveMacrosProperty === undefined) {
+          delete def.macros;
+        }
+        else {
           def.macros = saveMacrosProperty;
         }
         LineBlocks.blockOptions = {};
