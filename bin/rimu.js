@@ -482,7 +482,7 @@ var Rimu;
                 match: /^\\?\.([a-zA-Z][\w\- ]*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/,
                 replacement: '',
                 filter: function (match) {
-                    // Process HTML attributes.
+                    // Parse HTML attributes.
                     LineBlocks.htmlAttributes = '';
                     if (match[1]) {
                         LineBlocks.htmlAttributes += 'class="' + Rimu.trim(match[1]) + '"';
@@ -495,18 +495,17 @@ var Rimu;
                     }
                     LineBlocks.htmlAttributes = Rimu.trim(LineBlocks.htmlAttributes);
 
-                    // Process delimited block expansion options.
+                    // Parse delimited block expansion options.
                     LineBlocks.blockOptions = {};
                     if (match[4]) {
                         var options = match[4].trim().split(/\s+/);
                         for (var i in options) {
-                            switch (options[i]) {
-                                case '+macros':
-                                    LineBlocks.blockOptions.macros = true;
-                                    break;
-                                case '-macros':
-                                    LineBlocks.blockOptions.macros = false;
-                                    break;
+                            var option = options[i];
+                            if (Rimu.Options.safeMode !== 0 && option === '-specials') {
+                                return;
+                            }
+                            if (/^[+-](macros|spans|specials|container|skip)$/.test(option)) {
+                                LineBlocks.blockOptions[option.slice(1)] = option[0] === '+' ? true : false;
                             }
                         }
                     }
@@ -519,6 +518,8 @@ var Rimu;
         LineBlocks.htmlAttributes = '';
         LineBlocks.blockOptions = {};
 
+        // If the next element in the reader is a valid line block render it
+        // and return true, else return false.
         function render(reader, writer) {
             if (reader.eof())
                 throw 'premature eof';
@@ -595,7 +596,8 @@ var Rimu;
                 closeMatch: /^\*+\/$/,
                 openTag: '',
                 closeTag: '',
-                skip: true
+                skip: true,
+                specials: true
             },
             // Division block.
             {
@@ -604,7 +606,8 @@ var Rimu;
                 closeMatch: null,
                 openTag: '<div>',
                 closeTag: '</div>',
-                container: true
+                container: true,
+                specials: true
             },
             // Quote block.
             {
@@ -613,7 +616,8 @@ var Rimu;
                 closeMatch: null,
                 openTag: '<blockquote>',
                 closeTag: '</blockquote>',
-                container: true
+                container: true,
+                specials: true
             },
             // Code block.
             {
@@ -670,7 +674,8 @@ var Rimu;
                 openTag: '<p>',
                 closeTag: '</p>',
                 macros: true,
-                spans: true
+                spans: true,
+                specials: true
             }
         ];
 
@@ -709,43 +714,36 @@ var Rimu;
                     if (content !== null) {
                         lines = lines.concat(content);
                     }
-                    if (def.skip) {
-                        break;
-                    }
 
-                    // Load block expansion options.
-                    var saveMacrosProperty = def.macros;
-                    if (['code', 'html', 'indented', 'paragraph'].indexOf(def.name) !== -1) {
-                        if ('macros' in Rimu.LineBlocks.blockOptions) {
-                            def.macros = Rimu.LineBlocks.blockOptions.macros;
+                    // Set block expansion options.
+                    var expansionOptions;
+                    expansionOptions = { macros: false, spans: false, specials: false, container: false, skip: false };
+                    for (var k in expansionOptions)
+                        expansionOptions[k] = def[k];
+                    for (var k in Rimu.LineBlocks.blockOptions)
+                        expansionOptions[k] = Rimu.LineBlocks.blockOptions[k];
+
+                    if (!expansionOptions.skip) {
+                        writer.write(Rimu.injectHtmlAttributes(def.openTag));
+                        var text = lines.join('\n');
+                        if (def.filter) {
+                            text = def.filter(text, match);
+                        }
+                        if (expansionOptions.container) {
+                            text = Rimu.renderSource(text);
+                        } else {
+                            text = Rimu.replaceInline(text, expansionOptions);
+                        }
+                        writer.write(text);
+                        writer.write(def.closeTag);
+                        if ((def.openTag || text || def.closeTag) && !reader.eof()) {
+                            // Add a trailing '\n' if we've written a non-blank line and there are more source lines left.
+                            writer.write('\n');
                         }
                     }
 
-                    // Process block.
-                    writer.write(Rimu.injectHtmlAttributes(def.openTag));
-                    var text = lines.join('\n');
-                    if (def.filter) {
-                        text = def.filter(text, match);
-                    }
-                    if (def.container) {
-                        text = Rimu.renderSource(text);
-                    } else {
-                        text = Rimu.replaceInline(text, def);
-                    }
-                    writer.write(text);
-                    writer.write(def.closeTag);
-                    if ((def.openTag || text || def.closeTag) && !reader.eof()) {
-                        // Add a trailing '\n' if we've written a non-blank line and there are more source lines left.
-                        writer.write('\n');
-                    }
-
-                    if (saveMacrosProperty === undefined) {
-                        delete def.macros;
-                    } else {
-                        def.macros = saveMacrosProperty;
-                    }
+                    // Reset consumed Block Attributes expansion options.
                     Rimu.LineBlocks.blockOptions = {};
-
                     return true;
                 }
             }

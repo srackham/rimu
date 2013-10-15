@@ -1,6 +1,12 @@
 module Rimu {
 
-  export interface ExpansionOptions {macros?: boolean; spans?: boolean; specials?: boolean;};
+  export interface ExpansionOptions {
+      macros?: boolean;
+      spans?: boolean;
+      specials?: boolean;
+      container?: boolean;
+      skip?: boolean;
+  };
 
   // Whitespace strippers.
   export function trimLeft(s: string): string { return s.replace(/^\s+/g,''); }

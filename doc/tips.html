@@ -346,7 +346,13 @@ exclude lines of source text:</p>
 <pre>{macro=one} Included if macro value is 'one'.
 {macro=two} Included if macro value is 'two'.
 {macro=\d+} Included if macro value is a number.</pre>
-</li></ul><h2>Tables</h2>
+</li></ul><p><b>NOTE</b>: Rimu elements are recognized before macro expansion &mdash; you
+cannot include macro invocations in element delimiters. For example,
+this is a valid HTML block:</p>
+<pre>&lt;script {highlightjs!} src="highlight.min.js"&gt;&lt;/script&gt;</pre>
+<p>This is not and will be interpereted as a normal paragraph:</p>
+<pre>{highlightjs!}&lt;script src="highlight.min.js"&gt;&lt;/script&gt;</pre>
+<h2>Tables</h2>
 <p>Create tables using the HTML table syntax (Rimu has no special syntax
 for tables).</p>
 <p>You can use Rimu markup in table cells, just remember that HTML blocks
@@ -477,17 +483,18 @@ lines that end with a single-quote.</p>
 <ul><li>A block starting with a line containing a single macro invocation
   is a <em>Line Block</em>, not the start of a normal paragraph.
 </li><li>Block delimiters must be explicit and cannot be sourced from a macro
-  invocation.
+  invocation (because Rimu elements are recognized before macro
+  expansion).
 </li><li>Macro invocations inside macro values are expanded when the macro
   is declared not when it is invoked, you can defer evaluation until
   the macro is invoked by escaping the macro invocation. For example
   this Rimu markup:
-<div><pre><code>{m2} = 'foo'
-{m1} = '{m2} \{m2}'
-{m1}
+<div><pre><code>{m1} = 'foo'
+{m2} = '{m1} \{m1}'
+{m2}
 
-{m2} = 'bar'
-{m1}</code></pre>
+{m1} = 'bar'
+{m2}</code></pre>
 <p>Generates:</p>
 <pre><code>&lt;p&gt;foo foo&lt;/p&gt;
 &lt;p&gt;foo bar&lt;/p&gt;</code></pre></div>

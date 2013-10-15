@@ -125,7 +125,7 @@ module Rimu.LineBlocks {
       match: /^\\?\.([a-zA-Z][\w\- ]*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/,
       replacement: '',
       filter: function (match) {
-        // Process HTML attributes.
+        // Parse HTML attributes.
         htmlAttributes = '';
         if (match[1]) { // Class names.
           htmlAttributes += 'class="' + trim(match[1]) + '"';
@@ -137,14 +137,17 @@ module Rimu.LineBlocks {
           htmlAttributes += ' ' + trim(match[3].slice(1, match[3].length - 1));
         }
         htmlAttributes = trim(htmlAttributes);
-        // Process delimited block expansion options.
+        // Parse delimited block expansion options.
         blockOptions = {};
         if (match[4]) { // block-options.
           var options = match[4].trim().split(/\s+/);
           for (var i in options) {
-            switch (options[i]) {
-              case '+macros': blockOptions.macros = true; break;
-              case '-macros': blockOptions.macros = false; break;
+            var option = options[i];
+            if (Options.safeMode !== 0 && option === '-specials') {
+              return;
+            }
+            if (/^[+-](macros|spans|specials|container|skip)$/.test(option)) {
+              blockOptions[option.slice(1)] = option[0] === '+' ? true : false;
             }
           }
         }
@@ -157,6 +160,8 @@ module Rimu.LineBlocks {
   export var htmlAttributes: string = '';
   export var blockOptions: ExpansionOptions = {};
 
+  // If the next element in the reader is a valid line block render it
+  // and return true, else return false.
   export function render(reader: Reader, writer: Writer): boolean {
     if (reader.eof()) throw 'premature eof';
     for (var i in defs) {

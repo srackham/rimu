@@ -392,6 +392,16 @@ exclude lines of source text:
   {macro=two} Included if macro value is 'two'.
   {macro=\d+} Included if macro value is a number.
 
+NOTE: Rimu elements are recognized before macro expansion -- you
+cannot include macro invocations in element delimiters. For example,
+this is a valid HTML block:
+
+  <script {highlightjs!} src="highlight.min.js"></script>
+
+This is not and will be interpereted as a normal paragraph:
+
+  {highlightjs!}<script src="highlight.min.js"></script>
+
 
 == Tables
 Create tables using the HTML table syntax (Rimu has no special syntax
@@ -569,19 +579,20 @@ lines that end with a single-quote.
 - A block starting with a line containing a single macro invocation
   is a _Line Block_, not the start of a normal paragraph.
 - Block delimiters must be explicit and cannot be sourced from a macro
-  invocation.
+  invocation (because Rimu elements are recognized before macro
+  expansion).
 - Macro invocations inside macro values are expanded when the macro
   is declared not when it is invoked, you can defer evaluation until
   the macro is invoked by escaping the macro invocation. For example
   this Rimu markup:
 ..
 --
-{m2} = 'foo'
-{m1} = '{m2} \{m2}'
-{m1}
+{m1} = 'foo'
+{m2} = '{m1} \{m1}'
+{m2}
 
-{m2} = 'bar'
-{m1}
+{m1} = 'bar'
+{m2}
 --
 
 Generates:

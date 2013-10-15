@@ -7,6 +7,8 @@ declare module Rimu {
         macros?: boolean;
         spans?: boolean;
         specials?: boolean;
+        container?: boolean;
+        skip?: boolean;
     }
     function trimLeft(s: string): string;
     function trimRight(s: string): string;

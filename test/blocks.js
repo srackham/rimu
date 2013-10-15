@@ -186,11 +186,15 @@ exports['Lists'] = function(test) {
   testList(test,
       '- Item _1_\n - Item 2\n\\ - Escaped',
       '<ul><li>Item <em>1</em>\n</li><li>Item 2\n - Escaped\n</li></ul>',
-      'unordered list with escapted list item');
+      'unordered list with escaped list item');
   testList(test,
       '- List 1\n* List 2',
       '<ul><li>List 1\n<ul><li>List 2\n</li></ul></li></ul>',
       'nested unordered lists');
+  testList(test,
+      '. Item 1\n. Item 2',
+      '<ol><li>Item 1\n</li><li>Item 2\n</li></ol>',
+      'ordered list');
 
   /*
   - List item1.
@@ -451,21 +455,25 @@ exports['Documents'] = function(test) {
       '<p>foo\nbar\nmacro</p>',
       'inclusion macro: = syntax: matched pattern with escaped } character');
   test.equal(Rimu.render(
+      "{v}='xxx'\n<div>\nfoo {v} bar</div>"),
+      '<div>\nfoo xxx bar</div>',
+      'macro expansion in html delimited block');
+  test.equal(Rimu.render(
       '<div>{undefined!}</div>'),
       '',
-      'inclusion macro: ! syntax: HTML block');
+      'inclusion macro: ! syntax: HTML line block');
   test.equal(Rimu.render(
       '<div>{undefined=xxx}</div>'),
       '',
-      'inclusion macro: = syntax: HTML block');
+      'inclusion macro: = syntax: HTML line block');
   test.equal(Rimu.render(
       "{v}='xxx'\n<div>{v!}foobar</div>"),
       '<div>foobar</div>',
-      'inclusion macro: ! syntax: in html block');
+      'inclusion macro: ! syntax: in html line block');
   test.equal(Rimu.render(
       "{v}='xxx'\n<div>{v=..x}foobar</div>"),
       '<div>foobar</div>',
-      'inclusion macro: = syntax: in html block');
+      'inclusion macro: = syntax: in html line block');
   test.equal(Rimu.render(
       "{v}='{$1} = 'foobar''\n{v|v1}\n{v1}"),
       '<p>foobar</p>',
@@ -530,6 +538,7 @@ exports['Documents'] = function(test) {
       '.+macros\n {undefined}\n\n {undefined}'),
       '<pre></pre>\n<pre>{undefined}</pre>',
       'enable macro expansion in Indented paragraph');
+  // Attribute Block expansion options.
   test.equal(Rimu.render(
       '.-macros\nThis is `{undefined}`\n\nThis is `{undefined}`'),
       '<p>This is <code>{undefined}</code></p>\n<p>This is ``</p>',
@@ -542,6 +551,26 @@ exports['Documents'] = function(test) {
       '.-macros\n<div>{undefined}</div>\n\n<div>{undefined}</div>'),
       '<div>{undefined}</div>\n<div></div>',
       'disable macro expansion in HTML Block');
+  test.equal(Rimu.render(
+      '.-container\n..\nfoo\n..'),
+      '<div>foo</div>',
+      '-container expansion option');
+  test.equal(Rimu.render(
+      '.-spans -specials\n&foo'),
+      '<p>&foo</p>',
+      'disable specials (both spans and specials must off)');
+  test.equal(Rimu.render(
+      '.-spans -specials\n_&foo_', {safeMode:1}),
+      '<p>_&amp;foo_</p>',
+      'specials expansion cannot be disabled in safe-mode');
+  test.equal(Rimu.render(
+      '.-spans\n_&foo_'),
+      '<p>_&amp;foo_</p>',
+      '-spans expansion option');
+  test.equal(Rimu.render(
+      '.+skip\nfoo\nbar'),
+      '',
+      '+skip expansion option');
   // Quote definitions.
   Rimu.Quotes.defs = [];
   test.equal(Rimu.render(

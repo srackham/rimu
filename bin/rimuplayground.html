@@ -332,8 +332,8 @@ Block and inline HTML elements can be <span style="font-size:
 The _Block Attributes_ single-line block element injects HTML
 attributes into the opening tag of the next block element. You can
 specify class names, an element ID and any other HTML attributes.  It
-also has options to disable and enable macro expansion in paragraph
-and code blocks.
+also has options to control the processing of _Delmited Block_ and
+_Paragraph_ elements.
 
 Syntax:
 
@@ -346,11 +346,27 @@ Syntax:
 - HTML attributes can be applied any block element that renders HTML.
 - The leading period characpter must start at the left margin and must
   not extend beyond the end of the line.
-- The `[html-attributes]` section is skipped if the API _safeMode_
+- The `[html-attributes]` section is ignored if the API _safeMode_
   option is not zero (see the _API_ topic).
 - `block-options` can be `+macros` (to enable macro expansion) or
   `-macros` (to disable macro expansion) in _Code_ and _HTML_ blocks
   and in _Indented_ and _Normal_ paragraphs.
+- The following `block-options` can be used to modify the behavior of
+  _Delmited Block_ and _Paragraph_ elements:
+
+  `+macros`:: Enable macro expansion.
+  `-macros`:: Disable macro expansion.
+  `+spans`:: Enable span element processing.
+  `-spans`:: Disable span element processing.
+  `+specials`:: Enable special character entities.
+  `-specials`:: Disable special character entities.
+  `+container`:: The block is a container for Rimu elements.
+  `-container`:: Turn off the container option.
+  `+skip`:: Skip the block.
+  `-skip`:: Turn off the skip option.
+
+- The `-specials` option is ignored if the API _safeMode_ option is
+  not zero (see the _API_ topic).
 
 Here are a couple of examples of attribute elements applied to the
 paragraph block elements:

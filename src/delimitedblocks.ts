@@ -6,11 +6,13 @@ module Rimu.DelimitedBlocks {
     closeMatch: RegExp; // $1 (if defined) is appended to block content. If null then must match opening delimiter.
     openTag: string;
     closeTag: string;
-    filter?: (text: string, match: string[]) => string;
-    verify?: (match: string[]) => boolean; // Additional match verification checks.
-    macros?: boolean;  // Not applicable to container or skipped elements.
-    // container, skip, spans and specials properties are mutually exclusive,
-    // they are assumed false if they are not explicitly defined.
+    filter?: (text: string, match: string[]) => string; // Custom content pre-processing.
+    verify?: (match: string[]) => boolean;              // Additional match verification checks.
+    // Processing priority (highest to lowest): container, skip, spans and specials.
+    // If spans is true then both spans and specials are processed.
+    // They are assumed false if they are not explicitly defined.
+    // If a custom filter is specified their use depends on the filter.
+    macros?: boolean;
     container?: boolean;
     skip?: boolean;
     spans?: boolean;  // Span substitution also expands special characters.
@@ -44,6 +46,7 @@ module Rimu.DelimitedBlocks {
       openTag: '',
       closeTag: '',
       skip: true,
+      specials: true, // Fall-back if skip is disabled.
     },
     // Division block.
     {
@@ -53,6 +56,7 @@ module Rimu.DelimitedBlocks {
       openTag: '<div>',
       closeTag: '</div>',
       container: true,
+      specials: true, // Fall-back if container is disabled.
     },
     // Quote block.
     {
@@ -62,6 +66,7 @@ module Rimu.DelimitedBlocks {
       openTag: '<blockquote>',
       closeTag: '</blockquote>',
       container: true,
+      specials: true, // Fall-back if container is disabled.
     },
     // Code block.
     {
@@ -119,6 +124,7 @@ module Rimu.DelimitedBlocks {
       closeTag: '</p>',
       macros: true,
       spans: true,
+      specials: true, // Fall-back if spans is disabled.
     },
   ];
 
@@ -157,47 +163,37 @@ module Rimu.DelimitedBlocks {
         if (content !== null) {
           lines = lines.concat(content);
         }
-        if (def.skip) {
-          break;
-        }
-        // Load block expansion options.
-        var saveMacrosProperty = def.macros;
-        if (['code','html','indented','paragraph'].indexOf(def.name) !== -1) {
-          if ('macros' in LineBlocks.blockOptions) {
-            def.macros = LineBlocks.blockOptions.macros;
+        // Set block expansion options.
+        var expansionOptions: ExpansionOptions;
+        expansionOptions = {macros:false, spans:false, specials:false, container:false, skip:false};
+        for (var k in expansionOptions) expansionOptions[k] = def[k];
+        for (var k in LineBlocks.blockOptions) expansionOptions[k] = LineBlocks.blockOptions[k];
+        // Process block.
+        if (!expansionOptions.skip) {
+          writer.write(injectHtmlAttributes(def.openTag));
+          var text = lines.join('\n');
+          if (def.filter) {
+            text = def.filter(text, match);
+          }
+          if (expansionOptions.container) {
+            text = Rimu.renderSource(text);
+          }
+          else {
+            text = replaceInline(text, expansionOptions);
+          }
+          writer.write(text);
+          writer.write(def.closeTag);
+          if ((def.openTag || text || def.closeTag) && !reader.eof()) {
+            // Add a trailing '\n' if we've written a non-blank line and there are more source lines left.
+            writer.write('\n');
           }
         }
-        // Process block.
-        writer.write(injectHtmlAttributes(def.openTag));
-        var text = lines.join('\n');
-        if (def.filter) {
-          text = def.filter(text, match);
-        }
-        if (def.container) {
-          text = Rimu.renderSource(text);
-        }
-        else {
-          text = replaceInline(text, def);
-        }
-        writer.write(text);
-        writer.write(def.closeTag);
-        if ((def.openTag || text || def.closeTag) && !reader.eof()) {
-          // Add a trailing '\n' if we've written a non-blank line and there are more source lines left.
-          writer.write('\n');
-        }
-        // Restore block expansion options to default state.
-        if (saveMacrosProperty === undefined) {
-          delete def.macros;
-        }
-        else {
-          def.macros = saveMacrosProperty;
-        }
+        // Reset consumed Block Attributes expansion options.
         LineBlocks.blockOptions = {};
-
         return true;
       }
     }
-    return false;
+    return false; // No matching delimited block found.
   }
 
   // Return block definition or null if not found.
