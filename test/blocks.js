@@ -455,6 +455,14 @@ exports['Documents'] = function(test) {
       '<p>foo\nbar\nmacro</p>',
       'inclusion macro: = syntax: matched pattern with escaped } character');
   test.equal(Rimu.render(
+      "{v}='[style=\"margin:0;\"]'\n.bar {v}\nfoobar"),
+      '<p class="bar" style="margin:0;">foobar</p>',
+      'macro expansion in Attributes Block');
+  test.equal(Rimu.render(
+      '.bar {undefined!}\nfoobar'),
+      '<p>foobar</p>',
+      'undefined macro in Attributes Block');
+  test.equal(Rimu.render(
       "{v}='xxx'\n<div>\nfoo {v} bar</div>"),
       '<div>\nfoo xxx bar</div>',
       'macro expansion in html delimited block');

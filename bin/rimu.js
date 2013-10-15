@@ -476,13 +476,20 @@ var Rimu;
             },
             // Block Attributes.
             // Syntax: .[class names][#id][[html-attributes]][block-options...]
-            // class names = $1, id = $2, html-attributes = $3, block-options = $4
             {
                 name: 'attributes',
-                match: /^\\?\.([a-zA-Z][\w\- ]*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/,
+                match: /^\\?\.[a-zA-Z#\[+-].*$/,
                 replacement: '',
+                macros: true,
                 filter: function (match) {
                     // Parse HTML attributes.
+                    // class names = $1, id = $2, html-attributes = $3, block-options = $4
+                    var content = match[0];
+                    content = Rimu.replaceInline(content, this);
+                    match = /^\\?\.([a-zA-Z][\w\- ]*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(content);
+                    if (!match) {
+                        return '';
+                    }
                     LineBlocks.htmlAttributes = '';
                     if (match[1]) {
                         LineBlocks.htmlAttributes += 'class="' + Rimu.trim(match[1]) + '"';
