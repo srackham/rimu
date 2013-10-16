@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="Rimu is a readable text to HTML
-    markup language inspired by AsciiDoc and Markdown.">
-  <title>Rimu Tips</title>
+  <title> </title>
   <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
   <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
   <style>
@@ -16,9 +14,9 @@
     h1, h2, h3, h4, h5, h6 { color: #527bbd; }
     h1 { font-size: 2.2em; }
     h2 { font-size: 1.5em; }
-    h3 { font-size: 1.3em; }
-    h4 { font-size: 1.1em; }
-    h5 { font-size: 1.0em; }
+    h3 { font-size: 1.2em; }
+    h4 { font-size: 1.0em; }
+    h5 { font-size: 0.9em; }
     h6 { font-size: 0.9em; }
     h2, h3, h4, h5, h6 {
       line-height: normal;
@@ -39,13 +37,6 @@
     pre {
       padding: 6px;
     }
-    .breadcrumb {
-      font-weight: bold;
-      background-color: white;
-      margin: 0;
-      margin-top: 5px;
-      padding: 0;
-    }
     code {
       color: inherit;
       font-size: inherit;
@@ -55,6 +46,7 @@
       border: none;
       background-color: #fafafa;
     }
+    /* highlight.js tweaks. */
     pre > code {
       background-color: inherit;
       padding: 0;
@@ -65,14 +57,6 @@
   </style>
 </head>
 <body>
-  <ul class="breadcrumb pull-right">
-    <li><a href="index.html">Home</a> <span class="divider">|</span></li>
-    <li><a href="rimuplayground.html">Playground and Docs</a> <span class="divider">|</span></li>
-    <li><a href="tips.html">Tips</a> <span class="divider">|</span></li>
-    <li><a href="http://github.com/srackham/rimu">Github</a> <span class="divider">|</span></li>
-    <li><a href="https://npmjs.org/package/rimu">npm</a></li>
-  </ul>
-
 <h1>Rimu Tips</h1>
 <h2>HTML is valid Rimu</h2>
 <p>You are free to mix any valid HTML into a Rimu document &mdash; no
@@ -480,13 +464,11 @@ Link to {section1}.</code></pre>
 <p>Note the use of the backslash character to continue macro definition
 lines that end with a single-quote.</p>
 <h2>Macro gotchas</h2>
-<ul><li>A block starting with a line containing a single macro invocation
-  is a <em>Line Block</em>, not the start of a normal paragraph.
-</li><li>Block delimiters must be explicit and cannot be sourced from a macro
-  invocation (because Rimu elements are recognized before macro
-  expansion).
+<ul><li>Closing block delimiters must be explicit and cannot be sourced from
+  a macro invocation (because Rimu elements are recognized before
+  macro expansion).
 </li><li>Macro invocations inside macro values are expanded when the macro
-  is declared not when it is invoked, you can defer evaluation until
+  is declared, not when it is invoked, you can defer evaluation until
   the macro is invoked by escaping the macro invocation. For example
   this Rimu markup:
 <div><pre><code>{m1} = 'foo'
@@ -499,6 +481,6 @@ lines that end with a single-quote.</p>
 <pre><code>&lt;p&gt;foo foo&lt;/p&gt;
 &lt;p&gt;foo bar&lt;/p&gt;</code></pre></div>
 </li></ul>
-<script  type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

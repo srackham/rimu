@@ -258,7 +258,7 @@ var Rimu;
         var MATCH_MACROS = RegExp('\\\\?' + MATCH_MACRO.source, 'g');
 
         // Matches a line containing a single macro invocation.
-        Macros.MACRO_LINE = RegExp('^' + MATCH_MACRO.source + '$');
+        Macros.MACRO_LINE = RegExp('^' + MATCH_MACRO.source + '.*$');
 
         // Match multi-line macro definition open delimiter. $1 is first line of macro.
         Macros.MACRO_DEF_OPEN = /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/;
@@ -379,8 +379,8 @@ var Rimu;
                     }
                     Rimu.Quotes.set({
                         quote: match[1],
-                        openTag: match[2],
-                        closeTag: match[4],
+                        openTag: Rimu.replaceInline(match[2], this),
+                        closeTag: Rimu.replaceInline(match[4], this),
                         spans: match[3] === '|'
                     });
                     return '';
@@ -425,6 +425,9 @@ var Rimu;
             {
                 match: Rimu.Macros.MACRO_LINE,
                 replacement: '',
+                verify: function (match) {
+                    return !Rimu.Macros.MACRO_DEF_OPEN.test(match[0]);
+                },
                 filter: function (match, reader) {
                     var value = Rimu.Macros.render(match[0]);
 
@@ -537,6 +540,9 @@ var Rimu;
                     if (match[0][0] === '\\') {
                         // Drop backslash escape and continue.
                         reader.cursor(reader.cursor().slice(1));
+                        continue;
+                    }
+                    if (def.verify && !def.verify(match)) {
                         continue;
                     }
                     var text;

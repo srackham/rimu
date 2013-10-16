@@ -5,7 +5,7 @@ module Rimu.Macros {
   // Matches all macro invocations. $1 = name, $2 = params.
   var MATCH_MACROS = RegExp('\\\\?' + MATCH_MACRO.source, 'g');
   // Matches a line containing a single macro invocation.
-  export var MACRO_LINE = RegExp('^' + MATCH_MACRO.source + '$');
+  export var MACRO_LINE = RegExp('^' + MATCH_MACRO.source + '.*$');
   // Match multi-line macro definition open delimiter. $1 is first line of macro.
   export var MACRO_DEF_OPEN = /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/;
   // Match multi-line macro definition open delimiter. $1 is last line of macro.

@@ -3,6 +3,7 @@ module Rimu.LineBlocks {
   export interface Definition {
     name?: string;  // Optional unique identifier.
     filter?: (match: RegExpExecArray, reader?: Reader) => string;
+    verify?: (match: string[]) => boolean;  // Additional match verification checks.
     match: RegExp;
     replacement: string;
     macros?: boolean;
@@ -24,8 +25,8 @@ module Rimu.LineBlocks {
           return '';  // Skip if a safe mode is set.
         }
         Quotes.set({quote: match[1],
-          openTag: match[2],
-          closeTag: match[4],
+          openTag: replaceInline(match[2], this),
+          closeTag: replaceInline(match[4], this),
           spans: match[3] === '|'});
         return '';
       },
@@ -69,6 +70,9 @@ module Rimu.LineBlocks {
     {
       match: Macros.MACRO_LINE,
       replacement: '',
+      verify: function (match) {
+        return !Macros.MACRO_DEF_OPEN.test(match[0]); // Don't match macro definition blocks.
+      },
       filter: function (match, reader?) {
         var value = Macros.render(match[0]);
         // Insert the macro value into the reader just ahead of the cursor.
@@ -178,6 +182,9 @@ module Rimu.LineBlocks {
         if (match[0][0] === '\\') {
           // Drop backslash escape and continue.
           reader.cursor(reader.cursor().slice(1));
+          continue;
+        }
+        if (def.verify && !def.verify(match)) {
           continue;
         }
         var text: string;

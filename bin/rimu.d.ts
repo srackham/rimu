@@ -65,6 +65,7 @@ declare module Rimu.LineBlocks {
     interface Definition {
         name?: string;
         filter?: (match: RegExpExecArray, reader?: Rimu.Reader) => string;
+        verify?: (match: string[]) => boolean;
         match: RegExp;
         replacement: string;
         macros?: boolean;
