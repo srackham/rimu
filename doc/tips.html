@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title> </title>
+  <meta name="description" content="Rimu is a readable text to HTML
+    markup language inspired by AsciiDoc and Markdown.">
+  <title>Rimu Tips</title>
   <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
   <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
   <style>
@@ -14,9 +16,9 @@
     h1, h2, h3, h4, h5, h6 { color: #527bbd; }
     h1 { font-size: 2.2em; }
     h2 { font-size: 1.5em; }
-    h3 { font-size: 1.2em; }
-    h4 { font-size: 1.0em; }
-    h5 { font-size: 0.9em; }
+    h3 { font-size: 1.3em; }
+    h4 { font-size: 1.1em; }
+    h5 { font-size: 1.0em; }
     h6 { font-size: 0.9em; }
     h2, h3, h4, h5, h6 {
       line-height: normal;
@@ -36,6 +38,14 @@
     }
     pre {
       padding: 6px;
+      line-height: normal;
+    }
+    .breadcrumb {
+      font-weight: bold;
+      background-color: white;
+      margin: 0;
+      margin-top: 5px;
+      padding: 0;
     }
     code {
       color: inherit;
@@ -46,7 +56,6 @@
       border: none;
       background-color: #fafafa;
     }
-    /* highlight.js tweaks. */
     pre > code {
       background-color: inherit;
       padding: 0;
@@ -57,6 +66,14 @@
   </style>
 </head>
 <body>
+  <ul class="breadcrumb pull-right">
+    <li><a href="index.html">Home</a> <span class="divider">|</span></li>
+    <li><a href="rimuplayground.html">Playground and Docs</a> <span class="divider">|</span></li>
+    <li><a href="tips.html">Tips</a> <span class="divider">|</span></li>
+    <li><a href="http://github.com/srackham/rimu">Github</a> <span class="divider">|</span></li>
+    <li><a href="https://npmjs.org/package/rimu">npm</a></li>
+  </ul>
+
 <h1>Rimu Tips</h1>
 <h2>HTML is valid Rimu</h2>
 <p>You are free to mix any valid HTML into a Rimu document &mdash; no
@@ -93,8 +110,9 @@ experimentation.
 
 {note|This document is not yet finished.}
 ..</code></pre>
-<ul><li>The <code>{sidebar}</code> macro illustrates how you can create custom text
-  blocks by styling Rimu Division Blocks.
+<ul><li>The <code>{sidebar}</code> macro shows how you can inject CSS styles into a
+  <em>Division Block</em>, but a better way of styling block elements is to
+  use <a href="#scoped-css">scoped CSS</a>.
 </li><li>Note how macro definitions can span multiple lines and can contain
   any valid Rimu markup (including HTML and blank lines).
 </li></ul><h2 id="syntax-highlighting">Syntax highlighting</h2>
@@ -208,6 +226,11 @@ source non-portable and less readable.</p>
 <em>Replacement</em> definitions (refer to the Rimu documentation under
 <em>Tools</em>):</p>
 <pre><code>/*
+  Rimu Markup macro, quote and replacement definitions used by rimuc
+  command.
+*/
+
+/*
   Replacements
 */
 // Don't match HTML comment tags.
@@ -225,9 +248,6 @@ source non-portable and less readable.</p>
 /\B'\b(.+?)\b'\B/g = '&lt;em&gt;$1&lt;/em&gt;'
 // Do not process the  deprecated + line break.
 /[\\ ]\+(\n|$)/g = ' +$1'
-// Open URLs in a new browser tab.
-// /\\?&lt;(\S+?)&gt;/ = '&lt;a href="$1" target="_blank"&gt;$1&lt;/a&gt;'
-// /\\?&lt;(\S+?)\|([\s\S]+?)&gt;/ = '&lt;a href="$1" target="_blank"&gt;$2&lt;/a&gt;'
 
 /*
   Macros
@@ -241,7 +261,38 @@ source non-portable and less readable.</p>
 /*
   Quotes
 */
-~ = '&lt;del&gt;|&lt;/del&gt;'</code></pre>
+~ = '&lt;del&gt;|&lt;/del&gt;'
+
+/*
+  CSS
+
+  Invoke the {custom-css} macro at the start of the document and then
+  apply the following classes to Normal Paragraphs and
+  Division blocks:
+
+  sidebar  Styles sidebars.
+  verse    Styles poetry verses.
+*/
+{custom-css} = '
+&lt;style type="text/css" scoped&gt;
+.verse {
+  margin: 1.5em 20px;
+}
+div.verse p, p.verse {
+  font-family: serif;
+  white-space:pre;
+}
+.sidebar {
+  border: 1px solid silver;
+  border-radius:4px;
+  background: #ffffee;
+  padding: 10px;
+  margin: 1.5em 20px;
+}
+div.sidebar *:first-child {
+  margin-top: 0.2em;
+}
+&lt;/style&gt;'</code></pre>
 <h2>Extending the Vim syntax highligher</h2>
 <p>If you've added custom replacements and quotes you can highlight them
 in Vim by creating a custom <code>~/.vim/after/syntax/rimu.vim</code> syntax
@@ -480,7 +531,108 @@ lines that end with a single-quote.</p>
 <p>Generates:</p>
 <pre><code>&lt;p&gt;foo foo&lt;/p&gt;
 &lt;p&gt;foo bar&lt;/p&gt;</code></pre></div>
-</li></ul>
+</li></ul><h2 id="scoped-css">Use scoped CSS to generate custom styled elements</h2>
+<p>HTML5's <a href="http://www.w3schools.com/tags/att_style_scoped.asp">scoped
+CSS attribute</a> allows you to define CSS outside the document header.
+This allows you to include CSS in the body of a Rimu document which is
+very handy for tweaking the default CSS and for styling Rimu block
+elements.</p>
+<h4>Examples:</h4>
+<table class="example table table-bordered"><thead><tr style="color:#527bbd;">
+<th style="width:50%;">Rimu source</th>
+<th style="width:50%;">Rendered HTML</th>
+</tr></thead><tbody><tr><td style="width: 50%; padding: 4px;">
+<pre style="border:none; background-color:inherit;"><code>&lt;style type="text/css" scoped&gt;
+.verse {
+  margin: 1.5em 20px;
+}
+div.verse p, p.verse {
+  font-family: serif;
+  white-space:pre;
+}
+.sidebar {
+  border: 1px solid silver;
+  border-radius:4px;
+  background: #ffffee;
+  padding: 10px;
+  margin: 1.5em 20px;
+}
+div.sidebar *:first-child {
+  margin-top: 0.2em;
+}
+&lt;/style&gt;
+
+.verse
+Neque a massa. Porttitor
+consectetuer commodo. Nunc mauris
+tempor. Pede mauris sed.
+Scelerisque feugiat massa alias.
+
+.verse
+..
+==== Lorum Ipsum
+Neque a massa. Porttitor
+consectetuer commodo. Nunc mauris
+tempor. Pede mauris sed.
+Scelerisque feugiat massa alias.
+..
+
+.sidebar
+Neque a massa. Porttitor
+consectetuer commodo. Nunc mauris
+tempor. Pede mauris sed.
+Scelerisque feugiat massa alias.
+
+.sidebar
+..
+==== Lorum Ipsum
+Neque a massa. Porttitor
+consectetuer commodo. Nunc mauris
+tempor. Pede mauris sed.
+Scelerisque feugiat massa alias.
+..</code></pre>
+</td><td style="width:50%; padding: 4px;">
+<style type="text/css" scoped>
+.verse {
+  margin: 1.5em 20px;
+}
+div.verse p, p.verse {
+  font-family: serif;
+  white-space:pre;
+}
+.sidebar {
+  border: 1px solid silver;
+  border-radius:4px;
+  background: #ffffee;
+  padding: 10px;
+  margin: 1.5em 20px;
+}
+div.sidebar *:first-child {
+  margin-top: 0.2em;
+}
+</style>
+<p class="verse">Neque a massa. Porttitor
+consectetuer commodo. Nunc mauris
+tempor. Pede mauris sed.
+Scelerisque feugiat massa alias.</p>
+<div class="verse"><h4>Lorum Ipsum</h4>
+<p>Neque a massa. Porttitor
+consectetuer commodo. Nunc mauris
+tempor. Pede mauris sed.
+Scelerisque feugiat massa alias.</p></div>
+<p class="sidebar">Neque a massa. Porttitor
+consectetuer commodo. Nunc mauris
+tempor. Pede mauris sed.
+Scelerisque feugiat massa alias.</p>
+<div class="sidebar"><h4>Lorum Ipsum</h4>
+<p>Neque a massa. Porttitor
+consectetuer commodo. Nunc mauris
+tempor. Pede mauris sed.
+Scelerisque feugiat massa alias.</p></div>
+</td></tr></tbody></table>
+<p>You can put your library of shared CSS styles in a macro definition in
+<code>~/.rimurc</code> then include it in your documents with a single macro
+invocation (see the <a href="#example-rimurc">example .rimurc file</a>).</p>
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

@@ -44,6 +44,7 @@
     }
     pre {
       padding: 6px;
+      line-height: normal;
     }
     .breadcrumb {
       font-weight: bold;
@@ -78,4 +79,24 @@
     <li><a href="http://github.com/srackham/rimu">Github</a> <span class="divider">|</span></li>
     <li><a href="https://npmjs.org/package/rimu">npm</a></li>
   </ul>
+
+// Macro to generate two cell examples table.
+// $1 = name of example content macro.
+{generate-example} = '==== Examples:
+<table class="example table table-bordered"><thead><tr style="color:#527bbd;">
+<th style="width:50%;">Rimu source</th>
+<th style="width:50%;">Rendered HTML</th>
+</tr></thead><tbody><tr><td style="width: 50%; padding: 4px;">
+
+.[style="border:none; background-color:inherit;"] +macros
+----
+{$1}
+----
+</td><td style="width:50%; padding: 4px;">
+
+{$1}
+
+</td></tr></tbody></table>
+
+'
 

@@ -1,5 +1,6 @@
 = Rimu Tips
 
+
 == HTML is valid Rimu
 You are free to mix any valid HTML into a Rimu document &mdash; no
 special syntax or relearning  is required (in this sense Rimu can be
@@ -58,8 +59,9 @@ experimentation.
 ..
 --
 
-- The `\{sidebar}` macro illustrates how you can create custom text
-  blocks by styling Rimu Division Blocks.
+- The `\{sidebar}` macro shows how you can inject CSS styles into a
+  _Division Block_, but a better way of styling block elements is to
+  use <#scoped-css|scoped CSS>.
 - Note how macro definitions can span multiple lines and can contain
   any valid Rimu markup (including HTML and blank lines).
 
@@ -226,6 +228,11 @@ _Tools_):
 
 --
 /*
+  Rimu Markup macro, quote and replacement definitions used by rimuc
+  command.
+*/
+
+/*
   Replacements
 */
 // Don't match HTML comment tags.
@@ -243,9 +250,6 @@ _Tools_):
 /\B'\b(.+?)\b'\B/g = '<em>$1</em>'
 // Do not process the  deprecated + line break.
 /[\\ ]\+(\n|$)/g = ' +$1'
-// Open URLs in a new browser tab.
-// /\\?<(\S+?)>/ = '<a href="$1" target="_blank">$1</a>'
-// /\\?<(\S+?)\|([\s\S]+?)>/ = '<a href="$1" target="_blank">$2</a>'
 
 /*
   Macros
@@ -260,6 +264,37 @@ _Tools_):
   Quotes
 */
 ~ = '<del>|</del>'
+
+/*
+  CSS
+
+  Invoke the {custom-css} macro at the start of the document and then
+  apply the following classes to Normal Paragraphs and
+  Division blocks:
+
+  sidebar  Styles sidebars.
+  verse    Styles poetry verses.
+*/
+{custom-css} = '
+<style type="text/css" scoped>
+.verse {
+  margin: 1.5em 20px;
+}
+div.verse p, p.verse {
+  font-family: serif;
+  white-space:pre;
+}
+.sidebar {
+  border: 1px solid silver;
+  border-radius:4px;
+  background: #ffffee;
+  padding: 10px;
+  margin: 1.5em 20px;
+}
+div.sidebar *:first-child {
+  margin-top: 0.2em;
+}
+</style>'
 --
 
 == Extending the Vim syntax highligher
@@ -600,3 +635,67 @@ Generates:
 <p>foo bar</p>
 --
 ..
+
+
+.#scoped-css
+== Use scoped CSS to generate custom styled elements
+HTML5's <http://www.w3schools.com/tags/att\_style\_scoped.asp|scoped
+CSS attribute> allows you to define CSS outside the document header.
+This allows you to include CSS in the body of a Rimu document which is
+very handy for tweaking the default CSS and for styling Rimu block
+elements.
+
+{scoped-css-example} = '<style type="text/css" scoped>
+.verse {
+  margin: 1.5em 20px;
+}
+div.verse p, p.verse {
+  font-family: serif;
+  white-space:pre;
+}
+.sidebar {
+  border: 1px solid silver;
+  border-radius:4px;
+  background: #ffffee;
+  padding: 10px;
+  margin: 1.5em 20px;
+}
+div.sidebar *:first-child {
+  margin-top: 0.2em;
+}
+</style>
+
+.verse
+Neque a massa. Porttitor
+consectetuer commodo. Nunc mauris
+tempor. Pede mauris sed.
+Scelerisque feugiat massa alias.
+
+.verse
+..
+==== Lorum Ipsum
+Neque a massa. Porttitor
+consectetuer commodo. Nunc mauris
+tempor. Pede mauris sed.
+Scelerisque feugiat massa alias.
+..
+
+.sidebar
+Neque a massa. Porttitor
+consectetuer commodo. Nunc mauris
+tempor. Pede mauris sed.
+Scelerisque feugiat massa alias.
+
+.sidebar
+..
+==== Lorum Ipsum
+Neque a massa. Porttitor
+consectetuer commodo. Nunc mauris
+tempor. Pede mauris sed.
+Scelerisque feugiat massa alias.
+..'
+{generate-example|scoped-css-example}
+
+You can put your library of shared CSS styles in a macro definition in
+`~/.rimurc` then include it in your documents with a single macro
+invocation (see the <#example-rimurc|example .rimurc file>).

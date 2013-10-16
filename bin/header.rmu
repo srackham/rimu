@@ -43,6 +43,7 @@
     }
     pre {
       padding: 6px;
+      line-height: normal;
     }
     code {
       color: inherit;
