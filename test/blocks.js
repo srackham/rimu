@@ -343,9 +343,9 @@ exports['Documents'] = function(test) {
       '<p>a and b<em>c</em> d and e\nfg.</p>',
       'parametrized macros');
   testDocument(test,
-      "{v}='This $1 and $2 and $3 and $42'\n{v}{v|} {v|1|2}",
-      '<p>This  and  and  and This  and  and  and  This 1 and 2 and  and </p>',
-      'parametrized macros');
+      "{v}='This $1 and \\$2 and $3 and $42'\n{v}{v|} {v|1|2}",
+      '<p>This $1 and \\$2 and $3 and $42This  and $2 and  and  This 1 and $2 and  and </p>',
+      'parametrized macros with escaped, blank and missing parameters');
   testDocument(test,
       "{v1}='$1 $2'\n{v2}='{v1|1|2} $1 $2'\n{v2|3|4} {v1|5|6}",
       '<p>1 2 3 4 5 6</p>',
@@ -359,7 +359,7 @@ exports['Documents'] = function(test) {
       '<p><mark>Note</mark>: H<sub>2</sub>O</p>',
       'text format parametrized macros');
   testDocument(test,
-      "{v1}='$1 and $10 and $2'\n{v1|one}\n{v1}",
+      "{v1}='$1 and $10 and $2'\n{v1|one}\n{v1|}",
       '<p>one and  and \n and  and </p>',
       'undefined parametrized arguments replaced by an empty string');
   testDocument(test,

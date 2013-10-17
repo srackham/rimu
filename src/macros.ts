@@ -4,7 +4,7 @@ module Rimu.Macros {
   var MATCH_MACRO = /\{([\w\-]+)([!=|?](?:|[\s\S]*?[^\\]))?\}/;
   // Matches all macro invocations. $1 = name, $2 = params.
   var MATCH_MACROS = RegExp('\\\\?' + MATCH_MACRO.source, 'g');
-  // Matches a line containing a single macro invocation.
+  // Matches a line starting with a macro invocation.
   export var MACRO_LINE = RegExp('^' + MATCH_MACRO.source + '.*$');
   // Match multi-line macro definition open delimiter. $1 is first line of macro.
   export var MACRO_DEF_OPEN = /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/;
@@ -44,53 +44,40 @@ module Rimu.Macros {
   // Render all macro invocations in text string.
   export function render(text: string): string {
     text = text.replace(MATCH_MACROS, function(match, name /* $1 */, params /* $2 */) {
-     if (match[0] === '\\') {
-          return match.slice(1);
+      if (match[0] === '\\') {
+           return match.slice(1);
       }
-      var value = getValue(name);  // value is null if macro is undefined.
-      if (!params) {
-        return (value === null) ? '' : value.replace(/\$\d+/g, '');
-      }
+      var value = getValue(name); // null if macro is undefined.
+      params = params || '';
       params = params.replace(/\\\}/g, '}');  // Unescape escaped } characters.
-      if (params[0] === '|') {
-        if (value === null) {
-          return '';
-        }
-        // Substitute macro parameters.
-        var result = value;
-        var paramsList = params.slice(1).split('|');
-        for (var i in paramsList) {
-          result = result.replace(RegExp('\\$' + (parseInt(i)+1) + '(?!\\d)', 'g'), paramsList[i]);
-        }
-        result = result.replace(/\$\d+/g, '');
-        return result;
-      }
-      else if (params[0] === '?') {
-        if (value === null) {
-          return params.slice(1);
-        }
-      }
-      else if (params[0] === '!' || params[0] === '=') {
-        if (value === null ) {
-          value = '';   // null matches an empty string.
-        }
-        var pattern = params.slice(1);
-        var skip = !RegExp('^' + pattern + '$').test(value);
-        if (params[0] === '!') {
-          skip = !skip;
-        }
-        if (skip) {
-          return '\0';    // Flag line for deletion.
-        }
-        else {
-          return '';
-        }
-      }
-      else if (value === null) {
-        return '';      // Undefined macro replaced by empty string.
-      }
-      else {
-        return value;
+      switch (params[0]) {
+        case '?': // Existential macro.
+          return value === null ? params.slice(1) : value;
+
+        case '|': // Parametized macro.
+          // Substitute macro parameters.
+          var paramsList = params.slice(1).split('|');
+          value = (value || '').replace(/\\?\$\d+/g, function(match) {
+            if (match[0] === '\\') {  // Unescape escaped $ characters.
+              return match.slice(1);
+            }
+            var param = paramsList[parseInt(match.slice(1)) - 1];
+            return param === undefined ? '' : param;  // Unassigned parameters are replaced with a blank string.
+          });
+          return value;
+
+        case '!': // Inclusion macro.
+        case '=':
+          var pattern = params.slice(1);
+          var skip = !RegExp('^' + pattern + '$').test(value || '');
+          if (params[0] === '!') {
+            skip = !skip;
+          }
+          return skip ? '\0' : '';  // '\0' flags line for deletion.
+
+        default:  // Plain macro.
+          return value || '';      // Undefined macro replaced by empty string.
+
       }
     });
     // Delete lines marked for deletion by inclusion macros.

@@ -257,7 +257,7 @@ var Rimu;
         // Matches all macro invocations. $1 = name, $2 = params.
         var MATCH_MACROS = RegExp('\\\\?' + MATCH_MACRO.source, 'g');
 
-        // Matches a line containing a single macro invocation.
+        // Matches a line starting with a macro invocation.
         Macros.MACRO_LINE = RegExp('^' + MATCH_MACRO.source + '.*$');
 
         // Match multi-line macro definition open delimiter. $1 is first line of macro.
@@ -301,45 +301,35 @@ var Rimu;
                     return match.slice(1);
                 }
                 var value = getValue(name);
-                if (!params) {
-                    return (value === null) ? '' : value.replace(/\$\d+/g, '');
-                }
+                params = params || '';
                 params = params.replace(/\\\}/g, '}');
-                if (params[0] === '|') {
-                    if (value === null) {
-                        return '';
-                    }
+                switch (params[0]) {
+                    case '?':
+                        return value === null ? params.slice(1) : value;
 
-                    // Substitute macro parameters.
-                    var result = value;
-                    var paramsList = params.slice(1).split('|');
-                    for (var i in paramsList) {
-                        result = result.replace(RegExp('\\$' + (parseInt(i) + 1) + '(?!\\d)', 'g'), paramsList[i]);
-                    }
-                    result = result.replace(/\$\d+/g, '');
-                    return result;
-                } else if (params[0] === '?') {
-                    if (value === null) {
-                        return params.slice(1);
-                    }
-                } else if (params[0] === '!' || params[0] === '=') {
-                    if (value === null) {
-                        value = '';
-                    }
-                    var pattern = params.slice(1);
-                    var skip = !RegExp('^' + pattern + '$').test(value);
-                    if (params[0] === '!') {
-                        skip = !skip;
-                    }
-                    if (skip) {
-                        return '\0';
-                    } else {
-                        return '';
-                    }
-                } else if (value === null) {
-                    return '';
-                } else {
-                    return value;
+                    case '|':
+                        // Substitute macro parameters.
+                        var paramsList = params.slice(1).split('|');
+                        value = (value || '').replace(/\\?\$\d+/g, function (match) {
+                            if (match[0] === '\\') {
+                                return match.slice(1);
+                            }
+                            var param = paramsList[parseInt(match.slice(1)) - 1];
+                            return param === undefined ? '' : param;
+                        });
+                        return value;
+
+                    case '!':
+                    case '=':
+                        var pattern = params.slice(1);
+                        var skip = !RegExp('^' + pattern + '$').test(value || '');
+                        if (params[0] === '!') {
+                            skip = !skip;
+                        }
+                        return skip ? '\0' : '';
+
+                    default:
+                        return value || '';
                 }
             });
 
