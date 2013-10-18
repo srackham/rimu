@@ -373,6 +373,7 @@ A MathML block formula:
 formulas (for example, <code>{i=0}</code> and <code>{2}</code> in the LaTeX formula).</p>
 <p>See the <a href="http://docs.mathjax.org/en/latest/">latest MathJax
 documentation</a> to learn how to use MathJax.</p>
+<div id="conditional-inclusion"></div>
 <h2>Conditional inclusion</h2>
 <p><em>Inclusion</em> macro invocations can be used to conditionally include and
 exclude lines of source text:</p>
@@ -383,9 +384,9 @@ exclude lines of source text:</p>
 <pre>{macro=one} Included if macro value is 'one'.
 {macro=two} Included if macro value is 'two'.
 {macro=\d+} Included if macro value is a number.</pre>
-</li><li>Block elements can be prefixed with an inlusion macro (works because
-  lines starting with a macro invocation are preprocessed). For
-  example:
+</li><li>Output generating block elements can be prefixed with an inlusion
+  macro (works because lines starting with a macro invocation are
+  preprocessed). For example:
 <pre>{highlightjs!}&lt;script src="highlight.min.js"&gt;&lt;/script&gt;</pre>
 </li></ul><h2>Tables</h2>
 <p>Create tables using the HTML table syntax (Rimu has no special syntax
@@ -523,6 +524,9 @@ lines that end with a single-quote.</p>
 </li><li>Closing block delimiters must be explicit and cannot be sourced from
   a macro invocation (because Rimu elements are recognized before
   macro expansion).
+</li><li>Definition elements (elements that do not generate output) cannot be
+  prefixed with an inclusion macro (see
+  <a href="#conditional-inclusion">Conditional Inclusion</a>).
 </li><li>Macro invocations in macro definition values are expanded when the
   macro is declared, not when it is invoked. You can defer evaluation
   until the macro is invoked by escaping macro invocations or (in the

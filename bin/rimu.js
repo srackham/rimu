@@ -587,9 +587,6 @@ var Rimu;
                     // Set macro.
                     // Get the macro name from the match in the first line of the block.
                     var name = match[0].match(/^\{([\w\-]+)\}/)[1];
-
-                    //TODO
-                    //        text = text.replace(/' *\\\n/g, "'\n");  // Drop line continuations.
                     text = text.replace(/(' *[\\]*)\\\n/g, '$1\n');
                     text = text.replace(/ +\n/g, '\n');
                     text = Rimu.replaceInline(text, expansionOptions);

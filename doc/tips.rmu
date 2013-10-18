@@ -383,6 +383,7 @@ See the <http://docs.mathjax.org/en/latest/|latest MathJax
 documentation> to learn how to use MathJax.
 
 
+<<#conditional-inclusion>>
 == Conditional inclusion
 _Inclusion_ macro invocations can be used to conditionally include and
 exclude lines of source text:
@@ -398,9 +399,9 @@ exclude lines of source text:
   {macro=two} Included if macro value is 'two'.
   {macro=\d+} Included if macro value is a number.
 
-- Block elements can be prefixed with an inlusion macro (works because
-  lines starting with a macro invocation are preprocessed). For
-  example:
+- Output generating block elements can be prefixed with an inlusion
+  macro (works because lines starting with a macro invocation are
+  preprocessed). For example:
 
   {highlightjs!}<script src="highlight.min.js"></script>
 
@@ -548,6 +549,9 @@ lines that end with a single-quote.
 - Closing block delimiters must be explicit and cannot be sourced from
   a macro invocation (because Rimu elements are recognized before
   macro expansion).
+- Definition elements (elements that do not generate output) cannot be
+  prefixed with an inclusion macro (see
+  <#conditional-inclusion|Conditional Inclusion>).
 - Macro invocations in macro definition values are expanded when the
   macro is declared, not when it is invoked. You can defer evaluation
   until the macro is invoked by escaping macro invocations or (in the

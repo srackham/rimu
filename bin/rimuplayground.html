@@ -598,16 +598,17 @@ Invocation syntax:
   when they are invoked.
 - Macro expansion can be disabled in multi-line macro definitions
   using the _Block Attributes_ `-macros` option.
-- By default macro invocations are expanded everywhere except
-  inside _Code_ blocks and _Indented_ paragraphs. Use the _Block
-  Attributes_ `+macros` option to enable expansion inside _Code_ blocks
-  and _Indented_ paragraphs.
+- By default macro invocations are expanded everywhere except inside
+  _Code_ blocks and _Indented_ paragraphs. Use the _Block Attributes_
+  `+macros` and `-macros` options to enable and disable expansion
+  inside multi-line block elements (delimited blocks, paragraphs,
+  multi-line macro definitions and HTML).
 - Macro invocations cannot be nested.
 - A _Macro Line_ block element is a line starting with a  macro
-  invocation, the macros are expanded before other block elements are
-  processed. This feature allows macros to inject arbitrary Rimu
-  markup into the source stream as well as allowing block
-  elements to be prefixed with _Inclusion_ macros.
+  invocation, the macros are expanded before non-definition block
+  elements are processed. This feature allows macros to inject
+  Rimu markup into the source stream as well as allowing
+  block elements to be prefixed with _Inclusion_ macros.
 - _Parametrized_ macro invocations replace the `$1`, `$2` ...
   parameter names in the macro parametrized definition with the
   corresponding parameter values.
