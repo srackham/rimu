@@ -6,7 +6,7 @@ module Rimu.DelimitedBlocks {
     closeMatch: RegExp; // $1 (if defined) is appended to block content. If null then must match opening delimiter.
     openTag: string;
     closeTag: string;
-    filter?: (text: string, match: string[]) => string; // Custom content pre-processing.
+    filter?: (text: string, match: string[], expansionOptions: ExpansionOptions) => string; // Custom content pre-processing.
     verify?: (match: string[]) => boolean;              // Additional match verification checks.
     // Processing priority (highest to lowest): container, skip, spans and specials.
     // If spans is true then both spans and specials are processed.
@@ -29,12 +29,12 @@ module Rimu.DelimitedBlocks {
       openTag: '',
       closeTag: '',
       macros: true,
-      filter: function (text, match): string {
+      filter: function (text, match, expansionOptions): string {
         // Set macro.
         // Get the macro name from the match in the first line of the block.
         var name = match[0].match(/^\{([\w\-]+)\}/)[1];
         text = text.replace(/'\s*\\\n/g, "'\n");  // Drop line continuations.
-        text = replaceInline(text, this);         // Expand macro invocations.
+        text = replaceInline(text, expansionOptions); // Expand macro invocations.
         Macros.setValue(name, text);
         return '';
       },
@@ -173,7 +173,7 @@ module Rimu.DelimitedBlocks {
           writer.write(injectHtmlAttributes(def.openTag));
           var text = lines.join('\n');
           if (def.filter) {
-            text = def.filter(text, match);
+            text = def.filter(text, match, expansionOptions);
           }
           if (expansionOptions.container) {
             text = Rimu.renderSource(text);

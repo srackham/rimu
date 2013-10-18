@@ -332,27 +332,26 @@ Block and inline HTML elements can be <span style="font-size:
 The _Block Attributes_ single-line block element injects HTML
 attributes into the opening tag of the next block element. You can
 specify class names, an element ID and any other HTML attributes.  It
-also has options to control the processing of _Delmited Block_ and
-_Paragraph_ elements.
+also has options to control the processing of multi-line block
+elements.
 
 Syntax:
 
-  .[class names][#id][[html-attributes]] block-options
+  .class-names #id [html-attributes] block-options
 
-- `class names` is one or more HTML _class_ attribute names (separated
+- All items are optional.
+- `class-names` is one or more HTML _class_ attribute names (separated
   by spaces).
 - `id` is a unique HTML _id_ attribute value.
 - `html-attributes` is one or more HTML attribute name/value pairs.
 - HTML attributes can be applied any block element that renders HTML.
-- The leading period characpter must start at the left margin and must
-  not extend beyond the end of the line.
+- The leading period character must start at the left margin and the
+  attributes must not extend beyond the end of the line.
 - The `[html-attributes]` section is ignored if the API _safeMode_
   option is not zero (see the _API_ topic).
-- `block-options` can be `+macros` (to enable macro expansion) or
-  `-macros` (to disable macro expansion) in _Code_ and _HTML_ blocks
-  and in _Indented_ and _Normal_ paragraphs.
 - The following `block-options` can be used to modify the behavior of
-  _Delmited Block_ and _Paragraph_ elements:
+  multi-line block elements (delimited blocks, paragraphs, macro
+  definitions and HTML):
 
   `+macros`:: Enable macro expansion.
   `-macros`:: Disable macro expansion.
@@ -590,49 +589,55 @@ Invocation syntax:
   and can extend over multiple lines.
 - A macro name consists of one or more alphanumeric, underscore or
   dash characters.
+- Macro definitions and invocations can be escaped with a leading
+  backslash character prefix.
 - A macro definition must start at the left margin.
 - Macro definition lines ending with a single-quote character can be
   continued to the next line by appending a backslash character.
-- Macro definition values can invoke previously defined macros but
-  macro invocations cannot be nested.
-- Macro definitions and invocations can be escaped with a leading
-  backslash character prefix.
+- Macros are expanded in macro definitions when they are defined not
+  when they are invoked.
+- Macro expansion can be disabled in multi-line macro definitions
+  using the _Block Attributes_ `-macros` option.
 - By default macro invocations are expanded everywhere except
   inside _Code_ blocks and _Indented_ paragraphs. Use the _Block
-  Attributes_ `+macros` option to enable expansion inside _Code_
-  blocks and _Indented_ paragraphs.
-- Inline macro invocations are expanded before other inline elements
-  are processed.
+  Attributes_ `+macros` option to enable expansion inside _Code_ blocks
+  and _Indented_ paragraphs.
+- Macro invocations cannot be nested.
 - A _Macro Line_ block element is a line starting with a  macro
   invocation, the macros are expanded before other block elements are
   processed. This feature allows macros to inject arbitrary Rimu
   markup into the source stream as well as allowing  single-line block
   elements to be prefixed with _Inclusion_ macros.
-- _Parametrized_ macro invocations replace the `$1`, `$2` ... strings
-  in the macro definition with the `param1`, `param2` ... values.
+- _Parametrized_ macro invocations replace the `$1`, `$2` ...
+  parameter names in the macro parametrized definition with the
+  corresponding parameter values.
+  * If a macro parameter value is not specified then the corresponding
+    parameter name in the macro is replaced by and empty string.
+  * Parameter names in parametrized macro definitions can be escaped
+    with a backslash character prefix.
 - Macro invocation parameters contain inline Rimu markup; inline
   parameter values can span multiple lines.
-- Omitted parameter values default to an empty string.
 - Invocations of undefined macros are replaced with a blank string
   or the `default-value` if the `\{macro-name?default-value}`
   _Existential_ invocation syntax is used.
 - The `\{macro-name=pattern}` _Inclusion_ invocation is replaced by a
-  blank string if the macro value matches the `pattern` (where `pattern`
-  is a JavaScript regular expression).
-  If the macro value does not match the `pattern` the containing line
-  is skipped.
-  This feature can be used to conditionally include lines of source text.
-  * If the macro is undefined its value is treated as a blank string for the
-    purpose of pattern matching.
-  * If the `pattern` contains `}` characters they must be escaped with a
-    backslash character (otherwise they will be mistaken for the macro
-    closing brace).
-- The `\{macro-name!pattern}` _Inclusion_ invocation syntax is the inverse
-  of the `\{macro-name=pattern}` syntax i.e. the macro invocation is replaced
-  by a blank string if the macro value does not match the `pattern`, if it
-  does match the containing line is skipped.
-- Macro definitions are not processed if the _Safe Mode_ is
-  non-zero.
+  blank string if the macro value matches the `pattern` (where
+  `pattern` is a JavaScript regular expression).  If the macro value
+  does not match the `pattern` the containing line is skipped.  If the
+  macro is undefined its value is treated as a blank string for the
+  purpose of pattern matching.  This feature can be used to
+  conditionally include lines of source text.
+- The `\{macro-name!pattern}` _Inclusion_ invocation syntax is the
+  inverse of the `\{macro-name=pattern}` syntax i.e. the macro
+  invocation is replaced by a blank string if the macro value does not
+  match the `pattern`, if it does match the containing line is
+  skipped.
+- Macro invocations can contain `}` characters but they must be escaped
+  with a backslash character (otherwise they will be mistaken for the
+  macro's closing brace).
+- Inline macro invocations are expanded before other inline elements
+  are processed.
+- Macro definitions are not processed if the _Safe Mode_ is non-zero.
 
 Examples:
 

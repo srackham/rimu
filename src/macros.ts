@@ -47,7 +47,7 @@ module Rimu.Macros {
       if (match[0] === '\\') {
            return match.slice(1);
       }
-      var value = getValue(name); // null if macro is undefined.
+      var value = getValue(name); // Macro value is null if macro is undefined.
       params = params || '';
       params = params.replace(/\\\}/g, '}');  // Unescape escaped } characters.
       switch (params[0]) {
@@ -85,7 +85,7 @@ module Rimu.Macros {
       var lines = text.split('\n');
       for (var i = lines.length - 1; i >= 0; --i) {
         if (lines[i].indexOf('\0') !== -1) {
-          lines.splice(i, 1);
+          lines.splice(i, 1); // Delete line[i].
         }
       }
       text = lines.join('\n');

@@ -583,12 +583,12 @@ var Rimu;
                 openTag: '',
                 closeTag: '',
                 macros: true,
-                filter: function (text, match) {
+                filter: function (text, match, expansionOptions) {
                     // Set macro.
                     // Get the macro name from the match in the first line of the block.
                     var name = match[0].match(/^\{([\w\-]+)\}/)[1];
                     text = text.replace(/'\s*\\\n/g, "'\n");
-                    text = Rimu.replaceInline(text, this);
+                    text = Rimu.replaceInline(text, expansionOptions);
                     Rimu.Macros.setValue(name, text);
                     return '';
                 }
@@ -730,7 +730,7 @@ var Rimu;
                         writer.write(Rimu.injectHtmlAttributes(def.openTag));
                         var text = lines.join('\n');
                         if (def.filter) {
-                            text = def.filter(text, match);
+                            text = def.filter(text, match, expansionOptions);
                         }
                         if (expansionOptions.container) {
                             text = Rimu.renderSource(text);

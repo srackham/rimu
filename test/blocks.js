@@ -367,6 +367,14 @@ exports['Documents'] = function(test) {
       '',
       'undefined macro invoked with arguments');
   testDocument(test,
+      ".-macros\n{v1}='{undefined}\n'\n {v1}",
+      '<pre>{v1}</pre>',
+      'multi-line macro definition defined with macros disabled');
+  testDocument(test,
+      '.-macros\n<div>{undefined}\n</div>',
+      '<div>{undefined}\n</div>',
+      'multi-line HTML defined with macros disabled');
+  testDocument(test,
       "{src}='tiger.png'\n{caption}='Tiger'\n<image:{src}|{caption}>",
       '<img src="tiger.png" alt="Tiger">',
       'macro substitution in block image');
@@ -494,6 +502,10 @@ exports['Documents'] = function(test) {
       "{v}='foo'\n{v1}='\\{v} {v}'\n{v1}\n\n{v}='bar'\n{v1}"),
       "<p>foo foo</p>\n<p>bar foo</p>",
       'meta-macro with deferred evaluation');
+  test.equal(Rimu.render(
+      "{v}='foo $1 \\$1'\n{v1}='{v|1}'\n{v1|2}"),
+      "<p>foo 1 2</p>",
+      'meta-macro with deferred parameter evaluation');
   test.equal(Rimu.render(
       '{skipped} = \'SKIPPED\'\n{skipped?foobar}', {safeMode:1}),
       '<p>foobar</p>',

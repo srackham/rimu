@@ -82,7 +82,7 @@
 
 // Macro to generate two cell examples table.
 // $1 = name of example content macro.
-{generate-example} = '==== Examples:
+{generate-rendered-example} = '==== Examples:
 <table class="example table table-bordered"><thead><tr style="color:#527bbd;">
 <th style="width:50%;">Rimu source</th>
 <th style="width:50%;">Rendered HTML</th>
