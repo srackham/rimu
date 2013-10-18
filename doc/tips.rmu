@@ -141,19 +141,18 @@ element is an "inline block" element), you can flow them vertically by
 enclosing them in a _Division Block_ (HTML `div` element), for
 example:
 
-  <image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
-  ..
-  .#big-logo [width="150"]
-  <image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
-  ..
-
-Renders:
-
+{block-images-example} = '
 <image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
 ..
 .#big-logo [width="150"]
 <image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
-..
+..'
+
+{example-code-listing|block-images-example}
+
+Renders:
+
+{block-images-example}
 
 
 == Entering non-ASCII characters
@@ -311,8 +310,8 @@ Inline elements are processed in the following order (first to last):
 . Replacements
 . Special characters
 
-Substitutions in _Delmited Block_ and _Paragraph_ elements can be
-controlled using _block-options_ in the _Block Attributes_ element.
+Substitutions in multi-line block elements can be controlled using
+_block-options_ in the _Block Attributes_ element.
 
 
 == Using Macro, Replacement and Quote definitions in Safe Mode
@@ -325,12 +324,6 @@ separate API call, for example:
 Rimu.render(trusted_rimu_definitions); // safeMode is off by default.
 var html = Rimu.render(untrusted_rimu_markup, {safeMode: 1});
 --
-
-
-== Escaping Macro and Replacement parameters
-You can escape `$1`, `$2`... parameters in _Macro_ and _Replacement_
-definitions by using the `&dollar;` character entity instead of the
-dollar character.
 
 
 == Modifying built-in Quotes and Replacements
@@ -354,8 +347,9 @@ You can include math formulas written in LaTeX or MathML using
 option will include MathJax support if the `\{mathjax}` macro is
 defined. For example, this Rimu source:
 
---
-{mathjax} = 'yes'
+.-macros
+{mathjax-example} = '
+{mathjax} = 'yes'\
 
 A LaTeX inline formula: \(\sum_\{i=0}^n i^2 = \frac{n^2+n}m\{2}\)
 
@@ -373,28 +367,14 @@ A MathML block formula:
 <math display="block">
   <mi>E</mi><mo>=</mo><mrow><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow>
 </math>
---
+
+'
+
+{example-code-listing|mathjax-example}
 
 Renders:
 
-{mathjax} = 'yes'
-
-A LaTeX inline formula: \(\sum_\{i=0}^n i^2 = \frac{n^2+n}m\{2}\)
-
-A LaTeX block formula:
-
-\[\sum_\{i=0}^n i^2 = \frac{n^2+n}m\{2}\]
-
-A MathML inline formula:
-<math>
-  <mi>E</mi><mo>=</mo><mrow><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow>
-</math>
-
-A MathML block formula:
-
-<math display="block">
-  <mi>E</mi><mo>=</mo><mrow><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow>
-</math>
+{mathjax-example}
 
 NOTE: Don't forget to escape any Rimu macro invocations in the math
 formulas (for example, `\{i=0}` and `\{2}` in the LaTeX formula).
@@ -418,13 +398,9 @@ exclude lines of source text:
   {macro=two} Included if macro value is 'two'.
   {macro=\d+} Included if macro value is a number.
 
-NOTE: Rimu elements are recognized before macro expansion -- you
-cannot include macro invocations in element delimiters. For example,
-this is a valid HTML block:
-
-  <script {highlightjs!} src="highlight.min.js"></script>
-
-This is not and will be interpereted as a normal paragraph:
+- Block elements can be prefixed with an inlusion macro (works because
+  lines starting with a macro invocation are preprocessed). For
+  example:
 
   {highlightjs!}<script src="highlight.min.js"></script>
 
@@ -441,8 +417,8 @@ The `rimuc` `--styled` option includes
 <http://getbootstrap.com/css/#tables|Bootstrap tables classes> to
 create nicely formatted tables.
 
-For example, this table:
-
+.-macros
+{tables-example} = '
 <table class="table table-bordered">
   <tbody>
     <tr>
@@ -484,54 +460,15 @@ Lobortis lacus vestibulum sem.
 </td>
     </tr>
   </tbody>
-</table>
+</table>'
+
+For example, this table:
+
+{tables-example}
 
 Was generated from this Rimu source:
 
---
-<table class="table table-bordered">
-  <tbody>
-    <tr>
-<td style="width: 50%;">
-
-.text-info
-*Lorem ipsum dolor*. Sit amet venenatis. Erat nulla arcu. Lorem luctus
-sem. Mauris vitae ipsum. Donec dui ac ridiculus quisque proin.
-Lobortis lacus vestibulum sem.
-
-===== Normal paragraph
-Lorem ipsum dolor. Sit `amet venenatis`. Erat nulla arcu. Lorem luctus
-sem. _Mauris vitae_ ipsum. Donec dui ac ridiculus {mark|quisque} proin.
-Lobortis lacus vestibulum sem.
-
-===== Indented paragraph
-  Neque a massa. Porttitor consectetuer commodo. Nunc nulla tempor
-  tempor enim ornare. Mi nam id. Ornare mauris tempor. Pede mauris
-  sed.  Scelerisque feugiat massa alias.
-
-</td>
-<td style="width: 50%;">
-
-- Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu
-- lorem dolor fusce nec.
-  * Sit pretium quisque in wisi lobortis.
-  * Ac curabitur elementum.
-    ** Platea ad diam arcu vitae fermentum.
-       1. Eu lorem nulla.
-       2. In suspendisse at dapibus nostra est.
-          .. Montes adipiscing sodales.
-    ** Pellentesque nibh sit.
-
-- Augue et dui malesuada purus.
-
-  If a list item is followed by an indented paragraph the indented
-  paragraph is included in the list item.
-
-</td>
-    </tr>
-  </tbody>
-</table>
---
+{example-code-listing|tables-example}
 
 
 == Macro meta-programming
@@ -541,6 +478,8 @@ links and table of contents entries from a section identifier and
 title.
 
 The following Rimu markup:
+
+// Had to be explicitly escaped -- meta-macro in meta-macro no can do.
 
 --
 // Macro to generate section link, header and TOC entry macros.

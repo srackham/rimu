@@ -495,9 +495,9 @@ exports['Documents'] = function(test) {
       '<p>foobar</p>',
       'meta-macro (macro definition that generates macro definitions)');
   test.equal(Rimu.render(
-      "{v}='foo'\\\nbar'\n{v}"),
-      "<p>foo'\nbar</p>",
-      'macro definition with backslash continuation');
+      "{v}='foo' \\\nfoo' \\\\\nbar'\n{v}"),
+      "<p>foo'\nfoo'<br>\nbar</p>",
+      'macro definition with backslash continuation and escaped continuation');
   test.equal(Rimu.render(
       "{v}='foo'\n{v1}='\\{v} {v}'\n{v1}\n\n{v}='bar'\n{v1}"),
       "<p>foo foo</p>\n<p>bar foo</p>",

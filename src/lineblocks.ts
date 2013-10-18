@@ -122,7 +122,7 @@ module Rimu.LineBlocks {
       specials: true,
     },
     // Block Attributes.
-    // Syntax: .[class names][#id][[html-attributes]][block-options...]
+    // Syntax: .class-names #id [html-attributes] block-options
     {
       name: 'attributes',
       match: /^\\?\.[a-zA-Z#\[+-].*$/,

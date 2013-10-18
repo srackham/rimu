@@ -174,11 +174,12 @@ image elements flow inline like text (this is because the HTML <code>img</code>
 element is an "inline block" element), you can flow them vertically by
 enclosing them in a <em>Division Block</em> (HTML <code>div</code> element), for
 example:</p>
-<pre>&lt;image:http://www.w3.org/Icons/w3c_home.png|W3C logo&gt;
+<pre><code>
+&lt;image:http://www.w3.org/Icons/w3c_home.png|W3C logo&gt;
 ..
 .#big-logo [width="150"]
 &lt;image:http://www.w3.org/Icons/w3c_home.png|W3C logo&gt;
-..</pre>
+..</code></pre>
 <p>Renders:</p>
 <img src="http://www.w3.org/Icons/w3c_home.png" alt="W3C logo">
 <div><img id="big-logo" width="150" src="http://www.w3.org/Icons/w3c_home.png" alt="W3C logo"></div>
@@ -312,8 +313,8 @@ hi def link rimuSpanDeleted Todo</code></pre>
 </li><li>Quotes
 </li><li>Replacements
 </li><li>Special characters
-</li></ol><p>Substitutions in <em>Delmited Block</em> and <em>Paragraph</em> elements can be
-controlled using <em>block-options</em> in the <em>Block Attributes</em> element.</p>
+</li></ol><p>Substitutions in multi-line block elements can be controlled using
+<em>block-options</em> in the <em>Block Attributes</em> element.</p>
 <h2>Using Macro, Replacement and Quote definitions in Safe Mode</h2>
 <p><em>Macro</em>, <em>Replacement</em> and <em>Quote</em> definitions are not processed in
 Safe Mode. To apply Macro, Replacement or Quote definitions to Rimu
@@ -321,10 +322,6 @@ markup processed in Safe Mode you need to load the definitions with a
 separate API call, for example:</p>
 <pre><code>Rimu.render(trusted_rimu_definitions); // safeMode is off by default.
 var html = Rimu.render(untrusted_rimu_markup, {safeMode: 1});</code></pre>
-<h2>Escaping Macro and Replacement parameters</h2>
-<p>You can escape <code>$1</code>, <code>$2</code>&hellip; parameters in <em>Macro</em> and <em>Replacement</em>
-definitions by using the <code>&amp;dollar;</code> character entity instead of the
-dollar character.</p>
 <h2>Modifying built-in Quotes and Replacements</h2>
 <p>You can (with <a href="#defs-warning">caveats</a>) redefine built-in <em>Quotes</em> and
 <em>Replacements</em>, here are a couple of examples:</p>
@@ -339,7 +336,8 @@ and
 <a href="http://www.mathjax.org/">MathJax</a>. The <code>rimuc</code> command <code>--styled</code>
 option will include MathJax support if the <code>{mathjax}</code> macro is
 defined. For example, this Rimu source:</p>
-<pre><code>{mathjax} = 'yes'
+<pre><code>
+{mathjax} = 'yes'
 
 A LaTeX inline formula: \(\sum_\{i=0}^n i^2 = \frac{n^2+n}m\{2}\)
 
@@ -356,7 +354,9 @@ A MathML block formula:
 
 &lt;math display="block"&gt;
   &lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mrow&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;msup&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;/mrow&gt;
-&lt;/math&gt;</code></pre>
+&lt;/math&gt;
+
+</code></pre>
 <p>Renders:</p>
 <p>A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\)</p>
 <p>A LaTeX block formula:</p>
@@ -383,13 +383,11 @@ exclude lines of source text:</p>
 <pre>{macro=one} Included if macro value is 'one'.
 {macro=two} Included if macro value is 'two'.
 {macro=\d+} Included if macro value is a number.</pre>
-</li></ul><p><b>NOTE</b>: Rimu elements are recognized before macro expansion &mdash; you
-cannot include macro invocations in element delimiters. For example,
-this is a valid HTML block:</p>
-<pre>&lt;script {highlightjs!} src="highlight.min.js"&gt;&lt;/script&gt;</pre>
-<p>This is not and will be interpereted as a normal paragraph:</p>
+</li><li>Block elements can be prefixed with an inlusion macro (works because
+  lines starting with a macro invocation are preprocessed). For
+  example:
 <pre>{highlightjs!}&lt;script src="highlight.min.js"&gt;&lt;/script&gt;</pre>
-<h2>Tables</h2>
+</li></ul><h2>Tables</h2>
 <p>Create tables using the HTML table syntax (Rimu has no special syntax
 for tables).</p>
 <p>You can use Rimu markup in table cells, just remember that HTML blocks
@@ -433,7 +431,8 @@ paragraph is included in the list item.</pre>
   </tbody>
 </table>
 <p>Was generated from this Rimu source:</p>
-<pre><code>&lt;table class="table table-bordered"&gt;
+<pre><code>
+&lt;table class="table table-bordered"&gt;
   &lt;tbody&gt;
     &lt;tr&gt;
 &lt;td style="width: 50%;"&gt;

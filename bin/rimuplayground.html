@@ -350,8 +350,8 @@ Syntax:
 - The `[html-attributes]` section is ignored if the API _safeMode_
   option is not zero (see the _API_ topic).
 - The following `block-options` can be used to modify the behavior of
-  multi-line block elements (delimited blocks, paragraphs, macro
-  definitions and HTML):
+  multi-line block elements (delimited blocks, paragraphs, multi-line
+  macro definitions and HTML):
 
   `+macros`:: Enable macro expansion.
   `-macros`:: Disable macro expansion.
@@ -606,7 +606,7 @@ Invocation syntax:
 - A _Macro Line_ block element is a line starting with a  macro
   invocation, the macros are expanded before other block elements are
   processed. This feature allows macros to inject arbitrary Rimu
-  markup into the source stream as well as allowing  single-line block
+  markup into the source stream as well as allowing block
   elements to be prefixed with _Inclusion_ macros.
 - _Parametrized_ macro invocations replace the `$1`, `$2` ...
   parameter names in the macro parametrized definition with the
