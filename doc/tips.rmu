@@ -141,8 +141,7 @@ element is an "inline block" element), you can flow them vertically by
 enclosing them in a _Division Block_ (HTML `div` element), for
 example:
 
-{block-images-example} = '
-<image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
+{block-images-example} = '<image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
 ..
 .#big-logo [width="150"]
 <image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
@@ -348,8 +347,7 @@ option will include MathJax support if the `\{mathjax}` macro is
 defined. For example, this Rimu source:
 
 .-macros
-{mathjax-example} = '
-{mathjax} = 'yes'\
+{mathjax-example} = '{mathjax} = 'yes'\
 
 A LaTeX inline formula: \(\sum_\{i=0}^n i^2 = \frac{n^2+n}m\{2}\)
 
@@ -366,9 +364,7 @@ A MathML block formula:
 
 <math display="block">
   <mi>E</mi><mo>=</mo><mrow><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow>
-</math>
-
-'
+</math>'
 
 {example-code-listing|mathjax-example}
 
@@ -399,9 +395,9 @@ exclude lines of source text:
   {macro=two} Included if macro value is 'two'.
   {macro=\d+} Included if macro value is a number.
 
-- Output generating block elements can be prefixed with an inlusion
-  macro (works because lines starting with a macro invocation are
-  preprocessed). For example:
+- Output generating block elements can be prefixed with an _Inlusion_
+  macro (this is because _Macro Line_ elements are processed first).
+  For example:
 
   {highlightjs!}<script src="highlight.min.js"></script>
 
@@ -419,8 +415,7 @@ The `rimuc` `--styled` option includes
 create nicely formatted tables.
 
 .-macros
-{tables-example} = '
-<table class="table table-bordered">
+{tables-example} = '<table class="table table-bordered">
   <tbody>
     <tr>
 <td style="width: 50%;">
@@ -478,23 +473,20 @@ good example of this is the generation of document section headers,
 links and table of contents entries from a section identifier and
 title.
 
-The following Rimu markup:
-
-// Had to be explicitly escaped -- meta-macro in meta-macro no can do.
-
---
-// Macro to generate section link, header and TOC entry macros.
+.-macros
+{meta-macros-example} = '// Macro to generate section link, header and TOC entry macros.
 // $1 = section ID, $2 = section title.
-{section-definition} = '
-{$1} = '<#$1|$2>' \
+{section-definition} = '\
+{$1} = '<#$1|$2>' \\
 {$1-header} = '<<#$1>>
-== $2' \
-{$1-toc} = '{$1} \' \
-'
+== $2' \\
+{$1-toc} = '{$1} \' \\
+'\
 // Generate section macros.
 {section-definition|section1|Section One}
 {section-definition|section2|Section Two}
 
+""
 ==== Table of Contents
 {section1-toc}
 {section2-toc}
@@ -506,36 +498,16 @@ Link to {section2}.
 // Section Two section.
 {section2-header}
 Link to {section1}.
---
+
+""'
+
+The following Rimu markup:
+
+{example-code-listing|meta-macros-example}
 
 Renders:
 
-// Macro to generate section link, header and TOC entry macros.
-// $1 = section ID, $2 = section title.
-{section-definition} = '
-{$1} = '<#$1|$2>' \
-{$1-header} = '<<#$1>>
-== $2' \
-{$1-toc} = '{$1} \' \
-'
-// Generate section macros.
-{section-definition|section1|Section One}
-{section-definition|section2|Section Two}
-
-""
-==== Table of Contents
-{section1-toc}
-{section2-toc}
-
-// Section One section.
-{section1-header}
-Link to {section2}.
-
-// Section Two section.
-{section2-header}
-Link to {section1}.
-
-""
+{meta-macros-example}
 
 Note the use of the backslash character to continue macro definition
 lines that end with a single-quote.
@@ -544,13 +516,22 @@ lines that end with a single-quote.
 == Macro tips
 - Use the `&vert;` character entity to display a `|` character inside
   a macro parameter value.
-- Macro parameter names (`$1`,`$2`...) in macro definitions are only
-  expanded by parametrized invocations.
 - Closing block delimiters must be explicit and cannot be sourced from
   a macro invocation (because Rimu elements are recognized before
   macro expansion).
-- Definition elements (elements that do not generate output) cannot be
-  prefixed with an inclusion macro (see
+- The contents of a macro can be rendered verbatim in a code block by
+  enabling macro expansion. For example:
+..
+----
+.+macros
+--
+{example-42}
+--
+----
+
+The contents of `\{example-42}` are not subject to macro expansion.
+..
+- Definition elements cannot be prefixed with an Inclusion macro (see
   <#conditional-inclusion|Conditional Inclusion>).
 - Macro invocations in macro definition values are expanded when the
   macro is declared, not when it is invoked. You can defer evaluation

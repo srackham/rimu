@@ -1,5 +1,6 @@
 module Rimu.DelimitedBlocks {
 
+  // Multi-line block element definition.
   export interface Definition {
     name?: string;      // Optional unique identifier.
     openMatch: RegExp;  // $1 (if defined) is prepended to block content.
@@ -33,7 +34,7 @@ module Rimu.DelimitedBlocks {
         // Set macro.
         // Get the macro name from the match in the first line of the block.
         var name = match[0].match(/^\{([\w\-]+)\}/)[1];
-        text = text.replace(/(' *[\\]*)\\\n/g, '$1\n'); // Unescape line-continuations and escaped line-continuations.
+        text = text.replace(/(' *[\\]*)\\\n/g, '$1\n'); // Unescape line-continuations (and escaped line-continuations).
         text = text.replace(/ +\n/g, '\n');             // Strip trailing spaces.
         text = replaceInline(text, expansionOptions);   // Expand macro invocations.
         Macros.setValue(name, text);

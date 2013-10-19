@@ -80,13 +80,11 @@
     <li><a href="https://npmjs.org/package/rimu">npm</a></li>
   </ul>
 
-// Macro to render code listing from source in macro $1.
-// The Rimu source does not need to be escaped, so it's a bit tricky.
-.-macros
-{example-code-listing} = '{temp} = '----
+// Macro to render code listing from content macro $1.
+{example-code-listing} = '.+macros
+----
 {$1}
-----'\
-{temp|$1}'
+----'
 
 // Macro to generate two cell examples table.
 // $1 = name of example content macro.
@@ -97,8 +95,10 @@
 <th style="width:50%;">Rendered HTML</th>
 </tr></thead><tbody><tr><td style="width: 50%; padding: 4px;">
 
-.[style="border:none; background-color:inherit;"]
-{example-code-listing|$1}
+.[style="border:none; background-color:inherit;"] +macros
+----
+{$1}
+----
 
 </td><td style="width:50%; padding: 4px;">
 
