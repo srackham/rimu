@@ -172,16 +172,25 @@ topic) makes it much easier to spot syntax errors.</p>
 <p>Unless they are separated by other block elements, multiple block
 image elements flow inline like text (this is because the HTML <code>img</code>
 element is an "inline block" element), you can flow them vertically by
-enclosing them in a <em>Division Block</em> (HTML <code>div</code> element), for
+enclosing them in a <em>Division Block</em> (HTML <code>div</code> element). For
 example:</p>
-<pre><code>&lt;image:http://www.w3.org/Icons/w3c_home.png|W3C logo&gt;
+<table class="example table table-bordered">
+<tbody>
+<tr>
+<td style="width:10%; color:#527bbd; font-weight:bold;">Rimu source</td>
+<td>
+<pre style="border:none; background-color:inherit;"><code>&lt;image:http://www.w3.org/Icons/w3c_home.png|W3C logo&gt;
 ..
 .#big-logo [width="150"]
 &lt;image:http://www.w3.org/Icons/w3c_home.png|W3C logo&gt;
 ..</code></pre>
-<p>Renders:</p>
+</td>
+</tr>
+<tr><td style="width:10%; color:#527bbd; font-weight:bold;">Rendered HTML</td>
+<td>
 <img src="http://www.w3.org/Icons/w3c_home.png" alt="W3C logo">
 <div><img id="big-logo" width="150" src="http://www.w3.org/Icons/w3c_home.png" alt="W3C logo"></div>
+</td></tr></table>
 <h2>Entering non-ASCII characters</h2>
 <p>A number of non-ASCII Unicode characters are commonly used for
 punctuation e.g.  em dash, ellipsis and quotation characters. You can
@@ -334,8 +343,13 @@ and
 <p>You can include math formulas written in LaTeX or MathML using
 <a href="http://www.mathjax.org/">MathJax</a>. The <code>rimuc</code> command <code>--styled</code>
 option will include MathJax support if the <code>{mathjax}</code> macro is
-defined. For example, this Rimu source:</p>
-<pre><code>{mathjax} = 'yes'
+defined. Examples:</p>
+<table class="example table table-bordered">
+<tbody>
+<tr>
+<td style="width:10%; color:#527bbd; font-weight:bold;">Rimu source</td>
+<td>
+<pre style="border:none; background-color:inherit;"><code>{mathjax} = 'yes'
 
 A LaTeX inline formula: \(\sum_\{i=0}^n i^2 = \frac{n^2+n}m\{2}\)
 
@@ -353,7 +367,10 @@ A MathML block formula:
 &lt;math display="block"&gt;
   &lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mrow&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;msup&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;/mrow&gt;
 &lt;/math&gt;</code></pre>
-<p>Renders:</p>
+</td>
+</tr>
+<tr><td style="width:10%; color:#527bbd; font-weight:bold;">Rendered HTML</td>
+<td>
 <p>A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\)</p>
 <p>A LaTeX block formula:</p>
 <p>\[\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\]</p>
@@ -365,6 +382,7 @@ A MathML block formula:
 <math display="block">
   <mi>E</mi><mo>=</mo><mrow><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow>
 </math>
+</td></tr></table>
 <p><b>NOTE</b>: Don't forget to escape any Rimu macro invocations in the math
 formulas (for example, <code>{i=0}</code> and <code>{2}</code> in the LaTeX formula).</p>
 <p>See the <a href="http://docs.mathjax.org/en/latest/">latest MathJax
@@ -392,43 +410,13 @@ must start at the left margin and end with a blank line.</p>
 <p>The <code>rimuc</code> <code>--styled</code> option includes
 <a href="http://getbootstrap.com/">Bootstrap</a> so you can use
 <a href="http://getbootstrap.com/css/#tables">Bootstrap tables classes</a> to
-create nicely formatted tables.</p>
-<p>For example, this table:</p>
-<table class="table table-bordered">
-  <tbody>
-    <tr>
-<td style="width: 50%;">
-<p class="text-info"><strong>Lorem ipsum dolor</strong>. Sit amet venenatis. Erat nulla arcu. Lorem luctus
-sem. Mauris vitae ipsum. Donec dui ac ridiculus quisque proin.
-Lobortis lacus vestibulum sem.</p>
-<h5>Normal paragraph</h5>
-<p>Lorem ipsum dolor. Sit <code>amet venenatis</code>. Erat nulla arcu. Lorem luctus
-sem. <em>Mauris vitae</em> ipsum. Donec dui ac ridiculus <mark>quisque</mark> proin.
-Lobortis lacus vestibulum sem.</p>
-<h5>Indented paragraph</h5>
-<pre>Neque a massa. Porttitor consectetuer commodo. Nunc nulla tempor
-tempor enim ornare. Mi nam id. Ornare mauris tempor. Pede mauris
-sed.  Scelerisque feugiat massa alias.</pre>
-</td>
-<td style="width: 50%;">
-<ul><li>Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu
-</li><li>lorem dolor fusce nec.
-<ul><li>Sit pretium quisque in wisi lobortis.
-</li><li>Ac curabitur elementum.
-<ul><li>Platea ad diam arcu vitae fermentum.
-<ol><li>Eu lorem nulla.
-</li><li>In suspendisse at dapibus nostra est.
-<ol><li>Montes adipiscing sodales.
-</li></ol></li></ol></li><li>Pellentesque nibh sit.
-</li></ul></li></ul></li><li>Augue et dui malesuada purus.
-<pre>If a list item is followed by an indented paragraph the indented
-paragraph is included in the list item.</pre>
-</li></ul></td>
-    </tr>
-  </tbody>
-</table>
-<p>Was generated from this Rimu source:</p>
-<pre><code>&lt;table class="table table-bordered"&gt;
+create nicely formatted tables. For example:</p>
+<table class="example table table-bordered">
+<tbody>
+<tr>
+<td style="width:10%; color:#527bbd; font-weight:bold;">Rimu source</td>
+<td>
+<pre style="border:none; background-color:inherit;"><code>&lt;table class="table table-bordered"&gt;
   &lt;tbody&gt;
     &lt;tr&gt;
 &lt;td style="width: 50%;"&gt;
@@ -470,13 +458,55 @@ Lobortis lacus vestibulum sem.
     &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;</code></pre>
+</td>
+</tr>
+<tr><td style="width:10%; color:#527bbd; font-weight:bold;">Rendered HTML</td>
+<td>
+<table class="table table-bordered">
+  <tbody>
+    <tr>
+<td style="width: 50%;">
+<p class="text-info"><strong>Lorem ipsum dolor</strong>. Sit amet venenatis. Erat nulla arcu. Lorem luctus
+sem. Mauris vitae ipsum. Donec dui ac ridiculus quisque proin.
+Lobortis lacus vestibulum sem.</p>
+<h5>Normal paragraph</h5>
+<p>Lorem ipsum dolor. Sit <code>amet venenatis</code>. Erat nulla arcu. Lorem luctus
+sem. <em>Mauris vitae</em> ipsum. Donec dui ac ridiculus <mark>quisque</mark> proin.
+Lobortis lacus vestibulum sem.</p>
+<h5>Indented paragraph</h5>
+<pre>Neque a massa. Porttitor consectetuer commodo. Nunc nulla tempor
+tempor enim ornare. Mi nam id. Ornare mauris tempor. Pede mauris
+sed.  Scelerisque feugiat massa alias.</pre>
+</td>
+<td style="width: 50%;">
+<ul><li>Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu
+</li><li>lorem dolor fusce nec.
+<ul><li>Sit pretium quisque in wisi lobortis.
+</li><li>Ac curabitur elementum.
+<ul><li>Platea ad diam arcu vitae fermentum.
+<ol><li>Eu lorem nulla.
+</li><li>In suspendisse at dapibus nostra est.
+<ol><li>Montes adipiscing sodales.
+</li></ol></li></ol></li><li>Pellentesque nibh sit.
+</li></ul></li></ul></li><li>Augue et dui malesuada purus.
+<pre>If a list item is followed by an indented paragraph the indented
+paragraph is included in the list item.</pre>
+</li></ul></td>
+    </tr>
+  </tbody>
+</table>
+</td></tr></table>
 <h2>Macro meta-programming</h2>
 <p>You can define macros which, when invoked, generate other macros. A
 good example of this is the generation of document section headers,
 links and table of contents entries from a section identifier and
-title.</p>
-<p>The following Rimu markup:</p>
-<pre><code>// Macro to generate section link, header and TOC entry macros.
+title:</p>
+<table class="example table table-bordered">
+<tbody>
+<tr>
+<td style="width:10%; color:#527bbd; font-weight:bold;">Rimu source</td>
+<td>
+<pre style="border:none; background-color:inherit;"><code>// Macro to generate section link, header and TOC entry macros.
 // $1 = section ID, $2 = section title.
 {section-definition} = '
 {$1} = '&lt;#$1|$2&gt;' \
@@ -488,7 +518,6 @@ title.</p>
 {section-definition|section1|Section One}
 {section-definition|section2|Section Two}
 
-""
 ==== Table of Contents
 {section1-toc}
 {section2-toc}
@@ -499,11 +528,12 @@ Link to {section2}.
 
 // Section Two section.
 {section2-header}
-Link to {section1}.
-
-""</code></pre>
-<p>Renders:</p>
-<blockquote><h4>Table of Contents</h4>
+Link to {section1}.</code></pre>
+</td>
+</tr>
+<tr><td style="width:10%; color:#527bbd; font-weight:bold;">Rendered HTML</td>
+<td>
+<h4>Table of Contents</h4>
 <p><a href="#section1">Section One</a><br>
 <a href="#section2">Section Two</a><br></p>
 <div id="section1"></div>
@@ -511,7 +541,8 @@ Link to {section1}.
 <p>Link to <a href="#section2">Section Two</a>.</p>
 <div id="section2"></div>
 <h2>Section Two</h2>
-<p>Link to <a href="#section1">Section One</a>.</p></blockquote>
+<p>Link to <a href="#section1">Section One</a>.</p>
+</td></tr></table>
 <p>Note the use of the backslash character to continue macro definition
 lines that end with a single-quote.</p>
 <h2>Macro tips</h2>
@@ -548,8 +579,7 @@ lines that end with a single-quote.</p>
 CSS attribute</a> allows you to define CSS outside the document header.
 This allows you to include CSS in the body of a Rimu document which is
 very handy for tweaking the default CSS and for styling Rimu block
-elements.</p>
-<h4>Examples:</h4>
+elements. Examples:</p>
 <table class="example table table-bordered"><thead><tr style="color:#527bbd;">
 <th style="width:50%;">Rimu source</th>
 <th style="width:50%;">Rendered HTML</th>

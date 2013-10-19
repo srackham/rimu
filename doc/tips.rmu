@@ -138,7 +138,7 @@ topic) makes it much easier to spot syntax errors.
 Unless they are separated by other block elements, multiple block
 image elements flow inline like text (this is because the HTML `img`
 element is an "inline block" element), you can flow them vertically by
-enclosing them in a _Division Block_ (HTML `div` element), for
+enclosing them in a _Division Block_ (HTML `div` element). For
 example:
 
 {block-images-example} = '<image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
@@ -147,11 +147,7 @@ example:
 <image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
 ..'
 
-{example-code-listing|block-images-example}
-
-Renders:
-
-{block-images-example}
+{generate-rendered-example-2|block-images-example}
 
 
 == Entering non-ASCII characters
@@ -344,7 +340,7 @@ and
 You can include math formulas written in LaTeX or MathML using
 <http://www.mathjax.org/|MathJax>. The `rimuc` command `--styled`
 option will include MathJax support if the `\{mathjax}` macro is
-defined. For example, this Rimu source:
+defined. Examples:
 
 .-macros
 {mathjax-example} = '{mathjax} = 'yes'\
@@ -366,11 +362,7 @@ A MathML block formula:
   <mi>E</mi><mo>=</mo><mrow><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow>
 </math>'
 
-{example-code-listing|mathjax-example}
-
-Renders:
-
-{mathjax-example}
+{generate-rendered-example-2|mathjax-example}
 
 NOTE: Don't forget to escape any Rimu macro invocations in the math
 formulas (for example, `\{i=0}` and `\{2}` in the LaTeX formula).
@@ -412,7 +404,7 @@ must start at the left margin and end with a blank line.
 The `rimuc` `--styled` option includes
 <http://getbootstrap.com/|Bootstrap> so you can use
 <http://getbootstrap.com/css/#tables|Bootstrap tables classes> to
-create nicely formatted tables.
+create nicely formatted tables. For example:
 
 .-macros
 {tables-example} = '<table class="table table-bordered">
@@ -458,20 +450,14 @@ Lobortis lacus vestibulum sem.
   </tbody>
 </table>'
 
-For example, this table:
-
-{tables-example}
-
-Was generated from this Rimu source:
-
-{example-code-listing|tables-example}
+{generate-rendered-example-2|tables-example}
 
 
 == Macro meta-programming
 You can define macros which, when invoked, generate other macros. A
 good example of this is the generation of document section headers,
 links and table of contents entries from a section identifier and
-title.
+title:
 
 .-macros
 {meta-macros-example} = '// Macro to generate section link, header and TOC entry macros.
@@ -486,7 +472,6 @@ title.
 {section-definition|section1|Section One}
 {section-definition|section2|Section Two}
 
-""
 ==== Table of Contents
 {section1-toc}
 {section2-toc}
@@ -497,17 +482,9 @@ Link to {section2}.
 
 // Section Two section.
 {section2-header}
-Link to {section1}.
+Link to {section1}.'
 
-""'
-
-The following Rimu markup:
-
-{example-code-listing|meta-macros-example}
-
-Renders:
-
-{meta-macros-example}
+{generate-rendered-example-2|meta-macros-example}
 
 Note the use of the backslash character to continue macro definition
 lines that end with a single-quote.
@@ -563,7 +540,7 @@ HTML5's <http://www.w3schools.com/tags/att\_style\_scoped.asp|scoped
 CSS attribute> allows you to define CSS outside the document header.
 This allows you to include CSS in the body of a Rimu document which is
 very handy for tweaking the default CSS and for styling Rimu block
-elements.
+elements. Examples:
 
 {scoped-css-example} = '<style type="text/css" scoped>
 .verse {
@@ -614,7 +591,8 @@ consectetuer commodo. Nunc mauris
 tempor. Pede mauris sed.
 Scelerisque feugiat massa alias.
 ..'
-{generate-rendered-example|scoped-css-example}
+
+{generate-rendered-example-1|scoped-css-example}
 
 You can put your library of shared CSS styles in a macro definition in
 `~/.rimurc` then include it in your documents with a single macro

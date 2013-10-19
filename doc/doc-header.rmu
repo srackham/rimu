@@ -86,10 +86,10 @@
 {$1}
 ----'
 
-// Macro to generate two cell examples table.
+// Macro to generate Rimu markup and rendered example (stacked horizontally).
 // $1 = name of example content macro.
 .-macros
-{generate-rendered-example} = '==== Examples:
+{generate-rendered-example-1} = '
 <table class="example table table-bordered"><thead><tr style="color:#527bbd;">
 <th style="width:50%;">Rimu source</th>
 <th style="width:50%;">Rendered HTML</th>
@@ -108,3 +108,27 @@
 
 '
 
+// Macro to generate Rimu markup and rendered example (stacked vertically).
+// $1 = name of example content macro.
+.-macros
+{generate-rendered-example-2} = '
+<table class="example table table-bordered">
+<tbody>
+<tr>
+<td style="width:10%; color:#527bbd; font-weight:bold;">Rimu source</td>
+<td>
+
+.[style="border:none; background-color:inherit;"] +macros
+----
+{$1}
+----
+</td>
+</tr>
+<tr><td style="width:10%; color:#527bbd; font-weight:bold;">Rendered HTML</td>
+<td>
+
+{$1}
+
+</td></tr></table>
+
+'
