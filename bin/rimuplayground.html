@@ -245,9 +245,10 @@ and closing delimiter lines.
 *Code Block*
 
 - -
-A code block expands macro invocations but all other inline
-elements are rendered verbatim. Rendered with  HTML <pre><code>
-elements.
+By default the all text in a _Code Block_ is rendered verbatim. This
+behavior can be changed using a preceding _Block Attributes_ element.
+The generated HTML is enveloped  with  <pre><code>...</code></pre>
+tags.
 
 The delimiter lines are two or more dash characters starting at the
 left margin.
@@ -496,9 +497,10 @@ Line breaks can be escaped by prefixing a space character followed
 by a backslash character to the end of the line.
 
 ==== Indented paragraphs
-  _Indented paragraphs_ expand macro invocations but all other
-  inline elements are rendered verbatim. Indented paragraphs are
-  rendered with an HTML <pre> element.
+  By default the all text in an _Indented Paragraph__ is rendered
+  verbatim. This behavior can be changed using a preceding _Block
+  Attributes_ element.  The generated HTML is enveloped  with
+  <pre>...</pre> tags.
 
 -->
 </div>
