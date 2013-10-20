@@ -103,18 +103,31 @@ var Rimu;
     // Inject HTML attributes from LineBlocks.htmlAttributes into the opening tag.
     // Reset LineBlocks.htmlAttributes if the injection is successful.
     function injectHtmlAttributes(tag) {
-        if (!tag || !Rimu.LineBlocks.htmlAttributes) {
+        if (!tag) {
             return tag;
         }
-        var match = tag.match(/^<([a-zA-Z]+|h[1-6])(?=[ >])/);
-        if (!match) {
-            return tag;
+        if (Rimu.LineBlocks.classAttributes) {
+            if (/class="\S.*"/.test(tag)) {
+                // Inject class names into existing class attribute.
+                tag.replace(/class="(\S.*)"/, '$`class="' + Rimu.LineBlocks.classAttributes + ' $1"$\'');
+            } else {
+                // Prepend new class attribute to HTML attributes.
+                Rimu.LineBlocks.htmlAttributes = trim('class="' + Rimu.LineBlocks.classAttributes + '" ' + Rimu.LineBlocks.htmlAttributes);
+            }
         }
-        var before = tag.slice(0, match[0].length);
-        var after = tag.slice(match[0].length);
-        var result = before + ' ' + Rimu.LineBlocks.htmlAttributes + after;
+        if (Rimu.LineBlocks.htmlAttributes) {
+            var match = tag.match(/^<([a-zA-Z]+|h[1-6])(?=[ >])/);
+            if (match) {
+                var before = tag.slice(0, match[0].length);
+                var after = tag.slice(match[0].length);
+                tag = before + ' ' + Rimu.LineBlocks.htmlAttributes + after;
+            }
+        }
+
+        // Consume the attributes.
+        Rimu.LineBlocks.classAttributes = '';
         Rimu.LineBlocks.htmlAttributes = '';
-        return result;
+        return tag;
     }
     Rimu.injectHtmlAttributes = injectHtmlAttributes;
 })(Rimu || (Rimu = {}));
@@ -483,9 +496,10 @@ var Rimu;
                     if (!match) {
                         return '';
                     }
+                    LineBlocks.classAttributes = '';
                     LineBlocks.htmlAttributes = '';
                     if (match[1]) {
-                        LineBlocks.htmlAttributes += 'class="' + Rimu.trim(match[1]) + '"';
+                        LineBlocks.classAttributes = Rimu.trim(match[1]);
                     }
                     if (match[2]) {
                         LineBlocks.htmlAttributes += ' id="' + Rimu.trim(match[2]).slice(1) + '"';
@@ -515,6 +529,7 @@ var Rimu;
         ];
 
         // Globals set by Block Attributes filter.
+        LineBlocks.classAttributes = '';
         LineBlocks.htmlAttributes = '';
         LineBlocks.blockOptions = {};
 

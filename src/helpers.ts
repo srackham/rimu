@@ -62,18 +62,31 @@ module Rimu {
   // Inject HTML attributes from LineBlocks.htmlAttributes into the opening tag.
   // Reset LineBlocks.htmlAttributes if the injection is successful.
   export function injectHtmlAttributes(tag: string): string {
-    if (!tag || !LineBlocks.htmlAttributes) {
+    if (!tag) {
       return tag;
     }
-    var match = tag.match(/^<([a-zA-Z]+|h[1-6])(?=[ >])/);
-    if (!match) {
-      return tag;
+    if (LineBlocks.classAttributes) {
+      if (/class="\S.*"/.test(tag)) {
+        // Inject class names into existing class attribute.
+        tag.replace(/class="(\S.*)"/, '$`class="' + LineBlocks.classAttributes + ' $1"$\'');
+      }
+      else {
+        // Prepend new class attribute to HTML attributes.
+        LineBlocks.htmlAttributes = trim('class="' + LineBlocks.classAttributes + '" ' + LineBlocks.htmlAttributes);
+      }
     }
-    var before = tag.slice(0, match[0].length);
-    var after = tag.slice(match[0].length);
-    var result = before + ' ' + LineBlocks.htmlAttributes + after;
-    LineBlocks.htmlAttributes = '';   // Consume the attributes.
-    return result;
+    if (LineBlocks.htmlAttributes) {
+      var match = tag.match(/^<([a-zA-Z]+|h[1-6])(?=[ >])/);
+      if (match) {
+        var before = tag.slice(0, match[0].length);
+        var after = tag.slice(match[0].length);
+        tag = before + ' ' + LineBlocks.htmlAttributes + after;
+      }
+    }
+    // Consume the attributes.
+    LineBlocks.classAttributes = '';
+    LineBlocks.htmlAttributes = '';
+    return tag
   }
 
 }

@@ -72,6 +72,7 @@ declare module Rimu.LineBlocks {
         spans?: boolean;
         specials?: boolean;
     }
+    var classAttributes: string;
     var htmlAttributes: string;
     var blockOptions: Rimu.ExpansionOptions;
     function render(reader: Rimu.Reader, writer: Rimu.Writer): boolean;

@@ -137,9 +137,10 @@ module Rimu.LineBlocks {
         if (!match) {
           return '';
         }
+        classAttributes = '';
         htmlAttributes = '';
         if (match[1]) { // Class names.
-          htmlAttributes += 'class="' + trim(match[1]) + '"';
+          classAttributes = trim(match[1]);
         }
         if (match[2]) { // id.
           htmlAttributes += ' id="' + trim(match[2]).slice(1) + '"';
@@ -168,6 +169,7 @@ module Rimu.LineBlocks {
   ];
 
   // Globals set by Block Attributes filter.
+  export var classAttributes: string = '';
   export var htmlAttributes: string = '';
   export var blockOptions: ExpansionOptions = {};
 
