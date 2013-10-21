@@ -109,7 +109,7 @@ var Rimu;
         if (Rimu.LineBlocks.classAttributes) {
             if (/class="\S.*"/.test(tag)) {
                 // Inject class names into existing class attribute.
-                tag.replace(/class="(\S.*)"/, '$`class="' + Rimu.LineBlocks.classAttributes + ' $1"$\'');
+                tag = tag.replace(/class="(\S.*?)"/, 'class="' + Rimu.LineBlocks.classAttributes + ' $1"');
             } else {
                 // Prepend new class attribute to HTML attributes.
                 Rimu.LineBlocks.htmlAttributes = trim('class="' + Rimu.LineBlocks.classAttributes + '" ' + Rimu.LineBlocks.htmlAttributes);
@@ -370,6 +370,19 @@ var Rimu;
     (function (LineBlocks) {
         var defs = [
             // Prefix match with backslash to allow escaping.
+            // Delimited Block definition.
+            // name = $1, definition = $2
+            {
+                match: /^\\?\|([\w\-]+)\|\s*=\s*'(.*)'$/,
+                replacement: '',
+                filter: function (match) {
+                    if (Rimu.Options.safeMode !== 0) {
+                        return '';
+                    }
+                    Rimu.DelimitedBlocks.setDefinition(match[1], match[2]);
+                    return '';
+                }
+            },
             // Quote definition.
             // quote = $1, openTag = $2, separator = $3, closeTag = $4
             {
@@ -380,7 +393,7 @@ var Rimu;
                     if (Rimu.Options.safeMode !== 0) {
                         return '';
                     }
-                    Rimu.Quotes.set({
+                    Rimu.Quotes.setDefinition({
                         quote: match[1],
                         openTag: Rimu.replaceInline(match[2], this),
                         closeTag: Rimu.replaceInline(match[4], this),
@@ -611,6 +624,7 @@ var Rimu;
             },
             // Comment block.
             {
+                name: 'comment',
                 openMatch: /^\\?\/\*+$/,
                 closeMatch: /^\*+\/$/,
                 openTag: '',
@@ -780,6 +794,18 @@ var Rimu;
             return null;
         }
         DelimitedBlocks.getDefinition = getDefinition;
+
+        // Update existing named definition.
+        // Value syntax: <open-tag>|<close-tag>
+        function setDefinition(name, value) {
+            var def = DelimitedBlocks.getDefinition(name);
+            var match = Rimu.trim(value).match(/^(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>)$/);
+            if (match) {
+                def.openTag = match[1];
+                def.closeTag = match[2];
+            }
+        }
+        DelimitedBlocks.setDefinition = setDefinition;
 
         if (typeof exports !== 'undefined') {
             exports.DelimitedBlocks = Rimu.DelimitedBlocks;
@@ -1045,7 +1071,7 @@ var Rimu;
                 }
 
                 // Arrive here if we have a matched quote.
-                var def = Rimu.Quotes.find(match[1]);
+                var def = Rimu.Quotes.getDefinition(match[1]);
                 if (def.verify && !def.verify(match, findRe)) {
                     // Next search starts after the opening quote (not the closing quote).
                     findRe.lastIndex = match.index + 1;
@@ -1202,14 +1228,15 @@ var Rimu;
             unescapeRe = RegExp('\\\\(' + s.join('|') + ')', 'g');
         }
 
-        // Return the quote definition corresponding to 'quote' character.
-        function find(quote) {
+        // Return the quote definition corresponding to 'quote' character, return null if not found.
+        function getDefinition(quote) {
             for (var i in Quotes.defs) {
                 if (Quotes.defs[i].quote === quote)
                     return Quotes.defs[i];
             }
+            return null;
         }
-        Quotes.find = find;
+        Quotes.getDefinition = getDefinition;
 
         // Strip backslashes from quote characters.
         function unescape(s) {
@@ -1218,7 +1245,7 @@ var Rimu;
         Quotes.unescape = unescape;
 
         // Update existing or add new quote definition.
-        function set(def) {
+        function setDefinition(def) {
             for (var i in Quotes.defs) {
                 if (Quotes.defs[i].quote === def.quote) {
                     // Update existing definition.
@@ -1233,7 +1260,7 @@ var Rimu;
             Quotes.defs.unshift(def);
             initialize();
         }
-        Quotes.set = set;
+        Quotes.setDefinition = setDefinition;
 
         if (typeof exports !== 'undefined') {
             exports.Quotes = Rimu.Quotes;

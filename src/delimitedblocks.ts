@@ -43,6 +43,7 @@ module Rimu.DelimitedBlocks {
     },
     // Comment block.
     {
+      name: 'comment',
       openMatch: /^\\?\/\*+$/,
       closeMatch: /^\*+\/$/,
       openTag: '',
@@ -206,6 +207,17 @@ module Rimu.DelimitedBlocks {
       }
     }
     return null;
+  }
+
+  // Update existing named definition.
+  // Value syntax: <open-tag>|<close-tag>
+  export function setDefinition(name: string, value: string): void {
+    var def = DelimitedBlocks.getDefinition(name);
+    var match = trim(value).match(/^(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>)$/);
+    if (match) {
+      def.openTag = match[1];
+      def.closeTag = match[2];
+    }
   }
 
   // CommonJS module exports.

@@ -95,6 +95,7 @@ declare module Rimu.DelimitedBlocks {
     }
     function render(reader: Rimu.Reader, writer: Rimu.Writer): boolean;
     function getDefinition(name: string): Definition;
+    function setDefinition(name: string, value: string): void;
 }
 declare module Rimu.Lists {
     function render(reader: Rimu.Reader, writer: Rimu.Writer): boolean;
@@ -112,9 +113,9 @@ declare module Rimu.Quotes {
     }
     var defs: Definition[];
     var findRe: RegExp;
-    function find(quote: string): Definition;
+    function getDefinition(quote: string): Definition;
     function unescape(s: string): string;
-    function set(def: Definition): void;
+    function setDefinition(def: Definition): void;
 }
 declare module Rimu.Replacements {
     interface Definition {

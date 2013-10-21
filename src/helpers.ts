@@ -68,7 +68,7 @@ module Rimu {
     if (LineBlocks.classAttributes) {
       if (/class="\S.*"/.test(tag)) {
         // Inject class names into existing class attribute.
-        tag.replace(/class="(\S.*)"/, '$`class="' + LineBlocks.classAttributes + ' $1"$\'');
+        tag = tag.replace(/class="(\S.*?)"/, 'class="' + LineBlocks.classAttributes + ' $1"');
       }
       else {
         // Prepend new class attribute to HTML attributes.

@@ -65,7 +65,7 @@ module Rimu.Spans {
         continue;
       }
       // Arrive here if we have a matched quote.
-      var def = Quotes.find(match[1]);
+      var def = Quotes.getDefinition(match[1]);
       if (def.verify && !def.verify(match, findRe)) {
         // Next search starts after the opening quote (not the closing quote).
         findRe.lastIndex = match.index + 1;

@@ -49,11 +49,12 @@ module Rimu.Quotes {
     unescapeRe = RegExp('\\\\(' + s.join('|') + ')', 'g');
   }
 
-  // Return the quote definition corresponding to 'quote' character.
-  export function find(quote: string): Definition {
+  // Return the quote definition corresponding to 'quote' character, return null if not found.
+  export function getDefinition(quote: string): Definition {
     for (var i in defs) {
       if (defs[i].quote === quote) return defs[i];
     }
+    return null;
   }
 
   // Strip backslashes from quote characters.
@@ -62,7 +63,7 @@ module Rimu.Quotes {
   }
 
   // Update existing or add new quote definition.
-  export function set(def: Definition): void {
+  export function setDefinition(def: Definition): void {
     for (var i in defs) {
       if (defs[i].quote === def.quote) {
         // Update existing definition.

@@ -14,6 +14,19 @@ module Rimu.LineBlocks {
   var defs: Definition[] = [
     // Prefix match with backslash to allow escaping.
 
+    // Delimited Block definition.
+    // name = $1, definition = $2
+    {
+      match: /^\\?\|([\w\-]+)\|\s*=\s*'(.*)'$/,
+      replacement: '',
+      filter: function (match) {
+        if (Options.safeMode !== 0) {
+          return '';  // Skip if a safe mode is set.
+        }
+        DelimitedBlocks.setDefinition(match[1], match[2]);
+        return '';
+      },
+    },
     // Quote definition.
     // quote = $1, openTag = $2, separator = $3, closeTag = $4
     {
@@ -24,7 +37,7 @@ module Rimu.LineBlocks {
         if (Options.safeMode !== 0) {
           return '';  // Skip if a safe mode is set.
         }
-        Quotes.set({quote: match[1],
+        Quotes.setDefinition({quote: match[1],
           openTag: replaceInline(match[2], this),
           closeTag: replaceInline(match[4], this),
           spans: match[3] === '|'});

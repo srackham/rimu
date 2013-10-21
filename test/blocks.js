@@ -667,5 +667,11 @@ exports['Documents'] = function(test) {
       Rimu.Replacements.defs.length,
       2,
       'replacements length');
+  // Delimited Block definitions.
+  test.equal(Rimu.render(
+      '|paragraph| = \'<p class="normal">|</p>\'\nfoobar\n\n.test1 test2\nfoobar'),
+      '<p class="normal">foobar</p>\n<p class="test1 test2 normal">foobar</p>',
+      'update HTML tags and test class injection');
   test.done();
 };
+

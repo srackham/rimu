@@ -277,6 +277,26 @@ contained elements are enclosed by an HTML `<div>` element.
   list items).
 ..
 
+You can change the generated HTML using _Delimited Block definitions_.
+
+Definition syntax:
+
+  |block-name| = '<open-tags>|<close-tags>'
+
+- `block-name` is the Delmited Block name (`code`, `comment`,
+  `division`, `html`, `quote` or `paragraph`).
+- `open-tags` and `close-tags` are the HTML tags that envelope the
+  output block.
+- A Delimited Block definition must start at the left margin and must not
+  extend beyond the end of the line.
+- Delimited Block definitions are not processed if the _Safe Mode_ is
+  non-zero.
+
+The following example generates Code blocks with a `no-highlight`
+class attribute:
+
+  |code| = '<pre><code class="no-highlight">|</code></pre>'
+
 -->
 </div>
 
@@ -547,22 +567,22 @@ definitions_.
 
 Definition syntax:
 
-  quote-character = 'quote-template'
+  quote-character = '<open-tags>|<close-tags>'
 
-Where `quote-character` is a single character and `quote-template`
-specifies the markup tags that envelope the quoted output text.
-For example:
+- `quote-character` is the quote character used in the Rimu markup.
+- `open-tags` and `close-tags` are the HTML tags that envelope the
+  generated HTML.
+- If a two-bar `||` separator is used the output is rendered
+  verbatim like the built-in _code quote_.
+- A Quote definition must start at the left margin and must not
+  extend beyond the end of the line.
+- Quote definitions are not processed if the _Safe Mode_ is
+  non-zero.
+
+The following example envelopes text quoted with a tilde character
+with an HTML `del` tag:
 
   ~ = '<del>|</del>'
-
-The `|` character separates the open and close tags. If a two-bar `||`
-separator is used the quoted text is displayed verbatim like the
-built-in _code quote_.
-
-- A quote definition must start at the left margin and must not
-  extend beyond the end of the line.
-- The `quote-template` can invoke previously defined macros.
-- Quote definitions are not processed if the _Safe Mode_ is non-zero.
 
 -->
 </div>
