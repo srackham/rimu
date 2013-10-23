@@ -27,7 +27,7 @@ module Rimu.Options {
       case 3:   // Render HTML as text.
         return replaceSpecialChars(text);
       default:
-        throw 'illegal safeMode value'
+        console.error('illegal safeMode value');
     }
   }
 

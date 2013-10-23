@@ -177,7 +177,7 @@ module Rimu.LineBlocks {
   // If the next element in the reader is a valid line block render it
   // and return true, else return false.
   export function render(reader: Reader, writer: Writer): boolean {
-    if (reader.eof()) throw 'premature eof';
+    if (reader.eof()) console.error('premature eof');
     for (var i in defs) {
       var def = defs[i];
       var match = def.match.exec(reader.cursor());

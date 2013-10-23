@@ -57,7 +57,7 @@ module Rimu.Lists {
   var ids: string[];  // Stack of open list IDs.
 
   export function render(reader: Reader, writer: Writer): boolean {
-    if (reader.eof()) throw 'premature eof';
+    if (reader.eof()) console.error('premature eof');
     var startItem: ItemState;
     if (!(startItem = matchItem(reader))) {
       return false;

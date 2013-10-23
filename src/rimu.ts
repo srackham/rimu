@@ -23,7 +23,7 @@ module Rimu {
       if (LineBlocks.render(reader, writer)) continue;
       if (Lists.render(reader, writer)) continue;
       if (DelimitedBlocks.render(reader, writer)) continue;
-      throw 'no matching delimited block found';
+      console.error('no matching delimited block found');
     }
     return writer.toString();
   }
