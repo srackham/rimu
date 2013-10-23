@@ -6,7 +6,7 @@ module Rimu {
       specials?: boolean;
       container?: boolean;
       skip?: boolean;
-  };
+  }
 
   // Whitespace strippers.
   export function trimLeft(s: string): string { return s.replace(/^\s+/g,''); }
@@ -16,7 +16,7 @@ module Rimu {
   // http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
   export function escapeRegExp(s: string): string {
     return s.replace(/[\-\/\\\^$*+?.()|\[\]{}]/g, '\\$&');
-  };
+  }
 
   export function replaceSpecialChars(s: string): string {
     return s.replace(/&/g, "&amp;")

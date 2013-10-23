@@ -219,7 +219,7 @@ module Rimu.DelimitedBlocks {
           return;
         }
         if (/^[+-](macros|spans|specials|container|skip)$/.test(opt)) {
-          blockOptions[opt.slice(1)] = opt[0] === '+' ? true : false;
+          blockOptions[opt.slice(1)] = opt[0] === '+';
         }
       }
     }

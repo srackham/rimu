@@ -23,8 +23,7 @@ module Rimu {
       if (LineBlocks.render(reader, writer)) continue;
       if (Lists.render(reader, writer)) continue;
       if (DelimitedBlocks.render(reader, writer)) continue;
-      // We should never arrive here because a normal paragraph (the last
-      // delimited block) should catch all.
+      throw 'no matching delimited block found';
     }
     return writer.toString();
   }

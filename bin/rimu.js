@@ -28,8 +28,7 @@ var Rimu;
                 continue;
             if (Rimu.DelimitedBlocks.render(reader, writer))
                 continue;
-            // We should never arrive here because a normal paragraph (the last
-            // delimited block) should catch all.
+            throw 'no matching delimited block found';
         }
         return writer.toString();
     }
@@ -43,8 +42,6 @@ if (typeof exports !== 'undefined') {
 this.Rimu = Rimu;
 var Rimu;
 (function (Rimu) {
-    ;
-
     // Whitespace strippers.
     function trimLeft(s) {
         return s.replace(/^\s+/g, '');
@@ -64,7 +61,6 @@ var Rimu;
         return s.replace(/[\-\/\\\^$*+?.()|\[\]{}]/g, '\\$&');
     }
     Rimu.escapeRegExp = escapeRegExp;
-    ;
 
     function replaceSpecialChars(s) {
         return s.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;");
@@ -157,6 +153,7 @@ var Rimu;
                 case 3:
                     return Rimu.replaceSpecialChars(text);
                 default:
+                    throw 'illegal safeMode value';
             }
         }
         Options.safeModeFilter = safeModeFilter;
@@ -792,7 +789,7 @@ var Rimu;
                         return;
                     }
                     if (/^[+-](macros|spans|specials|container|skip)$/.test(opt)) {
-                        blockOptions[opt.slice(1)] = opt[0] === '+' ? true : false;
+                        blockOptions[opt.slice(1)] = opt[0] === '+';
                     }
                 }
             }
@@ -846,7 +843,7 @@ var Rimu;
             // Definition lists.
             // $1 is term, $2 is list ID, $3 is definition.
             {
-                match: /^\\?\s*(.*[^:])(\:{2,4})(|\s+.*)$/,
+                match: /^\\?\s*(.*[^:])(:{2,4})(|\s+.*)$/,
                 listOpenTag: '<dl>',
                 listCloseTag: '</dl>',
                 itemOpenTag: '<dd>',
@@ -907,7 +904,7 @@ var Rimu;
             lines.write('\n');
             reader.next();
             var nextItem;
-            nextItem = readToNext(startItem, reader, lines);
+            nextItem = readToNext(reader, lines);
             text = lines.toString();
             text = Rimu.replaceInline(text, { macros: true, spans: true });
             writer.write(text);
@@ -948,7 +945,7 @@ var Rimu;
         // Translate the list item in the reader to the writer until the next element
         // is encountered. Return 'next' containing the next element's match and
         // identity information.
-        function readToNext(item, reader, writer) {
+        function readToNext(reader, writer) {
             // The reader should be at the line following the first line of the list
             // item (or EOF).
             var next;

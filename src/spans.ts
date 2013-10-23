@@ -51,7 +51,7 @@ module Rimu.Spans {
         nextFragment = !match;
       }
       if (nextFragment) {
-        fragmentIndex++
+        fragmentIndex++;
         if (fragmentIndex >= fragments.length) {
           break;
         }
@@ -126,7 +126,7 @@ module Rimu.Spans {
         nextFragment = !match;
       }
       if (nextFragment) {
-        fragmentIndex++
+        fragmentIndex++;
         if (fragmentIndex >= fragments.length) {
           break;
         }

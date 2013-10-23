@@ -44,7 +44,7 @@ module Rimu.Lists {
     // Definition lists.
     // $1 is term, $2 is list ID, $3 is definition.
     {
-      match: /^\\?\s*(.*[^:])(\:{2,4})(|\s+.*)$/,
+      match: /^\\?\s*(.*[^:])(:{2,4})(|\s+.*)$/,
       listOpenTag: '<dl>',
       listCloseTag: '</dl>',
       itemOpenTag: '<dd>',
@@ -105,7 +105,7 @@ module Rimu.Lists {
     lines.write('\n');
     reader.next();
     var nextItem: ItemState;
-    nextItem = readToNext(startItem, reader, lines);
+    nextItem = readToNext(reader, lines);
     text = lines.toString();
     text = replaceInline(text, {macros: true, spans: true});
     writer.write(text);
@@ -150,8 +150,7 @@ module Rimu.Lists {
   // Translate the list item in the reader to the writer until the next element
   // is encountered. Return 'next' containing the next element's match and
   // identity information.
-  function readToNext(item: ItemState,
-      reader: Reader, writer: Writer): ItemState
+  function readToNext(reader: Reader, writer: Writer): ItemState
   {
     // The reader should be at the line following the first line of the list
     // item (or EOF).
@@ -197,7 +196,7 @@ module Rimu.Lists {
           reader.cursor(reader.cursor().slice(1));  // Drop backslash.
           return null;
         }
-        item.match = match
+        item.match = match;
         item.def = defs[i];
         item.id = match[match.length - 2];
         item.isListItem = true;
