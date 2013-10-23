@@ -93,7 +93,7 @@ module Rimu.Replacements {
   ];
 
   // Update existing or add new replacement definition.
-  export function set(regexp: string, flags: string, replacement: string): void {
+  export function setDefinition(regexp: string, flags: string, replacement: string): void {
     if (!/g/.test(flags)) {
       flags += 'g';
     }

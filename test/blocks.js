@@ -592,10 +592,10 @@ exports['Documents'] = function(test) {
       '',
       '+skip expansion option');
   // Quote definitions.
-  Rimu.Quotes.defs = [];
+  var quotesLength = Rimu.Quotes.defs.length;
   test.equal(Rimu.render(
       '= = \'<del>|</del>\'\n=Testing *123*='),
-      '<p><del>Testing *123*</del></p>',
+      '<p><del>Testing <strong>123</strong></del></p>',
       'new quote');
   test.equal(Rimu.render(
       '\\=Testing= 123'),
@@ -611,7 +611,7 @@ exports['Documents'] = function(test) {
       'existing quotes work in safe mode');
   test.equal(
       Rimu.Quotes.defs.length,
-      1,
+      quotesLength + 1,
       'quotes length');
   test.equal(Rimu.render(
       '#=\'<ins>|</ins>\'\n#Quote 2#', {safeMode:0}),
@@ -623,7 +623,7 @@ exports['Documents'] = function(test) {
       'update quote with no spans');
   test.equal(
       Rimu.Quotes.defs.length,
-      2,
+      quotesLength + 2,
       'quotes length');
   // Replacement definitions.
   Rimu.Replacements.defs = [];
@@ -672,6 +672,10 @@ exports['Documents'] = function(test) {
       '|paragraph| = \'<p class="normal">|</p>\'\nfoobar\n\n.test1 test2\nfoobar'),
       '<p class="normal">foobar</p>\n<p class="test1 test2 normal">foobar</p>',
       'update HTML tags and test class injection');
+  test.equal(Rimu.render(
+      "|paragraph| = '<p>|</p>'\n_Lorum_ & {ipsum}.\n\n|paragraph| = '-macros'\n\n_Lorum_ & {ipsum}.\n\n|paragraph| = '<p class=\"normal\">|</p> -spans +macros'\n\n_Lorum_ & {ipsum}."),
+      '<p><em>Lorum</em> &amp; .</p>\n<p><em>Lorum</em> &amp; {ipsum}.</p>\n<p class="normal">_Lorum_ &amp; .</p>',
+      'paragraph expansion options');
   test.done();
 };
 

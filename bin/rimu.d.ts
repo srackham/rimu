@@ -95,6 +95,7 @@ declare module Rimu.DelimitedBlocks {
     }
     function render(reader: Rimu.Reader, writer: Rimu.Writer): boolean;
     function getDefinition(name: string): Definition;
+    function setBlockOptions(blockOptions: Rimu.ExpansionOptions, options: string): void;
     function setDefinition(name: string, value: string): void;
 }
 declare module Rimu.Lists {
@@ -124,5 +125,5 @@ declare module Rimu.Replacements {
         filter?: (match: RegExpExecArray) => string;
     }
     var defs: Definition[];
-    function set(regexp: string, flags: string, replacement: string): void;
+    function setDefinition(regexp: string, flags: string, replacement: string): void;
 }

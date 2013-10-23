@@ -242,8 +242,7 @@ and closing delimiter lines.
   the number in the he opening delimiter, this feature allows
   delimited blocks of the same type to be nested.
 
-*Code Block*
-
+=== Code Block
 - -
 By default the all text in a _Code Block_ is rendered verbatim. This
 behavior can be changed using a preceding _Block Attributes_ element.
@@ -254,8 +253,7 @@ The delimiter lines are two or more dash characters starting at the
 left margin.
 - -
 
-*Quote Block*
-
+=== Quote Block
 ""
 A _Quote Block_ renders the enclosed block elements inside an HTML
 `<blockquote>` element.
@@ -264,8 +262,7 @@ The delimiter lines are two or more double-quote characters starting
 at the left margin.
 ""
 
-*Division Block*
-
+=== Division Block 
 ..
 A _Division Block_ is a container for other block elements, the
 contained elements are enclosed by an HTML `<div>` element.
@@ -277,16 +274,36 @@ contained elements are enclosed by an HTML `<div>` element.
   list items).
 ..
 
+=== Delimited Block Definitions
 You can change the generated HTML using _Delimited Block definitions_.
 
 Definition syntax:
 
-  |block-name| = '<open-tags>|<close-tags>'
+  |block-name| = '<open-tags>|<close-tags> block-options'
 
 - `block-name` is the Delmited Block name (`code`, `comment`,
   `division`, `html`, `quote` or `paragraph`).
-- `open-tags` and `close-tags` are the HTML tags that envelope the
-  output block.
+- `open-tags` and `close-tags` define the HTML tags that envelope the
+  output block. `<open-tags>|<close-tags>` is optional.
+- `block-options` is used to control the processing of multi-line
+  block element contents (delimited blocks, paragraphs, multi-line
+  macro definitions and HTML). `block-options` is optional and
+  consists of one or more of the following options (separated by
+  spaces):
+
+  `+macros`:: Enable macro expansion.
+  `-macros`:: Disable macro expansion.
+  `+spans`:: Enable span element processing.
+  `-spans`:: Disable span element processing.
+  `+specials`:: Enable special character entities.
+  `-specials`:: Disable special character entities.
+  `+container`:: The block is a container for Rimu elements.
+  `-container`:: Turn off the container option.
+  `+skip`:: Skip the block.
+  `-skip`:: Turn off the skip option.
+
+- The `-specials` option is ignored if the API _safeMode_ option is
+  not zero (see the _API_ topic).
 - A Delimited Block definition must start at the left margin and must not
   extend beyond the end of the line.
 - Delimited Block definitions are not processed if the _Safe Mode_ is
@@ -296,6 +313,11 @@ The following example generates Code blocks with a `no-highlight`
 class attribute:
 
   |code| = '<pre><code class="no-highlight">|</code></pre>'
+
+The following example disables macro expansion and spans (inline
+elements) processing in Paragraphs:
+
+  |paragraph| = '-macros -spans'
 
 -->
 </div>
@@ -370,23 +392,8 @@ Syntax:
   attributes must not extend beyond the end of the line.
 - The `[html-attributes]` section is ignored if the API _safeMode_
   option is not zero (see the _API_ topic).
-- The following `block-options` can be used to modify the behavior of
-  multi-line block elements (delimited blocks, paragraphs, multi-line
-  macro definitions and HTML):
-
-  `+macros`:: Enable macro expansion.
-  `-macros`:: Disable macro expansion.
-  `+spans`:: Enable span element processing.
-  `-spans`:: Disable span element processing.
-  `+specials`:: Enable special character entities.
-  `-specials`:: Disable special character entities.
-  `+container`:: The block is a container for Rimu elements.
-  `-container`:: Turn off the container option.
-  `+skip`:: Skip the block.
-  `-skip`:: Turn off the skip option.
-
-- The `-specials` option is ignored if the API _safeMode_ option is
-  not zero (see the _API_ topic).
+- `block-options` is used to control the processing of multi-line
+  block element contents (see _Delimited Blocks_ definitions).
 
 Here are a couple of examples of attribute elements applied to the
 paragraph block elements:

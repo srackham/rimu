@@ -58,7 +58,7 @@ module Rimu.LineBlocks {
         var flags = match[2];
         var replacement = match[3];
         replacement = replaceInline(replacement, this);
-        Replacements.set(pattern, flags, replacement);
+        Replacements.setDefinition(pattern, flags, replacement);
         return '';
       },
     },
@@ -162,20 +162,8 @@ module Rimu.LineBlocks {
           htmlAttributes += ' ' + trim(match[3].slice(1, match[3].length - 1));
         }
         htmlAttributes = trim(htmlAttributes);
-        // Parse delimited block expansion options.
         blockOptions = {};
-        if (match[4]) { // block-options.
-          var options = match[4].trim().split(/\s+/);
-          for (var i in options) {
-            var option = options[i];
-            if (Options.safeMode !== 0 && option === '-specials') {
-              return;
-            }
-            if (/^[+-](macros|spans|specials|container|skip)$/.test(option)) {
-              blockOptions[option.slice(1)] = option[0] === '+' ? true : false;
-            }
-          }
-        }
+        DelimitedBlocks.setBlockOptions(blockOptions, match[4]);
         return '';
       },
     },

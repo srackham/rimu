@@ -127,7 +127,7 @@ module Rimu.DelimitedBlocks {
       closeTag: '</p>',
       macros: true,
       spans: true,
-      specials: true, // Fall-back if spans is disabled.
+      specials: true,       // Fall-back if spans is disabled.
     },
   ];
 
@@ -209,14 +209,33 @@ module Rimu.DelimitedBlocks {
     return null;
   }
 
+  // Parse delimited block expansion options string into blockOptions.
+  export function setBlockOptions(blockOptions: ExpansionOptions, options: string ) {
+    if (options) {
+      var opts = options.trim().split(/\s+/);
+      for (var i in opts) {
+        var opt = opts[i];
+        if (Options.safeMode !== 0 && opt === '-specials') {
+          return;
+        }
+        if (/^[+-](macros|spans|specials|container|skip)$/.test(opt)) {
+          blockOptions[opt.slice(1)] = opt[0] === '+' ? true : false;
+        }
+      }
+    }
+  }
+
   // Update existing named definition.
-  // Value syntax: <open-tag>|<close-tag>
+  // Value syntax: <open-tag>|<close-tag> block-options
   export function setDefinition(name: string, value: string): void {
     var def = DelimitedBlocks.getDefinition(name);
-    var match = trim(value).match(/^(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>)$/);
+    var match = trim(value).match(/^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/);
     if (match) {
-      def.openTag = match[1];
-      def.closeTag = match[2];
+      if (match[1]) {
+        def.openTag = match[1];
+        def.closeTag = match[2];
+      }
+      setBlockOptions(def, match[3]);
     }
   }
 

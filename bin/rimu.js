@@ -416,7 +416,7 @@ var Rimu;
                     var flags = match[2];
                     var replacement = match[3];
                     replacement = Rimu.replaceInline(replacement, this);
-                    Rimu.Replacements.set(pattern, flags, replacement);
+                    Rimu.Replacements.setDefinition(pattern, flags, replacement);
                     return '';
                 }
             },
@@ -521,21 +521,8 @@ var Rimu;
                         LineBlocks.htmlAttributes += ' ' + Rimu.trim(match[3].slice(1, match[3].length - 1));
                     }
                     LineBlocks.htmlAttributes = Rimu.trim(LineBlocks.htmlAttributes);
-
-                    // Parse delimited block expansion options.
                     LineBlocks.blockOptions = {};
-                    if (match[4]) {
-                        var options = match[4].trim().split(/\s+/);
-                        for (var i in options) {
-                            var option = options[i];
-                            if (Rimu.Options.safeMode !== 0 && option === '-specials') {
-                                return;
-                            }
-                            if (/^[+-](macros|spans|specials|container|skip)$/.test(option)) {
-                                LineBlocks.blockOptions[option.slice(1)] = option[0] === '+' ? true : false;
-                            }
-                        }
-                    }
+                    Rimu.DelimitedBlocks.setBlockOptions(LineBlocks.blockOptions, match[4]);
                     return '';
                 }
             }
@@ -795,14 +782,34 @@ var Rimu;
         }
         DelimitedBlocks.getDefinition = getDefinition;
 
+        // Parse delimited block expansion options string into blockOptions.
+        function setBlockOptions(blockOptions, options) {
+            if (options) {
+                var opts = options.trim().split(/\s+/);
+                for (var i in opts) {
+                    var opt = opts[i];
+                    if (Rimu.Options.safeMode !== 0 && opt === '-specials') {
+                        return;
+                    }
+                    if (/^[+-](macros|spans|specials|container|skip)$/.test(opt)) {
+                        blockOptions[opt.slice(1)] = opt[0] === '+' ? true : false;
+                    }
+                }
+            }
+        }
+        DelimitedBlocks.setBlockOptions = setBlockOptions;
+
         // Update existing named definition.
-        // Value syntax: <open-tag>|<close-tag>
+        // Value syntax: <open-tag>|<close-tag> block-options
         function setDefinition(name, value) {
             var def = DelimitedBlocks.getDefinition(name);
-            var match = Rimu.trim(value).match(/^(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>)$/);
+            var match = Rimu.trim(value).match(/^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/);
             if (match) {
-                def.openTag = match[1];
-                def.closeTag = match[2];
+                if (match[1]) {
+                    def.openTag = match[1];
+                    def.closeTag = match[2];
+                }
+                setBlockOptions(def, match[3]);
             }
         }
         DelimitedBlocks.setDefinition = setDefinition;
@@ -1346,7 +1353,7 @@ var Rimu;
         ];
 
         // Update existing or add new replacement definition.
-        function set(regexp, flags, replacement) {
+        function setDefinition(regexp, flags, replacement) {
             if (!/g/.test(flags)) {
                 flags += 'g';
             }
@@ -1363,7 +1370,7 @@ var Rimu;
             // Add new definition at start of defs list.
             Replacements.defs.unshift({ match: new RegExp(regexp, flags), replacement: replacement });
         }
-        Replacements.set = set;
+        Replacements.setDefinition = setDefinition;
 
         if (typeof exports !== 'undefined') {
             exports.Replacements = Rimu.Replacements;

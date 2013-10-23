@@ -88,7 +88,7 @@ other browsers have PDF add-ons that perform the same function.</p>
 <a href="tips.pdf">tips.pdf</a> generated with this <a href="http://www.htmldoc.org/">HTMLDOC</a>
 command (it generates a title page and a table of contents but the
 fidelity is not as good as printing HTML to PDF from the browser):</p>
-<pre>htmldoc -f doc/tips.pdf  doc/tips.html</pre>
+<pre class="no-highlight"><code>htmldoc -f doc/tips.pdf  doc/tips.html</code></pre>
 <h2>Extend Rimu with Macros</h2>
 <p>Macros provide a simple, consistent mechanism for extending the Rimu
 markup vocabulary. For example:</p>
@@ -97,7 +97,7 @@ markup vocabulary. For example:</p>
 <tr>
 <td style="width:10%; color:#527bbd; font-weight:bold;">Rimu source</td>
 <td>
-<pre style="border:none; background-color:inherit;"><code>{sidebar} = '==== $1
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>{sidebar} = '==== $1
 .[style="padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"]'
 {info} = '&lt;span class="label label-info"&gt;$1&lt;/span&gt;'
 {heads-up} = '{info|Heads up!}'
@@ -137,13 +137,13 @@ value. It does this by linking to CSS and JavaScript files on the
 <p><em>Highlight.js</em> automatically detects the language in the code block,
 but you can also set the language explicitly by setting the code block
 class, for example:</p>
-<pre>.javascript
+<pre class="no-highlight"><code>.javascript
 --
 function die(message) {
   console.error(message);
   process.exit(1);
 }
---</pre>
+--</code></pre>
 <p>Set the <code>no-highlight</code> class too disable syntax highlighting for a
 code block.</p>
 <h2>Syntax shared with Markdown</h2>
@@ -171,7 +171,7 @@ separate file and specify it as the first Rimu source file in the
 <em>rimuc</em> command.</p>
 <p>The following example sets the HTML <em>title</em> in the <code>kotlin-notes.html</code>
 output document:</p>
-<pre>rimuc --styled --prepend "{title}='Kotlin Notes'" kotlin-notes.rmu</pre>
+<pre class="no-highlight"><code>rimuc --styled --prepend "{title}='Kotlin Notes'" kotlin-notes.rmu</code></pre>
 <h2>Syntax checker</h2>
 <p>The Vim editor syntax highlighter is a big help when writing (and
 reading) Rimu markup.</p>
@@ -189,7 +189,7 @@ example:</p>
 <tr>
 <td style="width:10%; color:#527bbd; font-weight:bold;">Rimu source</td>
 <td>
-<pre style="border:none; background-color:inherit;"><code>&lt;image:http://www.w3.org/Icons/w3c_home.png|W3C logo&gt;
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>&lt;image:http://www.w3.org/Icons/w3c_home.png|W3C logo&gt;
 ..
 .#big-logo [width="150"]
 &lt;image:http://www.w3.org/Icons/w3c_home.png|W3C logo&gt;
@@ -217,20 +217,20 @@ followed by <em>u2014</em>
 </dd><dt>Linux console input</dt><dd> Enter <em>Ctrl+Shift+U</em> followed by the hexadecimal
 character code followed by the <em>Enter</em> key.
 </dd></dl><p>Common Unicode characters:</p>
-<pre>Character     HTML entity    Hexadecimal code
+<pre class="no-highlight"><code>Character     HTML entity    Hexadecimal code
 ---------     -----------    ----------------
 —             &amp;mdash;        2014
 …             &amp;hellip;       2026
 “             &amp;ldquo;        201c
 ”             &amp;rdquo;        201d
-→             &amp;rightarrow;   2192</pre>
+→             &amp;rightarrow;   2192</code></pre>
 <p>Here's a full list of
 <a href="http://dev.w3.org/html5/html-author/charref">HTML5 character
 entities</a>.</p>
 <h2>Whitespace and Underscores in URLs</h2>
 <p>Whitespace characters are illegal in URL paths, use <em>%20</em> in place of
 spaces, for example:</p>
-<pre>&lt;file:///home/srackham/books/War%20and%20Peace.pdf|War and Peace&gt;</pre>
+<pre class="no-highlight"><code>&lt;file:///home/srackham/books/War%20and%20Peace.pdf|War and Peace&gt;</code></pre>
 <p>Underscore characters are legal in URL paths but they may be
 interpreted as Rimu emphasis quotes, you can use <em>%5F</em> in place of
 underscores or escape them with backslashes.</p>
@@ -244,7 +244,7 @@ source non-portable and less readable.</p>
 <p>Here is an example <code>.rimurc</code> file containing <em>Macro</em>, <em>Quote</em> and
 <em>Replacement</em> definitions (refer to the Rimu documentation under
 <em>Tools</em>):</p>
-<pre><code>/*
+<pre class="no-highlight"><code>/*
   Rimu Markup macro, quote and replacement definitions used by rimuc
   command.
 */
@@ -320,7 +320,7 @@ file. Vim loads this file after the distributed
 <code>~/.vim/after/syntax/rimu.vim</code> syntax file highlights the admonitions
 replacement and the strike-through quote definitions from the previous
 example <code>.rimurc</code> file:</p>
-<pre><code>syn match rimuAdmonition /^\(NOTE\|IMPORTANT\|WARNING\|TIP\):/ containedin=ALLBUT,rimuComment,rimuCodeBlock
+<pre class="no-highlight"><code>syn match rimuAdmonition /^\(NOTE\|IMPORTANT\|WARNING\|TIP\):/ containedin=ALLBUT,rimuComment,rimuCodeBlock
 hi def link rimuAdmonition Special
 
 syn match rimuSpanDeleted /\\\@&lt;!\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@&lt;!\~/ contains=rimuSpanEntity
@@ -338,12 +338,12 @@ hi def link rimuSpanDeleted Todo</code></pre>
 Safe Mode. To apply Macro, Replacement or Quote definitions to Rimu
 markup processed in Safe Mode you need to load the definitions with a
 separate API call, for example:</p>
-<pre><code>Rimu.render(trusted_rimu_definitions); // safeMode is off by default.
+<pre class="no-highlight"><code>Rimu.render(trusted_rimu_definitions); // safeMode is off by default.
 var html = Rimu.render(untrusted_rimu_markup, {safeMode: 1});</code></pre>
 <h2>Modifying built-in Quotes and Replacements</h2>
 <p>You can (with <a href="#defs-warning">caveats</a>) redefine built-in <em>Quotes</em> and
 <em>Replacements</em>, here are a couple of examples:</p>
-<pre><code>_ = '&lt;em class="emphasis"&gt;|&lt;/em&gt;'
+<pre class="no-highlight"><code>_ = '&lt;em class="emphasis"&gt;|&lt;/em&gt;'
 /\\?&lt;(\S+@[\w\.\-]+)&gt;/g = '&lt;a class="mailto" href="mailto:$1"&gt;$1&lt;/a&gt;'</code></pre>
 <p>Refer to the Rimu source files
 <a href="https://github.com/srackham/rimu/blob/master/src/quotes.ts">quotes.ts</a>
@@ -359,7 +359,7 @@ defined. Examples:</p>
 <tr>
 <td style="width:10%; color:#527bbd; font-weight:bold;">Rimu source</td>
 <td>
-<pre style="border:none; background-color:inherit;"><code>{mathjax} = 'yes'
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>{mathjax} = 'yes'
 
 .-macros
 A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\)
@@ -404,16 +404,16 @@ documentation</a> to learn how to use MathJax.</p>
 <p><em>Inclusion</em> macro invocations can be used to conditionally include and
 exclude lines of source text:</p>
 <ul><li>If-then-else logic:
-<pre>{macro=} Included if macro is undefined or value is blank.
-{macro!} Included if macro is defined and value not blank.</pre>
+<pre class="no-highlight"><code>{macro=} Included if macro is undefined or value is blank.
+{macro!} Included if macro is defined and value not blank.</code></pre>
 </li><li>Case statement logic:
-<pre>{macro=one} Included if macro value is 'one'.
+<pre class="no-highlight"><code>{macro=one} Included if macro value is 'one'.
 {macro=two} Included if macro value is 'two'.
-{macro=\d+} Included if macro value is a number.</pre>
+{macro=\d+} Included if macro value is a number.</code></pre>
 </li><li>Output generating block elements can be prefixed with an <em>Inlusion</em>
   macro (this is because <em>Macro Line</em> elements are processed first).
   For example:
-<pre>{highlightjs!}&lt;script src="highlight.min.js"&gt;&lt;/script&gt;</pre>
+<pre class="no-highlight"><code>{highlightjs!}&lt;script src="highlight.min.js"&gt;&lt;/script&gt;</code></pre>
 </li></ul><h2>Tables</h2>
 <p>Create tables using the HTML table syntax (Rimu has no special syntax
 for tables).</p>
@@ -428,7 +428,7 @@ create nicely formatted tables. For example:</p>
 <tr>
 <td style="width:10%; color:#527bbd; font-weight:bold;">Rimu source</td>
 <td>
-<pre style="border:none; background-color:inherit;"><code>&lt;table class="table table-bordered"&gt;
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>&lt;table class="table table-bordered"&gt;
   &lt;tbody&gt;
     &lt;tr&gt;
 &lt;td style="width: 50%;"&gt;
@@ -486,9 +486,9 @@ Lobortis lacus vestibulum sem.</p>
 sem. <em>Mauris vitae</em> ipsum. Donec dui ac ridiculus <mark>quisque</mark> proin.
 Lobortis lacus vestibulum sem.</p>
 <h5>Indented paragraph</h5>
-<pre>Neque a massa. Porttitor consectetuer commodo. Nunc nulla tempor
+<pre class="no-highlight"><code>Neque a massa. Porttitor consectetuer commodo. Nunc nulla tempor
 tempor enim ornare. Mi nam id. Ornare mauris tempor. Pede mauris
-sed.  Scelerisque feugiat massa alias.</pre>
+sed.  Scelerisque feugiat massa alias.</code></pre>
 </td>
 <td style="width: 50%;">
 <ul><li>Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu
@@ -501,8 +501,8 @@ sed.  Scelerisque feugiat massa alias.</pre>
 <ol><li>Montes adipiscing sodales.
 </li></ol></li></ol></li><li>Pellentesque nibh sit.
 </li></ul></li></ul></li><li>Augue et dui malesuada purus.
-<pre>If a list item is followed by an indented paragraph the indented
-paragraph is included in the list item.</pre>
+<pre class="no-highlight"><code>If a list item is followed by an indented paragraph the indented
+paragraph is included in the list item.</code></pre>
 </li></ul></td>
     </tr>
   </tbody>
@@ -518,7 +518,7 @@ title:</p>
 <tr>
 <td style="width:10%; color:#527bbd; font-weight:bold;">Rimu source</td>
 <td>
-<pre style="border:none; background-color:inherit;"><code>// Macro to generate section link, header and TOC entry macros.
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>// Macro to generate section link, header and TOC entry macros.
 // $1 = section ID, $2 = section title.
 {section-definition} = '
 {$1} = '&lt;#$1|$2&gt;' \
@@ -565,7 +565,7 @@ lines that end with a single-quote.</p>
   macro expansion).
 </li><li>The contents of a macro can be rendered verbatim in a code block by
   enabling macro expansion. For example:
-<div><pre><code>.+macros
+<div><pre class="no-highlight"><code>.+macros
 --
 {example-42}
 --</code></pre>
@@ -577,14 +577,14 @@ lines that end with a single-quote.</p>
   until the macro is invoked by escaping macro invocations or (in the
   case of multi-line definitions) by using the <code>-macros</code> <em>Block
   Attributes</em> option. For example this Rimu markup:
-<div><pre><code>{m1} = 'foo'
+<div><pre class="no-highlight"><code>{m1} = 'foo'
 {m2} = '{m1} \{m1}'
 {m2}
 
 {m1} = 'bar'
 {m2}</code></pre>
 <p>Generates:</p>
-<pre><code>&lt;p&gt;foo foo&lt;/p&gt;
+<pre class="no-highlight"><code>&lt;p&gt;foo foo&lt;/p&gt;
 &lt;p&gt;foo bar&lt;/p&gt;</code></pre></div>
 </li></ul><h2 id="scoped-css">Use scoped CSS to generate custom styled elements</h2>
 <p>HTML5's <a href="http://www.w3schools.com/tags/att_style_scoped.asp">scoped
@@ -596,7 +596,7 @@ elements. Examples:</p>
 <th style="width:50%;">Rimu source</th>
 <th style="width:50%;">Rendered HTML</th>
 </tr></thead><tbody><tr><td style="width: 50%; padding: 4px;">
-<pre style="border:none; background-color:inherit;"><code>&lt;style type="text/css" scoped&gt;
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>&lt;style type="text/css" scoped&gt;
 .verse {
   margin: 1.5em 20px;
 }
