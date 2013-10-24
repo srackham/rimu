@@ -134,7 +134,7 @@ module Rimu.DelimitedBlocks {
   // If the next element in the reader is a valid delimited block render it
   // and return true, else return false.
   export function render(reader: Reader, writer: Writer): boolean {
-    if (reader.eof()) console.error('premature eof');
+    if (reader.eof()) throw 'premature eof';
     for (var i in defs) {
       var def = defs[i];
       var match = reader.cursor().match(def.openMatch);

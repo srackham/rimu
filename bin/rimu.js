@@ -28,7 +28,7 @@ var Rimu;
                 continue;
             if (Rimu.DelimitedBlocks.render(reader, writer))
                 continue;
-            console.error('no matching delimited block found');
+            throw 'no matching delimited block found';
         }
         return writer.toString();
     }
@@ -153,7 +153,7 @@ var Rimu;
                 case 3:
                     return Rimu.replaceSpecialChars(text);
                 default:
-                    console.error('illegal safeMode value');
+                    throw 'illegal safeMode value';
             }
         }
         Options.safeModeFilter = safeModeFilter;
@@ -534,7 +534,7 @@ var Rimu;
         // and return true, else return false.
         function render(reader, writer) {
             if (reader.eof())
-                console.error('premature eof');
+                throw 'premature eof';
             for (var i in defs) {
                 var def = defs[i];
                 var match = def.match.exec(reader.cursor());
@@ -700,7 +700,7 @@ var Rimu;
         // and return true, else return false.
         function render(reader, writer) {
             if (reader.eof())
-                console.error('premature eof');
+                throw 'premature eof';
             for (var i in defs) {
                 var def = defs[i];
                 var match = reader.cursor().match(def.openMatch);
@@ -857,7 +857,7 @@ var Rimu;
 
         function render(reader, writer) {
             if (reader.eof())
-                console.error('premature eof');
+                throw 'premature eof';
             var startItem;
             if (!(startItem = matchItem(reader))) {
                 return false;
