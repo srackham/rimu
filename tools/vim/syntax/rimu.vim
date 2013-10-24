@@ -44,9 +44,11 @@ syn region rimuHTMLBlock start=/<!\|\(<\/\?\(html\|head\|body\|script\|style\|ad
 syn match rimuMacroDefinition /^{[0-9A-Za-z_-]\+}\s*=\s*'\_.\{-}'\n/
 syn match rimuReplacementDefinition /^\/.\+\/[igm]*\s*=\s*'\_.\{-}'\n/
 syn match rimuReplacementRegExp /^\/.\+\/[igm]*[\t =]\@=/ contained containedin=rimuReplacementDefinition
+syn match rimuDelimitedBlockDefinition /^|[0-9A-Za-z-]\+|*\s*=\s*'\_.\{-}'\n/
+syn match rimuDelimitedBlockDefinitionName /^|[0-9A-Za-z-]\+|[\t =]\@=/ contained containedin=rimuDelimitedBlockDefinition
 syn match rimuQuoteDefinition /^\S\s*=\s*'\_.\{-}'\n/
 syn match rimuQuoteQuote /^\S/ contained containedin=rimuQuoteDefinition
-syn match rimuDefinitionValue /'\_.\{-}'\n/ contained containedin=rimuMacroDefinition,rimuReplacementDefinition,rimuQuoteDefinition
+syn match rimuDefinitionValue /'\_.\{-}'\n/ contained containedin=rimuMacroDefinition,rimuReplacementDefinition,rimuQuoteDefinition,rimuDelimitedBlockDefinition
 syn match rimuDefinitionParam /\($\d\+\)\|\(|\{1,2}\)/ contained containedin=rimuDefinitionValue
 
 syn match rimuBlockAttributes /^\.[a-zA-Z#\[+\-].*$/
@@ -63,6 +65,7 @@ hi def link rimuParamSeparator Label
 hi def link rimuBlockDelimiter Label
 hi def link rimuCodeBlock Identifier
 hi def link rimuComment Comment
+hi def link rimuDelimitedBlockDefinitionName Special
 hi def link rimuHeader Label
 hi def link rimuHeaderStartEnd Label
 hi def link rimuBlockAttributes Title
