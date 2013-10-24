@@ -101,8 +101,8 @@ module Rimu.DelimitedBlocks {
       name: 'indented',
       openMatch: /^\\?(\s+.*)$/,  // $1 is first line of block.
       closeMatch: /^$/,           // Blank line or EOF.
-      openTag: '<pre>',
-      closeTag: '</pre>',
+      openTag: '<pre><code>',
+      closeTag: '</code></pre>',
       macros: false,
       specials: true,
       filter: function (text): string {

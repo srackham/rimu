@@ -62,6 +62,7 @@
       border: none;
       background-color: #fafafa;
     }
+    /* highlight.js tweaks. */
     pre > code {
       background-color: inherit;
       padding: 0;

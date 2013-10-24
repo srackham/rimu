@@ -149,7 +149,7 @@ exports['Delimited blocks'] = function(test) {
       'html comment');
   testDelimitedBlock(test,
       '  *Indented* paragraph\nLine 2\n    Line 3',
-      '<pre>*Indented* paragraph\nLine 2\n  Line 3</pre>',
+      '<pre><code>*Indented* paragraph\nLine 2\n  Line 3</code></pre>',
       'indented paragraph');
   testDelimitedBlock(test,
       '/*\nComment lines\n More comments.\n*/',
@@ -212,7 +212,7 @@ exports['Lists'] = function(test) {
       'Mixed nested lists');
   testList(test,
       '- Item 1\n..\nA\nparagraph\n..\n- Item 2\n\n  Indented',
-      '<ul><li>Item 1\n<div><p>A\nparagraph</p></div>\n</li><li>Item 2\n<pre>Indented</pre></li></ul>',
+      '<ul><li>Item 1\n<div><p>A\nparagraph</p></div>\n</li><li>Item 2\n<pre><code>Indented</code></pre></li></ul>',
       'list item with attached division block and indented paragraph');
   testList(test,
       '- Item 1\n""\nA\nparagraph\n""',
@@ -368,7 +368,7 @@ exports['Documents'] = function(test) {
       'undefined macro invoked with arguments');
   testDocument(test,
       ".-macros\n{v1}='{undefined}\n'\n {v1}",
-      '<pre>{v1}</pre>',
+      '<pre><code>{v1}</code></pre>',
       'multi-line macro definition defined with macros disabled');
   testDocument(test,
       '.-macros\n<div>{undefined}\n</div>',
@@ -556,7 +556,7 @@ exports['Documents'] = function(test) {
       'Single undefined inclusion macro');
   test.equal(Rimu.render(
       '.+macros\n {undefined}\n\n {undefined}'),
-      '<pre></pre>\n<pre>{undefined}</pre>',
+      '<pre><code></code></pre>\n<pre><code>{undefined}</code></pre>',
       'enable macro expansion in Indented paragraph');
   // Attribute Block expansion options.
   test.equal(Rimu.render(

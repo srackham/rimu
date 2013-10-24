@@ -56,6 +56,7 @@
       border: none;
       background-color: #fafafa;
     }
+    /* highlight.js tweaks. */
     pre > code {
       background-color: inherit;
       padding: 0;
@@ -130,13 +131,13 @@ experimentation.</p>
 </li></ul><h2 id="syntax-highlighting">Syntax highlighting</h2>
 <p><a href="https://github.com/isagalaev/highlight.js">Highlight.js</a> is a nice
 syntax highlighter that makes it trivial to add syntax highlighting to
-Rimu code blocks.  The <em>rimuc</em> tool <code>--styled</code> option includes
-Highlight.js if you set the <code>{highlightjs}</code> macro to a non-blank
-value. It does this by linking to CSS and JavaScript files on the
-<em>Highlight.js</em> website.</p>
-<p><em>Highlight.js</em> automatically detects the language in the code block,
-but you can also set the language explicitly by setting the code block
-class, for example:</p>
+Rimu Code blocks and Indented paragraphs.  The <em>rimuc</em> tool <code>--styled</code>
+option includes Highlight.js if you set the <code>{highlightjs}</code> macro to
+a non-blank value. It does this by linking to CSS and JavaScript files
+on the <em>Highlight.js</em> website.</p>
+<p><em>Highlight.js</em> automatically detects the language in Code Blocks and
+Indented Paragraphs. You can also set the language explicitly by
+adding a code block class, for example:</p>
 <pre class="no-highlight"><code>.javascript
 --
 function die(message) {
@@ -144,8 +145,12 @@ function die(message) {
   process.exit(1);
 }
 --</code></pre>
-<p>Set the <code>no-highlight</code> class too disable syntax highlighting for a
-code block.</p>
+<p>Set the <code>no-highlight</code> class to disable syntax highlighting for a code
+block.  Adding the <code>no-highlight</code> class to all code blocks using
+<em>Delimited Block Definitions</em> effectively turns off auto-highlighting
+unless the language class is explicitly set:</p>
+<pre class="no-highlight"><code>|code| = '&lt;pre class="no-highlight"&gt;&lt;code&gt;|&lt;/code&gt;&lt;/pre&gt;'
+|indented| = '&lt;pre class="no-highlight"&gt;&lt;code&gt;|&lt;/code&gt;&lt;/pre&gt;'</code></pre>
 <h2>Syntax shared with Markdown</h2>
 <p>The following subset of <em>Rimu</em> elements is compatible with Markdown:</p>
 <dl><dt>Headers</dt><dd> Headers using <code>#</code> character header IDs.
@@ -311,8 +316,15 @@ div.verse p, p.verse {
 div.sidebar *:first-child {
   margin-top: 0.2em;
 }
-&lt;/style&gt;'</code></pre>
-<h2>Extending the Vim syntax highligher</h2>
+&lt;/style&gt;'
+
+/*
+  Highlight.js
+*/
+// Turn off auto-hightlighting.
+|code| = '&lt;pre class="no-highlight"&gt;&lt;code&gt;|&lt;/code&gt;&lt;/pre&gt;'
+|indented| = '&lt;pre class="no-highlight"&gt;&lt;code&gt;|&lt;/code&gt;&lt;/pre&gt;'</code></pre>
+<h2>Extending the Vim syntax highlighter</h2>
 <p>If you've added custom replacements and quotes you can highlight them
 in Vim by creating a custom <code>~/.vim/after/syntax/rimu.vim</code> syntax
 file. Vim loads this file after the distributed

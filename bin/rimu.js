@@ -665,8 +665,8 @@ var Rimu;
                 name: 'indented',
                 openMatch: /^\\?(\s+.*)$/,
                 closeMatch: /^$/,
-                openTag: '<pre>',
-                closeTag: '</pre>',
+                openTag: '<pre><code>',
+                closeTag: '</code></pre>',
                 macros: false,
                 specials: true,
                 filter: function (text) {

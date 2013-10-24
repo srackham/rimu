@@ -55,14 +55,14 @@ experimentation.
 == Syntax highlighting
 <https://github.com/isagalaev/highlight.js|Highlight.js> is a nice
 syntax highlighter that makes it trivial to add syntax highlighting to
-Rimu code blocks.  The _rimuc_ tool `--styled` option includes
-Highlight.js if you set the `\{highlightjs}` macro to a non-blank
-value. It does this by linking to CSS and JavaScript files on the
-_Highlight.js_ website.
+Rimu Code blocks and Indented paragraphs.  The _rimuc_ tool `--styled`
+option includes Highlight.js if you set the `\{highlightjs}` macro to
+a non-blank value. It does this by linking to CSS and JavaScript files
+on the _Highlight.js_ website.
 
-_Highlight.js_ automatically detects the language in the code block,
-but you can also set the language explicitly by setting the code block
-class, for example:
+_Highlight.js_ automatically detects the language in Code Blocks and
+Indented Paragraphs. You can also set the language explicitly by
+adding a code block class, for example:
 
   .javascript
   --
@@ -72,8 +72,13 @@ class, for example:
   }
   --
 
-Set the `no-highlight` class too disable syntax highlighting for a
-code block.
+Set the `no-highlight` class to disable syntax highlighting for a code
+block.  Adding the `no-highlight` class to all code blocks using
+_Delimited Block Definitions_ effectively turns off auto-highlighting
+unless the language class is explicitly set:
+
+  |code| = '<pre class="no-highlight"><code>|</code></pre>'
+  |indented| = '<pre class="no-highlight"><code>|</code></pre>'
 
 
 == Syntax shared with Markdown
@@ -270,9 +275,16 @@ div.sidebar *:first-child {
   margin-top: 0.2em;
 }
 </style>'
+
+/*
+  Highlight.js
+*/
+// Turn off auto-hightlighting.
+|code| = '<pre class="no-highlight"><code>|</code></pre>'
+|indented| = '<pre class="no-highlight"><code>|</code></pre>'
 --
 
-== Extending the Vim syntax highligher
+== Extending the Vim syntax highlighter
 If you've added custom replacements and quotes you can highlight them
 in Vim by creating a custom `~/.vim/after/syntax/rimu.vim` syntax
 file. Vim loads this file after the distributed
