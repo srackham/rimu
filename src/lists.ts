@@ -9,7 +9,7 @@ module Rimu.Lists {
     termOpenTag?: string;   // Definition lists only.
     termCloseTag?: string;  // Definition lists only.
   }
-    
+
   // Information about a matched list item element.
   interface ItemState {
     match: RegExpExecArray;
@@ -68,9 +68,7 @@ module Rimu.Lists {
     return true;
   }
 
-  function renderList(startItem: ItemState,
-      reader: Reader, writer: Writer): ItemState
-  {
+  function renderList(startItem: ItemState, reader: Reader, writer: Writer): ItemState {
     ids.push(startItem.id);
     writer.write(injectHtmlAttributes(startItem.def.listOpenTag));
     var nextItem: ItemState;
@@ -82,13 +80,11 @@ module Rimu.Lists {
         ids.pop();
         return nextItem;
       }
-      startItem = nextItem; 
+      startItem = nextItem;
     }
   }
 
-  function renderListItem(startItem: ItemState,
-      reader: Reader, writer: Writer): ItemState
-  {
+  function renderListItem(startItem: ItemState, reader: Reader, writer: Writer): ItemState {
     var def = startItem.def;
     var match = startItem.match;
     var text: string;
@@ -97,7 +93,7 @@ module Rimu.Lists {
       text = replaceInline(match[1], {macros: true, spans: true});
       writer.write(text);
       writer.write(def.termCloseTag);
-    } 
+    }
     writer.write(def.itemOpenTag);
     // Process of item text.
     var lines = new Writer();
@@ -150,8 +146,7 @@ module Rimu.Lists {
   // Translate the list item in the reader to the writer until the next element
   // is encountered. Return 'next' containing the next element's match and
   // identity information.
-  function readToNext(reader: Reader, writer: Writer): ItemState
-  {
+  function readToNext(reader: Reader, writer: Writer): ItemState {
     // The reader should be at the line following the first line of the list
     // item (or EOF).
     var next: ItemState;
@@ -183,7 +178,7 @@ module Rimu.Lists {
     // Consume any HTML attributes elements.
     var attrRe = LineBlocks.getDefinition('attributes').match;
     if (attrRe.test(reader.cursor())) {
-        LineBlocks.render(reader, new Writer());
+      LineBlocks.render(reader, new Writer());
     }
     // Check if the line matches a list definition.
     var line = reader.cursor();

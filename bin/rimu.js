@@ -1026,6 +1026,19 @@ var Rimu;
 })(Rimu || (Rimu = {}));
 var Rimu;
 (function (Rimu) {
+    /*
+    This module renders text containing Quote and Replacement elements.
+    
+    Quote and replacement processing involves splitting the source text into
+    fragments where a quote or a replacement occurs then splicing the fragments
+    containing HTML markup into the breaks.  A fragment is flagged as 'done' to
+    exclude it from further substitutions.
+    
+    Once all quotes and replacements are processed fragments not yet flagged as
+    'done' have special characters (&, <, >) replaced with corresponding special
+    character entities. The fragments are then reassembled (defraged) into a
+    resultant HTML string.
+    */
     (function (Spans) {
         function render(source) {
             var fragments = [{ text: source, done: false }];

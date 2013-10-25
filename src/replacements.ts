@@ -5,7 +5,7 @@ module Rimu.Replacements {
     replacement: string;
     filter?: (match: RegExpExecArray) => string;
   }
-    
+
   export var defs: Definition[] = [
     // Begin match with \\? to allow the replacement to be escaped.
     // Global flag must be set on match re's so that the RegExp lastIndex property is set.

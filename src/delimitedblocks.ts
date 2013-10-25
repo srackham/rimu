@@ -86,8 +86,7 @@ module Rimu.DelimitedBlocks {
       name: 'html',
       // Must start with  an <! or a block-level element start or end tag.
       // $1 is first line of block.
-      openMatch:
-      /^(<!.*|(?:<\/?(?:html|head|body|iframe|script|style|address|article|aside|audio|blockquote|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|img|math|nav|noscript|ol|output|p|pre|section|table|tfoot|td|th|tr|ul|video)(?:[ >].*)?))$/i,
+      openMatch: /^(<!.*|(?:<\/?(?:html|head|body|iframe|script|style|address|article|aside|audio|blockquote|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|img|math|nav|noscript|ol|output|p|pre|section|table|tfoot|td|th|tr|ul|video)(?:[ >].*)?))$/i,
       closeMatch: /^$/, // Blank line or EOF.
       openTag: '',
       closeTag: '',
@@ -112,7 +111,7 @@ module Rimu.DelimitedBlocks {
         for (var i in buffer) {
           // Strip first line indent width or up to first non-space character.
           var indent = buffer[i].search(/\S/);
-          if (indent > first_indent) indent =  first_indent;
+          if (indent > first_indent) indent = first_indent;
           buffer[i] = buffer[i].slice(indent);
         }
         return buffer.join('\n');
@@ -168,7 +167,7 @@ module Rimu.DelimitedBlocks {
         }
         // Set block expansion options.
         var expansionOptions: ExpansionOptions;
-        expansionOptions = {macros:false, spans:false, specials:false, container:false, skip:false};
+        expansionOptions = {macros: false, spans: false, specials: false, container: false, skip: false};
         for (var k in expansionOptions) expansionOptions[k] = def[k];
         for (var k in LineBlocks.blockOptions) expansionOptions[k] = LineBlocks.blockOptions[k];
         // Process block.
@@ -210,7 +209,7 @@ module Rimu.DelimitedBlocks {
   }
 
   // Parse delimited block expansion options string into blockOptions.
-  export function setBlockOptions(blockOptions: ExpansionOptions, options: string ) {
+  export function setBlockOptions(blockOptions: ExpansionOptions, options: string) {
     if (options) {
       var opts = options.trim().split(/\s+/);
       for (var i in opts) {

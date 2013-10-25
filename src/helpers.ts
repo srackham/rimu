@@ -1,11 +1,11 @@
 module Rimu {
 
   export interface ExpansionOptions {
-      macros?: boolean;
-      spans?: boolean;
-      specials?: boolean;
-      container?: boolean;
-      skip?: boolean;
+    macros?: boolean;
+    spans?: boolean;
+    specials?: boolean;
+    container?: boolean;
+    skip?: boolean;
   }
 
   // Whitespace strippers.
@@ -40,9 +40,7 @@ module Rimu {
   }
 
   // Replace the inline elements specified in options in text and return the result.
-  export function replaceInline(text: string,
-      expansionOptions: ExpansionOptions): string
-  {
+  export function replaceInline(text: string, expansionOptions: ExpansionOptions): string {
     if (expansionOptions.macros) {
       text = Macros.render(text);
       text = text === null ? '' : text;

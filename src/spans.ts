@@ -1,17 +1,17 @@
-module Rimu.Spans {
 /*
-  This module renders text containing Quote and Replacement elements.
+ This module renders text containing Quote and Replacement elements.
 
-  Quote and replacement processing involves splitting the source text into
-  fragments where a quote or a replacement occurs then splicing the fragments
-  containing HTML markup into the breaks.  A fragment is flagged as 'done' to
-  exclude it from further substitutions.
+ Quote and replacement processing involves splitting the source text into
+ fragments where a quote or a replacement occurs then splicing the fragments
+ containing HTML markup into the breaks.  A fragment is flagged as 'done' to
+ exclude it from further substitutions.
 
-  Once all quotes and replacements are processed fragments not yet flagged as
-  'done' have special characters (&, <, >) replaced with corresponding special
-  character entities. The fragments are then reassembled (defraged) into a
-  resultant HTML string.
-*/
+ Once all quotes and replacements are processed fragments not yet flagged as
+ 'done' have special characters (&, <, >) replaced with corresponding special
+ character entities. The fragments are then reassembled (defraged) into a
+ resultant HTML string.
+ */
+module Rimu.Spans {
 
   interface Fragment {
     text: string;
@@ -57,7 +57,7 @@ module Rimu.Spans {
         }
         fragment = fragments[fragmentIndex];
         if (match) {
-           findRe.lastIndex = 0;
+          findRe.lastIndex = 0;
         }
         continue;
       }
@@ -76,11 +76,11 @@ module Rimu.Spans {
       var quoted = match[2];
       var after = match.input.slice(findRe.lastIndex);
       fragments.splice(fragmentIndex, 1,
-        {text: before, done: false},
-        {text: def.openTag, done: true},
-        {text: quoted, done: false},
-        {text: def.closeTag, done: true},
-        {text: after, done: false}
+          {text: before, done: false},
+          {text: def.openTag, done: true},
+          {text: quoted, done: false},
+          {text: def.closeTag, done: true},
+          {text: after, done: false}
       );
       // Move to 'quoted' fragment.
       fragmentIndex += 2;
@@ -132,7 +132,7 @@ module Rimu.Spans {
         }
         fragment = fragments[fragmentIndex];
         if (match) {
-           findRe.lastIndex = 0;
+          findRe.lastIndex = 0;
         }
         continue;
       }
@@ -141,9 +141,9 @@ module Rimu.Spans {
       var before = match.input.slice(0, match.index);
       var after = match.input.slice(findRe.lastIndex);
       fragments.splice(fragmentIndex, 1,
-        {text: before, done: false},
-        {text: '', done: true},
-        {text: after, done: false}
+          {text: before, done: false},
+          {text: '', done: true},
+          {text: after, done: false}
       );
       // Advance to 'matched' fragment and fill in the replacement text.
       fragmentIndex++;

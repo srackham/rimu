@@ -17,7 +17,7 @@ module Rimu.Macros {
     name: string;
     value: string;
   }
-    
+
   export var defs: Macro[] = [];
 
   // Return named macro value or null if it doesn't exist.
@@ -45,7 +45,7 @@ module Rimu.Macros {
   export function render(text: string): string {
     text = text.replace(MATCH_MACROS, function(match, name /* $1 */, params /* $2 */) {
       if (match[0] === '\\') {
-           return match.slice(1);
+        return match.slice(1);
       }
       var value = getValue(name); // Macro value is null if macro is undefined.
       params = params || '';
@@ -57,7 +57,7 @@ module Rimu.Macros {
         case '|': // Parametized macro.
           // Substitute macro parameters.
           var paramsList = params.slice(1).split('|');
-          value = (value || '').replace(/\\?\$\d+/g, function(match) {
+          value = (value || '').replace(/\\?\$\d+/g, function (match) {
             if (match[0] === '\\') {  // Unescape escaped $ characters.
               return match.slice(1);
             }

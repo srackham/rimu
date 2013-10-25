@@ -7,7 +7,7 @@ module Rimu.Quotes {
     spans: boolean;      // Allow span elements inside quotes.
     verify?: (match: RegExpExecArray, re: RegExp) => boolean; // Additional match verification checks.
   }
-    
+
   export var defs: Definition[] = [
     {
       quote: '_',

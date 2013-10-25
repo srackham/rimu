@@ -77,7 +77,7 @@ module Rimu {
   export class Writer {
     buffer: string[]; // Appending an array is faster than string concatenation.
 
-    constructor () {
+    constructor() {
       this.buffer = [];
     }
 
