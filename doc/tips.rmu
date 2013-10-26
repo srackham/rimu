@@ -60,13 +60,22 @@ _Highlight.js_ automatically detects the language in Code Blocks and
 Indented Paragraphs. You can also set the language explicitly by
 adding a code block class, for example:
 
-  .javascript
-  --
-  function die(message) {
+{highlightjs-example} = '\{highlightjs} = 'yes'\
+
+.javascript
+--
+function die(message) {
+  if (message) {
     console.error(message);
-    process.exit(1);
   }
-  --
+  else {
+    console.error('fatal error');
+  }
+  process.exit(1);
+}
+--'
+
+{generate-rendered-example-1|highlightjs-example}
 
 Set the `no-highlight` class to disable syntax highlighting for a code
 block.  Adding the `no-highlight` class to all code blocks using

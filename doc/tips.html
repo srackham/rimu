@@ -135,13 +135,35 @@ on the <em>Highlight.js</em> website.</p>
 <p><em>Highlight.js</em> automatically detects the language in Code Blocks and
 Indented Paragraphs. You can also set the language explicitly by
 adding a code block class, for example:</p>
-<pre class="no-highlight"><code>.javascript
+<table class="example table table-bordered"><thead><tr style="color:#527bbd;">
+<th style="width:50%;">Rimu source</th>
+<th style="width:50%;">Rendered HTML</th>
+</tr></thead><tbody><tr><td style="width: 50%; padding: 4px;">
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>{highlightjs} = 'yes'
+
+.javascript
 --
 function die(message) {
-  console.error(message);
+  if (message) {
+    console.error(message);
+  }
+  else {
+    console.error('fatal error');
+  }
   process.exit(1);
 }
 --</code></pre>
+</td><td style="width:50%; padding: 4px;">
+<pre class="javascript no-highlight"><code>function die(message) {
+  if (message) {
+    console.error(message);
+  }
+  else {
+    console.error('fatal error');
+  }
+  process.exit(1);
+}</code></pre>
+</td></tr></tbody></table>
 <p>Set the <code>no-highlight</code> class to disable syntax highlighting for a code
 block.  Adding the <code>no-highlight</code> class to all code blocks using
 <em>Delimited Block Definitions</em> effectively turns off auto-highlighting
@@ -709,6 +731,7 @@ Scelerisque feugiat massa alias.</p></div>
 <p>You can put your library of shared CSS styles in a macro definition in
 <code>~/.rimurc</code> then include it in your documents with a single macro
 invocation (see the <a href="#example-rimurc">example .rimurc file</a>).</p>
+<script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

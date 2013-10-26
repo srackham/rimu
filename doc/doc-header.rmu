@@ -134,3 +134,7 @@
 </td></tr></table>
 
 '
+
+// Turn off Highlight.js auto-hightlighting.
+|code| = '<pre class="no-highlight"><code>|</code></pre>'
+|indented| = '<pre class="no-highlight"><code>|</code></pre>'
