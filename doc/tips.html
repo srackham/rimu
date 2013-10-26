@@ -250,8 +250,8 @@ source non-portable and less readable.</p>
 <em>Replacement</em> definitions (refer to the Rimu documentation under
 <em>Tools</em>):</p>
 <pre class="no-highlight"><code>/*
-  Rimu Markup macro, quote and replacement definitions used by rimuc
-  command.
+  ~/.rimurc file containing custom Rimu Markup definitions used by
+  rimuc command.
 */
 
 /*
@@ -267,6 +267,8 @@ source non-portable and less readable.</p>
 /&lt;-/ = '&amp;leftarrow;'
 /\bTODO\b/ = '&lt;b style="color: red; background-color: yellow;"&gt;TODO&lt;/b&gt;'
 /^(NOTE|IMPORTANT|WARNING|TIP):/ = '&lt;b&gt;$1&lt;/b&gt;:'
+// Encodes (most) raw HTTP URLs as links.
+/(^|[^&lt;])((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/ = '$1&lt;a href="$2"&gt;$2&lt;/a&gt;'
 // Alternative (typing friendly) emphasis, works for most cases but
 // can't contain quotes.
 /\B'\b(.+?)\b'\B/g = '&lt;em&gt;$1&lt;/em&gt;'
@@ -305,6 +307,8 @@ source non-portable and less readable.</p>
 div.verse p, p.verse {
   font-family: serif;
   white-space:pre;
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
 }
 .sidebar {
   border: 1px solid silver;
@@ -332,11 +336,22 @@ file. Vim loads this file after the distributed
 <code>~/.vim/after/syntax/rimu.vim</code> syntax file highlights the admonitions
 replacement and the strike-through quote definitions from the previous
 example <code>.rimurc</code> file:</p>
-<pre class="no-highlight"><code>syn match rimuAdmonition /^\(NOTE\|IMPORTANT\|WARNING\|TIP\):/ containedin=ALLBUT,rimuComment,rimuCodeBlock
+<pre class="no-highlight"><code>" ~/.vim/after/syntax/rimu.vim
+"
+" Custom Vim highlighting for custom syntax defined in ~/.rimurc
+"
+
+" Admonishments.
+syn match rimuAdmonition /^\([A-Z]\+\):/ containedin=ALLBUT,rimuComment,rimuCodeBlock
 hi def link rimuAdmonition Special
 
+" ~ quote.
 syn match rimuSpanDeleted /\\\@&lt;!\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@&lt;!\~/ contains=rimuSpanEntity
-hi def link rimuSpanDeleted Todo</code></pre>
+hi def link rimuSpanDeleted Todo
+
+" Raw HTTP URLs as links.
+syn match rimuSpanRawURL /[\\&lt;]\@&lt;!\(http\|https\):\/\/[^\s"']*[^\s"',.;?)]/
+hi def link rimuSpanRawURL Title</code></pre>
 <h2>Understanding substitution priorities</h2>
 <p>Inline elements are processed in the following order (first to last):</p>
 <ol><li>Macros

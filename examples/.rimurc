@@ -1,0 +1,79 @@
+/*
+  ~/.rimurc file containing custom Rimu Markup definitions used by
+  rimuc command.
+*/
+
+/*
+  Replacements
+*/
+// Don't match HTML comment tags.
+/(^|[^!])--(?!>)/ = '$1&mdash;'
+/\.{3}/ = '&hellip;'
+/``/ = '&ldquo;'
+/''/ = '&rdquo;'
+// Don't match HTML close comment tag.
+/(^|[^-])->/ = '$1&rightarrow;'
+/<-/ = '&leftarrow;'
+/\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
+/^(NOTE|IMPORTANT|WARNING|TIP):/ = '<b>$1</b>:'
+// Encodes (most) raw HTTP URLs as links.
+/(^|[^<])((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/ = '$1<a href="$2">$2</a>'
+// Alternative (typing friendly) emphasis, works for most cases but
+// can't contain quotes.
+/\B'\b(.+?)\b'\B/g = '<em>$1</em>'
+// Do not process the  deprecated + line break.
+/[\\ ]\+(\n|$)/g = ' +$1'
+
+/*
+  Macros
+*/
+{mark} = '<mark>$1</mark>'
+{del} = '<del>$1</del>'
+{ins} = '<ins>$1</ins>'
+{sup} = '<sup>$1</sup>'
+{sub} = '<sub>$1</sub>'
+
+/*
+  Quotes
+*/
+~ = '<del>|</del>'
+
+/*
+  CSS
+
+  Invoke the {rimurc-css} macro at the start of the document and then
+  apply the following classes to Normal Paragraphs and
+  Division blocks:
+
+  sidebar  Styles sidebars.
+  verse    Styles poetry verses.
+*/
+{rimurc-css} = '
+<style type="text/css" scoped>
+.verse {
+  margin: 1.5em 20px;
+}
+div.verse p, p.verse {
+  font-family: serif;
+  white-space:pre;
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+}
+.sidebar {
+  border: 1px solid silver;
+  border-radius:4px;
+  background: #ffffee;
+  padding: 10px;
+  margin: 1.5em 20px;
+}
+div.sidebar *:first-child {
+  margin-top: 0.2em;
+}
+</style>'
+
+/*
+  Highlight.js
+*/
+// Turn off auto-hightlighting.
+|code| = '<pre class="no-highlight"><code>|</code></pre>'
+|indented| = '<pre class="no-highlight"><code>|</code></pre>'

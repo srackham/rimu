@@ -208,8 +208,8 @@ _Tools_):
 
 --
 /*
-  Rimu Markup macro, quote and replacement definitions used by rimuc
-  command.
+  ~/.rimurc file containing custom Rimu Markup definitions used by
+  rimuc command.
 */
 
 /*
@@ -225,6 +225,8 @@ _Tools_):
 /<-/ = '&leftarrow;'
 /\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
 /^(NOTE|IMPORTANT|WARNING|TIP):/ = '<b>$1</b>:'
+// Encodes (most) raw HTTP URLs as links.
+/(^|[^<])((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/ = '$1<a href="$2">$2</a>'
 // Alternative (typing friendly) emphasis, works for most cases but
 // can't contain quotes.
 /\B'\b(.+?)\b'\B/g = '<em>$1</em>'
@@ -263,6 +265,8 @@ _Tools_):
 div.verse p, p.verse {
   font-family: serif;
   white-space:pre;
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
 }
 .sidebar {
   border: 1px solid silver;
@@ -294,11 +298,22 @@ replacement and the strike-through quote definitions from the previous
 example `.rimurc` file:
 
 --
-syn match rimuAdmonition /^\(NOTE\|IMPORTANT\|WARNING\|TIP\):/ containedin=ALLBUT,rimuComment,rimuCodeBlock
+" ~/.vim/after/syntax/rimu.vim
+"
+" Custom Vim highlighting for custom syntax defined in ~/.rimurc
+"
+
+" Admonishments.
+syn match rimuAdmonition /^\([A-Z]\+\):/ containedin=ALLBUT,rimuComment,rimuCodeBlock
 hi def link rimuAdmonition Special
 
+" ~ quote.
 syn match rimuSpanDeleted /\\\@<!\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\~/ contains=rimuSpanEntity
 hi def link rimuSpanDeleted Todo
+
+" Raw HTTP URLs as links.
+syn match rimuSpanRawURL /[\\<]\@<!\(http\|https\):\/\/[^\s"']*[^\s"',.;?)]/
+hi def link rimuSpanRawURL Title
 --
 
 
