@@ -90,6 +90,7 @@
       <option selected value="topic-playground">Playground</option>
       <option value="topic-quotes">Quotes</option>
       <option value="topic-replacements">Replacements</option>
+      <option value="topic-taxonomy">Taxonomy</option>
       <option value="topic-tools">Tools</option>
       <option value="topic-urls-and-email">URLs and email addresses</option>
     </select>
@@ -600,60 +601,62 @@ with an HTML `del` tag:
 
 <div id="topic-macros">
 <!--
-Macros provide a mechanism for creating shortcuts for repeatedly used markup.
-They are used to parametrize documents, promote clarity and eliminate repetition.
+Macros are a simple yet powerful mechanism for creating shortcuts for
+repeatedly used markup.  They are used to parametrize documents,
+promote clarity and eliminate repetition.
 
-Macro definitions contain Rimu markup and can be invoked anywhere you
-would use an inline or block element.
+Rimu provides elements for defining and invoking macros and includes
+features like macro parametrization, conditional processing and
+meta-programming.
+
+=== Macro Definitions
+A macro definition assigns one or more lines of Rimu markup to a macro
+name.
 
 Definition syntax:
 
   {macro-name} = 'macro-value'
 
-Invocation syntax:
-
-  {macro-name}
-  {macro-name?default-value}
-  {macro-name|param1[|param2...]}
-  {macro-name=pattern}
-  {macro-name!pattern}
-
-- Macro definition values are enclosed by single-quote characters
-  and can extend over multiple lines.
 - A macro name consists of one or more alphanumeric, underscore or
   dash characters.
-- Macro definitions and invocations can be escaped with a leading
-  backslash character prefix.
+- Macro definition values are enclosed by single-quote characters
+  and can extend over multiple lines.
+- Macro definitions can be escaped with a leading backslash character
+  prefix.
 - A macro definition must start at the left margin.
 - Macro definition lines ending with a single-quote character can be
   continued to the next line by appending a backslash character.
 - Macros are expanded in macro definitions when they are defined not
   when they are invoked.
 - Macro expansion can be disabled in multi-line macro definitions
-  using the _Block Attributes_ `-macros` option.
-- By default macro invocations are expanded everywhere except inside
-  _Code_ blocks and _Indented_ paragraphs. Use the _Block Attributes_
-  `+macros` and `-macros` options to enable and disable expansion
-  inside multi-line block elements (delimited blocks, paragraphs,
-  multi-line macro definitions and HTML).
-- Macro invocations cannot be nested.
-- A _Macro Line_ block element is a line starting with a  macro
-  invocation, the macros are expanded before non-definition block
-  elements are processed. This feature allows macros to inject
-  Rimu markup into the source stream as well as allowing
-  block elements to be prefixed with _Inclusion_ macros.
-- _Parametrized_ macro invocations replace the `$1`, `$2` ...
-  parameter names in the macro parametrized definition with the
-  corresponding parameter values.
+  using a preceding _Block Attributes_ `-macros` option.
+
+
+=== Macro Invocations
+When a macro is invoked the invocation is replaced by text which is
+determined by the macro value.
+
+Invocation syntax:
+
+  {macro-name}                      Simple macro invocation
+  {macro-name?default-value}        Existential macro invocation
+  {macro-name|param1[|param2...]}   Parametrized macro invocation
+  {macro-name=pattern}              Inclusion macro invocation
+  {macro-name!pattern}              Inclusion macro invocation
+
+- A _Simple_ macro invocation is replaced by the macro value or a
+  blank string if the macro is not defined.
+- An _Existential macro invocation is replaced by the macro value or a
+  the `default-value` if the macro is not defined.
+- _Parametrized_ macro invocations replace `$1`, `$2` ...  parameter
+  names in the macro definition value with the corresponding parameter
+  values..
   * If a macro parameter value is not specified then the corresponding
-    parameter name in the macro is replaced by and empty string.
-  * Parameter names in parametrized macro definitions can be escaped
+    parameter name is replaced by a blank string.
+  * Parameter names in macro definition values can be escaped
     with a backslash character prefix.
-- Macro invocation parameters contain inline Rimu markup; inline
-  parameter values can span multiple lines.
-- Invocations of undefined macros are replaced with a blank string
-  or the `default-value` if the `\{macro-name?default-value}`
-  _Existential_ invocation syntax is used.
+  *  Macro invocation parameters can contain inline Rimu elements;
+     inline parameter values can span multiple lines.
 - The `\{macro-name=pattern}` _Inclusion_ invocation is replaced by a
   blank string if the macro value matches the `pattern` (where
   `pattern` is a JavaScript regular expression).  If the macro value
@@ -666,6 +669,14 @@ Invocation syntax:
   invocation is replaced by a blank string if the macro value does not
   match the `pattern`, if it does match the containing line is
   skipped.
+- By default macro invocations are expanded everywhere except inside
+  _Code_ blocks and _Indented_ paragraphs. Use the _Block Attributes_
+  `+macros` and `-macros` options to enable and disable expansion
+  inside multi-line block elements (delimited blocks, paragraphs,
+  multi-line macro definitions and HTML).
+- Macro invocations can be escaped with a leading backslash character
+  prefix.
+- Macro invocations cannot be nested.
 - Macro invocations can contain `}` characters but they must be escaped
   with a backslash character (otherwise they will be mistaken for the
   macro's closing brace).
@@ -688,6 +699,18 @@ Visit the {homepage}.
 {info|Heads up!}
 {info|As you were!}
 - -
+
+=== Macro Line element
+- A _Macro Line_ block element is a single line starting with a  macro
+  invocation.
+- Macro invocations are expanded and then processing continues from
+  the start of the expanded line.
+- _Macro Lines_ are the macros are processed before any other block
+  elements.
+
+These properties allow macros to be used to inject Rimu markup into
+the source stream and allow block elements to be prefixed with
+_Inclusion_ macros.
 
 -->
 </div>
@@ -724,6 +747,66 @@ Example replacement definitions:
 - -
 /\.{3}/ = '&hellip;'
 /\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
+- -
+
+-->
+</div>
+
+<div id="topic-taxonomy">
+<!--
+==== Document structure
+- A Rimu document consists of zero or more _Block_ elements.
+- A Block element comprises one or more lines of text.
+- _Inline_ elements are contained within the textual content of Block
+  elements.
+
+==== Element taxonomy
+- -
+Block elements
+    Delimited Blocks
+        Code Block
+        Division Block
+        HTML Block
+        Indented Paragraph
+        Macro Definition
+        Multi-line Comment
+        Normal Paragraph
+        Quote Block
+    Line Blocks
+        Element Definitions
+            Macro Definition
+            Quote Definition
+            Replacement Definition
+            Delimited Block Definition
+        Headers
+        Block Image
+        Block Anchor
+        Block Attributes
+        Macro Line
+        Single-line Comment
+    Lists
+        Bullet List
+        Numbered List
+        Labeled List
+Inline elements
+    Macro Invocations
+        Simple
+        Existential
+        Inclusion
+        Parametrized
+    Spans
+        Quotes
+            Bold
+            Emphasis
+            Monospaced
+        Replacements
+            Anchors
+            Character entities
+            HTML tags
+            Images
+            Line break
+            Links
+            URLs
 - -
 
 -->
