@@ -77,8 +77,14 @@
   <p class="pull-right" style="color:red; font-size:small; margin-top:-0.5em;">This website reflects the repository tip not the current Rimu version</p>
 
 <h1>Rimu Markup</h1>
-<p>Rimu is a readable text to HTML markup language inspired by AsciiDoc
+<p>Rimu is a readable-text to HTML markup language inspired by AsciiDoc
 and Markdown.</p>
+<h2>Scope</h2>
+<p>At its core Rimu is a simple readable-text markup similar in scope to
+Markdown, but with two additional areas of functionality:</p>
+<ul><li>Markup generation can be customized and extended.
+</li><li>It includes a simple, flexible macro language.
+</li></ul><p>Both these features are built into the Rimu markup syntax.</p>
 <h2>Implementation</h2>
 <ul><li>Single lightweight JavaScript file (less than 23KB minified) that
   can be dropped onto a Web page or used as a Node module.
@@ -86,12 +92,12 @@ and Markdown.</p>
 </li><li>Simple one-function API.
 </li><li>Features include raw HTML (a la Markdown), HTML attribute injection
   and parametrized macros.
-</li><li>Syntax and behavior can be modified with user defined <em>Macros</em>,
-  <em>Quotes</em> and <em>Replacements</em>.
+</li><li>Element syntax and behavior can be modified and extended.
 </li><li>Written in TypeScript.
 </li><li>Available from Github and as an npm module or a Meteor smart package.
-</li><li>Includes command-line compiler, playground GUI, Vim syntax
-  highlighter and a unit test suite.
+</li><li>Includes command-line compiler, JavaScript library, TypeScript
+  library declaration file, playground GUI,
+  Vim syntax highlighter and a unit test suite.
 </li><li>MIT license.
 </li></ul><h2>Rimu Playground</h2>
 <p>Read the documentation and experiment with Rimu in the <em>Rimu
@@ -115,8 +121,8 @@ open <code>rimuplayground.html</code> locally in in your browser.</p>
 <pre class="no-highlight"><code>cd meteor-example
 mrt</code></pre>
 </li></ul><h2>Browser compatibility</h2>
-<p>There hasn't been a huge amount of browser testing. Works with the
-latest versions of IE, Firefox and Chrome, seems OK on Android 4 and
-iOS.  Does not work on IE8.</p>
+<p>The generated HTML is compatible with all browsers. The Rimu
+JavaScript library works with the latest versions of IE, Firefox and
+Chrome, seems OK on Android 4 and iOS. Does not run on IE8.</p>
 </body>
 </html>

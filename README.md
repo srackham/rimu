@@ -1,7 +1,18 @@
 # Rimu Markup
 
-Rimu is a readable text to HTML markup language inspired by AsciiDoc
+Rimu is a readable-text to HTML markup language inspired by AsciiDoc
 and Markdown.
+
+
+## Scope
+
+At its core Rimu is a simple readable-text markup similar in scope to
+Markdown, but with two additional areas of functionality:
+
+- Markup generation can be customized and extended.
+- It includes a simple, flexible macro language.
+
+Both these features are built into the Rimu markup syntax.
 
 
 ## Implementation
@@ -12,12 +23,12 @@ and Markdown.
 - Simple one-function API.
 - Features include raw HTML (a la Markdown), HTML attribute injection
   and parametrized macros.
-- Syntax and behavior can be modified with user defined _Macros_,
-  _Quotes_ and _Replacements_.
+- Element syntax and behavior can be modified and extended.
 - Written in TypeScript.
 - Available from Github and as an npm module or a Meteor smart package.
-- Includes command-line compiler, playground GUI, Vim syntax
-  highlighter and a unit test suite.
+- Includes command-line compiler, JavaScript library, TypeScript
+  library declaration file, playground GUI,
+  Vim syntax highlighter and a unit test suite.
 - MIT license.
 
 
@@ -57,6 +68,6 @@ open `rimuplayground.html` locally in in your browser.
 
 ## Browser compatibility
 
-There hasn't been a huge amount of browser testing. Works with the
-latest versions of IE, Firefox and Chrome, seems OK on Android 4 and
-iOS.  Does not work on IE8.
+The generated HTML is compatible with all browsers. The Rimu
+JavaScript library works with the latest versions of IE, Firefox and
+Chrome, seems OK on Android 4 and iOS. Does not run on IE8.
