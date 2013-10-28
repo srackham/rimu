@@ -150,10 +150,9 @@ module Rimu.LineBlocks {
         if (!match) {
           return '';
         }
-        classAttributes = '';
-        htmlAttributes = '';
         if (match[1]) { // Class names.
-          classAttributes = trim(match[1]);
+          classAttributes += ' ' + trim(match[1]);
+          classAttributes = trim(classAttributes);
         }
         if (match[2]) { // id.
           htmlAttributes += ' id="' + trim(match[2]).slice(1) + '"';
@@ -162,7 +161,6 @@ module Rimu.LineBlocks {
           htmlAttributes += ' ' + trim(match[3].slice(1, match[3].length - 1));
         }
         htmlAttributes = trim(htmlAttributes);
-        blockOptions = {};
         DelimitedBlocks.setBlockOptions(blockOptions, match[4]);
         return '';
       },

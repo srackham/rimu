@@ -89,6 +89,7 @@
       <option value="topic-paragraphs">Paragraphs</option>
       <option selected value="topic-playground">Playground</option>
       <option value="topic-quotes">Quotes</option>
+      <option value="topic-release-notes">Release Notes</option>
       <option value="topic-replacements">Replacements</option>
       <option value="topic-taxonomy">Taxonomy</option>
       <option value="topic-tools">Tools</option>
@@ -399,6 +400,8 @@ Syntax:
   option is not zero (see the _API_ topic).
 - `block-options` is used to control the processing of multi-line
   block element contents (see _Delimited Blocks_ definitions).
+- Sucessive Block Attributes elements accumulate attribute items until
+  they are consumed by a block element.
 
 Here are a couple of examples of attribute elements applied to the
 paragraph block elements:
@@ -536,16 +539,16 @@ by a backslash character to the end of the line.
 
 Individual paragraph behavior can be modified with a preceding _Block
 Attributes_ element. The behavior of all paragraphs can be modified
-with a _Delimited Block Definition_ (block name 'paragraph' for Normal
-Paragraph; 'indented' for Indented Paragraph).
+with a _Delimited Block Definition_ (block name `paragraph` for Normal
+Paragraph; `indented` for Indented Paragraph).
 
 -->
 </div>
 
 <div id="topic-playground">
 <!--
-This is the _Rimu Playground_, it's an interactive sandbox
-for learning and experimenting with Rimu markup:
+This is the _Rimu Playground_, it's a documentation browser and an
+interactive sandbox for learning and experimenting with Rimu markup:
 
 - Select from the drop-down list to view Rimu documentation topics.
 - Enter Rimu source in the _Rimu_ text area, the _Preview_ and _HTML_
@@ -716,6 +719,48 @@ Visit the {homepage}.
 These properties allow macros to be used to inject Rimu markup into
 the source stream and allow block elements to be prefixed with
 _Inclusion_ macros.
+
+-->
+</div>
+
+<div id="topic-release-notes">
+<!--
+As of version 3 Rimu has stablized, expect few (if any) major
+additions in future releases and expect no future breaking changes.
+
+See the <https://github.com/srackham/rimu/commits/|commit log> for
+the latest and more detailed information.
+
+==== Major releases
+Version 3 (first release 2013-10-28)::
+..
+- Added _Delimited Block_ definitions.
+- Enhanced and refined Macros.
+- Many other enhancements, additons and documentation updates.
+- _Indented Paragraphs_ and _Code Blocks_ no longer expand macro
+  invocations by default. To reinstate old behavior use this delimited
+  block definitions:
+
+  |code| = '+macros'
+  |indented| = '+macros'
+
+- _Indented Paragraph_ emits same code as _Code Block_. To reinstate
+  old behavior use this delimited block definition:
+
+  |indented| = '<pre>|</pre>'
+
+- Dropped the deprecated _+_ line-break, use the newer backslash
+  line-break. To reinstate the old _+_ line-break use this replacement
+  definition:
+
+  /[\\ ]\+(\n|$)/g = '<br>$1'
+..
+
+Version 2 (first release 2013-07-26)::
+..
+- Added Quote and Replacements definitions.
+- A number of other enhancements, additons and documentation updates.
+..
 
 -->
 </div>

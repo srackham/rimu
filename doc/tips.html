@@ -291,8 +291,6 @@ source non-portable and less readable.</p>
 // Alternative (typing friendly) emphasis, works for most cases but
 // can't contain quotes.
 /\B'\b(.+?)\b'\B/g = '&lt;em&gt;$1&lt;/em&gt;'
-// Do not process the  deprecated + line break.
-/[\\ ]\+(\n|$)/g = ' +$1'
 
 /*
   Macros

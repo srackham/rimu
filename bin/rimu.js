@@ -506,10 +506,9 @@ var Rimu;
                     if (!match) {
                         return '';
                     }
-                    LineBlocks.classAttributes = '';
-                    LineBlocks.htmlAttributes = '';
                     if (match[1]) {
-                        LineBlocks.classAttributes = Rimu.trim(match[1]);
+                        LineBlocks.classAttributes += ' ' + Rimu.trim(match[1]);
+                        LineBlocks.classAttributes = Rimu.trim(LineBlocks.classAttributes);
                     }
                     if (match[2]) {
                         LineBlocks.htmlAttributes += ' id="' + Rimu.trim(match[2]).slice(1) + '"';
@@ -518,7 +517,6 @@ var Rimu;
                         LineBlocks.htmlAttributes += ' ' + Rimu.trim(match[3].slice(1, match[3].length - 1));
                     }
                     LineBlocks.htmlAttributes = Rimu.trim(LineBlocks.htmlAttributes);
-                    LineBlocks.blockOptions = {};
                     Rimu.DelimitedBlocks.setBlockOptions(LineBlocks.blockOptions, match[4]);
                     return '';
                 }
@@ -1304,11 +1302,6 @@ var Rimu;
             // Line-break (space followed by \ at end of line).
             {
                 match: /[\\ ]\\(\n|$)/g,
-                replacement: '<br>$1'
-            },
-            // DEPRECATED: version 1 "+" line-break.
-            {
-                match: /[\\ ]\+(\n|$)/g,
                 replacement: '<br>$1'
             },
             // Anchor: <<#id>>

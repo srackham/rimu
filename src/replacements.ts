@@ -27,12 +27,6 @@ module Rimu.Replacements {
       replacement: '<br>$1',
     },
 
-    // DEPRECATED: version 1 "+" line-break.
-    {
-      match: /[\\ ]\+(\n|$)/g,
-      replacement: '<br>$1',
-    },
-
     // Anchor: <<#id>>
     {
       match: /\\?<<#([a-zA-Z][\w\-]*)>>/g,

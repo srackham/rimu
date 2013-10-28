@@ -91,10 +91,6 @@ exports['Replacements'] = function(test) {
         'Lorum<br>\nipsum \\\n<code>lorum \\\nipsum</code>\nvestibulum<br>',
         'line breaks');
   test.equal(Spans.render(
-      'Lorum +\nipsum \\+\n`lorum +\nipsum`\nvestibulum +'),
-      'Lorum<br>\nipsum +\n<code>lorum +\nipsum</code>\nvestibulum<br>',
-      'deprecated "+" line breaks');
-  test.equal(Spans.render(
         'Lorum <<#x1>>ipsum <#x1|lorum link> \\<<#x1>>'),
         'Lorum <span id="x1"></span>ipsum <a href="#x1">lorum link</a> &lt;&lt;#x1&gt;&gt;',
         'inline anchors and links');

@@ -32,13 +32,15 @@ Both these features are built into the Rimu markup syntax.
 - MIT license.
 
 
-## Rimu Playground
+## Learn More
 
 Read the documentation and experiment with Rimu in the _Rimu
 Playground_.
 
 Play with it here <http://rimumarkup.org/rimuplayground.html> or
 open `rimuplayground.html` locally in in your browser.
+
+See also the _Release Notes_ topic in the _Rimu Playground_.
 
 
 ## Installing Rimu

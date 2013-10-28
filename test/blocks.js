@@ -465,11 +465,15 @@ exports['Documents'] = function(test) {
   test.equal(Rimu.render(
       "{v}='[style=\"margin:0;\"]'\n.bar {v}\nfoobar"),
       '<p class="bar" style="margin:0;">foobar</p>',
-      'macro expansion in Attributes Block');
+      'macro expansion in Block Attributes');
   test.equal(Rimu.render(
       '.bar {undefined!}\nfoobar'),
       '<p>foobar</p>',
-      'undefined macro in Attributes Block');
+      'undefined macro in Block Attributes');
+  test.equal(Rimu.render(
+      '.#x1\n.foo\n.bar\n.[style="color:red;"]\n.[data-duration="5"]\n.-macros\n.-spans\n_foobar_ {undefined}\n\n_foobar_ {undefined}'),
+      '<p class="foo bar" id="x1" style="color:red;" data-duration="5">_foobar_ {undefined}</p>\n<p><em>foobar</em> </p>',
+      'accumulated Block Attributes');
   test.equal(Rimu.render(
       "{v}='xxx'\n<div>\nfoo {v} bar</div>"),
       '<div>\nfoo xxx bar</div>',
