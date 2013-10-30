@@ -61,10 +61,12 @@ commit:
 push:
 	git push -u --tags origin master
 
+publish: publish-npm push publish-meteor
+
 publish-npm:
 	npm publish
 
-tag-and-release-meteor:
-	mrt release .
+publish-meteor:
+	mrt publish .
 
-.PHONY: all lint test build commit doc push publish-npm tag-and-release-meteor
+.PHONY: all lint test build commit doc push publish publish-npm publish-meteor
