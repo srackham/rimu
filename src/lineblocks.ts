@@ -79,7 +79,7 @@ module Rimu.LineBlocks {
         return '';
       },
     },
-    // Macro invocation block.
+    // Macro Line block.
     {
       match: Macros.MACRO_LINE,
       replacement: '',

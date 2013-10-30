@@ -37,39 +37,6 @@
 ~ = '<del>|</del>'
 
 /*
-  CSS
-
-  Invoke the {rimurc-css} macro at the start of the document and then
-  apply the following classes to Normal Paragraphs and
-  Division blocks:
-
-  sidebar  Styles sidebars.
-  verse    Styles poetry verses.
-*/
-{rimurc-css} = '
-<style type="text/css" scoped>
-.verse {
-  margin: 1.5em 20px;
-}
-div.verse p, p.verse {
-  font-family: serif;
-  white-space:pre;
-  margin-top: 0.75em;
-  margin-bottom: 0.75em;
-}
-.sidebar {
-  border: 1px solid silver;
-  border-radius:4px;
-  background: #ffffee;
-  padding: 10px;
-  margin: 1.5em 20px;
-}
-div.sidebar *:first-child {
-  margin-top: 0.2em;
-}
-</style>'
-
-/*
   Highlight.js
 */
 // Turn off auto-hightlighting.

@@ -251,39 +251,6 @@ _Tools_):
 ~ = '<del>|</del>'
 
 /*
-  CSS
-
-  Invoke the {rimurc-css} macro at the start of the document and then
-  apply the following classes to Normal Paragraphs and
-  Division blocks:
-
-  sidebar  Styles sidebars.
-  verse    Styles poetry verses.
-*/
-{rimurc-css} = '
-<style type="text/css" scoped>
-.verse {
-  margin: 1.5em 20px;
-}
-div.verse p, p.verse {
-  font-family: serif;
-  white-space:pre;
-  margin-top: 0.75em;
-  margin-bottom: 0.75em;
-}
-.sidebar {
-  border: 1px solid silver;
-  border-radius:4px;
-  background: #ffffee;
-  padding: 10px;
-  margin: 1.5em 20px;
-}
-div.sidebar *:first-child {
-  margin-top: 0.2em;
-}
-</style>'
-
-/*
   Highlight.js
 */
 // Turn off auto-hightlighting.
@@ -397,7 +364,7 @@ documentation> to learn how to use MathJax.
 
 
 <<#conditional-inclusion>>
-== Conditional inclusion
+== Conditional Inclusion
 _Inclusion_ macro invocations can be used to conditionally include and
 exclude lines of source text:
 
@@ -412,11 +379,23 @@ exclude lines of source text:
   {macro=two} Included if macro value is 'two'.
   {macro=\d+} Included if macro value is a number.
 
-- Output generating block elements can be prefixed with an _Inlusion_
-  macro (this is because _Macro Line_ elements are processed first).
-  For example:
+- Any block element, except for Line Block definitions, can be
+  prefixed with an _Inlusion_ macro For example:
 
   {highlightjs!}<script src="highlight.min.js"></script>
+
+Macros also provide a handy way to comment out text within block
+elements that support macro expansion (for example  paragraphs and
+HTML blocks). Here is an example paragraph that uses this technique:
+
+  Lobortis lacus vestibulum sem.
+  {other-text!} This line is excluded from the output.
+  Mauris vitae ipsum. {other-text|This parameter text
+  is excluded} Donec dui.
+
+So long as `other-text` is undefined or blank the text is excluded --
+set it to a non-blank value and the text will be included. Note that
+parameter text can extend over multiple lines.
 
 
 == Tables
@@ -619,6 +598,5 @@ Scelerisque feugiat massa alias.
 
 {generate-rendered-example-1|scoped-css-example}
 
-You can put your library of shared CSS styles in a macro definition in
-`~/.rimurc` then include it in your documents with a single macro
-invocation (see the <#example-rimurc|example .rimurc file>).
+The above _verse_ and _sidebar_ CSS styles are automatically included
+when you use the _rimuc_ tool `--styled` option.

@@ -434,7 +434,7 @@ var Rimu;
                     return '';
                 }
             },
-            // Macro invocation block.
+            // Macro Line block.
             {
                 match: Rimu.Macros.MACRO_LINE,
                 replacement: '',

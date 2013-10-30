@@ -306,39 +306,6 @@ source non-portable and less readable.</p>
 ~ = '&lt;del&gt;|&lt;/del&gt;'
 
 /*
-  CSS
-
-  Invoke the {rimurc-css} macro at the start of the document and then
-  apply the following classes to Normal Paragraphs and
-  Division blocks:
-
-  sidebar  Styles sidebars.
-  verse    Styles poetry verses.
-*/
-{rimurc-css} = '
-&lt;style type="text/css" scoped&gt;
-.verse {
-  margin: 1.5em 20px;
-}
-div.verse p, p.verse {
-  font-family: serif;
-  white-space:pre;
-  margin-top: 0.75em;
-  margin-bottom: 0.75em;
-}
-.sidebar {
-  border: 1px solid silver;
-  border-radius:4px;
-  background: #ffffee;
-  padding: 10px;
-  margin: 1.5em 20px;
-}
-div.sidebar *:first-child {
-  margin-top: 0.2em;
-}
-&lt;/style&gt;'
-
-/*
   Highlight.js
 */
 // Turn off auto-hightlighting.
@@ -443,7 +410,7 @@ A MathML block formula:
 <p>See the <a href="http://docs.mathjax.org/en/latest/">latest MathJax
 documentation</a> to learn how to use MathJax.</p>
 <div id="conditional-inclusion"></div>
-<h2>Conditional inclusion</h2>
+<h2>Conditional Inclusion</h2>
 <p><em>Inclusion</em> macro invocations can be used to conditionally include and
 exclude lines of source text:</p>
 <ul><li>If-then-else logic:
@@ -453,11 +420,20 @@ exclude lines of source text:</p>
 <pre class="no-highlight"><code>{macro=one} Included if macro value is 'one'.
 {macro=two} Included if macro value is 'two'.
 {macro=\d+} Included if macro value is a number.</code></pre>
-</li><li>Output generating block elements can be prefixed with an <em>Inlusion</em>
-  macro (this is because <em>Macro Line</em> elements are processed first).
-  For example:
+</li><li>Any block element, except for Line Block definitions, can be
+  prefixed with an <em>Inlusion</em> macro For example:
 <pre class="no-highlight"><code>{highlightjs!}&lt;script src="highlight.min.js"&gt;&lt;/script&gt;</code></pre>
-</li></ul><h2>Tables</h2>
+</li></ul><p>Macros also provide a handy way to comment out text within block
+elements that support macro expansion (for example  paragraphs and
+HTML blocks). Here is an example paragraph that uses this technique:</p>
+<pre class="no-highlight"><code>Lobortis lacus vestibulum sem.
+{other-text!} This line is excluded from the output.
+Mauris vitae ipsum. {other-text|This parameter text
+is excluded} Donec dui.</code></pre>
+<p>So long as <code>other-text</code> is undefined or blank the text is excluded &mdash;
+set it to a non-blank value and the text will be included. Note that
+parameter text can extend over multiple lines.</p>
+<h2>Tables</h2>
 <p>Create tables using the HTML table syntax (Rimu has no special syntax
 for tables).</p>
 <p>You can use Rimu markup in table cells, just remember that HTML blocks
@@ -725,9 +701,8 @@ Porttitor consectetuer commodo.</p>
 Pede mauris sed.
 Scelerisque feugiat massa alias.</p></div>
 </td></tr></tbody></table>
-<p>You can put your library of shared CSS styles in a macro definition in
-<code>~/.rimurc</code> then include it in your documents with a single macro
-invocation (see the <a href="#example-rimurc">example .rimurc file</a>).</p>
+<p>The above <em>verse</em> and <em>sidebar</em> CSS styles are automatically included
+when you use the <em>rimuc</em> tool <code>--styled</code> option.</p>
 <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>

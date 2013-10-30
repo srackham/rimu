@@ -422,7 +422,7 @@ Imperdiet pellentesque minim. Metus mauris tortor. Torquent leo vel.
 ""
 
 .-macros
-Macro {invocations} are not expanded when the `-macros` block option
+Macro invocations are not expanded when the `-macros` block option
 is set.
 
 -->
@@ -713,12 +713,24 @@ Visit the {homepage}.
   invocation.
 - Macro invocations are expanded and then processing continues from
   the start of the expanded line.
-- _Macro Lines_ are the macros are processed before any other block
-  elements.
+- _Macro Lines_ are the macros are processed before all other block
+  elements except for Line Block definitions.
 
 These properties allow macros to be used to inject Rimu markup into
 the source stream and allow block elements to be prefixed with
 _Inclusion_ macros.
+
+=== Reserved macro names
+Macro names starting with a dash character are reserved for use by
+Rimu.
+
+Published reserved names:
+
+  Reserved Name    Description
+  _____________________________________________________
+  - -               Guaranteed to always be undefined.
+  _____________________________________________________
+
 
 -->
 </div>
@@ -906,13 +918,15 @@ OPTIONS
     - -safe-mode 3 renders raw HTML as text.
 
   -s, - -styled
-    Include HTML header and footer and CSS styling in output.
+    Include HTML header and footer and CSS styling in output:
+    - Styled using Bootstrap.
+    - Set the {highlightjs} macro to a non-blank value to enable
+      syntax highlighting with Highlight.js.
+    - Set the {mathjax} macro to a non-blank value to enable MathJax.
+    - verse and sidebar classes can be applied to paragraphs and
+      delimited blocks.
     If one source file is specified the output is written to
     same-named file with .html extension.
-    Styled using Bootstrap.
-    Set the {highlightjs} macro to a non-blank value to enable
-    syntax highlighting with Highlight.js.
-    Set the {mathjax} macro to a non-blank value to enable MathJax.
 
 - -
 

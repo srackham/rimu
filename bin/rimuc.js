@@ -42,13 +42,15 @@ var MANPAGE = 'NAME\n' +
     '    --safe-mode 3 renders raw HTML as text.\n' +
     '\n' +
     '  -s, --styled\n' +
-    '    Include HTML header and footer and CSS styling in output.\n' +
+    '    Include HTML header and footer and CSS styling in output:\n' +
+    '    - Styled using Bootstrap.\n' +
+    '    - Set the {highlightjs} macro to a non-blank value to enable\n' +
+    '      syntax highlighting with Highlight.js.\n' +
+    '    - Set the {mathjax} macro to a non-blank value to enable MathJax.\n' +
+    '    - verse and sidebar classes can be applied to paragraphs and\n' +
+    '      delimited blocks.\n' +
     '    If one source file is specified the output is written to\n' +
-    '    same-named file with .html extension.\n' +
-    '    Styled using Bootstrap.\n' +
-    '    Set the {highlightjs} macro to a non-blank value to enable\n' +
-    '    syntax highlighting with Highlight.js.\n' +
-    '    Set the {mathjax} macro to a non-blank value to enable MathJax.\n';
+    '    same-named file with .html extension.\n';
 
 // Helpers.
 function die(message) {

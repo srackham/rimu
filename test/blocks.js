@@ -399,6 +399,10 @@ exports['Documents'] = function(test) {
       '<p>Hello </p>',
       'undefined macro');
   test.equal(Rimu.render(
+      'foo\n{undefined!}1\nbar {undefined|2\n3} four'),
+      '<p>foo\nbar  four</p>',
+      'comment out block contents with inclusion and parametrized macros');
+  test.equal(Rimu.render(
       'Hello {undefined?undefined macro.}'),
       '<p>Hello undefined macro.</p>',
       'existential macro invocation');
