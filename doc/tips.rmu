@@ -394,8 +394,8 @@ HTML blocks). Here is an example paragraph that uses this technique:
   is excluded} Donec dui.
 
 So long as `other-text` is undefined or blank the text is excluded --
-set it to a non-blank value and the text will be included. Note that
-parameter text can extend over multiple lines.
+set it to `$1` and the text will be included. Note that parameter text
+can extend over multiple lines.
 
 
 == Tables
