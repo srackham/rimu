@@ -393,8 +393,7 @@ example:
 
   {macro!}.+skip
   *Lorem ipsum dolor*. Sit amet venenatis. Erat nulla arcu. Lorem
-  luctus sem. Mauris vitaei ipsum. Donec dui ac ridiculus quisque
-  proin.  Lobortis lacus vestibulum sem.
+  luctus sem. Mauris vitaei ipsum.
 
 If `macro` is defined and not blank then the `.+skip` Attribute Block
 will be processed which causes the following paragraph to be skipped.
@@ -416,10 +415,15 @@ Blocks), then block content can be conditionally included using:
 . _Parametrized_  macro invocations to exclude arbitrary portions of
   inline text, for example:
 ...
+--
+{macro} = ''
+Mauris vitae ipsumi lacus vestibulum sem. {macro|This text
+is excluded}
 
-  Mauris vitae ipsumi lacus vestibulum sem {macro|This parameter text
-  is excluded if macro is undefined or value is blank} Donec dui.
-
+{macro} = '$1'
+Mauris vitae ipsumi lacus vestibulum sem. {macro|This text
+is included.}
+--
 So long as the `macro` value is undefined or blank the text is
 excluded -- set it to `$1` and the text will be included. Note that
 parameter text can encompass multiple lines.
