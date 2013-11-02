@@ -8,13 +8,18 @@ thought of as an HTML superset).
 
 
 == Converting Rimu to PDF
-First convert Rimu markup to HTML and then convert the HTML to PDF.
+First convert Rimu markup to HTML using the `rimuc` tool and then
+convert the HTML to PDF.  Here are a few options for converting HTML
+to PDF:
 
-Google's Chrome web browser has an option to print HTML to a PDF file,
-other browsers have PDF add-ons that perform the same function.
-
-Alternatively use an HTML to PDF conversion program such as
-<http://www.htmldoc.org/|HTMLDOC>.
+. Open the HTML document in <https://www.libreoffice.org/|LibreOffice>
+  Writer and export as PDF, this does a good job especially if you use
+  the `rimuc` `--styled` option.
+. Google's Chrome web browser has an option to print HTML to a PDF
+  file, other browsers have PDF add-ons that perform the same
+  function.
+. Use an HTML to PDF conversion program such as
+  <http://www.htmldoc.org/|HTMLDOC>.
 
 
 == Extend Rimu with Macros
@@ -198,14 +203,14 @@ interpreted as Rimu emphasis quotes, you can use _%5F_ in place of
 underscores or escape them with backslashes.
 
 
-<<#defs-warning>>
+.#defs-warning
 == Use Replacement and Quote definitions sparingly
 Adding new Replacement and Quote definitions changes the Rimu syntax
 which can produce unexpected results. It can also make your Rimu
 source non-portable and less readable.
 
 
-<<#example-rimurc>>
+.#example-rimurc
 == Example .rimurc file
 Here is an example `.rimurc` file containing _Macro_, _Quote_ and
 _Replacement_ definitions (refer to the Rimu documentation under
@@ -363,39 +368,63 @@ See the <http://docs.mathjax.org/en/latest/|latest MathJax
 documentation> to learn how to use MathJax.
 
 
-<<#conditional-inclusion>>
+.#conditional-inclusion
 == Conditional Inclusion
-_Inclusion_ macro invocations can be used to conditionally include and
-exclude lines of source text:
+Macro invocations can be used to conditionally include source text.
 
-- If-then-else logic:
-
-  {macro=} Included if macro is undefined or value is blank.
-  {macro!} Included if macro is defined and value not blank.
-
-- Case statement logic:
-
-  {macro=one} Included if macro value is 'one'.
-  {macro=two} Included if macro value is 'two'.
-  {macro=\d+} Included if macro value is a number.
-
-- Any block element, except for Line Block definitions, can be
-  prefixed with an _Inlusion_ macro For example:
+Single-line Blocks::
+..
+Single-line block elements (e.g. Headers, Block Attributes,
+single-line Paragraphs and single-line HTML blocks) can be
+conditionally excluded by prefixing an _Inclusion_ macro invocation.
+For example:
 
   {highlightjs!}<script src="highlight.min.js"></script>
 
-Macros also provide a handy way to comment out text within block
-elements that support macro expansion (for example  paragraphs and
-HTML blocks). Here is an example paragraph that uses this technique:
+This works because lines (in a block context) that begin with a macro
+invocation are initially processed as _Line Macro_ elements.
+..
 
-  Lobortis lacus vestibulum sem.
-  {other-text!} This line is excluded from the output.
-  Mauris vitae ipsum. {other-text|This parameter text
-  is excluded} Donec dui.
+Delmited Blocks, HTML Blocks and Paragraphs::
+..
+To conditionally exclude these multi-line block elements enable the
+`+skip` option with a preceding _Attribute Block_ element. For
+example:
 
-So long as `other-text` is undefined or blank the text is excluded --
-set it to `$1` and the text will be included. Note that parameter text
-can extend over multiple lines.
+  {macro!}.+skip
+  *Lorem ipsum dolor*. Sit amet venenatis. Erat nulla arcu. Lorem
+  luctus sem. Mauris vitaei ipsum. Donec dui ac ridiculus quisque
+  proin.  Lobortis lacus vestibulum sem.
+
+If `macro` is defined and not blank then the `.+skip` Attribute Block
+will be processed which causes the following paragraph to be skipped.
+..
+
+Inline content::
+..
+If an element supports macro expansion (e.g. Paragraphs and HTML
+Blocks), then block content can be conditionally included using:
+
+. _Inclusion_ macro invocations to exclude lines of text, for example: 
+
+  {macro=} Line is included if macro is undefined or value is blank.
+  {macro!} Line is included if macro is defined and value not blank.
+  {macro=one} Line is included if macro value is 'one'.
+  {macro=two} Line is included if macro value is 'two'.
+  {macro=\d+} Line is included if macro value is a number.
+
+. _Parametrized_  macro invocations to exclude arbitrary portions of
+  inline text, for example:
+...
+
+  Mauris vitae ipsumi lacus vestibulum sem {macro|This parameter text
+  is excluded if macro is undefined or value is blank} Donec dui.
+
+So long as the `macro` value is undefined or blank the text is
+excluded -- set it to `$1` and the text will be included. Note that
+parameter text can encompass multiple lines.
+...
+..
 
 
 == Tables

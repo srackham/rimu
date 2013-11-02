@@ -81,12 +81,18 @@
 special syntax or relearning  is required (in this sense Rimu can be
 thought of as an HTML superset).</p>
 <h2>Converting Rimu to PDF</h2>
-<p>First convert Rimu markup to HTML and then convert the HTML to PDF.</p>
-<p>Google's Chrome web browser has an option to print HTML to a PDF file,
-other browsers have PDF add-ons that perform the same function.</p>
-<p>Alternatively use an HTML to PDF conversion program such as
-<a href="http://www.htmldoc.org/">HTMLDOC</a>.</p>
-<h2>Extend Rimu with Macros</h2>
+<p>First convert Rimu markup to HTML using the <code>rimuc</code> tool and then
+convert the HTML to PDF.  Here are a few options for converting HTML
+to PDF:</p>
+<ol><li>Open the HTML document in <a href="https://www.libreoffice.org/">LibreOffice</a>
+  Writer and export as PDF, this does a good job especially if you use
+  the <code>rimuc</code> <code>--styled</code> option.
+</li><li>Google's Chrome web browser has an option to print HTML to a PDF
+  file, other browsers have PDF add-ons that perform the same
+  function.
+</li><li>Use an HTML to PDF conversion program such as
+  <a href="http://www.htmldoc.org/">HTMLDOC</a>.
+</li></ol><h2>Extend Rimu with Macros</h2>
 <p>Macros provide a simple, consistent mechanism for extending the Rimu
 markup vocabulary. For example:</p>
 <table class="example table table-bordered">
@@ -257,13 +263,11 @@ spaces, for example:</p>
 <p>Underscore characters are legal in URL paths but they may be
 interpreted as Rimu emphasis quotes, you can use <em>%5F</em> in place of
 underscores or escape them with backslashes.</p>
-<div id="defs-warning"></div>
-<h2>Use Replacement and Quote definitions sparingly</h2>
+<h2 id="defs-warning">Use Replacement and Quote definitions sparingly</h2>
 <p>Adding new Replacement and Quote definitions changes the Rimu syntax
 which can produce unexpected results. It can also make your Rimu
 source non-portable and less readable.</p>
-<div id="example-rimurc"></div>
-<h2>Example .rimurc file</h2>
+<h2 id="example-rimurc">Example .rimurc file</h2>
 <p>Here is an example <code>.rimurc</code> file containing <em>Macro</em>, <em>Quote</em> and
 <em>Replacement</em> definitions (refer to the Rimu documentation under
 <em>Tools</em>):</p>
@@ -409,31 +413,43 @@ A MathML block formula:
 <code>{i=0}</code> and <code>{2}</code> from being mistaken for Rimu macro invocations.</p>
 <p>See the <a href="http://docs.mathjax.org/en/latest/">latest MathJax
 documentation</a> to learn how to use MathJax.</p>
-<div id="conditional-inclusion"></div>
-<h2>Conditional Inclusion</h2>
-<p><em>Inclusion</em> macro invocations can be used to conditionally include and
-exclude lines of source text:</p>
-<ul><li>If-then-else logic:
-<pre class="no-highlight"><code>{macro=} Included if macro is undefined or value is blank.
-{macro!} Included if macro is defined and value not blank.</code></pre>
-</li><li>Case statement logic:
-<pre class="no-highlight"><code>{macro=one} Included if macro value is 'one'.
-{macro=two} Included if macro value is 'two'.
-{macro=\d+} Included if macro value is a number.</code></pre>
-</li><li>Any block element, except for Line Block definitions, can be
-  prefixed with an <em>Inlusion</em> macro For example:
+<h2 id="conditional-inclusion">Conditional Inclusion</h2>
+<p>Macro invocations can be used to conditionally include source text.</p>
+<dl><dt>Single-line Blocks</dt><dd>
+<div><p>Single-line block elements (e.g. Headers, Block Attributes,
+single-line Paragraphs and single-line HTML blocks) can be
+conditionally excluded by prefixing an <em>Inclusion</em> macro invocation.
+For example:</p>
 <pre class="no-highlight"><code>{highlightjs!}&lt;script src="highlight.min.js"&gt;&lt;/script&gt;</code></pre>
-</li></ul><p>Macros also provide a handy way to comment out text within block
-elements that support macro expansion (for example  paragraphs and
-HTML blocks). Here is an example paragraph that uses this technique:</p>
-<pre class="no-highlight"><code>Lobortis lacus vestibulum sem.
-{other-text!} This line is excluded from the output.
-Mauris vitae ipsum. {other-text|This parameter text
-is excluded} Donec dui.</code></pre>
-<p>So long as <code>other-text</code> is undefined or blank the text is excluded &mdash;
-set it to <code>$1</code> and the text will be included. Note that parameter text
-can extend over multiple lines.</p>
-<h2>Tables</h2>
+<p>This works because lines (in a block context) that begin with a macro
+invocation are initially processed as <em>Line Macro</em> elements.</p></div>
+</dd><dt>Delmited Blocks, HTML Blocks and Paragraphs</dt><dd>
+<div><p>To conditionally exclude these multi-line block elements enable the
+<code>+skip</code> option with a preceding <em>Attribute Block</em> element. For
+example:</p>
+<pre class="no-highlight"><code>{macro!}.+skip
+*Lorem ipsum dolor*. Sit amet venenatis. Erat nulla arcu. Lorem
+luctus sem. Mauris vitaei ipsum. Donec dui ac ridiculus quisque
+proin.  Lobortis lacus vestibulum sem.</code></pre>
+<p>If <code>macro</code> is defined and not blank then the <code>.+skip</code> Attribute Block
+will be processed which causes the following paragraph to be skipped.</p></div>
+</dd><dt>Inline content</dt><dd>
+<div><p>If an element supports macro expansion (e.g. Paragraphs and HTML
+Blocks), then block content can be conditionally included using:</p>
+<ol><li><em>Inclusion</em> macro invocations to exclude lines of text, for example:
+<pre class="no-highlight"><code>{macro=} Line is included if macro is undefined or value is blank.
+{macro!} Line is included if macro is defined and value not blank.
+{macro=one} Line is included if macro value is 'one'.
+{macro=two} Line is included if macro value is 'two'.
+{macro=\d+} Line is included if macro value is a number.</code></pre>
+</li><li><em>Parametrized</em>  macro invocations to exclude arbitrary portions of
+  inline text, for example:
+<div><pre class="no-highlight"><code>Mauris vitae ipsumi lacus vestibulum sem {macro|This parameter text
+is excluded if macro is undefined or value is blank} Donec dui.</code></pre>
+<p>So long as the <code>macro</code> value is undefined or blank the text is
+excluded &mdash; set it to <code>$1</code> and the text will be included. Note that
+parameter text can encompass multiple lines.</p></div></li></ol></div>
+</dd></dl><h2>Tables</h2>
 <p>Create tables using the HTML table syntax (Rimu has no special syntax
 for tables).</p>
 <p>You can use Rimu markup in table cells, just remember that HTML blocks
