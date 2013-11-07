@@ -137,7 +137,11 @@ while (!!(arg = process.argv.shift())) {
   if (!fs.existsSync(arg)) {
     die('source file does not exist: ' + arg);
   }
-  source = fs.readFileSync(arg).toString();
+  try {
+    source = fs.readFileSync(arg).toString();
+  } catch (e) {
+    die('source file permission denied: ' + arg);
+  }
   html += Rimu.render(source, {safeMode: arg === rimurc ? 0 : safeMode}) + '\n';
 }
 html = html.trim() + '\n';

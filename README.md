@@ -48,7 +48,7 @@ See also the _Release Notes_ topic in the _Rimu Playground_.
 - Install Rimu as a Node.js module (includes the `rimuc` command-line
   tool, run `rimuc --help`):
 
-        npm install rimu
+        sudo npm install -g rimu
 
 - Get the source from Github: <https://github.com/srackham/rimu>
 

@@ -631,5 +631,7 @@ Scelerisque feugiat massa alias.
 
 {generate-rendered-example-1|scoped-css-example}
 
-The above _verse_ and _sidebar_ CSS styles are automatically included
-when you use the _rimuc_ tool `--styled` option.
+- The above _verse_ and _sidebar_ CSS styles are automatically included when
+  you use the _rimuc_ tool `--styled` option.
+- HTML5 stipulates that scoped _style_ element must be the first child element
+  -- in practice  most browsers don't care where it occurs.
