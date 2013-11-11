@@ -58,14 +58,10 @@ See also the _Release Notes_ topic in the _Rimu Playground_.
 - See the _API_ documentation topic in the _Rimu Playground_.
 - Take a look at `./bin/rimuc.js` and `./bin/rimuplayground.html` for
   examples of using Rimu with Node.js and in the browser respectively.
-- The `meteor-example` directory contains a simple Meteor application
-  that uses the _rimumarkup_ smart package
-  (<https://atmosphere.meteor.com/package/rimumarkup>). Use
-  _Meteorite_ (<https://github.com/oortcloud/meteorite>) to install
-  and run the example:
-
-        cd meteor-example
-        mrt
+- There's a simple example Meteor application on Github
+  (<https://github.com/srackham/rimu-meteor-example>) which uses the
+  _rimumarkup_ smart package
+  (<https://atmosphere.meteor.com/package/rimumarkup>).
 
 
 ## Browser compatibility
