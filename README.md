@@ -53,12 +53,18 @@ See also the _Release Notes_ topic in the _Rimu Playground_.
 - Get the source from Github: <https://github.com/srackham/rimu>
 
 
-## Using Rimu
+## Example Apps
 
-- See the _API_ documentation topic in the _Rimu Playground_.
-- Take a look at `./bin/rimuc.js` and `./bin/rimuplayground.html` for
-  examples of using Rimu with Node.js and in the browser respectively.
-- There's a simple example Meteor application on Github
+First take a look at the _API_ documentation topic in the _Rimu Playground_
+(<http://rimumarkup.org/rimuplayground.html>).
+
+- Rimu includes the _rimuc_ command-line tool (`./bin/rimuc.js`) and
+  the _Rimu Playground_ (`./bin/rimuplayground.html`) -- examples
+  of using Rimu in Node.js and in the browser respectively.
+- A Chrome browser extension
+  (<https://github.com/srackham/rimu-chrome-extension.git>) for
+  rendering Rimu Markup files directly in the browser.
+- A simple example Meteor web application
   (<https://github.com/srackham/rimu-meteor-example>) which uses the
   _rimumarkup_ smart package
   (<https://atmosphere.meteor.com/package/rimumarkup>).
