@@ -10,7 +10,7 @@
   <meta charset="UTF-8">
   <meta name="description" content="Rimu is a readable text to HTML
     markup language inspired by AsciiDoc and Markdown.">
-  <title>{title}</title>
+  <title>{--title}</title>
   <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
   <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
   <style>
@@ -61,6 +61,9 @@
       white-space: normal;
       border: none;
       background-color: #fafafa;
+    }
+    .dl-horizontal > dt {
+      text-align: left;
     }
     /* highlight.js tweaks. */
     pre > code {

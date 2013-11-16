@@ -9,7 +9,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>{title? }</title>
+  <title>{--title? }</title>
   <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
   <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
   <style>
@@ -54,6 +54,9 @@
       border: none;
       background-color: #fafafa;
     }
+    .dl-horizontal > dt {
+      text-align: left;
+    }
     /* highlight.js tweaks. */
     pre > code {
       background-color: inherit;
@@ -84,6 +87,21 @@
     div.sidebar *:first-child {
       margin-top: 0.2em;
     }
+    /* Definition list numbering. */
+{--!} Number labeled lists with .dl-numbered class.
+    .dl-numbered {
+      counter-reset: dl-counter;
+    }
+    .dl-numbered dt:before {
+      content: counter(dl-counter) ". ";
+      counter-increment: dl-counter;
+    }
+{--!} Prefix counter value to dl-counter class element content.
+    .dl-counter:before {
+      content: counter(dl-counter) " ";
+    }
+{--!} Additional custom CSS.
+{--css!}{--css}
   </style>
 </head>
 <body>

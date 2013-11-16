@@ -557,7 +557,6 @@ The contents of `\{example-42}` are not subject to macro expansion.
 {m1} = 'foo'
 {m2} = '{m1} \{m1}'
 {m2}
-
 {m1} = 'bar'
 {m2}
 --

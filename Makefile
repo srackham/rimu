@@ -35,21 +35,21 @@ doc: doc/index.html doc/tips.html doc/showcase.html
 
 doc/index.html: README.md doc/doc-header.rmu doc/doc-footer.rmu
 	node ./bin/rimuc.js --output doc/index.html \
-		--prepend "{title}='Rimu Markup'" \
+		--prepend "{--title}='Rimu Markup'" \
 		doc/doc-header.rmu \
 		README.md \
 		doc/doc-footer.rmu
 
 doc/tips.html: doc/tips.rmu doc/doc-header.rmu doc/doc-footer.rmu
 	node ./bin/rimuc.js --output doc/tips.html \
-		--prepend "{title}='Rimu Tips'" \
+		--prepend "{--title}='Rimu Tips'" \
 		doc/doc-header.rmu \
 		doc/tips.rmu \
 		doc/doc-footer.rmu
 
 doc/showcase.html: doc/showcase.rmu doc/doc-header.rmu doc/doc-footer.rmu
 	node ./bin/rimuc.js --output doc/showcase.html \
-		--prepend "{title}='Rimu Showcase'" \
+		--prepend "{--title}='Rimu Showcase'" \
 		doc/doc-header.rmu \
 		doc/showcase.rmu \
 		doc/doc-footer.rmu
