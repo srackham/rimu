@@ -54,7 +54,7 @@
     *:not(pre) > code {
       white-space: normal;
       border: none;
-      background-color: #fafafa;
+      background-color: #f8f8f8;
     }
     .dl-horizontal > dt {
       text-align: left;
@@ -416,6 +416,14 @@ A MathML block formula:
 <code>{i=0}</code> and <code>{2}</code> from being mistaken for Rimu macro invocations.</p>
 <p>See the <a href="http://docs.mathjax.org/en/latest/">latest MathJax
 documentation</a> to learn how to use MathJax.</p>
+<h2>Inline Comments</h2>
+<p>Rimu comment elements are block elements and cannot be used inline &mdash;
+use an undefined macro to exclude inline text from elements that
+support macro expansion (e.g. paragraphs, lists, HTML blocks). It is
+customary to use the <em>Undefined</em> <code>--</code> macro for this purpose:</p>
+<pre class="no-highlight"><code>{--!}This line is skipped,
+and {--|this text is skipped}.</code></pre>
+<p>See also <a href="#conditional-inclusion">Conditional Inclusion</a>.</p>
 <h2 id="conditional-inclusion">Conditional Inclusion</h2>
 <p>Macro invocations can be used to conditionally include source text.</p>
 <dl><dt>Single-line Blocks</dt><dd>

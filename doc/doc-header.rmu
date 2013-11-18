@@ -60,7 +60,7 @@
     *:not(pre) > code {
       white-space: normal;
       border: none;
-      background-color: #fafafa;
+      background-color: #f8f8f8;
     }
     .dl-horizontal > dt {
       text-align: left;

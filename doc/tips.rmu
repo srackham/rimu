@@ -368,6 +368,18 @@ See the <http://docs.mathjax.org/en/latest/|latest MathJax
 documentation> to learn how to use MathJax.
 
 
+== Inline Comments
+Rimu comment elements are block elements and cannot be used inline --
+use an undefined macro to exclude inline text from elements that
+support macro expansion (e.g. paragraphs, lists, HTML blocks). It is
+customary to use the _Undefined_ `--` macro for this purpose:
+
+  {--!}This line is skipped,
+  and {--|this text is skipped}.
+
+See also <#conditional-inclusion|Conditional Inclusion>.
+
+
 .#conditional-inclusion
 == Conditional Inclusion
 Macro invocations can be used to conditionally include source text.
