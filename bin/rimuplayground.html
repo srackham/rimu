@@ -722,17 +722,7 @@ _Inclusion_ macros.
 
 === Reserved macro names
 Macro names starting with a dash character are reserved for use by
-Rimu.
-
-Published reserved names:
-
-  Reserved Name    Description
-  ___________________________________________________________
-  - -               Guaranteed to always be undefined.
-  - -title          Title for rimuc - -styled header.
-  - -css            Additional CSS for rimuc - -styled header.
-  ___________________________________________________________
-
+Rimu. The `- -` macro is guaranteed to always be undefined.
 
 -->
 </div>
@@ -930,6 +920,28 @@ OPTIONS
     If one source file is specified the output is written to
     same-named file with .html extension.
 
+STYLING MACROS AND CLASSES
+  The following macros and CSS classes are available when the
+  - -styled option is used:
+
+  Macro name       Description
+  ______________________________________________________________
+  - -title         HTML document title (1).
+  - -css           Additional CSS included in  HTML header (1).
+  highlightjs      Set to non-blank value to enable syntax
+                   highlighting with Highlight.js.
+  mathjax          Set to a non-blank value to enable MathJax.
+  ______________________________________________________________
+  (1) Must be defined prior to header (- -prepend or .rimurc).
+
+  CSS class        Description
+  ______________________________________________________________
+  verse            Verse format (paragraphs, division blocks).
+  sidebar          Sidebar format (paragraphs, division blocks).
+  dl-numbered      Number labeled list items.
+  dl-counter       Prepend dl-numbered item number to element
+                   content.
+  ______________________________________________________________
 - -
 
 Example usage:

@@ -50,7 +50,30 @@ var MANPAGE = 'NAME\n' +
     '    - verse and sidebar classes can be applied to paragraphs and\n' +
     '      delimited blocks.\n' +
     '    If one source file is specified the output is written to\n' +
-    '    same-named file with .html extension.\n';
+    '    same-named file with .html extension.\n' +
+    '\n' +
+    'STYLING MACROS AND CLASSES\n' +
+    '  The following macros and CSS classes are available when the\n' +
+    '  --styled option is used:\n' +
+    '\n' +
+    '  Macro name       Description\n' +
+    '  ______________________________________________________________\n' +
+    '  --title          HTML document title (1).\n' +
+    '  --css            Additional CSS included in  HTML header (1).\n' +
+    '  highlightjs      Set to non-blank value to enable syntax\n' +
+    '                   highlighting with Highlight.js.\n' +
+    '  mathjax          Set to a non-blank value to enable MathJax.\n' +
+    '  ______________________________________________________________\n' +
+    '  (1) Must be defined prior to header (--prepend or .rimurc).\n' +
+    '\n' +
+    '  CSS class        Description\n' +
+    '  ______________________________________________________________\n' +
+    '  verse            Verse format (paragraphs, division blocks).\n' +
+    '  sidebar          Sidebar format (paragraphs, division blocks).\n' +
+    '  dl-numbered      Number labeled list items.\n' +
+    '  dl-counter       Prepend dl-numbered item number to element\n' +
+    '                   content.\n' +
+    '  ______________________________________________________________\n';
 
 // Helpers.
 function die(message) {
