@@ -911,14 +911,8 @@ OPTIONS
     - -safe-mode 3 renders raw HTML as text.
 
   -s, - -styled
-    Include HTML header and footer and CSS styling in output:
-    - Styled using Bootstrap.
-    - Set the {highlightjs} macro to a non-blank value to enable
-      syntax highlighting with Highlight.js.
-    - Set the {mathjax} macro to a non-blank value to enable MathJax.
-    - verse and sidebar classes can be applied to paragraphs and
-      delimited blocks.
-    If one source file is specified the output is written to
+    Include HTML header and footer and Bootstrap CSS styling in
+    output. If one source file is specified the output is written to
     same-named file with .html extension.
 
 STYLING MACROS AND CLASSES
@@ -927,11 +921,11 @@ STYLING MACROS AND CLASSES
 
   Macro name       Description
   ______________________________________________________________
-  - -title         HTML document title (1).
-  - -css           Additional CSS included in  HTML header (1).
-  highlightjs      Set to non-blank value to enable syntax
+  - -title          HTML document title (1).
+  - -css            Additional CSS included in  HTML header (1).
+  - -highlightjs    Set to non-blank value to enable syntax
                    highlighting with Highlight.js.
-  mathjax          Set to a non-blank value to enable MathJax.
+  - -mathjax        Set to a non-blank value to enable MathJax.
   ______________________________________________________________
   (1) Must be defined prior to header (- -prepend or .rimurc).
 
@@ -939,7 +933,7 @@ STYLING MACROS AND CLASSES
   ______________________________________________________________
   verse            Verse format (paragraphs, division blocks).
   sidebar          Sidebar format (paragraphs, division blocks).
-  dl-numbered      Number labeled list items.
+  dl-numbered      Number labeled list items (labeled lists).
   dl-counter       Prepend dl-numbered item number to element
                    content.
   ______________________________________________________________
@@ -953,7 +947,7 @@ Example usage:
 
 2. Generate styled HTML Web page and use MathJax to process MathML:
 
-  rimuc - -styled - -prepend "{mathjax}='yes'" showcase.rmu
+  rimuc - -styled - -prepend "{- -mathjax}='yes'" showcase.rmu
 
 3. Compile multiple source files to single output file:
 

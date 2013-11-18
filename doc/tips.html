@@ -137,7 +137,7 @@ experimentation.</p>
 <p><a href="https://github.com/isagalaev/highlight.js">Highlight.js</a> is a nice
 syntax highlighter that makes it trivial to add syntax highlighting to
 Rimu Code blocks and Indented paragraphs.  The <em>rimuc</em> tool <code>--styled</code>
-option includes Highlight.js if you set the <code>{highlightjs}</code> macro to
+option includes Highlight.js if you set the <code>{--highlightjs}</code> macro to
 a non-blank value. It does this by linking to CSS and JavaScript files
 on the <em>Highlight.js</em> website.</p>
 <p><em>Highlight.js</em> automatically detects the language in Code Blocks and
@@ -147,7 +147,7 @@ adding a code block class, for example:</p>
 <th style="width:50%;">Rimu source</th>
 <th style="width:50%;">Rendered HTML</th>
 </tr></thead><tbody><tr><td style="width: 50%; padding: 4px;">
-<pre style="border:none; background-color:inherit;" class="no-highlight"><code>{highlightjs} = 'yes'
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>{--highlightjs} = 'yes'
 
 .javascript
 --
@@ -369,14 +369,14 @@ and
 <h2>Mathematical formulae using MathJax</h2>
 <p>You can include math formulas written in LaTeX or MathML using
 <a href="http://www.mathjax.org/">MathJax</a>. The <code>rimuc</code> command <code>--styled</code>
-option will include MathJax support if the <code>{mathjax}</code> macro is
+option will include MathJax support if the <code>{--mathjax}</code> macro is
 defined. Examples:</p>
 <table class="example table table-bordered">
 <tbody>
 <tr>
 <td style="width:10%; color:#527bbd; font-weight:bold;">Rimu source</td>
 <td>
-<pre style="border:none; background-color:inherit;" class="no-highlight"><code>{mathjax} = 'yes'
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>{--mathjax} = 'yes'
 
 .-macros
 A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\)
@@ -431,7 +431,7 @@ and {--|this text is skipped}.</code></pre>
 single-line Paragraphs and single-line HTML blocks) can be
 conditionally excluded by prefixing an <em>Inclusion</em> macro invocation.
 For example:</p>
-<pre class="no-highlight"><code>{highlightjs!}&lt;script src="highlight.min.js"&gt;&lt;/script&gt;</code></pre>
+<pre class="no-highlight"><code>{underscore!}&lt;script src="underscore-min.js"&gt;&lt;/script&gt;</code></pre>
 <p>This works because lines (in a block context) that begin with a macro
 invocation are initially processed as <em>Line Macro</em> elements.</p></div>
 </dd><dt>Delmited Blocks, HTML Blocks and Paragraphs</dt><dd>

@@ -42,14 +42,8 @@ var MANPAGE = 'NAME\n' +
     '    --safe-mode 3 renders raw HTML as text.\n' +
     '\n' +
     '  -s, --styled\n' +
-    '    Include HTML header and footer and CSS styling in output:\n' +
-    '    - Styled using Bootstrap.\n' +
-    '    - Set the {highlightjs} macro to a non-blank value to enable\n' +
-    '      syntax highlighting with Highlight.js.\n' +
-    '    - Set the {mathjax} macro to a non-blank value to enable MathJax.\n' +
-    '    - verse and sidebar classes can be applied to paragraphs and\n' +
-    '      delimited blocks.\n' +
-    '    If one source file is specified the output is written to\n' +
+    '    Include HTML header and footer and Bootstrap CSS styling in\n' +
+    '    output. If one source file is specified the output is written to\n' +
     '    same-named file with .html extension.\n' +
     '\n' +
     'STYLING MACROS AND CLASSES\n' +
@@ -60,9 +54,9 @@ var MANPAGE = 'NAME\n' +
     '  ______________________________________________________________\n' +
     '  --title          HTML document title (1).\n' +
     '  --css            Additional CSS included in  HTML header (1).\n' +
-    '  highlightjs      Set to non-blank value to enable syntax\n' +
+    '  --highlightjs    Set to non-blank value to enable syntax\n' +
     '                   highlighting with Highlight.js.\n' +
-    '  mathjax          Set to a non-blank value to enable MathJax.\n' +
+    '  --mathjax        Set to a non-blank value to enable MathJax.\n' +
     '  ______________________________________________________________\n' +
     '  (1) Must be defined prior to header (--prepend or .rimurc).\n' +
     '\n' +
@@ -70,7 +64,7 @@ var MANPAGE = 'NAME\n' +
     '  ______________________________________________________________\n' +
     '  verse            Verse format (paragraphs, division blocks).\n' +
     '  sidebar          Sidebar format (paragraphs, division blocks).\n' +
-    '  dl-numbered      Number labeled list items.\n' +
+    '  dl-numbered      Number labeled list items (labeled lists).\n' +
     '  dl-counter       Prepend dl-numbered item number to element\n' +
     '                   content.\n' +
     '  ______________________________________________________________\n';

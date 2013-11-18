@@ -57,7 +57,7 @@ experimentation.
 <https://github.com/isagalaev/highlight.js|Highlight.js> is a nice
 syntax highlighter that makes it trivial to add syntax highlighting to
 Rimu Code blocks and Indented paragraphs.  The _rimuc_ tool `--styled`
-option includes Highlight.js if you set the `\{highlightjs}` macro to
+option includes Highlight.js if you set the `\{--highlightjs}` macro to
 a non-blank value. It does this by linking to CSS and JavaScript files
 on the _Highlight.js_ website.
 
@@ -65,7 +65,7 @@ _Highlight.js_ automatically detects the language in Code Blocks and
 Indented Paragraphs. You can also set the language explicitly by
 adding a code block class, for example:
 
-{highlightjs-example} = '\{highlightjs} = 'yes'\
+{highlightjs-example} = '\{--highlightjs} = 'yes'\
 
 .javascript
 --
@@ -334,11 +334,11 @@ and
 == Mathematical formulae using MathJax
 You can include math formulas written in LaTeX or MathML using
 <http://www.mathjax.org/|MathJax>. The `rimuc` command `--styled`
-option will include MathJax support if the `\{mathjax}` macro is
+option will include MathJax support if the `\{--mathjax}` macro is
 defined. Examples:
 
 .-macros
-{mathjax-example} = '{mathjax} = 'yes'\
+{mathjax-example} = '{--mathjax} = 'yes'\
 
 .-macros
 A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\)
@@ -391,7 +391,7 @@ single-line Paragraphs and single-line HTML blocks) can be
 conditionally excluded by prefixing an _Inclusion_ macro invocation.
 For example:
 
-  {highlightjs!}<script src="highlight.min.js"></script>
+  {underscore!}<script src="underscore-min.js"></script>
 
 This works because lines (in a block context) that begin with a macro
 invocation are initially processed as _Line Macro_ elements.
