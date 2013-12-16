@@ -39,7 +39,7 @@ if (typeof exports !== 'undefined') {
     exports.render = Rimu.render;
 }
 
-this.Rimu = Rimu;
+this.Rimu = Rimu; // Fix Meteor 0.6.0 var scope incompatibility.
 var Rimu;
 (function (Rimu) {
     // Whitespace strippers.
@@ -86,6 +86,7 @@ var Rimu;
             text = text === null ? '' : text;
         }
 
+        // Spans also expand special characters.
         if (expansionOptions.spans) {
             return Rimu.Spans.render(text);
         } else if (expansionOptions.specials) {
@@ -158,7 +159,7 @@ var Rimu;
         }
         Options.safeModeFilter = safeModeFilter;
 
-        update({});
+        update({}); // Initialize options to default values.
     })(Rimu.Options || (Rimu.Options = {}));
     var Options = Rimu.Options;
 })(Rimu || (Rimu = {}));
@@ -213,7 +214,7 @@ var Rimu;
                 match = this.cursor().match(find);
                 if (match) {
                     if (match.length > 1) {
-                        result.push(match[1]);
+                        result.push(match[1]); // $1
                     }
                     this.next();
                     break;
@@ -222,6 +223,7 @@ var Rimu;
                 this.next();
             }
 
+            // Blank line matches EOF.
             if (match || find.toString() === '/^$/' && this.eof()) {
                 return result;
             } else {
@@ -253,6 +255,7 @@ var Rimu;
     })();
     Rimu.Writer = Writer;
 
+    
     if (typeof exports !== 'undefined') {
         exports.Reader = Rimu.Reader;
         exports.Writer = Rimu.Writer;
@@ -306,13 +309,13 @@ var Rimu;
 
         // Render all macro invocations in text string.
         function render(text) {
-            text = text.replace(MATCH_MACROS, function (match, name/* $1 */ , params/* $2 */ ) {
+            text = text.replace(MATCH_MACROS, function (match, name /* $1 */ , params /* $2 */ ) {
                 if (match[0] === '\\') {
                     return match.slice(1);
                 }
                 var value = getValue(name);
                 params = params || '';
-                params = params.replace(/\\\}/g, '}');
+                params = params.replace(/\\\}/g, '}'); // Unescape escaped } characters.
                 switch (params[0]) {
                     case '?':
                         return value === null ? params.slice(1) : value;
@@ -343,11 +346,12 @@ var Rimu;
                 }
             });
 
+            // Delete lines marked for deletion by inclusion macros.
             if (text.indexOf('\0') !== -1) {
                 var lines = text.split('\n');
                 for (var i = lines.length - 1; i >= 0; --i) {
                     if (lines[i].indexOf('\0') !== -1) {
-                        lines.splice(i, 1);
+                        lines.splice(i, 1); // Delete line[i].
                     }
                 }
                 text = lines.join('\n');
@@ -356,6 +360,7 @@ var Rimu;
         }
         Macros.render = render;
 
+        
         if (typeof exports !== 'undefined') {
             exports.Macros = Rimu.Macros;
         }
@@ -394,8 +399,7 @@ var Rimu;
                         quote: match[1],
                         openTag: Rimu.replaceInline(match[2], this),
                         closeTag: Rimu.replaceInline(match[4], this),
-                        spans: match[3] === '|'
-                    });
+                        spans: match[3] === '|' });
                     return '';
                 }
             },
@@ -457,7 +461,7 @@ var Rimu;
                 macros: true,
                 spans: true,
                 filter: function (match) {
-                    match[1] = match[1].length.toString();
+                    match[1] = match[1].length.toString(); // Replace $1 with header number.
                     return Rimu.replaceMatch(match, this.replacement, this);
                 }
             },
@@ -501,7 +505,7 @@ var Rimu;
                     // Parse HTML attributes.
                     // class names = $1, id = $2, html-attributes = $3, block-options = $4
                     var content = match[0];
-                    content = Rimu.replaceInline(content, this);
+                    content = Rimu.replaceInline(content, this); // Expand macros.
                     match = /^\\?\.([a-zA-Z][\w\- ]*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(content);
                     if (!match) {
                         return '';
@@ -555,7 +559,7 @@ var Rimu;
                     writer.write(text);
                     reader.next();
                     if (text && !reader.eof()) {
-                        writer.write('\n');
+                        writer.write('\n'); // Add a trailing '\n' if there are more lines.
                     }
                     return true;
                 }
@@ -575,6 +579,7 @@ var Rimu;
         }
         LineBlocks.getDefinition = getDefinition;
 
+        
         if (typeof exports !== 'undefined') {
             exports.LineBlocks = Rimu.LineBlocks;
         }
@@ -584,6 +589,8 @@ var Rimu;
 var Rimu;
 (function (Rimu) {
     (function (DelimitedBlocks) {
+        
+
         var defs = [
             // Delimited blocks cannot be escaped with a backslash.
             // Macro definition block.
@@ -597,9 +604,9 @@ var Rimu;
                     // Set macro.
                     // Get the macro name from the match in the first line of the block.
                     var name = match[0].match(/^\{([\w\-]+)\}/)[1];
-                    text = text.replace(/(' *[\\]*)\\\n/g, '$1\n');
-                    text = text.replace(/ +\n/g, '\n');
-                    text = Rimu.replaceInline(text, expansionOptions);
+                    text = text.replace(/(' *[\\]*)\\\n/g, '$1\n'); // Unescape line-continuations (and escaped line-continuations).
+                    text = text.replace(/ +\n/g, '\n'); // Strip trailing spaces.
+                    text = Rimu.replaceInline(text, expansionOptions); // Expand macro invocations.
                     Rimu.Macros.setValue(name, text);
                     return '';
                 }
@@ -703,6 +710,7 @@ var Rimu;
                 var def = defs[i];
                 var match = reader.cursor().match(def.openMatch);
                 if (match) {
+                    // Escape non-paragraphs.
                     if (match[0][0] === '\\' && def.name !== 'paragraph') {
                         // Drop backslash escape and continue.
                         reader.cursor(reader.cursor().slice(1));
@@ -713,8 +721,9 @@ var Rimu;
                     }
                     var lines = [];
 
+                    // Prepend delimiter text.
                     if (match.length > 1) {
-                        lines.push(match[1]);
+                        lines.push(match[1]); // $1
                     }
 
                     // Read content up to the closing delimiter.
@@ -738,6 +747,7 @@ var Rimu;
                     for (var k in Rimu.LineBlocks.blockOptions)
                         expansionOptions[k] = Rimu.LineBlocks.blockOptions[k];
 
+                    // Process block.
                     if (!expansionOptions.skip) {
                         writer.write(Rimu.injectHtmlAttributes(def.openTag));
                         var text = lines.join('\n');
@@ -809,6 +819,7 @@ var Rimu;
         }
         DelimitedBlocks.setDefinition = setDefinition;
 
+        
         if (typeof exports !== 'undefined') {
             exports.DelimitedBlocks = Rimu.DelimitedBlocks;
         }
@@ -818,6 +829,8 @@ var Rimu;
 var Rimu;
 (function (Rimu) {
     (function (Lists) {
+        
+
         var defs = [
             // Prefix match with backslash to allow escaping.
             // Unordered lists.
@@ -898,7 +911,7 @@ var Rimu;
 
             // Process of item text.
             var lines = new Rimu.Writer();
-            lines.write(match[match.length - 1]);
+            lines.write(match[match.length - 1]); // Item text from first line.
             lines.write('\n');
             reader.next();
             var nextItem;
@@ -987,7 +1000,7 @@ var Rimu;
                 var match = defs[i].match.exec(line);
                 if (match) {
                     if (match[0][0] === '\\') {
-                        reader.cursor(reader.cursor().slice(1));
+                        reader.cursor(reader.cursor().slice(1)); // Drop backslash.
                         return null;
                     }
                     item.match = match;
@@ -1016,6 +1029,7 @@ var Rimu;
             return null;
         }
 
+        
         if (typeof exports !== 'undefined') {
             exports.Lists = Lists;
         }
@@ -1191,6 +1205,7 @@ var Rimu;
             }
         }
 
+        
         if (typeof exports !== 'undefined') {
             exports.Spans = Rimu.Spans;
         }
@@ -1277,6 +1292,7 @@ var Rimu;
         }
         Quotes.setDefinition = setDefinition;
 
+        
         if (typeof exports !== 'undefined') {
             exports.Quotes = Rimu.Quotes;
         }
@@ -1375,6 +1391,7 @@ var Rimu;
         }
         Replacements.setDefinition = setDefinition;
 
+        
         if (typeof exports !== 'undefined') {
             exports.Replacements = Rimu.Replacements;
         }

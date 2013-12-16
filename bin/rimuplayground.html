@@ -308,6 +308,8 @@ Definition syntax:
   `+skip`:: Skip the block.
   `-skip`:: Turn off the skip option.
 
+- _Quote_ and _Replacement_ elements are collectively refered to as
+  _Spans_.
 - The `-specials` option is ignored if the API _safeMode_ option is
   not zero (see the _API_ topic).
 - A Delimited Block definition must start at the left margin and must not
@@ -654,7 +656,7 @@ Invocation syntax:
 
 - A _Simple_ macro invocation is replaced by the macro value or a
   blank string if the macro is not defined.
-- An _Existential macro invocation is replaced by the macro value or a
+- An _Existential_ macro invocation is replaced by the macro value or a
   the `default-value` if the macro is not defined.
 - _Parametrized_ macro invocations replace `$1`, `$2` ...  parameter
   names in the macro definition value with the corresponding parameter
@@ -836,7 +838,7 @@ Block elements
             Quote Definition
             Replacement Definition
             Delimited Block Definition
-        Headers
+        Header
         Block Image
         Block Anchor
         Block Attributes
@@ -858,13 +860,13 @@ Inline elements
             Emphasis
             Monospaced
         Replacements
-            Anchors
-            Character entities
-            HTML tags
-            Images
+            Anchor
+            Character entity
+            HTML tag
+            Image
             Line break
-            Links
-            URLs
+            Link
+            URL
 - -
 
 -->

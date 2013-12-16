@@ -572,7 +572,7 @@ title:</p>
 // $1 = section ID, $2 = section title.
 {section-definition} = '
 {$1} = '&lt;#$1|$2&gt;' \
-{$1-header} = '&lt;&lt;#$1&gt;&gt;
+{$1-header} = '.#$1
 == $2' \
 {$1-toc} = '{$1} \' \
 '
@@ -598,11 +598,9 @@ Link to {section1}.</code></pre>
 <h4>Table of Contents</h4>
 <p><a href="#section1">Section One</a><br>
 <a href="#section2">Section Two</a><br></p>
-<div id="section1"></div>
-<h2>Section One</h2>
+<h2 id="section1">Section One</h2>
 <p>Link to <a href="#section2">Section Two</a>.</p>
-<div id="section2"></div>
-<h2>Section Two</h2>
+<h2 id="section2">Section Two</h2>
 <p>Link to <a href="#section1">Section One</a>.</p>
 </td></tr></table>
 <p><b>NOTE</b>: The backslash character is used to continue macro definition
@@ -630,6 +628,7 @@ lines that end with a single-quote.</p>
 <div><pre class="no-highlight"><code>{m1} = 'foo'
 {m2} = '{m1} \{m1}'
 {m2}
+
 {m1} = 'bar'
 {m2}</code></pre>
 <p>Generates:</p>

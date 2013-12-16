@@ -513,7 +513,7 @@ title:
 // $1 = section ID, $2 = section title.
 {section-definition} = '\
 {$1} = '<#$1|$2>' \\
-{$1-header} = '<<#$1>>
+{$1-header} = '.#$1
 == $2' \\
 {$1-toc} = '{$1} \' \\
 '\
@@ -569,6 +569,7 @@ The contents of `\{example-42}` are not subject to macro expansion.
 {m1} = 'foo'
 {m2} = '{m1} \{m1}'
 {m2}
+
 {m1} = 'bar'
 {m2}
 --

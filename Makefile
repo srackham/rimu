@@ -61,7 +61,7 @@ commit:
 push:
 	git push -u --tags origin master
 
-publish: publish-npm push publish-meteor
+publish: push publish-npm publish-meteor
 
 publish-npm:
 	npm publish
