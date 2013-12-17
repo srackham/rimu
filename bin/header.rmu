@@ -100,8 +100,6 @@
     .dl-counter:before {
       content: counter(dl-counter) " ";
     }
-{--!} Additional custom CSS.
-{--css!}{--css}
   </style>
 </head>
 <body>

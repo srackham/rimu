@@ -53,7 +53,6 @@ var MANPAGE = 'NAME\n' +
     '  Macro name       Description\n' +
     '  ______________________________________________________________\n' +
     '  --title          HTML document title (1).\n' +
-    '  --css            Additional CSS included in  HTML header (1).\n' +
     '  --highlightjs    Set to non-blank value to enable syntax\n' +
     '                   highlighting with Highlight.js.\n' +
     '  --mathjax        Set to a non-blank value to enable MathJax.\n' +
