@@ -73,6 +73,37 @@
     pre span {
       opacity: 1 !important;
     }
+    /* List item counters and definition list numbering. */
+    dl {
+      counter-reset: dl-counter;
+    }
+    dl > dt {
+      counter-increment: dl-counter;
+    }
+    ol {
+      counter-reset: ol-counter;
+    }
+    ol > li {
+      counter-increment: ol-counter;
+    }
+    ul {
+      counter-reset: ul-counter;
+    }
+    ul > li {
+      counter-increment: ul-counter;
+    }
+    .dl-counter:before {
+      content: counter(dl-counter) " ";
+    }
+    .ol-counter:before {
+      content: counter(ol-counter) " ";
+    }
+    .ul-counter:before {
+      content: counter(ul-counter) " ";
+    }
+    .dl-numbered > dt:before {
+      content: counter(dl-counter) ". ";
+    }
   </style>
 </head>
 <body>

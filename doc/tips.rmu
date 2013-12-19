@@ -647,3 +647,37 @@ Scelerisque feugiat massa alias.
   you use the _rimuc_ tool `--styled` option.
 - HTML5 stipulates that scoped _style_ element must be the first child element
   -- in practice  most browsers don't care where it occurs.
+
+
+== List item counters
+In addition to the _verse_ and _sidebar_ CSS styles the  _rimuc_ tool
+`--styled` option also includes CSS classes for counting list items
+and for numbering labeled list items:
+
+{list-item-counters-example} = '==== Numbered labeled list
+.dl-numbered
+One:: Item one.
+Two:: Item two.
+Three:: Item three.
+
+.dl-counter
+labeled list items.
+
+==== Counted unordered list
+- Item one.
+- Item two.
+- Item three.
+- Item four.
+
+.ul-counter
+unordered list items.
+
+==== Counted ordered list
+. Item one.
+. Item two.
+
+.ol-counter
+ordered list items.'
+
+{generate-rendered-example-1|list-item-counters-example}
+

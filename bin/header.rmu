@@ -87,18 +87,39 @@
     div.sidebar *:first-child {
       margin-top: 0.2em;
     }
-    /* Definition list numbering. */
-{--!} Number labeled lists with .dl-numbered class.
-    .dl-numbered {
+    /* List item counters and definition list numbering. */
+{--!} List item counters.
+    dl {
       counter-reset: dl-counter;
     }
-    .dl-numbered dt:before {
-      content: counter(dl-counter) ". ";
+    dl > dt {
       counter-increment: dl-counter;
     }
-{--!} Prefix counter value to dl-counter class element content.
+    ol {
+      counter-reset: ol-counter;
+    }
+    ol > li {
+      counter-increment: ol-counter;
+    }
+    ul {
+      counter-reset: ul-counter;
+    }
+    ul > li {
+      counter-increment: ul-counter;
+    }
+{--!} Prefix list counter to counter class element content.
     .dl-counter:before {
       content: counter(dl-counter) " ";
+    }
+    .ol-counter:before {
+      content: counter(ol-counter) " ";
+    }
+    .ul-counter:before {
+      content: counter(ul-counter) " ";
+    }
+{--!} Number labeled list items.
+    .dl-numbered > dt:before {
+      content: counter(dl-counter) ". ";
     }
   </style>
 </head>

@@ -67,6 +67,37 @@
     pre span {
       opacity: 1 !important;
     }
+    /* List item counters and definition list numbering. */
+    dl {
+      counter-reset: dl-counter;
+    }
+    dl > dt {
+      counter-increment: dl-counter;
+    }
+    ol {
+      counter-reset: ol-counter;
+    }
+    ol > li {
+      counter-increment: ol-counter;
+    }
+    ul {
+      counter-reset: ul-counter;
+    }
+    ul > li {
+      counter-increment: ul-counter;
+    }
+    .dl-counter:before {
+      content: counter(dl-counter) " ";
+    }
+    .ol-counter:before {
+      content: counter(ol-counter) " ";
+    }
+    .ul-counter:before {
+      content: counter(ul-counter) " ";
+    }
+    .dl-numbered > dt:before {
+      content: counter(dl-counter) ". ";
+    }
   </style>
 </head>
 <body>
@@ -734,7 +765,56 @@ Scelerisque feugiat massa alias.</p></div>
   you use the <em>rimuc</em> tool <code>--styled</code> option.
 </li><li>HTML5 stipulates that scoped <em>style</em> element must be the first child element
   &mdash; in practice  most browsers don't care where it occurs.
-</li></ul>
+</li></ul><h2>List item counters</h2>
+<p>In addition to the <em>verse</em> and <em>sidebar</em> CSS styles the  <em>rimuc</em> tool
+<code>--styled</code> option also includes CSS classes for counting list items
+and for numbering labeled list items:</p>
+<table class="example table table-bordered"><thead><tr style="color:#527bbd;">
+<th style="width:50%;">Rimu source</th>
+<th style="width:50%;">Rendered HTML</th>
+</tr></thead><tbody><tr><td style="width: 50%; padding: 4px;">
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>==== Numbered labeled list
+.dl-numbered
+One:: Item one.
+Two:: Item two.
+Three:: Item three.
+
+.dl-counter
+labeled list items.
+
+==== Counted unordered list
+- Item one.
+- Item two.
+- Item three.
+- Item four.
+
+.ul-counter
+unordered list items.
+
+==== Counted ordered list
+. Item one.
+. Item two.
+
+.ol-counter
+ordered list items.</code></pre>
+</td><td style="width:50%; padding: 4px;">
+<h4>Numbered labeled list</h4>
+<dl class="dl-numbered"><dt>One</dt><dd> Item one.
+</dd><dt>Two</dt><dd> Item two.
+</dd><dt>Three</dt><dd> Item three.
+</dd></dl><p class="dl-counter">labeled list items.</p>
+<h4>Counted unordered list</h4>
+<ul><li>Item one.
+</li><li>Item two.
+</li><li>Item three.
+</li><li>Item four.
+</li></ul><p class="ul-counter">unordered list items.</p>
+<h4>Counted ordered list</h4>
+<ol><li>Item one.
+</li><li>Item two.
+</li></ol><p class="ol-counter">ordered list items.</p>
+</td></tr></tbody></table>
+
 <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
