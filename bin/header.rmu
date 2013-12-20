@@ -12,115 +12,132 @@
   <title>{--title? }</title>
   <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
   <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
-  <style>
-    /* Bootstrap tweaks. */
-    body {
-      margin: 1em;
-      max-width: 50em;
-    }
-    h1, h2, h3, h4, h5, h6 { color: #527bbd; }
-    h1 { font-size: 2.2em; }
-    h2 { font-size: 1.5em; }
-    h3 { font-size: 1.2em; }
-    h4 { font-size: 1.0em; }
-    h5 { font-size: 0.9em; }
-    h6 { font-size: 0.9em; }
-    h2, h3, h4, h5, h6 {
-      line-height: normal;
-      margin-top: 1.5em;
-      margin-bottom: 0.2em;
-    }
-    h2 {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-    }
-    a, a:hover { color: #527bbd; }
-    li, dd {
-      margin-bottom: 0.25em;
-    }
-    p, pre, ul, ol, dl {
-      margin-top: 0.5em;
-      margin-bottom: 0.5em;
-    }
-    pre {
-      padding: 6px;
-      line-height: normal;
-    }
-    code {
-      color: inherit;
-      font-size: inherit;
-    }
-    *:not(pre) > code {
-      white-space: normal;
-      border: none;
-      background-color: #f8f8f8;
-    }
-    .dl-horizontal > dt {
-      text-align: left;
-    }
-    /* highlight.js tweaks. */
-    pre > code {
-      background-color: inherit;
-      padding: 0;
-    }
-    pre span {
-      opacity: 1 !important;
-    }
-    /* Rimu styles. */
+
+<style>
+  /* Bootstrap tweaks. */
+  body {
+    margin: 1em;
+    max-width: 50em;
+  }
+  h1, h2, h3, h4, h5, h6 { color: #527bbd; }
+  h1 { font-size: 2.2em; }
+  h2 { font-size: 1.5em; }
+  h3 { font-size: 1.2em; }
+  h4 { font-size: 1.0em; }
+  h5 { font-size: 0.9em; }
+  h6 { font-size: 0.9em; }
+  h2, h3, h4, h5, h6 {
+    line-height: normal;
+    margin-top: 1.5em;
+    margin-bottom: 0.2em;
+  }
+  h2 {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  }
+  a, a:hover { color: #527bbd; }
+  li, dd {
+    margin-bottom: 0.25em;
+  }
+  p, pre, ul, ol, dl {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+  pre {
+    padding: 6px;
+    line-height: normal;
+  }
+  code {
+    color: inherit;
+    font-size: inherit;
+  }
+  *:not(pre) > code {
+    white-space: normal;
+    border: none;
+    background-color: #f8f8f8;
+  }
+  .dl-horizontal > dt {
+    text-align: left;
+  }
+  /* highlight.js tweaks. */
+  pre > code {
+    background-color: inherit;
+    padding: 0;
+  }
+  pre span {
+    opacity: 1 !important;
+  }
+  /* Rimu styles. */
 {--!} Apply verse class to Normal Paragraphs and Division blocks.
-    .verse {
-      margin: 1.5em 20px;
-    }
-    div.verse p, p.verse {
-      font-family: serif;
-      white-space:pre;
-      margin-top: 0.75em;
-      margin-bottom: 0.75em;
-    }
+  .verse {
+    margin: 1.5em 20px;
+  }
+  div.verse p, p.verse {
+    font-family: serif;
+    white-space:pre;
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+  }
 {--!} Apply sidebar class to Normal Paragraphs and Division blocks.
-    .sidebar {
-      border: 1px solid silver;
-      border-radius:4px;
-      background: #ffffee;
-      padding: 10px;
-      margin: 1.5em 20px;
-    }
-    div.sidebar *:first-child {
-      margin-top: 0.2em;
-    }
-    /* List item counters and definition list numbering. */
+  .sidebar {
+    border: 1px solid silver;
+    border-radius:4px;
+    background: #ffffee;
+    padding: 10px;
+    margin: 1.5em 20px;
+  }
+  div.sidebar *:first-child {
+    margin-top: 0.2em;
+  }
+  /* List item counters and definition list numbering. */
 {--!} List item counters.
-    dl {
-      counter-reset: dl-counter;
-    }
-    dl > dt {
-      counter-increment: dl-counter;
-    }
-    ol {
-      counter-reset: ol-counter;
-    }
-    ol > li {
-      counter-increment: ol-counter;
-    }
-    ul {
-      counter-reset: ul-counter;
-    }
-    ul > li {
-      counter-increment: ul-counter;
-    }
+  dl {
+    counter-reset: dl-counter;
+  }
+  dl > dt {
+    counter-increment: dl-counter;
+  }
+  ol {
+    counter-reset: ol-counter;
+  }
+  ol > li {
+    counter-increment: ol-counter;
+  }
+  ul {
+    counter-reset: ul-counter;
+  }
+  ul > li {
+    counter-increment: ul-counter;
+  }
 {--!} Prefix list counter to counter class element content.
-    .dl-counter:before {
-      content: counter(dl-counter) " ";
-    }
-    .ol-counter:before {
-      content: counter(ol-counter) " ";
-    }
-    .ul-counter:before {
-      content: counter(ul-counter) " ";
-    }
+  .dl-counter:before {
+    content: counter(dl-counter) " ";
+  }
+  .ol-counter:before {
+    content: counter(ol-counter) " ";
+  }
+  .ul-counter:before {
+    content: counter(ul-counter) " ";
+  }
 {--!} Number labeled list items.
-    .dl-numbered > dt:before {
-      content: counter(dl-counter) ". ";
-    }
-  </style>
+  .dl-numbered > dt:before {
+    content: counter(dl-counter) ". ";
+  }
+</style>
+
+{--section-numbers=}.+skip
+<style>
+  /* Section numbers. */
+  body,h1 { counter-reset: h2-counter; }
+  h2      { counter-reset: h3-counter; }
+  h2:before { 
+    content: counter(h2-counter) ". ";
+    counter-increment: h2-counter;
+  }
+  h3:before {
+    content: counter(h2-counter) "." counter(h3-counter) ". ";
+    counter-increment: h3-counter;
+  }
+</style>
+
 </head>
 <body>

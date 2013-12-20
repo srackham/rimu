@@ -50,12 +50,13 @@ var MANPAGE = 'NAME\n' +
     '  The following macros and CSS classes are available when the\n' +
     '  --styled option is used:\n' +
     '\n' +
-    '  Macro name       Description\n' +
+    '  Macro name         Description\n' +
     '  ______________________________________________________________\n' +
-    '  --title          HTML document title (1).\n' +
-    '  --highlightjs    Set to non-blank value to enable syntax\n' +
-    '                   highlighting with Highlight.js.\n' +
-    '  --mathjax        Set to a non-blank value to enable MathJax.\n' +
+    '  --title            HTML document title (1).\n' +
+    '  --highlightjs      Set to non-blank value to enable syntax\n' +
+    '                     highlighting with Highlight.js.\n' +
+    '  --mathjax          Set to a non-blank value to enable MathJax.\n' +
+    '  --section-numbers  Apply h1 and h2 section numbering (1).\n' +
     '  ______________________________________________________________\n' +
     '  (1) Must be defined prior to header (--prepend or .rimurc).\n' +
     '\n' +

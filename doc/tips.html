@@ -814,6 +814,13 @@ ordered list items.</code></pre>
 </li><li>Item two.
 </li></ol><p class="ol-counter">ordered list items.</p>
 </td></tr></tbody></table>
+<h2>Section numbering</h2>
+<p>If you define the <code>--section-numbers</code> macro the  <em>rimuc</em> tool
+<code>--styled</code> option will emit CSS to automatically number <em>h2</em> sections
+and <em>h3</em> sub-sections. You need to define the <code>--section-numbers</code>
+macro on the command-line (using the <code>--prepend</code> option) or in your
+<code>.rimurc</code> file. For example:</p>
+<pre class="no-highlight"><code>rimuc --styled --prepend "{--section-numbers}='yes'" mydoc.rmu</code></pre>
 
 <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
