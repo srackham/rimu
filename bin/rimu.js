@@ -309,12 +309,17 @@ var Rimu;
 
         // Render all macro invocations in text string.
         function render(text) {
-            text = text.replace(MATCH_MACROS, function (match, name /* $1 */ , params /* $2 */ ) {
+            text = text.replace(MATCH_MACROS, function (match) {
+                var args = [];
+                for (var _i = 0; _i < (arguments.length - 1); _i++) {
+                    args[_i] = arguments[_i + 1];
+                }
                 if (match[0] === '\\') {
                     return match.slice(1);
                 }
+                var name = args[0];
+                var params = args[1] || '';
                 var value = getValue(name);
-                params = params || '';
                 params = params.replace(/\\\}/g, '}'); // Unescape escaped } characters.
                 switch (params[0]) {
                     case '?':
@@ -449,7 +454,8 @@ var Rimu;
                     var value = Rimu.Macros.render(match[0]);
 
                     // Insert the macro value into the reader just ahead of the cursor.
-                    Array.prototype.splice.apply(reader.lines, [reader.pos + 1, 0].concat(value.split('\n')));
+                    var spliceArgs = [reader.pos + 1, 0].concat(value.split('\n'));
+                    Array.prototype.splice.apply(reader.lines, spliceArgs);
                     return '';
                 }
             },
@@ -625,7 +631,6 @@ var Rimu;
             {
                 name: 'division',
                 openMatch: /^\\?\.{2,}$/,
-                closeMatch: null,
                 openTag: '<div>',
                 closeTag: '</div>',
                 container: true,
@@ -635,7 +640,6 @@ var Rimu;
             {
                 name: 'quote',
                 openMatch: /^\\?"{2,}$/,
-                closeMatch: null,
                 openTag: '<blockquote>',
                 closeTag: '</blockquote>',
                 container: true,
@@ -645,7 +649,6 @@ var Rimu;
             {
                 name: 'code',
                 openMatch: /^\\?\-{2,}$/,
-                closeMatch: null,
                 openTag: '<pre><code>',
                 closeTag: '</code></pre>',
                 macros: false,
@@ -729,7 +732,8 @@ var Rimu;
                     // Read content up to the closing delimiter.
                     reader.next();
                     var closeMatch;
-                    if (def.closeMatch === null) {
+                    if (def.closeMatch === undefined) {
+                        // Close delimiter matches opening delimiter.
                         closeMatch = RegExp('^' + Rimu.escapeRegExp(match[0]) + '$');
                     } else {
                         closeMatch = def.closeMatch;

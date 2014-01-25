@@ -43,12 +43,13 @@ module Rimu.Macros {
 
   // Render all macro invocations in text string.
   export function render(text: string): string {
-    text = text.replace(MATCH_MACROS, function(match, name /* $1 */, params /* $2 */) {
+    text = text.replace(MATCH_MACROS, function(match, ...args) {
       if (match[0] === '\\') {
         return match.slice(1);
       }
+      var name = args[0];         /* $1 */
+      var params = args[1] || ''; /* $2 */
       var value = getValue(name); // Macro value is null if macro is undefined.
-      params = params || '';
       params = params.replace(/\\\}/g, '}');  // Unescape escaped } characters.
       switch (params[0]) {
         case '?': // Existential macro.

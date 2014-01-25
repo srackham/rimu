@@ -2,6 +2,7 @@ declare module Rimu {
     function render(source: string, options?: Options.Values): string;
     function renderSource(source: string): string;
 }
+declare var exports: any;
 declare module Rimu {
     interface ExpansionOptions {
         macros?: boolean;
@@ -65,7 +66,7 @@ declare module Rimu.LineBlocks {
     interface Definition {
         name?: string;
         filter?: (match: RegExpExecArray, reader?: Rimu.Reader) => string;
-        verify?: (match: string[]) => boolean;
+        verify?: (match: RegExpExecArray) => boolean;
         match: RegExp;
         replacement: string;
         macros?: boolean;
@@ -82,7 +83,7 @@ declare module Rimu.DelimitedBlocks {
     interface Definition {
         name?: string;
         openMatch: RegExp;
-        closeMatch: RegExp;
+        closeMatch?: RegExp;
         openTag: string;
         closeTag: string;
         filter?: (text: string, match: string[], expansionOptions: Rimu.ExpansionOptions) => string;

@@ -3,7 +3,7 @@ module Rimu.LineBlocks {
   export interface Definition {
     name?: string;  // Optional unique identifier.
     filter?: (match: RegExpExecArray, reader?: Reader) => string;
-    verify?: (match: string[]) => boolean;  // Additional match verification checks.
+    verify?: (match: RegExpExecArray) => boolean;  // Additional match verification checks.
     match: RegExp;
     replacement: string;
     macros?: boolean;
@@ -89,7 +89,8 @@ module Rimu.LineBlocks {
       filter: function (match, reader?) {
         var value = Macros.render(match[0]);
         // Insert the macro value into the reader just ahead of the cursor.
-        Array.prototype.splice.apply(reader.lines, [reader.pos + 1, 0].concat(value.split('\n')));
+        var spliceArgs = (<any[]> [reader.pos + 1, 0]).concat(value.split('\n'));
+        Array.prototype.splice.apply(reader.lines, spliceArgs);
         return '';
       },
     },
