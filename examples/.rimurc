@@ -3,6 +3,7 @@
   rimuc command.
 */
 
+
 /*
   Replacements
 */
@@ -14,13 +15,17 @@
 // Don't match HTML close comment tag.
 /(^|[^-])->/ = '$1&rightarrow;'
 /<-/ = '&leftarrow;'
+
 /\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
 /^(NOTE|IMPORTANT|WARNING|TIP):/ = '<b>$1</b>:'
+
 // Encodes (most) raw HTTP URLs as links.
 /(^|[^<])((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/ = '$1<a href="$2">$2</a>'
+
 // Alternative (typing friendly) emphasis, works for most cases but
 // can't contain quotes.
 /\B'\b(.+?)\b'\B/g = '<em>$1</em>'
+
 
 /*
   Macros
@@ -31,10 +36,15 @@
 {sup} = '<sup>$1</sup>'
 {sub} = '<sub>$1</sub>'
 
+
 /*
   Quotes
 */
 ~ = '<del>|</del>'
+
+// Markdown compatible strong quote.
+** = '<strong>|</strong>'
+
 
 /*
   Highlight.js

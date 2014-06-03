@@ -11,6 +11,9 @@ hi def link rimuAdmonition Special
 syn match rimuSpanDeleted /\\\@<!\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\~/ contains=rimuSpanEntity
 hi def link rimuSpanDeleted Todo
 
+" Markdown ** quote.
+syn match rimuSpanStrong /\\\@<!\*\*[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\*\*/ contains=rimuSpanEntity
+
 " Raw HTTP URLs as links.
 syn match rimuSpanRawURL /[\\<]\@<!\(http\|https\):\/\/[^ \t"']*[^ \t"',.;?)]/
 hi def link rimuSpanRawURL Title

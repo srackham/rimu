@@ -99,7 +99,12 @@ Headers:: Headers using `#` character header IDs.
 Code blocks:: Indented paragraphs (at least four spaces)
 render like Markdown code blocks.
 
-Text formatting:: `_emphasis_` and `\`code\`` quotes.
+Text formatting:: `_emphasis_` and `\`code\`` quotes. If you add the
+following Quote definition you can also use the double-asterisk quote
+for `**strong**` text (see the <#example-rimurc|example .rimurc
+file>):
+
+  \** = '<strong>|</strong>'
 
 Lists::
 - Bullet lists with `-` and `*` IDs.
@@ -222,6 +227,7 @@ _Tools_):
   rimuc command.
 */
 
+
 /*
   Replacements
 */
@@ -233,13 +239,17 @@ _Tools_):
 // Don't match HTML close comment tag.
 /(^|[^-])->/ = '$1&rightarrow;'
 /<-/ = '&leftarrow;'
+
 /\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
 /^(NOTE|IMPORTANT|WARNING|TIP):/ = '<b>$1</b>:'
+
 // Encodes (most) raw HTTP URLs as links.
 /(^|[^<])((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/ = '$1<a href="$2">$2</a>'
+
 // Alternative (typing friendly) emphasis, works for most cases but
 // can't contain quotes.
 /\B'\b(.+?)\b'\B/g = '<em>$1</em>'
+
 
 /*
   Macros
@@ -250,10 +260,15 @@ _Tools_):
 {sup} = '<sup>$1</sup>'
 {sub} = '<sub>$1</sub>'
 
+
 /*
   Quotes
 */
 ~ = '<del>|</del>'
+
+// Markdown compatible strong quote.
+** = '<strong>|</strong>'
+
 
 /*
   Highlight.js

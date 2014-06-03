@@ -214,7 +214,11 @@ unless the language class is explicitly set:</p>
 <dl><dt>Headers</dt><dd> Headers using <code>#</code> character header IDs.
 </dd><dt>Code blocks</dt><dd> Indented paragraphs (at least four spaces)
 render like Markdown code blocks.
-</dd><dt>Text formatting</dt><dd> <code>_emphasis_</code> and <code>`code`</code> quotes.
+</dd><dt>Text formatting</dt><dd> <code>_emphasis_</code> and <code>`code`</code> quotes. If you add the
+following Quote definition you can also use the double-asterisk quote
+for <code>**strong**</code> text (see the <a href="#example-rimurc">example .rimurc
+file</a>):
+<pre class="no-highlight"><code>\** = '&lt;strong&gt;|&lt;/strong&gt;'</code></pre>
 </dd><dt>Lists</dt><dd>
 <ul><li>Bullet lists with <code>-</code> and <code>*</code> IDs.
 </li><li>Numbered lists with explicit numbering.
@@ -310,6 +314,7 @@ source non-portable and less readable.</p>
   rimuc command.
 */
 
+
 /*
   Replacements
 */
@@ -321,13 +326,17 @@ source non-portable and less readable.</p>
 // Don't match HTML close comment tag.
 /(^|[^-])-&gt;/ = '$1&amp;rightarrow;'
 /&lt;-/ = '&amp;leftarrow;'
+
 /\bTODO\b/ = '&lt;b style="color: red; background-color: yellow;"&gt;TODO&lt;/b&gt;'
 /^(NOTE|IMPORTANT|WARNING|TIP):/ = '&lt;b&gt;$1&lt;/b&gt;:'
+
 // Encodes (most) raw HTTP URLs as links.
 /(^|[^&lt;])((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/ = '$1&lt;a href="$2"&gt;$2&lt;/a&gt;'
+
 // Alternative (typing friendly) emphasis, works for most cases but
 // can't contain quotes.
 /\B'\b(.+?)\b'\B/g = '&lt;em&gt;$1&lt;/em&gt;'
+
 
 /*
   Macros
@@ -338,10 +347,15 @@ source non-portable and less readable.</p>
 {sup} = '&lt;sup&gt;$1&lt;/sup&gt;'
 {sub} = '&lt;sub&gt;$1&lt;/sub&gt;'
 
+
 /*
   Quotes
 */
 ~ = '&lt;del&gt;|&lt;/del&gt;'
+
+// Markdown compatible strong quote.
+** = '&lt;strong&gt;|&lt;/strong&gt;'
+
 
 /*
   Highlight.js
