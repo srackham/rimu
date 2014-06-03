@@ -103,8 +103,9 @@ Text formatting:: `_emphasis_` and `\`code\`` quotes. If you add the
 following Quote definition you can also use the double-asterisk quote
 for `**strong**` text (see the <#example-rimurc|example .rimurc
 file>):
-
-  \** = '<strong>|</strong>'
+..
+\  ** = '<strong>|</strong>'
+..
 
 Lists::
 - Bullet lists with `-` and `*` IDs.
