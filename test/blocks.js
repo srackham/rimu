@@ -626,9 +626,21 @@ exports['Documents'] = function(test) {
           quotesLength + 2,
       'quotes length');
   test.equal(Rimu.render(
-          '\\=Testing= 123'),
-      '<p>=Testing= 123</p>',
+          '\\**Testing** 123'),
+      '<p>**Testing** 123</p>',
       'escaped double quote');
+  test.equal(Rimu.render(
+          '_* = \'<em><strong>|</strong></em>\'\n_*Testing_* *123*'),
+      '<p><em><strong>Testing</strong></em> <strong>123</strong></p>',
+      'asymmetric double quote definition');
+  test.equal(
+      Rimu.Quotes.defs.length,
+          quotesLength + 3,
+      'quotes length');
+  test.equal(Rimu.render(
+          '\\_*Testing_* 123'),
+      '<p>_*Testing_* 123</p>',
+      'escaped asymmetric double quote');
   test.equal(Rimu.render(
       '#=\'<ins>|</ins>\'\n#skipped#', {safeMode:1}),
       '<p>#skipped#</p>',
