@@ -608,11 +608,27 @@ exports['Documents'] = function(test) {
   test.equal(Rimu.render(
       '= = \'<del>|</del>\'\n=Testing *123*='),
       '<p><del>Testing <strong>123</strong></del></p>',
-      'new quote');
+      'single quote definition');
+  test.equal(
+      Rimu.Quotes.defs.length,
+          quotesLength + 1,
+      'quotes length');
   test.equal(Rimu.render(
       '\\=Testing= 123'),
       '<p>=Testing= 123</p>',
-      'escaped quote');
+      'escaped single quote');
+  test.equal(Rimu.render(
+      '** = \'<strong>|</strong>\'\n**Testing** *123*'),
+      '<p><strong>Testing</strong> <strong>123</strong></p>',
+      'double quote definition');
+  test.equal(
+      Rimu.Quotes.defs.length,
+          quotesLength + 2,
+      'quotes length');
+  test.equal(Rimu.render(
+          '\\=Testing= 123'),
+      '<p>=Testing= 123</p>',
+      'escaped double quote');
   test.equal(Rimu.render(
       '#=\'<ins>|</ins>\'\n#skipped#', {safeMode:1}),
       '<p>#skipped#</p>',
@@ -621,10 +637,6 @@ exports['Documents'] = function(test) {
       '=Testing= 123', {safeMode:1}),
       '<p><del>Testing</del> 123</p>',
       'existing quotes work in safe mode');
-  test.equal(
-      Rimu.Quotes.defs.length,
-      quotesLength + 1,
-      'quotes length');
   test.equal(Rimu.render(
       '#=\'<ins>|</ins>\'\n#Quote 2#', {safeMode:0}),
       '<p><ins>Quote 2</ins></p>',
@@ -633,10 +645,6 @@ exports['Documents'] = function(test) {
       '==\'<code>||</code>\'\n=Testing #123#='),
       '<p><code>Testing #123#</code></p>',
       'update quote with no spans');
-  test.equal(
-      Rimu.Quotes.defs.length,
-      quotesLength + 2,
-      'quotes length');
   // Replacement definitions.
   Rimu.Replacements.defs = [];
   test.equal(Rimu.render(

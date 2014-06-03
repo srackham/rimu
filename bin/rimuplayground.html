@@ -589,13 +589,13 @@ definitions_.
 
 Definition syntax:
 
-  quote-character = '<open-tags>|<close-tags>'
+  quote-delimiter = '<open-tags>|<close-tags>'
 
-- `quote-character` is the quote character used in the Rimu markup.
+- `quote-delimiter` and be one or two characters.
 - `open-tags` and `close-tags` are the HTML tags that envelope the
   generated HTML.
-- If a two-bar `||` separator is used the output is rendered
-  verbatim like the built-in _code quote_.
+- Use a two-bar `||` separator to render the quoted text
+  verbatim (like the built-in _code quote_).
 - A Quote definition must start at the left margin and must not
   extend beyond the end of the line.
 - Quote definitions are not processed if the _Safe Mode_ is

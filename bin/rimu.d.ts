@@ -65,7 +65,7 @@ declare module Rimu.Macros {
 declare module Rimu.LineBlocks {
     interface Definition {
         name?: string;
-        filter?: (match: RegExpExecArray, reader?: Rimu.Reader) => string;
+        filter?: (match: RegExpExecArray, reader?: Reader) => string;
         verify?: (match: RegExpExecArray) => boolean;
         match: RegExp;
         replacement: string;
@@ -75,8 +75,8 @@ declare module Rimu.LineBlocks {
     }
     var classAttributes: string;
     var htmlAttributes: string;
-    var blockOptions: Rimu.ExpansionOptions;
-    function render(reader: Rimu.Reader, writer: Rimu.Writer): boolean;
+    var blockOptions: ExpansionOptions;
+    function render(reader: Reader, writer: Writer): boolean;
     function getDefinition(name: string): Definition;
 }
 declare module Rimu.DelimitedBlocks {
@@ -86,7 +86,7 @@ declare module Rimu.DelimitedBlocks {
         closeMatch?: RegExp;
         openTag: string;
         closeTag: string;
-        filter?: (text: string, match: string[], expansionOptions: Rimu.ExpansionOptions) => string;
+        filter?: (text: string, match: string[], expansionOptions: ExpansionOptions) => string;
         verify?: (match: string[]) => boolean;
         macros?: boolean;
         container?: boolean;
@@ -94,13 +94,13 @@ declare module Rimu.DelimitedBlocks {
         spans?: boolean;
         specials?: boolean;
     }
-    function render(reader: Rimu.Reader, writer: Rimu.Writer): boolean;
+    function render(reader: Reader, writer: Writer): boolean;
     function getDefinition(name: string): Definition;
-    function setBlockOptions(blockOptions: Rimu.ExpansionOptions, options: string): void;
+    function setBlockOptions(blockOptions: ExpansionOptions, options: string): void;
     function setDefinition(name: string, value: string): void;
 }
 declare module Rimu.Lists {
-    function render(reader: Rimu.Reader, writer: Rimu.Writer): boolean;
+    function render(reader: Reader, writer: Writer): boolean;
 }
 declare module Rimu.Spans {
     function render(source: string): string;

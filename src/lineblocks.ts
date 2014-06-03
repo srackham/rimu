@@ -30,7 +30,7 @@ module Rimu.LineBlocks {
     // Quote definition.
     // quote = $1, openTag = $2, separator = $3, closeTag = $4
     {
-      match: /^(\S)\s*=\s*'([^\|]*)(\|{1,2})(.*)'$/,
+      match: /^(\S{1,2})\s*=\s*'([^\|]*)(\|{1,2})(.*)'$/,
       replacement: '',
       macros: true,
       filter: function (match) {
