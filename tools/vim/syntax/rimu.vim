@@ -46,10 +46,6 @@ syn match rimuReplacementDefinition /^\/.\+\/[igm]*\s*=\s*'\_.\{-}'\n/
 syn match rimuReplacementRegExp /^\/.\+\/[igm]*[\t =]\@=/ contained containedin=rimuReplacementDefinition
 syn match rimuDelimitedBlockDefinition /^|[0-9A-Za-z-]\+|*\s*=\s*'\_.\{-}'\n/
 syn match rimuDelimitedBlockDefinitionName /^|[0-9A-Za-z-]\+|[\t =]\@=/ contained containedin=rimuDelimitedBlockDefinition
-syn match rimuQuoteDefinition /^\S\s*=\s*'\_.\{-}'\n/
-syn match rimuQuoteQuote /^\S/ contained containedin=rimuQuoteDefinition
-syn match rimuDefinitionValue /'\_.\{-}'\n/ contained containedin=rimuMacroDefinition,rimuReplacementDefinition,rimuQuoteDefinition,rimuDelimitedBlockDefinition
-syn match rimuDefinitionParam /\($\d\+\)\|\(|\{1,2}\)/ contained containedin=rimuDefinitionValue
 
 syn match rimuBlockAttributes /^\.[a-zA-Z#\[+\-].*$/
 syn match rimuComment "^\\\@<!//.*$" contains=rimuTodo
@@ -59,6 +55,11 @@ syn match rimuListId /^\s*\(-\|\*\{1,4}\)\s/
 syn match rimuListId /^\s*\(\(\d\+\.\)\|\.\{1,4}\)\s/
 syn match rimuListId /:\{2,4}/ contained containedin=rimuListLabel
 syn region rimuListLabel start=/^/ end=/:\{2,4}/ contains=rimuSpan.* oneline keepend
+
+syn match rimuQuoteDefinition /^\S\{1,2}\s*=\s*'\_.\{-}'\n/
+syn match rimuQuoteQuote /^\S/ contained containedin=rimuQuoteDefinition
+syn match rimuDefinitionValue /'\_.\{-}'\n/ contained containedin=rimuMacroDefinition,rimuReplacementDefinition,rimuQuoteDefinition,rimuDelimitedBlockDefinition
+syn match rimuDefinitionParam /\($\d\+\)\|\(|\{1,2}\)/ contained containedin=rimuDefinitionValue
 
 hi def link rimuBackslash Special
 hi def link rimuParamSeparator Label
