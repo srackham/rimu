@@ -608,7 +608,7 @@ exports['Documents'] = function(test) {
   test.equal(Rimu.render(
       '= = \'<del>|</del>\'\n=Testing *123*='),
       '<p><del>Testing <strong>123</strong></del></p>',
-      'single quote definition');
+      'new single quote definition');
   test.equal(
       Rimu.Quotes.defs.length,
           quotesLength + 1,
@@ -620,7 +620,7 @@ exports['Documents'] = function(test) {
   test.equal(Rimu.render(
       '** = \'<strong>|</strong>\'\n**Testing** *123*'),
       '<p><strong>Testing</strong> <strong>123</strong></p>',
-      'double quote definition');
+      'new double quote definition');
   test.equal(
       Rimu.Quotes.defs.length,
           quotesLength + 2,
@@ -632,7 +632,7 @@ exports['Documents'] = function(test) {
   test.equal(Rimu.render(
           '_* = \'<em><strong>|</strong></em>\'\n_*Testing_* *123*'),
       '<p><em><strong>Testing</strong></em> <strong>123</strong></p>',
-      'asymmetric double quote definition');
+      'new asymmetric double quote definition');
   test.equal(
       Rimu.Quotes.defs.length,
           quotesLength + 3,
@@ -657,6 +657,10 @@ exports['Documents'] = function(test) {
       '==\'<code>||</code>\'\n=Testing #123#='),
       '<p><code>Testing #123#</code></p>',
       'update quote with no spans');
+  test.equal(Rimu.render(
+          '*=\'<em>|</em>\'\n**Testing** *123*'),
+      '<p><strong>Testing</strong> <em>123</em></p>',
+      'modify built-in quote');
   // Replacement definitions.
   Rimu.Replacements.defs = [];
   test.equal(Rimu.render(
