@@ -22,10 +22,6 @@
 // Encodes (most) raw HTTP URLs as links.
 /(^|[^<])((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/ = '$1<a href="$2">$2</a>'
 
-// Alternative (typing friendly) emphasis, works for most cases but
-// can't contain quotes.
-/\B'\b(.+?)\b'\B/g = '<em>$1</em>'
-
 
 /*
   Macros

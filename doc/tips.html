@@ -333,10 +333,6 @@ source non-portable and less readable.</p>
 // Encodes (most) raw HTTP URLs as links.
 /(^|[^&lt;])((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/ = '$1&lt;a href="$2"&gt;$2&lt;/a&gt;'
 
-// Alternative (typing friendly) emphasis, works for most cases but
-// can't contain quotes.
-/\B'\b(.+?)\b'\B/g = '&lt;em&gt;$1&lt;/em&gt;'
-
 
 /*
   Macros
