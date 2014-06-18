@@ -15,5 +15,5 @@ hi def link rimuSpanDeleted Todo
 syn match rimuSpanStrong /\\\@<!\*\*[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\*\*/ contains=rimuSpanEntity
 
 " Raw HTTP URLs as links.
-syn match rimuSpanRawURL /[\\<]\@<!\(http\|https\):\/\/[^ \t"']*[^ \t"',.;?)]/
+syn match rimuSpanRawURL /[\\<]\@<!\(http\|https\):\/\/[^ \t"]*[^ \t",.;?)]/
 hi def link rimuSpanRawURL Title
