@@ -20,7 +20,7 @@
 /^\\?(NOTE|IMPORTANT|WARNING|TIP):/ = '<b>$1</b>:'
 
 // Encodes (most) raw HTTP URLs as links.
-/\\?\b((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/ = '<a href="$1">$1</a>'
+/(^|[^<])\b((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/ = '$1<a href="$2">$2</a>'
 
 
 /*
