@@ -39,7 +39,7 @@
       margin-bottom: 0.25em;
     }
     p, pre, ul, ol, dl, blockquote p {
-      font-size: 14px;
+      font-size: inherit;
       margin-top: 0.5em;
       margin-bottom: 0.5em;
     }
