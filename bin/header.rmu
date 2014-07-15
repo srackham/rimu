@@ -38,7 +38,8 @@
   li, dd {
     margin-bottom: 0.25em;
   }
-  p, pre, ul, ol, dl {
+  p, pre, ul, ol, dl, blockquote p {
+    font-size: 14px;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
   }
