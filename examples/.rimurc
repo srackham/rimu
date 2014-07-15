@@ -8,19 +8,19 @@
   Replacements
 */
 // Don't match HTML comment tags.
-/(^|[^!])--(?!>)/ = '$1&mdash;'
-/\.{3}/ = '&hellip;'
-/``/ = '&ldquo;'
-/''/ = '&rdquo;'
+/\\?(^|[^!])--(?!>)/ = '$1&mdash;'
+/\\?\.{3}/ = '&hellip;'
+/\\?``/ = '&ldquo;'
+/\\?''/ = '&rdquo;'
 // Don't match HTML close comment tag.
-/(^|[^-])->/ = '$1&rightarrow;'
-/<-/ = '&leftarrow;'
+/\\?(^|[^-])->/ = '$1&rightarrow;'
+/\\?<-/ = '&leftarrow;'
 
-/\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
-/^(NOTE|IMPORTANT|WARNING|TIP):/ = '<b>$1</b>:'
+/\\?\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
+/^\\?(NOTE|IMPORTANT|WARNING|TIP):/ = '<b>$1</b>:'
 
 // Encodes (most) raw HTTP URLs as links.
-/(^|[^<])((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/ = '$1<a href="$2">$2</a>'
+/\\?\b((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/ = '<a href="$1">$1</a>'
 
 
 /*
