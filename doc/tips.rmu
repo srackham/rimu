@@ -99,13 +99,7 @@ Headers:: Headers using `#` character header IDs.
 Code blocks:: Indented paragraphs (at least four spaces)
 render like Markdown code blocks.
 
-Text formatting:: `_emphasis_` and `\`code\`` quotes. If you add the
-following Quote definition you can also use the double-asterisk quote
-for `**strong**` text (see the <#example-rimurc|example .rimurc
-file>):
-..
-\  ** = '<strong>|</strong>'
-..
+Text formatting:: `_emphasis_` and `\`code\`` quotes.
 
 Lists::
 - Bullet lists with `-` and `*` IDs.
@@ -115,6 +109,10 @@ URLs and Email addresses:: Using the `<url>` and `<email>` syntaxes.
 
 The Rimu _README_ uses this subset for compatibility with _GitHub_ and
 _npmjs.org_ README formats.
+
+Rimu can be extended to recognise additional Markdown syntax using
+Quote and Replacement definitions -- you can find some examples in
+the <#example-rimurc|example .rimurc file>.
 
 
 == Escaping Rimu syntax
@@ -266,6 +264,12 @@ _Tools_):
 // Markdown compatible strong quote.
 ** = '<strong>|</strong>'
 
+// Markdown [link-text](url) syntax.
+// /\[([\s\S]*?)\]\s*\(((?:http|https):\/\/[^\s"']*[^\s"',.;?)])\)/ = '<a href="$2">$1</a>'
+/\\?\[([\s\S]+?)\]\s*\((\S+?)\)/ = '<a href="$2">$1</a>'
+
+// Markdown ![alt-text](image-url) syntax.
+/\\?!\[([\s\S]+?)\]\s*\((\S+?)\)/ = '<img src="$2" alt="$1">'
 
 /*
   Highlight.js
