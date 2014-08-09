@@ -715,8 +715,9 @@ Visit the {homepage}.
   invocation.
 - Macro invocations are expanded and then processing continues from
   the start of the expanded line.
-- _Macro Lines_ are the macros are processed before all other block
-  elements except for Line Block definitions.
+- A _Macro Line_ can be the first line in any other block element
+  with the exception of _Line Block_ definition elements i.e. Macro,
+  Quote, Replacement or Delimited Block definitions.
 
 These properties allow macros to be used to inject Rimu markup into
 the source stream and allow block elements to be prefixed with
