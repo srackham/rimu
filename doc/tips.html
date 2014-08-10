@@ -215,17 +215,16 @@ unless the language class is explicitly set:</p>
 <dl><dt>Headers</dt><dd> Headers using <code>#</code> character header IDs.
 </dd><dt>Code blocks</dt><dd> Indented paragraphs (at least four spaces)
 render like Markdown code blocks.
-</dd><dt>Text formatting</dt><dd> <code>_emphasis_</code> and <code>`code`</code> quotes. If you add the
-following Quote definition you can also use the double-asterisk quote
-for <code>**strong**</code> text (see the <a href="#example-rimurc">example .rimurc
-file</a>):
-<div><pre class="no-highlight"><code>** = '&lt;strong&gt;|&lt;/strong&gt;'</code></pre></div>
+</dd><dt>Text formatting</dt><dd> <code>_emphasis_</code> and <code>`code`</code> quotes.
 </dd><dt>Lists</dt><dd>
 <ul><li>Bullet lists with <code>-</code> and <code>*</code> IDs.
 </li><li>Numbered lists with explicit numbering.
 </li></ul></dd><dt>URLs and Email addresses</dt><dd> Using the <code>&lt;url&gt;</code> and <code>&lt;email&gt;</code> syntaxes.
 </dd></dl><p>The Rimu <em>README</em> uses this subset for compatibility with <em>GitHub</em> and
 <em>npmjs.org</em> README formats.</p>
+<p>Rimu can be extended to recognise additional Markdown syntax using
+Quote and Replacement definitions &mdash; you can find some examples in
+the <a href="#example-rimurc">example .rimurc file</a>.</p>
 <h2>Escaping Rimu syntax</h2>
 <p>If you have text that you don't want interpreted as a Rimu element
 then you can render it literally (escape it) by prefixing the element
@@ -353,6 +352,12 @@ source non-portable and less readable.</p>
 // Markdown compatible strong quote.
 ** = '&lt;strong&gt;|&lt;/strong&gt;'
 
+// Markdown [link-text](url) syntax.
+// /\[([\s\S]*?)\]\s*\(((?:http|https):\/\/[^\s"']*[^\s"',.;?)])\)/ = '&lt;a href="$2"&gt;$1&lt;/a&gt;'
+/\\?\[([\s\S]+?)\]\s*\((\S+?)\)/ = '&lt;a href="$2"&gt;$1&lt;/a&gt;'
+
+// Markdown ![alt-text](image-url) syntax.
+/\\?!\[([\s\S]+?)\]\s*\((\S+?)\)/ = '&lt;img src="$2" alt="$1"&gt;'
 
 /*
   Highlight.js
