@@ -243,7 +243,13 @@ _Tools_):
 /^\\?(NOTE|IMPORTANT|WARNING|TIP):/ = '<b>$1</b>:'
 
 // Encodes (most) raw HTTP URLs as links.
-/\\?\b((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/ = '<a href="$1">$1</a>'
+/(^|[^<])\b((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/ = '$1<a href="$2">$2</a>'
+
+// Markdown [link-text](url) syntax.
+/\\?\[([\s\S]+?)\]\s*\((\S+?)\)/ = '<a href="$2">$1</a>'
+
+// Markdown ![alt-text](image-url) syntax.
+/\\?!\[([\s\S]+?)\]\s*\((\S+?)\)/ = '<img src="$2" alt="$1">'
 
 
 /*
@@ -264,12 +270,6 @@ _Tools_):
 // Markdown compatible strong quote.
 ** = '<strong>|</strong>'
 
-// Markdown [link-text](url) syntax.
-// /\[([\s\S]*?)\]\s*\(((?:http|https):\/\/[^\s"']*[^\s"',.;?)])\)/ = '<a href="$2">$1</a>'
-/\\?\[([\s\S]+?)\]\s*\((\S+?)\)/ = '<a href="$2">$1</a>'
-
-// Markdown ![alt-text](image-url) syntax.
-/\\?!\[([\s\S]+?)\]\s*\((\S+?)\)/ = '<img src="$2" alt="$1">'
 
 /*
   Highlight.js
