@@ -34,11 +34,9 @@ Both these features are built into the Rimu markup syntax.
 
 ## Learn More
 
-Read the documentation and experiment with Rimu in the _Rimu
-Playground_.
-
-Play with it here <http://rimumarkup.org/rimuplayground.html> or
-open `rimuplayground.html` locally in your browser.
+Read the documentation and experiment with Rimu in the [Rimu
+Playground](http://rimumarkup.org/rimuplayground.html) or open the
+`rimuplayground.html` file locally in your browser.
 
 See also the _Release Notes_ topic in the _Rimu Playground_.
 
@@ -50,24 +48,24 @@ See also the _Release Notes_ topic in the _Rimu Playground_.
 
         sudo npm install -g rimu
 
-- Get the source from Github: <https://github.com/srackham/rimu>
+- Get the source from [Github](https://github.com/srackham/rimu).
 
 
 ## Example Apps
 
-First take a look at the _API_ documentation topic in the _Rimu Playground_
-(<http://rimumarkup.org/rimuplayground.html>).
+See the _API_ documentation topic in the [Rimu
+Playground](<http://rimumarkup.org/rimuplayground.html).
 
 - Rimu includes the _rimuc_ command-line tool (`./bin/rimuc.js`) and
-  the _Rimu Playground_ (`./bin/rimuplayground.html`) -- examples
-  of using Rimu in Node.js and in the browser respectively.
-- A Chrome browser extension
-  (<https://github.com/srackham/rimu-chrome-extension.git>) for
-  rendering Rimu Markup files directly in the browser.
-- A simple example Meteor web application
-  (<https://github.com/srackham/rimu-meteor-example>) which uses the
-  _rimumarkup_ smart package
-  (<https://atmosphere.meteor.com/package/rimumarkup>).
+  the _Rimu Playground_ (`./bin/rimuplayground.html`) -- examples of
+  using Rimu in Node.js and in the browser respectively.
+- A [Chrome browser
+  extension](https://github.com/srackham/rimu-chrome-extension.git)
+  for rendering Rimu Markup files directly in the browser.
+- A simple example [Meteor web
+  application](https://github.com/srackham/rimu-meteor-example) which
+  uses the [rimumarkup smart
+  package](https://atmosphere.meteor.com/package/rimumarkup).
 
 
 ## Browser compatibility
