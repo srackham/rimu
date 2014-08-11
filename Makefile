@@ -29,7 +29,7 @@ build: bin/rimu.js doc
 
 bin/rimu.js: $(SOURCE)
 	tsc --declaration --out bin/rimu.js $(SOURCE)
-	uglifyjs bin/rimu.js > bin/rimu.min.js
+	uglifyjs --preamble "/* rimu.js: Rimu Markup: `date` */" bin/rimu.js > bin/rimu.min.js
 
 doc: doc/index.html doc/tips.html doc/showcase.html 
 
