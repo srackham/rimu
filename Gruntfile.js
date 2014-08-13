@@ -65,10 +65,25 @@ module.exports = function(grunt) {
     });
   });
 
+  grunt.registerTask('version', 'Display or update the project version number', function() {
+    var version = grunt.option('package-version');
+    if (!version) {
+      echo('\nversion: ' + PKG.version);
+    }
+    else {
+      if (!version.match(/^\d+\.\d+\.\d+$/)) {
+        grunt.warn('Invalid version number: ' + version + '\n');
+      }
+      ['package.json','smart.json'].forEach(function(file) {
+        sed('-i', /(\n\s*"version"\s*:\s*)"\d+\.\d+\.\d+"/, '$1' + '"' + version + '"', file);
+      });
+    }
+  });
+
   grunt.registerTask('commit', 'Commit changes to local Git repo', function() {
     var commit_message = grunt.option('m') || grunt.option('message');
     if (!commit_message) {
-      grunt.warn('Missing command-line option: -m "commit-message".');
+      grunt.warn('Missing command-line option: -m "commit-message"\n');
     }
     exec('git commit -a -m "' + commit_message + '"');
   });
