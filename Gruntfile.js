@@ -65,7 +65,7 @@ module.exports = function(grunt) {
     });
   });
 
-  grunt.registerTask('version', 'Display or update the project version number', function() {
+  grunt.registerTask('version', 'Display or update (--package-version option) the project version number', function() {
     var version = grunt.option('package-version');
     if (!version) {
       echo('\nversion: ' + PKG.version);

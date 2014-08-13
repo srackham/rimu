@@ -1,3 +1,4 @@
+/* Used by Meteor package manager. */
 Package.describe({
   summary: 'Readable text to HTML markup'
 });
