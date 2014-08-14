@@ -41,6 +41,7 @@
     "nodeunit": "^0.9.0",
     "shelljs": "^0.3.0",
     "typescript": "^1.0.1",
-    "uglify-js": "^2.4.15"
+    "uglify-js": "^2.4.15",
+    "w3cjs": "^0.1.25"
   }
 }

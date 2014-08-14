@@ -2,6 +2,7 @@ module.exports = function(grunt) {
   'use strict';
 
   var shelljs = require('shelljs');
+  var w3cjs = require('w3cjs');
 
   /* Inputs and outputs */
 
@@ -28,12 +29,17 @@ module.exports = function(grunt) {
     {src: 'doc/showcase.rmu', dst: 'doc/showcase.html', title: 'Rimu Showcase'}
   ];
 
+  var HTML = ['bin/rimuplayground.html'];
+  DOCS.forEach(function(doc) {
+    HTML.push(doc.dst);
+  });
+
   var PKG = grunt.file.readJSON('package.json');
 
 
   /* Tasks */
 
-  grunt.registerTask('default', ['compile', 'lint', 'uglify', 'test', 'docs']);
+  grunt.registerTask('default', ['compile', 'lint', 'uglify', 'test', 'docs', 'validate-html']);
 
   grunt.registerTask('lint', 'Lint Javascript and JSON files', function() {
     shelljs.exec('jshint ' + TESTS.join(' ') + ' bin/rimuc.js');
@@ -101,6 +107,16 @@ module.exports = function(grunt) {
 
   grunt.registerTask('publish-meteor', 'Publish to Meteor', function() {
     shelljs.exec('mrt publish');
+  });
+
+  grunt.registerTask('validate-html', 'Validate HTML file with W3C Validator', function() {
+    HTML.forEach(function(file) {
+      var result = shelljs.exec('w3cjs validate ' + file, {silent: true});
+      if (result.code != 0) {
+        shelljs.echo(result.output);
+        grunt.warn('Invalid HTML: ' + file + '\n');
+      }
+    });
   });
 
 };
