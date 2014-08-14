@@ -1,4 +1,5 @@
 module.exports = function(grunt) {
+  'use strict';
 
   var shelljs = require('shelljs');
 
@@ -65,7 +66,7 @@ module.exports = function(grunt) {
     });
   });
 
-  grunt.registerTask('version', 'Display or update (--package-version option) the project version number', function() {
+  grunt.registerTask('version', 'Display or update the project version number. Use the --package-version option to set a new version number.', function() {
     var version = grunt.option('package-version');
     if (!version) {
       shelljs.echo('\nversion: ' + PKG.version);
