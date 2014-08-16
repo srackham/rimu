@@ -87,7 +87,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('commit', 'Commit changes to local Git repo', function() {
+  grunt.registerTask('commit', 'Commit changes to local Git repo. Use the --message option to set the commit message.', function() {
     var commit_message = grunt.option('m') || grunt.option('message');
     if (!commit_message) {
       grunt.warn('Missing command-line option: -m "commit-message"\n');
