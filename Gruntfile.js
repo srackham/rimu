@@ -40,22 +40,38 @@ module.exports = function(grunt) {
   var PKG = grunt.file.readJSON('package.json');
 
 
+  /* Utility functions. */
+
+// shelljs.exec() wrapper.
+  function exec(command, options) {
+    var result = shelljs.exec(command, options);
+    if (result.code != 0) {
+      if (options.silent) {
+        shelljs.echo(result.output);
+      }
+      var msg = options.errorMessage || 'Error executing: ' + command;
+      grunt.warn(msg + '\n');
+    }
+    return result;
+  }
+
+
   /* Tasks */
 
   grunt.registerTask('default', ['compile', 'lint', 'uglify', 'test', 'docs', 'validate-html']);
 
   grunt.registerTask('lint', 'Lint Javascript and JSON files', function() {
-    shelljs.exec('jshint ' + TESTS.join(' ') + ' bin/rimuc.js');
-    shelljs.exec('jsonlint --quiet package.json');
+    exec('jshint ' + TESTS.join(' ') + ' bin/rimuc.js');
+    exec('jsonlint --quiet package.json');
   });
 
   grunt.registerTask('compile', 'Compile Typescript to JavaScript then uglify', function() {
-    shelljs.exec('tsc --declaration --out bin/rimu.js ' + SOURCE.join(' '));
+    exec('tsc --declaration --out bin/rimu.js ' + SOURCE.join(' '));
   });
 
   grunt.registerTask('uglify', 'Minimize compiled JavaScript', function() {
     var preamble = '/* ' + PKG.name + ' ' + PKG.version + ' (' + PKG.repository.url + ') */';
-    shelljs.exec('uglifyjs --preamble "' + preamble + '" bin/rimu.js', {silent: true})
+    exec('uglifyjs --preamble "' + preamble + '" bin/rimu.js', {silent: true})
         .output
         .to('bin/rimu.min.js');
   });
@@ -64,13 +80,13 @@ module.exports = function(grunt) {
     TESTS.forEach(function(file) {
       // Use the TAP reporter because the default color terminal reporter intermittently
       // omits output when invoked with shelljs.exec().
-      shelljs.exec('nodeunit --reporter tap ' + file, {silent: true});
+      exec('nodeunit --reporter tap ' + file, {silent: true});
     });
   });
 
   grunt.registerTask('docs', 'Generate HTML documentation', function() {
     DOCS.forEach(function(doc) {
-      shelljs.exec('node ./bin/rimuc.js --output ' + doc.dst
+      exec('node ./bin/rimuc.js --output ' + doc.dst
               + ' --prepend "{--title}=\'' + doc.title + '\'"'
               + ' doc/doc-header.rmu ' + doc.src + ' doc/doc-footer.rmu'
       )
@@ -97,30 +113,26 @@ module.exports = function(grunt) {
     if (!commit_message) {
       grunt.warn('Missing command-line option: -m "commit-message"\n');
     }
-    shelljs.exec('git commit -a -m "' + commit_message + '"');
+    exec('git commit -a -m "' + commit_message + '"');
   });
 
   grunt.registerTask('push', 'Push local commits to Github', function() {
-    shelljs.exec('git push -u --tags origin master');
+    exec('git push -u --tags origin master');
   });
 
   grunt.registerTask('publish', ['push', 'publish-npm', 'publish-meteor']);
 
   grunt.registerTask('publish-npm', 'Publish to npm', function() {
-    shelljs.exec('npm publish');
+    exec('npm publish');
   });
 
   grunt.registerTask('publish-meteor', 'Publish to Meteor', function() {
-    shelljs.exec('mrt publish');
+    exec('mrt publish');
   });
 
   grunt.registerTask('validate-html', 'Validate HTML file with W3C Validator', function() {
     HTML.forEach(function(file) {
-      var result = shelljs.exec('w3cjs validate ' + file, {silent: true});
-      if (result.code != 0) {
-        shelljs.echo(result.output);
-        grunt.warn('Invalid HTML: ' + file + '\n');
-      }
+      exec('w3cjs validate ' + file, {silent: true, errorMessage: 'Invalid HTML: ' + file});
     });
   });
 
