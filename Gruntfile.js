@@ -1,8 +1,11 @@
+/*
+ * Gruntfile for Rimu Markup (http://github.com/srackham/rimu).
+ */
+
 module.exports = function(grunt) {
   'use strict';
 
   var shelljs = require('shelljs');
-  var w3cjs = require('w3cjs');
 
   /* Inputs and outputs */
 
@@ -59,7 +62,9 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', 'Run unit tests', function() {
     TESTS.forEach(function(file) {
-      shelljs.exec('nodeunit ' + file);
+      // Use the TAP reporter because the default color terminal reporter intermittently
+      // omits output when invoked with shelljs.exec().
+      shelljs.exec('nodeunit --reporter tap ' + file, {silent: true});
     });
   });
 
