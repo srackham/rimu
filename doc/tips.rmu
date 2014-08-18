@@ -107,12 +107,14 @@ Lists::
 
 URLs and Email addresses:: Using the `<url>` and `<email>` syntaxes.
 
+Other elements::
+Rimu can be extended to recognise additional Markdown syntax using
+Rimu _Quote_ and _Replacement_ definitions -- the
+<#example-rimurc|example .rimurc file> implements `**strong**`,
+`[link-text](url)` and `[alt-text](image-url)` Markdown elements.
+
 The Rimu _README_ uses this subset for compatibility with _GitHub_ and
 _npmjs.org_ README formats.
-
-Rimu can be extended to recognise additional Markdown syntax using
-Quote and Replacement definitions -- you can find some examples in
-the <#example-rimurc|example .rimurc file>.
 
 
 == Escaping Rimu syntax
