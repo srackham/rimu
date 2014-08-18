@@ -59,7 +59,7 @@
       font-size: inherit;
     }
     *:not(pre) > code {
-      white-space: normal;
+      white-space: nowrap;
       border: none;
       background-color: #f8f8f8;
     }
