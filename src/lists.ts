@@ -175,7 +175,7 @@ module Rimu.Lists {
   function matchItem(reader: Reader,
       options: {delimited?: boolean; indented?: boolean;} = {}): ItemState
   {
-    // Consume any HTML attributes elements.
+    // Consume any Block Attributes elements.
     var attrRe = LineBlocks.getDefinition('attributes').match;
     if (attrRe.test(reader.cursor())) {
       LineBlocks.render(reader, new Writer());

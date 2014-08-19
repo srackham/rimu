@@ -143,7 +143,7 @@ module Rimu.LineBlocks {
       replacement: '',
       macros: true,
       filter: function (match) {
-        // Parse HTML attributes.
+        // Parse Block Attributes.
         // class names = $1, id = $2, html-attributes = $3, block-options = $4
         var content = match[0];
         content = replaceInline(content, this); // Expand macros.
@@ -152,13 +152,13 @@ module Rimu.LineBlocks {
           return '';
         }
         if (match[1]) { // Class names.
-          classAttributes += ' ' + trim(match[1]);
-          classAttributes = trim(classAttributes);
+          htmlClasses += ' ' + trim(match[1]);
+          htmlClasses = trim(htmlClasses);
         }
         if (match[2]) { // id.
           htmlAttributes += ' id="' + trim(match[2]).slice(1) + '"';
         }
-        if (match[3] && Options.safeMode === 0) { // Attributes.
+        if (match[3] && Options.safeMode === 0) { // HTML attributes.
           htmlAttributes += ' ' + trim(match[3].slice(1, match[3].length - 1));
         }
         htmlAttributes = trim(htmlAttributes);
@@ -169,7 +169,7 @@ module Rimu.LineBlocks {
   ];
 
   // Globals set by Block Attributes filter.
-  export var classAttributes: string = '';
+  export var htmlClasses: string = '';
   export var htmlAttributes: string = '';
   export var blockOptions: ExpansionOptions = {};
 

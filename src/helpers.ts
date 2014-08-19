@@ -63,14 +63,14 @@ module Rimu {
     if (!tag) {
       return tag;
     }
-    if (LineBlocks.classAttributes) {
+    if (LineBlocks.htmlClasses) {
       if (/class="\S.*"/.test(tag)) {
         // Inject class names into existing class attribute.
-        tag = tag.replace(/class="(\S.*?)"/, 'class="' + LineBlocks.classAttributes + ' $1"');
+        tag = tag.replace(/class="(\S.*?)"/, 'class="' + LineBlocks.htmlClasses + ' $1"');
       }
       else {
         // Prepend new class attribute to HTML attributes.
-        LineBlocks.htmlAttributes = trim('class="' + LineBlocks.classAttributes + '" ' + LineBlocks.htmlAttributes);
+        LineBlocks.htmlAttributes = trim('class="' + LineBlocks.htmlClasses + '" ' + LineBlocks.htmlAttributes);
       }
     }
     if (LineBlocks.htmlAttributes) {
@@ -82,7 +82,7 @@ module Rimu {
       }
     }
     // Consume the attributes.
-    LineBlocks.classAttributes = '';
+    LineBlocks.htmlClasses = '';
     LineBlocks.htmlAttributes = '';
     return tag
   }
