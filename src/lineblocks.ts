@@ -147,7 +147,7 @@ module Rimu.LineBlocks {
         // class names = $1, id = $2, html-attributes = $3, block-options = $4
         var content = match[0];
         content = replaceInline(content, this); // Expand macros.
-        match = /^\\?\.([a-zA-Z][\w\- ]*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(content);
+        match = /^\\?\.([a-zA-Z][\w\ -]*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(content);
         if (!match) {
           return '';
         }
