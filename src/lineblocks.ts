@@ -139,23 +139,23 @@ module Rimu.LineBlocks {
     // Syntax: .class-names #id [html-attributes] block-options
     {
       name: 'attributes',
-      match: /^\\?\.[a-zA-Z#\[+-].*$/,
+      match: /^\\?\.[a-zA-Z#\[+-].*$/,  // A loose match because Block Attributes can contain macro references.
       replacement: '',
       macros: true,
-      filter: function (match) {
+      verify: function (match) {
         // Parse Block Attributes.
         // class names = $1, id = $2, html-attributes = $3, block-options = $4
-        var content = match[0];
-        content = replaceInline(content, this); // Expand macros.
-        match = /^\\?\.([a-zA-Z][\w\ -]*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(content);
+        var text = match[0];
+        text = replaceInline(text, this); // Expand macro references.
+        match = /^\\?\.([a-zA-Z][\w\ -]*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text);
         if (!match) {
-          return '';
+          return false;
         }
-        if (match[1]) { // Class names.
+        if (match[1]) { // HTML element class names.
           htmlClasses += ' ' + trim(match[1]);
           htmlClasses = trim(htmlClasses);
         }
-        if (match[2]) { // id.
+        if (match[2]) { // HTML element id.
           htmlAttributes += ' id="' + trim(match[2]).slice(1) + '"';
         }
         if (match[3] && Options.safeMode === 0) { // HTML attributes.
@@ -163,6 +163,9 @@ module Rimu.LineBlocks {
         }
         htmlAttributes = trim(htmlAttributes);
         DelimitedBlocks.setBlockOptions(blockOptions, match[4]);
+        return true;
+      },
+      filter: function (match) {
         return '';
       },
     },
