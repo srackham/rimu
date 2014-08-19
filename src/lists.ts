@@ -153,13 +153,16 @@ module Rimu.Lists {
     while (true) {
       if (reader.eof()) return null;
       if (reader.cursor() === '') {
-        // The list item has ended, check what follows.
+        // Encountered blank line.
+        // Can be followed by new list item or attached indented paragraph.
         reader.skipBlankLines();
         if (reader.eof()) return null;
-        return matchItem(reader, {delimited: true, indented: true});
+        return matchItem(reader, {indented: true});
       }
       next = matchItem(reader, {delimited: true});
       if (next) {
+        // Encountered new list item or attached quote, code or division
+        // delimited block.
         return next;
       }
       writer.write(reader.cursor());
@@ -176,8 +179,8 @@ module Rimu.Lists {
       options: {delimited?: boolean; indented?: boolean;} = {}): ItemState
   {
     // Consume any Block Attributes elements.
-    var attrRe = LineBlocks.getDefinition('attributes').match;
-    if (attrRe.test(reader.cursor())) {
+    var attributes = LineBlocks.getDefinition('attributes');
+    if (attributes.match.test(reader.cursor())) {
       LineBlocks.render(reader, new Writer());
     }
     // Check if the line matches a list definition.

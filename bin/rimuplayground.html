@@ -467,9 +467,11 @@ and groups list items into lists.
   semantic significance.
 - List items can be escaped with a backslash at the beginning of the
   line.
-- If a delimited block (_Code_, _Quote_ or _Division_ block) or an
-  _Indented_ paragraph immediately follows a list item then it is
-  rendered with the list item.
+- If an _Indented_ paragraph immediately follows a list item then it
+  is rendered with the list item.
+- If a delimited block (_Code_, _Quote_ or _Division_ block)
+  immediately follows a list item without any intervening blank lines
+  then it is rendered with the list item.
 - There are no explicit numbering or bullet styles, this is best left
   to CSS which can apply a consistent set of list styles.
 
