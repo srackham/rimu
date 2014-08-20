@@ -78,6 +78,14 @@ module Rimu.DelimitedBlocks {
       macros: false,
       specials: true,
     },
+    {
+      name: 'continuation',
+      openMatch: /^\\?\+{1,}$/,
+      openTag: '',
+      closeTag: '',
+      container: true,
+      specials: true, // Fall-back if container is disabled.
+    },
     // HTML block.
     {
       name: 'html',
