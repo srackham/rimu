@@ -172,21 +172,17 @@ module Rimu.Lists {
   }
 
   // Check if the line at the reader cursor matches a list related element. If
-  // does return list item information else return null.  By default it matches
-  // list item elements but 'options' can be included to include delimited
+  // does return list item information else return null.  It matches
+  // list item elements but 'options' can be included to also match delimited
   // blocks or indented paragraphs.
   function matchItem(reader: Reader,
       options: {delimited?: boolean; indented?: boolean;} = {}): ItemState
   {
     // Consume any Block Attributes elements.
-    var attributes = LineBlocks.getDefinition('attributes');
-    if (attributes.match.test(reader.cursor())) {
-      LineBlocks.render(reader, new Writer());
-    }
-    // Check if the line matches a list definition.
+    LineBlocks.render(reader, new Writer(), [LineBlocks.getDefinition('attributes')]);
+    // Check if the line matches a List definition.
     var line = reader.cursor();
     var item = <ItemState>{};   // ItemState factory.
-    var def: DelimitedBlocks.Definition;
     for (var i in defs) {
       var match = defs[i].match.exec(line);
       if (match) {
@@ -201,6 +197,8 @@ module Rimu.Lists {
         return item;
       }
     }
+    // Check if the line matches a Delimited Block definition.
+    var def: DelimitedBlocks.Definition;
     if (options.delimited) {
       for (var id in {quote:0, code:0, division:0}) {
         def = DelimitedBlocks.getDefinition(id);
@@ -210,6 +208,7 @@ module Rimu.Lists {
         }
       }
     }
+    // Check if the line matches an Indented Paragraph definition.
     if (options.indented) {
       def = DelimitedBlocks.getDefinition('indented');
       if (def.openMatch.test(line)) {
