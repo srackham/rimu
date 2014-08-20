@@ -551,9 +551,9 @@ exports['Documents'] = function(test) {
       '<dl class="dl-horizontal"><dt>term</dt><dd> definition\n<dl><dt>term</dt><dd> definition\n</dd></dl></dd></dl>',
       'list html attributes');
   test.equal(Rimu.render(
-      '.class1\n- Item\n.class2\n..\nDivision\n..\nParagraph'),
+      '.class1\n- Item\n+\n.class2\n..\nDivision\n..\n+\nParagraph'),
       '<ul class="class1"><li>Item\n<div class="class2"><p>Division</p></div>\n</li></ul><p>Paragraph</p>',
-      'list item and attached division block html attributes');
+      'list item with Continuation block containing Division block with html attributes');
   test.equal(Rimu.render(
       '{info}= \'.info #ref2 [style="color:green"]\'\n{info}\ngreeny\n\nnormal\n\n{2paragraphs} =\'paragraph 1\n\nparagraph2\'\n{2paragraphs}'),
       '<p class="info" id="ref2" style="color:green">greeny</p>\n<p>normal</p>\n<p>paragraph 1</p>\n<p>paragraph2</p>',

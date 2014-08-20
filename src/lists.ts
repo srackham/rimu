@@ -178,8 +178,6 @@ module Rimu.Lists {
   function matchItem(reader: Reader,
       options: {delimited?: boolean; indented?: boolean;} = {}): ItemState
   {
-    // Consume any Block Attributes elements.
-    LineBlocks.render(reader, new Writer(), [LineBlocks.getDefinition('attributes')]);
     // Check if the line matches a List definition.
     var line = reader.cursor();
     var item = <ItemState>{};   // ItemState factory.
