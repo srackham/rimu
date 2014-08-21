@@ -709,3 +709,28 @@ macro on the command-line (using the `--prepend` option) or in your
 
   rimuc --styled --prepend "{--section-numbers}='yes'" mydoc.rmu 
 
+
+== Nested Delimited Blocks
+Delimited blocks of the same type can be nested by using differing
+numbers of delimiter characters to distinguish between them. Here is
+an example of a Quote block nested within a Quote block:
+
+{nested-delimited-blocks-example} = '""
+Urna aliquam pid, pulvinar augue ut
+aenean enim cum lectus sed, duis odio
+lectus, augue non egestas amet? Magna
+lectus?
+
+"""
+Enim ultricies odio rhoncus ultrices,
+porttitor augue a amet, pulvinar
+adipiscing in dictumst in, enim integer
+vel mauris placerat in phasellus magna.
+Nisi! Amet. 
+"""
+
+Duis in tincidunt rhoncus nascetur
+lacus!
+""'
+
+{generate-rendered-example-1|nested-delimited-blocks-example}

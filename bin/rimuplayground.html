@@ -143,8 +143,8 @@ Syntax:
 
 - Block and inline anchor elements share the same syntax.
 - Links are inline elements.
-- In most situations a _Block Attribute ID_ is preferable to a Block
-  Anchor.
+- In most situations a specifying an HTML element ID using a Rimu
+  _Block Attribute_ element is preferable to a Block Anchor.
 
 Examples:
 
@@ -245,7 +245,7 @@ and closing delimiter lines.
 - Delimited blocks can be escaped by prefixing the opening delimiter
   with a backslash character.
 - The number of characters in the closing delimiter must exactly match
-  the number in the he opening delimiter, this feature allows
+  the number in the he opening delimiter - - this feature allows
   delimited blocks of the same type to be nested.
 
 === Code Block
@@ -275,9 +275,8 @@ contained elements are enclosed by an HTML `<div>` element.
 
 - The delimiter lines are two or more period characters starting at
   the left margin.
-- The _Division Block_ is can be used to group block elements so
-  they can be attached to a list item (this allows arbitrarily complex
-  list items).
+- The _Division Block_ can be used to group block elements and is
+  useful for appending arbitrary elements to list items.
 ..
 
 === Delimited Block Definitions
@@ -383,8 +382,8 @@ Block and inline HTML elements can be <span style="font-size:
 The _Block Attributes_ single-line block element injects HTML
 attributes into the opening tag of the next block element. You can
 specify class names, an element ID and any other HTML attributes.  It
-also has options to control the processing of multi-line block
-elements.
+can also include _block-options_ to control the processing of
+multi-line block elements.
 
 Syntax:
 
