@@ -1,7 +1,7 @@
 module Rimu {
 
   export interface ExpansionOptions {
-    [key:string]: any;
+    [key:string]: boolean;
     // Processing priority (highest to lowest): container, skip, spans and specials.
     // If spans is true then both spans and specials are processed.
     // They are assumed false if they are not explicitly defined.

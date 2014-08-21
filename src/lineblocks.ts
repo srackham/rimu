@@ -1,11 +1,12 @@
 module Rimu.LineBlocks {
 
-  export interface Definition extends ExpansionOptions {
+  export interface Definition {
     name?: string;  // Optional unique identifier.
     filter?: (match: RegExpExecArray, reader?: Reader) => string;
     verify?: (match: RegExpExecArray) => boolean;  // Additional match verification checks.
     match: RegExp;
     replacement: string;
+    expansionOptions: ExpansionOptions;
   }
 
   var defs: Definition[] = [
@@ -16,6 +17,7 @@ module Rimu.LineBlocks {
     {
       match: /^\\?\|([\w\-]+)\|\s*=\s*'(.*)'$/,
       replacement: '',
+      expansionOptions: {},
       filter: function (match) {
         if (Options.safeMode !== 0) {
           return '';  // Skip if a safe mode is set.
@@ -29,14 +31,16 @@ module Rimu.LineBlocks {
     {
       match: /^(\S{1,2})\s*=\s*'([^\|]*)(\|{1,2})(.*)'$/,
       replacement: '',
-      macros: true,
+      expansionOptions: {
+        macros: true,
+      },
       filter: function (match) {
         if (Options.safeMode !== 0) {
           return '';  // Skip if a safe mode is set.
         }
         Quotes.setDefinition({quote: match[1],
-          openTag: replaceInline(match[2], this),
-          closeTag: replaceInline(match[4], this),
+          openTag: replaceInline(match[2], this.expansionOptions),
+          closeTag: replaceInline(match[4], this.expansionOptions),
           spans: match[3] === '|'});
         return '';
       },
@@ -46,7 +50,9 @@ module Rimu.LineBlocks {
     {
       match: /^\\?\/(.+)\/([igm]*)\s*=\s*'(.*)'$/,
       replacement: '',
-      macros: true,
+      expansionOptions: {
+        macros: true,
+      },
       filter: function (match) {
         if (Options.safeMode !== 0) {
           return '';  // Skip if a safe mode is set.
@@ -54,7 +60,7 @@ module Rimu.LineBlocks {
         var pattern = match[1];
         var flags = match[2];
         var replacement = match[3];
-        replacement = replaceInline(replacement, this);
+        replacement = replaceInline(replacement, this.expansionOptions);
         Replacements.setDefinition(pattern, flags, replacement);
         return '';
       },
@@ -64,22 +70,25 @@ module Rimu.LineBlocks {
     {
       match: Macros.MACRO_DEF,
       replacement: '',
-      macros: true,
+      expansionOptions: {
+        macros: true,
+      },
       filter: function (match) {
         if (Options.safeMode !== 0) {
           return '';  // Skip if a safe mode is set.
         }
         var name = match[1];
         var value = match[2];
-        value = replaceInline(value, this);
+        value = replaceInline(value, this.expansionOptions);
         Macros.setValue(name, value);
         return '';
-      },
+      }
     },
     // Macro Line block.
     {
       match: Macros.MACRO_LINE,
       replacement: '',
+      expansionOptions: {},
       verify: function (match) {
         return !Macros.MACRO_DEF_OPEN.test(match[0]); // Don't match macro definition blocks.
       },
@@ -96,41 +105,50 @@ module Rimu.LineBlocks {
     {
       match: /^\\?((?:#|=){1,6})\s+(.+?)(?:\s+(?:#|=){1,6})?$/,
       replacement: '<h$1>$2</h$1>',
-      macros: true,
-      spans: true,
+      expansionOptions: {
+        macros: true,
+        spans: true,
+      },
       filter: function (match) {
         match[1] = match[1].length.toString(); // Replace $1 with header number.
-        return replaceMatch(match, this.replacement, this);
+        return replaceMatch(match, this.replacement, this.expansionOptions);
       },
     },
     // Comment line.
     {
       match: /^\\?\/{2}(.*)$/,
       replacement: '',
+      expansionOptions: {},
     },
     // Block image: <image:src|alt>
     // src = $1, alt = $2
     {
       match: /^\\?<image:([^\s\|]+)\|([\s\S]+?)>$/,
       replacement: '<img src="$1" alt="$2">',
-      macros: true,
-      specials: true,
+      expansionOptions: {
+        macros: true,
+        specials: true,
+      },
     },
     // Block image: <image:src>
     // src = $1, alt = $1
     {
       match: /^\\?<image:([^\s\|]+?)>$/,
       replacement: '<img src="$1" alt="$1">',
-      macros: true,
-      specials: true,
+      expansionOptions: {
+        macros: true,
+        specials: true,
+      },
     },
     // Block anchor: <<#id>>
     // id = $1
     {
       match: /^\\?<<#([a-zA-Z][\w\-]*)>>$/,
       replacement: '<div id="$1"></div>',
-      macros: true,
-      specials: true,
+      expansionOptions: {
+        macros: true,
+        specials: true,
+      },
     },
     // Block Attributes.
     // Syntax: .class-names #id [html-attributes] block-options
@@ -138,12 +156,14 @@ module Rimu.LineBlocks {
       name: 'attributes',
       match: /^\\?\.[a-zA-Z#\[+-].*$/,  // A loose match because Block Attributes can contain macro references.
       replacement: '',
-      macros: true,
+      expansionOptions: {
+        macros: true,
+      },
       verify: function (match) {
         // Parse Block Attributes.
         // class names = $1, id = $2, html-attributes = $3, block-options = $4
         var text = match[0];
-        text = replaceInline(text, this); // Expand macro references.
+        text = replaceInline(text, this.expansionOptions); // Expand macro references.
         match = /^\\?\.([a-zA-Z][\w\ -]*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text);
         if (!match) {
           return false;
@@ -191,7 +211,7 @@ module Rimu.LineBlocks {
         }
         var text: string;
         if (!def.filter) {
-          text = replaceMatch(match, def.replacement, def);
+          text = replaceMatch(match, def.replacement, def.expansionOptions);
         }
         else {
           text = def.filter(match, reader);

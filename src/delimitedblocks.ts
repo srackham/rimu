@@ -1,14 +1,15 @@
 module Rimu.DelimitedBlocks {
 
   // Multi-line block element definition.
-  export interface Definition extends ExpansionOptions {
-    name?: string;      // Optional unique identifier.
-    openMatch: RegExp;  // $1 (if defined) is prepended to block content.
+  export interface Definition {
+    name?: string;       // Optional unique identifier.
+    openMatch: RegExp;   // $1 (if defined) is prepended to block content.
     closeMatch?: RegExp; // $1 (if defined) is appended to block content. If closeMatch is undefined then it must match opening delimiter.
     openTag: string;
     closeTag: string;
     filter?: (text: string, match?: string[], expansionOptions?: ExpansionOptions) => string;
-    verify?: (match: string[]) => boolean;              // Additional match verification checks.
+    verify?: (match: string[]) => boolean;  // Additional match verification checks.
+    expansionOptions: ExpansionOptions;
   }
 
   var defs: Definition[] = [
@@ -20,7 +21,9 @@ module Rimu.DelimitedBlocks {
       closeMatch: Macros.MACRO_DEF_CLOSE,  // $1 is last line of macro.
       openTag: '',
       closeTag: '',
-      macros: true,
+      expansionOptions: {
+        macros: true,
+      },
       filter: function (text: string, match: string[], expansionOptions: ExpansionOptions): string {
         // Set macro.
         // Get the macro name from the match in the first line of the block.
@@ -39,8 +42,10 @@ module Rimu.DelimitedBlocks {
       closeMatch: /^\*+\/$/,
       openTag: '',
       closeTag: '',
-      skip: true,
-      specials: true, // Fall-back if skip is disabled.
+      expansionOptions: {
+        skip: true,
+        specials: true, // Fall-back if skip is disabled.
+      },
     },
     // Division block.
     {
@@ -48,8 +53,10 @@ module Rimu.DelimitedBlocks {
       openMatch: /^\\?\.{2,}$/,
       openTag: '<div>',
       closeTag: '</div>',
-      container: true,
-      specials: true, // Fall-back if container is disabled.
+      expansionOptions: {
+        container: true,
+        specials: true, // Fall-back if container is disabled.
+      },
     },
     // Quote block.
     {
@@ -57,8 +64,10 @@ module Rimu.DelimitedBlocks {
       openMatch: /^\\?"{2,}$/,
       openTag: '<blockquote>',
       closeTag: '</blockquote>',
-      container: true,
-      specials: true, // Fall-back if container is disabled.
+      expansionOptions: {
+        container: true,
+        specials: true, // Fall-back if container is disabled.
+      },
     },
     // Code block.
     {
@@ -66,8 +75,10 @@ module Rimu.DelimitedBlocks {
       openMatch: /^\\?\-{2,}$/,
       openTag: '<pre><code>',
       closeTag: '</code></pre>',
-      macros: false,
-      specials: true,
+      expansionOptions: {
+        macros: false,
+        specials: true,
+      },
     },
     // HTML block.
     {
@@ -78,7 +89,9 @@ module Rimu.DelimitedBlocks {
       closeMatch: /^$/, // Blank line or EOF.
       openTag: '',
       closeTag: '',
-      macros: true,
+      expansionOptions: {
+        macros: true,
+      },
       filter: function (text) {
         return Options.safeModeFilter(text);
       },
@@ -90,8 +103,10 @@ module Rimu.DelimitedBlocks {
       closeMatch: /^$/,           // Blank line or EOF.
       openTag: '<pre><code>',
       closeTag: '</code></pre>',
-      macros: false,
-      specials: true,
+      expansionOptions: {
+        macros: false,
+        specials: true,
+      },
       filter: function (text: string): string {
         // Strip indent from start of each line.
         var first_indent = text.search(/\S/);
@@ -112,9 +127,11 @@ module Rimu.DelimitedBlocks {
       closeMatch: /^$/,     // Blank line or EOF.
       openTag: '<p>',
       closeTag: '</p>',
-      macros: true,
-      spans: true,
-      specials: true,       // Fall-back if spans is disabled.
+      expansionOptions: {
+        macros: true,
+        spans: true,
+        specials: true,       // Fall-back if spans is disabled.
+      },
     },
   ];
 
@@ -157,7 +174,7 @@ module Rimu.DelimitedBlocks {
         // Set block expansion options.
         var expansionOptions: ExpansionOptions;
         expansionOptions = {macros: false, spans: false, specials: false, container: false, skip: false};
-        for (var k in expansionOptions) expansionOptions[k] = def[k];
+        for (var k in expansionOptions) expansionOptions[k] = def.expansionOptions[k];
         for (var k in LineBlocks.blockOptions) expansionOptions[k] = LineBlocks.blockOptions[k];
         // Process block.
         if (!expansionOptions.skip) {
@@ -223,7 +240,7 @@ module Rimu.DelimitedBlocks {
         def.openTag = match[1];
         def.closeTag = match[2];
       }
-      setBlockOptions(def, match[3]);
+      setBlockOptions(def.expansionOptions, match[3]);
     }
   }
 
