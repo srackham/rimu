@@ -1,23 +1,14 @@
 module Rimu.DelimitedBlocks {
 
   // Multi-line block element definition.
-  export interface Definition {
+  export interface Definition extends ExpansionOptions {
     name?: string;      // Optional unique identifier.
     openMatch: RegExp;  // $1 (if defined) is prepended to block content.
     closeMatch?: RegExp; // $1 (if defined) is appended to block content. If closeMatch is undefined then it must match opening delimiter.
     openTag: string;
     closeTag: string;
-    filter?: (text: string, match: string[], expansionOptions: ExpansionOptions) => string; // Custom content pre-processing.
+    filter?: (text: string, match?: string[], expansionOptions?: ExpansionOptions) => string;
     verify?: (match: string[]) => boolean;              // Additional match verification checks.
-    // Processing priority (highest to lowest): container, skip, spans and specials.
-    // If spans is true then both spans and specials are processed.
-    // They are assumed false if they are not explicitly defined.
-    // If a custom filter is specified their use depends on the filter.
-    macros?: boolean;
-    container?: boolean;
-    skip?: boolean;
-    spans?: boolean;  // Span substitution also expands special characters.
-    specials?: boolean;
   }
 
   var defs: Definition[] = [
@@ -30,7 +21,7 @@ module Rimu.DelimitedBlocks {
       openTag: '',
       closeTag: '',
       macros: true,
-      filter: function (text, match, expansionOptions): string {
+      filter: function (text: string, match: string[], expansionOptions: ExpansionOptions): string {
         // Set macro.
         // Get the macro name from the match in the first line of the block.
         var name = match[0].match(/^\{([\w\-]+)\}/)[1];
@@ -101,7 +92,7 @@ module Rimu.DelimitedBlocks {
       closeTag: '</code></pre>',
       macros: false,
       specials: true,
-      filter: function (text): string {
+      filter: function (text: string): string {
         // Strip indent from start of each line.
         var first_indent = text.search(/\S/);
         var buffer = text.split('\n');

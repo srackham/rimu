@@ -1,14 +1,11 @@
 module Rimu.LineBlocks {
 
-  export interface Definition {
+  export interface Definition extends ExpansionOptions {
     name?: string;  // Optional unique identifier.
     filter?: (match: RegExpExecArray, reader?: Reader) => string;
     verify?: (match: RegExpExecArray) => boolean;  // Additional match verification checks.
     match: RegExp;
     replacement: string;
-    macros?: boolean;
-    spans?: boolean;   // Span substitution also expands special characters.
-    specials?: boolean;
   }
 
   var defs: Definition[] = [

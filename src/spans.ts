@@ -28,7 +28,7 @@ module Rimu.Spans {
 
   // Converts fragments to a string.
   function defrag(fragments: Fragment[]): string {
-    var result = [];
+    var result: string[] = [];
     for (var i in fragments) {
       result.push(fragments[i].text);
     }

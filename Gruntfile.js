@@ -66,7 +66,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('compile', 'Compile Typescript to JavaScript then uglify', function() {
-    exec('tsc --declaration --out bin/rimu.js ' + SOURCE.join(' '));
+    exec('tsc --noImplicitAny --declaration --out bin/rimu.js ' + SOURCE.join(' '));
   });
 
   grunt.registerTask('uglify', 'Minimize compiled JavaScript', function() {

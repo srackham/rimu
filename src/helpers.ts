@@ -1,11 +1,16 @@
 module Rimu {
 
   export interface ExpansionOptions {
+    [key:string]: any;
+    // Processing priority (highest to lowest): container, skip, spans and specials.
+    // If spans is true then both spans and specials are processed.
+    // They are assumed false if they are not explicitly defined.
+    // If a custom filter is specified their use depends on the filter.
     macros?: boolean;
-    spans?: boolean;
-    specials?: boolean;
     container?: boolean;
     skip?: boolean;
+    spans?: boolean;  // Span substitution also expands special characters.
+    specials?: boolean;
   }
 
   // Whitespace strippers.

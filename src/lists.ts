@@ -198,8 +198,8 @@ module Rimu.Lists {
     // Check if the line matches a Delimited Block definition.
     var def: DelimitedBlocks.Definition;
     if (options.delimited) {
-      for (var id in {quote:0, code:0, division:0}) {
-        def = DelimitedBlocks.getDefinition(id);
+      for (var name in {quote:0, code:0, division:0}) {
+        def = DelimitedBlocks.getDefinition(name);
         if (def.openMatch.test(line)) {
           item.isDelimited = true;
           return item;
