@@ -34,8 +34,7 @@
     "url": "https://github.com/srackham/rimu.git"
   },
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-cli": "^0.1.13",
+    "jake": "^8.0.4",
     "jshint": "^2.5.3",
     "jsonlint": "^1.6.0",
     "nodeunit": "^0.9.0",
