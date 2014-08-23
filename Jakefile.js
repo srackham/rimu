@@ -157,6 +157,6 @@ task('publish-npm', ['test'], function() {
 
 desc('Publish to Meteor.');
 task('publish-meteor', ['test'], function() {
-  exec('mrt publish');
+  exec('mrt publish .');
 });
 
