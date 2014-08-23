@@ -82,7 +82,7 @@ module Rimu.LineBlocks {
         value = replaceInline(value, this.expansionOptions);
         Macros.setValue(name, value);
         return '';
-      }
+      },
     },
     // Macro Line block.
     {
