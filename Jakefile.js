@@ -133,6 +133,12 @@ task('version', function() {
   }
 });
 
+var tag = 'v' + PKG.version;
+desc('Create tag ' + tag);
+task('tag', ['test'], function() {
+  shelljs.echo('git tag -a -m "Tag ' + tag + '" ' + tag);
+});
+
 desc('Commit changes to local Git repo. Use message="commit message" syntax to set the commit message.');
 task('commit', ['test'], function() {
   var commit_message = process.env.message;
