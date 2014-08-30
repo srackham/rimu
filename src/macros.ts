@@ -94,10 +94,7 @@ module Rimu.Macros {
     return text;
   }
 
-  // CommonJS module exports.
-  declare var exports: any;
-  if (typeof exports !== 'undefined') {
-    exports.Macros = Rimu.Macros;
-  }
-
 }
+
+// Exposed for unit tests.
+Rimu.nodeExport({Macros: Rimu.Macros});

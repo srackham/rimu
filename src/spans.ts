@@ -11,6 +11,7 @@
  character entities. The fragments are then reassembled (defraged) into a
  resultant HTML string.
  */
+
 module Rimu.Spans {
 
   interface Fragment {
@@ -178,10 +179,7 @@ module Rimu.Spans {
     }
   }
 
-  // CommonJS module exports.
-  declare var exports: any;
-  if (typeof exports !== 'undefined') {
-    exports.Spans = Rimu.Spans;
-  }
-
 }
+
+// Exposed for unit tests.
+Rimu.nodeExport({Spans: Rimu.Spans});

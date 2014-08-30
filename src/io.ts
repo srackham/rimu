@@ -91,12 +91,7 @@ module Rimu {
 
   }
 
-  // CommonJS module exports.
-  declare var exports: any;
-  if (typeof exports !== 'undefined') {
-    exports.Reader = Rimu.Reader;
-    exports.Writer = Rimu.Writer;
-  }
-
 }
 
+// Exposed for unit tests.
+Rimu.nodeExport({Reader: Rimu.Reader, Writer: Rimu.Writer});

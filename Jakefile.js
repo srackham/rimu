@@ -15,8 +15,8 @@ var RIMUC_JS = 'bin/rimuc.js';
 
 // The source file compilation order is important.
 var SOURCE = [
-  'src/rimu.ts',
   'src/helpers.ts',
+  'src/rimu.ts',
   'src/options.ts',
   'src/io.ts',
   'src/macros.ts',

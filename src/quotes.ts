@@ -78,10 +78,7 @@ module Rimu.Quotes {
     initialize();
   }
 
-  // CommonJS module exports.
-  declare var exports: any;
-  if (typeof exports !== 'undefined') {
-    exports.Quotes = Rimu.Quotes;
-  }
-
 }
+
+// Exposed for unit tests.
+Rimu.nodeExport({Quotes: Rimu.Quotes});

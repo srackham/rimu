@@ -238,10 +238,7 @@ module Rimu.LineBlocks {
     return null;
   }
 
-  // CommonJS module exports.
-  declare var exports: any;
-  if (typeof exports !== 'undefined') {
-    exports.LineBlocks = Rimu.LineBlocks;
-  }
-
 }
+
+// Exposed for unit tests.
+Rimu.nodeExport({LineBlocks: Rimu.LineBlocks});

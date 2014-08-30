@@ -217,10 +217,7 @@ module Rimu.Lists {
     return null;
   }
 
-  // CommonJS module exports.
-  declare var exports: any;
-  if (typeof exports !== 'undefined') {
-    exports.Lists = Lists;
-  }
-
 }
+
+// Exposed for unit tests.
+Rimu.nodeExport({Lists: Rimu.Lists});

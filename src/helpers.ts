@@ -1,7 +1,7 @@
 module Rimu {
 
   export interface ExpansionOptions {
-    [key:string]: boolean;
+    [key: string]: boolean;
     // Processing priority (highest to lowest): container, skip, spans and specials.
     // If spans is true then both spans and specials are processed.
     // They are assumed false if they are not explicitly defined.
@@ -11,6 +11,17 @@ module Rimu {
     skip?: boolean;
     spans?: boolean;  // Span substitution also expands special characters.
     specials?: boolean;
+  }
+
+  declare var exports: any; // CommonJS global exports.
+  // Add objects in hash to CommonJS module exports.
+  // Hash key is the exported name; hash value is the exported object.
+  export function nodeExport(objects: {[exportedName: string]: any}): void {
+    if (typeof exports !== 'undefined') {
+      for (var key in objects) {
+        exports[key] = objects[key];
+      }
+    }
   }
 
   // Whitespace strippers.
