@@ -63,7 +63,7 @@ module Rimu {
   }
 
   // Inject HTML attributes from LineBlocks.htmlAttributes into the opening tag.
-  // Reset LineBlocks.htmlAttributes if the injection is successful.
+  // Consume LineBlocks.htmlAttributes unless the 'tag' argument is blank.
   export function injectHtmlAttributes(tag: string): string {
     if (!tag) {
       return tag;
