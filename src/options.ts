@@ -13,7 +13,7 @@ module Rimu.Options {
   // their default value.
   export function update(options: Values): void {
     safeMode = ('safeMode' in options) ? options.safeMode : 0;
-    htmlReplacement = ('htmlReplacement' in options) ? options.htmlReplacement : '<mark>replaced HTML<mark>';
+    htmlReplacement = ('htmlReplacement' in options) ? options.htmlReplacement : '<mark>replaced HTML</mark>';
   }
 
   export function safeModeFilter(text: string): string {
