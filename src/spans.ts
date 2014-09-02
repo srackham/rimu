@@ -12,6 +12,8 @@
  resultant HTML string.
  */
 
+/// <reference path="definitions.d.ts" />
+
 module Rimu.Spans {
 
   interface Fragment {
@@ -182,4 +184,4 @@ module Rimu.Spans {
 }
 
 // Exposed for unit tests.
-Rimu.nodeExport({Spans: Rimu.Spans});
+Rimu.exportCommonjs({Spans: Rimu.Spans});

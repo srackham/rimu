@@ -1,3 +1,5 @@
+/// <reference path="definitions.d.ts" />
+
 module Rimu.Macros {
 
   // Matches macro invocation. $1 = name, $2 = params.
@@ -97,4 +99,4 @@ module Rimu.Macros {
 }
 
 // Exposed for unit tests.
-Rimu.nodeExport({Macros: Rimu.Macros});
+Rimu.exportCommonjs({Macros: Rimu.Macros});

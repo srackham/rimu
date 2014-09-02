@@ -1,3 +1,5 @@
+/// <reference path="definitions.d.ts" />
+
 module Rimu.Quotes {
 
   export interface Definition {
@@ -81,4 +83,4 @@ module Rimu.Quotes {
 }
 
 // Exposed for unit tests.
-Rimu.nodeExport({Quotes: Rimu.Quotes});
+Rimu.exportCommonjs({Quotes: Rimu.Quotes});

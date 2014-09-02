@@ -1,3 +1,5 @@
+/// <reference path="definitions.d.ts" />
+
 module Rimu {
 
   export class Reader {
@@ -94,4 +96,4 @@ module Rimu {
 }
 
 // Exposed for unit tests.
-Rimu.nodeExport({Reader: Rimu.Reader, Writer: Rimu.Writer});
+Rimu.exportCommonjs({Reader: Rimu.Reader, Writer: Rimu.Writer});

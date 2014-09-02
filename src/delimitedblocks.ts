@@ -1,3 +1,5 @@
+/// <reference path="definitions.d.ts" />
+
 module Rimu.DelimitedBlocks {
 
   // Multi-line block element definition.
@@ -247,4 +249,4 @@ module Rimu.DelimitedBlocks {
 }
 
 // Exposed for unit tests.
-Rimu.nodeExport({DelimitedBlocks: Rimu.DelimitedBlocks});
+Rimu.exportCommonjs({DelimitedBlocks: Rimu.DelimitedBlocks});

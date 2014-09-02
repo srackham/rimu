@@ -1,3 +1,5 @@
+/// <reference path="definitions.d.ts" />
+
 module Rimu.LineBlocks {
 
   export interface Definition {
@@ -241,4 +243,4 @@ module Rimu.LineBlocks {
 }
 
 // Exposed for unit tests.
-Rimu.nodeExport({LineBlocks: Rimu.LineBlocks});
+Rimu.exportCommonjs({LineBlocks: Rimu.LineBlocks});

@@ -1,3 +1,5 @@
+/// <reference path="definitions.d.ts" />
+
 module Rimu.Options {
 
   export interface Values {

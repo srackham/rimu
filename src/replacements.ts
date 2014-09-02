@@ -1,3 +1,5 @@
+/// <reference path="definitions.d.ts" />
+
 module Rimu.Replacements {
 
   export interface Definition {
@@ -107,4 +109,4 @@ module Rimu.Replacements {
 }
 
 // Exposed for unit tests.
-Rimu.nodeExport({Replacements: Rimu.Replacements});
+Rimu.exportCommonjs({Replacements: Rimu.Replacements});

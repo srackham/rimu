@@ -10,11 +10,12 @@ var shelljs = require('shelljs');
 
 var JAKEFILE = 'Jakefile.js';
 var RIMU_JS = 'bin/rimu.js';
+var RIMU_TS = 'src/rimu.ts';
 var RIMU_MIN_JS = 'bin/rimu.min.js';
 var RIMUC_JS = 'bin/rimuc.js';
 
-// The source file compilation order is important.
 var SOURCE = [
+  'src/definitions.d.ts',
   'src/helpers.ts',
   'src/rimu.ts',
   'src/options.ts',
@@ -92,7 +93,7 @@ desc('Compile Typescript to JavaScript then uglify');
 task('compile', [RIMU_JS, RIMU_MIN_JS]);
 
 file(RIMU_JS, SOURCE.concat(JAKEFILE), function() {
-  exec('tsc --noImplicitAny --declaration --out ' + RIMU_JS + ' ' + SOURCE.join(' '));
+  exec('tsc --noImplicitAny --declaration --out ' + RIMU_JS + ' ' + RIMU_TS);
 });
 
 file(RIMU_MIN_JS, [RIMU_JS], function() {

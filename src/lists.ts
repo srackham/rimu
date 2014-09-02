@@ -1,3 +1,5 @@
+/// <reference path="definitions.d.ts" />
+
 module Rimu.Lists {
 
   interface Definition {
@@ -220,4 +222,4 @@ module Rimu.Lists {
 }
 
 // Exposed for unit tests.
-Rimu.nodeExport({Lists: Rimu.Lists});
+Rimu.exportCommonjs({Lists: Rimu.Lists});
