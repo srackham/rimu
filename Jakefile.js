@@ -78,7 +78,7 @@ desc('Compile Typescript to JavaScript then uglify');
 task('compile', [RIMU_JS, RIMU_MIN_JS]);
 
 file(RIMU_JS, SOURCE.concat(JAKEFILE), function() {
-  exec('tsc --noImplicitAny --declaration --out ' + RIMU_JS + ' ' + RIMU_TS);
+  exec('tsc --noImplicitAny --out ' + RIMU_JS + ' ' + RIMU_TS);
 });
 
 file(RIMU_MIN_JS, [RIMU_JS], function() {
