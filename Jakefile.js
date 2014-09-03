@@ -13,22 +13,7 @@ var RIMU_JS = 'bin/rimu.js';
 var RIMU_TS = 'src/rimu.ts';
 var RIMU_MIN_JS = 'bin/rimu.min.js';
 var RIMUC_JS = 'bin/rimuc.js';
-
-var SOURCE = [
-  'src/references.ts',
-  'src/helpers.ts',
-  'src/rimu.ts',
-  'src/options.ts',
-  'src/io.ts',
-  'src/macros.ts',
-  'src/lineblocks.ts',
-  'src/delimitedblocks.ts',
-  'src/lists.ts',
-  'src/spans.ts',
-  'src/quotes.ts',
-  'src/replacements.ts'
-];
-
+var SOURCE = shelljs.ls('src/*.ts');
 var TESTS = shelljs.ls('test/*.js');
 
 var DOCS = [
