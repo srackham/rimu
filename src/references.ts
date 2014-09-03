@@ -4,7 +4,7 @@
  */
 
 /// <reference path="helpers.ts" />
-/// <reference path="rimu.ts" />
+/// <reference path="main.ts" />
 /// <reference path="options.ts" />
 /// <reference path="io.ts" />
 /// <reference path="macros.ts" />
