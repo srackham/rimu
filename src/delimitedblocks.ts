@@ -1,4 +1,4 @@
-/// <reference path="definitions.d.ts" />
+/// <reference path="references.ts" />
 
 module Rimu.DelimitedBlocks {
 

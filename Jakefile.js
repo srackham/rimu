@@ -15,7 +15,7 @@ var RIMU_MIN_JS = 'bin/rimu.min.js';
 var RIMUC_JS = 'bin/rimuc.js';
 
 var SOURCE = [
-  'src/definitions.d.ts',
+  'src/references.ts',
   'src/helpers.ts',
   'src/rimu.ts',
   'src/options.ts',

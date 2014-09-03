@@ -1,5 +1,5 @@
 /*
-  Common dependencies.
+  Dependent source file references.
   The order is important as it defines the order in which the files are compiled to the output file.
  */
 

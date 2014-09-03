@@ -23,7 +23,7 @@ https://github.com/srackham/rimu
 See http://srackham.wordpress.com/2012/11/20/building-heterogeneous-typescript-libraries/
 */
 
-/// <reference path="definitions.d.ts" />
+/// <reference path="references.ts" />
 
 module Rimu {
 
