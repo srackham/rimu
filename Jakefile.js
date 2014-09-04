@@ -122,7 +122,7 @@ task('version', function() {
 var tag = 'v' + PKG.version;  // The 'v' prefix is required by Meteor package management (https://groups.google.com/forum/#!topic/meteor-talk/Q6fAH9tR27Q).
 desc('Create tag ' + tag);
 task('tag', ['test'], function() {
-  shelljs.echo('git tag -a -m "Tag ' + tag + '" ' + tag);
+  exec('git tag -a -m "Tag ' + tag + '" ' + tag);
 });
 
 desc('Commit changes to local Git repo. Use message="commit message" syntax to set the commit message.');
