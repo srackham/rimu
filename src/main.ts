@@ -14,11 +14,9 @@ https://github.com/srackham/rimu
   JavaScript file.
  - rimu.js can be used in the browser using a script tag or can be used in Nodejs using require().
 - Rimu API functions are explicitly exported to Nodejs with the exportCommonjs() helper.
-- Similarly other internal objects are exported to Nodejs for use by nodeunit unit tests.
+- Other internal objects are exported to Nodejs for use by nodeunit unit tests.
 - To mimimize browser global namespace pollution all source is enveloped in a single open module
   named Rimu.
- - /// <reference path="..."/> directives are unnecessary because all files are included
- in the compile command.
 
 See http://srackham.wordpress.com/2012/11/20/building-heterogeneous-typescript-libraries/
 */
