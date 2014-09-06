@@ -27,9 +27,9 @@ module Rimu {
   }
 
   // Whitespace strippers.
-  export function trimLeft(s: string): string { return s.replace(/^\s+/g,''); }
-  export function trimRight(s: string): string { return s.replace(/\s+$/g,''); }
-  export function trim(s: string): string { return s.replace(/^\s+|\s+$/g,''); }
+  export function trimLeft(s: string): string { return s.replace(/^\s+/g, ''); }
+  export function trimRight(s: string): string { return s.replace(/\s+$/g, ''); }
+  export function trim(s: string): string { return s.replace(/^\s+|\s+$/g, ''); }
 
   // http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
   export function escapeRegExp(s: string): string {
@@ -37,9 +37,9 @@ module Rimu {
   }
 
   export function replaceSpecialChars(s: string): string {
-    return s.replace(/&/g, "&amp;")
-            .replace(/>/g, "&gt;")
-            .replace(/</g, "&lt;");
+    return s.replace(/&/g, '&amp;')
+            .replace(/>/g, '&gt;')
+            .replace(/</g, '&lt;');
   }
 
   // Replace match groups, optionally substituting the replacement groups with
@@ -102,7 +102,7 @@ module Rimu {
     // Consume the attributes.
     LineBlocks.htmlClasses = '';
     LineBlocks.htmlAttributes = '';
-    return tag
+    return tag;
   }
 
 }

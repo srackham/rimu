@@ -26,7 +26,7 @@ module Rimu.LineBlocks {
         }
         DelimitedBlocks.setDefinition(match[1], match[2]);
         return '';
-      },
+      }
     },
     // Quote definition.
     // quote = $1, openTag = $2, separator = $3, closeTag = $4
@@ -45,7 +45,7 @@ module Rimu.LineBlocks {
           closeTag: replaceInline(match[4], this.expansionOptions),
           spans: match[3] === '|'});
         return '';
-      },
+      }
     },
     // Replacement definition.
     // pattern = $1, flags = $2, replacement = $3
@@ -65,7 +65,7 @@ module Rimu.LineBlocks {
         replacement = replaceInline(replacement, this.expansionOptions);
         Replacements.setDefinition(pattern, flags, replacement);
         return '';
-      },
+      }
     },
     // Macro definition.
     // name = $1, value = $2
@@ -84,7 +84,7 @@ module Rimu.LineBlocks {
         value = replaceInline(value, this.expansionOptions);
         Macros.setValue(name, value);
         return '';
-      },
+      }
     },
     // Macro Line block.
     {
@@ -100,7 +100,7 @@ module Rimu.LineBlocks {
         var spliceArgs = (<any[]> [reader.pos + 1, 0]).concat(value.split('\n'));
         Array.prototype.splice.apply(reader.lines, spliceArgs);
         return '';
-      },
+      }
     },
     // Headers.
     // $1 is ID, $2 is header text.
@@ -114,13 +114,13 @@ module Rimu.LineBlocks {
       filter: function (match) {
         match[1] = match[1].length.toString(); // Replace $1 with header number.
         return replaceMatch(match, this.replacement, this.expansionOptions);
-      },
+      }
     },
     // Comment line.
     {
       match: /^\\?\/{2}(.*)$/,
       replacement: '',
-      expansionOptions: {},
+      expansionOptions: {}
     },
     // Block image: <image:src|alt>
     // src = $1, alt = $2
@@ -130,7 +130,7 @@ module Rimu.LineBlocks {
       expansionOptions: {
         macros: true,
         specials: true,
-      },
+      }
     },
     // Block image: <image:src>
     // src = $1, alt = $1
@@ -140,7 +140,7 @@ module Rimu.LineBlocks {
       expansionOptions: {
         macros: true,
         specials: true,
-      },
+      }
     },
     // Block anchor: <<#id>>
     // id = $1
@@ -150,7 +150,7 @@ module Rimu.LineBlocks {
       expansionOptions: {
         macros: true,
         specials: true,
-      },
+      }
     },
     // Block Attributes.
     // Syntax: .class-names #id [html-attributes] block-options
@@ -186,7 +186,7 @@ module Rimu.LineBlocks {
       },
       filter: function (match) {
         return '';
-      },
+      }
     },
   ];
 
@@ -234,7 +234,7 @@ module Rimu.LineBlocks {
   export function getDefinition(name: string): Definition {
     for (var i in defs) {
       if (defs[i].name === name) {
-        return defs[i]
+        return defs[i];
       }
     }
     return null;

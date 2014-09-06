@@ -56,17 +56,25 @@ function exec(command, options) {
 desc('Run test task.');
 task('default', ['test']);
 
-desc('compile, lint, test, docs, validate-html.');
-task('build', ['test', 'docs', 'validate-html']);
+desc('compile, jslint, test, tslint, docs, validate-html.');
+task('build', ['test', 'tslint', 'docs', 'validate-html']);
 
 desc('Lint Javascript and JSON files.');
-task('lint', function() {
+task('jslint', function() {
   exec('jshint ' + TESTS.join(' ') + ' ' + RIMUC_JS);
   exec('jsonlint --quiet package.json');
 });
 
+// tslint is quite slow so make it a separate task that is run by 'build' rather than the default 'test'.
+desc('Lint TypeScript source files.');
+task('tslint', function() {
+  SOURCE.forEach(function(file) {
+    exec('tslint -f ' + file);
+  });
+});
+
 desc('Run tests (recompile if necessary).');
-task('test', ['compile', 'lint'], function() {
+task('test', ['compile', 'jslint'], function() {
   TESTS.forEach(function(file) {
     // Use the TAP reporter because the default color terminal reporter intermittently
     // omits output when invoked with shelljs.exec().

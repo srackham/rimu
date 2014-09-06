@@ -32,7 +32,7 @@ module Rimu.Lists {
       listOpenTag: '<ul>',
       listCloseTag: '</ul>',
       itemOpenTag: '<li>',
-      itemCloseTag: '</li>',
+      itemCloseTag: '</li>'
     },
     // Ordered lists.
     // $1 is list ID $2 is item text.
@@ -41,7 +41,7 @@ module Rimu.Lists {
       listOpenTag: '<ol>',
       listCloseTag: '</ol>',
       itemOpenTag: '<li>',
-      itemCloseTag: '</li>',
+      itemCloseTag: '</li>'
     },
     // Definition lists.
     // $1 is term, $2 is list ID, $3 is definition.
@@ -52,7 +52,7 @@ module Rimu.Lists {
       itemOpenTag: '<dd>',
       itemCloseTag: '</dd>',
       termOpenTag: '<dt>',
-      termCloseTag: '</dt>',
+      termCloseTag: '</dt>'
     },
   ];
 
@@ -178,7 +178,7 @@ module Rimu.Lists {
   // list item elements but 'options' can be included to also match delimited
   // blocks or indented paragraphs.
   function matchItem(reader: Reader,
-      options: {delimited?: boolean; indented?: boolean;} = {}): ItemState
+      options: {delimited?: boolean; indented?: boolean; } = {}): ItemState
   {
     // Check if the line matches a List definition.
     var line = reader.cursor();
@@ -200,7 +200,7 @@ module Rimu.Lists {
     // Check if the line matches a Delimited Block definition.
     var def: DelimitedBlocks.Definition;
     if (options.delimited) {
-      for (var name in {quote:0, code:0, division:0}) {
+      for (var name in {quote: 0, code: 0, division: 0}) {
         def = DelimitedBlocks.getDefinition(name);
         if (def.openMatch.test(line)) {
           item.isDelimited = true;

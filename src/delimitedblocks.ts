@@ -24,7 +24,7 @@ module Rimu.DelimitedBlocks {
       openTag: '',
       closeTag: '',
       expansionOptions: {
-        macros: true,
+        macros: true
       },
       filter: function (text: string, match: string[], expansionOptions: ExpansionOptions): string {
         // Set macro.
@@ -35,7 +35,7 @@ module Rimu.DelimitedBlocks {
         text = replaceInline(text, expansionOptions);   // Expand macro invocations.
         Macros.setValue(name, text);
         return '';
-      },
+      }
     },
     // Comment block.
     {
@@ -46,8 +46,8 @@ module Rimu.DelimitedBlocks {
       closeTag: '',
       expansionOptions: {
         skip: true,
-        specials: true, // Fall-back if skip is disabled.
-      },
+        specials: true // Fall-back if skip is disabled.
+      }
     },
     // Division block.
     {
@@ -57,8 +57,8 @@ module Rimu.DelimitedBlocks {
       closeTag: '</div>',
       expansionOptions: {
         container: true,
-        specials: true, // Fall-back if container is disabled.
-      },
+        specials: true // Fall-back if container is disabled.
+      }
     },
     // Quote block.
     {
@@ -68,8 +68,8 @@ module Rimu.DelimitedBlocks {
       closeTag: '</blockquote>',
       expansionOptions: {
         container: true,
-        specials: true, // Fall-back if container is disabled.
-      },
+        specials: true // Fall-back if container is disabled.
+      }
     },
     // Code block.
     {
@@ -79,24 +79,26 @@ module Rimu.DelimitedBlocks {
       closeTag: '</code></pre>',
       expansionOptions: {
         macros: false,
-        specials: true,
-      },
+        specials: true
+      }
     },
     // HTML block.
     {
       name: 'html',
       // Must start with  an <! or a block-level element start or end tag.
       // $1 is first line of block.
+      /* tslint:disable:max-line-length */
       openMatch: /^(<!.*|(?:<\/?(?:html|head|body|iframe|script|style|address|article|aside|audio|blockquote|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|img|math|nav|noscript|ol|output|p|pre|section|table|tfoot|td|th|tr|ul|video)(?:[ >].*)?))$/i,
+      /* tslint:enable:max-line-length */
       closeMatch: /^$/, // Blank line or EOF.
       openTag: '',
       closeTag: '',
       expansionOptions: {
-        macros: true,
+        macros: true
       },
       filter: function (text) {
         return Options.safeModeFilter(text);
-      },
+      }
     },
     // Indented paragraph.
     {
@@ -107,7 +109,7 @@ module Rimu.DelimitedBlocks {
       closeTag: '</code></pre>',
       expansionOptions: {
         macros: false,
-        specials: true,
+        specials: true
       },
       filter: function (text: string): string {
         // Strip indent from start of each line.
@@ -120,7 +122,7 @@ module Rimu.DelimitedBlocks {
           buffer[i] = buffer[i].slice(indent);
         }
         return buffer.join('\n');
-      },
+      }
     },
     // Paragraph (lowest priority, cannot be escaped).
     {
@@ -132,8 +134,8 @@ module Rimu.DelimitedBlocks {
       expansionOptions: {
         macros: true,
         spans: true,
-        specials: true,       // Fall-back if spans is disabled.
-      },
+        specials: true       // Fall-back if spans is disabled.
+      }
     },
   ];
 
@@ -176,8 +178,9 @@ module Rimu.DelimitedBlocks {
         // Set block expansion options.
         var expansionOptions: ExpansionOptions;
         expansionOptions = {macros: false, spans: false, specials: false, container: false, skip: false};
-        for (var k in expansionOptions) expansionOptions[k] = def.expansionOptions[k];
-        for (var k in LineBlocks.blockOptions) expansionOptions[k] = LineBlocks.blockOptions[k];
+        var k: string;
+        for (k in expansionOptions) expansionOptions[k] = def.expansionOptions[k];
+        for (k in LineBlocks.blockOptions) expansionOptions[k] = LineBlocks.blockOptions[k];
         // Process block.
         if (!expansionOptions.skip) {
           writer.write(injectHtmlAttributes(def.openTag));
@@ -210,7 +213,7 @@ module Rimu.DelimitedBlocks {
   export function getDefinition(name: string): Definition {
     for (var i in defs) {
       if (defs[i].name === name) {
-        return defs[i]
+        return defs[i];
       }
     }
     return null;

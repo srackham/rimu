@@ -15,19 +15,19 @@ module Rimu.Quotes {
       quote: '_',
       openTag: '<em>',
       closeTag: '</em>',
-      spans: true,
+      spans: true
     },
     {
       quote: '*',
       openTag: '<strong>',
       closeTag: '</strong>',
-      spans: true,
+      spans: true
     },
     {
       quote: '`',
       openTag: '<code>',
       closeTag: '</code>',
-      spans: false,
+      spans: false
     },
   ];
 
