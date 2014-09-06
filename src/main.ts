@@ -15,8 +15,8 @@ https://github.com/srackham/rimu
  - rimu.js can be used in the browser using a script tag or can be used in Nodejs using require().
 - Rimu API functions are explicitly exported to Nodejs with the exportCommonjs() helper.
 - Other internal objects are exported to Nodejs for use by nodeunit unit tests.
-- To mimimize browser global namespace pollution all source is enveloped in a single open module
-  named Rimu.
+- To mimimize browser global namespace pollution and to disallow run-time access to internal
+  objects all source is enveloped in a single open module named Rimu.
 
 See http://srackham.wordpress.com/2012/11/20/building-heterogeneous-typescript-libraries/
 */

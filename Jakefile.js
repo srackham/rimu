@@ -147,6 +147,7 @@ task('publish-npm', ['test'], function() {
   exec('npm publish');
 });
 
+// FIXME: Does not work when executed by exec() because user/password prompt is interactive.
 desc('Publish to Meteor.');
 task('publish-meteor', ['test'], function() {
   exec('mrt publish .');
