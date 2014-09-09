@@ -45,7 +45,7 @@ module Rimu.Macros {
 
   // Render all macro invocations in text string.
   export function render(text: string): string {
-    text = text.replace(MATCH_MACROS, function(match, ...args) {
+    text = text.replace(MATCH_MACROS, function(match: string, ...args: string[]): string {
       if (match[0] === '\\') {
         return match.slice(1);
       }
@@ -60,7 +60,7 @@ module Rimu.Macros {
         case '|': // Parametized macro.
           // Substitute macro parameters.
           var paramsList = params.slice(1).split('|');
-          value = (value || '').replace(/\\?\$\d+/g, function (match) {
+          value = (value || '').replace(/\\?\$\d+/g, function (match: string): string {
             if (match[0] === '\\') {  // Unescape escaped $ characters.
               return match.slice(1);
             }

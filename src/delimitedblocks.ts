@@ -96,7 +96,7 @@ module Rimu.DelimitedBlocks {
       expansionOptions: {
         macros: true
       },
-      filter: function (text) {
+      filter: function (text: string): string {
         return Options.safeModeFilter(text);
       }
     },
@@ -220,7 +220,7 @@ module Rimu.DelimitedBlocks {
   }
 
   // Parse delimited block expansion options string into blockOptions.
-  export function setBlockOptions(blockOptions: ExpansionOptions, options: string) {
+  export function setBlockOptions(blockOptions: ExpansionOptions, options: string): void {
     if (options) {
       var opts = options.trim().split(/\s+/);
       for (var i in opts) {

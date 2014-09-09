@@ -52,11 +52,12 @@
     "radix": false,
     "semicolon": true,
     "triple-equals": [true, "allow-null-check"],
-    "typedef": [false,
+    "typedef": [true,
       "callSignature",
       "indexSignature",
       "parameter",
-      "propertySignature"
+      "propertySignature",
+      "memberVariableDeclarator"
     ],
     "typedef-whitespace": [true,
       ["callSignature", "noSpace"],

@@ -37,7 +37,7 @@ module Rimu.Quotes {
   initialize();
 
   // Synthesise re's to find and unescape quotes.
-  function initialize() {
+  function initialize(): void {
     var s: string[] = [];
     for (var i in defs) {
       s.push(escapeRegExp(defs[i].quote));

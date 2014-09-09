@@ -18,7 +18,7 @@ module Rimu.Replacements {
     {
       match: /\\?(&[\w#][\w]+;)/g,
       replacement: '',
-      filter: function (match) {
+      filter: function (match: RegExpExecArray): string {
         return match[1];  // Pass the entity through verbatim.
       }
     },
@@ -67,7 +67,7 @@ module Rimu.Replacements {
     {
       match: /\\?(<[!\/]?[a-zA-Z\-]+(:?\s+[^<>&]+)?>)/g,
       replacement: '',
-      filter: function (match) {
+      filter: function (match: RegExpExecArray): string {
         return Options.safeModeFilter(match[1]);
       }
     },

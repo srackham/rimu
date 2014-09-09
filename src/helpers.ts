@@ -47,9 +47,9 @@ module Rimu {
   export function replaceMatch(
       match: RegExpExecArray,
       replacement: string,
-      expansionOptions: ExpansionOptions)
+      expansionOptions: ExpansionOptions): string
   {
-    return replacement.replace(/\$\d/g, function () {
+    return replacement.replace(/\$\d/g, function (): string {
       // Replace $1, $2 ... with corresponding match groups.
       var i = parseInt(arguments[0][1]);  // match group number.
       var text = match[i];                // match group text.

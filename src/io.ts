@@ -83,7 +83,7 @@ module Rimu {
       this.buffer = [];
     }
 
-    write(s: string) {
+    write(s: string): void {
       this.buffer.push(s);
     }
 

@@ -20,7 +20,7 @@ module Rimu.LineBlocks {
       match: /^\\?\|([\w\-]+)\|\s*=\s*'(.*)'$/,
       replacement: '',
       expansionOptions: {},
-      filter: function (match) {
+      filter: function (match: RegExpExecArray): string {
         if (Options.safeMode !== 0) {
           return '';  // Skip if a safe mode is set.
         }
@@ -36,7 +36,7 @@ module Rimu.LineBlocks {
       expansionOptions: {
         macros: true,
       },
-      filter: function (match) {
+      filter: function (match: RegExpExecArray): string {
         if (Options.safeMode !== 0) {
           return '';  // Skip if a safe mode is set.
         }
@@ -55,7 +55,7 @@ module Rimu.LineBlocks {
       expansionOptions: {
         macros: true,
       },
-      filter: function (match) {
+      filter: function (match: RegExpExecArray): string {
         if (Options.safeMode !== 0) {
           return '';  // Skip if a safe mode is set.
         }
@@ -75,7 +75,7 @@ module Rimu.LineBlocks {
       expansionOptions: {
         macros: true,
       },
-      filter: function (match) {
+      filter: function (match: RegExpExecArray): string {
         if (Options.safeMode !== 0) {
           return '';  // Skip if a safe mode is set.
         }
@@ -91,10 +91,10 @@ module Rimu.LineBlocks {
       match: Macros.MACRO_LINE,
       replacement: '',
       expansionOptions: {},
-      verify: function (match) {
+      verify: function (match: RegExpExecArray): boolean {
         return !Macros.MACRO_DEF_OPEN.test(match[0]); // Don't match macro definition blocks.
       },
-      filter: function (match, reader?) {
+      filter: function (match: RegExpExecArray, reader?: Reader): string {
         var value = Macros.render(match[0]);
         // Insert the macro value into the reader just ahead of the cursor.
         var spliceArgs = (<any[]> [reader.pos + 1, 0]).concat(value.split('\n'));
@@ -111,7 +111,7 @@ module Rimu.LineBlocks {
         macros: true,
         spans: true,
       },
-      filter: function (match) {
+      filter: function (match: RegExpExecArray): string {
         match[1] = match[1].length.toString(); // Replace $1 with header number.
         return replaceMatch(match, this.replacement, this.expansionOptions);
       }
@@ -161,7 +161,7 @@ module Rimu.LineBlocks {
       expansionOptions: {
         macros: true,
       },
-      verify: function (match) {
+      verify: function (match: RegExpExecArray): boolean {
         // Parse Block Attributes.
         // class names = $1, id = $2, html-attributes = $3, block-options = $4
         var text = match[0];
@@ -184,7 +184,7 @@ module Rimu.LineBlocks {
         DelimitedBlocks.setBlockOptions(blockOptions, match[4]);
         return true;
       },
-      filter: function (match) {
+      filter: function (match: RegExpExecArray): string {
         return '';
       }
     },
