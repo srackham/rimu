@@ -3,6 +3,7 @@
  */
 'use strict';
 
+var pkg = require('./package.json');
 var shelljs = require('shelljs');
 
 
@@ -15,6 +16,8 @@ var RIMU_MIN_JS = 'bin/rimu.min.js';
 var RIMUC_JS = 'bin/rimuc.js';
 var SOURCE = shelljs.ls('src/*.ts');
 var TESTS = shelljs.ls('test/*.js');
+var TYPEDOC_DIR = 'doc/api';
+var TYPEDOC_INDEX = TYPEDOC_DIR + '/index.html';
 
 var DOCS = [
   {src: 'README.md', dst: 'doc/index.html', title: 'Rimu Markup'},
@@ -26,8 +29,6 @@ var HTML = ['bin/rimuplayground.html'];
 DOCS.forEach(function(doc) {
   HTML.push(doc.dst);
 });
-
-var PKG = JSON.parse(shelljs.cat('package.json'));
 
 
 /* Utility functions. */
@@ -82,20 +83,28 @@ task('test', ['compile', 'jslint'], function() {
   });
 });
 
-desc('Compile Typescript to JavaScript then uglify');
+desc('Compile Typescript to JavaScript then uglify.');
 task('compile', [RIMU_JS, RIMU_MIN_JS]);
 
 file(RIMU_JS, SOURCE.concat(JAKEFILE), function() {
   exec('tsc --noImplicitAny --out ' + RIMU_JS + ' ' + MAIN_TS);
 });
 
+desc('Create TypeDoc API documentation.');
+task('api-docs', [TYPEDOC_INDEX]);
+
+file(TYPEDOC_INDEX, SOURCE.concat(JAKEFILE), function() {
+  shelljs.rm('-rf', TYPEDOC_DIR);
+  exec('typedoc --out ' + TYPEDOC_DIR + ' ./src');
+});
+
 file(RIMU_MIN_JS, [RIMU_JS], function() {
-  var preamble = '/* ' + PKG.name + ' ' + PKG.version + ' (' + PKG.repository.url + ') */';
+  var preamble = '/* ' + pkg.name + ' ' + pkg.version + ' (' + pkg.repository.url + ') */';
   exec('uglifyjs  --preamble "' + preamble + '" --output ' + RIMU_MIN_JS + ' ' + RIMU_JS);
 });
 
 desc('Generate HTML documentation');
-task('docs', function() {
+task('docs', ['api-docs'], function() {
   DOCS.forEach(function(doc) {
     exec('node ./bin/rimuc.js --output ' + doc.dst
             + ' --prepend "{--title}=\'' + doc.title + '\'"'
@@ -115,7 +124,7 @@ desc('Display or update the project version number. Use vers=x.y.z syntax to set
 task('version', function() {
   var version = process.env.vers;
   if (!version) {
-    shelljs.echo('\nversion: ' + PKG.version);
+    shelljs.echo('\nversion: ' + pkg.version);
   }
   else {
     if (!version.match(/^\d+\.\d+\.\d+$/)) {
@@ -127,7 +136,7 @@ task('version', function() {
   }
 });
 
-var tag = 'v' + PKG.version;  // The 'v' prefix is required by Meteor package management (https://groups.google.com/forum/#!topic/meteor-talk/Q6fAH9tR27Q).
+var tag = 'v' + pkg.version;  // The 'v' prefix is required by Meteor package management (https://groups.google.com/forum/#!topic/meteor-talk/Q6fAH9tR27Q).
 desc('Create tag ' + tag);
 task('tag', ['test'], function() {
   exec('git tag -a -m "Tag ' + tag + '" ' + tag);
