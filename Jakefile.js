@@ -5,11 +5,11 @@
 
 var pkg = require('./package.json');
 var shelljs = require('shelljs');
+var child_process = require('child_process');
 
 
 /* Inputs and outputs */
 
-var JAKEFILE = 'Jakefile.js';
 var RIMU_JS = 'bin/rimu.js';
 var MAIN_TS = 'src/main.ts';
 var RIMU_MIN_JS = 'bin/rimu.min.js';
@@ -33,26 +33,48 @@ DOCS.forEach(function(doc) {
 
 /* Utility functions. */
 
-// shelljs.exec() wrapper.
-// I don't use jake.exec() because it runs asynchronously and has no synchronous option.
-function exec(command, options) {
-  options = options || {};
-  if (jake.program.opts.quiet) {
-    options.silent = true; // Honor --quiet flag.
+/*
+  Execute shell commands in parallel then run the callback when they have all finished.
+  `callback` defaults to the Jake async `complete` function.
+  Abort if an error occurs.
+  Write command output to the inherited stdout (unless the Jake --quiet option is set).
+  Print a status message when each command starts and finishes (unless the Jake --quiet option is set).
+
+  NOTE: This function is similar to the built-in jake.exec function
+  but is twice as fast.
+*/
+function exec(commands, callback) {
+  if (typeof commands === 'string') {
+    commands = [commands];
   }
-  var result = shelljs.exec(command, options);
-  if (result.code != 0) {
-    if (options.silent) {
-      shelljs.echo(result.output);
-    }
-    var msg = options.errorMessage || 'Error executing: ' + command;
-    fail(msg, result.code);
-  }
-  return result;
+  callback = callback || complete;
+  var remaining = commands.length;
+  commands.forEach(function(command) {
+    jake.logger.log('Starting: ' + command);
+    child_process.exec(command, function (error, stdout, stderr) {
+        jake.logger.log('Finished: ' + command);
+        if (!jake.program.opts.quiet) {
+          process.stdout.write(stdout);
+        }
+        if (error !== null) {
+          fail(error, error.code);
+        }
+        remaining--;
+        if (remaining === 0) {
+          callback();
+        }
+      });
+    });
 }
 
 
-/* Tasks */
+/*
+  Tasks
+
+  All tasks are synchronous (another task will not run until the current task has completed).
+  Consequently all task dependencies are executed asynchronously in declaration order.
+  The `exec` function ensures shell commands within each task run in parallel.
+*/
 
 desc('Run test task.');
 task('default', ['test']);
@@ -61,70 +83,66 @@ desc('compile, jslint, test, tslint, docs, validate-html.');
 task('build', ['test', 'tslint', 'docs', 'validate-html']);
 
 desc('Lint Javascript and JSON files.');
-task('jslint', function() {
-  exec('jshint ' + TESTS.join(' ') + ' ' + RIMUC_JS);
-  exec('jsonlint --quiet package.json');
+task('jslint', {async: true}, function() {
+  var commands = TESTS.map(function(file) { return 'jshint ' + file; });
+  commands.push('jsonlint --quiet package.json');
+  exec(commands);
 });
 
-// tslint is quite slow so make it a separate task that is run by 'build' rather than the default 'test'.
 desc('Lint TypeScript source files.');
-task('tslint', function() {
-  SOURCE.forEach(function(file) {
-    exec('tslint -f ' + file);
-  });
+task('tslint', {async: true}, function() {
+  var commands = SOURCE.map(function(file) { return 'tslint -f ' + file; });
+  exec(commands);
 });
 
 desc('Run tests (recompile if necessary).');
-task('test', ['compile', 'jslint'], function() {
-  TESTS.forEach(function(file) {
-    // Use the TAP reporter because the default color terminal reporter intermittently
-    // omits output when invoked with shelljs.exec().
-    exec('nodeunit --reporter tap ' + file, {silent: true});
-  });
+task('test', ['compile', 'jslint'], {async: true}, function() {
+  var commands = TESTS.map(function(file) { return 'nodeunit ' + file; });
+  exec(commands);
 });
 
 desc('Compile Typescript to JavaScript then uglify.');
 task('compile', [RIMU_JS, RIMU_MIN_JS]);
 
-file(RIMU_JS, SOURCE.concat(JAKEFILE), function() {
+file(RIMU_JS, SOURCE, {async: true}, function() {
   exec('tsc --noImplicitAny --out ' + RIMU_JS + ' ' + MAIN_TS);
+});
+
+file(RIMU_MIN_JS, [RIMU_JS], {async: true}, function() {
+  var preamble = '/* ' + pkg.name + ' ' + pkg.version + ' (' + pkg.repository.url + ') */';
+  var command = 'uglifyjs  --preamble "' + preamble + '" --output ' + RIMU_MIN_JS + ' ' + RIMU_JS;
+  exec(command);
 });
 
 desc('Create TypeDoc API documentation.');
 task('api-docs', [TYPEDOC_INDEX]);
 
-file(TYPEDOC_INDEX, SOURCE.concat(JAKEFILE), function() {
+file(TYPEDOC_INDEX, SOURCE, {async: true}, function() {
   shelljs.rm('-rf', TYPEDOC_DIR);
   exec('typedoc --out ' + TYPEDOC_DIR + ' ./src');
 });
 
-file(RIMU_MIN_JS, [RIMU_JS], function() {
-  var preamble = '/* ' + pkg.name + ' ' + pkg.version + ' (' + pkg.repository.url + ') */';
-  exec('uglifyjs  --preamble "' + preamble + '" --output ' + RIMU_MIN_JS + ' ' + RIMU_JS);
-});
-
 desc('Generate HTML documentation');
-task('docs', ['api-docs'], function() {
-  DOCS.forEach(function(doc) {
-    exec('node ./bin/rimuc.js --output ' + doc.dst
-            + ' --prepend "{--title}=\'' + doc.title + '\'"'
-            + ' doc/doc-header.rmu ' + doc.src + ' doc/doc-footer.rmu'
-    )
+task('docs', ['api-docs'], {async: true}, function() {
+  var commands = DOCS.map(function(doc) {
+    return 'node ./bin/rimuc.js --output ' + doc.dst +
+      ' --prepend "{--title}=\'' + doc.title + '\'"' +
+      ' doc/doc-header.rmu ' + doc.src + ' doc/doc-footer.rmu';
   });
+  exec(commands);
 });
 
-desc('Validate HTML file with W3C Validator.');
-task('validate-html', function() {
-  HTML.forEach(function(file) {
-    exec('w3cjs validate ' + file, {silent: true, errorMessage: 'Invalid HTML: ' + file});
-  });
+desc('Validate HTML documents with W3C Validator.');
+task('validate-html', {async: true}, function() {
+  var commands = HTML.map(function(file) { return 'w3cjs validate ' + file; });
+  exec(commands);
 });
 
 desc('Display or update the project version number. Use vers=x.y.z syntax to set a new version number.');
 task('version', function() {
   var version = process.env.vers;
   if (!version) {
-    shelljs.echo('\nversion: ' + pkg.version);
+    console.log('\nversion: ' + pkg.version);
   }
   else {
     if (!version.match(/^\d+\.\d+\.\d+$/)) {
@@ -138,35 +156,30 @@ task('version', function() {
 
 var tag = 'v' + pkg.version;  // The 'v' prefix is required by Meteor package management (https://groups.google.com/forum/#!topic/meteor-talk/Q6fAH9tR27Q).
 desc('Create tag ' + tag);
-task('tag', ['test'], function() {
+task('tag', ['test'], {async: true}, function() {
   exec('git tag -a -m "Tag ' + tag + '" ' + tag);
 });
 
-desc('Commit changes to local Git repo. Use message="commit message" syntax to set the commit message.');
-task('commit', ['test'], function() {
-  var commit_message = process.env.message;
-  if (!commit_message) {
-    fail('Missing message environment variable: message="commit message"\n');
-  }
-  exec('git commit -a -m "' + commit_message + '"');
+desc('Commit changes to local Git repo.');
+task('commit', ['test'], {async: true}, function() {
+  jake.exec('git commit -a', {interactive: true}, complete);
 });
 
 desc('push, publish-npm, publish-meteor.');
 task('publish', ['push', 'publish-npm', 'publish-meteor']);
 
 desc('Push local commits to Github.');
-task('push', ['test'], function() {
+task('push', ['test'], {async: true}, function() {
   exec('git push -u --tags origin master');
 });
 
 desc('Publish to npm.');
-task('publish-npm', ['test'], function() {
+task('publish-npm', {async: true}, ['test'], function() {
   exec('npm publish');
 });
 
-// FIXME: Does not work when executed by exec() because user/password prompt is interactive.
 desc('Publish to Meteor.');
-task('publish-meteor', ['test'], function() {
-  exec('mrt publish .');
+task('publish-meteor', ['test'], {async: true}, function() {
+  jake.exec('mrt publish .', {interactive: true}, complete);
 });
 
