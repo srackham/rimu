@@ -13,7 +13,6 @@ var child_process = require('child_process');
 var RIMU_JS = 'bin/rimu.js';
 var MAIN_TS = 'src/main.ts';
 var RIMU_MIN_JS = 'bin/rimu.min.js';
-var RIMUC_JS = 'bin/rimuc.js';
 var SOURCE = shelljs.ls('src/*.ts');
 var TESTS = shelljs.ls('test/*.js');
 var TYPEDOC_DIR = 'doc/api';
@@ -34,15 +33,14 @@ DOCS.forEach(function(doc) {
 /* Utility functions. */
 
 /*
-  Execute shell commands in parallel then run the callback when they have all finished.
-  `callback` defaults to the Jake async `complete` function.
-  Abort if an error occurs.
-  Write command output to the inherited stdout (unless the Jake --quiet option is set).
-  Print a status message when each command starts and finishes (unless the Jake --quiet option is set).
+ Execute shell commands in parallel then run the callback when they have all finished.
+ `callback` defaults to the Jake async `complete` function.
+ Abort if an error occurs.
+ Write command output to the inherited stdout (unless the Jake --quiet option is set).
+ Print a status message when each command starts and finishes (unless the Jake --quiet option is set).
 
-  NOTE: This function is similar to the built-in jake.exec function
-  but is twice as fast.
-*/
+ NOTE: This function is similar to the built-in jake.exec function but is twice as fast.
+ */
 function exec(commands, callback) {
   if (typeof commands === 'string') {
     commands = [commands];
@@ -51,30 +49,30 @@ function exec(commands, callback) {
   var remaining = commands.length;
   commands.forEach(function(command) {
     jake.logger.log('Starting: ' + command);
-    child_process.exec(command, function (error, stdout, stderr) {
-        jake.logger.log('Finished: ' + command);
-        if (!jake.program.opts.quiet) {
-          process.stdout.write(stdout);
-        }
-        if (error !== null) {
-          fail(error, error.code);
-        }
-        remaining--;
-        if (remaining === 0) {
-          callback();
-        }
-      });
+    child_process.exec(command, function(error, stdout, stderr) {
+      jake.logger.log('Finished: ' + command);
+      if (!jake.program.opts.quiet) {
+        process.stdout.write(stdout);
+      }
+      if (error !== null) {
+        fail(error, error.code);
+      }
+      remaining--;
+      if (remaining === 0) {
+        callback();
+      }
     });
+  });
 }
 
 
 /*
-  Tasks
+ Tasks
 
-  All tasks are synchronous (another task will not run until the current task has completed).
-  Consequently all task dependencies are executed asynchronously in declaration order.
-  The `exec` function ensures shell commands within each task run in parallel.
-*/
+ All tasks are synchronous (another task will not run until the current task has completed).
+ Consequently all task dependencies are executed asynchronously in declaration order.
+ The `exec` function ensures shell commands within each task run in parallel.
+ */
 
 desc('Run test task.');
 task('default', ['test']);
@@ -84,20 +82,26 @@ task('build', ['test', 'tslint', 'docs', 'validate-html']);
 
 desc('Lint Javascript and JSON files.');
 task('jslint', {async: true}, function() {
-  var commands = TESTS.map(function(file) { return 'jshint ' + file; });
+  var commands = TESTS.map(function(file) {
+    return 'jshint ' + file;
+  });
   commands.push('jsonlint --quiet package.json');
   exec(commands);
 });
 
 desc('Lint TypeScript source files.');
 task('tslint', {async: true}, function() {
-  var commands = SOURCE.map(function(file) { return 'tslint -f ' + file; });
+  var commands = SOURCE.map(function(file) {
+    return 'tslint -f ' + file;
+  });
   exec(commands);
 });
 
 desc('Run tests (recompile if necessary).');
 task('test', ['compile', 'jslint'], {async: true}, function() {
-  var commands = TESTS.map(function(file) { return 'nodeunit ' + file; });
+  var commands = TESTS.map(function(file) {
+    return 'nodeunit ' + file;
+  });
   exec(commands);
 });
 
@@ -134,7 +138,9 @@ task('docs', ['api-docs'], {async: true}, function() {
 
 desc('Validate HTML documents with W3C Validator.');
 task('validate-html', {async: true}, function() {
-  var commands = HTML.map(function(file) { return 'w3cjs validate ' + file; });
+  var commands = HTML.map(function(file) {
+    return 'w3cjs validate ' + file;
+  });
   exec(commands);
 });
 
