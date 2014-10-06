@@ -62,10 +62,6 @@ Playground](http://rimumarkup.org/rimuplayground.html).
 - A [Chrome browser
   extension](https://github.com/srackham/rimu-chrome-extension.git)
   for rendering Rimu Markup files directly in the browser.
-- A simple example [Meteor web
-  application](https://github.com/srackham/rimu-meteor-example) which
-  uses the [rimumarkup smart
-  package](https://atmosphere.meteor.com/package/rimumarkup).
 
 
 ## Browser compatibility

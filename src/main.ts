@@ -61,4 +61,3 @@ module Rimu {
 // Export Rimu API.
 Rimu.exportCommonjs({render: Rimu.render});
 
-this.Rimu = Rimu; // Fix Meteor 0.6.0 var scope incompatibility.

@@ -154,16 +154,15 @@ task('version', function() {
     if (!version.match(/^\d+\.\d+\.\d+$/)) {
       fail('Invalid version number: ' + version + '\n');
     }
-    ['package.json', 'smart.json'].forEach(function(file) {
+    ['package.json'].forEach(function(file) {
       shelljs.sed('-i', /(\n\s*"version"\s*:\s*)"\d+\.\d+\.\d+"/, '$1' + '"' + version + '"', file);
     });
   }
 });
 
-var tag = 'v' + pkg.version;  // The 'v' prefix is required by Meteor package management (https://groups.google.com/forum/#!topic/meteor-talk/Q6fAH9tR27Q).
-desc('Create tag ' + tag);
+desc('Create tag ' + pkg.version);
 task('tag', ['test'], {async: true}, function() {
-  exec('git tag -a -m "Tag ' + tag + '" ' + tag);
+  exec('git tag -a -m "Tag ' + pkg.version + '" ' + pkg.version);
 });
 
 desc('Commit changes to local Git repo.');
@@ -171,8 +170,8 @@ task('commit', ['test'], {async: true}, function() {
   jake.exec('git commit -a', {interactive: true}, complete);
 });
 
-desc('push, publish-npm, publish-meteor.');
-task('publish', ['push', 'publish-npm', 'publish-meteor']);
+desc('push, publish-npm.');
+task('publish', ['push', 'publish-npm']);
 
 desc('Push local commits to Github.');
 task('push', ['test'], {async: true}, function() {
@@ -182,10 +181,5 @@ task('push', ['test'], {async: true}, function() {
 desc('Publish to npm.');
 task('publish-npm', {async: true}, ['test'], function() {
   exec('npm publish');
-});
-
-desc('Publish to Meteor.');
-task('publish-meteor', ['test'], {async: true}, function() {
-  jake.exec('mrt publish .', {interactive: true}, complete);
 });
 
