@@ -82,5 +82,3 @@ module Rimu.Quotes {
 
 }
 
-// Exposed for unit tests.
-Rimu.exportCommonjs({Quotes: Rimu.Quotes});

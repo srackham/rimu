@@ -251,5 +251,3 @@ module Rimu.DelimitedBlocks {
 
 }
 
-// Exposed for unit tests.
-Rimu.exportCommonjs({DelimitedBlocks: Rimu.DelimitedBlocks});

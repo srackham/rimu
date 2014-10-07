@@ -221,5 +221,3 @@ module Rimu.Lists {
 
 }
 
-// Exposed for unit tests.
-Rimu.exportCommonjs({Lists: Rimu.Lists});

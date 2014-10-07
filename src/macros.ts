@@ -98,5 +98,3 @@ module Rimu.Macros {
 
 }
 
-// Exposed for unit tests.
-Rimu.exportCommonjs({Macros: Rimu.Macros});

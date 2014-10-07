@@ -242,5 +242,3 @@ module Rimu.LineBlocks {
 
 }
 
-// Exposed for unit tests.
-Rimu.exportCommonjs({LineBlocks: Rimu.LineBlocks});

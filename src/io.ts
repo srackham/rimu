@@ -95,5 +95,3 @@ module Rimu {
 
 }
 
-// Exposed for unit tests.
-Rimu.exportCommonjs({Reader: Rimu.Reader, Writer: Rimu.Writer});

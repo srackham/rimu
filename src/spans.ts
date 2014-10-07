@@ -183,5 +183,3 @@ module Rimu.Spans {
 
 }
 
-// Exposed for unit tests.
-Rimu.exportCommonjs({Spans: Rimu.Spans});

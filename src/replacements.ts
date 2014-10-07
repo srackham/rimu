@@ -108,5 +108,3 @@ module Rimu.Replacements {
 
 }
 
-// Exposed for unit tests.
-Rimu.exportCommonjs({Replacements: Rimu.Replacements});
