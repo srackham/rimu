@@ -88,8 +88,8 @@ exports['Spans'] = function(test) {
     '&copy; &reg;&amp;para;',
     'character entities');
   test_span(
-    'Lorum \\\nipsum \\\\\n`lorum \\\nipsum`\nvestibulum \\',
-    'Lorum<br>\nipsum \\\n<code>lorum \\\nipsum</code>\nvestibulum<br>',
+    'Lorum \\\nipsum \\\\\n`lorum \\\nipsum`\nnostra \\\\\nvestibulum \\',
+    'Lorum<br>\nipsum \\\n<code>lorum \\\nipsum</code>\nnostra \\\nvestibulum<br>',
     'line breaks');
   test_span(
     'Lorum <<#x1>>ipsum <#x1|lorum link> \\<<#x1>>',
