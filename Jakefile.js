@@ -152,18 +152,19 @@ task('validate-html', {async: true}, function() {
 });
 
 desc('Display or update the project version number. Use vers=x.y.z argument to set a new version number.');
-task('version', function() {
+task('version', {async: true}, function() {
   var version = process.env.vers;
   if (!version) {
     console.log('\nversion: ' + pkg.version);
+    complete();
   }
   else {
     if (!version.match(/^\d+\.\d+\.\d+$/)) {
       fail('Invalid version number: ' + version + '\n');
     }
-    ['package.json'].forEach(function(file) {
-      shelljs.sed('-i', /(\n\s*"version"\s*:\s*)"\d+\.\d+\.\d+"/, '$1' + '"' + version + '"', file);
-    });
+    shelljs.sed('-i', /(\n\s*"version"\s*:\s*)"\d+\.\d+\.\d+"/, '$1' + '"' + version + '"', 'package.json');
+    pkg.version = version;
+    exec('git commit -m "Bump version number." package.json');
   }
 });
 
