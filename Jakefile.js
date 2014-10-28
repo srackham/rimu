@@ -85,7 +85,7 @@ desc('compile, jslint, test, tslint, docs, validate-html.');
 task('build', ['test', 'tslint', 'docs', 'validate-html']);
 
 desc('Update version number, tag and push to Github. Use vers=x.y.z argument to set a new version number.');
-task('release', ['build', 'version', 'tag', 'push']);
+task('release', ['build', 'version', 'tag', 'publish']);
 
 desc('Lint Javascript and JSON files.');
 task('jslint', {async: true}, function() {
