@@ -53,13 +53,13 @@ function exec(commands, callback) {
     commands.forEach(function(command) {
       jake.logger.log('Starting: ' + command);
       child_process.exec(command, function(error, stdout, stderr) {
-        jake.logger.log('Finished: ' + command);
         if (!jake.program.opts.quiet) {
           process.stdout.write(stdout);
         }
         if (error !== null) {
           fail(error, error.code);
         }
+        jake.logger.log('Finished: ' + command);
         remaining--;
         if (remaining === 0) {
           callback();
@@ -84,7 +84,7 @@ task('default', ['test']);
 desc('compile, jslint, test, tslint, docs, validate-html.');
 task('build', ['test', 'tslint', 'docs', 'validate-html']);
 
-desc('Update version number, tag and push to Github. Use vers=x.y.z argument to set a new version number.');
+desc('Update version number, tag and push to Github and npm. Use vers=x.y.z argument to set a new version number.');
 task('release', ['build', 'version', 'tag', 'publish']);
 
 desc('Lint Javascript and JSON files.');
