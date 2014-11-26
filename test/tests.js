@@ -217,8 +217,8 @@ exports['Blocks'] = function(test) {
     '<!-- An HTML comment -->',
     'html comment');
   test_document(
-    '  *Indented* paragraph\nLine 2\n    Line 3',
-    '<pre><code>*Indented* paragraph\nLine 2\n  Line 3</code></pre>',
+    '  *Indented* paragraph\nLine 2\n \n    Line 3',
+    '<pre><code>*Indented* paragraph\nLine 2\n \n  Line 3</code></pre>',
     'indented paragraph');
   test_document(
     '/*\nComment lines\n More comments.\n*/',
@@ -307,7 +307,7 @@ exports['Blocks'] = function(test) {
   // Mixed blocks.
   test_document(
     '# Title\n## Subtitle\n\nParagraph \none.\n\r\nParagraph two.',
-    '<h1>Title</h1>\n<h2>Subtitle</h2>\n<p>Paragraph\none.</p>\n<p>Paragraph two.</p>',
+    '<h1>Title</h1>\n<h2>Subtitle</h2>\n<p>Paragraph \none.</p>\n<p>Paragraph two.</p>',
     'headers and paragraphs');
   test_document(
     '# h1 header\n\n// Comment line.',

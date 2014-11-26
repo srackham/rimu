@@ -30,8 +30,8 @@ module Rimu.DelimitedBlocks {
         // Set macro.
         // Get the macro name from the match in the first line of the block.
         var name = match[0].match(/^\{([\w\-]+)\}/)[1];
-        text = text.replace(/(' *[\\]*)\\\n/g, '$1\n'); // Unescape line-continuations (and escaped line-continuations).
-        text = text.replace(/ +\n/g, '\n');             // Strip trailing spaces.
+        text = text.replace(/' *\\\n/g, '\'\n');        // Unescape line-continuations.
+        text = text.replace(/(' *[\\]+)\\\n/g, '$1\n'); // Unescape escaped line-continuations.
         text = replaceInline(text, expansionOptions);   // Expand macro invocations.
         Macros.setValue(name, text);
         return '';

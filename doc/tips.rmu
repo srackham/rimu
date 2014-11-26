@@ -148,6 +148,32 @@ Using an editor with Rimu syntax highlighting support (see previous
 topic) makes it much easier to spot syntax errors.
 
 
+== Render contiguous Indented paragraphs with a single element
+When you have multiple Indented paragraphs separated by blank lines
+the usual expectation is that they will be contained in a single
+listing -- to achieve this separate the paragraphs with lines
+containing one or more space characters:
+
+{joined-paragraphs-example} = '#### Separator line is blank
+
+  Neque a massa. Porttitor
+  consectetuer commodo.
+
+  Neque a massa. Porttitor
+  consectetuer commodo.
+
+
+#### Separator line with spaces
+
+  Neque a massa. Porttitor
+  consectetuer commodo.
+ 
+  Neque a massa. Porttitor
+  consectetuer commodo.'
+
+{generate-rendered-example-1|joined-paragraphs-example}
+
+
 == Display contiguous block images vertically
 Unless they are separated by other block elements, multiple block
 image elements flow inline like text (this is because the HTML `img`
@@ -434,7 +460,7 @@ Inline content::
 If an element supports macro expansion (e.g. Paragraphs and HTML
 Blocks), then block content can be conditionally included using:
 
-. _Inclusion_ macro invocations to exclude lines of text, for example: 
+. _Inclusion_ macro invocations to exclude lines of text, for example:
 
   {macro=} Line is included if macro is undefined or value is blank.
   {macro!} Line is included if macro is defined and value not blank.
@@ -509,8 +535,10 @@ Lobortis lacus vestibulum sem.
 
 - Augue et dui malesuada purus.
 
-  If a list item is followed by an indented paragraph the indented
-  paragraph is included in the list item.
+  If a list item is followed
+  by an indented paragraph the
+  indented paragraph is
+  included in the list item.
 
 </td>
     </tr>
@@ -707,7 +735,7 @@ and _h3_ sub-sections. You need to define the `--section-numbers`
 macro on the command-line (using the `--prepend` option) or in your
 `.rimurc` file. For example:
 
-  rimuc --styled --prepend "{--section-numbers}='yes'" mydoc.rmu 
+  rimuc --styled --prepend "{--section-numbers}='yes'" mydoc.rmu
 
 
 == Nested Delimited Blocks
@@ -726,7 +754,7 @@ Enim ultricies odio rhoncus ultrices,
 porttitor augue a amet, pulvinar
 adipiscing in dictumst in, enim integer
 vel mauris placerat in phasellus magna.
-Nisi! Amet. 
+Nisi! Amet.
 """
 
 Duis in tincidunt rhoncus nascetur
