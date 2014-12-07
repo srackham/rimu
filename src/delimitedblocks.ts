@@ -183,11 +183,11 @@ module Rimu.DelimitedBlocks {
         for (k in LineBlocks.blockOptions) expansionOptions[k] = LineBlocks.blockOptions[k];
         // Process block.
         if (!expansionOptions.skip) {
-          writer.write(injectHtmlAttributes(def.openTag));
           var text = lines.join('\n');
           if (def.filter) {
             text = def.filter(text, match, expansionOptions);
           }
+          writer.write(injectHtmlAttributes(def.openTag));
           if (expansionOptions.container) {
             text = Rimu.renderSource(text);
           }
