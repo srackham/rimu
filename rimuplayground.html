@@ -1,0 +1,1071 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="An interactive sandbox for learning and
+    experimenting with Rimu markup plus documentation.">
+  <title>Rimu Playground</title>
+  <style type="text/css">
+    /*<![CDATA[*/
+    body {
+      margin: 1em;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+    h1, h2, h3, h4, h5, h6, th {
+      color: #527bbd;
+    }
+    h1 {
+      margin-bottom: 0.2em;
+    }
+    table#view {
+      table-layout: fixed;
+      border-collapse:collapse;
+      width: 100%;
+      text-align:left;
+    }
+    #view td, #view th {
+      border: 2px solid #ddd;
+      width: 33%;
+      padding: 0.5em;
+    }
+    #view td {
+      height: 200px;
+      vertical-align:top;
+    }
+    #rimu {
+      height: 100%;
+      min-height: 800px; /* Non-WebKit browsers don't auto-resize textarea. */
+      width: 100%;
+      background-color: #ffe;
+      border: 1px solid #ddd;
+    }
+    #html {
+      white-space: pre-wrap;
+      margin: 0;
+    }
+    #preview em, #preview strong {
+      color: #295bad;
+    }
+    #preview code, pre {
+      color: #474747;
+      white-space: pre-wrap;
+    }
+    #preview pre {
+      margin-left: 1em;
+      /*background-color: #f8f8f8;*/
+    }
+    #navbar {
+      margin-left: 0.5em;
+      font-weight: bold;
+    }
+    #navbar a {
+      color: #527bbd;
+      text-decoration: none;
+    }
+    #navbar .divider {
+      color: silver;
+    }
+    /*]]>*/
+  </style>
+</head>
+<body>
+  <h1>Rimu Playground and Reference</h1>
+  <p>
+    <select id="topic"
+            onchange="renderTopic(this.value)"
+            onclick="renderTopic(this.value)">
+      <option value="topic-anchors-and-links">Anchors and links</option>
+      <option value="topic-api">API</option>
+      <option value="topic-block-attributes">Block Attributes</option>
+      <option value="topic-character-entities">Character entities</option>
+      <option value="topic-comments">Comments</option>
+      <option value="topic-delimited-blocks">Delimited blocks</option>
+      <option value="topic-headers">Headers</option>
+      <option value="topic-html-markup">HTML Markup</option>
+      <option value="topic-images">Images</option>
+      <option value="topic-lists">Lists</option>
+      <option value="topic-macros">Macros</option>
+      <option value="topic-other">Other</option>
+      <option value="topic-paragraphs">Paragraphs</option>
+      <option selected value="topic-playground">Playground</option>
+      <option value="topic-quotes">Quotes</option>
+      <option value="topic-release-notes">Release Notes</option>
+      <option value="topic-replacements">Replacements</option>
+      <option value="topic-taxonomy">Taxonomy</option>
+      <option value="topic-tools">Tools</option>
+      <option value="topic-urls-and-email">URLs and email addresses</option>
+    </select>
+    <button onclick="stash();">Stash</button>
+    <button onclick="unstash();">Unstash</button>
+    <span id="navbar">
+      <a href="http://rimumarkup.org/">Home</a> <span class="divider">|</span>
+      <a href="http://rimumarkup.org/tips.html">Tips</a> <span class="divider">|</span>
+      <a href="http://github.com/srackham/rimu">Github</a> <span class="divider">|</span>
+      <a href="https://npmjs.org/package/rimu">npm</a>
+    </span>
+  </p>
+
+  <table id="view">
+    <thead>
+      <tr>
+        <th>Rimu</th>
+        <th>Preview</th>
+        <th>HTML</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <textarea id="rimu" onkeyup="convert();">Enter markup here.</textarea>
+        </td>
+        <td id="preview">
+        </td>
+        <td>
+          <pre id="html"></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+<div id="topic-anchors-and-links">
+<!--
+Anchors are jump targets for links within the document.
+
+Syntax:
+
+  Role            Rimu            HTML
+  _________________________________________________________
+  Inline anchor   <<#id>>         <span id="id"></span>
+  Block anchor    <<#id>>         <div id="id"></div>
+  Link            <#id|caption>   <a href="#id">caption</a>
+  Link            <#id>           <a href="#id">#id</a>
+  _________________________________________________________
+
+- Block and inline anchor elements share the same syntax.
+- Links are inline elements.
+- In most situations a specifying an HTML element ID using a Rimu
+  _Block Attribute_ element is preferable to a Block Anchor.
+
+Examples:
+
+""
+<<#x1>>
+Refer to the <#x1|this paragraph> or the <#x2|next paragraph> or
+the <#x3|second list item below>.
+
+.#x2
+Bibendum neque quis quisque ac commodo. Non et cumque. Sit et a
+consequat.
+
+- Viverra pede turpis.
+- <<#x3>>Esse et dui nonummy modi.
+""
+
+See also the _URLs and email addresses_ topic.
+
+-->
+</div>
+
+<div id="topic-api">
+<!--
+Rimu has just one API:
+
+  render(source [, options])
+
+Where `source` is a string containing Rimu markup and `options` is an
+optional object argument with zero or more of the following
+properties:
+
+`safeMode`:: This option has a number value that controls how Rimu
+renders embedded HTML:
+
+  0 => Render the raw HTML (default behavior).
+  1 => Delete the HTML.
+  2 => Replace the HTML with the 'htmlReplacement' option string.
+  3 => Render HTML as text.
+
+`htmlReplacement`:: A string that replaces embedded HTML when
+`safeMode` is set to `2`. Defaults to `<mark>replaced HTML</mark>`.
+
+Example:
+
+  Rimu.render('Hello *Rimu*!', {safeMode: 1});
+
+See `rimuc.js` and `rimuplayground.html` for examples of `render()`
+in action.
+
+-->
+</div>
+
+<div id="topic-character-entities">
+<!--
+HTML character entities can be included in Rimu source.
+
+Examples: &copy; &reg; &alpha; &omega;
+
+Character entities can be escaped with a backslash character prefix.
+
+-->
+</div>
+
+<div id="topic-comments">
+<!--
+A _multi-line comment_ starts with a line containing only `/*` and
+ends with a line containing only `*/` for example:
+
+  /*
+    This comment does not appear in the
+    rendered HTML.
+  */
+
+A _single-line comment_ is any line of text starting with `//`
+for example:
+
+  // This comment does not appear in the rendered HTML.
+
+- Comments are not included in the HTML output.
+- Comments are block elements and cannot be used inline, for example
+  mid-paragraph.
+- Comment delimiters must start at the left margin.
+- Comments can be escaped by prefixing the opening delimiter with a
+  backslash character.
+- Use HTML comments (see _HTML Markup_) if you want comments to appear
+  in the rendered HTML, for example:
+
+  <!- - This comment appears in the rendered HTML. - ->
+
+-->
+</div>
+
+<div id="topic-delimited-blocks">
+<!--
+Delimited blocks are blocks of one or more lines bounded by opening
+and closing delimiter lines.
+
+- Delimited blocks can be escaped by prefixing the opening delimiter
+  with a backslash character.
+- The number of characters in the closing delimiter must exactly match
+  the number in the he opening delimiter - - this feature allows
+  delimited blocks of the same type to be nested.
+
+=== Code Block
+- -
+By default the all text in a _Code Block_ is rendered verbatim. This
+behavior can be changed using a preceding _Block Attributes_ element.
+The generated HTML is enveloped  with  <pre><code>...</code></pre>
+tags.
+
+The delimiter lines are two or more dash characters starting at the
+left margin.
+- -
+
+=== Quote Block
+""
+A _Quote Block_ renders the enclosed block elements inside an HTML
+`<blockquote>` element.
+
+The delimiter lines are two or more double-quote characters starting
+at the left margin.
+""
+
+=== Division Block
+..
+A _Division Block_ is a container for other block elements, the
+contained elements are enclosed by an HTML `<div>` element.
+
+- The delimiter lines are two or more period characters starting at
+  the left margin.
+- The _Division Block_ can be used to group block elements and is
+  useful for appending arbitrary elements to list items.
+..
+
+=== Delimited Block Definitions
+You can change the generated HTML using _Delimited Block definitions_.
+
+Definition syntax:
+
+  |block-name| = '<open-tags>|<close-tags> block-options'
+
+- `block-name` is the Delimited Block name (`code`, `comment`,
+  `division`, `html`, `indented`, `quote` or `paragraph`).
+- `open-tags` and `close-tags` define the HTML tags that envelope the
+  output block. `<open-tags>|<close-tags>` is optional.
+- `block-options` is used to control the processing of multi-line
+  block element contents (delimited blocks, paragraphs, multi-line
+  macro definitions and HTML). `block-options` is optional and
+  consists of one or more of the following options (separated by
+  spaces):
+
+  `+macros`:: Enable macro expansion.
+  `-macros`:: Disable macro expansion.
+  `+spans`:: Enable span element processing.
+  `-spans`:: Disable span element processing.
+  `+specials`:: Enable special character entities.
+  `-specials`:: Disable special character entities.
+  `+container`:: The block is a container for Rimu elements.
+  `-container`:: Turn off the container option.
+  `+skip`:: Skip the block.
+  `-skip`:: Turn off the skip option.
+
+- _Quote_ and _Replacement_ elements are collectively refered to as
+  _Spans_.
+- The `-specials` option is ignored if the API _safeMode_ option is
+  not zero (see the _API_ topic).
+- A Delimited Block definition must start at the left margin and must not
+  extend beyond the end of the line.
+- Delimited Block definitions are not processed if the _Safe Mode_ is
+  non-zero.
+
+The following example generates Code blocks with a `no-highlight`
+class attribute:
+
+  |code| = '<pre><code class="no-highlight">|</code></pre>'
+
+The following example disables macro expansion and spans (inline
+elements) processing in Paragraphs:
+
+  |paragraph| = '-macros -spans'
+
+-->
+</div>
+
+<div id="topic-headers">
+<!--
+A _Header_ is a single-line block element containing a title which is
+prefixed by 1 to 6 `=` or `#` characters (the header ID). A postfixed
+header ID is optional.
+
+Examples:
+
+# h1 header
+== h2 header ==
+#### h3 header
+#### h4 _header_ ####
+===== h5 header
+====== h6 header
+
+- The header ID is separated from the title text by whitespace.
+- Inline elements are allowed in the header title.
+
+-->
+</div>
+
+<div id="topic-html-markup">
+<!--
+Block and inline HTML elements can be <span style="font-size:
+2em">mixed with</span> Rimu markup.
+
+<table>
+  <tr>
+    <td>Montes adipiscing sodales.</td>
+    <td>Magna placerat posuere.</td>
+  </tr>
+  <tr>
+    <td>Nulla suspendisse egestas nulla libero sed.</td>
+    <td>Wisi ullamcorper eget.</td>
+  </tr>
+</table>
+
+- The opening tag of an HTML block element must start at the left
+  margin.
+- An HTML block element is terminated with a blank line (it cannot
+  contain blank lines).
+- HTML tags can be escaped with a backslash character prefix.
+- HTML elements can be excluded from the output using the API
+  _safeMode_ option (see the _API_ topic).
+
+-->
+</div>
+
+<div id="topic-block-attributes">
+<!--
+The _Block Attributes_ single-line block element injects HTML
+attributes into the opening tag of the next block element. You can
+specify class names, an element ID and any other HTML attributes.  It
+can also include _block-options_ to control the processing of
+multi-line block elements.
+
+Syntax:
+
+  .class-names #id [html-attributes] block-options
+
+- All items are optional.
+- `class-names` is one or more HTML _class_ attribute names (separated
+  by spaces).
+- `id` is a unique HTML _id_ attribute value.
+- `html-attributes` is one or more HTML attribute name/value pairs.
+- HTML attributes can be applied any block element that renders HTML.
+- The leading period character must start at the left margin and the
+  attributes must not extend beyond the end of the line.
+- The `[html-attributes]` section is ignored if the API _safeMode_
+  option is not zero (see the _API_ topic).
+- `block-options` is used to control the processing of multi-line
+  block element contents (see _Delimited Blocks_ definitions).
+- Successive Block Attributes elements accumulate attribute items until
+  they are consumed by a block element.
+
+Here are a couple of examples of attribute elements applied to the
+paragraph block elements:
+
+.error [style="color:red"]
+Lorum ipsum.
+
+.info #ref2 [style="color:green"]
+Ac curabitur elementum.
+
+{quote-style} = '.[style="padding-left: 10px; border-left: 4px solid silver;"]'
+
+{quote-style}
+""
+Lorem ipsum dolor sit amet sapien. Nascetur et mattis maecenas morbi
+porttitor. Vitae vestibulum voluptate. Quam elit id. In eu wisi.
+Imperdiet pellentesque minim. Metus mauris tortor. Torquent leo vel.
+""
+
+.-macros
+Macro {invocations} are not expanded when the `-macros` block option
+is set.
+
+-->
+</div>
+
+<div id="topic-images">
+<!--
+Syntax:
+
+  Rimu              HTML
+  ____________________________________________
+  <image:url|alt>   <img href="url" alt="alt">
+  <image:url>       <img href="url" alt="url">
+  ____________________________________________
+
+An image can be rendered as a block element:
+
+<image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
+
+Or an image can be <image:http://www.w3.org/Icons/w3c_home.png> an
+inline element.
+
+-->
+</div>
+
+<div id="topic-lists">
+<!--
+List items are prefixed with a list ID which identifies the list type
+and groups list items into lists.
+
+  List IDs             List type
+  __________________________________
+  -, *, **, ***, ****  Bullet list
+  ., .., ..., ....     Numbered list
+  ::, :::, ::::        Labeled list
+  __________________________________
+
+- List items can be indented but this has no semantic significance.
+- Number list IDs can be prefixed with numbers but they have no
+  semantic significance.
+- List items can be escaped with a backslash at the beginning of the
+  line.
+- If an _Indented_ paragraph immediately follows a list item then it
+  is rendered with the list item.
+- If a delimited block (_Code_, _Quote_ or _Division_ block)
+  immediately follows a list item without any intervening blank lines
+  then it is rendered with the list item.
+- There are no explicit numbering or bullet styles, this is best left
+  to CSS which can apply a consistent set of list styles.
+
+Examples:
+
+- Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu
+\- lorem dolor fusce nec.
+  * Sit pretium quisque in wisi lobortis.
+  * Ac curabitur elementum.
+    ** Platea ad diam arcu vitae fermentum.
+       1. Eu lorem nulla.
+       2. In suspendisse at dapibus nostra est.
+          .. Montes adipiscing sodales.
+    ** Pellentesque nibh sit.
+- Viverra pede turpis.
+  Esse et dui:: Nonummy modi.
+  Wisi ad diam:: Sapien porttitor.
+    Condimentum::: Lacus maecenas neque dolor habitant tellus eu vitae sed
+- Augue et dui malesuada purus.
+
+  Purus aliquam mauris a aliquam orci. Massa sit sit. Quis eget
+  penatibus. Maecenas at tellus. Sapien quam mauris. Sapien arcu nisl.
+  Non a pede in.
+
+- Facilisi vestibulum montes quam eget donec.
+..
+Cras proin molestie quam sem conubia. Ligula vel elit. Elit a earum.
+Arcu eget magna. Class vivamus morbi.
+
+Ac lacinia mi. Mi in enim. Dui sed ut. Egestas congue quam. Facilisis
+non magnis facilisi scelerisque luctus. Quis praesent pulvinar.
+..
+- Integer quisque hendrerit. Arcu nunc lorem posuere.
+
+-->
+</div>
+
+<div id="topic-other">
+<!--
+- By convention Rimu markup text files have a `.rmu` file name
+  extension.
+
+-->
+</div>
+
+<div id="topic-paragraphs">
+<!--
+Paragraph block elements are terminated by a blank line - - lines
+containing only space characters will not terminate a paragraph. There
+are two paragraph types:
+
+==== Normal paragraphs
+Normal paragraphs can contain inline elements, the first line must
+start at the left margin.
+
+You can force line breaks \
+in normal paragraphs by   \
+putting a space followed  \
+by a backslash character  \
+at the end of a line.
+
+Line breaks can be escaped by prefixing the trailing backslash
+with another backslash character.
+
+==== Indented paragraphs
+  By default the all text in an _Indented Paragraph_ is rendered
+  verbatim. This behavior can be changed using a preceding _Block
+  Attributes_ element.  The generated HTML is enveloped  with
+  <pre><code>...</code></pre> tags.
+
+Individual paragraph behavior can be modified with a preceding _Block
+Attributes_ element. The behavior of all paragraphs can be modified
+with a _Delimited Block Definition_ (block name `paragraph` for Normal
+Paragraph; `indented` for Indented Paragraph).
+
+-->
+</div>
+
+<div id="topic-playground">
+<!--
+This is the _Rimu Playground_, it's a documentation browser and an
+interactive sandbox for learning and experimenting with Rimu markup:
+
+- Select from the drop-down list to view Rimu documentation topics.
+- Enter Rimu source in the _Rimu_ text area, the _Preview_ and _HTML_
+  are displayed as you type.
+- Use _Stash_ to save the current Rimu source and _Unstash_
+  to restore it later.
+- The Playground is a single file stand-alone HTML application,
+  all processing in the browser (no data is sent from the browser).
+- You can find out more about Rimu Markup at
+  <http://rimumarkup.org|rimumarkup.org>
+
+-->
+</div>
+
+<div id="topic-quotes">
+<!--
+Text can be formatted by enclosing it with quote characters. The
+built-in quote characters are: underscore for _emphasized text_;
+asterisk for *bold text*; back-tick for `monospaced text`.
+
+  Rimu            HTML                      Font style
+  ___________________________________________________________
+  _emphasis_      <em>emphasis</em>         Italic
+  *strong*        <strong>strong</strong>   Bold
+  `code`          <code>code</code>         Monospaced
+  ___________________________________________________________
+
+- Quotes and inline elements can be nested within a quote with the
+  exception of the _code_ quote which displays enclosed elements verbatim.
+- Quotes can be escaped with backslash character prefixes.
+- Quoted text must begin and end with non-whitespace characters and
+  cannot end with a backslash character.
+
+You can modify existing quote behavior or add new quotes using _Quote
+definitions_.
+
+Definition syntax:
+
+  quote-delimiter = '<open-tags>|<close-tags>'
+
+- `quote-delimiter` can be one or two characters.
+- `open-tags` and `close-tags` are the HTML tags that envelope the
+  generated HTML.
+- Use a two-bar `||` separator to render the quoted text
+  verbatim (like the built-in _code quote_).
+- A Quote definition must start at the left margin and must not
+  extend beyond the end of the line.
+- Quote definitions are not processed if the _Safe Mode_ is
+  non-zero.
+
+The following example envelopes text quoted with a tilde character
+with an HTML `del` tag:
+
+  ~ = '<del>|</del>'
+
+-->
+</div>
+
+<div id="topic-macros">
+<!--
+Macros are a simple yet powerful mechanism for creating shortcuts for
+repeatedly used markup.  They are used to parametrize documents,
+promote clarity and eliminate repetition.
+
+Rimu provides elements for defining and invoking macros and includes
+features like macro parametrization, conditional processing and
+meta-programming.
+
+=== Macro Definitions
+A macro definition assigns one or more lines of Rimu markup to a macro
+name.
+
+Definition syntax:
+
+  {macro-name} = 'macro-value'
+
+- A macro name consists of one or more alphanumeric, underscore or
+  dash characters.
+- Macro definition values are enclosed by single-quote characters
+  and can extend over multiple lines.
+- Macro definitions can be escaped with a leading backslash character
+  prefix.
+- A macro definition must start at the left margin.
+- Macro definition lines ending with a single-quote character can be
+  continued to the next line by appending a backslash character.
+- Macros are expanded in macro definitions when they are defined not
+  when they are invoked.
+- Macro expansion can be disabled in multi-line macro definitions
+  using a preceding _Block Attributes_ `-macros` option.
+
+
+=== Macro Invocations
+When a macro is invoked the invocation is replaced by text which is
+determined by the macro value.
+
+Invocation syntax:
+
+  {macro-name}                      Simple macro invocation
+  {macro-name?default-value}        Existential macro invocation
+  {macro-name|param1[|param2...]}   Parametrized macro invocation
+  {macro-name=pattern}              Inclusion macro invocation
+  {macro-name!pattern}              Inclusion macro invocation
+
+- A _Simple_ macro invocation is replaced by the macro value or a
+  blank string if the macro is not defined.
+- An _Existential_ macro invocation is replaced by the macro value or a
+  the `default-value` if the macro is not defined.
+- _Parametrized_ macro invocations replace `$1`, `$2` ...  parameter
+  names in the macro definition value with the corresponding parameter
+  values..
+  * If a macro parameter value is not specified then the corresponding
+    parameter name is replaced by a blank string.
+  * Parameter names in macro definition values can be escaped
+    with a backslash character prefix.
+  *  Macro invocation parameters can contain inline Rimu elements;
+     inline parameter values can span multiple lines.
+- The `\{macro-name=pattern}` _Inclusion_ invocation is replaced by a
+  blank string if the macro value matches the `pattern` (where
+  `pattern` is a JavaScript regular expression).  If the macro value
+  does not match the `pattern` the containing line is skipped.  If the
+  macro is undefined its value is treated as a blank string for the
+  purpose of pattern matching.  This feature can be used to
+  conditionally include lines of source text.
+- The `\{macro-name!pattern}` _Inclusion_ invocation syntax is the
+  inverse of the `\{macro-name=pattern}` syntax i.e. the macro
+  invocation is replaced by a blank string if the macro value does not
+  match the `pattern`, if it does match the containing line is
+  skipped.
+- By default macro invocations are expanded everywhere except inside
+  _Code_ blocks and _Indented_ paragraphs. Use the _Block Attributes_
+  `+macros` and `-macros` options to enable and disable expansion
+  inside multi-line block elements (delimited blocks, paragraphs,
+  multi-line macro definitions and HTML).
+- Macro invocations can be escaped with a leading backslash character
+  prefix.
+- Macro invocations cannot be nested.
+- Macro invocations can contain `}` characters but they must be escaped
+  with a backslash character (otherwise they will be mistaken for the
+  macro's closing brace).
+- Inline macro invocations are expanded before other inline elements
+  are processed.
+- Macro definitions are not processed if the _Safe Mode_ is non-zero.
+
+Examples:
+
+- -
+{description} = 'Sapiente nec vestibulum integer sit qui. Libero pede
+posuere.  Erat ullamcorper enim per fusce aliquam interdum penatibus
+et sed auctor ac.  Lectus consectetuer neque.'
+{homepage} = '<http://www.example.com|Foobar home page>'
+
+Visit the {homepage}.
+
+{info} = '<span class="label label-info">$1</span>'
+
+{info|Heads up!}
+{info|As you were!}
+- -
+
+=== Macro Line element
+- A _Macro Line_ block element is a single line starting with a  macro
+  invocation.
+- Macro invocations are expanded and then processing continues from
+  the start of the expanded line.
+- A _Macro Line_ can be the first line in any other block element
+  with the exception of _Line Block_ definition elements i.e. Macro,
+  Quote, Replacement or Delimited Block definitions.
+
+These properties allow macros to be used to inject Rimu markup into
+the source stream and allow block elements to be prefixed with
+_Inclusion_ macros.
+
+=== Reserved macro names
+Macro names starting with a dash character are reserved for use by
+Rimu. The `- -` (_Undefined_) macro is guaranteed to always be
+undefined.
+
+-->
+</div>
+
+<div id="topic-release-notes">
+<!--
+As of version 3 Rimu has stabilized, expect few (if any) major
+additions in future releases and expect no future breaking changes.
+
+See the <https://github.com/srackham/rimu/commits/|commit log> for
+the latest and more detailed information.
+
+==== Major releases
+Version 3 (first release 2013-10-28)::
+..
+- Added _Delimited Block_ definitions.
+- Enhanced and refined Macros.
+- Many other enhancements, additions and documentation updates.
+- _Indented Paragraphs_ and _Code Blocks_ no longer expand macro
+  invocations by default. To reinstate old behavior use this delimited
+  block definitions:
+
+  |code| = '+macros'
+  |indented| = '+macros'
+
+- _Indented Paragraph_ emits same code as _Code Block_. To reinstate
+  old behavior use this delimited block definition:
+
+  |indented| = '<pre>|</pre>'
+
+- Dropped the deprecated _+_ line-break, use the newer backslash
+  line-break. To reinstate the old _+_ line-break use this replacement
+  definition:
+
+  /[\\ ]\+(\n|$)/g = '<br>$1'
+..
+
+Version 2 (first release 2013-07-26)::
+..
+- Added Quote and Replacements definitions.
+- A number of other enhancements, additions and documentation updates.
+..
+
+-->
+</div>
+
+<div id="topic-replacements">
+<!--
+A _Replacement_ replaces matched source text with some other text
+(usually HTML markup). A replacement is defined by a regular
+expression (to find the matched text) and the text to be replaced.
+
+Definition syntax:
+
+  /pattern/flags = 'replacement'
+
+- The `/pattern/flags` regular expression syntax is identical to JavaScript's
+  <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/RegExp|RegExp
+  literal> syntax.
+- `$1`, `$2`... in `replacement` are replaced by the corresponding
+  regular expression match groups.
+- Replacements are only expanded in inline contexts.
+- Replacements are not expanded inside _Code quotes_, _Code blocks_
+  or _Indented paragraphs_.
+- If the first matched character is a backslash then replacement will
+  be escaped i.e. starting the regular expression with `\\?` will
+  ensure it can be escaped.
+- A replacement definition must start at the left margin and must not
+  extend beyond the end of the line.
+- The `replacement` text can invoke previously defined macros.
+- Replacement definitions are not processed if the _Safe Mode_ is
+  non-zero.
+
+Example replacement definitions:
+
+- -
+/\.{3}/ = '&hellip;'
+/\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
+- -
+
+-->
+</div>
+
+<div id="topic-taxonomy">
+<!--
+==== Document structure
+- A Rimu document consists of zero or more _Block_ elements.
+- A Block element comprises one or more lines of text.
+  * A _Delimited Block_ has an opening line, zero or more content
+    lines and a closing line.
+  * A _Line Block_ element consists of just one line.
+- _Inline_ elements are contained within the textual content of Block
+  elements.
+
+==== Element taxonomy
+- -
+Block elements
+    Delimited Blocks
+        Code Block
+        Division Block
+        HTML Block
+        Indented Paragraph
+        Macro Definition
+        Multi-line Comment
+        Normal Paragraph
+        Quote Block
+    Line Blocks
+        Element Definitions
+            Macro Definition
+            Quote Definition
+            Replacement Definition
+            Delimited Block Definition
+        Header
+        Block Image
+        Block Anchor
+        Block Attributes
+        Macro Line
+        Single-line Comment
+    Lists
+        Bullet List
+        Numbered List
+        Labeled List
+Inline elements
+    Macro Invocations
+        Simple
+        Existential
+        Inclusion
+        Parametrized
+    Spans
+        Quotes
+            Bold
+            Emphasis
+            Monospaced
+        Replacements
+            Anchor
+            Character entity
+            HTML tag
+            Image
+            Line break
+            Link
+            URL
+- -
+
+-->
+</div>
+
+<div id="topic-tools">
+<!--
+==== Rimuc
+_rimuc_ is a Node.js command-line tool that converts Rimu source to
+HTML.
+
+- -
+NAME
+  rimuc - convert Rimu source to HTML
+
+SYNOPSIS
+  rimuc [OPTIONS...] [FILES...]
+
+DESCRIPTION
+  Reads Rimu source markup from stdin, converts it to HTML
+  then writes the HTML to stdout. If FILES are specified
+  the Rimu source is read from FILES.
+
+  If a file named .rimurc exists in the user's home directory
+  then its contents is processed after - -prepend sources but before
+  any other inputs. Rendered with safe-mode 0.
+
+OPTIONS
+  -h, - -help
+    Display help message.
+
+  -o, - -output OUTFILE
+    Write output to file OUTFILE instead of stdout.
+
+  -p, - -prepend SOURCE
+    Process the SOURCE text before other inputs.
+    Rendered with safe-mode 0.
+
+  - -safe-mode NUMBER
+    Specifies how to process inline and block HTML elements.
+    - -safe-mode 0 renders raw HTML (default),
+    - -safe-mode 1 drops raw HTML,
+    - -safe-mode 2 replaces raw HTML with text 'replaced HTML'.
+    - -safe-mode 3 renders raw HTML as text.
+
+  -s, - -styled
+    Include HTML header and footer and Bootstrap CSS styling in
+    output. If one source file is specified the output is written to
+    same-named file with .html extension.
+
+STYLING MACROS AND CLASSES
+  The following macros and CSS classes are available when the
+  - -styled option is used:
+
+  Macro name         Description
+  ______________________________________________________________
+  - -title            HTML document title (1).
+  - -highlightjs      Set to non-blank value to enable syntax
+                     highlighting with Highlight.js.
+  - -mathjax          Set to a non-blank value to enable MathJax.
+  - -section-numbers  Apply h1 and h2 section numbering (1).
+  ______________________________________________________________
+  (1) Must be defined prior to header (- -prepend or .rimurc).
+
+  CSS class        Description
+  ______________________________________________________________
+  verse            Verse format (paragraphs, division blocks).
+  sidebar          Sidebar format (paragraphs, division blocks).
+  dl-numbered      Number labeled list items .
+  dl-counter       Prepend dl item counter to element content.
+  ol-counter       Prepend ol item counter to element content.
+  ul-counter       Prepend ul item counter to element content.
+  ______________________________________________________________
+- -
+
+Example usage:
+
+1. Use _rimuc_ as a filter:
+
+  echo 'Hello *Rimu*!' | rimuc
+
+2. Generate styled HTML Web page and use MathJax to process MathML:
+
+  rimuc - -styled - -prepend "{- -mathjax}='yes'" showcase.rmu
+
+3. Compile multiple source files to single output file:
+
+  rimuc -o book.html frontmatter.rmu chapter*.rmu backmatter.rmu
+
+==== Vim syntax file
+The Rimu distribution includes a
+<https://raw.github.com/srackham/rimu/master/tools/vim/syntax/rimu.vim|syntax
+highlighter> for the Vim editor. Copy `rimu.vim` to your
+`$HOME/.vim/syntax` directory and then use the Vim `:set syn=rimu`
+command or put this line in your `$HOME/.vimrc` file to enable Rimu
+syntax highlighting:
+
+  autocmd BufRead,BufNewFile *.rmu setlocal filetype=rimu
+
+The syntax file also sets Vim text formatting options, if they're not
+to your taste delete them from the end of the file.
+
+-->
+</div>
+
+<div id="topic-urls-and-email">
+<!--
+Syntax:
+
+  Rimu              HTML
+  ____________________________________________________
+  <url|caption>     <a href="url">caption</a>
+  <url>             <a href="url">url</a>
+  <email|caption>   <a href="mailto:email">caption</a>
+  <email>           <a href="mailto:email">email</a>
+  ____________________________________________________
+
+Examples:
+
+  <http://example.com|Foo home>
+  <http://example.com>
+  <chapter1.html>
+  <chapter2.html#basics|the basics>
+  <#x1|preface>
+  <file:///home/joe/doc/user-guide.pdf|user guide>
+  <file:///home/joe/downloads/>
+  <ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt>
+  <joe@example.org|Joe Bloggs>
+  <joe@example.com>
+
+-->
+</div>
+
+  <script type="text/javascript" src="rimu.js"></script>
+  <script type="text/javascript">
+    // <![CDATA[
+    function escapeSpecialChars(s) {
+      return s.replace(/&/g, '&amp;')
+              .replace(/>/g, '&gt;')
+              .replace(/</g, '&lt;');
+    }
+    // Strip leading and trailing whitespace.
+    function trim(s) { return s.replace(/^\s+|\s+$/g,''); }
+    function convert() {
+      var source = document.getElementById('rimu').value;
+      var htmlRaw = Rimu.render(source);
+      var htmlEscaped = escapeSpecialChars(htmlRaw);
+      var htmlElement = document.getElementById('html');
+      var previewElement = document.getElementById('preview');
+      htmlElement.innerHTML = htmlEscaped;
+      previewElement.innerHTML = htmlRaw;
+    }
+    var stashText = '';
+    function stash() {
+      if (!window.sessionStorage) {
+        alert('This browser does not support local sessionStorage.'); // IE, I'm talking to you!
+        return;
+      }
+      var rimuElement = document.getElementById('rimu');
+      sessionStorage['stash'] = rimuElement.value;
+    }
+    function unstash() {
+      var rimuElement = document.getElementById('rimu');
+      rimuElement.value = sessionStorage['stash'];
+      convert();
+    }
+    // Render documentation topic stored in comment inside div with topic id.
+    function renderTopic(topicId) {
+      if (!topicId) {
+        topicId = document.getElementById('topic').value;
+      }
+      var commentDiv = document.getElementById(topicId);
+      if (!commentDiv) {
+        alert('Missing topic: ' + topicId);
+        return;
+      }
+      var rimuElement = document.getElementById('rimu');
+      var htmlElement = document.getElementById('html');
+      var previewElement = document.getElementById('preview');
+      // Retrieve comment from topic divs.
+      var source;
+      for (var i in commentDiv.childNodes) {
+        if (commentDiv.childNodes[i].nodeType === 8) {
+          source = commentDiv.childNodes[i].nodeValue;
+          break;
+        }
+      }
+      source = trim(source);
+      source = source.replace(/- -/mg, '--'); // Because -- is illegal in an HTML comment.
+      var html = Rimu.render(source);
+      rimuElement.value = source;
+      htmlElement.innerHTML = escapeSpecialChars(html);
+      previewElement.innerHTML = html;
+    }
+    window.onload = function () { renderTopic(); };
+    // ]]>
+  </script>
+</body>
+</html>
