@@ -35,7 +35,7 @@ Both these features are built into the Rimu markup syntax.
 ## Learn More
 
 Read the documentation and experiment with Rimu in the [Rimu
-Playground](http://rimumarkup.org/rimuplayground.html) or open the
+Playground](http://srackham.github.io/rimu/rimuplayground.html) or open the
 `rimuplayground.html` file locally in your browser.
 
 See also the _Release Notes_ topic in the _Rimu Playground_.
@@ -54,7 +54,7 @@ See also the _Release Notes_ topic in the _Rimu Playground_.
 ## Example Apps
 
 See the _API_ documentation topic in the [Rimu
-Playground](http://rimumarkup.org/rimuplayground.html).
+Playground](http://srackham.github.io/rimu/rimuplayground.html).
 
 - Rimu includes the _rimuc_ command-line tool (`./bin/rimuc.js`) and
   the _Rimu Playground_ (`./bin/rimuplayground.html`) -- examples of

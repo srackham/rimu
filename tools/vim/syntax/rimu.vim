@@ -1,13 +1,13 @@
 " Vim syntax file
 " Language:     Rimu Markup
 " Author:       Stuart Rackham <srackham@gmail.com>
-" URL:          http://rimumarkup.org
+" URL:          http://srackham.github.io/rimu/
 " Licence:      MIT
 " Limitations:
 " - An indented paragraph preceded by a non-blank line is not highlighted.
 " - Nested quoted text formatting is highlighted according to the outer
 "   format.
- 
+
 if exists("b:current_syntax")
   finish
 endif

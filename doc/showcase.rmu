@@ -16,7 +16,7 @@
 {red} = '<span style="color:red">$1</span>'
 {sup} = '<sup>$1</sup>'
 {sub} = '<sub>$1</sub>'
-{playground} = '<http://rimumarkup.org/rimuplayground.html|Rimu Playground>'
+{playground} = '<http://srackham.github.io/rimu/rimuplayground.html|Rimu Playground>'
 
 {heads-up} {mark|This document is not yet finished.}
 
