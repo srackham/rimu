@@ -17,11 +17,11 @@ var SOURCE = shelljs.ls('src/*.ts');
 var TESTS = shelljs.ls('test/*.js');
 var TYPEDOC_DIR = 'doc/api';
 var TYPEDOC_INDEX = TYPEDOC_DIR + '/index.html';
+var GH_PAGES_DIR = './gh-pages/';
 
 var DOCS = [
   {src: 'README.md', dst: 'doc/index.html', title: 'Rimu Markup'},
-  {src: 'doc/tips.rmu', dst: 'doc/tips.html', title: 'Rimu Tips'},
-  {src: 'doc/showcase.rmu', dst: 'doc/showcase.html', title: 'Rimu Showcase'}
+  {src: 'doc/tips.rmu', dst: 'doc/tips.html', title: 'Rimu Tips'}
 ];
 
 var HTML = ['bin/rimuplayground.html'];
@@ -134,7 +134,7 @@ file(TYPEDOC_INDEX, SOURCE, {async: true}, function() {
 });
 
 desc('Generate HTML documentation');
-task('docs', ['api-docs'], {async: true}, function() {
+task('html-docs', {async: true}, function() {
   var commands = DOCS.map(function(doc) {
     return 'node ./bin/rimuc.js --output ' + doc.dst +
       ' --prepend "{--title}=\'' + doc.title + '\'"' +
@@ -191,3 +191,19 @@ task('publish-npm', {async: true}, ['test'], function() {
   exec('npm publish');
 });
 
+desc('Generate documentation and copy to gh-pages repo');
+task('build-gh-pages', ['html-docs'], function() {
+  shelljs.cp('-f', HTML.concat(RIMU_JS), GH_PAGES_DIR)
+});
+
+desc('Commit changes to local Github Pages repo.');
+task('commit-gh-pages', ['test'], {async: true}, function() {
+  shelljs.cd(GH_PAGES_DIR);
+  jake.exec('git commit -a', {interactive: true}, complete);
+});
+
+desc('Push Github Pages commits to Github.');
+task('push-gh-pages', ['test'], {async: true}, function() {
+  shelljs.cd(GH_PAGES_DIR);
+  exec('git push origin gh-pages');
+});
