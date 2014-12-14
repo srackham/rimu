@@ -81,8 +81,8 @@ function exec(commands, callback) {
 desc('Run test task.');
 task('default', ['test']);
 
-desc('compile, jslint, test, tslint, docs, validate-html.');
-task('build', ['test', 'tslint', 'docs', 'validate-html']);
+desc('compile, jslint, test, tslint, build-gh-pages, validate-html.');
+task('build', ['test', 'tslint', 'build-gh-pages', 'validate-html']);
 
 desc('Update version number, tag and push to Github and npm. Use vers=x.y.z argument to set a new version number.');
 task('release', ['build', 'version', 'tag', 'publish']);
