@@ -74,7 +74,7 @@ module Rimu.DelimitedBlocks {
     // Code block.
     {
       name: 'code',
-      openMatch: /^\\?\-{2,}$/,
+      openMatch: /^\\?(?:\-{2,}|`{2,})$/,
       openTag: '<pre><code>',
       closeTag: '</code></pre>',
       expansionOptions: {
