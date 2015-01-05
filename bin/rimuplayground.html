@@ -249,15 +249,15 @@ and closing delimiter lines.
   delimited blocks of the same type to be nested.
 
 === Code Block
-- -
+```
 By default the all text in a _Code Block_ is rendered verbatim. This
 behavior can be changed using a preceding _Block Attributes_ element.
 The generated HTML is enveloped  with  <pre><code>...</code></pre>
 tags.
 
-The delimiter lines are two or more dash characters starting at the
+The delimiter lines are two or more back-tick characters starting at the
 left margin.
-- -
+```
 
 === Quote Block
 ""
@@ -698,7 +698,7 @@ Invocation syntax:
 
 Examples:
 
-- -
+```
 {description} = 'Sapiente nec vestibulum integer sit qui. Libero pede
 posuere.  Erat ullamcorper enim per fusce aliquam interdum penatibus
 et sed auctor ac.  Lectus consectetuer neque.'
@@ -710,7 +710,7 @@ Visit the {homepage}.
 
 {info|Heads up!}
 {info|As you were!}
-- -
+```
 
 === Macro Line element
 - A _Macro Line_ block element is a single line starting with a  macro
@@ -804,10 +804,10 @@ Definition syntax:
 
 Example replacement definitions:
 
-- -
+```
 /\.{3}/ = '&hellip;'
 /\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
-- -
+```
 
 -->
 </div>
@@ -824,7 +824,7 @@ Example replacement definitions:
   elements.
 
 ==== Element taxonomy
-- -
+```
 Block elements
     Delimited Blocks
         Code Block
@@ -870,7 +870,7 @@ Inline elements
             Line break
             Link
             URL
-- -
+```
 
 -->
 </div>
@@ -881,7 +881,7 @@ Inline elements
 _rimuc_ is a Node.js command-line tool that converts Rimu source to
 HTML.
 
-- -
+```
 NAME
   rimuc - convert Rimu source to HTML
 
@@ -943,7 +943,7 @@ STYLING MACROS AND CLASSES
   ol-counter       Prepend ol item counter to element content.
   ul-counter       Prepend ul item counter to element content.
   ______________________________________________________________
-- -
+```
 
 Example usage:
 

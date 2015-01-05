@@ -68,7 +68,7 @@ adding a code block class, for example:
 {highlightjs-example} = '\{--highlightjs} = 'yes'\
 
 .javascript
---
+```
 function die(message) {
   if (message) {
     console.error(message);
@@ -78,7 +78,7 @@ function die(message) {
   }
   process.exit(1);
 }
---'
+```'
 
 {generate-rendered-example-1|highlightjs-example}
 
@@ -167,7 +167,7 @@ containing one or more space characters:
 
   Neque a massa. Porttitor
   consectetuer commodo.
-
+ 
   Neque a massa. Porttitor
   consectetuer commodo.'
 
@@ -248,7 +248,7 @@ Here is an example `.rimurc` file containing _Macro_, _Quote_ and
 _Replacement_ definitions (refer to the Rimu documentation under
 _Tools_):
 
---
+```
 /*
   ~/.rimurc file containing custom Rimu Markup definitions used by
   rimuc command.
@@ -305,7 +305,7 @@ _Tools_):
 // Turn off auto-hightlighting.
 |code| = '<pre class="no-highlight"><code>|</code></pre>'
 |indented| = '<pre class="no-highlight"><code>|</code></pre>'
---
+```
 
 == Extending the Vim syntax highlighter
 If you've added custom replacements and quotes you can highlight them
@@ -316,7 +316,7 @@ file. Vim loads this file after the distributed
 replacement and the strike-through quote definitions from the previous
 example `.rimurc` file:
 
---
+```
 " ~/.vim/after/syntax/rimu.vim
 "
 " Custom Vim highlighting for custom syntax defined in ~/.rimurc
@@ -333,7 +333,7 @@ hi def link rimuSpanDeleted Todo
 " Raw HTTP URLs as links.
 syn match rimuSpanRawURL /[\\<]\@<!\(http\|https\):\/\/[^\s"]*[^\s",.;?)]/
 hi def link rimuSpanRawURL Title
---
+```
 
 
 == Understanding substitution priorities
@@ -354,20 +354,20 @@ Safe Mode. To apply Macro, Replacement or Quote definitions to Rimu
 markup processed in Safe Mode you need to load the definitions with a
 separate API call, for example:
 
---
+```
 Rimu.render(trusted_rimu_definitions); // safeMode is off by default.
 var html = Rimu.render(untrusted_rimu_markup, {safeMode: 1});
---
+```
 
 
 == Modifying built-in Quotes and Replacements
 You can (with <#defs-warning|caveats>) redefine built-in _Quotes_ and
 _Replacements_, here are a couple of examples:
 
---
+```
 _ = '<em class="emphasis">|</em>'
 /\\?<(\S+@[\w\.\-]+)>/g = '<a class="mailto" href="mailto:$1">$1</a>'
---
+```
 
 Refer to the Rimu source files
 <https://github.com/srackham/rimu/blob/master/src/quotes.ts|quotes.ts>
@@ -471,7 +471,7 @@ Blocks), then block content can be conditionally included using:
 . _Parametrized_  macro invocations to exclude arbitrary portions of
   inline text, for example:
 ...
---
+```
 {macro} = ''
 Mauris vitae ipsumi lacus vestibulum sem. {macro|This text
 is excluded}
@@ -479,7 +479,7 @@ is excluded}
 {macro} = '$1'
 Mauris vitae ipsumi lacus vestibulum sem. {macro|This text
 is included.}
---
+```
 So long as the `macro` value is undefined or blank the text is
 excluded -- set it to `$1` and the text will be included. Note that
 parameter text can encompass multiple lines.
@@ -594,12 +594,12 @@ lines that end with a single-quote.
 - The contents of a macro can be rendered verbatim in a code block by
   enabling macro expansion. For example:
 ..
-----
+````
 .+macros
---
+```
 {example-42}
---
-----
+```
+````
 
 The contents of `\{example-42}` are not subject to macro expansion.
 ..
@@ -611,21 +611,21 @@ The contents of `\{example-42}` are not subject to macro expansion.
   case of multi-line definitions) by using the `-macros` _Block
   Attributes_ option. For example this Rimu markup:
 ..
---
+```
 {m1} = 'foo'
 {m2} = '{m1} \{m1}'
 {m2}
 
 {m1} = 'bar'
 {m2}
---
+```
 
 Generates:
 
---
+```
 <p>foo foo</p>
 <p>foo bar</p>
---
+```
 ..
 
 

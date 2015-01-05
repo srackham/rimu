@@ -118,9 +118,9 @@
 
 // Macro to render code listing from content macro $1.
 {example-code-listing} = '.+macros
-----
+```
 {$1}
-----'
+```'
 
 // Macro to generate Rimu markup and rendered example (stacked horizontally).
 // $1 = name of example content macro.
@@ -132,9 +132,9 @@
 </tr></thead><tbody><tr><td style="width: 50%; padding: 4px;">
 
 .[style="border:none; background-color:inherit;"] +macros
-----
+```
 {$1}
-----
+```
 
 </td><td style="width:50%; padding: 4px;">
 
@@ -155,9 +155,9 @@
 <td>
 
 .[style="border:none; background-color:inherit;"] +macros
-----
+```
 {$1}
-----
+```
 </td>
 </tr>
 <tr><td style="width:10%; color:#527bbd; font-weight:bold;">Rendered HTML</td>
