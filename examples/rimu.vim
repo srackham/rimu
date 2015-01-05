@@ -7,8 +7,10 @@
 syn match rimuAdmonition /^\([A-Z]\+\):/ containedin=ALLBUT,rimuComment,rimuCodeBlock
 hi def link rimuAdmonition Special
 
-" ~ quote.
+" ~ strikethrough quote.
 syn match rimuSpanDeleted /\\\@<!\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\~/ contains=rimuSpanEntity
+" Github Flavored Markdown strikethrough.
+syn match rimuSpanDeleted /\\\@<!\~\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\~\~/ contains=rimuSpanEntity
 hi def link rimuSpanDeleted Todo
 
 " Markdown ** quote.

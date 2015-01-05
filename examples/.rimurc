@@ -19,7 +19,7 @@
 /\\?\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
 /^\\?(NOTE|IMPORTANT|WARNING|TIP):/ = '<b>$1</b>:'
 
-// Encodes (most) raw HTTP URLs as links.
+// Auto-encodes (most) raw HTTP URLs as links.
 /(^|[^<])\b((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/ = '$1<a href="$2">$2</a>'
 
 // Markdown [link-text](url) syntax.
@@ -43,6 +43,8 @@
   Quotes
 */
 ~ = '<del>|</del>'
+// Github Flavored Markdown compatible strikthrough.
+~~ = '<del>|</del>'
 
 // Markdown compatible strong quote.
 ** = '<strong>|</strong>'
