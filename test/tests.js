@@ -229,9 +229,21 @@ exports['Blocks'] = function(test) {
     '<pre><code>A &lt;code&gt; block\n Line _two_</code></pre>',
     'code block');
   test_document(
+    '``\nA <code> block\n Line _two_\n``',
+    '<pre><code>A &lt;code&gt; block\n Line _two_</code></pre>',
+    'code block');
+  test_document(
+    '>*Hello* <joe@foo.com|Joe & Jim>',
+    '<blockquote><p><strong>Hello</strong> <a href="mailto:joe@foo.com">Joe &amp; Jim</a></p></blockquote>',
+    'quote paragraph');
+  test_document(
     '*Hello* <joe@foo.com|Joe & Jim>',
     '<p><strong>Hello</strong> <a href="mailto:joe@foo.com">Joe &amp; Jim</a></p>',
     'normal paragraph');
+  test_document(
+    '> Line 1\nLine 2',
+    '<blockquote><p>Line 1\nLine 2</p></blockquote>',
+    'multi-line quote paragraph');
   test_document(
     'Line 1\nLine 2',
     '<p>Line 1\nLine 2</p>',
@@ -287,6 +299,10 @@ exports['Blocks'] = function(test) {
     'list item with attached quote block');
   test_document(
     '- Item 1\n--\nA\nparagraph\n--',
+    '<ul><li>Item 1\n<pre><code>A\nparagraph</code></pre></li></ul>',
+    'list item with attached code block');
+  test_document(
+    '- Item 1\n```\nA\nparagraph\n```',
     '<ul><li>Item 1\n<pre><code>A\nparagraph</code></pre></li></ul>',
     'list item with attached code block');
   test_document(
