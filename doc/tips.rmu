@@ -105,13 +105,20 @@ Lists::
 - Bullet lists with `-` and `*` IDs.
 - Numbered lists with explicit numbering.
 
-URLs and Email addresses:: Using the `<url>` and `<email>` syntaxes.
+URLs and Email addresses:: Using the `<url>` and `<email>` syntaxes
+plus Github Flavored Markdown _URL autolinking_.
 
-Other elements::
+Custom Markdown elements::
 Rimu can be extended to recognise additional Markdown syntax using
-Rimu _Quote_ and _Replacement_ definitions -- the
-<#example-rimurc|example .rimurc file> implements `**strong**`,
-`[link-text](url)` and `[alt-text](image-url)` Markdown elements.
+custom Rimu definitions -- the
+<https://github.com/srackham/rimu/blob/master/examples/.rimurc|example
+.rimurc file> implements the following additional Markdown syntaxes:
+
+- Strong text: `**strong**`
+- URL links: `[link-text](url)`
+- Image links: `![alt-text](image-url)`
+- Blockquotes: `>Lorum ipsum ...`
+- Strikethrough text: `~~Rubbish.~~` (Github Flavored Markdown)
 
 The Rimu _README_ uses this subset for compatibility with _GitHub_ and
 _npmjs.org_ README formats.
@@ -244,68 +251,11 @@ source non-portable and less readable.
 
 .#example-rimurc
 == Example .rimurc file
-Here is an example `.rimurc` file containing _Macro_, _Quote_ and
-_Replacement_ definitions (refer to the Rimu documentation under
-_Tools_):
+The Rimu package includes an
+<https://github.com/srackham/rimu/blob/master/examples/.rimurc|example
+.rimurc file> containing _Macro_, _Quote_ and _Replacement_
+definitions.
 
-```
-/*
-  ~/.rimurc file containing custom Rimu Markup definitions used by
-  rimuc command.
-*/
-
-
-/*
-  Replacements
-*/
-// Don't match HTML comment tags.
-/\\?(^|[^!])--(?!>)/ = '$1&mdash;'
-/\\?\.{3}/ = '&hellip;'
-/\\?``/ = '&ldquo;'
-/\\?''/ = '&rdquo;'
-// Don't match HTML close comment tag.
-/\\?(^|[^-])->/ = '$1&rightarrow;'
-/\\?<-/ = '&leftarrow;'
-
-/\\?\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
-/^\\?(NOTE|IMPORTANT|WARNING|TIP):/ = '<b>$1</b>:'
-
-// Encodes (most) raw HTTP URLs as links.
-/(^|[^<])\b((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/ = '$1<a href="$2">$2</a>'
-
-// Markdown [link-text](url) syntax.
-/\\?\[([\s\S]+?)\]\s*\((\S+?)\)/ = '<a href="$2">$1</a>'
-
-// Markdown ![alt-text](image-url) syntax.
-/\\?!\[([\s\S]+?)\]\s*\((\S+?)\)/ = '<img src="$2" alt="$1">'
-
-
-/*
-  Macros
-*/
-{mark} = '<mark>$1</mark>'
-{del} = '<del>$1</del>'
-{ins} = '<ins>$1</ins>'
-{sup} = '<sup>$1</sup>'
-{sub} = '<sub>$1</sub>'
-
-
-/*
-  Quotes
-*/
-~ = '<del>|</del>'
-
-// Markdown compatible strong quote.
-** = '<strong>|</strong>'
-
-
-/*
-  Highlight.js
-*/
-// Turn off auto-hightlighting.
-|code| = '<pre class="no-highlight"><code>|</code></pre>'
-|indented| = '<pre class="no-highlight"><code>|</code></pre>'
-```
 
 == Extending the Vim syntax highlighter
 If you've added custom replacements and quotes you can highlight them

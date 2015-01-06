@@ -17,6 +17,10 @@
     h1 {
       margin-bottom: 0.2em;
     }
+    blockquote {
+      padding-left: 10px;
+      border-left: 4px solid lightgrey;
+    }
     table#view {
       table-layout: fixed;
       border-collapse:collapse;
@@ -518,9 +522,10 @@ non magnis facilisi scelerisque luctus. Quis praesent pulvinar.
 
 <div id="topic-paragraphs">
 <!--
-Paragraph block elements are terminated by a blank line - - lines
-containing only space characters will not terminate a paragraph. There
-are two paragraph types:
+Paragraph block elements are terminated by a blank line (lines
+containing only space characters do not terminate a paragraph).
+
+There are three paragraph types:
 
 ==== Normal paragraphs
 Normal paragraphs can contain inline elements, the first line must
@@ -541,10 +546,15 @@ with another backslash character.
   Attributes_ element.  The generated HTML is enveloped  with
   <pre><code>...</code></pre> tags.
 
+==== Quote paragraphs
+> Quote paragraphs begin with a `>` character and are rendered inside
+an HTML `<blockquote>` element - - in all other respects they behave
+the same as _Normal paragraphs_.
+
 Individual paragraph behavior can be modified with a preceding _Block
 Attributes_ element. The behavior of all paragraphs can be modified
 with a _Delimited Block Definition_ (block name `paragraph` for Normal
-Paragraph; `indented` for Indented Paragraph).
+Paragraph; `indented` for Indented Paragraph; `quote-paragraph` for Quote Paragraph).
 
 -->
 </div>
@@ -741,8 +751,17 @@ additions in future releases and expect no future breaking changes.
 See the <https://github.com/srackham/rimu/commits/|commit log> for
 the latest and more detailed information.
 
-==== Major releases
-Version 3 (first release 2013-10-28)::
+Version 3.2 (2015-01-06)::
+..
+- Added Markdown compatible Quote Paragraphs (paragraphs starting with `>`
+  rendered inside a `<blockquote>` HTML element).
+- Added back-tick delimiter for code blocks - - back-tick is now the normative code block delimiter (the older dash delimiter is deprecated but will never be dropped). Back-tick rationale:
+
+1. Consistency: aligned with use of back-tick to quote inline code.
+2. Familarity: looks like a Github Flavored Markdown fenced code block.
+..
+
+Version 3 (2013-10-28)::
 ..
 - Added _Delimited Block_ definitions.
 - Enhanced and refined Macros.
@@ -766,7 +785,7 @@ Version 3 (first release 2013-10-28)::
   /[\\ ]\+(\n|$)/g = '<br>$1'
 ..
 
-Version 2 (first release 2013-07-26)::
+Version 2 (2013-07-26)::
 ..
 - Added Quote and Replacements definitions.
 - A number of other enhancements, additions and documentation updates.
