@@ -124,6 +124,19 @@ module Rimu.DelimitedBlocks {
         return buffer.join('\n');
       }
     },
+    // Quote paragraph.
+    {
+      name: 'quote-paragraph',
+      openMatch: /^\\?>\s*(\S.*)$/, // $1 is first line of block.
+      closeMatch: /^$/,             // Blank line or EOF.
+      openTag: '<blockquote><p>',
+      closeTag: '</p></blockquote>',
+      expansionOptions: {
+        macros: true,
+        spans: true,
+        specials: true       // Fall-back if spans is disabled.
+      }
+    },
     // Paragraph (lowest priority, cannot be escaped).
     {
       name: 'paragraph',
