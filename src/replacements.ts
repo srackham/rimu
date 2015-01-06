@@ -86,6 +86,12 @@ module Rimu.Replacements {
       replacement: '<a href="$1">$1</a>'
     },
 
+    // Auto-encode (most) raw HTTP URLs as links.
+    {
+      match: /(^|[^<])\b((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/g,
+      replacement: '$1<a href="$2">$2</a>'
+    },
+
   ];
 
   // Update existing or add new replacement definition.

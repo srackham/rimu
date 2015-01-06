@@ -63,13 +63,14 @@ exports['Spans'] = function(test) {
     'two HTML attributes do not generate delete quote');
 
   test_span(
-    'http://foobar.com \\<http://foobar.com>',
-    'http://foobar.com &lt;http://foobar.com&gt;',
+    '\\http://example.com \\<http://example.com>',
+    'http://example.com &lt;http://example.com&gt;',
     'escaped http urls');
   test_span(
-    '*<http://foobar.com>* <http://foobar.com|Foo\n& Bar>',
-      '<strong><a href="http://foobar.com">http://foobar.com</a></strong> ' +
-      '<a href="http://foobar.com">Foo\n&amp; Bar</a>',
+    '_http://example.com_ *<http://example.com>* <http://example.com|Foo\n& Bar>',
+    '<em><a href="http://example.com">http://example.com</a></em> ' +
+      '<strong><a href="http://example.com">http://example.com</a></strong> ' +
+      '<a href="http://example.com">Foo\n&amp; Bar</a>',
     'quoted and parametrized http urls');
   test_span(
     '<ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt>',
@@ -97,19 +98,19 @@ exports['Spans'] = function(test) {
     'inline anchors and links');
   test_span(
       '<image:./images/tiger.png> ' +
-      '<image:http://foobar.com|Tiger\n& Bar> ' +
+      '<image:http://example.com|Tiger\n& Bar> ' +
       '\\<image:tiger.png>',
       '<img src="./images/tiger.png" alt="./images/tiger.png"> ' +
-      '<img src="http://foobar.com" alt="Tiger\n&amp; Bar"> ' +
+      '<img src="http://example.com" alt="Tiger\n&amp; Bar"> ' +
       '&lt;image:tiger.png&gt;',
     'inline images');
   test_span(
-      '<joe.bloggs@foobar.com> ' +
-      '<joe.bloggs@foobar.com|Joe\n Bloggs> ' +
-      '\\<joe.bloggs@foobar.com>',
-      '<a href="mailto:joe.bloggs@foobar.com">joe.bloggs@foobar.com</a> ' +
-      '<a href="mailto:joe.bloggs@foobar.com">Joe\n Bloggs</a> ' +
-      '&lt;joe.bloggs@foobar.com&gt;',
+      '<joe.bloggs@example.com> ' +
+      '<joe.bloggs@example.com|Joe\n Bloggs> ' +
+      '\\<joe.bloggs@example.com>',
+      '<a href="mailto:joe.bloggs@example.com">joe.bloggs@example.com</a> ' +
+      '<a href="mailto:joe.bloggs@example.com">Joe\n Bloggs</a> ' +
+      '&lt;joe.bloggs@example.com&gt;',
     'email addresses');
   test_span(
     '<u>underlined *text*</u>\\<hr>',
@@ -189,8 +190,8 @@ exports['Blocks'] = function(test) {
     '<img src="./images/tiger.png" alt="./images/tiger.png">',
     'block image');
   test_document(
-    '<image:http://foobar.com|Tiger & Bar>',
-    '<img src="http://foobar.com" alt="Tiger &amp; Bar">',
+    '<image:http://example.com|Tiger & Bar>',
+    '<img src="http://example.com" alt="Tiger &amp; Bar">',
     'block image with caption');
   test_document(
     "{macro} = 'macro\n value'\n{macro}",

@@ -753,6 +753,7 @@ the latest and more detailed information.
 
 Version 3.2 (2015-01-06)::
 ..
+- Auto-encode (most) raw HTTP URLs as links.
 - Added Markdown compatible Quote Paragraphs (paragraphs starting with `>`
   rendered inside a `<blockquote>` HTML element).
 - Added back-tick delimiter for code blocks - - back-tick is now the normative code block delimiter (the older dash delimiter is deprecated but will never be dropped). Back-tick rationale:
@@ -1000,24 +1001,28 @@ Syntax:
 
   Rimu              HTML
   ____________________________________________________
-  <url|caption>     <a href="url">caption</a>
+  url               <a href="url">url</a>       Note 1
   <url>             <a href="url">url</a>
-  <email|caption>   <a href="mailto:email">caption</a>
+  <url|caption>     <a href="url">caption</a>
   <email>           <a href="mailto:email">email</a>
+  <email|caption>   <a href="mailto:email">caption</a>
   ____________________________________________________
 
 Examples:
 
-  <http://example.com|Foo home>
+  http://example.com
   <http://example.com>
+  <http://example.com|Foo home>
   <chapter1.html>
   <chapter2.html#basics|the basics>
   <#x1|preface>
   <file:///home/joe/doc/user-guide.pdf|user guide>
   <file:///home/joe/downloads/>
   <ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt>
-  <joe@example.org|Joe Bloggs>
   <joe@example.com>
+  <joe@example.org|Joe Bloggs>
+
+*Note 1*: Only HTTP and HTTPS raw URLs are auto-encoded.
 
 -->
 </div>
