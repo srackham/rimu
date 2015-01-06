@@ -20,8 +20,9 @@ var MANPAGE = 'NAME\n' +
     '  the Rimu source is read from FILES.\n' +
     '\n' +
     '  If a file named .rimurc exists in the user\'s home directory\n' +
-    '  then its contents is processed after --prepend sources but before\n' +
-    '  any other inputs. Rendered with safe-mode 0.\n' +
+    '  then its contents is processed (with safe-mode 0) after\n' +
+    '  --prepend sources but before any other inputs.\n' +
+    '  This behavior can be disabled with the --no-rimurc option.\n' +
     '\n' +
     'OPTIONS\n' +
     '  -h, --help\n' +
@@ -33,6 +34,9 @@ var MANPAGE = 'NAME\n' +
     '  -p, --prepend SOURCE\n' +
     '    Process the SOURCE text before other inputs.\n' +
     '    Rendered with safe-mode 0.\n' +
+    '\n' +
+    '  --no-rimurc\n' +
+    '    Do not process .rimurc from the user\'s home directory.\n' +
     '\n' +
     '  --safe-mode NUMBER\n' +
     '    Specifies how to process inline and block HTML elements.\n' +
@@ -78,6 +82,7 @@ function die(message) {
 
 var safeMode = 0;
 var styled = false;
+var no_rimurc = false;
 
 // Skip command name.
 if (process.argv.shift() === 'node') {
@@ -104,6 +109,9 @@ outer:
         case '--prepend':
         case '-p':
           source += process.argv.shift() + '\n';
+          break;
+        case '--no-rimurc':
+          no_rimurc = true;
           break;
         case '--safe-mode':
           safeMode = parseInt(process.argv.shift() || 99, 10);
@@ -142,7 +150,7 @@ if (styled) {
 // Include $HOME/.rimurc file if it exists.
 var homeDir = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
 var rimurc =  path.resolve(homeDir, '.rimurc');
-if (fs.existsSync(rimurc)) {
+if (!no_rimurc && fs.existsSync(rimurc)) {
   process.argv.unshift(rimurc);
 }
 
