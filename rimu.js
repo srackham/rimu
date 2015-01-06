@@ -577,7 +577,7 @@ var Rimu;
             },
             {
                 name: 'code',
-                openMatch: /^\\?\-{2,}$/,
+                openMatch: /^\\?(?:\-{2,}|`{2,})$/,
                 openTag: '<pre><code>',
                 closeTag: '</code></pre>',
                 expansionOptions: {
@@ -624,6 +624,18 @@ var Rimu;
                         buffer[i] = buffer[i].slice(indent);
                     }
                     return buffer.join('\n');
+                }
+            },
+            {
+                name: 'quote-paragraph',
+                openMatch: /^\\?>\s*(\S.*)$/,
+                closeMatch: /^$/,
+                openTag: '<blockquote><p>',
+                closeTag: '</p></blockquote>',
+                expansionOptions: {
+                    macros: true,
+                    spans: true,
+                    specials: true // Fall-back if spans is disabled.
                 }
             },
             {
@@ -1235,6 +1247,10 @@ var Rimu;
             {
                 match: /\\?<(\S+?)>/g,
                 replacement: '<a href="$1">$1</a>'
+            },
+            {
+                match: /(^|[^<])\b((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/g,
+                replacement: '$1<a href="$2">$2</a>'
             },
         ];
         // Update existing or add new replacement definition.

@@ -17,6 +17,10 @@
     h1 {
       margin-bottom: 0.2em;
     }
+    blockquote {
+      padding-left: 10px;
+      border-left: 4px solid lightgrey;
+    }
     table#view {
       table-layout: fixed;
       border-collapse:collapse;
@@ -249,15 +253,15 @@ and closing delimiter lines.
   delimited blocks of the same type to be nested.
 
 === Code Block
-- -
+```
 By default the all text in a _Code Block_ is rendered verbatim. This
 behavior can be changed using a preceding _Block Attributes_ element.
 The generated HTML is enveloped  with  <pre><code>...</code></pre>
 tags.
 
-The delimiter lines are two or more dash characters starting at the
+The delimiter lines are two or more back-tick characters starting at the
 left margin.
-- -
+```
 
 === Quote Block
 ""
@@ -518,9 +522,10 @@ non magnis facilisi scelerisque luctus. Quis praesent pulvinar.
 
 <div id="topic-paragraphs">
 <!--
-Paragraph block elements are terminated by a blank line - - lines
-containing only space characters will not terminate a paragraph. There
-are two paragraph types:
+Paragraph block elements are terminated by a blank line (lines
+containing only space characters do not terminate a paragraph).
+
+There are three paragraph types:
 
 ==== Normal paragraphs
 Normal paragraphs can contain inline elements, the first line must
@@ -541,10 +546,15 @@ with another backslash character.
   Attributes_ element.  The generated HTML is enveloped  with
   <pre><code>...</code></pre> tags.
 
+==== Quote paragraphs
+> Quote paragraphs begin with a `>` character and are rendered inside
+an HTML `<blockquote>` element - - in all other respects they behave
+the same as _Normal paragraphs_.
+
 Individual paragraph behavior can be modified with a preceding _Block
 Attributes_ element. The behavior of all paragraphs can be modified
 with a _Delimited Block Definition_ (block name `paragraph` for Normal
-Paragraph; `indented` for Indented Paragraph).
+Paragraph; `indented` for Indented Paragraph; `quote-paragraph` for Quote Paragraph).
 
 -->
 </div>
@@ -698,7 +708,7 @@ Invocation syntax:
 
 Examples:
 
-- -
+```
 {description} = 'Sapiente nec vestibulum integer sit qui. Libero pede
 posuere.  Erat ullamcorper enim per fusce aliquam interdum penatibus
 et sed auctor ac.  Lectus consectetuer neque.'
@@ -710,7 +720,7 @@ Visit the {homepage}.
 
 {info|Heads up!}
 {info|As you were!}
-- -
+```
 
 === Macro Line element
 - A _Macro Line_ block element is a single line starting with a  macro
@@ -741,8 +751,18 @@ additions in future releases and expect no future breaking changes.
 See the <https://github.com/srackham/rimu/commits/|commit log> for
 the latest and more detailed information.
 
-==== Major releases
-Version 3 (first release 2013-10-28)::
+Version 3.2 (2015-01-07)::
+..
+- Auto-encode (most) raw HTTP URLs as links.
+- Added Markdown compatible Quote Paragraphs (paragraphs starting with `>`
+  rendered inside a `<blockquote>` HTML element).
+- Added back-tick delimiter for code blocks - - back-tick is now the normative code block delimiter (the older dash delimiter is deprecated but will never be dropped). Back-tick rationale:
+
+1. Consistency: aligned with use of back-tick to quote inline code.
+2. Familarity: looks like a Github Flavored Markdown fenced code block.
+..
+
+Version 3 (2013-10-28)::
 ..
 - Added _Delimited Block_ definitions.
 - Enhanced and refined Macros.
@@ -766,7 +786,7 @@ Version 3 (first release 2013-10-28)::
   /[\\ ]\+(\n|$)/g = '<br>$1'
 ..
 
-Version 2 (first release 2013-07-26)::
+Version 2 (2013-07-26)::
 ..
 - Added Quote and Replacements definitions.
 - A number of other enhancements, additions and documentation updates.
@@ -804,10 +824,10 @@ Definition syntax:
 
 Example replacement definitions:
 
-- -
+```
 /\.{3}/ = '&hellip;'
 /\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
-- -
+```
 
 -->
 </div>
@@ -824,7 +844,7 @@ Example replacement definitions:
   elements.
 
 ==== Element taxonomy
-- -
+```
 Block elements
     Delimited Blocks
         Code Block
@@ -870,7 +890,7 @@ Inline elements
             Line break
             Link
             URL
-- -
+```
 
 -->
 </div>
@@ -881,7 +901,7 @@ Inline elements
 _rimuc_ is a Node.js command-line tool that converts Rimu source to
 HTML.
 
-- -
+```
 NAME
   rimuc - convert Rimu source to HTML
 
@@ -943,7 +963,7 @@ STYLING MACROS AND CLASSES
   ol-counter       Prepend ol item counter to element content.
   ul-counter       Prepend ul item counter to element content.
   ______________________________________________________________
-- -
+```
 
 Example usage:
 
@@ -981,24 +1001,28 @@ Syntax:
 
   Rimu              HTML
   ____________________________________________________
-  <url|caption>     <a href="url">caption</a>
+  url               <a href="url">url</a>       Note 1
   <url>             <a href="url">url</a>
-  <email|caption>   <a href="mailto:email">caption</a>
+  <url|caption>     <a href="url">caption</a>
   <email>           <a href="mailto:email">email</a>
+  <email|caption>   <a href="mailto:email">caption</a>
   ____________________________________________________
 
 Examples:
 
-  <http://example.com|Foo home>
+  http://example.com
   <http://example.com>
+  <http://example.com|Foo home>
   <chapter1.html>
   <chapter2.html#basics|the basics>
   <#x1|preface>
   <file:///home/joe/doc/user-guide.pdf|user guide>
   <file:///home/joe/downloads/>
   <ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt>
-  <joe@example.org|Joe Bloggs>
   <joe@example.com>
+  <joe@example.org|Joe Bloggs>
+
+*Note 1*: Only HTTP and HTTPS raw URLs are auto-encoded.
 
 -->
 </div>
