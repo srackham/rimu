@@ -19,9 +19,6 @@
 /\\?\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
 /^\\?(NOTE|IMPORTANT|WARNING|TIP):/ = '<b>$1</b>:'
 
-// Auto-encodes (most) raw HTTP URLs as links.
-/(^|[^<])\b((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/ = '$1<a href="$2">$2</a>'
-
 // Markdown [link-text](url) syntax.
 /\\?\[([\s\S]+?)\]\s*\((\S+?)\)/ = '<a href="$2">$1</a>'
 
