@@ -96,8 +96,14 @@ The following subset of _Rimu_ elements is compatible with Markdown:
 
 Headers:: Headers using `#` character header IDs.
 
-Code blocks:: Indented paragraphs (at least four spaces)
-render like Markdown code blocks.
+Code blocks:: Indented paragraphs (at least four spaces) render like
+Markdown code blocks.
+<https://help.github.com/articles/github-flavored-markdown/|GitHub
+Flavored Markdown> _Fenced Blocks_ are compatible with Rimu Back-tick
+delimited blocks.
+
+Quote paragraphs:: Paragraphs starting with `>` are rendered like
+Markdown Blockquotes.
 
 Text formatting:: `_emphasis_` and `\`code\`` quotes.
 
@@ -115,10 +121,9 @@ custom Rimu definitions -- the
 .rimurc file> implements the following additional Markdown syntaxes:
 
 - Strong text: `**strong**`
+- Strikethrough text: `~~Rubbish.~~` (Github Flavored Markdown)
 - URL links: `[link-text](url)`
 - Image links: `![alt-text](image-url)`
-- Blockquotes: `>Lorum ipsum ...`
-- Strikethrough text: `~~Rubbish.~~` (Github Flavored Markdown)
 
 The Rimu _README_ uses this subset for compatibility with _GitHub_ and
 _npmjs.org_ README formats.

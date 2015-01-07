@@ -40,7 +40,8 @@
   Quotes
 */
 ~ = '<del>|</del>'
-// Github Flavored Markdown compatible strikthrough.
+
+// Github Flavored Markdown compatible strikethrough.
 ~~ = '<del>|</del>'
 
 // Markdown compatible strong quote.
