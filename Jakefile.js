@@ -191,15 +191,22 @@ task('publish-npm', {async: true}, ['test'], function() {
   exec('npm publish');
 });
 
+desc('Rebuild and validate documentation then commit and publish to GitHub Pages');
+task('release-gh-pages', ['build-gh-pages', 'commit-gh-pages', 'push-gh-pages']);
+
 desc('Generate documentation and copy to gh-pages repo');
-task('build-gh-pages', ['html-docs'], function() {
+task('build-gh-pages', ['html-docs', 'validate-html'], function() {
   shelljs.cp('-f', HTML.concat(RIMU_JS), GH_PAGES_DIR)
 });
 
-desc('Commit changes to local Github Pages repo.');
+desc('Commit changes to local Github Pages repo. Use msg=\'commit message\' to set a custom commit message.');
 task('commit-gh-pages', ['test'], {async: true}, function() {
+  var msg = process.env.msg;
+  if (!msg) {
+    msg = 'Rebuilt project website.';
+  }
   shelljs.cd(GH_PAGES_DIR);
-  jake.exec('git commit -a', {interactive: true}, complete);
+  exec('git commit -a -m "' + msg + '"');
 });
 
 desc('Push Github Pages commits to Github.');
