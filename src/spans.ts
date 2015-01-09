@@ -65,13 +65,15 @@ module Rimu.Spans {
         continue;
       }
       if (match[0][0] === '\\') {
+        // Restart search after opening quote.
+        findRe.lastIndex = match.index + match[1].length + 1;
         continue;
       }
       // Arrive here if we have a matched quote.
       var def = Quotes.getDefinition(match[1]);
       if (def.verify && !def.verify(match, findRe)) {
-        // Next search starts after the opening quote (not the closing quote).
-        findRe.lastIndex = match.index + 1;
+        // Restart search after opening quote.
+        findRe.lastIndex = match.index + match[1].length + 1;
         continue;
       }
       // The quotes splits the fragment into 5 fragments.

@@ -47,7 +47,7 @@ module Rimu.Quotes {
     // Quoted can span multiple lines.
     // Quoted text cannot end with a backslash.
     findRe = RegExp('\\\\?(' + s.join('|') + ')([^\\s\\\\]|\\S[\\s\\S]*?[^\\s\\\\])\\1', 'g');
-    // $1 is quote character.
+    // $1 is quote character(s).
     unescapeRe = RegExp('\\\\(' + s.join('|') + ')', 'g');
   }
 

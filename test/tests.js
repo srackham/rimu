@@ -38,6 +38,14 @@ exports['Spans'] = function(test) {
     '*11* *22 <em>33</em>',
     'escape quotes');
   test_span(
+    '00 \\*11 http://example.com _22_*',
+    '00 *11 <a href="http://example.com">http://example.com</a> <em>22</em>*',
+    'replacements and quotes nested inside escaped quotes');
+  test_span(
+    '\\*11 _22_\\*33*44*',
+    '*11 <em>22</em>*33<strong>44</strong>',
+    'escape right-hand quote to resolve ambiguity');
+  test_span(
     '00 _ `_11_` _2*2*_ _2*2\\*_',
     '00 _ <code>_11_</code> <em>2<strong>2</strong></em> <em>2*2*</em>',
     'nested quotes');
