@@ -55,7 +55,7 @@ module Rimu.Replacements {
       match: /\\?!\[([\s\S]+?)\]\s*\((\S+?)\)/g,
       replacement: '<img src="$2" alt="$1">'
     },
-    
+
     // Email: <address|caption>
     // address = $1, caption = $2
     {

@@ -441,6 +441,7 @@ Syntax:
   ____________________________________________
   <image:url|alt>   <img href="url" alt="alt">
   <image:url>       <img href="url" alt="url">
+  ![alt](url)       <img href="url" alt="alt">
   ____________________________________________
 
 An image can be rendered as a block element:
@@ -581,13 +582,16 @@ interactive sandbox for learning and experimenting with Rimu markup:
 <!--
 Text can be formatted by enclosing it with quote characters. The
 built-in quote characters are: underscore for _emphasized text_;
-asterisk for *bold text*; back-tick for `monospaced text`.
+single and double-asterisk for *bold text*; back-tick for
+`monospaced text`, double-tilde for ~~strikethrough~~.
 
   Rimu            HTML                      Font style
   ___________________________________________________________
   _emphasis_      <em>emphasis</em>         Italic
   *strong*        <strong>strong</strong>   Bold
+  **strong**      <strong>strong</strong>   Bold
   `code`          <code>code</code>         Monospaced
+  ~~deleted~~     <del>deleted</del>        Strikethrough
   ___________________________________________________________
 
 - Quotes and inline elements can be nested within a quote with the
@@ -753,6 +757,17 @@ additions in future releases and expect no future breaking changes.
 See the <https://github.com/srackham/rimu/commits/|commit log> for
 the latest and more detailed information.
 
+Version 3.3 (2015-01-12)::
+..
+More Markdown compatible syntaxes added to Rimu core
+(these syntaxes were previously added using custom definitions):
+
+- Links: `[caption](url)`.
+- Images: `![alt](url)`.
+- Bold text: `**bold**`.
+- Strikethrough text: `~~strikethrough~~` (GitHub Flavored Markdown).
+..
+
 Version 3.2 (2015-01-07)::
 ..
 - Auto-encode (most) raw HTTP URLs as links.
@@ -885,6 +900,7 @@ Inline elements
             Bold
             Emphasis
             Monospaced
+            Strikethrough
         Replacements
             Anchor
             Character entity
@@ -1010,6 +1026,7 @@ Syntax:
   url               <a href="url">url</a>       Note 1
   <url>             <a href="url">url</a>
   <url|caption>     <a href="url">caption</a>
+  [caption](url)    <a href="url">caption</a>
   <email>           <a href="mailto:email">email</a>
   <email|caption>   <a href="mailto:email">caption</a>
   ____________________________________________________
@@ -1019,6 +1036,7 @@ Examples:
   http://example.com
   <http://example.com>
   <http://example.com|Foo home>
+  [Foo home](http://example.com)
   <chapter1.html>
   <chapter2.html#basics|the basics>
   <#x1|preface>
