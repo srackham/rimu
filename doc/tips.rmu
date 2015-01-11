@@ -205,8 +205,9 @@ entities or you can enter them literally.
 For example, to enter an ellipsis you could either enter `&hellip;` or
 you could enter the actual … character directly (alternatively you
 could define a _Replacement_ for the ellipsis, see the
-<#example-rimurc|Example .rimurc file> below). The mechanism for
-entering Unicode characters directly will be dictated your editor:
+<https://github.com/srackham/rimu/blob/master/examples/.rimurc|example
+.rimurc file>). The mechanism for entering Unicode characters directly
+will be dictated your editor:
 
 Vim:: Enter _Ctrl+V_ followed by the the character _u_ followed by the
 hexidecimal character code e.g. to enter an em dash enter _Ctrl+V_
@@ -250,39 +251,21 @@ source non-portable and less readable.
 
 .#example-rimurc
 == Example .rimurc file
-The Rimu package includes an
+The Rimu distribution includes an
 <https://github.com/srackham/rimu/blob/master/examples/.rimurc|example
-.rimurc file> containing _Macro_, _Quote_ and _Replacement_
-definitions.
+.rimurc file>.
 
 
 == Extending the Vim syntax highlighter
 If you've added custom replacements and quotes you can highlight them
 in Vim by creating a custom `~/.vim/after/syntax/rimu.vim` syntax
-file. Vim loads this file after the distributed
-`~/.vim/syntax/rimu.vim` file. The following example
-`~/.vim/after/syntax/rimu.vim` syntax file highlights the admonitions
-replacement and the strike-through quote definitions from the previous
-example `.rimurc` file:
-
-```
-" ~/.vim/after/syntax/rimu.vim
-"
-" Custom Vim highlighting for custom syntax defined in ~/.rimurc
-"
-
-" Admonishments.
-syn match rimuAdmonition /^\([A-Z]\+\):/ containedin=ALLBUT,rimuComment,rimuCodeBlock
-hi def link rimuAdmonition Special
-
-" ~ quote.
-syn match rimuSpanDeleted /\\\@<!\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\~/ contains=rimuSpanEntity
-hi def link rimuSpanDeleted Todo
-
-" Raw HTTP URLs as links.
-syn match rimuSpanRawURL /[\\<]\@<!\(http\|https\):\/\/[^\s"]*[^\s",.;?)]/
-hi def link rimuSpanRawURL Title
-```
+file (Vim loads files from the `after` directory after loading normal
+syntax files).  The distributed
+<https://github.com/srackham/rimu/blob/master/examples/rimu.vim|example
+~/.vim/after/syntax/rimu.vim syntax file> highlights custom syntax
+definitions from the
+<https://github.com/srackham/rimu/blob/master/examples/.rimurc|example
+.rimurc file>.
 
 
 == Understanding substitution priorities
