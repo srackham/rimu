@@ -75,8 +75,8 @@ exports['Spans'] = function(test) {
     'two HTML attributes do not generate delete quote');
 
   test_span(
-    'http://example.com <http://example.com> [example url](http://example.com)',
-    '<a href="http://example.com">http://example.com</a> <a href="http://example.com">http://example.com</a> <a href="http://example.com">example url</a>',
+    'http://example.com <http://example.com> [example\\nurl](http://example.com) [](http://example.com)',
+    '<a href="http://example.com">http://example.com</a> <a href="http://example.com">http://example.com</a> <a href="http://example.com">example\\nurl</a> <a href="http://example.com"></a>',
     'urls');
   test_span(
     '\\http://example.com \\<http://example.com> \\[example url](http://example.com)',
