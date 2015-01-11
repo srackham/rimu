@@ -30,12 +30,13 @@ syn match rimuSpanHTML /\\\@<!<[!\/]\?[a-zA-Z-]\+\(\_s\_.\{-}\|\)>/
 syn match rimuMacroInvocation /\\\@<!{[0-9A-Za-z_-]\+\([?!=|]\_.\{-}\)\?}/ contains=rimuDefinitionParams containedin=ALLBUT,rimuComment,rimuCodeBlock,rimuIndentedParagraph
 syn match rimuDefinitionParams /[?|]\_[^}]*/ contained contains=rimuSpan.*
 syn match rimuSpanAnchor /<<#[a-zA-Z_-].*>>/
-syn match rimuSpanAutoURL /[\\<]\@<!\(http\|https\):\/\/[^ \t"]*[^ \t",.;?)]/
-
+syn match rimuSpanRawURL /[\\<]\@<!\(http\|https\):\/\/[^ \t"]*[^ \t",.;?)]/
 
 syn match rimuSpanStrong /\\\@<!\*[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\*/ contains=rimuSpanEntity
+syn match rimuSpanStrong /\\\@<!\*\*[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\*\*/ contains=rimuSpanEntity
 syn match rimuSpanEmphasized /\\\@<!_[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!_/ contains=rimuSpanEntity
 syn match rimuSpanCode /\\\@<!`[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!`/
+syn match rimuSpanDeleted /\\\@<!\~\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\~\~/ contains=rimuSpanEntity
 
 syn region rimuHeader matchgroup=rimuHeaderStartEnd start=/^\(=\|#\)\{1,6}\s\+/ end=/\(\s\+\(=\|#\)\{1,6}\)\?\_$/ contains=rimuSpan.* oneline keepend
 syn match rimuBlockDelimiter /^\("\|\.\)\{2,}$/
@@ -84,9 +85,10 @@ hi def link rimuSpanEntity Special
 hi def link rimuSpanHTML Title
 hi def link rimuSpanLineBreak Special
 hi def link rimuSpanQuote Label
+hi def link rimuSpanRawURL Title
 hi def link rimuSpanStrong Special
+hi def link rimuSpanDeleted Todo
 hi def link rimuSpanURL Title
-hi def link rimuSpanAutoURL Title
 hi def link rimuTodo Todo
 hi def link rimuUnsafeUnderscore Todo
 hi def link rimuDefinitionValue Type
