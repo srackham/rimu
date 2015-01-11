@@ -592,7 +592,9 @@ asterisk for *bold text*; back-tick for `monospaced text`.
 
 - Quotes and inline elements can be nested within a quote with the
   exception of the _code_ quote which displays enclosed elements verbatim.
-- Quotes can be escaped with backslash character prefixes.
+- Quotes can be escaped with backslash character prefixes. If the text
+  contains multiple quotes of the same type then, to resolve ambiguity,
+  both open and close quotes must be escaped.
 - Quoted text must begin and end with non-whitespace characters and
   cannot end with a backslash character.
 
@@ -809,7 +811,7 @@ Definition syntax:
   <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/RegExp|RegExp
   literal> syntax.
 - `$1`, `$2`... in `replacement` are replaced by the corresponding
-  regular expression match groups.
+  regular expression match groups. `$0` is replaced by the entire match.
 - Replacements are only expanded in inline contexts.
 - Replacements are not expanded inside _Code quotes_, _Code blocks_
   or _Indented paragraphs_.
@@ -855,6 +857,7 @@ Block elements
         Multi-line Comment
         Normal Paragraph
         Quote Block
+        Quote Paragraph
     Line Blocks
         Element Definitions
             Macro Definition
