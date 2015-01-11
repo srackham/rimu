@@ -1019,13 +1019,15 @@ var Rimu;
                     continue;
                 }
                 if (match[0][0] === '\\') {
+                    // Restart search after opening quote.
+                    findRe.lastIndex = match.index + match[1].length + 1;
                     continue;
                 }
                 // Arrive here if we have a matched quote.
                 var def = Rimu.Quotes.getDefinition(match[1]);
                 if (def.verify && !def.verify(match, findRe)) {
-                    // Next search starts after the opening quote (not the closing quote).
-                    findRe.lastIndex = match.index + 1;
+                    // Restart search after opening quote.
+                    findRe.lastIndex = match.index + match[1].length + 1;
                     continue;
                 }
                 // The quotes splits the fragment into 5 fragments.
@@ -1161,7 +1163,7 @@ var Rimu;
             // Quoted can span multiple lines.
             // Quoted text cannot end with a backslash.
             Quotes.findRe = RegExp('\\\\?(' + s.join('|') + ')([^\\s\\\\]|\\S[\\s\\S]*?[^\\s\\\\])\\1', 'g');
-            // $1 is quote character.
+            // $1 is quote character(s).
             unescapeRe = RegExp('\\\\(' + s.join('|') + ')', 'g');
         }
         // Return the quote definition corresponding to 'quote' character, return null if not found.
