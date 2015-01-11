@@ -84,8 +84,8 @@ task('default', ['test']);
 desc('compile, jslint, test, tslint, build-gh-pages, validate-html.');
 task('build', ['test', 'tslint', 'build-gh-pages', 'validate-html']);
 
-desc('Update version number, tag and push to Github and npm. Use vers=x.y.z argument to set a new version number.');
-task('release', ['build', 'version', 'tag', 'publish']);
+desc('Update version number, tag and push to Github and npm. Use vers=x.y.z argument to set a new version number. Finally, rebuild and publish docs website.');
+task('release', ['build', 'version', 'tag', 'publish', 'release-gh-pages']);
 
 desc('Lint Javascript and JSON files.');
 task('jslint', {async: true}, function() {
