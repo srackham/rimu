@@ -213,29 +213,24 @@ unless the language class is explicitly set:</p>
 <h2>Syntax shared with Markdown</h2>
 <p>The following subset of <em>Rimu</em> elements is compatible with Markdown:</p>
 <dl><dt>Headers</dt><dd> Headers using <code>#</code> character header IDs.
-</dd><dt>Code blocks</dt><dd> Indented paragraphs (at least four spaces) render like
-Markdown code blocks.
-<a href="https://help.github.com/articles/github-flavored-markdown/">GitHub
-Flavored Markdown</a> <em>Fenced Blocks</em> are compatible with Rimu Back-tick
-delimited blocks.
-</dd><dt>Quote paragraphs</dt><dd> Paragraphs starting with <code>&gt;</code> are rendered like
+</dd><dt>Code blocks</dt><dd>
+<ul><li>Indented paragraphs (at least four spaces) render like Markdown code
+  blocks.
+</li><li><a href="https://help.github.com/articles/github-flavored-markdown/">GitHub
+  Flavored Markdown</a> <em>Fenced Blocks</em> are compatible with Rimu
+  Back-tick delimited blocks.
+</li></ul></dd><dt>Quote paragraphs</dt><dd> Paragraphs starting with <code>&gt;</code> are rendered like
 Markdown Blockquotes.
-</dd><dt>Text formatting</dt><dd> <code>_emphasis_</code> and <code>`code`</code> quotes.
+</dd><dt>Text formatting</dt><dd> <code>_emphasis_</code>, <code>**bold**</code>, <code>`code`</code> and
+<code>~~strikethrough~~</code> quotes (strikethrough is GitHub Flavored Markdown
+compatible).
 </dd><dt>Lists</dt><dd>
 <ul><li>Bullet lists with <code>-</code> and <code>*</code> IDs.
 </li><li>Numbered lists with explicit numbering.
-</li></ul></dd><dt>URLs and Email addresses</dt><dd> Using the <code>&lt;url&gt;</code> and <code>&lt;email&gt;</code> syntaxes
+</li></ul></dd><dt>URLs and Email addresses</dt><dd> <code>[caption](url)</code>, <code>&lt;url&gt;</code> and <code>&lt;email&gt;</code> syntaxes
 plus Github Flavored Markdown <em>URL autolinking</em>.
-</dd><dt>Custom Markdown elements</dt><dd>
-Rimu can be extended to recognise additional Markdown syntax using
-custom Rimu definitions &mdash; the
-<a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example
-.rimurc file</a> implements the following additional Markdown syntaxes:
-<ul><li>Strong text: <code>**strong**</code>
-</li><li>Strikethrough text: <code>~~Rubbish.~~</code> (Github Flavored Markdown)
-</li><li>URL links: <code>[link-text](url)</code>
-</li><li>Image links: <code>![alt-text](image-url)</code>
-</li></ul></dd></dl><p>The Rimu <em>README</em> uses this subset for compatibility with <em>GitHub</em> and
+</dd><dt>Images</dt><dd> <code>![alt](url)</code> syntax.
+</dd></dl><p>The Rimu <em>README</em> uses this subset for compatibility with <em>GitHub</em> and
 <em>npmjs.org</em> README formats.</p>
 <h2>Escaping Rimu syntax</h2>
 <p>If you have text that you don't want interpreted as a Rimu element
@@ -326,8 +321,9 @@ entities or you can enter them literally.</p>
 <p>For example, to enter an ellipsis you could either enter <code>&amp;hellip;</code> or
 you could enter the actual … character directly (alternatively you
 could define a <em>Replacement</em> for the ellipsis, see the
-<a href="#example-rimurc">Example .rimurc file</a> below). The mechanism for
-entering Unicode characters directly will be dictated your editor:</p>
+<a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example
+.rimurc file</a>). The mechanism for entering Unicode characters directly
+will be dictated your editor:</p>
 <dl><dt>Vim</dt><dd> Enter <em>Ctrl+V</em> followed by the the character <em>u</em> followed by the
 hexidecimal character code e.g. to enter an em dash enter <em>Ctrl+V</em>
 followed by <em>u2014</em>
@@ -356,34 +352,19 @@ underscores or escape them with backslashes.</p>
 which can produce unexpected results. It can also make your Rimu
 source non-portable and less readable.</p>
 <h2 id="example-rimurc">Example .rimurc file</h2>
-<p>The Rimu package includes an
+<p>The Rimu distribution includes an
 <a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example
-.rimurc file</a> containing <em>Macro</em>, <em>Quote</em> and <em>Replacement</em>
-definitions.</p>
+.rimurc file</a>.</p>
 <h2>Extending the Vim syntax highlighter</h2>
 <p>If you've added custom replacements and quotes you can highlight them
 in Vim by creating a custom <code>~/.vim/after/syntax/rimu.vim</code> syntax
-file. Vim loads this file after the distributed
-<code>~/.vim/syntax/rimu.vim</code> file. The following example
-<code>~/.vim/after/syntax/rimu.vim</code> syntax file highlights the admonitions
-replacement and the strike-through quote definitions from the previous
-example <code>.rimurc</code> file:</p>
-<pre class="no-highlight"><code>" ~/.vim/after/syntax/rimu.vim
-"
-" Custom Vim highlighting for custom syntax defined in ~/.rimurc
-"
-
-" Admonishments.
-syn match rimuAdmonition /^\([A-Z]\+\):/ containedin=ALLBUT,rimuComment,rimuCodeBlock
-hi def link rimuAdmonition Special
-
-" ~ quote.
-syn match rimuSpanDeleted /\\\@&lt;!\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@&lt;!\~/ contains=rimuSpanEntity
-hi def link rimuSpanDeleted Todo
-
-" Raw HTTP URLs as links.
-syn match rimuSpanRawURL /[\\&lt;]\@&lt;!\(http\|https\):\/\/[^\s"]*[^\s",.;?)]/
-hi def link rimuSpanRawURL Title</code></pre>
+file (Vim loads files from the <code>after</code> directory after loading normal
+syntax files).  The distributed
+<a href="https://github.com/srackham/rimu/blob/master/examples/rimu.vim">example
+~/.vim/after/syntax/rimu.vim syntax file</a> highlights custom syntax
+definitions from the
+<a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example
+.rimurc file</a>.</p>
 <h2>Understanding substitution priorities</h2>
 <p>Inline elements are processed in the following order (first to last):</p>
 <ol><li>Macros

@@ -1137,6 +1137,12 @@ var Rimu;
                 spans: true
             },
             {
+                quote: '**',
+                openTag: '<strong>',
+                closeTag: '</strong>',
+                spans: true
+            },
+            {
                 quote: '*',
                 openTag: '<strong>',
                 closeTag: '</strong>',
@@ -1147,6 +1153,12 @@ var Rimu;
                 openTag: '<code>',
                 closeTag: '</code>',
                 spans: false
+            },
+            {
+                quote: '~~',
+                openTag: '<del>',
+                closeTag: '</del>',
+                spans: true
             },
         ];
         Quotes.findRe; // Searches for quoted text.
@@ -1191,8 +1203,14 @@ var Rimu;
                     return;
                 }
             }
-            // Add new definition at start of defs list.
-            Quotes.defs.unshift(def);
+            // Double-quote definitions are prepended to the array so they are matched
+            // before single-quote definitions (which are appended to the array).
+            if (def.quote.length === 2) {
+                Quotes.defs.unshift(def);
+            }
+            else {
+                Quotes.defs.push(def);
+            }
             initialize();
         }
         Quotes.setDefinition = setDefinition;
@@ -1228,6 +1246,10 @@ var Rimu;
                 replacement: '<img src="$1" alt="$1">'
             },
             {
+                match: /\\?!\[([\s\S]*?)\]\s*\((\S+?)\)/g,
+                replacement: '<img src="$2" alt="$1">'
+            },
+            {
                 match: /\\?<(\S+@[\w\.\-]+)\|([\s\S]+?)>/g,
                 replacement: '<a href="mailto:$1">$2</a>'
             },
@@ -1249,6 +1271,10 @@ var Rimu;
             {
                 match: /\\?<(\S+?)>/g,
                 replacement: '<a href="$1">$1</a>'
+            },
+            {
+                match: /\\?\[([\s\S]*?)\]\s*\((\S+?)\)/g,
+                replacement: '<a href="$2">$1</a>'
             },
             {
                 match: /(^|[^<])\b((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/g,
