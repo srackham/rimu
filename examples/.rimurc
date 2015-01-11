@@ -44,9 +44,6 @@
 // Github Flavored Markdown compatible strikethrough.
 ~~ = '<del>|</del>'
 
-// Markdown compatible strong quote.
-** = '<strong>|</strong>'
-
 
 /*
   Highlight.js

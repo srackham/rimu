@@ -18,6 +18,12 @@ module Rimu.Quotes {
       spans: true
     },
     {
+      quote: '**',
+      openTag: '<strong>',
+      closeTag: '</strong>',
+      spans: true
+    },
+    {
       quote: '*',
       openTag: '<strong>',
       closeTag: '</strong>',
