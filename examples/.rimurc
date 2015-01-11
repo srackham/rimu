@@ -31,12 +31,6 @@
 
 
 /*
-  Quotes
-*/
-~ = '<del>|</del>'
-
-
-/*
   Highlight.js
 */
 // Turn off auto-hightlighting.
