@@ -35,6 +35,12 @@ module Rimu.Quotes {
       closeTag: '</code>',
       spans: false
     },
+    {
+      quote: '~~',
+      openTag: '<del>',
+      closeTag: '</del>',
+      spans: true
+    },
   ];
 
   export var findRe: RegExp;  // Searches for quoted text.

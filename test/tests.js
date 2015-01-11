@@ -22,8 +22,8 @@ exports['Spans'] = function(test) {
     '*11*',
     'escape strong quote');
   test_span(
-    '*11* 22 _33_',
-    '<strong>11</strong> 22 <em>33</em>',
+    '*11* 22 _33_ **44**',
+    '<strong>11</strong> 22 <em>33</em> <strong>44</strong>',
     'strong and emphasis quotes');
   test_span(
     '*1 1*',
@@ -34,8 +34,8 @@ exports['Spans'] = function(test) {
     '<strong>1\n1</strong>',
     'strong quotes span lines');
   test_span(
-    '\\*11* \\*22 _33_',
-    '*11* *22 <em>33</em>',
+    '\\*11* *22* \\_33_ \\**44**',
+    '*11* <strong>22</strong> _33_ **44**',
     'escape quotes');
   test_span(
     '00 \\*11 http://example.com _22_*',
@@ -64,6 +64,10 @@ exports['Spans'] = function(test) {
   test_span(
     '`<http://example.com> \\``',
     '<code>&lt;http://example.com&gt; `</code>',
+    'code quotes');
+  test_span(
+    'Some ~~rubbish~~.',
+    'Some <del>rubbish</del>.',
     'code quotes');
   test_span(
     '<a class="btn">abc</a> <a class="btn">xyz</a>',

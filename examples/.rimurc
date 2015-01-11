@@ -41,9 +41,6 @@
 */
 ~ = '<del>|</del>'
 
-// Github Flavored Markdown compatible strikethrough.
-~~ = '<del>|</del>'
-
 
 /*
   Highlight.js
