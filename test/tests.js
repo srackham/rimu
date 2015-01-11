@@ -75,8 +75,12 @@ exports['Spans'] = function(test) {
     'two HTML attributes do not generate delete quote');
 
   test_span(
-    '\\http://example.com \\<http://example.com>',
-    'http://example.com &lt;http://example.com&gt;',
+    'http://example.com <http://example.com> [example url](http://example.com)',
+    '<a href="http://example.com">http://example.com</a> <a href="http://example.com">http://example.com</a> <a href="http://example.com">example url</a>',
+    'urls');
+  test_span(
+    '\\http://example.com \\<http://example.com> \\[example url](http://example.com)',
+    'http://example.com &lt;http://example.com&gt; [example url](http://example.com)',
     'escaped http urls');
   test_span(
     '_http://example.com_ *<http://example.com>* <http://example.com|Foo\n& Bar>',
@@ -110,11 +114,15 @@ exports['Spans'] = function(test) {
     'inline anchors and links');
   test_span(
       '<image:./images/tiger.png> ' +
-      '<image:http://example.com|Tiger\n& Bar> ' +
-      '\\<image:tiger.png>',
+      '<image:http://example.com/tiger.png|Tiger\n& Bar> ' +
+      '![Tiger paws](./images/tiger.png) ' +
+      '![Tiger paws](http://example.com/tiger.png) ' +
+      '\\<image:tiger.png> \\![Tiger paws](./images/tiger.png)',
       '<img src="./images/tiger.png" alt="./images/tiger.png"> ' +
-      '<img src="http://example.com" alt="Tiger\n&amp; Bar"> ' +
-      '&lt;image:tiger.png&gt;',
+      '<img src="http://example.com/tiger.png" alt="Tiger\n&amp; Bar"> ' +
+      '<img src="./images/tiger.png" alt="Tiger paws"> ' +
+      '<img src="http://example.com/tiger.png" alt="Tiger paws"> ' +
+      '&lt;image:tiger.png&gt; ![Tiger paws](./images/tiger.png)',
     'inline images');
   test_span(
       '<joe.bloggs@example.com> ' +

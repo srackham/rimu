@@ -49,6 +49,13 @@ module Rimu.Replacements {
       replacement: '<img src="$1" alt="$1">'
     },
 
+    // Image: ![alt](url)
+    // alt = $1, url = $2
+    {
+      match: /\\?!\[([\s\S]+?)\]\s*\((\S+?)\)/g,
+      replacement: '<img src="$2" alt="$1">'
+    },
+    
     // Email: <address|caption>
     // address = $1, caption = $2
     {
@@ -84,6 +91,13 @@ module Rimu.Replacements {
     {
       match: /\\?<(\S+?)>/g,
       replacement: '<a href="$1">$1</a>'
+    },
+
+    // Link: [caption](url)
+    // caption = $1, url = $2
+    {
+      match: /\\?\[([\s\S]+?)\]\s*\((\S+?)\)/g,
+      replacement: '<a href="$2">$1</a>'
     },
 
     // Auto-encode (most) raw HTTP URLs as links.

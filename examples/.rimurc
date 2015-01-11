@@ -19,12 +19,6 @@
 /\\?\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
 /^\\?(NOTE|IMPORTANT|WARNING|TIP):/ = '<b>$1</b>:'
 
-// Markdown [link-text](url) syntax.
-/\\?\[([\s\S]+?)\]\s*\((\S+?)\)/ = '<a href="$2">$1</a>'
-
-// Markdown ![alt-text](image-url) syntax.
-/\\?!\[([\s\S]+?)\]\s*\((\S+?)\)/ = '<img src="$2" alt="$1">'
-
 
 /*
   Macros
