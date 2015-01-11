@@ -696,6 +696,14 @@ exports['Blocks'] = function(test) {
 
   // Quote definitions.
   test_document(
+    '== = \'<strong>|</strong>\'\n==Testing== *123*',
+    '<p><strong>Testing</strong> <strong>123</strong></p>',
+    'new double quote definition');
+  test_document(
+    '\\==Testing== 123',
+    '<p>==Testing== 123</p>',
+    'escaped double quote');
+  test_document(
     '= = \'<del>|</del>\'\n=Testing *123*=',
     '<p><del>Testing <strong>123</strong></del></p>',
     'new single quote definition');
@@ -704,13 +712,9 @@ exports['Blocks'] = function(test) {
     '<p>=Testing= 123</p>',
     'escaped single quote');
   test_document(
-    '** = \'<strong>|</strong>\'\n**Testing** *123*',
-    '<p><strong>Testing</strong> <strong>123</strong></p>',
-    'new double quote definition');
-  test_document(
-    '\\**Testing** 123',
-    '<p>**Testing** 123</p>',
-    'escaped double quote');
+    '=Testing= ==123== =Test=',
+    '<p><del>Testing</del> <strong>123</strong> <del>Test</del></p>',
+    'single and double-quotes');
   test_document(
     '_* = \'<em><strong>|</strong></em>\'\n_*Testing_* *123*',
     '<p><em><strong>Testing</strong></em> <strong>123</strong></p>',
@@ -736,7 +740,7 @@ exports['Blocks'] = function(test) {
     '<p><code>Testing #123#</code></p>',
     'update quote with no spans');
   test_document(
-    '*=\'<em>|</em>\'\n**Testing** *123*',
+    '*=\'<em>|</em>\'\n==Testing== *123*',
     '<p><strong>Testing</strong> <em>123</em></p>',
     'modify built-in quote');
 

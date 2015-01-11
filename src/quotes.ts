@@ -75,8 +75,13 @@ module Rimu.Quotes {
         return;
       }
     }
-    // Add new definition at start of defs list.
-    defs.unshift(def);
+    // Double-quote definitions are prepended to the array so they are matched
+    // before single-quote definitions (which are appended to the array).
+    if (def.quote.length === 2) {
+      defs.unshift(def);
+    } else {
+      defs.push(def);
+    }
     initialize();
   }
 
