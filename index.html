@@ -115,11 +115,15 @@
 and Markdown.</p>
 <h2>Scope</h2>
 <p>At its core Rimu is a simple readable-text markup similar in scope to
-Markdown, but with two additional areas of functionality:</p>
+Markdown, but with two additional areas of functionality (both built
+into the Rimu markup syntax):</p>
 <ul><li>Markup generation can be customized and extended.
-</li><li>It includes a simple, flexible macro language.
-</li></ul><p>Both these features are built into the Rimu markup syntax.</p>
-<h2>Implementation</h2>
+</li><li>Rimu includes a simple, flexible macro language.
+</li></ul><p>Plus:</p>
+<ul><li>A large subset of Rimu syntax is <a href="http://srackham.github.io/rimu/tips.html#markdown-compatible">Markdown
+  compatible</a>.
+</li><li>Rimu is fast (same speed as <em>marked 0.3.2</em> compiling Rimu <code>README.md</code>).
+</li></ul><h2>Implementation</h2>
 <ul><li>Single lightweight JavaScript file (less than 23KB minified) that
   can be dropped onto a Web page or used as a Node module.
 </li><li>No dependencies.
@@ -128,7 +132,7 @@ Markdown, but with two additional areas of functionality:</p>
   and parametrized macros.
 </li><li>Element syntax and behavior can be modified and extended.
 </li><li>Written in TypeScript.
-</li><li>Available from Github and as an npm module or a Meteor smart package.
+</li><li>Available from Github and as an npm module.
 </li><li>Includes command-line compiler, JavaScript library, TypeScript
   library declaration file, playground GUI,
   Vim syntax highlighter and a unit test suite.
