@@ -7,12 +7,17 @@ and Markdown.
 ## Scope
 
 At its core Rimu is a simple readable-text markup similar in scope to
-Markdown, but with two additional areas of functionality:
+Markdown, but with two additional areas of functionality (both built
+into the Rimu markup syntax):
 
 - Markup generation can be customized and extended.
-- It includes a simple, flexible macro language.
+- Rimu includes a simple, flexible macro language.
 
-Both these features are built into the Rimu markup syntax.
+Plus:
+
+- A large subset of Rimu syntax is [Markdown
+  compatible](http://srackham.github.io/rimu/tips.html#markdown-compatible).
+- Rimu is fast (same speed as _marked 0.3.2_ compiling Rimu `README.md`).
 
 
 ## Implementation
@@ -25,7 +30,7 @@ Both these features are built into the Rimu markup syntax.
   and parametrized macros.
 - Element syntax and behavior can be modified and extended.
 - Written in TypeScript.
-- Available from Github and as an npm module or a Meteor smart package.
+- Available from Github and as an npm module.
 - Includes command-line compiler, JavaScript library, TypeScript
   library declaration file, playground GUI,
   Vim syntax highlighter and a unit test suite.

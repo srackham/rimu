@@ -91,6 +91,7 @@ unless the language class is explicitly set:
   |indented| = '<pre class="no-highlight"><code>|</code></pre>'
 
 
+.#markdown-compatible
 == Syntax shared with Markdown
 The following subset of _Rimu_ elements is compatible with Markdown:
 
