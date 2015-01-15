@@ -79,6 +79,10 @@ exports['Spans'] = function(test) {
     '<a href="http://example.com">http://example.com</a> <a href="http://example.com">http://example.com</a> <a href="http://example.com">example\\nurl</a> <a href="http://example.com"></a>',
     'urls');
   test_span(
+    '<http://example.com|>',
+    '<a href="http://example.com"></a>',
+    'url with empty caption');
+  test_span(
     '\\http://example.com \\<http://example.com> \\[example url](http://example.com)',
     'http://example.com &lt;http://example.com&gt; [example url](http://example.com)',
     'escaped http urls');
@@ -124,6 +128,10 @@ exports['Spans'] = function(test) {
       '<img src="http://example.com/tiger.png" alt="Tiger paws"> ' +
       '&lt;image:tiger.png&gt; ![Tiger paws](./images/tiger.png)',
     'inline images');
+  test_span(
+    '<image:./images/tiger.png|>',
+    '<img src="./images/tiger.png" alt="">',
+    'image with empty alt');
   test_span(
       '<joe.bloggs@example.com> ' +
       '<joe.bloggs@example.com|Joe\n Bloggs> ' +

@@ -38,7 +38,7 @@ module Rimu.Replacements {
     // Image: <image:src|alt>
     // src = $1, alt = $2
     {
-      match: /\\?<image:([^\s\|]+)\|([\s\S]+?)>/g,
+      match: /\\?<image:([^\s\|]+)\|([\s\S]*?)>/g,
       replacement: '<img src="$1" alt="$2">'
     },
 
@@ -82,7 +82,7 @@ module Rimu.Replacements {
     // Link: <url|caption>
     // url = $1, caption = $2
     {
-      match: /\\?<(\S+?)\|([\s\S]+?)>/g,
+      match: /\\?<(\S+?)\|([\s\S]*?)>/g,
       replacement: '<a href="$1">$2</a>'
     },
 
