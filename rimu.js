@@ -1238,7 +1238,7 @@ var Rimu;
                 replacement: '<span id="$1"></span>'
             },
             {
-                match: /\\?<image:([^\s\|]+)\|([\s\S]+?)>/g,
+                match: /\\?<image:([^\s\|]+)\|([\s\S]*?)>/g,
                 replacement: '<img src="$1" alt="$2">'
             },
             {
@@ -1265,7 +1265,7 @@ var Rimu;
                 }
             },
             {
-                match: /\\?<(\S+?)\|([\s\S]+?)>/g,
+                match: /\\?<(\S+?)\|([\s\S]*?)>/g,
                 replacement: '<a href="$1">$2</a>'
             },
             {
