@@ -142,6 +142,7 @@ module Rimu.LineBlocks {
         specials: true,
       }
     },
+    // DEPRECATED as of 3.4.0.
     // Block anchor: <<#id>>
     // id = $1
     {

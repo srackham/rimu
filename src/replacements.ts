@@ -29,6 +29,7 @@ module Rimu.Replacements {
       replacement: '<br>$1'
     },
 
+    // DEPRECATED as of 3.4.0.
     // Anchor: <<#id>>
     {
       match: /\\?<<#([a-zA-Z][\w\-]*)>>/g,

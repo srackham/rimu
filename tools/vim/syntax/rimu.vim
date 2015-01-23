@@ -31,6 +31,7 @@ syn match rimuURLText /\[\@<=\_.\{-}]\@=/ contained containedin=rimuSpanURL
 syn match rimuSpanHTML /\\\@<!<[!\/]\?[a-zA-Z-]\+\(\_s\_.\{-}\|\)>/
 syn match rimuMacroInvocation /\\\@<!{[0-9A-Za-z_-]\+\([?!=|]\_.\{-}\)\?}/ contains=rimuDefinitionParams containedin=ALLBUT,rimuComment,rimuCodeBlock,rimuIndentedParagraph
 syn match rimuDefinitionParams /[?|]\_[^}]*/ contained contains=rimuSpan.*
+" DEPRECATED as of 3.4.0: rimuSpanAnchor.
 syn match rimuSpanAnchor /<<#[a-zA-Z_-].*>>/
 syn match rimuSpanRawURL /[\\<]\@<!\(http\|https\):\/\/[^ \t"]*[^ \t",.;?)]/
 
@@ -80,6 +81,7 @@ hi def link rimuIndentedParagraph Identifier
 hi def link rimuListId Label
 hi def link rimuQuoteQuote Special
 hi def link rimuReplacementRegExp Special
+" DEPRECATED as of 3.4.0: rimuSpanAnchor.
 hi def link rimuSpanAnchor Title
 hi def link rimuSpanCode Identifier
 hi def link rimuSpanEmphasized Type

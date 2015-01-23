@@ -52,6 +52,23 @@ experimentation.
   any valid Rimu markup (including HTML and blank lines).
 
 
+== Intra-Document Links
+To link to another place within a document: Create an ID for the
+element you want to link to (using the Rimu _Block Attribute_ element)
+then create a link to it using a fragment identifier URL. For example:
+
+{document-links-example} = '.#link-target
+This paragraph has ID `link-target`.
+
+<#link-target|This link> takes you to
+the above paragraph.
+
+So does [this link](#link-target)
+(Markdown style syntax).'
+
+{generate-rendered-example-1|document-links-example}
+
+
 .#syntax-highlighting
 == Syntax highlighting
 <https://github.com/isagalaev/highlight.js|Highlight.js> is a nice

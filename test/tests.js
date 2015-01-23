@@ -113,6 +113,7 @@ exports['Spans'] = function(test) {
     'Lorum<br>\nipsum \\\n<code>lorum \\\nipsum</code>\nnostra \\\nvestibulum<br>',
     'line breaks');
   test_span(
+    // DEPRECATED as of 3.4.0: <<anchor>> syntax.
     'Lorum <<#x1>>ipsum <#x1|lorum link> \\<<#x1>>',
     'Lorum <span id="x1"></span>ipsum <a href="#x1">lorum link</a> &lt;&lt;#x1&gt;&gt;',
     'inline anchors and links');
@@ -390,22 +391,21 @@ exports['Blocks'] = function(test) {
       'Refer to the <#x1|next paragraph> or the <#x2|second list item\n' +
       'below>.\n' +
       '\n' +
-      '<<#x1>>\n' +
+      '.#x1\n' +
       'Nisl curabitur donec. Vel porttitor et. Et amet vitae. Quam\n' +
       'porttitor integer. Bibendum neque quis quisque ac commodo. Non et\n' +
-      'cumque. Sit et a consequat.\n' +
-      '\n' +
+      'cumque. Sit et a consequat.\n\n' +
+      '.#x2\n' +
       '- Viverra pede turpis.\n' +
-      '- <<#x2>>Esse et dui nonummy modi.\n',
+      '- Esse et dui nonummy modi.\n',
 
       '<p>Refer to the <a href="#x1">next paragraph</a> or the <a href="#x2">second list item\n' +
       'below</a>.</p>\n' +
-      '<div id="x1"></div>\n' +
-      '<p>Nisl curabitur donec. Vel porttitor et. Et amet vitae. Quam\n' +
+      '<p id="x1">Nisl curabitur donec. Vel porttitor et. Et amet vitae. Quam\n' +
       'porttitor integer. Bibendum neque quis quisque ac commodo. Non et\n' +
       'cumque. Sit et a consequat.</p>\n' +
-      '<ul><li>Viverra pede turpis.\n' +
-      '</li><li><span id="x2"></span>Esse et dui nonummy modi.\n' +
+      '<ul id="x2"><li>Viverra pede turpis.\n' +
+      '</li><li>Esse et dui nonummy modi.\n' +
       '</li></ul>',
     'anchors and links');
 
