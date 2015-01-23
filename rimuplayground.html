@@ -78,7 +78,6 @@
     <select id="topic"
             onchange="renderTopic(this.value)"
             onclick="renderTopic(this.value)">
-      <option value="topic-anchors-and-links">Anchors and links</option>
       <option value="topic-api">API</option>
       <option value="topic-block-attributes">Block Attributes</option>
       <option value="topic-character-entities">Character entities</option>
@@ -130,45 +129,6 @@
       </tr>
     </tbody>
   </table>
-
-<div id="topic-anchors-and-links">
-<!--
-Anchors are jump targets for links within the document.
-
-Syntax:
-
-  Role            Rimu            HTML
-  _________________________________________________________
-  Inline anchor   <<#id>>         <span id="id"></span>
-  Block anchor    <<#id>>         <div id="id"></div>
-  Link            <#id|caption>   <a href="#id">caption</a>
-  Link            <#id>           <a href="#id">#id</a>
-  _________________________________________________________
-
-- Block and inline anchor elements share the same syntax.
-- Links are inline elements.
-- In most situations a specifying an HTML element ID using a Rimu
-  _Block Attribute_ element is preferable to a Block Anchor.
-
-Examples:
-
-""
-<<#x1>>
-Refer to the <#x1|this paragraph> or the <#x2|next paragraph> or
-the <#x3|second list item below>.
-
-.#x2
-Bibendum neque quis quisque ac commodo. Non et cumque. Sit et a
-consequat.
-
-- Viverra pede turpis.
-- <<#x3>>Esse et dui nonummy modi.
-""
-
-See also the _URLs and email addresses_ topic.
-
--->
-</div>
 
 <div id="topic-api">
 <!--
@@ -881,7 +841,6 @@ Block elements
             Delimited Block Definition
         Header
         Block Image
-        Block Anchor
         Block Attributes
         Macro Line
         Single-line Comment
@@ -902,12 +861,10 @@ Inline elements
             Monospaced
             Strikethrough
         Replacements
-            Anchor
             Character entity
             HTML tag
             Image
             Line break
-            Link
             URL
 ```
 

@@ -165,7 +165,30 @@ experimentation.</p>
   use <a href="#scoped-css">scoped CSS</a>.
 </li><li>Note how macro definitions can span multiple lines and can contain
   any valid Rimu markup (including HTML and blank lines).
-</li></ul><h2 id="syntax-highlighting">Syntax highlighting</h2>
+</li></ul><h2>Intra-Document Links</h2>
+<p>To link to another place within a document: Create an ID for the
+element you want to link to (using the Rimu <em>Block Attribute</em> element)
+then create a link to it using a fragment identifier URL. For example:</p>
+<table class="example table table-bordered"><thead><tr style="color:#527bbd;">
+<th style="width:50%;">Rimu source</th>
+<th style="width:50%;">Rendered HTML</th>
+</tr></thead><tbody><tr><td style="width: 50%; padding: 4px;">
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>.#link-target
+This paragraph has ID `link-target`.
+
+&lt;#link-target|This link&gt; takes you to
+the above paragraph.
+
+So does [this link](#link-target)
+(Markdown style syntax).</code></pre>
+</td><td style="width:50%; padding: 4px;">
+<p id="link-target">This paragraph has ID <code>link-target</code>.</p>
+<p><a href="#link-target">This link</a> takes you to
+the above paragraph.</p>
+<p>So does <a href="#link-target">this link</a>
+(Markdown style syntax).</p>
+</td></tr></tbody></table>
+<h2 id="syntax-highlighting">Syntax highlighting</h2>
 <p><a href="https://github.com/isagalaev/highlight.js">Highlight.js</a> is a nice
 syntax highlighter that makes it trivial to add syntax highlighting to
 Rimu Code blocks and Indented paragraphs.  The <em>rimuc</em> tool <code>--styled</code>
