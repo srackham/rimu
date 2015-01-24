@@ -636,6 +636,14 @@ var Rimu;
                     macros: true,
                     spans: true,
                     specials: true // Fall-back if spans is disabled.
+                },
+                filter: function (text) {
+                    // Strip leading > from start of each line.
+                    var buffer = text.split('\n');
+                    for (var i in buffer) {
+                        buffer[i] = buffer[i].replace(/^>\s*/, '');
+                    }
+                    return buffer.join('\n');
                 }
             },
             {
