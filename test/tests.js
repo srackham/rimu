@@ -267,6 +267,10 @@ exports['Blocks'] = function(test) {
     '<blockquote><p><strong>Hello</strong> <a href="mailto:joe@foo.com">Joe &amp; Jim</a></p></blockquote>',
     'quote paragraph');
   test_document(
+    '>*Hello*\n> <joe@foo.com|Joe & Jim>',
+    '<blockquote><p><strong>Hello</strong>\n<a href="mailto:joe@foo.com">Joe &amp; Jim</a></p></blockquote>',
+    'multi-line quote paragraph');
+  test_document(
     '*Hello* <joe@foo.com|Joe & Jim>',
     '<p><strong>Hello</strong> <a href="mailto:joe@foo.com">Joe &amp; Jim</a></p>',
     'normal paragraph');
