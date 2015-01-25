@@ -127,7 +127,7 @@ module Rimu.DelimitedBlocks {
     // Quote paragraph.
     {
       name: 'quote-paragraph',
-      openMatch: /^\\?>\s*(\S.*)$/, // $1 is first line of block.
+      openMatch: /^\\?(>.*)$/,      // $1 is first line of block.
       closeMatch: /^$/,             // Blank line or EOF.
       openTag: '<blockquote><p>',
       closeTag: '</p></blockquote>',
