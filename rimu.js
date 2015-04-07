@@ -628,7 +628,7 @@ var Rimu;
             },
             {
                 name: 'quote-paragraph',
-                openMatch: /^\\?>\s*(\S.*)$/,
+                openMatch: /^\\?(>.*)$/,
                 closeMatch: /^$/,
                 openTag: '<blockquote><p>',
                 closeTag: '</p></blockquote>',
