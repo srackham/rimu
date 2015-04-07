@@ -84,10 +84,10 @@ var safeMode = 0;
 var styled = false;
 var no_rimurc = false;
 
-// Skip command name.
-if (process.argv.shift() === 'node') {
-  process.argv.shift();
-}
+// Skip executable and script paths.
+process.argv.shift(); // Skip executable path.
+process.argv.shift(); // Skip rimuc script path.
+
 // Parse command-line options.
 var source = '';
 var outFile;
