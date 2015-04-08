@@ -74,7 +74,9 @@ module Rimu.DelimitedBlocks {
     // Code block.
     {
       name: 'code',
-      openMatch: /^\\?(?:\-{2,}|`{2,})$/,
+      // Backtick hex literal \x60 to work arount eslint problem.
+      // See https://github.com/palantir/tslint/issues/357.
+      openMatch: /^\\?(?:\-{2,}|\x60{2,})$/,
       openTag: '<pre><code>',
       closeTag: '</code></pre>',
       expansionOptions: {
