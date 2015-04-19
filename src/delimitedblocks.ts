@@ -139,10 +139,11 @@ module Rimu.DelimitedBlocks {
         specials: true       // Fall-back if spans is disabled.
       },
       filter: function (text: string): string {
-        // Strip leading > from start of each line.
+        // Strip leading > from start of each line and unescape escaped leading >.
         var buffer = text.split('\n');
         for (var i in buffer) {
           buffer[i] = buffer[i].replace(/^>\s*/, '');
+          buffer[i] = buffer[i].replace(/^\\>/, '>');
         }
         return buffer.join('\n');
       }
