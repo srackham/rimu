@@ -40,12 +40,13 @@ syn match rimuSpanStrong /\\\@<!\*\*[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\
 syn match rimuSpanEmphasized /\\\@<!_[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!_/ contains=rimuSpanEntity
 syn match rimuSpanCode /\\\@<!`[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!`/
 syn match rimuSpanDeleted /\\\@<!\~\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\~\~/ contains=rimuSpanEntity
-
 syn region rimuHeader matchgroup=rimuHeaderStartEnd start=/^\(=\|#\)\{1,6}\s\+/ end=/\(\s\+\(=\|#\)\{1,6}\)\?\_$/ contains=rimuSpan.* oneline keepend
 syn match rimuBlockDelimiter /^\("\|\.\)\{2,}$/
 syn region rimuCodeBlock start=/^-\{2,}$/ end=/^-\{2,}$/ keepend
 syn region rimuCodeBlock start=/^`\{2,}$/ end=/^`\{2,}$/ keepend
-syn region rimuIndentedParagraph start=/\(\%^\|\_^\n\)\@<=\s\+\S/ end=/\n\n/ keepend
+syn region rimuIndentedParagraph start=/\(\%^\|\_^\n\|^\(=\|#\)\{1,6}\s\+\S\+.*\n\)\@<=\s\+\S/ end=/\n\n/ keepend
+syn region rimuQuoteParagraph start=/\(\%^\|\_^\n\|^\(=\|#\)\{1,6}\s\+\S\+.*\n\)\@<=\\\@<!>\s*\S/ end=/\n\n/ keepend contains=rimuSpan.*,rimuQuotePrefix
+syn match rimuQuotePrefix /^\\\@<!>/ contained
 syn region rimuHTMLBlock start=/<!\|\(<\/\?\(html\|head\|body\|script\|style\|address\|article\|aside\|audio\|blockquote\|canvas\|dd\|div\|dl\|fieldset\|figcaption\|figure\|figcaption\|footer\|form\|h1\|h2\|h3\|h4\|h5\|h6\|header\|hgroup\|hr\|noscript\|ol\|output\|p\|pre\|section\|table\|tfoot\|ul\|video\)[ >\n]\?\)/ end=/\n\n/ contains=rimuSpanHTML keepend
 
 syn match rimuMacroDefinition /^{[0-9A-Za-z_-]\+}\s*=\s*'\_.\{-}'\n/
@@ -79,6 +80,7 @@ hi def link rimuHeaderStartEnd Label
 hi def link rimuBlockAttributes Title
 hi def link rimuIndentedParagraph Identifier
 hi def link rimuListId Label
+hi def link rimuQuotePrefix Label
 hi def link rimuQuoteQuote Special
 hi def link rimuReplacementRegExp Special
 " DEPRECATED as of 3.4.0: rimuSpanAnchor.
