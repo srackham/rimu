@@ -268,7 +268,7 @@ exports['Blocks'] = function(test) {
     'quote paragraph');
   test_document(
     '>*Hello*\n> <joe@foo.com|Joe & Jim>',
-    '<blockquote><p><strong>Hello</strong>\n<a href="mailto:joe@foo.com">Joe &amp; Jim</a></p></blockquote>',
+    '<blockquote><p><strong>Hello</strong>\n <a href="mailto:joe@foo.com">Joe &amp; Jim</a></p></blockquote>',
     'multi-line quote paragraph');
   test_document(
     '*Hello* <joe@foo.com|Joe & Jim>',
@@ -276,7 +276,7 @@ exports['Blocks'] = function(test) {
     'normal paragraph');
   test_document(
     '> Line 1\nLine 2',
-    '<blockquote><p>Line 1\nLine 2</p></blockquote>',
+    '<blockquote><p> Line 1\nLine 2</p></blockquote>',
     'multi-line quote paragraph');
   test_document(
     'Line 1\nLine 2',

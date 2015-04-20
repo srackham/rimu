@@ -142,7 +142,7 @@ module Rimu.DelimitedBlocks {
         // Strip leading > from start of each line and unescape escaped leading >.
         var buffer = text.split('\n');
         for (var i in buffer) {
-          buffer[i] = buffer[i].replace(/^>\s*/, '');
+          buffer[i] = buffer[i].replace(/^>/, '');
           buffer[i] = buffer[i].replace(/^\\>/, '>');
         }
         return buffer.join('\n');
