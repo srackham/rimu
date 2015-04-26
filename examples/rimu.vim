@@ -4,6 +4,6 @@
 "
 
 " Admonishments.
-syn match rimuAdmonition /^\\\@<!\(NOTE\|IMPORTANT\|WARNING\|TIP\):/ containedin=ALLBUT,rimuComment,rimuCodeBlock
+syn match rimuAdmonition /^\\\@<!\(NOTES\?\|IMPORTANT\|WARNINGS\?\|TIPS\?\):/ containedin=ALLBUT,rimuComment,rimuCodeBlock
 hi def link rimuAdmonition Special
 

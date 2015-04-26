@@ -17,7 +17,7 @@
 /\\?<-/ = '&leftarrow;'
 
 /\\?\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
-/^\\?(NOTE|IMPORTANT|WARNING|TIP):/ = '<b>$1</b>:'
+/^\\?(NOTES?|IMPORTANT|WARNINGS?|TIPS?):/ = '<b>$1</b>:'
 
 
 /*
