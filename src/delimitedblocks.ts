@@ -1,4 +1,4 @@
-import * as main from './main'
+import {renderSource} from './render'
 import * as helpers from './helpers'
 import * as options from './options'
 import * as io from './io'
@@ -222,7 +222,7 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
         }
         writer.write(helpers.injectHtmlAttributes(def.openTag));
         if (expansionOptions.container) {
-          text = main.renderSource(text);
+          text = renderSource(text);
         }
         else {
           text = helpers.replaceInline(text, expansionOptions);
