@@ -11,10 +11,9 @@
  character entities. The fragments are then reassembled (defraged) into a
  resultant HTML string.
  */
-
-/// <reference path="references.ts" />
-
-module Rimu.Spans {
+import * as helpers from './helpers'
+import * as quotes from './quotes'
+import * as replacements from './replacements'
 
   interface Fragment {
     text: string;
@@ -39,7 +38,7 @@ module Rimu.Spans {
   }
 
   function fragQuotes(fragments: Fragment[]): void {
-    var findRe = Quotes.findRe;
+    var findRe = quotes.findRe;
     var fragmentIndex = 0;
     var fragment = fragments[fragmentIndex];
     var nextFragment: boolean;
@@ -70,7 +69,7 @@ module Rimu.Spans {
         continue;
       }
       // Arrive here if we have a matched quote.
-      var def = Quotes.getDefinition(match[1]);
+      var def = quotes.getDefinition(match[1]);
       if (def.verify && !def.verify(match, findRe)) {
         // Restart search after opening quote.
         findRe.lastIndex = match.index + match[1].length + 1;
@@ -91,8 +90,8 @@ module Rimu.Spans {
       fragmentIndex += 2;
       fragment = fragments[fragmentIndex];
       if (!def.spans) {
-        fragment.text = Quotes.unescape(fragment.text);
-        fragment.text = replaceSpecialChars(fragment.text);
+        fragment.text = quotes.unescape(fragment.text);
+        fragment.text = helpers.replaceSpecialChars(fragment.text);
         fragment.done = true;
         // Move to 'after' fragment.
         fragmentIndex += 2;
@@ -104,18 +103,18 @@ module Rimu.Spans {
     for (var i in fragments) {
       fragment = fragments[i];
       if (!fragment.done) {
-        fragment.text = Quotes.unescape(fragment.text);
+        fragment.text = quotes.unescape(fragment.text);
       }
     }
   }
 
   function fragReplacements(fragments: Fragment[]): void {
-    for (var i in Replacements.defs) {
-      fragReplacement(fragments, Replacements.defs[i]);
+    for (var i in replacements.defs) {
+      fragReplacement(fragments, replacements.defs[i]);
     }
   }
 
-  function fragReplacement(fragments: Fragment[], def: Replacements.Definition): void {
+  function fragReplacement(fragments: Fragment[], def: replacements.Definition): void {
     var findRe = def.match;
     var fragmentIndex = 0;
     var fragment = fragments[fragmentIndex];
@@ -156,11 +155,11 @@ module Rimu.Spans {
       if (match[0][0] === '\\') {
         // Remove leading backslash.
         fragment.text = match.input.slice(match.index + 1, findRe.lastIndex);
-        fragment.text = replaceSpecialChars(fragment.text);
+        fragment.text = helpers.replaceSpecialChars(fragment.text);
       }
       else {
         if (!def.filter) {
-          fragment.text = replaceMatch(match, def.replacement, {specials: true});
+          fragment.text = helpers.replaceMatch(match, def.replacement, {specials: true});
         }
         else {
           fragment.text = def.filter(match);
@@ -178,10 +177,8 @@ module Rimu.Spans {
     for (var i in fragments) {
       fragment = fragments[i];
       if (!fragment.done) {
-        fragment.text = replaceSpecialChars(fragment.text);
+        fragment.text = helpers.replaceSpecialChars(fragment.text);
       }
     }
   }
-
-}
 

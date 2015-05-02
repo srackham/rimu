@@ -1,8 +1,6 @@
-
-/// <reference path="references.ts" />
-
 /**
  * ### Rimu Modularization
+ * TODO
  *
  * - This application uses Internal TypeScript modules and is compiled to a single rimu.js
  *   JavaScript file.
@@ -15,49 +13,49 @@
  * See [Building heterogeneous TypeScript libraries](http://srackham.wordpress.com/2012/11/20/building-heterogeneous-typescript-libraries/)
  *
  */
-module Rimu {
 
-  /**
-   *
-   * This is the single public API which translates Rimu Markup to HTML.
-   *
-   * @param source
-   * Input text containing Rimu Markup.
-   *
-   * @param options
-   * Markup translation options.
-   *
-   * @returns Returns HTML output text.
-   *
-   * Example:
-   *
-   *     Rimu.render('Hello *Rimu*!', {safeMode: 1});
-   *
-   * See `rimuc.js` and `rimuplayground.html` for examples of [[render]]  in action.
-   *
-   */
-  export function render(source: string, options: Options.RenderOptions = {}): string {
-    Options.update(options);
-    return renderSource(source);
-  }
+import * as io from './io'
+import * as options from './options'
+import * as lineBlocks from './lineblocks'
+import * as delimitedBlocks from './delimitedblocks'
+import * as lists from './lists'
 
-  // Same as render() but does not update options.
-  export function renderSource(source: string): string {
-    var reader = new Reader(source);
-    var writer = new Writer();
-    while (!reader.eof()) {
-      reader.skipBlankLines();
-      if (reader.eof()) break;
-      if (LineBlocks.render(reader, writer)) continue;
-      if (Lists.render(reader, writer)) continue;
-      if (DelimitedBlocks.render(reader, writer)) continue;
-      throw 'no matching delimited block found';
-    }
-    return writer.toString();
-  }
-
+/**
+ *
+ * This is the single public API which translates Rimu Markup to HTML.
+ *
+ * @param source
+ * Input text containing Rimu Markup.
+ *
+ * @param opts
+ * Markup translation options.
+ *
+ * @returns Returns HTML output text.
+ *
+ * Example:
+ *
+ *     Rimu.render('Hello *Rimu*!', {safeMode: 1});
+ *
+ * See `rimuc.js` and `rimuplayground.html` for examples of [[render]]  in action.
+ *
+ */
+export function render(source: string, opts: options.RenderOptions = {}): string {
+  options.update(opts);
+  return renderSource(source);
 }
 
-// Export Rimu API.
-Rimu.exportCommonjs({render: Rimu.render});
+// Same as render() but does not update options.
+export function renderSource(source: string): string {
+  var reader = new io.Reader(source);
+  var writer = new io.Writer();
+  while (!reader.eof()) {
+    reader.skipBlankLines();
+    if (reader.eof()) break;
+    if (lineBlocks.render(reader, writer)) continue;
+    if (lists.render(reader, writer)) continue;
+    if (delimitedBlocks.render(reader, writer)) continue;
+    throw 'no matching delimited block found';
+  }
+  return writer.toString();
+}
 

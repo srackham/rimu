@@ -1,7 +1,3 @@
-/// <reference path="references.ts" />
-
-module Rimu {
-
   export class Reader {
     lines: string[];
     pos: number;      // line index of current line.
@@ -88,6 +84,4 @@ module Rimu {
     }
 
   }
-
-}
 
