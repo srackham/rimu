@@ -1,17 +1,8 @@
-/**
- * ### Rimu Modularization
- * TODO
- *
- * - This application uses Internal TypeScript modules and is compiled to a single rimu.js
- *   JavaScript file.
- * - `rimu.js` can be used in the browser using a script tag or can be used in Nodejs using require().
- * - Rimu API functions are explicitly exported to Nodejs with the exportCommonjs() helper.
- * - Other internal objects are exported to Nodejs for use by nodeunit unit tests.
- * - To minimize browser global namespace pollution and to disallow run-time access to internal
- *   objects all source is enveloped in a single open module named [[Rimu]].
- *
- * See [Building heterogeneous TypeScript libraries](http://srackham.wordpress.com/2012/11/20/building-heterogeneous-typescript-libraries/)
- *
+/*
+  This is the main module, it exports the 'render' API.
+
+  The compiled modules are bundled by Webpack into 'var' (script tag) and 'commonjs' (npm)
+  formatted libraries.
  */
 
 /* tslint:disable */
@@ -34,9 +25,7 @@ import * as quotes from './quotes'
  *
  * Example:
  *
- *     Rimu.render('Hello *Rimu*!', {safeMode: 1});
- *
- * See `rimuc.js` and `rimuplayground.html` for examples of [[render]]  in action.
+ *     Rimu.render('Hello *Rimu*!', {safeMode: 1})
  *
  */
 export function render(source: string, opts: options.RenderOptions = {}): string {
