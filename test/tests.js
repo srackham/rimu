@@ -1,4 +1,4 @@
-var Rimu = require('../bin/rimu.js');
+var Rimu = require('../bin/rimu-commonjs2.js');
 
 exports['API check'] = function(test) {
   test.ok(

@@ -6,7 +6,7 @@
 
 var path = require('path');
 var fs = require('fs');
-var Rimu = require('./rimu.js');
+var Rimu = require('./rimu-commonjs2.js');
 
 var MANPAGE = 'NAME\n' +
     '  rimuc - convert Rimu source to HTML\n' +

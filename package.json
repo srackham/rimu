@@ -18,12 +18,12 @@
   "engines": {
     "node": ">=0.8"
   },
-  "main": "bin/rimu.js",
+  "main": "bin/rimu-commonjs2.js",
   "bin": {
     "rimuc": "bin/rimuc.js"
   },
   "files": [
-    "bin/rimu.js",
+    "bin/rimu-commonjs2.js",
     "bin/rimuc.js",
     "bin/rimuplayground.html",
     "bin/header.rmu",
