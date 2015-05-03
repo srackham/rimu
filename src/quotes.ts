@@ -44,10 +44,8 @@ export var defs: Definition[] = [
 export var findRe: RegExp;  // Searches for quoted text.
 var unescapeRe: RegExp;     // Searches for escaped quotes.
 
-initialize();
-
 // Synthesise re's to find and unescape quotes.
-function initialize(): void {
+export function initialize(): void {
   var s: string[] = [];
   for (var i in defs) {
     s.push(helpers.escapeRegExp(defs[i].quote));

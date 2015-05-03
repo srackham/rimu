@@ -254,7 +254,7 @@ export function getDefinition(name: string): Definition {
 
 // Parse delimited block expansion options string into blockOptions.
 export function setBlockOptions(blockOptions: helpers.ExpansionOptions, optionsString: string): void {
-  if (opts) {
+  if (optionsString) {
     var opts = optionsString.trim().split(/\s+/);
     for (var i in opts) {
       var opt = opts[i];
