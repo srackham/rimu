@@ -12,6 +12,7 @@ var child_process = require('child_process');
 
 var RIMU_JS = 'bin/rimu.js';
 var MAIN_TS = 'src/main.ts';
+var MAIN_JS = 'out/main.js';
 var RIMU_MIN_JS = 'bin/rimu.min.js';
 var SOURCE = shelljs.ls('src/*.ts');
 var TESTS = shelljs.ls('test/*.js');
@@ -113,12 +114,15 @@ task('test', ['compile', 'jslint'], {async: true}, function() {
 });
 
 desc('Compile Typescript to JavaScript then uglify.');
-task('compile', [RIMU_JS, RIMU_MIN_JS]);
+task('compile', [MAIN_JS, RIMU_JS, RIMU_MIN_JS]);
 
-file(RIMU_JS, SOURCE, {async: true}, function() {
-  exec('tsc --noImplicitAny --out ' + RIMU_JS + ' ' + MAIN_TS);
+file(MAIN_JS, SOURCE, {async: true}, function() {
+  exec('tsc --module commonjs --outDir ./out ' + MAIN_TS);
 });
 
+file(RIMU_JS, MAIN_JS, {async: true}, function() {
+  exec('webpack');
+});
 file(RIMU_MIN_JS, [RIMU_JS], {async: true}, function() {
   var preamble = '/* ' + pkg.name + ' ' + pkg.version + ' (' + pkg.repository.url + ') */';
   var command = 'uglifyjs  --preamble "' + preamble + '" --output ' + RIMU_MIN_JS + ' ' + RIMU_JS;
