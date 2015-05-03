@@ -14,9 +14,11 @@
  *
  */
 
+/* tslint:disable */
 import {renderSource} from './render'
 import * as options from './options'
 import * as quotes from './quotes'
+/* tslint:enable */
 
 /**
  *

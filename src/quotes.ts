@@ -1,4 +1,6 @@
+/* tslint:disable */
 import * as helpers from './helpers'
+/* tslint:enable */
 
 export interface Definition {
   quote: string;    // Single quote character.

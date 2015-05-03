@@ -11,9 +11,12 @@
  character entities. The fragments are then reassembled (defraged) into a
  resultant HTML string.
  */
+
+/* tslint:disable */
 import * as helpers from './helpers'
 import * as quotes from './quotes'
 import * as replacements from './replacements'
+/* tslint:enable */
 
   interface Fragment {
     text: string;

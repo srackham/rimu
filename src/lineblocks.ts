@@ -1,3 +1,4 @@
+/* tslint:disable */
 import * as helpers from './helpers'
 import * as options from './options'
 import * as io from './io'
@@ -5,6 +6,7 @@ import * as delimitedBlocks from './delimitedblocks'
 import * as quotes from './quotes'
 import * as replacements from './replacements'
 import * as macros from './macros'
+/* tslint:enable */
 
 export interface Definition {
   name?: string;  // Optional unique identifier.

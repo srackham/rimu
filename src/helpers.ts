@@ -1,6 +1,8 @@
+/* tslint:disable */
 import * as macros from './macros'
 import * as spans from './spans'
 import * as lineBlocks from './lineblocks'
+/* tslint:enable */
 
 export interface ExpansionOptions {
   [key: string]: boolean;

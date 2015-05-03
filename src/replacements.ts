@@ -1,4 +1,6 @@
+/* tslint:disable */
 import * as options from './options'
+/* tslint:enable */
 
 export interface Definition {
   match: RegExp;

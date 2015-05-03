@@ -1,4 +1,6 @@
+/* tslint:disable */
 import * as helpers from './helpers'
+/* tslint:enable */
 
 /**
  * An object with zero or more optional properties to control Rimu Markup

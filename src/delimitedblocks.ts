@@ -1,9 +1,11 @@
+/* tslint:disable */
 import {renderSource} from './render'
 import * as helpers from './helpers'
 import * as options from './options'
 import * as io from './io'
 import * as macros from './macros'
 import * as lineBlocks from './lineblocks'
+/* tslint:enable */
 
 // Multi-line block element definition.
 export interface Definition {
