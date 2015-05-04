@@ -43,7 +43,8 @@ Read the documentation and experiment with Rimu in the [Rimu
 Playground](http://srackham.github.io/rimu/rimuplayground.html) or open the
 `rimuplayground.html` file locally in your browser.
 
-See also the _Release Notes_ topic in the _Rimu Playground_.
+See the Rimu [CHANGELOG](http://srackham.github.io/rimu/CHANGELOG.html) for
+the latest changes.
 
 
 ## Installing Rimu

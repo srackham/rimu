@@ -23,6 +23,7 @@ var GH_PAGES_DIR = './gh-pages/';
 
 var DOCS = [
   {src: 'README.md', dst: 'doc/index.html', title: 'Rimu Markup'},
+  {src: 'CHANGELOG.md', dst: 'doc/CHANGELOG.html', title: 'Rimu Change Log'},
   {src: 'doc/tips.rmu', dst: 'doc/tips.html', title: 'Rimu Tips'}
 ];
 
