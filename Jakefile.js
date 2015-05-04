@@ -10,9 +10,9 @@ var child_process = require('child_process');
 
 /* Inputs and outputs */
 
-var RIMU_JS = 'bin/rimu.js';  // HTML script library format.
+var RIMU_JS = 'bin/rimu.js';  // Script tag library format.
 var RIMU_MIN_JS = 'bin/rimu.min.js';
-var RIMU_COMMONJS2_JS = 'bin/rimu-commonjs2.js';  // CommonJS library format.
+var RIMU_COMMONJS2_JS = 'bin/rimu-commonjs2.js';  // Npm library format.
 var RIMU_COMMONJS2_MIN_JS = 'bin/rimu-commonjs2.min.js';
 var MAIN_TS = 'src/main.ts';
 var MAIN_JS = 'out/main.js';
@@ -115,6 +115,7 @@ task('test', ['compile', 'jslint'], {async: true}, function() {
   exec(commands);
 });
 
+// TODO: Fix me.
 desc('Compile Typescript to JavaScript then bundle CommonJS and scriptable libraries.');
 task('compile', [MAIN_JS, RIMU_JS, RIMU_COMMONJS2_JS, RIMU_MIN_JS, RIMU_COMMONJS2_MIN_JS]);
 
@@ -122,11 +123,11 @@ file(MAIN_JS, SOURCE, {async: true}, function() {
   exec('tsc --module commonjs --outDir ./out ' + MAIN_TS);
 });
 
-file(RIMU_COMMONJS2_JS, MAIN_JS, {async: true}, function() {
+file(RIMU_COMMONJS2_JS, [MAIN_JS], {async: true}, function() {
   exec('webpack');
 });
 
-file(RIMU_JS, MAIN_JS, {async: true}, function() {
+file(RIMU_JS, [MAIN_JS], {async: true}, function() {
   exec('webpack --output-library-target var --output-file ' + RIMU_JS);
 });
 
@@ -136,11 +137,11 @@ function minify(src, dst) {
   exec(command);
 };
 
-file(RIMU_COMMONJS2_MIN_JS, RIMU_COMMONJS2_JS, {async: true}, function() {
+file(RIMU_COMMONJS2_MIN_JS, [RIMU_COMMONJS2_JS], {async: true}, function() {
   minify(RIMU_COMMONJS2_JS, RIMU_COMMONJS2_MIN_JS)
 });
 
-file(RIMU_MIN_JS, RIMU_JS, {async: true}, function() {
+file(RIMU_MIN_JS, [RIMU_JS], {async: true}, function() {
   minify(RIMU_JS, RIMU_MIN_JS)
 });
 
