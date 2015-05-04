@@ -4,12 +4,14 @@ See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
 ## Version 4.0.0 (2015-05-05)
-- Switched codebase from TypeScript internal modules to external (ES6) modules.
-- Modules are bundled into JavaScript libraries using Webpack.
-- The single `rimu.js` library has been replaced by two separate libraries:
+- Switched codebase from Internal to External (ES6 compatible) module
+  syntax.
+- Modules are bundled into deployable JavaScript libraries using Webpack.
+- The single `rimu.js` compiled library file has been replaced by two separate
+  library files:
 
     1. `rimu-var.js` for use in HTML _script_ tags.
-    2. `rimu-commonjs2.js` in CommonJS (npm) format.
+    2. `rimu-commonjs2.js` for use with CommonJS (Node.js) applications.
 
 ## Version 3.3 (2015-01-12)
 More Markdown compatible syntaxes added to Rimu core

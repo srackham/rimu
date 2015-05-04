@@ -63,8 +63,8 @@ This paragraph has ID `link-target`.
 <#link-target|This link> takes you to
 the above paragraph.
 
-So does [this link](#link-target)
-(Markdown style syntax).'
+// Markdown compatible syntax.
+So does [this link](#link-target).'
 
 {generate-rendered-example-1|document-links-example}
 
@@ -191,7 +191,7 @@ containing one or more space characters:
 
   Neque a massa. Porttitor
   consectetuer commodo.
- 
+
   Neque a massa. Porttitor
   consectetuer commodo.'
 

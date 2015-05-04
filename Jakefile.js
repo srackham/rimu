@@ -180,7 +180,7 @@ task('version', {async: true}, function() {
     }
     shelljs.sed('-i', /(\n\s*"version"\s*:\s*)"\d+\.\d+\.\d+"/, '$1' + '"' + version + '"', 'package.json');
     pkg.version = version;
-    exec('git commit -m "Bump version number." package.json');
+    exec('git commit -m "bump version number" package.json');
   }
 });
 
@@ -219,7 +219,7 @@ desc('Commit changes to local Github Pages repo. Use msg=\'commit message\' to s
 task('commit-gh-pages', ['test'], {async: true}, function() {
   var msg = process.env.msg;
   if (!msg) {
-    msg = 'Rebuilt project website.';
+    msg = 'rebuilt project website';
   }
   shelljs.cd(GH_PAGES_DIR);
   exec('git commit -a -m "' + msg + '"');

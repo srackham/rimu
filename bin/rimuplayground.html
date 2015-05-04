@@ -150,8 +150,14 @@ renders embedded HTML:
 `htmlReplacement`:: A string that replaces embedded HTML when
 `safeMode` is set to `2`. Defaults to `<mark>replaced HTML</mark>`.
 
-Example:
+Node.js example (Rimu has been installed from npm):
 
+  var Rimu = require('rimu');
+  Rimu.render('Hello *Rimu*!', {safeMode: 1});
+
+HTML script tag example:
+
+  <script type="text/javascript" src="rimu-var.js"></script>
   Rimu.render('Hello *Rimu*!', {safeMode: 1});
 
 See `rimuc.js` and `rimuplayground.html` for examples of `render()`
