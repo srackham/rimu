@@ -1,6 +1,6 @@
 /* tslint:disable */
 import {renderSource} from './render'
-import * as helpers from './helpers'
+import * as utils from './utils'
 import * as options from './options'
 import * as io from './io'
 import * as macros from './macros'
@@ -14,9 +14,9 @@ export interface Definition {
   closeMatch?: RegExp; // $1 (if defined) is appended to block content. If closeMatch is undefined then it must match opening delimiter.
   openTag: string;
   closeTag: string;
-  filter?: (text: string, match?: string[], expansionOptions?: helpers.ExpansionOptions) => string;
+  filter?: (text: string, match?: string[], expansionOptions?: utils.ExpansionOptions) => string;
   verify?: (match: string[]) => boolean;  // Additional match verification checks.
-  expansionOptions: helpers.ExpansionOptions;
+  expansionOptions: utils.ExpansionOptions;
 }
 
 var defs: Definition[] = [
@@ -31,13 +31,13 @@ var defs: Definition[] = [
     expansionOptions: {
       macros: true
     },
-    filter: function (text: string, match: string[], expansionOptions: helpers.ExpansionOptions): string {
+    filter: function (text: string, match: string[], expansionOptions: utils.ExpansionOptions): string {
       // Set macro.
       // Get the macro name from the match in the first line of the block.
       var name = match[0].match(/^\{([\w\-]+)\}/)[1];
       text = text.replace(/' *\\\n/g, '\'\n');        // Unescape line-continuations.
       text = text.replace(/(' *[\\]+)\\\n/g, '$1\n'); // Unescape escaped line-continuations.
-      text = helpers.replaceInline(text, expansionOptions);   // Expand macro invocations.
+      text = utils.replaceInline(text, expansionOptions);   // Expand macro invocations.
       macros.setValue(name, text);
       return '';
     }
@@ -195,7 +195,7 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
       var closeMatch: RegExp;
       if (def.closeMatch === undefined) {
         // Close delimiter matches opening delimiter.
-        closeMatch = RegExp('^' + helpers.escapeRegExp(match[0]) + '$');
+        closeMatch = RegExp('^' + utils.escapeRegExp(match[0]) + '$');
       }
       else {
         closeMatch = def.closeMatch;
@@ -205,7 +205,7 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
         lines = lines.concat(content);
       }
       // Set block expansion options.
-      var expansionOptions: helpers.ExpansionOptions;
+      var expansionOptions: utils.ExpansionOptions;
       expansionOptions = {
         macros: false,
         spans: false,
@@ -222,12 +222,12 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
         if (def.filter) {
           text = def.filter(text, match, expansionOptions);
         }
-        writer.write(helpers.injectHtmlAttributes(def.openTag));
+        writer.write(utils.injectHtmlAttributes(def.openTag));
         if (expansionOptions.container) {
           text = renderSource(text);
         }
         else {
-          text = helpers.replaceInline(text, expansionOptions);
+          text = utils.replaceInline(text, expansionOptions);
         }
         writer.write(text);
         writer.write(def.closeTag);
@@ -255,7 +255,7 @@ export function getDefinition(name: string): Definition {
 }
 
 // Parse delimited block expansion options string into blockOptions.
-export function setBlockOptions(blockOptions: helpers.ExpansionOptions, optionsString: string): void {
+export function setBlockOptions(blockOptions: utils.ExpansionOptions, optionsString: string): void {
   if (optionsString) {
     var opts = optionsString.trim().split(/\s+/);
     for (var i in opts) {
@@ -274,7 +274,7 @@ export function setBlockOptions(blockOptions: helpers.ExpansionOptions, optionsS
 // Value syntax: <open-tag>|<close-tag> block-options
 export function setDefinition(name: string, value: string): void {
   var def = getDefinition(name);
-  var match = helpers.trim(value).match(/^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/);
+  var match = utils.trim(value).match(/^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/);
   if (match) {
     if (match[1]) {
       def.openTag = match[1];

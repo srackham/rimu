@@ -1,5 +1,5 @@
 /* tslint:disable */
-import * as helpers from './helpers'
+import * as utils from './utils'
 import * as io from './io'
 import * as delimitedBlocks from './delimitedblocks'
 /* tslint:enable */
@@ -74,7 +74,7 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
 
 function renderList(startItem: ItemState, reader: io.Reader, writer: io.Writer): ItemState {
   ids.push(startItem.id);
-  writer.write(helpers.injectHtmlAttributes(startItem.def.listOpenTag));
+  writer.write(utils.injectHtmlAttributes(startItem.def.listOpenTag));
   var nextItem: ItemState;
   while (true) {
     nextItem = renderListItem(startItem, reader, writer);
@@ -94,7 +94,7 @@ function renderListItem(startItem: ItemState, reader: io.Reader, writer: io.Writ
   var text: string;
   if (match.length === 4) { // 3 match groups => definition list.
     writer.write(def.termOpenTag);
-    text = helpers.replaceInline(match[1], {macros: true, spans: true});
+    text = utils.replaceInline(match[1], {macros: true, spans: true});
     writer.write(text);
     writer.write(def.termCloseTag);
   }
@@ -107,7 +107,7 @@ function renderListItem(startItem: ItemState, reader: io.Reader, writer: io.Writ
   var nextItem: ItemState;
   nextItem = readToNext(reader, lines);
   text = lines.toString();
-  text = helpers.replaceInline(text, {macros: true, spans: true});
+  text = utils.replaceInline(text, {macros: true, spans: true});
   writer.write(text);
   while (true) {
     if (!nextItem) {

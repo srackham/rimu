@@ -1,5 +1,5 @@
 /* tslint:disable */
-import * as helpers from './helpers'
+import * as utils from './utils'
 import * as options from './options'
 import * as io from './io'
 import * as delimitedBlocks from './delimitedblocks'
@@ -14,7 +14,7 @@ export interface Definition {
   verify?: (match: RegExpExecArray) => boolean;  // Additional match verification checks.
   match: RegExp;
   replacement: string;
-  expansionOptions: helpers.ExpansionOptions;
+  expansionOptions: utils.ExpansionOptions;
 }
 
 var defs: Definition[] = [
@@ -48,8 +48,8 @@ var defs: Definition[] = [
       }
       quotes.setDefinition({
         quote: match[1],
-        openTag: helpers.replaceInline(match[2], this.expansionOptions),
-        closeTag: helpers.replaceInline(match[4], this.expansionOptions),
+        openTag: utils.replaceInline(match[2], this.expansionOptions),
+        closeTag: utils.replaceInline(match[4], this.expansionOptions),
         spans: match[3] === '|'
       });
       return '';
@@ -70,7 +70,7 @@ var defs: Definition[] = [
       var pattern = match[1];
       var flags = match[2];
       var replacement = match[3];
-      replacement = helpers.replaceInline(replacement, this.expansionOptions);
+      replacement = utils.replaceInline(replacement, this.expansionOptions);
       replacements.setDefinition(pattern, flags, replacement);
       return '';
     }
@@ -89,7 +89,7 @@ var defs: Definition[] = [
       }
       var name = match[1];
       var value = match[2];
-      value = helpers.replaceInline(value, this.expansionOptions);
+      value = utils.replaceInline(value, this.expansionOptions);
       macros.setValue(name, value);
       return '';
     }
@@ -121,7 +121,7 @@ var defs: Definition[] = [
     },
     filter: function (match: RegExpExecArray): string {
       match[1] = match[1].length.toString(); // Replace $1 with header number.
-      return helpers.replaceMatch(match, this.replacement, this.expansionOptions);
+      return utils.replaceMatch(match, this.replacement, this.expansionOptions);
     }
   },
   // Comment line.
@@ -174,22 +174,22 @@ var defs: Definition[] = [
       // Parse Block Attributes.
       // class names = $1, id = $2, html-attributes = $3, block-options = $4
       var text = match[0];
-      text = helpers.replaceInline(text, this.expansionOptions); // Expand macro references.
+      text = utils.replaceInline(text, this.expansionOptions); // Expand macro references.
       match = /^\\?\.([a-zA-Z][\w\ -]*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text);
       if (!match) {
         return false;
       }
       if (match[1]) { // HTML element class names.
-        htmlClasses += ' ' + helpers.trim(match[1]);
-        htmlClasses = helpers.trim(htmlClasses);
+        htmlClasses += ' ' + utils.trim(match[1]);
+        htmlClasses = utils.trim(htmlClasses);
       }
       if (match[2]) { // HTML element id.
-        htmlAttributes += ' id="' + helpers.trim(match[2]).slice(1) + '"';
+        htmlAttributes += ' id="' + utils.trim(match[2]).slice(1) + '"';
       }
       if (match[3] && options.safeMode === 0) { // HTML attributes.
-        htmlAttributes += ' ' + helpers.trim(match[3].slice(1, match[3].length - 1));
+        htmlAttributes += ' ' + utils.trim(match[3].slice(1, match[3].length - 1));
       }
-      htmlAttributes = helpers.trim(htmlAttributes);
+      htmlAttributes = utils.trim(htmlAttributes);
       delimitedBlocks.setBlockOptions(blockOptions, match[4]);
       return true;
     },
@@ -202,7 +202,7 @@ var defs: Definition[] = [
 // Globals set by Block Attributes filter.
 export var htmlClasses: string = '';
 export var htmlAttributes: string = '';
-export var blockOptions: helpers.ExpansionOptions = {};
+export var blockOptions: utils.ExpansionOptions = {};
 
 // If the next element in the reader is a valid line block render it
 // and return true, else return false.
@@ -222,12 +222,12 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
       }
       var text: string;
       if (!def.filter) {
-        text = helpers.replaceMatch(match, def.replacement, def.expansionOptions);
+        text = utils.replaceMatch(match, def.replacement, def.expansionOptions);
       }
       else {
         text = def.filter(match, reader);
       }
-      text = helpers.injectHtmlAttributes(text);
+      text = utils.injectHtmlAttributes(text);
       writer.write(text);
       reader.next();
       if (text && !reader.eof()) {

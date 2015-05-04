@@ -1,5 +1,5 @@
 /* tslint:disable */
-import * as helpers from './helpers'
+import * as utils from './utils'
 /* tslint:enable */
 
 export interface Definition {
@@ -50,7 +50,7 @@ var unescapeRe: RegExp;     // Searches for escaped quotes.
 export function initialize(): void {
   var s: string[] = [];
   for (var i in defs) {
-    s.push(helpers.escapeRegExp(defs[i].quote));
+    s.push(utils.escapeRegExp(defs[i].quote));
   }
   // $1 is quote character, $2 is quoted text.
   // Quoted text cannot begin or end with whitespace.

@@ -1,5 +1,5 @@
 /* tslint:disable */
-import * as helpers from './helpers'
+import * as utils from './utils'
 /* tslint:enable */
 
 /**
@@ -54,7 +54,7 @@ export function safeModeFilter(html: string): string {
     case 2:   // Replace HTML with 'htmlReplacement' option string.
       return htmlReplacement;
     case 3:   // Render HTML as text.
-      return helpers.replaceSpecialChars(html);
+      return utils.replaceSpecialChars(html);
     default:
       throw 'illegal safeMode value';
   }

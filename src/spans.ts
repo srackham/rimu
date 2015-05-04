@@ -13,7 +13,7 @@
  */
 
 /* tslint:disable */
-import * as helpers from './helpers'
+import * as utils from './utils'
 import * as quotes from './quotes'
 import * as replacements from './replacements'
 /* tslint:enable */
@@ -94,7 +94,7 @@ import * as replacements from './replacements'
       fragment = fragments[fragmentIndex];
       if (!def.spans) {
         fragment.text = quotes.unescape(fragment.text);
-        fragment.text = helpers.replaceSpecialChars(fragment.text);
+        fragment.text = utils.replaceSpecialChars(fragment.text);
         fragment.done = true;
         // Move to 'after' fragment.
         fragmentIndex += 2;
@@ -158,11 +158,11 @@ import * as replacements from './replacements'
       if (match[0][0] === '\\') {
         // Remove leading backslash.
         fragment.text = match.input.slice(match.index + 1, findRe.lastIndex);
-        fragment.text = helpers.replaceSpecialChars(fragment.text);
+        fragment.text = utils.replaceSpecialChars(fragment.text);
       }
       else {
         if (!def.filter) {
-          fragment.text = helpers.replaceMatch(match, def.replacement, {specials: true});
+          fragment.text = utils.replaceMatch(match, def.replacement, {specials: true});
         }
         else {
           fragment.text = def.filter(match);
@@ -180,7 +180,7 @@ import * as replacements from './replacements'
     for (var i in fragments) {
       fragment = fragments[i];
       if (!fragment.done) {
-        fragment.text = helpers.replaceSpecialChars(fragment.text);
+        fragment.text = utils.replaceSpecialChars(fragment.text);
       }
     }
   }
