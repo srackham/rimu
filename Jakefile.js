@@ -13,7 +13,6 @@ var child_process = require('child_process');
 var RIMU_VAR_LIB = 'bin/rimu-var.js';  // Script tag library format.
 var RIMU_VAR_LIB_MIN = 'bin/rimu-var.min.js';
 var RIMU_COMMONJS2_LIB = 'bin/rimu-commonjs2.js';  // Npm library format.
-var RIMU_COMMONJS2_LIB_MIN = 'bin/rimu-commonjs2.min.js';
 var MAIN_TS = 'src/main.ts';
 var MAIN_JS = 'out/main.js';
 var SOURCE = shelljs.ls('src/*.ts');
@@ -117,7 +116,7 @@ task('test', ['compile', 'jslint'], {async: true}, function() {
 
 // TODO: Fix me.
 desc('Compile Typescript to JavaScript then bundle CommonJS and scriptable libraries.');
-task('compile', [MAIN_JS, RIMU_VAR_LIB, RIMU_COMMONJS2_LIB, RIMU_VAR_LIB_MIN, RIMU_COMMONJS2_LIB_MIN]);
+task('compile', [MAIN_JS, RIMU_VAR_LIB, RIMU_COMMONJS2_LIB, RIMU_VAR_LIB_MIN]);
 
 file(MAIN_JS, SOURCE, {async: true}, function() {
   exec('tsc --module commonjs --outDir ./out ' + MAIN_TS);
@@ -136,10 +135,6 @@ function minify(src, dst) {
   var command = 'uglifyjs  --preamble "' + preamble + '" --output ' + dst + ' ' + src;
   exec(command);
 };
-
-file(RIMU_COMMONJS2_LIB_MIN, [RIMU_COMMONJS2_LIB], {async: true}, function() {
-  minify(RIMU_COMMONJS2_LIB, RIMU_COMMONJS2_LIB_MIN)
-});
 
 file(RIMU_VAR_LIB_MIN, [RIMU_VAR_LIB], {async: true}, function() {
   minify(RIMU_VAR_LIB, RIMU_VAR_LIB_MIN)
