@@ -10,10 +10,10 @@ var child_process = require('child_process');
 
 /* Inputs and outputs */
 
-var RIMU_JS = 'bin/rimu.js';  // Script tag library format.
-var RIMU_MIN_JS = 'bin/rimu.min.js';
-var RIMU_COMMONJS2_JS = 'bin/rimu-commonjs2.js';  // Npm library format.
-var RIMU_COMMONJS2_MIN_JS = 'bin/rimu-commonjs2.min.js';
+var RIMU_VAR_LIB = 'bin/rimu-var.js';  // Script tag library format.
+var RIMU_VAR_LIB_MIN = 'bin/rimu-var.min.js';
+var RIMU_COMMONJS2_LIB = 'bin/rimu-commonjs2.js';  // Npm library format.
+var RIMU_COMMONJS2_LIB_MIN = 'bin/rimu-commonjs2.min.js';
 var MAIN_TS = 'src/main.ts';
 var MAIN_JS = 'out/main.js';
 var SOURCE = shelljs.ls('src/*.ts');
@@ -117,18 +117,18 @@ task('test', ['compile', 'jslint'], {async: true}, function() {
 
 // TODO: Fix me.
 desc('Compile Typescript to JavaScript then bundle CommonJS and scriptable libraries.');
-task('compile', [MAIN_JS, RIMU_JS, RIMU_COMMONJS2_JS, RIMU_MIN_JS, RIMU_COMMONJS2_MIN_JS]);
+task('compile', [MAIN_JS, RIMU_VAR_LIB, RIMU_COMMONJS2_LIB, RIMU_VAR_LIB_MIN, RIMU_COMMONJS2_LIB_MIN]);
 
 file(MAIN_JS, SOURCE, {async: true}, function() {
   exec('tsc --module commonjs --outDir ./out ' + MAIN_TS);
 });
 
-file(RIMU_COMMONJS2_JS, [MAIN_JS], {async: true}, function() {
+file(RIMU_COMMONJS2_LIB, [MAIN_JS], {async: true}, function() {
   exec('webpack');
 });
 
-file(RIMU_JS, [MAIN_JS], {async: true}, function() {
-  exec('webpack --output-library-target var --output-file ' + RIMU_JS);
+file(RIMU_VAR_LIB, [MAIN_JS], {async: true}, function() {
+  exec('webpack --output-library-target var --output-file ' + RIMU_VAR_LIB);
 });
 
 function minify(src, dst) {
@@ -137,12 +137,12 @@ function minify(src, dst) {
   exec(command);
 };
 
-file(RIMU_COMMONJS2_MIN_JS, [RIMU_COMMONJS2_JS], {async: true}, function() {
-  minify(RIMU_COMMONJS2_JS, RIMU_COMMONJS2_MIN_JS)
+file(RIMU_COMMONJS2_LIB_MIN, [RIMU_COMMONJS2_LIB], {async: true}, function() {
+  minify(RIMU_COMMONJS2_LIB, RIMU_COMMONJS2_LIB_MIN)
 });
 
-file(RIMU_MIN_JS, [RIMU_JS], {async: true}, function() {
-  minify(RIMU_JS, RIMU_MIN_JS)
+file(RIMU_VAR_LIB_MIN, [RIMU_VAR_LIB], {async: true}, function() {
+  minify(RIMU_VAR_LIB, RIMU_VAR_LIB_MIN)
 });
 
 desc('Create TypeDoc API documentation.');
@@ -216,7 +216,7 @@ task('release-gh-pages', ['build-gh-pages', 'commit-gh-pages', 'push-gh-pages'])
 
 desc('Generate documentation and copy to gh-pages repo');
 task('build-gh-pages', ['html-docs', 'validate-html'], function() {
-  shelljs.cp('-f', HTML.concat(RIMU_JS), GH_PAGES_DIR)
+  shelljs.cp('-f', HTML.concat(RIMU_VAR_LIB), GH_PAGES_DIR)
 });
 
 desc('Commit changes to local Github Pages repo. Use msg=\'commit message\' to set a custom commit message.');
