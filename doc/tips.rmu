@@ -1,39 +1,38 @@
-= Rimu Tips
+# Rimu Tips
 
 
-== HTML is valid Rimu
+## HTML is valid Rimu
 You are free to mix any valid HTML into a Rimu document &mdash; no
 special syntax or relearning  is required (in this sense Rimu can be
 thought of as an HTML superset).
 
 
-== Converting Rimu to PDF
+## Converting Rimu to PDF
 First convert Rimu markup to HTML using the `rimuc` tool and then
 convert the HTML to PDF.  Here are a few options for converting HTML
 to PDF:
 
-. Open the HTML document in <https://www.libreoffice.org/|LibreOffice>
+. Open the HTML document in [LibreOffice](https://www.libreoffice.org/)
   Writer and export as PDF, this does a good job especially if you use
   the `rimuc` `--styled` option.
 . Google's Chrome web browser has an option to print HTML to a PDF
   file, other browsers have PDF add-ons that perform the same
   function.
 . Use an HTML to PDF conversion program such as
-  <http://www.htmldoc.org/|HTMLDOC>.
+  [HTMLDOC](http://www.htmldoc.org/).
 
 
-== Extend Rimu with Macros
+## Extend Rimu with Macros
 Macros provide a simple, consistent mechanism for extending the Rimu
 markup vocabulary. For example:
 
 .-macros
-{macros-example} = '{sidebar} = '==== $1
+{macros-example} = '{sidebar} = '#### $1
 .[style="padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"]'\
 {info} = '<span class="label label-info">$1</span>'\
 {heads-up} = '{info|Heads up!}'\
 {note} = '{info|Note} <mark>$1</mark>'\
-{playground} = '<http://srackham.github.io/rimu/rimuplayground.html|Rimu
-Playground>'\
+{playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'\
 
 {sidebar|Fun with Macros}
 ..
@@ -52,7 +51,7 @@ experimentation.
   any valid Rimu markup (including HTML and blank lines).
 
 
-== Intra-Document Links
+## Intra-Document Links
 To link to another place within a document: Create an ID for the
 element you want to link to (using the Rimu _Block Attribute_ element)
 then create a link to it using a fragment identifier URL. For example:
@@ -70,8 +69,8 @@ So does [this link](#link-target).'
 
 
 .#syntax-highlighting
-== Syntax highlighting
-<https://github.com/isagalaev/highlight.js|Highlight.js> is a nice
+## Syntax highlighting
+[Highlight.js](https://github.com/isagalaev/highlight.js) is a nice
 syntax highlighter that makes it trivial to add syntax highlighting to
 Rimu Code blocks and Indented paragraphs.  The _rimuc_ tool `--styled`
 option includes Highlight.js if you set the `\{--highlightjs}` macro to
@@ -109,7 +108,7 @@ unless the language class is explicitly set:
 
 
 .#markdown-compatible
-== Syntax shared with Markdown
+## Syntax shared with Markdown
 The following subset of _Rimu_ elements is compatible with Markdown:
 
 Headers:: Headers using `#` character header IDs.
@@ -117,12 +116,11 @@ Headers:: Headers using `#` character header IDs.
 Code blocks::
 - Indented paragraphs (at least four spaces) render like Markdown code
   blocks.
-- <https://help.github.com/articles/github-flavored-markdown/|GitHub
-  Flavored Markdown> _Fenced Blocks_ are compatible with Rimu
-  Back-tick delimited blocks.
+- [GitHub Flavored Markdown](https://help.github.com/articles/github-flavored-markdown/)
+  _Fenced Blocks_ are compatible with Rimu Back-tick delimited blocks.
 
-Quote paragraphs:: Paragraphs starting with `>` are rendered like
-Markdown Blockquotes.
+Quote paragraphs:: Paragraphs starting with a `>` character are
+rendered like Markdown Blockquotes.
 
 Text formatting:: `_emphasis_`, `**bold**`, `\`code\`` and
 `~~strikethrough~~` quotes (strikethrough is GitHub Flavored Markdown
@@ -132,8 +130,8 @@ Lists::
 - Bullet lists with `-` and `*` IDs.
 - Numbered lists with explicit numbering.
 
-URLs and Email addresses:: `[caption](url)`, `<url>` and `<email>` syntaxes
-plus Github Flavored Markdown _URL autolinking_.
+URLs and Email addresses:: `[caption](url)`, `<url>` and `<email>`
+syntaxes plus Github Flavored Markdown _URL autolinking_.
 
 Images:: `![alt](url)` syntax.
 
@@ -141,13 +139,13 @@ The Rimu _README_ uses this subset for compatibility with _GitHub_ and
 _npmjs.org_ README formats.
 
 
-== Escaping Rimu syntax
+## Escaping Rimu syntax
 If you have text that you don't want interpreted as a Rimu element
 then you can render it literally (escape it) by prefixing the element
 with a backslash character.
 
 
-== Passing macro values into Rimu documents
+## Passing macro values into Rimu documents
 You can do this by prepending text containing macro definitions to
 Rimu source before rendering the source. The _rimuc_ command has a
 `--prepend` option that can be used to do this.
@@ -162,17 +160,17 @@ output document:
   rimuc --styled --prepend "{title}='Kotlin Notes'" kotlin-notes.rmu
 
 
-== Syntax checker
+## Syntax checker
 The Vim editor syntax highlighter is a big help when writing (and
 reading) Rimu markup.
 
 
-== The Rimu markup looks ok but the generated HTML is wrong
+## The Rimu markup looks ok but the generated HTML is wrong
 Using an editor with Rimu syntax highlighting support (see previous
 topic) makes it much easier to spot syntax errors.
 
 
-== Render contiguous Indented paragraphs with a single element
+## Render contiguous Indented paragraphs with a single element
 When you have multiple Indented paragraphs separated by blank lines
 the usual expectation is that they will be contained in a single
 listing -- to achieve this separate the paragraphs with lines
@@ -191,14 +189,14 @@ containing one or more space characters:
 
   Neque a massa. Porttitor
   consectetuer commodo.
-
+  
   Neque a massa. Porttitor
   consectetuer commodo.'
 
 {generate-rendered-example-1|joined-paragraphs-example}
 
 
-== Display contiguous block images vertically
+## Display contiguous block images vertically
 Unless they are separated by other block elements, multiple block
 image elements flow inline like text (this is because the HTML `img`
 element is an "inline block" element), you can flow them vertically by
@@ -214,7 +212,7 @@ example:
 {generate-rendered-example-2|block-images-example}
 
 
-== Entering non-ASCII characters
+## Entering non-ASCII characters
 A number of non-ASCII Unicode characters are commonly used for
 punctuation e.g.  em dash, ellipsis and quotation characters. You can
 enter these characters (or any Unicode character) as HTML character
@@ -223,9 +221,9 @@ entities or you can enter them literally.
 For example, to enter an ellipsis you could either enter `&hellip;` or
 you could enter the actual … character directly (alternatively you
 could define a _Replacement_ for the ellipsis, see the
-<https://github.com/srackham/rimu/blob/master/examples/.rimurc|example
-.rimurc file>). The mechanism for entering Unicode characters directly
-will be dictated your editor:
+[example .rimurc file](https://github.com/srackham/rimu/blob/master/examples/.rimurc)).
+The mechanism for entering Unicode characters directly will be dictated
+by your editor:
 
 Vim:: Enter _Ctrl+V_ followed by the the character _u_ followed by the
 hexidecimal character code e.g. to enter an em dash enter _Ctrl+V_
@@ -245,11 +243,10 @@ Common Unicode characters:
   →             &rightarrow;   2192
 
 Here's a full list of
-<http://dev.w3.org/html5/html-author/charref|HTML5 character
-entities>.
+[HTML5 character entities](http://dev.w3.org/html5/html-author/charref).
 
 
-== Whitespace and Underscores in URLs
+## Whitespace and Underscores in URLs
 Whitespace characters are illegal in URL paths, use _%20_ in place of
 spaces, for example:
 
@@ -261,32 +258,29 @@ underscores or escape them with backslashes.
 
 
 .#defs-warning
-== Use Replacement and Quote definitions sparingly
+## Use Replacement and Quote definitions sparingly
 Adding new Replacement and Quote definitions changes the Rimu syntax
 which can produce unexpected results. It can also make your Rimu
 source non-portable and less readable.
 
 
 .#example-rimurc
-== Example .rimurc file
-The Rimu distribution includes an
-<https://github.com/srackham/rimu/blob/master/examples/.rimurc|example
-.rimurc file>.
+## Example .rimurc file
+The Rimu distribution includes an [example .rimurc
+file](https://github.com/srackham/rimu/blob/master/examples/.rimurc).
 
 
-== Extending the Vim syntax highlighter
+## Extending the Vim syntax highlighter
 If you've added custom replacements and quotes you can highlight them
 in Vim by creating a custom `~/.vim/after/syntax/rimu.vim` syntax
 file (Vim loads files from the `after` directory after loading normal
-syntax files).  The distributed
-<https://github.com/srackham/rimu/blob/master/examples/rimu.vim|example
-~/.vim/after/syntax/rimu.vim syntax file> highlights custom syntax
-definitions from the
-<https://github.com/srackham/rimu/blob/master/examples/.rimurc|example
-.rimurc file>.
+syntax files).  The distributed [example ~/.vim/after/syntax/rimu.vim
+syntax file](https://github.com/srackham/rimu/blob/master/examples/rimu.vim)
+highlights custom syntax definitions from the [example .rimurc
+file](https://github.com/srackham/rimu/blob/master/examples/.rimurc).
 
 
-== Understanding substitution priorities
+## Understanding substitution priorities
 Inline elements are processed in the following order (first to last):
 
 . Macros
@@ -298,7 +292,7 @@ Substitutions in multi-line block elements can be controlled using
 _block-options_ in the _Block Attributes_ element.
 
 
-== Using Macro, Replacement and Quote definitions in Safe Mode
+## Using Macro, Replacement and Quote definitions in Safe Mode
 _Macro_, _Replacement_ and _Quote_ definitions are not processed in
 Safe Mode. To apply Macro, Replacement or Quote definitions to Rimu
 markup processed in Safe Mode you need to load the definitions with a
@@ -310,7 +304,7 @@ var html = Rimu.render(untrusted_rimu_markup, {safeMode: 1});
 ```
 
 
-== Modifying built-in Quotes and Replacements
+## Modifying built-in Quotes and Replacements
 You can (with <#defs-warning|caveats>) redefine built-in _Quotes_ and
 _Replacements_, here are a couple of examples:
 
@@ -320,14 +314,14 @@ _ = '<em class="emphasis">|</em>'
 ```
 
 Refer to the Rimu source files
-<https://github.com/srackham/rimu/blob/master/src/quotes.ts|quotes.ts>
+[quotes.ts](https://github.com/srackham/rimu/blob/master/src/quotes.ts)
 and
-<https://github.com/srackham/rimu/blob/master/src/replacements.ts|replacements.ts>.
+[replacements.ts](https://github.com/srackham/rimu/blob/master/src/replacements.ts).
 
 
-== Mathematical formulae using MathJax
+## Mathematical formulae using MathJax
 You can include math formulas written in LaTeX or MathML using
-<http://www.mathjax.org/|MathJax>. The `rimuc` command `--styled`
+[MathJax](http://www.mathjax.org/). The `rimuc` command `--styled`
 option will include MathJax support if the `\{--mathjax}` macro is
 defined. Examples:
 
@@ -358,11 +352,11 @@ A MathML block formula:
 NOTE: Macro expansion has been disabled in LaTeX formulas to stop
 `\{i=0}` and `\{2}` from being mistaken for Rimu macro invocations.
 
-See the <http://docs.mathjax.org/en/latest/|latest MathJax
-documentation> to learn how to use MathJax.
+See the [latest MathJax documentation](http://docs.mathjax.org/en/latest/)
+to learn how to use MathJax.
 
 
-== Inline Comments
+## Inline Comments
 Rimu comment elements are block elements and cannot be used inline --
 use an undefined macro to exclude inline text from elements that
 support macro expansion (e.g. paragraphs, lists, HTML blocks). It is
@@ -375,7 +369,7 @@ See also <#conditional-inclusion|Conditional Inclusion>.
 
 
 .#conditional-inclusion
-== Conditional Inclusion
+## Conditional Inclusion
 Macro invocations can be used to conditionally include source text.
 
 Single-line Blocks::
@@ -437,7 +431,7 @@ parameter text can encompass multiple lines.
 ..
 
 
-== Tables
+## Tables
 Create tables using the HTML table syntax (Rimu has no special syntax
 for tables).
 
@@ -445,8 +439,8 @@ You can use Rimu markup in table cells, just remember that HTML blocks
 must start at the left margin and end with a blank line.
 
 The `rimuc` `--styled` option includes
-<http://getbootstrap.com/|Bootstrap> so you can use
-<http://getbootstrap.com/css/#tables|Bootstrap tables classes> to
+[Bootstrap](http://getbootstrap.com/) so you can use
+[Bootstrap tables classes](http://getbootstrap.com/css/#tables) to
 create nicely formatted tables. For example:
 
 .-macros
@@ -460,12 +454,12 @@ create nicely formatted tables. For example:
 sem. Mauris vitae ipsum. Donec dui ac ridiculus quisque proin.
 Lobortis lacus vestibulum sem.
 
-===== Normal paragraph
+##### Normal paragraph
 Lorem ipsum dolor. Sit `amet venenatis`. Erat nulla arcu. Lorem luctus
 sem. _Mauris vitae_ ipsum. Donec dui ac ridiculus {mark|quisque} proin.
 Lobortis lacus vestibulum sem.
 
-===== Indented paragraph
+##### Indented paragraph
   Neque a massa. Porttitor consectetuer commodo. Nunc nulla tempor
   tempor enim ornare. Mi nam id. Ornare mauris tempor. Pede mauris
   sed.  Scelerisque feugiat massa alias.
@@ -498,7 +492,7 @@ Lobortis lacus vestibulum sem.
 {generate-rendered-example-2|tables-example}
 
 
-== Macro meta-programming
+## Macro meta-programming
 You can define macros which, when invoked, generate other macros. A
 good example of this is the generation of document section headers,
 links and table of contents entries from a section identifier and
@@ -510,14 +504,14 @@ title:
 {section-definition} = '\
 {$1} = '<#$1|$2>' \\
 {$1-header} = '.#$1
-== $2' \\
+## $2' \\
 {$1-toc} = '{$1} \' \\
 '\
 // Generate section macros.
 {section-definition|section1|Section One}
 {section-definition|section2|Section Two}
 
-==== Table of Contents
+#### Table of Contents
 {section1-toc}
 {section2-toc}
 
@@ -535,7 +529,7 @@ NOTE: The backslash character is used to continue macro definition
 lines that end with a single-quote.
 
 
-== Macro tips
+## Macro tips
 - Use the `&vert;` character entity to display a `|` character inside
   a macro parameter value.
 - Closing block delimiters must be explicit and cannot be sourced from
@@ -580,12 +574,13 @@ Generates:
 
 
 .#scoped-css
-== Use scoped CSS to generate custom styled elements
-HTML5's <http://www.w3schools.com/tags/att\_style\_scoped.asp|scoped
-CSS attribute> allows you to define CSS outside the document header.
-This allows you to include CSS in the body of a Rimu document which is
-very handy for tweaking the default CSS and for styling Rimu block
-elements. Examples:
+## Use scoped CSS to generate custom styled elements
+HTML5's [scoped CSS
+attribute](http://www.w3schools.com/tags/att\_style\_scoped.asp)
+allows you to define CSS outside the document header.  This allows you
+to include CSS in the body of a Rimu document which is very handy for
+tweaking the default CSS and for styling Rimu block elements.
+Examples:
 
 {scoped-css-example} = '<style type="text/css" scoped>
 .verse {
@@ -613,7 +608,7 @@ Porttitor consectetuer commodo.
 
 .verse
 ..
-==== Lorum Ipsum
+#### Lorum Ipsum
 Neque a massa.
 Porttitor consectetuer commodo.
 
@@ -628,7 +623,7 @@ Porttitor consectetuer commodo.
 
 .sidebar
 ..
-==== Lorum Ipsum
+#### Lorum Ipsum
 Neque a massa.
 Porttitor consectetuer commodo.
 
@@ -639,18 +634,18 @@ Scelerisque feugiat massa alias.
 
 {generate-rendered-example-1|scoped-css-example}
 
-- The above _verse_ and _sidebar_ CSS styles are automatically included when
-  you use the _rimuc_ tool `--styled` option.
-- HTML5 stipulates that scoped _style_ element must be the first child element
-  -- in practice  most browsers don't care where it occurs.
+- The above _verse_ and _sidebar_ CSS styles are automatically
+  included when you use the _rimuc_ tool `--styled` option.
+- HTML5 stipulates that scoped _style_ element must be the first child
+  element -- in practice  most browsers don't care where it occurs.
 
 
-== List item counters
+## List item counters
 In addition to the _verse_ and _sidebar_ CSS styles the  _rimuc_ tool
 `--styled` option also includes CSS classes for counting list items
 and for numbering labeled list items:
 
-{list-item-counters-example} = '==== Numbered labeled list
+{list-item-counters-example} = '#### Numbered labeled list
 .dl-numbered
 One:: Item one.
 Two:: Item two.
@@ -659,7 +654,7 @@ Three:: Item three.
 .dl-counter
 labeled list items.
 
-==== Counted unordered list
+#### Counted unordered list
 - Item one.
 - Item two.
 - Item three.
@@ -668,7 +663,7 @@ labeled list items.
 .ul-counter
 unordered list items.
 
-==== Counted ordered list
+#### Counted ordered list
 . Item one.
 . Item two.
 
@@ -678,7 +673,7 @@ ordered list items.'
 {generate-rendered-example-1|list-item-counters-example}
 
 
-== Section numbering
+## Section numbering
 If you define the `--section-numbers` macro the  _rimuc_ tool
 `--styled` option will emit CSS to automatically number _h2_ sections
 and _h3_ sub-sections. You need to define the `--section-numbers`
@@ -688,7 +683,7 @@ macro on the command-line (using the `--prepend` option) or in your
   rimuc --styled --prepend "{--section-numbers}='yes'" mydoc.rmu
 
 
-== Nested Delimited Blocks
+## Nested Delimited Blocks
 Delimited blocks of the same type can be nested by using differing
 numbers of delimiter characters to distinguish between them. Here is
 an example of a Quote block nested within a Quote block:
