@@ -120,7 +120,7 @@ desc('Compile Typescript to JavaScript then bundle CommonJS and scriptable libra
 task('compile', [MAIN_JS, RIMU_VAR_LIB, RIMU_COMMONJS2_LIB, RIMU_VAR_LIB_MIN]);
 
 file(MAIN_JS, SOURCE, {async: true}, function() {
-  exec('tsc --module commonjs --outDir ./out ' + MAIN_TS);
+  exec('tsc --project .');
 });
 
 file(RIMU_COMMONJS2_LIB, [MAIN_JS], {async: true}, function() {

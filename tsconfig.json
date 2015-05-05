@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "preserveConstEnums": true,
+    "outDir": "./out"
+  },
+  "files": [
+    "./src/delimitedblocks.ts",
+    "./src/io.ts",
+    "./src/lineblocks.ts",
+    "./src/lists.ts",
+    "./src/macros.ts",
+    "./src/main.ts",
+    "./src/options.ts",
+    "./src/quotes.ts",
+    "./src/render.ts",
+    "./src/replacements.ts",
+    "./src/spans.ts",
+    "./src/utils.ts"
+  ]
+}
