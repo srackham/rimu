@@ -3,6 +3,13 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
+## Version 4.0.1 (2015-05-06)
+Documentation updates (no functional changes).
+
+- Use Markdown links and headers syntax in documentation.
+  Most users will already know and use Markdown so this makes Rimu
+  example source more familar and easier to assimilate.
+
 ## Version 4.0.0 (2015-05-05)
 - Switched codebase from Internal to External (ES6 compatible) module
   syntax.
