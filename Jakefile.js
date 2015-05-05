@@ -222,11 +222,15 @@ task('commit-gh-pages', ['test'], {async: true}, function() {
     msg = 'rebuilt project website';
   }
   shelljs.cd(GH_PAGES_DIR);
-  exec('git commit -a -m "' + msg + '"');
+  exec('git commit -a -m "' + msg + '"', function () {
+    shelljs.cd('..');
+  });
 });
 
 desc('Push Github Pages commits to Github.');
 task('push-gh-pages', ['test'], {async: true}, function() {
   shelljs.cd(GH_PAGES_DIR);
-  exec('git push origin gh-pages');
+  exec('git push origin gh-pages', function () {
+    shelljs.cd('..');
+  });
 });
