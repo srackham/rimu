@@ -88,8 +88,8 @@ var Rimu =
 /***/ function(module, exports, __webpack_require__) {
 
 	/* tslint:disable */
-	var io = __webpack_require__(4);
-	var lineBlocks = __webpack_require__(5);
+	var io = __webpack_require__(5);
+	var lineBlocks = __webpack_require__(4);
 	var delimitedBlocks = __webpack_require__(6);
 	var lists = __webpack_require__(7);
 	/* tslint:enable */
@@ -248,91 +248,6 @@ var Rimu =
 
 /***/ },
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Reader = (function () {
-	    function Reader(text) {
-	        // Split lines on newline boundaries.
-	        // http://stackoverflow.com/questions/1155678/javascript-string-newline-character
-	        // TODO split is broken on IE8 e.g. 'X\n\nX'.split(/\n/g).length) returns 2 but should return 3.
-	        this.lines = text.split(/\r\n|\r|\n/g);
-	        this.pos = 0;
-	    }
-	    // Getter/setter for current line, return null if EOF.
-	    Reader.prototype.cursor = function (value) {
-	        if (value === void 0) { value = null; }
-	        if (this.eof())
-	            return null;
-	        if (value !== null) {
-	            this.lines[this.pos] = value;
-	        }
-	        return this.lines[this.pos];
-	    };
-	    Reader.prototype.eof = function () {
-	        return this.pos >= this.lines.length;
-	    };
-	    // Read the next line, return null if EOF.
-	    Reader.prototype.next = function () {
-	        if (this.eof())
-	            return null;
-	        this.pos++;
-	        if (this.eof())
-	            return null;
-	        return this.lines[this.pos];
-	    };
-	    // Read to the first line matching the re.
-	    // Return the array of lines preceding the match plus a line containing
-	    // the $1 match group (if it exists).
-	    // Return null if an EOF is encountered.
-	    // Exit with the reader pointing to the line following the match.
-	    Reader.prototype.readTo = function (find) {
-	        var result = [];
-	        var match;
-	        while (!this.eof()) {
-	            match = this.cursor().match(find);
-	            if (match) {
-	                if (match.length > 1) {
-	                    result.push(match[1]); // $1
-	                }
-	                this.next();
-	                break;
-	            }
-	            result.push(this.cursor());
-	            this.next();
-	        }
-	        // Blank line matches EOF.
-	        if (match || find.toString() === '/^$/' && this.eof()) {
-	            return result;
-	        }
-	        else {
-	            return null;
-	        }
-	    };
-	    Reader.prototype.skipBlankLines = function () {
-	        while (this.cursor() === '') {
-	            this.next();
-	        }
-	    };
-	    return Reader;
-	})();
-	exports.Reader = Reader;
-	var Writer = (function () {
-	    function Writer() {
-	        this.buffer = [];
-	    }
-	    Writer.prototype.write = function (s) {
-	        this.buffer.push(s);
-	    };
-	    Writer.prototype.toString = function () {
-	        return this.buffer.join('');
-	    };
-	    return Writer;
-	})();
-	exports.Writer = Writer;
-
-
-/***/ },
-/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* tslint:disable */
@@ -575,6 +490,91 @@ var Rimu =
 
 
 /***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Reader = (function () {
+	    function Reader(text) {
+	        // Split lines on newline boundaries.
+	        // http://stackoverflow.com/questions/1155678/javascript-string-newline-character
+	        // TODO split is broken on IE8 e.g. 'X\n\nX'.split(/\n/g).length) returns 2 but should return 3.
+	        this.lines = text.split(/\r\n|\r|\n/g);
+	        this.pos = 0;
+	    }
+	    // Getter/setter for current line, return null if EOF.
+	    Reader.prototype.cursor = function (value) {
+	        if (value === void 0) { value = null; }
+	        if (this.eof())
+	            return null;
+	        if (value !== null) {
+	            this.lines[this.pos] = value;
+	        }
+	        return this.lines[this.pos];
+	    };
+	    Reader.prototype.eof = function () {
+	        return this.pos >= this.lines.length;
+	    };
+	    // Read the next line, return null if EOF.
+	    Reader.prototype.next = function () {
+	        if (this.eof())
+	            return null;
+	        this.pos++;
+	        if (this.eof())
+	            return null;
+	        return this.lines[this.pos];
+	    };
+	    // Read to the first line matching the re.
+	    // Return the array of lines preceding the match plus a line containing
+	    // the $1 match group (if it exists).
+	    // Return null if an EOF is encountered.
+	    // Exit with the reader pointing to the line following the match.
+	    Reader.prototype.readTo = function (find) {
+	        var result = [];
+	        var match;
+	        while (!this.eof()) {
+	            match = this.cursor().match(find);
+	            if (match) {
+	                if (match.length > 1) {
+	                    result.push(match[1]); // $1
+	                }
+	                this.next();
+	                break;
+	            }
+	            result.push(this.cursor());
+	            this.next();
+	        }
+	        // Blank line matches EOF.
+	        if (match || find.toString() === '/^$/' && this.eof()) {
+	            return result;
+	        }
+	        else {
+	            return null;
+	        }
+	    };
+	    Reader.prototype.skipBlankLines = function () {
+	        while (this.cursor() === '') {
+	            this.next();
+	        }
+	    };
+	    return Reader;
+	})();
+	exports.Reader = Reader;
+	var Writer = (function () {
+	    function Writer() {
+	        this.buffer = [];
+	    }
+	    Writer.prototype.write = function (s) {
+	        this.buffer.push(s);
+	    };
+	    Writer.prototype.toString = function () {
+	        return this.buffer.join('');
+	    };
+	    return Writer;
+	})();
+	exports.Writer = Writer;
+
+
+/***/ },
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -583,7 +583,7 @@ var Rimu =
 	var utils = __webpack_require__(8);
 	var options = __webpack_require__(2);
 	var macros = __webpack_require__(10);
-	var lineBlocks = __webpack_require__(5);
+	var lineBlocks = __webpack_require__(4);
 	var defs = [
 	    // Delimited blocks cannot be escaped with a backslash.
 	    // Macro definition block.
@@ -859,7 +859,7 @@ var Rimu =
 
 	/* tslint:disable */
 	var utils = __webpack_require__(8);
-	var io = __webpack_require__(4);
+	var io = __webpack_require__(5);
 	var delimitedBlocks = __webpack_require__(6);
 	var defs = [
 	    // Prefix match with backslash to allow escaping.
@@ -1062,7 +1062,7 @@ var Rimu =
 	/* tslint:disable */
 	var macros = __webpack_require__(10);
 	var spans = __webpack_require__(11);
-	var lineBlocks = __webpack_require__(5);
+	var lineBlocks = __webpack_require__(4);
 	// Whitespace strippers.
 	function trimLeft(s) {
 	    return s.replace(/^\s+/g, '');

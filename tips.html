@@ -135,13 +135,12 @@ markup vocabulary. For example:</p>
 <tr>
 <td style="width:10%; color:#527bbd; font-weight:bold;">Rimu source</td>
 <td>
-<pre style="border:none; background-color:inherit;" class="no-highlight"><code>{sidebar} = '==== $1
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>{sidebar} = '#### $1
 .[style="padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"]'
 {info} = '&lt;span class="label label-info"&gt;$1&lt;/span&gt;'
 {heads-up} = '{info|Heads up!}'
 {note} = '{info|Note} &lt;mark&gt;$1&lt;/mark&gt;'
-{playground} = '&lt;http://srackham.github.io/rimu/rimuplayground.html|Rimu
-Playground&gt;'
+{playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'
 
 {sidebar|Fun with Macros}
 ..
@@ -155,8 +154,7 @@ experimentation.
 <tr><td style="width:10%; color:#527bbd; font-weight:bold;">Rendered HTML</td>
 <td>
 <h4>Fun with Macros</h4>
-<div style="padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"><p><span class="label label-info">Heads up!</span> See the <a href="http://srackham.github.io/rimu/rimuplayground.html">Rimu
-Playground</a> for documentation and hands-on
+<div style="padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"><p><span class="label label-info">Heads up!</span> See the <a href="http://srackham.github.io/rimu/rimuplayground.html">Rimu Playground</a> for documentation and hands-on
 experimentation.</p>
 <p><span class="label label-info">Note</span> <mark>This document is not yet finished.</mark></p></div>
 </td></tr></table>
@@ -238,19 +236,18 @@ unless the language class is explicitly set:</p>
 </dd><dt>Code blocks</dt><dd>
 <ul><li>Indented paragraphs (at least four spaces) render like Markdown code
   blocks.
-</li><li><a href="https://help.github.com/articles/github-flavored-markdown/">GitHub
-  Flavored Markdown</a> <em>Fenced Blocks</em> are compatible with Rimu
-  Back-tick delimited blocks.
-</li></ul></dd><dt>Quote paragraphs</dt><dd> Paragraphs starting with <code>&gt;</code> are rendered like
-Markdown Blockquotes.
+</li><li><a href="https://help.github.com/articles/github-flavored-markdown/">GitHub Flavored Markdown</a>
+  <em>Fenced Blocks</em> are compatible with Rimu Back-tick delimited blocks.
+</li></ul></dd><dt>Quote paragraphs</dt><dd> Paragraphs starting with a <code>&gt;</code> character are
+rendered like Markdown Blockquotes.
 </dd><dt>Text formatting</dt><dd> <code>_emphasis_</code>, <code>**bold**</code>, <code>`code`</code> and
 <code>~~strikethrough~~</code> quotes (strikethrough is GitHub Flavored Markdown
 compatible).
 </dd><dt>Lists</dt><dd>
 <ul><li>Bullet lists with <code>-</code> and <code>*</code> IDs.
 </li><li>Numbered lists with explicit numbering.
-</li></ul></dd><dt>URLs and Email addresses</dt><dd> <code>[caption](url)</code>, <code>&lt;url&gt;</code> and <code>&lt;email&gt;</code> syntaxes
-plus Github Flavored Markdown <em>URL autolinking</em>.
+</li></ul></dd><dt>URLs and Email addresses</dt><dd> <code>[caption](url)</code>, <code>&lt;url&gt;</code> and <code>&lt;email&gt;</code>
+syntaxes plus Github Flavored Markdown <em>URL autolinking</em>.
 </dd><dt>Images</dt><dd> <code>![alt](url)</code> syntax.
 </dd></dl><p>The Rimu <em>README</em> uses this subset for compatibility with <em>GitHub</em> and
 <em>npmjs.org</em> README formats.</p>
@@ -296,7 +293,7 @@ containing one or more space characters:</p>
 
   Neque a massa. Porttitor
   consectetuer commodo.
-
+  
   Neque a massa. Porttitor
   consectetuer commodo.</code></pre>
 </td><td style="width:50%; padding: 4px;">
@@ -307,8 +304,9 @@ consectetuer commodo.</code></pre>
 consectetuer commodo.</code></pre>
 <h4>Separator line with spaces</h4>
 <pre class="no-highlight"><code>Neque a massa. Porttitor
-consectetuer commodo.</code></pre>
-<pre class="no-highlight"><code>Neque a massa. Porttitor
+consectetuer commodo.
+ 
+Neque a massa. Porttitor
 consectetuer commodo.</code></pre>
 </td></tr></tbody></table>
 <h2>Display contiguous block images vertically</h2>
@@ -342,9 +340,9 @@ entities or you can enter them literally.</p>
 <p>For example, to enter an ellipsis you could either enter <code>&amp;hellip;</code> or
 you could enter the actual … character directly (alternatively you
 could define a <em>Replacement</em> for the ellipsis, see the
-<a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example
-.rimurc file</a>). The mechanism for entering Unicode characters directly
-will be dictated your editor:</p>
+<a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example .rimurc file</a>).
+The mechanism for entering Unicode characters directly will be dictated
+by your editor:</p>
 <dl><dt>Vim</dt><dd> Enter <em>Ctrl+V</em> followed by the the character <em>u</em> followed by the
 hexidecimal character code e.g. to enter an em dash enter <em>Ctrl+V</em>
 followed by <em>u2014</em>
@@ -359,8 +357,7 @@ character code followed by the <em>Enter</em> key.
 ”             &amp;rdquo;        201d
 →             &amp;rightarrow;   2192</code></pre>
 <p>Here's a full list of
-<a href="http://dev.w3.org/html5/html-author/charref">HTML5 character
-entities</a>.</p>
+<a href="http://dev.w3.org/html5/html-author/charref">HTML5 character entities</a>.</p>
 <h2>Whitespace and Underscores in URLs</h2>
 <p>Whitespace characters are illegal in URL paths, use <em>%20</em> in place of
 spaces, for example:</p>
@@ -373,19 +370,16 @@ underscores or escape them with backslashes.</p>
 which can produce unexpected results. It can also make your Rimu
 source non-portable and less readable.</p>
 <h2 id="example-rimurc">Example .rimurc file</h2>
-<p>The Rimu distribution includes an
-<a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example
-.rimurc file</a>.</p>
+<p>The Rimu distribution includes an <a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example .rimurc
+file</a>.</p>
 <h2>Extending the Vim syntax highlighter</h2>
 <p>If you've added custom replacements and quotes you can highlight them
 in Vim by creating a custom <code>~/.vim/after/syntax/rimu.vim</code> syntax
 file (Vim loads files from the <code>after</code> directory after loading normal
-syntax files).  The distributed
-<a href="https://github.com/srackham/rimu/blob/master/examples/rimu.vim">example
-~/.vim/after/syntax/rimu.vim syntax file</a> highlights custom syntax
-definitions from the
-<a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example
-.rimurc file</a>.</p>
+syntax files).  The distributed <a href="https://github.com/srackham/rimu/blob/master/examples/rimu.vim">example ~/.vim/after/syntax/rimu.vim
+syntax file</a>
+highlights custom syntax definitions from the <a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example .rimurc
+file</a>.</p>
 <h2>Understanding substitution priorities</h2>
 <p>Inline elements are processed in the following order (first to last):</p>
 <ol><li>Macros
@@ -458,8 +452,8 @@ A MathML block formula:
 </td></tr></table>
 <p><b>NOTE</b>: Macro expansion has been disabled in LaTeX formulas to stop
 <code>{i=0}</code> and <code>{2}</code> from being mistaken for Rimu macro invocations.</p>
-<p>See the <a href="http://docs.mathjax.org/en/latest/">latest MathJax
-documentation</a> to learn how to use MathJax.</p>
+<p>See the <a href="http://docs.mathjax.org/en/latest/">latest MathJax documentation</a>
+to learn how to use MathJax.</p>
 <h2>Inline Comments</h2>
 <p>Rimu comment elements are block elements and cannot be used inline &mdash;
 use an undefined macro to exclude inline text from elements that
@@ -532,12 +526,12 @@ create nicely formatted tables. For example:</p>
 sem. Mauris vitae ipsum. Donec dui ac ridiculus quisque proin.
 Lobortis lacus vestibulum sem.
 
-===== Normal paragraph
+##### Normal paragraph
 Lorem ipsum dolor. Sit `amet venenatis`. Erat nulla arcu. Lorem luctus
 sem. _Mauris vitae_ ipsum. Donec dui ac ridiculus {mark|quisque} proin.
 Lobortis lacus vestibulum sem.
 
-===== Indented paragraph
+##### Indented paragraph
   Neque a massa. Porttitor consectetuer commodo. Nunc nulla tempor
   tempor enim ornare. Mi nam id. Ornare mauris tempor. Pede mauris
   sed.  Scelerisque feugiat massa alias.
@@ -621,14 +615,14 @@ title:</p>
 {section-definition} = '
 {$1} = '&lt;#$1|$2&gt;' \
 {$1-header} = '.#$1
-== $2' \
+## $2' \
 {$1-toc} = '{$1} \' \
 '
 // Generate section macros.
 {section-definition|section1|Section One}
 {section-definition|section2|Section Two}
 
-==== Table of Contents
+#### Table of Contents
 {section1-toc}
 {section2-toc}
 
@@ -683,11 +677,12 @@ lines that end with a single-quote.</p>
 <pre class="no-highlight"><code>&lt;p&gt;foo foo&lt;/p&gt;
 &lt;p&gt;foo bar&lt;/p&gt;</code></pre></div>
 </li></ul><h2 id="scoped-css">Use scoped CSS to generate custom styled elements</h2>
-<p>HTML5's <a href="http://www.w3schools.com/tags/att_style_scoped.asp">scoped
-CSS attribute</a> allows you to define CSS outside the document header.
-This allows you to include CSS in the body of a Rimu document which is
-very handy for tweaking the default CSS and for styling Rimu block
-elements. Examples:</p>
+<p>HTML5's <a href="http://www.w3schools.com/tags/att_style_scoped.asp">scoped CSS
+attribute</a>
+allows you to define CSS outside the document header.  This allows you
+to include CSS in the body of a Rimu document which is very handy for
+tweaking the default CSS and for styling Rimu block elements.
+Examples:</p>
 <table class="example table table-bordered"><thead><tr style="color:#527bbd;">
 <th style="width:50%;">Rimu source</th>
 <th style="width:50%;">Rendered HTML</th>
@@ -718,7 +713,7 @@ Porttitor consectetuer commodo.
 
 .verse
 ..
-==== Lorum Ipsum
+#### Lorum Ipsum
 Neque a massa.
 Porttitor consectetuer commodo.
 
@@ -733,7 +728,7 @@ Porttitor consectetuer commodo.
 
 .sidebar
 ..
-==== Lorum Ipsum
+#### Lorum Ipsum
 Neque a massa.
 Porttitor consectetuer commodo.
 
@@ -778,10 +773,10 @@ Porttitor consectetuer commodo.</p>
 Pede mauris sed.
 Scelerisque feugiat massa alias.</p></div>
 </td></tr></tbody></table>
-<ul><li>The above <em>verse</em> and <em>sidebar</em> CSS styles are automatically included when
-  you use the <em>rimuc</em> tool <code>--styled</code> option.
-</li><li>HTML5 stipulates that scoped <em>style</em> element must be the first child element
-  &mdash; in practice  most browsers don't care where it occurs.
+<ul><li>The above <em>verse</em> and <em>sidebar</em> CSS styles are automatically
+  included when you use the <em>rimuc</em> tool <code>--styled</code> option.
+</li><li>HTML5 stipulates that scoped <em>style</em> element must be the first child
+  element &mdash; in practice  most browsers don't care where it occurs.
 </li></ul><h2>List item counters</h2>
 <p>In addition to the <em>verse</em> and <em>sidebar</em> CSS styles the  <em>rimuc</em> tool
 <code>--styled</code> option also includes CSS classes for counting list items
@@ -790,7 +785,7 @@ and for numbering labeled list items:</p>
 <th style="width:50%;">Rimu source</th>
 <th style="width:50%;">Rendered HTML</th>
 </tr></thead><tbody><tr><td style="width: 50%; padding: 4px;">
-<pre style="border:none; background-color:inherit;" class="no-highlight"><code>==== Numbered labeled list
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>#### Numbered labeled list
 .dl-numbered
 One:: Item one.
 Two:: Item two.
@@ -799,7 +794,7 @@ Three:: Item three.
 .dl-counter
 labeled list items.
 
-==== Counted unordered list
+#### Counted unordered list
 - Item one.
 - Item two.
 - Item three.
@@ -808,7 +803,7 @@ labeled list items.
 .ul-counter
 unordered list items.
 
-==== Counted ordered list
+#### Counted ordered list
 . Item one.
 . Item two.
 
