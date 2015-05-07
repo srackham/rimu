@@ -3,9 +3,9 @@ import * as options from './options'
 /* tslint:enable */
 
 export interface Definition {
-  match: RegExp;
-  replacement: string;
-  filter?: (match: RegExpExecArray) => string;
+  match: RegExp
+  replacement: string
+  filter?: (match: RegExpExecArray) => string
 }
 
 export var defs: Definition[] = [
@@ -19,7 +19,7 @@ export var defs: Definition[] = [
     match: /\\?(&[\w#][\w]+;)/g,
     replacement: '',
     filter: function (match: RegExpExecArray): string {
-      return match[1];  // Pass the entity through verbatim.
+      return match[1]   // Pass the entity through verbatim.
     }
   },
 
@@ -76,7 +76,7 @@ export var defs: Definition[] = [
     match: /\\?(<[!\/]?[a-zA-Z\-]+(:?\s+[^<>&]+)?>)/g,
     replacement: '',
     filter: function (match: RegExpExecArray): string {
-      return options.safeModeFilter(match[1]);
+      return options.safeModeFilter(match[1])
     }
   },
 
@@ -107,23 +107,23 @@ export var defs: Definition[] = [
     replacement: '$1<a href="$2">$2</a>'
   },
 
-];
+]
 
 // Update existing or add new replacement definition.
 export function setDefinition(regexp: string, flags: string, replacement: string): void {
   if (!/g/.test(flags)) {
-    flags += 'g';
+    flags += 'g'
   }
   for (var i in defs) {
     if (defs[i].match.source === regexp) {
       // Update existing definition.
       // Flag properties are read-only so have to create new RegExp.
-      defs[i].match = new RegExp(regexp, flags);
-      defs[i].replacement = replacement;
-      return;
+      defs[i].match = new RegExp(regexp, flags)
+      defs[i].replacement = replacement
+      return
     }
   }
   // Add new definition at start of defs list.
-  defs.unshift({match: new RegExp(regexp, flags), replacement: replacement});
+  defs.unshift({match: new RegExp(regexp, flags), replacement: replacement})
 }
 

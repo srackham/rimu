@@ -19,168 +19,168 @@ import * as replacements from './replacements'
 /* tslint:enable */
 
   interface Fragment {
-    text: string;
-    done: boolean;
+    text: string
+    done: boolean
   }
 
   export function render(source: string): string {
-    var fragments: Fragment[] = [{text: source, done: false}];
-    fragQuotes(fragments);
-    fragReplacements(fragments);
-    fragSpecials(fragments);
-    return defrag(fragments);
+    var fragments: Fragment[] = [{text: source, done: false}]
+    fragQuotes(fragments)
+    fragReplacements(fragments)
+    fragSpecials(fragments)
+    return defrag(fragments)
   }
 
   // Converts fragments to a string.
   function defrag(fragments: Fragment[]): string {
-    var result: string[] = [];
+    var result: string[] = []
     for (var i in fragments) {
-      result.push(fragments[i].text);
+      result.push(fragments[i].text)
     }
-    return result.join('');
+    return result.join('')
   }
 
   function fragQuotes(fragments: Fragment[]): void {
-    var findRe = quotes.findRe;
-    var fragmentIndex = 0;
-    var fragment = fragments[fragmentIndex];
-    var nextFragment: boolean;
-    var match: RegExpExecArray;
-    findRe.lastIndex = 0;
+    var findRe = quotes.findRe
+    var fragmentIndex = 0
+    var fragment = fragments[fragmentIndex]
+    var nextFragment: boolean
+    var match: RegExpExecArray
+    findRe.lastIndex = 0
     while (true) {
       if (fragment.done) {
-        nextFragment = true;
+        nextFragment = true
       }
       else {
-        match = findRe.exec(fragment.text);
-        nextFragment = !match;
+        match = findRe.exec(fragment.text)
+        nextFragment = !match
       }
       if (nextFragment) {
-        fragmentIndex++;
+        fragmentIndex++
         if (fragmentIndex >= fragments.length) {
-          break;
+          break
         }
-        fragment = fragments[fragmentIndex];
+        fragment = fragments[fragmentIndex]
         if (match) {
-          findRe.lastIndex = 0;
+          findRe.lastIndex = 0
         }
-        continue;
+        continue
       }
       if (match[0][0] === '\\') {
         // Restart search after opening quote.
-        findRe.lastIndex = match.index + match[1].length + 1;
-        continue;
+        findRe.lastIndex = match.index + match[1].length + 1
+        continue
       }
       // Arrive here if we have a matched quote.
-      var def = quotes.getDefinition(match[1]);
+      var def = quotes.getDefinition(match[1])
       if (def.verify && !def.verify(match, findRe)) {
         // Restart search after opening quote.
-        findRe.lastIndex = match.index + match[1].length + 1;
-        continue;
+        findRe.lastIndex = match.index + match[1].length + 1
+        continue
       }
       // The quotes splits the fragment into 5 fragments.
-      var before = match.input.slice(0, match.index);
-      var quoted = match[2];
-      var after = match.input.slice(findRe.lastIndex);
+      var before = match.input.slice(0, match.index)
+      var quoted = match[2]
+      var after = match.input.slice(findRe.lastIndex)
       fragments.splice(fragmentIndex, 1,
           {text: before, done: false},
           {text: def.openTag, done: true},
           {text: quoted, done: false},
           {text: def.closeTag, done: true},
           {text: after, done: false}
-      );
+      )
       // Move to 'quoted' fragment.
-      fragmentIndex += 2;
-      fragment = fragments[fragmentIndex];
+      fragmentIndex += 2
+      fragment = fragments[fragmentIndex]
       if (!def.spans) {
-        fragment.text = quotes.unescape(fragment.text);
-        fragment.text = utils.replaceSpecialChars(fragment.text);
-        fragment.done = true;
+        fragment.text = quotes.unescape(fragment.text)
+        fragment.text = utils.replaceSpecialChars(fragment.text)
+        fragment.done = true
         // Move to 'after' fragment.
-        fragmentIndex += 2;
-        fragment = fragments[fragmentIndex];
+        fragmentIndex += 2
+        fragment = fragments[fragmentIndex]
       }
-      findRe.lastIndex = 0;
+      findRe.lastIndex = 0
     }
     // Strip backlash from escaped quotes in non-done fragments.
     for (var i in fragments) {
-      fragment = fragments[i];
+      fragment = fragments[i]
       if (!fragment.done) {
-        fragment.text = quotes.unescape(fragment.text);
+        fragment.text = quotes.unescape(fragment.text)
       }
     }
   }
 
   function fragReplacements(fragments: Fragment[]): void {
     for (var i in replacements.defs) {
-      fragReplacement(fragments, replacements.defs[i]);
+      fragReplacement(fragments, replacements.defs[i])
     }
   }
 
   function fragReplacement(fragments: Fragment[], def: replacements.Definition): void {
-    var findRe = def.match;
-    var fragmentIndex = 0;
-    var fragment = fragments[fragmentIndex];
-    var nextFragment: boolean;
-    var match: RegExpExecArray;
-    findRe.lastIndex = 0;
+    var findRe = def.match
+    var fragmentIndex = 0
+    var fragment = fragments[fragmentIndex]
+    var nextFragment: boolean
+    var match: RegExpExecArray
+    findRe.lastIndex = 0
     while (true) {
       if (fragment.done) {
-        nextFragment = true;
+        nextFragment = true
       }
       else {
-        match = findRe.exec(fragment.text);
-        nextFragment = !match;
+        match = findRe.exec(fragment.text)
+        nextFragment = !match
       }
       if (nextFragment) {
-        fragmentIndex++;
+        fragmentIndex++
         if (fragmentIndex >= fragments.length) {
-          break;
+          break
         }
-        fragment = fragments[fragmentIndex];
+        fragment = fragments[fragmentIndex]
         if (match) {
-          findRe.lastIndex = 0;
+          findRe.lastIndex = 0
         }
-        continue;
+        continue
       }
       // Arrive here if we have a matched replacement.
       // The replacement splits the fragment into 3 fragments.
-      var before = match.input.slice(0, match.index);
-      var after = match.input.slice(findRe.lastIndex);
+      var before = match.input.slice(0, match.index)
+      var after = match.input.slice(findRe.lastIndex)
       fragments.splice(fragmentIndex, 1,
           {text: before, done: false},
           {text: '', done: true},
           {text: after, done: false}
-      );
+      )
       // Advance to 'matched' fragment and fill in the replacement text.
-      fragmentIndex++;
-      fragment = fragments[fragmentIndex];
+      fragmentIndex++
+      fragment = fragments[fragmentIndex]
       if (match[0][0] === '\\') {
         // Remove leading backslash.
-        fragment.text = match.input.slice(match.index + 1, findRe.lastIndex);
-        fragment.text = utils.replaceSpecialChars(fragment.text);
+        fragment.text = match.input.slice(match.index + 1, findRe.lastIndex)
+        fragment.text = utils.replaceSpecialChars(fragment.text)
       }
       else {
         if (!def.filter) {
-          fragment.text = utils.replaceMatch(match, def.replacement, {specials: true});
+          fragment.text = utils.replaceMatch(match, def.replacement, {specials: true})
         }
         else {
-          fragment.text = def.filter(match);
+          fragment.text = def.filter(match)
         }
       }
-      fragmentIndex++;
-      fragment = fragments[fragmentIndex];
-      findRe.lastIndex = 0;
+      fragmentIndex++
+      fragment = fragments[fragmentIndex]
+      findRe.lastIndex = 0
     }
   }
 
   function fragSpecials(fragments: Fragment[]): void {
     // Replace special characters in all non-done fragments.
-    var fragment: Fragment;
+    var fragment: Fragment
     for (var i in fragments) {
-      fragment = fragments[i];
+      fragment = fragments[i]
       if (!fragment.done) {
-        fragment.text = utils.replaceSpecialChars(fragment.text);
+        fragment.text = utils.replaceSpecialChars(fragment.text)
       }
     }
   }

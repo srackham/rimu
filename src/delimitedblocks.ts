@@ -9,14 +9,14 @@ import * as lineBlocks from './lineblocks'
 
 // Multi-line block element definition.
 export interface Definition {
-  name?: string;       // Optional unique identifier.
-  openMatch: RegExp;   // $1 (if defined) is prepended to block content.
-  closeMatch?: RegExp; // $1 (if defined) is appended to block content. If closeMatch is undefined then it must match opening delimiter.
-  openTag: string;
-  closeTag: string;
-  filter?: (text: string, match?: string[], expansionOptions?: utils.ExpansionOptions) => string;
-  verify?: (match: string[]) => boolean;  // Additional match verification checks.
-  expansionOptions: utils.ExpansionOptions;
+  name?: string        // Optional unique identifier.
+  openMatch: RegExp    // $1 (if defined) is prepended to block content.
+  closeMatch?: RegExp  // $1 (if defined) is appended to block content. If closeMatch is undefined then it must match opening delimiter.
+  openTag: string
+  closeTag: string
+  filter?: (text: string, match?: string[], expansionOptions?: utils.ExpansionOptions) => string
+  verify?: (match: string[]) => boolean   // Additional match verification checks.
+  expansionOptions: utils.ExpansionOptions
 }
 
 var defs: Definition[] = [
@@ -34,12 +34,12 @@ var defs: Definition[] = [
     filter: function (text: string, match: string[], expansionOptions: utils.ExpansionOptions): string {
       // Set macro.
       // Get the macro name from the match in the first line of the block.
-      var name = match[0].match(/^\{([\w\-]+)\}/)[1];
-      text = text.replace(/' *\\\n/g, '\'\n');        // Unescape line-continuations.
-      text = text.replace(/(' *[\\]+)\\\n/g, '$1\n'); // Unescape escaped line-continuations.
-      text = utils.replaceInline(text, expansionOptions);   // Expand macro invocations.
-      macros.setValue(name, text);
-      return '';
+      var name = match[0].match(/^\{([\w\-]+)\}/)[1]
+      text = text.replace(/' *\\\n/g, '\'\n')         // Unescape line-continuations.
+      text = text.replace(/(' *[\\]+)\\\n/g, '$1\n')  // Unescape escaped line-continuations.
+      text = utils.replaceInline(text, expansionOptions)    // Expand macro invocations.
+      macros.setValue(name, text)
+      return ''
     }
   },
   // Comment block.
@@ -104,7 +104,7 @@ var defs: Definition[] = [
       macros: true
     },
     filter: function (text: string): string {
-      return options.safeModeFilter(text);
+      return options.safeModeFilter(text)
     }
   },
   // Indented paragraph.
@@ -120,15 +120,15 @@ var defs: Definition[] = [
     },
     filter: function (text: string): string {
       // Strip indent from start of each line.
-      var first_indent = text.search(/\S/);
-      var buffer = text.split('\n');
+      var first_indent = text.search(/\S/)
+      var buffer = text.split('\n')
       for (var i in buffer) {
         // Strip first line indent width or up to first non-space character.
-        var indent = buffer[i].search(/\S/);
-        if (indent > first_indent) indent = first_indent;
-        buffer[i] = buffer[i].slice(indent);
+        var indent = buffer[i].search(/\S/)
+        if (indent > first_indent) indent = first_indent
+        buffer[i] = buffer[i].slice(indent)
       }
-      return buffer.join('\n');
+      return buffer.join('\n')
     }
   },
   // Quote paragraph.
@@ -145,12 +145,12 @@ var defs: Definition[] = [
     },
     filter: function (text: string): string {
       // Strip leading > from start of each line and unescape escaped leading >.
-      var buffer = text.split('\n');
+      var buffer = text.split('\n')
       for (var i in buffer) {
-        buffer[i] = buffer[i].replace(/^>/, '');
-        buffer[i] = buffer[i].replace(/^\\>/, '>');
+        buffer[i] = buffer[i].replace(/^>/, '')
+        buffer[i] = buffer[i].replace(/^\\>/, '>')
       }
-      return buffer.join('\n');
+      return buffer.join('\n')
     }
   },
   // Paragraph (lowest priority, cannot be escaped).
@@ -166,105 +166,105 @@ var defs: Definition[] = [
       specials: true       // Fall-back if spans is disabled.
     }
   },
-];
+]
 
 // If the next element in the reader is a valid delimited block render it
 // and return true, else return false.
 export function render(reader: io.Reader, writer: io.Writer): boolean {
-  if (reader.eof()) throw 'premature eof';
+  if (reader.eof()) throw 'premature eof'
   for (var i in defs) {
-    var def = defs[i];
-    var match = reader.cursor().match(def.openMatch);
+    var def = defs[i]
+    var match = reader.cursor().match(def.openMatch)
     if (match) {
       // Escape non-paragraphs.
       if (match[0][0] === '\\' && def.name !== 'paragraph') {
         // Drop backslash escape and continue.
-        reader.cursor(reader.cursor().slice(1));
-        continue;
+        reader.cursor(reader.cursor().slice(1))
+        continue
       }
       if (def.verify && !def.verify(match)) {
-        continue;
+        continue
       }
-      var lines: string[] = [];
+      var lines: string[] = []
       // Prepend delimiter text.
       if (match.length > 1) {
-        lines.push(match[1]);   // $1
+        lines.push(match[1])    // $1
       }
       // Read content up to the closing delimiter.
-      reader.next();
-      var closeMatch: RegExp;
+      reader.next()
+      var closeMatch: RegExp
       if (def.closeMatch === undefined) {
         // Close delimiter matches opening delimiter.
-        closeMatch = RegExp('^' + utils.escapeRegExp(match[0]) + '$');
+        closeMatch = RegExp('^' + utils.escapeRegExp(match[0]) + '$')
       }
       else {
-        closeMatch = def.closeMatch;
+        closeMatch = def.closeMatch
       }
-      var content = reader.readTo(closeMatch);
+      var content = reader.readTo(closeMatch)
       if (content !== null) {
-        lines = lines.concat(content);
+        lines = lines.concat(content)
       }
       // Set block expansion options.
-      var expansionOptions: utils.ExpansionOptions;
+      var expansionOptions: utils.ExpansionOptions
       expansionOptions = {
         macros: false,
         spans: false,
         specials: false,
         container: false,
         skip: false
-      };
-      var k: string;
-      for (k in expansionOptions) expansionOptions[k] = def.expansionOptions[k];
-      for (k in lineBlocks.blockOptions) expansionOptions[k] = lineBlocks.blockOptions[k];
+      }
+      var k: string
+      for (k in expansionOptions) expansionOptions[k] = def.expansionOptions[k]
+      for (k in lineBlocks.blockOptions) expansionOptions[k] = lineBlocks.blockOptions[k]
       // Process block.
       if (!expansionOptions.skip) {
-        var text = lines.join('\n');
+        var text = lines.join('\n')
         if (def.filter) {
-          text = def.filter(text, match, expansionOptions);
+          text = def.filter(text, match, expansionOptions)
         }
-        writer.write(utils.injectHtmlAttributes(def.openTag));
+        writer.write(utils.injectHtmlAttributes(def.openTag))
         if (expansionOptions.container) {
-          text = renderSource(text);
+          text = renderSource(text)
         }
         else {
-          text = utils.replaceInline(text, expansionOptions);
+          text = utils.replaceInline(text, expansionOptions)
         }
-        writer.write(text);
-        writer.write(def.closeTag);
+        writer.write(text)
+        writer.write(def.closeTag)
         if ((def.openTag || text || def.closeTag) && !reader.eof()) {
           // Add a trailing '\n' if we've written a non-blank line and there are more source lines left.
-          writer.write('\n');
+          writer.write('\n')
         }
       }
       // Reset consumed Block Attributes expansion options.
-      lineBlocks.blockOptions = {};
-      return true;
+      lineBlocks.blockOptions = {}
+      return true
     }
   }
-  return false; // No matching delimited block found.
+  return false  // No matching delimited block found.
 }
 
 // Return block definition or null if not found.
 export function getDefinition(name: string): Definition {
   for (var i in defs) {
     if (defs[i].name === name) {
-      return defs[i];
+      return defs[i]
     }
   }
-  return null;
+  return null
 }
 
 // Parse delimited block expansion options string into blockOptions.
 export function setBlockOptions(blockOptions: utils.ExpansionOptions, optionsString: string): void {
   if (optionsString) {
-    var opts = optionsString.trim().split(/\s+/);
+    var opts = optionsString.trim().split(/\s+/)
     for (var i in opts) {
-      var opt = opts[i];
+      var opt = opts[i]
       if (options.safeMode !== 0 && opt === '-specials') {
-        return;
+        return
       }
       if (/^[+-](macros|spans|specials|container|skip)$/.test(opt)) {
-        blockOptions[opt.slice(1)] = opt[0] === '+';
+        blockOptions[opt.slice(1)] = opt[0] === '+'
       }
     }
   }
@@ -273,14 +273,14 @@ export function setBlockOptions(blockOptions: utils.ExpansionOptions, optionsStr
 // Update existing named definition.
 // Value syntax: <open-tag>|<close-tag> block-options
 export function setDefinition(name: string, value: string): void {
-  var def = getDefinition(name);
-  var match = utils.trim(value).match(/^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/);
+  var def = getDefinition(name)
+  var match = utils.trim(value).match(/^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/)
   if (match) {
     if (match[1]) {
-      def.openTag = match[1];
-      def.closeTag = match[2];
+      def.openTag = match[1]
+      def.closeTag = match[2]
     }
-    setBlockOptions(def.expansionOptions, match[3]);
+    setBlockOptions(def.expansionOptions, match[3])
   }
 }
 

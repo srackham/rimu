@@ -9,12 +9,12 @@ import * as macros from './macros'
 /* tslint:enable */
 
 export interface Definition {
-  name?: string;  // Optional unique identifier.
-  filter?: (match: RegExpExecArray, reader?: io.Reader) => string;
-  verify?: (match: RegExpExecArray) => boolean;  // Additional match verification checks.
-  match: RegExp;
-  replacement: string;
-  expansionOptions: utils.ExpansionOptions;
+  name?: string   // Optional unique identifier.
+  filter?: (match: RegExpExecArray, reader?: io.Reader) => string
+  verify?: (match: RegExpExecArray) => boolean   // Additional match verification checks.
+  match: RegExp
+  replacement: string
+  expansionOptions: utils.ExpansionOptions
 }
 
 var defs: Definition[] = [
@@ -28,10 +28,10 @@ var defs: Definition[] = [
     expansionOptions: {},
     filter: function (match: RegExpExecArray): string {
       if (options.safeMode !== 0) {
-        return '';  // Skip if a safe mode is set.
+        return ''   // Skip if a safe mode is set.
       }
-      delimitedBlocks.setDefinition(match[1], match[2]);
-      return '';
+      delimitedBlocks.setDefinition(match[1], match[2])
+      return ''
     }
   },
   // Quote definition.
@@ -44,15 +44,15 @@ var defs: Definition[] = [
     },
     filter: function (match: RegExpExecArray): string {
       if (options.safeMode !== 0) {
-        return '';  // Skip if a safe mode is set.
+        return ''   // Skip if a safe mode is set.
       }
       quotes.setDefinition({
         quote: match[1],
         openTag: utils.replaceInline(match[2], this.expansionOptions),
         closeTag: utils.replaceInline(match[4], this.expansionOptions),
         spans: match[3] === '|'
-      });
-      return '';
+      })
+      return ''
     }
   },
   // Replacement definition.
@@ -65,14 +65,14 @@ var defs: Definition[] = [
     },
     filter: function (match: RegExpExecArray): string {
       if (options.safeMode !== 0) {
-        return '';  // Skip if a safe mode is set.
+        return ''   // Skip if a safe mode is set.
       }
-      var pattern = match[1];
-      var flags = match[2];
-      var replacement = match[3];
-      replacement = utils.replaceInline(replacement, this.expansionOptions);
-      replacements.setDefinition(pattern, flags, replacement);
-      return '';
+      var pattern = match[1]
+      var flags = match[2]
+      var replacement = match[3]
+      replacement = utils.replaceInline(replacement, this.expansionOptions)
+      replacements.setDefinition(pattern, flags, replacement)
+      return ''
     }
   },
   // Macro definition.
@@ -85,13 +85,13 @@ var defs: Definition[] = [
     },
     filter: function (match: RegExpExecArray): string {
       if (options.safeMode !== 0) {
-        return '';  // Skip if a safe mode is set.
+        return ''   // Skip if a safe mode is set.
       }
-      var name = match[1];
-      var value = match[2];
-      value = utils.replaceInline(value, this.expansionOptions);
-      macros.setValue(name, value);
-      return '';
+      var name = match[1]
+      var value = match[2]
+      value = utils.replaceInline(value, this.expansionOptions)
+      macros.setValue(name, value)
+      return ''
     }
   },
   // Macro Line block.
@@ -100,14 +100,14 @@ var defs: Definition[] = [
     replacement: '',
     expansionOptions: {},
     verify: function (match: RegExpExecArray): boolean {
-      return !macros.MACRO_DEF_OPEN.test(match[0]); // Don't match macro definition blocks.
+      return !macros.MACRO_DEF_OPEN.test(match[0])  // Don't match macro definition blocks.
     },
     filter: function (match: RegExpExecArray, reader?: io.Reader): string {
-      var value = macros.render(match[0]);
+      var value = macros.render(match[0])
       // Insert the macro value into the reader just ahead of the cursor.
-      var spliceArgs = (<any[]> [reader.pos + 1, 0]).concat(value.split('\n'));
-      Array.prototype.splice.apply(reader.lines, spliceArgs);
-      return '';
+      var spliceArgs = (<any[]> [reader.pos + 1, 0]).concat(value.split('\n'))
+      Array.prototype.splice.apply(reader.lines, spliceArgs)
+      return ''
     }
   },
   // Headers.
@@ -120,8 +120,8 @@ var defs: Definition[] = [
       spans: true,
     },
     filter: function (match: RegExpExecArray): string {
-      match[1] = match[1].length.toString(); // Replace $1 with header number.
-      return utils.replaceMatch(match, this.replacement, this.expansionOptions);
+      match[1] = match[1].length.toString()  // Replace $1 with header number.
+      return utils.replaceMatch(match, this.replacement, this.expansionOptions)
     }
   },
   // Comment line.
@@ -173,79 +173,79 @@ var defs: Definition[] = [
     verify: function (match: RegExpExecArray): boolean {
       // Parse Block Attributes.
       // class names = $1, id = $2, html-attributes = $3, block-options = $4
-      var text = match[0];
-      text = utils.replaceInline(text, this.expansionOptions); // Expand macro references.
-      match = /^\\?\.([a-zA-Z][\w\ -]*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text);
+      var text = match[0]
+      text = utils.replaceInline(text, this.expansionOptions)  // Expand macro references.
+      match = /^\\?\.([a-zA-Z][\w\ -]*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text)
       if (!match) {
-        return false;
+        return false
       }
       if (match[1]) { // HTML element class names.
-        htmlClasses += ' ' + utils.trim(match[1]);
-        htmlClasses = utils.trim(htmlClasses);
+        htmlClasses += ' ' + utils.trim(match[1])
+        htmlClasses = utils.trim(htmlClasses)
       }
       if (match[2]) { // HTML element id.
-        htmlAttributes += ' id="' + utils.trim(match[2]).slice(1) + '"';
+        htmlAttributes += ' id="' + utils.trim(match[2]).slice(1) + '"'
       }
       if (match[3] && options.safeMode === 0) { // HTML attributes.
-        htmlAttributes += ' ' + utils.trim(match[3].slice(1, match[3].length - 1));
+        htmlAttributes += ' ' + utils.trim(match[3].slice(1, match[3].length - 1))
       }
-      htmlAttributes = utils.trim(htmlAttributes);
-      delimitedBlocks.setBlockOptions(blockOptions, match[4]);
-      return true;
+      htmlAttributes = utils.trim(htmlAttributes)
+      delimitedBlocks.setBlockOptions(blockOptions, match[4])
+      return true
     },
     filter: function (match: RegExpExecArray): string {
-      return '';
+      return ''
     }
   },
-];
+]
 
 // Globals set by Block Attributes filter.
-export var htmlClasses: string = '';
-export var htmlAttributes: string = '';
-export var blockOptions: utils.ExpansionOptions = {};
+export var htmlClasses: string = ''
+export var htmlAttributes: string = ''
+export var blockOptions: utils.ExpansionOptions = {}
 
 // If the next element in the reader is a valid line block render it
 // and return true, else return false.
 export function render(reader: io.Reader, writer: io.Writer): boolean {
-  if (reader.eof()) throw 'premature eof';
+  if (reader.eof()) throw 'premature eof'
   for (var i in defs) {
-    var def = defs[i];
-    var match = def.match.exec(reader.cursor());
+    var def = defs[i]
+    var match = def.match.exec(reader.cursor())
     if (match) {
       if (match[0][0] === '\\') {
         // Drop backslash escape and continue.
-        reader.cursor(reader.cursor().slice(1));
-        continue;
+        reader.cursor(reader.cursor().slice(1))
+        continue
       }
       if (def.verify && !def.verify(match)) {
-        continue;
+        continue
       }
-      var text: string;
+      var text: string
       if (!def.filter) {
-        text = utils.replaceMatch(match, def.replacement, def.expansionOptions);
+        text = utils.replaceMatch(match, def.replacement, def.expansionOptions)
       }
       else {
-        text = def.filter(match, reader);
+        text = def.filter(match, reader)
       }
-      text = utils.injectHtmlAttributes(text);
-      writer.write(text);
-      reader.next();
+      text = utils.injectHtmlAttributes(text)
+      writer.write(text)
+      reader.next()
       if (text && !reader.eof()) {
-        writer.write('\n'); // Add a trailing '\n' if there are more lines.
+        writer.write('\n')  // Add a trailing '\n' if there are more lines.
       }
-      return true;
+      return true
     }
   }
-  return false;
+  return false
 }
 
 // Return def definition or null if not found.
 export function getDefinition(name: string): Definition {
   for (var i in defs) {
     if (defs[i].name === name) {
-      return defs[i];
+      return defs[i]
     }
   }
-  return null;
+  return null
 }
 

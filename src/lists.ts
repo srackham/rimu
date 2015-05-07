@@ -5,23 +5,23 @@ import * as delimitedBlocks from './delimitedblocks'
 /* tslint:enable */
 
 interface Definition {
-  match: RegExp;
-  listOpenTag: string;
-  listCloseTag: string;
-  itemOpenTag: string;
-  itemCloseTag: string;
-  termOpenTag?: string;   // Definition lists only.
-  termCloseTag?: string;  // Definition lists only.
+  match: RegExp
+  listOpenTag: string
+  listCloseTag: string
+  itemOpenTag: string
+  itemCloseTag: string
+  termOpenTag?: string    // Definition lists only.
+  termCloseTag?: string   // Definition lists only.
 }
 
 // Information about a matched list item element.
 interface ItemState {
-  match: RegExpExecArray;
-  def: Definition;
-  id: string;
-  isListItem: boolean;
-  isDelimited: boolean;
-  isIndented: boolean;
+  match: RegExpExecArray
+  def: Definition
+  id: string
+  isListItem: boolean
+  isDelimited: boolean
+  isIndented: boolean
 }
 
 var defs: Definition[] = [
@@ -56,91 +56,91 @@ var defs: Definition[] = [
     termOpenTag: '<dt>',
     termCloseTag: '</dt>'
   },
-];
+]
 
-var ids: string[];  // Stack of open list IDs.
+var ids: string[]   // Stack of open list IDs.
 
 export function render(reader: io.Reader, writer: io.Writer): boolean {
-  if (reader.eof()) throw 'premature eof';
-  var startItem: ItemState;
+  if (reader.eof()) throw 'premature eof'
+  var startItem: ItemState
   if (!(startItem = matchItem(reader))) {
-    return false;
+    return false
   }
-  ids = [];
-  renderList(startItem, reader, writer);
+  ids = []
+  renderList(startItem, reader, writer)
   // ids should now be empty.
-  return true;
+  return true
 }
 
 function renderList(startItem: ItemState, reader: io.Reader, writer: io.Writer): ItemState {
-  ids.push(startItem.id);
-  writer.write(utils.injectHtmlAttributes(startItem.def.listOpenTag));
-  var nextItem: ItemState;
+  ids.push(startItem.id)
+  writer.write(utils.injectHtmlAttributes(startItem.def.listOpenTag))
+  var nextItem: ItemState
   while (true) {
-    nextItem = renderListItem(startItem, reader, writer);
+    nextItem = renderListItem(startItem, reader, writer)
     if (!nextItem || nextItem.id !== startItem.id) {
       // End of list or next item belongs to ancestor.
-      writer.write(startItem.def.listCloseTag);
-      ids.pop();
-      return nextItem;
+      writer.write(startItem.def.listCloseTag)
+      ids.pop()
+      return nextItem
     }
-    startItem = nextItem;
+    startItem = nextItem
   }
 }
 
 function renderListItem(startItem: ItemState, reader: io.Reader, writer: io.Writer): ItemState {
-  var def = startItem.def;
-  var match = startItem.match;
-  var text: string;
+  var def = startItem.def
+  var match = startItem.match
+  var text: string
   if (match.length === 4) { // 3 match groups => definition list.
-    writer.write(def.termOpenTag);
-    text = utils.replaceInline(match[1], {macros: true, spans: true});
-    writer.write(text);
-    writer.write(def.termCloseTag);
+    writer.write(def.termOpenTag)
+    text = utils.replaceInline(match[1], {macros: true, spans: true})
+    writer.write(text)
+    writer.write(def.termCloseTag)
   }
-  writer.write(def.itemOpenTag);
+  writer.write(def.itemOpenTag)
   // Process of item text.
-  var lines = new io.Writer();
-  lines.write(match[match.length - 1]); // Item text from first line.
-  lines.write('\n');
-  reader.next();
-  var nextItem: ItemState;
-  nextItem = readToNext(reader, lines);
-  text = lines.toString();
-  text = utils.replaceInline(text, {macros: true, spans: true});
-  writer.write(text);
+  var lines = new io.Writer()
+  lines.write(match[match.length - 1])  // Item text from first line.
+  lines.write('\n')
+  reader.next()
+  var nextItem: ItemState
+  nextItem = readToNext(reader, lines)
+  text = lines.toString()
+  text = utils.replaceInline(text, {macros: true, spans: true})
+  writer.write(text)
   while (true) {
     if (!nextItem) {
       // EOF or non-list related item.
-      writer.write(def.itemCloseTag);
-      return null;
+      writer.write(def.itemCloseTag)
+      return null
     }
     else if (nextItem.isListItem) {
       if (ids.indexOf(nextItem.id) !== -1) {
         // Item belongs to current list or an ancestor list.
-        writer.write(def.itemCloseTag);
-        return nextItem;
+        writer.write(def.itemCloseTag)
+        return nextItem
       }
       else {
         // Render new child list.
-        nextItem = renderList(nextItem, reader, writer);
-        writer.write(def.itemCloseTag);
-        return nextItem;
+        nextItem = renderList(nextItem, reader, writer)
+        writer.write(def.itemCloseTag)
+        return nextItem
       }
     }
     else if (nextItem.isDelimited || nextItem.isIndented) {
       // Delimited blocks and Indented blocks attach to list items.
-      var savedIds = ids;
-      ids = [];
-      delimitedBlocks.render(reader, writer);
-      ids = savedIds;
-      reader.skipBlankLines();
+      var savedIds = ids
+      ids = []
+      delimitedBlocks.render(reader, writer)
+      ids = savedIds
+      reader.skipBlankLines()
       if (reader.eof()) {
-        writer.write(def.itemCloseTag);
-        return null;
+        writer.write(def.itemCloseTag)
+        return null
       }
       else {
-        nextItem = matchItem(reader);
+        nextItem = matchItem(reader)
       }
     }
   }
@@ -153,25 +153,25 @@ function renderListItem(startItem: ItemState, reader: io.Reader, writer: io.Writ
 function readToNext(reader: io.Reader, writer: io.Writer): ItemState {
   // The reader should be at the line following the first line of the list
   // item (or EOF).
-  var next: ItemState;
+  var next: ItemState
   while (true) {
-    if (reader.eof()) return null;
+    if (reader.eof()) return null
     if (reader.cursor() === '') {
       // Encountered blank line.
       // Can be followed by new list item or attached indented paragraph.
-      reader.skipBlankLines();
-      if (reader.eof()) return null;
-      return matchItem(reader, {indented: true});
+      reader.skipBlankLines()
+      if (reader.eof()) return null
+      return matchItem(reader, {indented: true})
     }
-    next = matchItem(reader, {delimited: true});
+    next = matchItem(reader, {delimited: true})
     if (next) {
       // Encountered new list item or attached quote, code or division
       // delimited block.
-      return next;
+      return next
     }
-    writer.write(reader.cursor());
-    writer.write('\n');
-    reader.next();
+    writer.write(reader.cursor())
+    writer.write('\n')
+    reader.next()
   }
 }
 
@@ -182,41 +182,41 @@ function readToNext(reader: io.Reader, writer: io.Writer): ItemState {
 function matchItem(reader: io.Reader,
                    options: {delimited?: boolean; indented?: boolean; } = {}): ItemState {
   // Check if the line matches a List definition.
-  var line = reader.cursor();
-  var item = <ItemState>{};   // ItemState factory.
+  var line = reader.cursor()
+  var item = <ItemState>{}    // ItemState factory.
   for (var i in defs) {
-    var match = defs[i].match.exec(line);
+    var match = defs[i].match.exec(line)
     if (match) {
       if (match[0][0] === '\\') {
-        reader.cursor(reader.cursor().slice(1));  // Drop backslash.
-        return null;
+        reader.cursor(reader.cursor().slice(1))   // Drop backslash.
+        return null
       }
-      item.match = match;
-      item.def = defs[i];
-      item.id = match[match.length - 2];
-      item.isListItem = true;
-      return item;
+      item.match = match
+      item.def = defs[i]
+      item.id = match[match.length - 2]
+      item.isListItem = true
+      return item
     }
   }
   // Check if the line matches a Delimited Block definition.
-  var def: delimitedBlocks.Definition;
+  var def: delimitedBlocks.Definition
   if (options.delimited) {
     for (var name in {quote: 0, code: 0, division: 0}) {
-      def = delimitedBlocks.getDefinition(name);
+      def = delimitedBlocks.getDefinition(name)
       if (def.openMatch.test(line)) {
-        item.isDelimited = true;
-        return item;
+        item.isDelimited = true
+        return item
       }
     }
   }
   // Check if the line matches an Indented Paragraph definition.
   if (options.indented) {
-    def = delimitedBlocks.getDefinition('indented');
+    def = delimitedBlocks.getDefinition('indented')
     if (def.openMatch.test(line)) {
-      item.isIndented = true;
-      return item;
+      item.isIndented = true
+      return item
     }
   }
-  return null;
+  return null
 }
 

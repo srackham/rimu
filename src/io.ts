@@ -1,34 +1,34 @@
   export class Reader {
-    lines: string[];
-    pos: number;      // line index of current line.
+    lines: string[]
+    pos: number       // line index of current line.
 
     constructor(text: string) {
       // Split lines on newline boundaries.
       // http://stackoverflow.com/questions/1155678/javascript-string-newline-character
       // TODO split is broken on IE8 e.g. 'X\n\nX'.split(/\n/g).length) returns 2 but should return 3.
-      this.lines = text.split(/\r\n|\r|\n/g);
-      this.pos = 0;
+      this.lines = text.split(/\r\n|\r|\n/g)
+      this.pos = 0
     }
 
     // Getter/setter for current line, return null if EOF.
     cursor(value: string = null): string {
-      if (this.eof()) return null;
+      if (this.eof()) return null
       if (value !== null) {
-        this.lines[this.pos] = value;
+        this.lines[this.pos] = value
       }
-      return this.lines[this.pos];
+      return this.lines[this.pos]
     }
 
     eof(): boolean {
-      return this.pos >= this.lines.length;
+      return this.pos >= this.lines.length
     }
 
     // Read the next line, return null if EOF.
     next(): string {
-      if (this.eof()) return null;
-      this.pos++;
-      if (this.eof()) return null;
-      return this.lines[this.pos];
+      if (this.eof()) return null
+      this.pos++
+      if (this.eof()) return null
+      return this.lines[this.pos]
     }
 
     // Read to the first line matching the re.
@@ -37,50 +37,50 @@
     // Return null if an EOF is encountered.
     // Exit with the reader pointing to the line following the match.
     readTo(find: RegExp): string[] {
-      var result: string[] = [];
-      var match: string[];
+      var result: string[] = []
+      var match: string[]
       while (!this.eof()) {
-        match = this.cursor().match(find);
+        match = this.cursor().match(find)
         if (match) {
           if (match.length > 1) {
-            result.push(match[1]);  // $1
+            result.push(match[1])   // $1
           }
-          this.next();
-          break;
+          this.next()
+          break
         }
-        result.push(this.cursor());
-        this.next();
+        result.push(this.cursor())
+        this.next()
       }
       // Blank line matches EOF.
       if (match || find.toString() === '/^$/' && this.eof()) {
-        return result;
+        return result
       }
       else {
-        return null;
+        return null
       }
     }
 
     skipBlankLines(): void {
       while (this.cursor() === '') {
-        this.next();
+        this.next()
       }
     }
 
   }
 
   export class Writer {
-    buffer: string[]; // Appending an array is faster than string concatenation.
+    buffer: string[]  // Appending an array is faster than string concatenation.
 
     constructor() {
-      this.buffer = [];
+      this.buffer = []
     }
 
     write(s: string): void {
-      this.buffer.push(s);
+      this.buffer.push(s)
     }
 
     toString(): string {
-      return this.buffer.join('');
+      return this.buffer.join('')
     }
 
   }

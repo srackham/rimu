@@ -19,18 +19,18 @@ export interface RenderOptions {
    * _3_: Render HTML as text.
    *
    */
-  safeMode?: number;
+  safeMode?: number
   /**
    * A string that replaces embedded HTML in the output when
    * _safeMode_ has the value _2_. Defaults to `<mark>replaced HTML</mark>`.
    *
    */
-  htmlReplacement?: string;
+  htmlReplacement?: string
 }
 
 // Option values.
-export var safeMode: number;
-export var htmlReplacement: string;
+export var safeMode: number
+export var htmlReplacement: string
 
 /**
  * Set options to values in 'options', those not in 'options' are set to their default value.
@@ -38,8 +38,8 @@ export var htmlReplacement: string;
  * @param options
  */
 export function update(options: RenderOptions): void {
-  safeMode = ('safeMode' in options) ? options.safeMode : 0;
-  htmlReplacement = ('htmlReplacement' in options) ? options.htmlReplacement : '<mark>replaced HTML</mark>';
+  safeMode = ('safeMode' in options) ? options.safeMode : 0
+  htmlReplacement = ('htmlReplacement' in options) ? options.htmlReplacement : '<mark>replaced HTML</mark>'
 }
 
 /**
@@ -48,17 +48,17 @@ export function update(options: RenderOptions): void {
 export function safeModeFilter(html: string): string {
   switch (safeMode) {
     case 0:   // Raw HTML (default behavior).
-      return html;
+      return html
     case 1:   // Drop HTML.
-      return '';
+      return ''
     case 2:   // Replace HTML with 'htmlReplacement' option string.
-      return htmlReplacement;
+      return htmlReplacement
     case 3:   // Render HTML as text.
-      return utils.replaceSpecialChars(html);
+      return utils.replaceSpecialChars(html)
     default:
-      throw 'illegal safeMode value';
+      throw 'illegal safeMode value'
   }
 }
 
-update({});   // Initialize options to default values.
+update({})    // Initialize options to default values.
 

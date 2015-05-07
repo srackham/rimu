@@ -29,10 +29,10 @@ import * as quotes from './quotes'
  *
  */
 export function render(source: string, opts: options.RenderOptions = {}): string {
-  options.update(opts);
-  return renderSource(source);
+  options.update(opts)
+  return renderSource(source)
 }
 
 // Load-time initializations.
-quotes.initialize();
+quotes.initialize()
 
