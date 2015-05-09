@@ -44,8 +44,10 @@ syn region rimuHeader matchgroup=rimuHeaderStartEnd start=/^\(=\|#\)\{1,6}\s\+/ 
 syn match rimuBlockDelimiter /^\("\|\.\)\{2,}$/
 syn region rimuCodeBlock start=/^-\{2,}$/ end=/^-\{2,}$/ keepend
 syn region rimuCodeBlock start=/^`\{2,}$/ end=/^`\{2,}$/ keepend
-syn region rimuIndentedParagraph start=/\(\%^\|\_^\n\|^\(=\|#\)\{1,6}\s\+\S\+.*\n\)\@<=\s\+\S/ end=/\n\n/ keepend
-syn region rimuQuoteParagraph start=/\(\%^\|\_^\n\|^\(=\|#\)\{1,6}\s\+\S\+.*\n\)\@<=\\\@<!>\s*\S/ end=/\n\n/ keepend contains=rimuSpan.*,rimuQuotePrefix
+"syn region rimuIndentedParagraph start=/\(\%^\|\_^\n\|^\(=\|#\)\{1,6}\s\+\S\+.*\n\|^\.\{2,}\n\)\@<=\s\+\S/ end=/\n\n/ keepend
+syn region rimuIndentedParagraph start=/\(\%^\|\_^\n\|^\(=\|#\)\{1,6}\s\+\S\+.*\n\|^\.\{2,}\n\)\@<=\s\+\S/ end=/\n\(\.\.\|""\|\n\)\@=/ keepend
+"syn region rimuQuoteParagraph start=/\(\%^\|\_^\n\|^\(=\|#\)\{1,6}\s\+\S\+.*\n\|^\.\{2,}\n\)\@<=\\\@<!>\s*\S/ end=/\n\n/ keepend contains=rimuSpan.*,rimuQuotePrefix
+syn region rimuQuoteParagraph start=/\(\%^\|\_^\n\|^\(=\|#\)\{1,6}\s\+\S\+.*\n\|^\.\{2,}\n\)\@<=\\\@<!>\s*\S/ end=/\n\(\.\.\|""\|\n\)\@=/ keepend contains=rimuSpan.*,rimuQuotePrefix
 syn match rimuQuotePrefix /^\\\@<!>/ contained
 syn region rimuHTMLBlock start=/<!\|\(<\/\?\(html\|head\|body\|script\|style\|address\|article\|aside\|audio\|blockquote\|canvas\|dd\|div\|dl\|fieldset\|figcaption\|figure\|figcaption\|footer\|form\|h1\|h2\|h3\|h4\|h5\|h6\|header\|hgroup\|hr\|noscript\|ol\|output\|p\|pre\|section\|table\|tfoot\|ul\|video\)[ >\n]\?\)/ end=/\n\n/ contains=rimuSpanHTML keepend
 
