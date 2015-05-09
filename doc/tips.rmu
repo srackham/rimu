@@ -538,12 +538,12 @@ lines that end with a single-quote.
 - The contents of a macro can be rendered verbatim in a code block by
   enabling macro expansion. For example:
 ..
-````
+``
 .+macros
 ```
 {example-42}
 ```
-````
+``
 
 The contents of `\{example-42}` are not subject to macro expansion.
 ..
