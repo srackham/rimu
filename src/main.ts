@@ -29,6 +29,12 @@ import * as quotes from './quotes'
  *
  */
 export function render(source: string, opts: options.RenderOptions = {}): string {
+  if (typeof source !== 'string') {
+    throw new TypeError('render(): source argument is not a string')
+  }
+  if (opts !== undefined && typeof opts !== 'object') {
+    throw new TypeError('render(): options argument is not an object')
+  }
   options.update(opts)
   return renderSource(source)
 }
