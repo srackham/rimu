@@ -83,6 +83,7 @@
       <option value="topic-character-entities">Character entities</option>
       <option value="topic-comments">Comments</option>
       <option value="topic-delimited-blocks">Delimited blocks</option>
+      <option value="topic-documents">Documents</option>
       <option value="topic-headers">Headers</option>
       <option value="topic-html-markup">HTML Markup</option>
       <option value="topic-images">Images</option>
@@ -93,7 +94,6 @@
       <option selected value="topic-playground">Playground</option>
       <option value="topic-quotes">Quotes</option>
       <option value="topic-replacements">Replacements</option>
-      <option value="topic-taxonomy">Taxonomy</option>
       <option value="topic-tools">Tools</option>
       <option value="topic-urls-and-email">URLs and email addresses</option>
     </select>
@@ -762,7 +762,7 @@ Example replacement definitions:
 -->
 </div>
 
-<div id="topic-taxonomy">
+<div id="topic-documents">
 <!--
 #### Document structure
 - A Rimu document consists of zero or more _Block_ elements.
@@ -772,6 +772,30 @@ Example replacement definitions:
   * A _Line Block_ element consists of just one line.
 - _Inline_ elements are contained within the textual content of Block
   elements.
+
+
+#### Document processing
+Rimu scans the input text for block elements. When a block element is
+matched it is converted to HTML on the output.
+
+Block elements in the source markup are matched in the following order
+(first to last):
+
+. Line Blocks
+. Lists
+. Delimited Blocks
+. Paragraphs
+
+Inline elements are processed in the following order (first to last):
+
+. Macros
+. Quotes
+. Replacements
+. Special characters
+
+Inline substitutions in multi-line block elements can be controlled
+using _block-options_ in the _Block Attributes_ element.
+
 
 #### Element taxonomy
 ```

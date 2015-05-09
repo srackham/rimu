@@ -280,18 +280,6 @@ highlights custom syntax definitions from the [example .rimurc
 file](https://github.com/srackham/rimu/blob/master/examples/.rimurc).
 
 
-## Understanding substitution priorities
-Inline elements are processed in the following order (first to last):
-
-. Macros
-. Quotes
-. Replacements
-. Special characters
-
-Substitutions in multi-line block elements can be controlled using
-_block-options_ in the _Block Attributes_ element.
-
-
 ## Using Macro, Replacement and Quote definitions in Safe Mode
 _Macro_, _Replacement_ and _Quote_ definitions are not processed in
 Safe Mode. To apply Macro, Replacement or Quote definitions to Rimu
@@ -366,6 +354,11 @@ customary to use the _Undefined_ `--` macro for this purpose:
   and {--|this text is skipped}.
 
 See also <#conditional-inclusion|Conditional Inclusion>.
+
+You could also implement inline `//` style single-line comments with
+the following custom Replacement definition:
+
+  /(^|\n)\\?\/\/.*(\n|$)/g = '$1'
 
 
 .#conditional-inclusion

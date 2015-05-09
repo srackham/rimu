@@ -793,6 +793,10 @@ exports['Blocks'] = function(test) {
     "/\\\\?\\B'\\b(.+?)\\b'\\B/g = '<em>$1</em>'\n'emphasized'",
     '<p><em>emphasized</em></p>',
     'replacement with match groups');
+  test_document(
+    "/(^|\\n)\\\\?\\/\\/.*(\\n|$)/g = '$1'\nA paragraph\n//Comment\n//Comment\nwith inline comments.",
+    '<p>A paragraph\nwith inline comments.</p>',
+    'Inline comments replacement.');
 
   // Delimited Block definitions.
   test_document(
