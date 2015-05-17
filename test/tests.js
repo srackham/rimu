@@ -68,7 +68,11 @@ exports['Spans'] = function(test) {
   test_span(
     'Some ~~rubbish~~.',
     'Some <del>rubbish</del>.',
-    'code quotes');
+    'strike-through quotes');
+  test_span(
+    'Some __strong text__.',
+    'Some <strong>strong text</strong>.',
+    'double-underlined quotes');
   test_span(
     '<a class="btn">abc</a> <a class="btn">xyz</a>',
     '<a class="btn">abc</a> <a class="btn">xyz</a>',

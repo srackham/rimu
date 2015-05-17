@@ -12,12 +12,6 @@ export interface Definition {
 
 export var defs: Definition[] = [
   {
-    quote: '_',
-    openTag: '<em>',
-    closeTag: '</em>',
-    spans: true
-  },
-  {
     quote: '**',
     openTag: '<strong>',
     closeTag: '</strong>',
@@ -27,6 +21,18 @@ export var defs: Definition[] = [
     quote: '*',
     openTag: '<strong>',
     closeTag: '</strong>',
+    spans: true
+  },
+  {
+    quote: '__',
+    openTag: '<strong>',
+    closeTag: '</strong>',
+    spans: true
+  },
+  {
+    quote: '_',
+    openTag: '<em>',
+    closeTag: '</em>',
     spans: true
   },
   {

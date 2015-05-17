@@ -38,6 +38,7 @@ syn match rimuSpanRawURL /[\\<]\@<!\(http\|https\):\/\/[^ \t"]*[^ \t",.;?)]/
 syn match rimuSpanStrong /\\\@<!\*[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\*/ contains=rimuSpanEntity
 syn match rimuSpanStrong /\\\@<!\*\*[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\*\*/ contains=rimuSpanEntity
 syn match rimuSpanEmphasized /\\\@<!_[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!_/ contains=rimuSpanEntity
+syn match rimuSpanStrong /\\\@<!__[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!__/ contains=rimuSpanEntity
 syn match rimuSpanCode /\\\@<!`[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!`/
 syn match rimuSpanDeleted /\\\@<!\~\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\~\~/ contains=rimuSpanEntity
 syn region rimuHeader matchgroup=rimuHeaderStartEnd start=/^\(=\|#\)\{1,6}\s\+/ end=/\(\s\+\(=\|#\)\{1,6}\)\?\_$/ contains=rimuSpan.* oneline keepend
