@@ -31,6 +31,12 @@
 
 
 /*
+  Quotes
+*/
+__ = '<u>|</u>'
+
+
+/*
   Highlight.js
 */
 // Turn off auto-hightlighting.
