@@ -224,6 +224,7 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
         }
         writer.write(utils.injectHtmlAttributes(def.openTag))
         if (expansionOptions.container) {
+          delete lineBlocks.blockOptions.container  // Consume before recursion.
           text = renderSource(text)
         }
         else {

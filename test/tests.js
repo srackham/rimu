@@ -726,6 +726,10 @@ exports['Blocks'] = function(test) {
     '<div>foo</div>',
     '-container expansion option');
   test_document(
+    '.+container\n``\nFoo\n``',
+    '<pre><code><p>Foo</p></code></pre>',
+    '+container option');
+  test_document(
     '.-spans -specials\n&foo',
     '<p>&foo</p>',
     'disable specials (both spans and specials must off)');
