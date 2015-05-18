@@ -718,6 +718,10 @@ exports['Blocks'] = function(test) {
     '<p id="id1">A _test_</p>',
     'id attribute and block option');
   test_document(
+    '.-spans -macros +specials\n_A {macro}_',
+    '<p>_A {macro}_</p>',
+    'multiple block options');
+  test_document(
     '.-container\n..\nfoo\n..',
     '<div>foo</div>',
     '-container expansion option');
