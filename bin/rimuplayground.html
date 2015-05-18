@@ -94,6 +94,7 @@
       <option selected value="topic-playground">Playground</option>
       <option value="topic-quotes">Quotes</option>
       <option value="topic-replacements">Replacements</option>
+      <option value="topic-taxonomy">Taxonomy</option>
       <option value="topic-tools">Tools</option>
       <option value="topic-urls-and-email">URLs and email addresses</option>
     </select>
@@ -182,17 +183,16 @@ Character entities can be escaped with a backslash character prefix.
 <div id="topic-comments">
 <!--
 A _multi-line comment_ starts with a line containing only `/*` and
-ends with a line containing only `*/` for example:
+ends with a line containing only `*/`.
 
-  /*
-    This comment does not appear in the
-    rendered HTML.
-  */
+/*
+  This comment does not appear in the
+  rendered HTML.
+*/
 
-A _single-line comment_ is any line of text starting with `//`
-for example:
+A _single-line comment_ is any line of text starting with `//`.
 
-  // This comment does not appear in the rendered HTML.
+// This comment does not appear in the rendered HTML.
 
 - Comments are not included in the HTML output.
 - Comments are block elements and cannot be used inline, for example
@@ -273,11 +273,13 @@ Definition syntax:
   `-spans`:: Disable span element processing.
   `+specials`:: Enable special character entities.
   `-specials`:: Disable special character entities.
-  `+container`:: The block is a container for Rimu elements.
+  `+container`:: The block is a container for Rimu block elements.
   `-container`:: Turn off the container option.
   `+skip`:: Skip the block.
   `-skip`:: Turn off the skip option.
 
+- Do not apply `macros`, `spans` `or specials` block options to
+  Division blocks or Quote blocks (container blocks) or Lists.
 - _Quote_ and _Replacement_ elements are collectively refered to as
   _Spans_.
 - The `-specials` option is ignored if the API _safeMode_ option is
@@ -772,6 +774,7 @@ Example replacement definitions:
   * A _Line Block_ element consists of just one line.
 - _Inline_ elements are contained within the textual content of Block
   elements.
+- See the _Taxonomy_ section for a full list of Rimu element types.
 
 
 #### Document processing
@@ -796,6 +799,11 @@ Inline elements are processed in the following order (first to last):
 Inline substitutions in multi-line block elements can be controlled
 using _block-options_ in the _Block Attributes_ element.
 
+-->
+</div>
+
+<div id="topic-taxonomy">
+<!--
 
 #### Element taxonomy
 ```

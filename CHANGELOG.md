@@ -45,7 +45,7 @@ More Markdown compatible syntaxes added to Rimu core
 - Enhanced and refined Macros.
 - Many other enhancements, additions and documentation updates.
 - _Indented Paragraphs_ and _Code Blocks_ no longer expand macro
-  invocations by default. To reinstate old behavior use this delimited
+  invocations by default. To reinstate old behavior use these delimited
   block definitions:
 
           |code| = '+macros'
