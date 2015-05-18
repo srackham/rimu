@@ -175,7 +175,7 @@ var defs: Definition[] = [
       // class names = $1, id = $2, html-attributes = $3, block-options = $4
       var text = match[0]
       text = utils.replaceInline(text, this.expansionOptions)  // Expand macro references.
-      match = /^\\?\.([a-zA-Z][\w\ -]*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text)
+      match = /^\\?\.((?:\s*[a-zA-Z][\w\-]*)+)*(?:\s*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text)
       if (!match) {
         return false
       }

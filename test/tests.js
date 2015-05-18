@@ -79,8 +79,8 @@ exports['Spans'] = function(test) {
     'adjacent nested single and double quotes');
   test_span(
     '```nested double and single code quotes```',
-    '<codd>`nested double and single code quotes`</code>',
-    'nested double and single code quotes';
+    '<code>`nested double and single code quotes`</code>',
+    'nested double and single code quotes');
   test_span(
     '<a class="btn">abc</a> <a class="btn">xyz</a>',
     '<a class="btn">abc</a> <a class="btn">xyz</a>',
@@ -709,6 +709,14 @@ exports['Blocks'] = function(test) {
     '.-macros\n<div>{undefined}</div>\n\n<div>{undefined}</div>',
     '<div>{undefined}</div>\n<div></div>',
     'disable macro expansion in HTML Block');
+  test_document(
+    '.class1 -macros\nA {macro}',
+    '<p class="class1">A {macro}</p>',
+    'class attribute and block option');
+  test_document(
+    '.#id1 -spans\nA _test_',
+    '<p id="id1">A _test_</p>',
+    'id attribute and block option');
   test_document(
     '.-container\n..\nfoo\n..',
     '<div>foo</div>',
