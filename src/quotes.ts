@@ -36,6 +36,12 @@ export var defs: Definition[] = [
     spans: true
   },
   {
+    quote: '``',
+    openTag: '<code>',
+    closeTag: '</code>',
+    spans: false
+  },
+  {
     quote: '`',
     openTag: '<code>',
     closeTag: '</code>',

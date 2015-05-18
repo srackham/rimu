@@ -78,6 +78,10 @@ exports['Spans'] = function(test) {
     '<strong><strong>single and double quotes</strong></strong>',
     'adjacent nested single and double quotes');
   test_span(
+    '```nested double and single code quotes```',
+    '<codd>`nested double and single code quotes`</code>',
+    'nested double and single code quotes';
+  test_span(
     '<a class="btn">abc</a> <a class="btn">xyz</a>',
     '<a class="btn">abc</a> <a class="btn">xyz</a>',
     'two HTML attributes do not generate delete quote');
