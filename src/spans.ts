@@ -78,6 +78,12 @@ import * as replacements from './replacements'
         findRe.lastIndex = match.index + match[1].length + 1
         continue
       }
+      // Check for same closing quote one character further to the right.
+      while (fragment.text[findRe.lastIndex] === match[1][0]) {
+        // Move to closing quote one character to right.
+        match[2] += match[1][0]
+        findRe.lastIndex += 1
+      }
       // The quotes splits the fragment into 5 fragments.
       var before = match.input.slice(0, match.index)
       var quoted = match[2]
