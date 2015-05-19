@@ -4,47 +4,46 @@ import * as utils from './utils'
 
 /**
  * An object with zero or more optional properties to control Rimu Markup
- * translation in the [[render]] API.
+ * translation in the render() API.
  */
 export interface RenderOptions {
-  /**
-   * This option is an integer value that controls how Rimu
-   * renders embedded HTML.
-   *
-   * Allowed values:
-   *
-   * _0_: Render the raw HTML (default behavior).<br>
-   * _1_: Delete the HTML.<br>
-   * _2_: Replace the HTML with the 'htmlReplacement' option string.<br>
-   * _3_: Render HTML as text.
-   *
-   */
   safeMode?: number
-  /**
-   * A string that replaces embedded HTML in the output when
-   * _safeMode_ has the value _2_. Defaults to `<mark>replaced HTML</mark>`.
-   *
-   */
   htmlReplacement?: string
+  macroMode?: number
 }
 
-// Option values.
+// Global ption values.
 export var safeMode: number
 export var htmlReplacement: string
+export var macroMode: number
 
-/**
- * Set options to values in 'options', those not in 'options' are set to their default value.
- *
- * @param options
- */
+// Set options to values in 'options', those not in 'options' are set to their default value.
 export function update(options: RenderOptions): void {
   safeMode = ('safeMode' in options) ? options.safeMode : 0
   htmlReplacement = ('htmlReplacement' in options) ? options.htmlReplacement : '<mark>replaced HTML</mark>'
+  macroMode = ('macroMode' in options) ? options.macroMode : 4
 }
 
-/**
- * Filter HTML based on current [[safeMode]].
- */
+// Set named option value.
+export function setOptionValue(name: string, value: any): void {
+  switch (name) {
+    case 'safeMode':
+      /* tslint:disable */
+      isNaN(value = parseInt(value, 10)) || value < 0 || value > 3 || (safeMode = value)
+      /* tslint:enable */
+      break
+    case 'macroMode':
+      /* tslint:disable */
+      isNaN(value = parseInt(value, 10)) || value < 0 || value > 4 || (macroMode = value)
+      /* tslint:enable */
+      break
+    case 'htmlReplacement':
+      htmlReplacement = value
+      break
+  }
+}
+
+// Filter HTML based on current [[safeMode]].
 export function safeModeFilter(html: string): string {
   switch (safeMode) {
     case 0:   // Raw HTML (default behavior).

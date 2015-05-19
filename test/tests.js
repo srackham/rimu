@@ -425,6 +425,7 @@ exports['Blocks'] = function(test) {
       '</li></ul>',
     'anchors and links');
 
+  // API options
   test_document('<hr>', '<hr>', 'safeMode default');
   test_document('<hr>', '', 'saveMode=1', {safeMode: 1});
   test_document('<hr>', '<hr>');
@@ -435,6 +436,11 @@ exports['Blocks'] = function(test) {
   test_document('Lorum ipsum<br>', '<p>Lorum ipsum</p>', 'safeMode=1', {safeMode: 1});
   test_document('<hr>', '', 'safeMode=1', {safeMode: 1});
   test_document('<hr>', 'XXX', 'htmlReplacement option', {safeMode: 2, htmlReplacement: 'XXX'});
+  test_document(
+    '.htmlReplacement = \'Foo\'\n.safeMode=\'2\'\n<span>Bar</span>',
+    '<p>FooBarFoo</p>',
+    'htmlReplacement option element');
+
   // The {blockref} is passed through and gets picked up as a paragraph.
   test_document(
     '{v1}=\'1\'\n\n{v1}',

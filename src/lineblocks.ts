@@ -197,6 +197,22 @@ var defs: Definition[] = [
       return ''
     }
   },
+  // API Option.
+  // name = $1, value = $2
+  {
+    match: /^\\?\.(safeMode|htmlReplacement|macroMode)\s*=\s*'(.*)'$/,
+    replacement: '',
+    expansionOptions: {
+      macros: true,
+    },
+    filter: function (match: RegExpExecArray): string {
+      if (options.safeMode !== 0) {
+        return ''   // Skip if a safe mode is set.
+      }
+      options.setOptionValue(match[1], match[2])
+      return ''
+    }
+  },
 ]
 
 // Globals set by Block Attributes filter.
