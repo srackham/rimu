@@ -806,6 +806,28 @@ exports['Blocks'] = function(test) {
     '<p><strong>Testing</strong> <em>123</em></p>',
     'modify built-in quote');
 
+  // macroMode option.
+  test_document(
+    '{defined}=\'\'\n{defined}{undefinded}{--undefined}',
+    '<p>{defined}{undefinded}{--undefined}</p>',
+    'macroMode=0', {macroMode: 0});
+  test_document(
+    '{defined}=\'\'\n{defined}{undefinded}{--undefined}',
+    '<p>{undefinded}{--undefined}</p>',
+    'macroMode=2', {macroMode: 2});
+  test_document(
+    '.macroMode=\'3\'\n{defined}=\'\'\n{defined}{undefinded}{--undefined}',
+    '<p>{defined}{undefinded}</p>',
+    'macroMode=3');
+  test_document(
+    '{defined}=\'\'\n{defined}{undefinded}{--undefined}',
+    '<p>{undefinded}</p>',
+    'macroMode=4', {macroMode: 4});
+  test_document(
+    '.safeMode=\'1\'\n.macroMode=\'3\'\n{defined}=\'\'\n{defined}{undefinded}{--undefined}',
+    '<p>{undefinded}</p>',
+    'API elements disabled by safeMode');
+
   // Replacement definitions.
   test_document(
     '/\\\\?\\.{3}/=\'&hellip;\'\nTesting...',
