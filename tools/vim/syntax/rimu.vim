@@ -46,9 +46,7 @@ syn region rimuHeader matchgroup=rimuHeaderStartEnd start=/^\(=\|#\)\{1,6}\s\+/ 
 syn match rimuBlockDelimiter /^\("\|\.\)\{2,}$/
 syn region rimuCodeBlock start=/^-\{2,}$/ end=/^-\{2,}$/ keepend
 syn region rimuCodeBlock start=/^`\{2,}$/ end=/^`\{2,}$/ keepend
-"syn region rimuIndentedParagraph start=/\(\%^\|\_^\n\|^\(=\|#\)\{1,6}\s\+\S\+.*\n\|^\.\{2,}\n\)\@<=\s\+\S/ end=/\n\n/ keepend
 syn region rimuIndentedParagraph start=/\(\%^\|\_^\n\|^\(=\|#\)\{1,6}\s\+\S\+.*\n\|^\.\{2,}\n\)\@<=\s\+\S/ end=/\n\(\.\.\|""\|\n\)\@=/ keepend
-"syn region rimuQuoteParagraph start=/\(\%^\|\_^\n\|^\(=\|#\)\{1,6}\s\+\S\+.*\n\|^\.\{2,}\n\)\@<=\\\@<!>\s*\S/ end=/\n\n/ keepend contains=rimuSpan.*,rimuQuotePrefix
 syn region rimuQuoteParagraph start=/\(\%^\|\_^\n\|^\(=\|#\)\{1,6}\s\+\S\+.*\n\|^\.\{2,}\n\)\@<=\\\@<!>\s*\S/ end=/\n\(\.\.\|""\|\n\)\@=/ keepend contains=rimuSpan.*,rimuQuotePrefix
 syn match rimuQuotePrefix /^\\\@<!>/ contained
 syn region rimuHTMLBlock start=/<!\|\(<\/\?\(html\|head\|body\|script\|style\|address\|article\|aside\|audio\|blockquote\|canvas\|dd\|div\|dl\|fieldset\|figcaption\|figure\|figcaption\|footer\|form\|h1\|h2\|h3\|h4\|h5\|h6\|header\|hgroup\|hr\|noscript\|ol\|output\|p\|pre\|section\|table\|tfoot\|ul\|video\)[ >\n]\?\)/ end=/\n\n/ contains=rimuSpanHTML keepend
@@ -68,11 +66,14 @@ syn match rimuListId /^\s*\(\(\d\+\.\)\|\.\{1,4}\)\s/
 syn match rimuListId /:\{2,4}/ contained containedin=rimuListLabel
 syn region rimuListLabel start=/^/ end=/:\{2,4}/ contains=rimuSpan.* oneline keepend
 
+syn match rimuApiElement /^\.[a-zA-Z]\+\s*=\s*'\_.\{-}'\n/
+syn match rimuApiOption /^\.\(safeMode\|htmlReplacement\|macroMode\)/ contained containedin=rimuApiElement
 syn match rimuQuoteDefinition /^\S\{1,2}\s*=\s*'\_.\{-}'\n/
 syn match rimuQuoteQuote /^\S\{1,2}/ contained containedin=rimuQuoteDefinition
-syn match rimuDefinitionValue /'\_.\{-}'\n/ contained containedin=rimuMacroDefinition,rimuReplacementDefinition,rimuQuoteDefinition,rimuDelimitedBlockDefinition
+syn match rimuDefinitionValue /'\_.\{-}'\n/ contained containedin=rimuMacroDefinition,rimuReplacementDefinition,rimuQuoteDefinition,rimuDelimitedBlockDefinition,rimuApiElement
 syn match rimuDefinitionParam /\($\d\+\)\|\(|\{1,2}\)/ contained containedin=rimuDefinitionValue
 
+hi def link rimuApiOption Special
 hi def link rimuBackslash Special
 hi def link rimuParamSeparator Label
 hi def link rimuBlockDelimiter Label
