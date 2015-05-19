@@ -20,34 +20,34 @@ exports['Spans'] = function(test) {
   test_span(
     '\\*11*',
     '*11*',
-    'escape strong quote');
+    'escape quote');
   test_span(
     '*11* 22 _33_ **44**',
-    '<strong>11</strong> 22 <em>33</em> <strong>44</strong>',
-    'strong and emphasis quotes');
+    '<em>11</em> 22 <em>33</em> <strong>44</strong>',
+    'emphasis and strong quotes');
   test_span(
     '*1 1*',
-    '<strong>1 1</strong>',
-    'strong quotes span words');
+    '<em>1 1</em>',
+    'quotes span words');
   test_span(
     '*1\n1*',
-    '<strong>1\n1</strong>',
-    'strong quotes span lines');
+    '<em>1\n1</em>',
+    'quotes span lines');
   test_span(
     '\\*11* *22* \\_33_ \\**44**',
-    '*11* <strong>22</strong> _33_ **44**',
+    '*11* <em>22</em> _33_ **44**',
     'escape quotes');
   test_span(
     '00 \\*11 http://example.com _22_*',
     '00 *11 <a href="http://example.com">http://example.com</a> <em>22</em>*',
     'replacements and quotes nested inside escaped quotes');
   test_span(
-    '\\*11 _22_\\*33*44*',
-    '*11 <em>22</em>*33<strong>44</strong>',
+    '\\*11 _22_\\**33**44**',
+    '*11 <em>22</em>**33<strong>44</strong>',
     'escape right-hand quote to resolve ambiguity');
   test_span(
-    '00 _ `_11_` _2*2*_ _2*2\\*_',
-    '00 _ <code>_11_</code> <em>2<strong>2</strong></em> <em>2*2*</em>',
+    '00 _ `_11_` _2**2**_ _2\\**2**_',
+    '00 _ <code>_11_</code> <em>2<strong>2</strong></em> <em>2**2**</em>',
     'nested quotes');
   test_span(
     '__xyz\\_ abc_',
@@ -58,7 +58,7 @@ exports['Spans'] = function(test) {
     '<em>_xyz abc_</em>',
     'quote containing quote characters');
   test_span(
-    '_*abc `efg`* h<sup>i</sup>_ j',
+    '_**abc `efg`** h<sup>i</sup>_ j',
     '<em><strong>abc <code>efg</code></strong> h<sup>i</sup></em> j',
     'nested quotes');
   test_span(
@@ -75,11 +75,11 @@ exports['Spans'] = function(test) {
     'double underlined quotes');
   test_span(
     '***single and double quotes***',
-    '<strong><strong>single and double quotes</strong></strong>',
+    '<strong><em>single and double quotes</em></strong>',
     'adjacent nested single and double quotes');
   test_span(
-    '```nested double and single code quotes```',
-    '<code>`nested double and single code quotes`</code>',
+    '```nested double `and` single code quotes```',
+    '<code>`nested double `and` single code quotes`</code>',
     'nested double and single code quotes');
   test_span(
     '<a class="btn">abc</a> <a class="btn">xyz</a>',
@@ -99,7 +99,7 @@ exports['Spans'] = function(test) {
     'http://example.com &lt;http://example.com&gt; [example url](http://example.com)',
     'escaped http urls');
   test_span(
-    '_http://example.com_ *<http://example.com>* <http://example.com|Foo\n& Bar>',
+    '_http://example.com_ **<http://example.com>** <http://example.com|Foo\n& Bar>',
     '<em><a href="http://example.com">http://example.com</a></em> ' +
       '<strong><a href="http://example.com">http://example.com</a></strong> ' +
       '<a href="http://example.com">Foo\n&amp; Bar</a>',
@@ -155,7 +155,7 @@ exports['Spans'] = function(test) {
     'email addresses');
   test_span(
     '<u>underlined *text*</u>\\<hr>',
-    '<u>underlined <strong>text</strong></u>&lt;hr&gt;',
+    '<u>underlined <em>text</em></u>&lt;hr&gt;',
     'HTML tags');
   test_span(
     '<span style="font-size:\n2em">inline elements</span>',
@@ -216,11 +216,11 @@ exports['Blocks'] = function(test) {
     'header');
   test_document(
     '## *Hello* World! ##',
-    '<h2><strong>Hello</strong> World!</h2>',
+    '<h2><em>Hello</em> World!</h2>',
     'header');
   test_document(
     '=== *Hello* <joe@foo.com|Joe & Jim> ====',
-    '<h3><strong>Hello</strong> <a href="mailto:joe@foo.com">Joe &amp; Jim</a></h3>',
+    '<h3><em>Hello</em> <a href="mailto:joe@foo.com">Joe &amp; Jim</a></h3>',
     'header title containing quotes and email address');
   test_document(
     '// A comment.',
@@ -276,15 +276,15 @@ exports['Blocks'] = function(test) {
     'code block');
   test_document(
     '>*Hello* <joe@foo.com|Joe & Jim>',
-    '<blockquote><p><strong>Hello</strong> <a href="mailto:joe@foo.com">Joe &amp; Jim</a></p></blockquote>',
+    '<blockquote><p><em>Hello</em> <a href="mailto:joe@foo.com">Joe &amp; Jim</a></p></blockquote>',
     'quote paragraph');
   test_document(
     '>*Hello*\n> <joe@foo.com|Joe & Jim>',
-    '<blockquote><p><strong>Hello</strong>\n <a href="mailto:joe@foo.com">Joe &amp; Jim</a></p></blockquote>',
+    '<blockquote><p><em>Hello</em>\n <a href="mailto:joe@foo.com">Joe &amp; Jim</a></p></blockquote>',
     'multi-line quote paragraph');
   test_document(
     '*Hello* <joe@foo.com|Joe & Jim>',
-    '<p><strong>Hello</strong> <a href="mailto:joe@foo.com">Joe &amp; Jim</a></p>',
+    '<p><em>Hello</em> <a href="mailto:joe@foo.com">Joe &amp; Jim</a></p>',
     'normal paragraph');
   test_document(
     '> Line 1\nLine 2',
@@ -748,7 +748,7 @@ exports['Blocks'] = function(test) {
 
   // Quote definitions.
   test_document(
-    '== = \'<strong>|</strong>\'\n==Testing== *123*',
+    '== = \'<strong>|</strong>\'\n==Testing== **123**',
     '<p><strong>Testing</strong> <strong>123</strong></p>',
     'new double quote definition');
   test_document(
@@ -757,7 +757,7 @@ exports['Blocks'] = function(test) {
     'escaped double quote');
   test_document(
     '= = \'<del>|</del>\'\n=Testing *123*=',
-    '<p><del>Testing <strong>123</strong></del></p>',
+    '<p><del>Testing <em>123</em></del></p>',
     'new single quote definition');
   test_document(
     '\\=Testing= 123',
@@ -768,7 +768,7 @@ exports['Blocks'] = function(test) {
     '<p><del>Testing</del> <strong>123</strong> <del>Test</del></p>',
     'single and double-quotes');
   test_document(
-    '_* = \'<em><strong>|</strong></em>\'\n_*Testing_* *123*',
+    '_* = \'<em><strong>|</strong></em>\'\n_*Testing_* **123**',
     '<p><em><strong>Testing</strong></em> <strong>123</strong></p>',
     'new asymmetric double quote definition');
   test_document(

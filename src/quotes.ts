@@ -19,8 +19,8 @@ export var defs: Definition[] = [
   },
   {
     quote: '*',
-    openTag: '<strong>',
-    closeTag: '</strong>',
+    openTag: '<em>',
+    closeTag: '</em>',
     spans: true
   },
   {

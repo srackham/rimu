@@ -558,17 +558,21 @@ interactive sandbox for learning and experimenting with Rimu markup:
 
 <div id="topic-quotes">
 <!--
-Text can be formatted by enclosing it with quote characters. The
-built-in quote characters are: underscore for _emphasized text_;
-single and double-asterisk for *bold text*; back-tick for
-`monospaced text`, double-tilde for ~~strikethrough~~.
+Text can be formatted by enclosing it in single or double quote
+characters. The built-in default quote characters are:
+single underscore or asterisk for _emphasized_  *text*;
+double underscore or asterisk for __bold__ **text**;
+single or doubleback-tick for`monospaced text`;
+double-tilde for ~~strikethrough~~.
 
   Rimu            HTML                      Font style
   ___________________________________________________________
   _emphasis_      <em>emphasis</em>         Italic
-  *strong*        <strong>strong</strong>   Bold
+  *emphasis*      <em>emphasis</em>         Italic
+  __strong__      <strong>strong</strong>   Bold
   **strong**      <strong>strong</strong>   Bold
   `code`          <code>code</code>         Monospaced
+  ``code``        <code>code</code>         Monospaced
   ~~deleted~~     <del>deleted</del>        Strikethrough
   ___________________________________________________________
 

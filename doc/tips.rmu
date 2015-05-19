@@ -122,9 +122,9 @@ Code blocks::
 Quote paragraphs:: Paragraphs starting with a `>` character are
 rendered like Markdown Blockquotes.
 
-Text formatting:: `_emphasis_`, `**bold**`, `\`code\`` and
-`~~strikethrough~~` quotes (strikethrough is GitHub Flavored Markdown
-compatible).
+Text formatting:: `_emphasis_`, `*emphasis*`, `__bold__`, `**bold**`,
+`\`code\`` and `~~strikethrough~~` quotes (strikethrough is GitHub
+Flavored Markdown compatible).
 
 Lists::
 - Bullet lists with `-` and `*` IDs.
@@ -385,7 +385,7 @@ To conditionally exclude these multi-line block elements enable the
 example:
 
   {macro!}.+skip
-  *Lorem ipsum dolor*. Sit amet venenatis. Erat nulla arcu. Lorem
+  **Lorem ipsum dolor**. Sit amet venenatis. Erat nulla arcu. Lorem
   luctus sem. Mauris vitaei ipsum.
 
 If `macro` is defined and not blank then the `.+skip` Attribute Block
@@ -443,7 +443,7 @@ create nicely formatted tables. For example:
 <td style="width: 50%;">
 
 .text-info
-*Lorem ipsum dolor*. Sit amet venenatis. Erat nulla arcu. Lorem luctus
+**Lorem ipsum dolor**. Sit amet venenatis. Erat nulla arcu. Lorem luctus
 sem. Mauris vitae ipsum. Donec dui ac ridiculus quisque proin.
 Lobortis lacus vestibulum sem.
 
