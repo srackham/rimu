@@ -21,7 +21,7 @@ export var macroMode: number
 export function update(options: RenderOptions): void {
   safeMode = ('safeMode' in options) ? options.safeMode : 0
   htmlReplacement = ('htmlReplacement' in options) ? options.htmlReplacement : '<mark>replaced HTML</mark>'
-  macroMode = ('macroMode' in options) ? options.macroMode : 4
+  macroMode = ('macroMode' in options) ? options.macroMode : 1
 }
 
 // Set named option value.

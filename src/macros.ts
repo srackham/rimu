@@ -1,3 +1,7 @@
+/* tslint:disable */
+import * as options from './options'
+/* tslint:enable */
+
 // Matches macro invocation. $1 = name, $2 = params.
 var MATCH_MACRO = /\{([\w\-]+)([!=|?](?:|[\s\S]*?[^\\]))?\}/
 // Matches all macro invocations. $1 = name, $2 = params.
@@ -50,12 +54,33 @@ export function render(text: string): string {
     var params = args[1] || ''
     /* $2 */
     var value = getValue(name)  // Macro value is null if macro is undefined.
+    switch (options.macroMode) {
+      case 0: // No macros.
+        return match
+      case 1: // All macros.
+        break
+      case 2: // Only defined macros.
+        if (value === null) {
+          return match
+        }
+        break
+      case 3: // Only reserved macros.
+        if (!/^--/.test(name)) {
+          return match
+        }
+        break
+      case 4: // Defined or reserved macros.
+        if (value === null && !/^--/.test(name)) {
+          return match
+        }
+        break
+    }
     params = params.replace(/\\\}/g, '}')   // Unescape escaped } characters.
     switch (params[0]) {
       case '?': // Existential macro.
         return value === null ? params.slice(1) : value
 
-      case '|': // Parametized macro.
+      case '|': // Parametrized macro.
                 // Substitute macro parameters.
         var paramsList = params.slice(1).split('|')
         value = (value || '').replace(/\\?\$\d+/g, function (match: string): string {
