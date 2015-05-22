@@ -6,9 +6,8 @@
  */
 
 /* tslint:disable */
-import {renderSource} from './render'
+import * as api from './api'
 import * as options from './options'
-import * as quotes from './quotes'
 /* tslint:enable */
 
 /**
@@ -35,10 +34,10 @@ export function render(source: string, opts: options.RenderOptions = {}): string
   if (opts !== undefined && typeof opts !== 'object') {
     throw new TypeError('render(): options argument is not an object')
   }
-  options.update(opts)
-  return renderSource(source)
+  options.initialize(); // TODO: drop this once render options are stateful.
+  options.updateOptions(opts)
+  return api.render(source)
 }
 
-// Load-time initializations.
-quotes.initialize()
+api.initialize()
 

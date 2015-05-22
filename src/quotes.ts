@@ -10,7 +10,9 @@ export interface Definition {
   verify?: (match: RegExpExecArray, re: RegExp) => boolean  // Additional match verification checks.
 }
 
-export var defs: Definition[] = [
+let defs: Definition[]
+
+const DEFFAULT_DEFS: Definition[] = [
   {
     quote: '**',
     openTag: '<strong>',
@@ -58,11 +60,20 @@ export var defs: Definition[] = [
 export var findRe: RegExp   // Searches for quoted text.
 var unescapeRe: RegExp      // Searches for escaped quotes.
 
-// Synthesise re's to find and unescape quotes.
+// Reset definitions to defaults.
 export function initialize(): void {
+  defs = []
+  for (let def of DEFFAULT_DEFS) {
+    defs.push(utils.copy(def))
+  }
+  initializeRegExps()
+}
+
+// Synthesise re's to find and unescape quotes.
+export function initializeRegExps(): void {
   var s: string[] = []
-  for (var i in defs) {
-    s.push(utils.escapeRegExp(defs[i].quote))
+  for (let def of defs) {
+    s.push(utils.escapeRegExp(def.quote))
   }
   // $1 is quote character, $2 is quoted text.
   // Quoted text cannot begin or end with whitespace.
@@ -75,8 +86,8 @@ export function initialize(): void {
 
 // Return the quote definition corresponding to 'quote' character, return null if not found.
 export function getDefinition(quote: string): Definition {
-  for (var i in defs) {
-    if (defs[i].quote === quote) return defs[i]
+  for (let def of defs) {
+    if (def.quote === quote) return def
   }
   return null
 }
@@ -104,6 +115,6 @@ export function setDefinition(def: Definition): void {
   } else {
     defs.push(def)
   }
-  initialize()
+  initializeRegExps()
 }
 

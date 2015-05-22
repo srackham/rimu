@@ -1,5 +1,6 @@
 /* tslint:disable */
 import * as utils from './utils'
+import * as api from './api'
 /* tslint:enable */
 
 /**
@@ -10,40 +11,66 @@ export interface RenderOptions {
   safeMode?: number
   htmlReplacement?: string
   macroMode?: number
+  reset?: boolean
 }
 
-// Global ption values.
+// Global option values.
 export var safeMode: number
 export var htmlReplacement: string
 export var macroMode: number
 
-// Set options to values in 'options', those not in 'options' are set to their default value.
-export function update(options: RenderOptions): void {
-  safeMode = ('safeMode' in options) ? options.safeMode : 0
-  htmlReplacement = ('htmlReplacement' in options) ? options.htmlReplacement : '<mark>replaced HTML</mark>'
-  macroMode = ('macroMode' in options) ? options.macroMode : 4
+export function initialize(): void {
+  safeMode = 0
+  htmlReplacement = '<mark>replaced HTML</mark>'
+  macroMode = 4
 }
 
-// Set named option value.
-export function setOptionValue(name: string, value: any): void {
-  switch (name) {
-    case 'safeMode':
-      /* tslint:disable */
-      isNaN(value = parseInt(value, 10)) || value < 0 || value > 3 || (safeMode = value)
-      /* tslint:enable */
-      break
-    case 'macroMode':
-      /* tslint:disable */
-      isNaN(value = parseInt(value, 10)) || value < 0 || value > 4 || (macroMode = value)
-      /* tslint:enable */
-      break
-    case 'htmlReplacement':
-      htmlReplacement = value
-      break
+// Return true if set to a safe mode.
+export function isSafe(): boolean {
+  return safeMode !== 0
+}
+
+function setSafeMode(value: number|string): void {
+  let n = Number(value)
+  if (!isNaN(n) && n >= 0 && n <= 3) {
+    safeMode = n
   }
 }
 
-// Filter HTML based on current [[safeMode]].
+function setMacroMode(value: number|string): void {
+  let n = Number(value)
+  if (!isNaN(n) && n >= 0 && n <= 4) {
+    macroMode = n
+  }
+}
+
+function setHtmlReplacement(value: string): void {
+  htmlReplacement = value
+}
+
+function setReset(value: boolean|string): void {
+  if (value === true || value === 'true') {
+    api.initialize()
+  }
+}
+
+export function updateOptions(options: RenderOptions): void {
+  if ('reset' in options) { // Reset takes priority.
+    setReset(options.reset)
+  }
+  if ('safeMode' in options) setSafeMode(options.safeMode)
+  if ('htmlReplacement' in options) setHtmlReplacement(options.htmlReplacement)
+  if ('macroMode' in options) setMacroMode(options.macroMode)
+}
+
+// Set named option value.
+export function setOption(name: string, value: any): void {
+  let option: any = {}
+  option[name] = value
+  updateOptions(option)
+}
+
+// Filter HTML based on current safeMode.
 export function safeModeFilter(html: string): string {
   switch (safeMode) {
     case 0:   // Raw HTML (default behavior).
@@ -58,6 +85,4 @@ export function safeModeFilter(html: string): string {
       throw 'illegal safeMode value'
   }
 }
-
-update({})    // Initialize options to default values.
 

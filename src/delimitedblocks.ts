@@ -1,5 +1,5 @@
 /* tslint:disable */
-import {renderSource} from './render'
+import * as api from './api'
 import * as utils from './utils'
 import * as options from './options'
 import * as io from './io'
@@ -19,7 +19,9 @@ export interface Definition {
   expansionOptions: utils.ExpansionOptions
 }
 
-var defs: Definition[] = [
+let defs: Definition[]
+
+const DEFFAULT_DEFS: Definition[] = [
   // Delimited blocks cannot be escaped with a backslash.
 
   // Macro definition block.
@@ -168,6 +170,14 @@ var defs: Definition[] = [
   },
 ]
 
+// Reset definitions to defaults.
+export function initialize(): void {
+  defs = []
+  for (let def of DEFFAULT_DEFS) {
+    defs.push(utils.copy(def))
+  }
+}
+
 // If the next element in the reader is a valid delimited block render it
 // and return true, else return false.
 export function render(reader: io.Reader, writer: io.Writer): boolean {
@@ -225,7 +235,7 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
         writer.write(utils.injectHtmlAttributes(def.openTag))
         if (expansionOptions.container) {
           delete lineBlocks.blockOptions.container  // Consume before recursion.
-          text = renderSource(text)
+          text = api.render(text)
         }
         else {
           text = utils.replaceInline(text, expansionOptions)
@@ -261,7 +271,7 @@ export function setBlockOptions(blockOptions: utils.ExpansionOptions, optionsStr
     var opts = optionsString.trim().split(/\s+/)
     for (var i in opts) {
       var opt = opts[i]
-      if (options.safeMode !== 0 && opt === '-specials') {
+      if (options.isSafe() && opt === '-specials') {
         return
       }
       if (/^[+-](macros|spans|specials|container|skip)$/.test(opt)) {

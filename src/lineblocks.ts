@@ -27,7 +27,7 @@ var defs: Definition[] = [
     replacement: '',
     expansionOptions: {},
     filter: function (match: RegExpExecArray): string {
-      if (options.safeMode !== 0) {
+      if (options.isSafe()) {
         return ''   // Skip if a safe mode is set.
       }
       delimitedBlocks.setDefinition(match[1], match[2])
@@ -43,7 +43,7 @@ var defs: Definition[] = [
       macros: true,
     },
     filter: function (match: RegExpExecArray): string {
-      if (options.safeMode !== 0) {
+      if (options.isSafe()) {
         return ''   // Skip if a safe mode is set.
       }
       quotes.setDefinition({
@@ -64,7 +64,7 @@ var defs: Definition[] = [
       macros: true,
     },
     filter: function (match: RegExpExecArray): string {
-      if (options.safeMode !== 0) {
+      if (options.isSafe()) {
         return ''   // Skip if a safe mode is set.
       }
       var pattern = match[1]
@@ -84,7 +84,7 @@ var defs: Definition[] = [
       macros: true,
     },
     filter: function (match: RegExpExecArray): string {
-      if (options.safeMode !== 0) {
+      if (options.isSafe()) {
         return ''   // Skip if a safe mode is set.
       }
       var name = match[1]
@@ -190,7 +190,7 @@ var defs: Definition[] = [
       if (match[2]) { // HTML element id.
         htmlAttributes += ' id="' + utils.trim(match[2]).slice(1) + '"'
       }
-      if (match[3] && options.safeMode === 0) { // HTML attributes.
+      if (match[3] && !options.isSafe()) { // HTML attributes.
         htmlAttributes += ' ' + utils.trim(match[3].slice(1, match[3].length - 1))
       }
       htmlAttributes = utils.trim(htmlAttributes)
@@ -210,10 +210,9 @@ var defs: Definition[] = [
       macros: true,
     },
     filter: function (match: RegExpExecArray): string {
-      if (options.safeMode !== 0) {
-        return ''   // Skip if a safe mode is set.
+      if (!options.isSafe()) {
+        options.setOption(match[1], match[2])
       }
-      options.setOptionValue(match[1], match[2])
       return ''
     }
   },

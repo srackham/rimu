@@ -46,12 +46,36 @@ export function replaceMatch(match: RegExpExecArray,
                              expansionOptions: ExpansionOptions): string {
   return replacement.replace(/\$\d/g, function (): string {
     // Replace $1, $2 ... with corresponding match groups.
-    var i = parseInt(arguments[0][1])   // match group number.
+    var i = Number(arguments[0][1])     // match group number.
     var text = match[i]                 // match group text.
     return replaceInline(text, expansionOptions)
   })
 }
 
+// Shallow object clone.
+export function copy(source: any): any {
+  var result: any = {}
+  for(let key in source) {
+    if(source.hasOwnProperty(key)) {
+      result[key] = source[key]
+    }
+  }
+  return result
+}
+
+// Copy properties in source object to target object.
+export function merge(target: any, source: any): void {
+  for (let key in source) {
+    target[key] = source[key]
+  }
+}
+
+// Update existing target object properties with same-named source object properties.
+export function update(target: any, source: any): void {
+  for (let key in source) {
+    if (key in target) target[key] = source[key]
+  }
+}
 // Replace the inline elements specified in options in text and return the result.
 export function replaceInline(text: string, expansionOptions: ExpansionOptions): string {
   if (expansionOptions.macros) {

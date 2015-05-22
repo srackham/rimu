@@ -22,6 +22,11 @@ export interface Macro {
 
 export var defs: Macro[] = []
 
+// Reset definitions to defaults.
+export function initialize(): void {
+  defs = []
+}
+
 // Return named macro value or null if it doesn't exist.
 export function getValue(name: string): string {
   for (var i in defs) {
@@ -50,9 +55,7 @@ export function render(text: string): string {
       return match.slice(1)
     }
     var name = args[0]
-    /* $1 */
     var params = args[1] || ''
-    /* $2 */
     var value = getValue(name)  // Macro value is null if macro is undefined.
     switch (options.macroMode) {
       case 0: // No macros.
@@ -87,7 +90,7 @@ export function render(text: string): string {
           if (match[0] === '\\') {  // Unescape escaped $ characters.
             return match.slice(1)
           }
-          var param = paramsList[parseInt(match.slice(1)) - 1]
+          var param = paramsList[Number(match.slice(1)) - 1]
           return param === undefined ? '' : param   // Unassigned parameters are replaced with a blank string.
         })
         return value
