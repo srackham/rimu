@@ -20,7 +20,7 @@ export var htmlReplacement: string
 export var macroMode: number
 
 // Reset options to default values.
-export function reset(): void {
+export function setDefaults(): void {
   safeMode = 0
   htmlReplacement = '<mark>replaced HTML</mark>'
   macroMode = 4

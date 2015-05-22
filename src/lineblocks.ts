@@ -204,7 +204,7 @@ var defs: Definition[] = [
   // API Option.
   // name = $1, value = $2
   {
-    match: /^\\?\.(safeMode|htmlReplacement|macroMode)\s*=\s*'(.*)'$/,
+    match: /^\\?\.(safeMode|htmlReplacement|macroMode|reset)\s*=\s*'(.*)'$/,
     replacement: '',
     expansionOptions: {
       macros: true,

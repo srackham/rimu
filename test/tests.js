@@ -180,9 +180,15 @@ exports['Spans'] = function(test) {
 
 exports['Blocks'] = function(test) {
 
-  function test_document(source, expected, message, options) {
+  // The render API is reset by default unless `supporessReset` is true.
+  function test_document(source, expected, message, options, suppressReset) {
     options = options || {};
+    if (!suppressReset) options.reset = true;
     test.equal(Rimu.render(source, options), expected, message);
+  }
+
+  function test_document_no_reset(source, expected, message, options) {
+    test_document(source, expected, message, options, true);
   }
 
   // Macros.
@@ -190,19 +196,19 @@ exports['Blocks'] = function(test) {
     "{macro} = 'macro value'",
     '',
     'macro definition');
-  test_document(
+  test_document_no_reset(
     "{macro}",
     '<p>macro value</p>',
     'macro value');
-  test_document(
+  test_document_no_reset(
     "{macro} = 'macro value2'\n{macro}",
     '<p>macro value2</p>',
     'macro value');
-  test_document(
+  test_document_no_reset(
     "&ZeroWidthSpace;\\{macro}='value'\n{macro} \\{macro}",
     "<p>&ZeroWidthSpace;{macro}='value'\nmacro value2 {macro}</p>",
     'escaped macro definitions and invocations');
-  test_document(
+  test_document_no_reset(
     "{macro2} = 'nested macro: {macro}'\n{macro2}",
     '<p>nested macro: macro value2</p>',
     'nested macro value');
@@ -514,15 +520,15 @@ exports['Blocks'] = function(test) {
     '\\/*\nabc\n*/\n\n\\// xyz',
     '<p>/*\nabc\n*/</p>\n<p>// xyz</p>',
     'escaped comments');
-  test_document(
+  test_document_no_reset(
     "{v}='This 'and' that'\n{v}",
     "<p>This 'and' that</p>",
     'single quotes are ok inside macros values');
-  test_document(
+  test_document_no_reset(
     'A \\{v}',
     '<p>A {v}</p>',
     'escaped undefined macros are unescaped');
-  test_document(
+  test_document_no_reset(
     '{v}',
     "<p>This 'and' that</p>",
     'macros are preserved across Rimu.render() invocations');
@@ -761,19 +767,19 @@ exports['Blocks'] = function(test) {
     '== = \'<strong>|</strong>\'\n==Testing== **123**',
     '<p><strong>Testing</strong> <strong>123</strong></p>',
     'new double quote definition');
-  test_document(
+  test_document_no_reset(
     '\\==Testing== 123',
     '<p>==Testing== 123</p>',
     'escaped double quote');
-  test_document(
+  test_document_no_reset(
     '= = \'<del>|</del>\'\n=Testing *123*=',
     '<p><del>Testing <em>123</em></del></p>',
     'new single quote definition');
-  test_document(
+  test_document_no_reset(
     '\\=Testing= 123',
     '<p>=Testing= 123</p>',
     'escaped single quote');
-  test_document(
+  test_document_no_reset(
     '=Testing= ==123== =Test=',
     '<p><del>Testing</del> <strong>123</strong> <del>Test</del></p>',
     'single and double-quotes');
@@ -781,7 +787,7 @@ exports['Blocks'] = function(test) {
     '_* = \'<em><strong>|</strong></em>\'\n_*Testing_* **123**',
     '<p><em><strong>Testing</strong></em> <strong>123</strong></p>',
     'new asymmetric double quote definition');
-  test_document(
+  test_document_no_reset(
     '\\_*Testing_* 123',
     '<p>_*Testing_* 123</p>',
     'escaped asymmetric double quote');
@@ -790,8 +796,8 @@ exports['Blocks'] = function(test) {
     '<p>#skipped#</p>',
     'quote definition skipped in safe mode', {safeMode: 1});
   test_document(
-    '=Testing= 123',
-    '<p><del>Testing</del> 123</p>',
+    '*Testing* 123',
+    '<p><em>Testing</em> 123</p>',
     'existing quotes work in safe mode', {safeMode: 1});
   test_document(
     '#=\'<ins>|</ins>\'\n#Quote 2#',
@@ -802,7 +808,7 @@ exports['Blocks'] = function(test) {
     '<p><code>Testing #123#</code></p>',
     'update quote with no spans');
   test_document(
-    '*=\'<em>|</em>\'\n==Testing== *123*',
+    '_=\'<em>|</em>\'\n**Testing** _123_',
     '<p><strong>Testing</strong> <em>123</em></p>',
     'modify built-in quote');
 
@@ -825,7 +831,7 @@ exports['Blocks'] = function(test) {
     'macroMode=4', {macroMode: 4});
   test_document(
     '.safeMode=\'1\'\n.macroMode=\'3\'\n{defined}=\'\'\n{defined}{undefinded}{--undefined}',
-    '<p>{undefinded}</p>',
+    '<p>{defined}{undefinded}</p>',
     'API elements disabled by safeMode');
 
   // Replacement definitions.
@@ -833,22 +839,22 @@ exports['Blocks'] = function(test) {
     '/\\\\?\\.{3}/=\'&hellip;\'\nTesting...',
     '<p>Testing&hellip;</p>',
     'new replacement');
-  test_document(
+  test_document_no_reset(
     'Testing\\...',
     '<p>Testing...</p>',
     'escaped replacement');
-  test_document(
+  test_document_no_reset(
     '/skipped/=\'SKIPPED\'\nskipped',
     '<p>skipped</p>',
     'replacement definition skipped in safe mode', {safeMode: 1});
-  test_document(
+  test_document_no_reset(
     'Testing...',
     '<p>Testing&hellip;</p>',
     'existing replacements work in safe mode', {safeMode: 1});
   test_document(
-    '/\\\\?\\.{3}/i=\'...\'\nTesting...',
-    '<p>Testing...</p>',
-    'update replacement');
+    '/\\\\?\\.{3}/i=\'!!!\'\nTesting...',
+    '<p>Testing!!!</p>',
+    'redefine existing replacement');
   test_document(
     "/\\\\?\\B'\\b(.+?)\\b'\\B/g = '<em>$1</em>'\n'emphasized'",
     '<p><em>emphasized</em></p>',

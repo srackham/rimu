@@ -34,10 +34,10 @@ export function render(source: string, opts: options.RenderOptions = {}): string
   if (opts !== undefined && typeof opts !== 'object') {
     throw new TypeError('render(): options argument is not an object')
   }
-  options.reset(); // TODO: drop this once render options are stateful.
   options.updateOptions(opts)
   return api.render(source)
 }
 
+// Load-time initialization.
 api.reset()
 
