@@ -67,7 +67,7 @@ syn match rimuListId /:\{2,4}/ contained containedin=rimuListLabel
 syn region rimuListLabel start=/^/ end=/:\{2,4}/ contains=rimuSpan.* oneline keepend
 
 syn match rimuApiElement /^\.[a-zA-Z]\+\s*=\s*'\_.\{-}'\n/
-syn match rimuApiOption /^\.\(safeMode\|htmlReplacement\|macroMode\)/ contained containedin=rimuApiElement
+syn match rimuApiOption /^\.\(safeMode\|htmlReplacement\|macroMode\|reset\)/ contained containedin=rimuApiElement
 syn match rimuQuoteDefinition /^\S\{1,2}\s*=\s*'\_.\{-}'\n/
 syn match rimuQuoteQuote /^\S\{1,2}/ contained containedin=rimuQuoteDefinition
 syn match rimuDefinitionValue /'\_.\{-}'\n/ contained containedin=rimuMacroDefinition,rimuReplacementDefinition,rimuQuoteDefinition,rimuDelimitedBlockDefinition,rimuApiElement
