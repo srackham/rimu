@@ -5,7 +5,7 @@
     constructor(text: string) {
       // Split lines on newline boundaries.
       // http://stackoverflow.com/questions/1155678/javascript-string-newline-character
-      // TODO split is broken on IE8 e.g. 'X\n\nX'.split(/\n/g).length) returns 2 but should return 3.
+      // Split is broken on IE8 e.g. 'X\n\nX'.split(/\n/g).length) returns 2 but should return 3.
       this.lines = text.split(/\r\n|\r|\n/g)
       this.pos = 0
     }

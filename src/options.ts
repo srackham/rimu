@@ -19,7 +19,8 @@ export var safeMode: number
 export var htmlReplacement: string
 export var macroMode: number
 
-export function initialize(): void {
+// Reset options to default values.
+export function reset(): void {
   safeMode = 0
   htmlReplacement = '<mark>replaced HTML</mark>'
   macroMode = 4
@@ -50,7 +51,7 @@ function setHtmlReplacement(value: string): void {
 
 function setReset(value: boolean|string): void {
   if (value === true || value === 'true') {
-    api.initialize()
+    api.reset()
   }
 }
 

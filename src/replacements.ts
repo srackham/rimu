@@ -1,7 +1,7 @@
 /* tslint:disable */
 import * as options from './options'
 import * as utils from './utils'
-/* tslint:enable */
+///* tslint:enable */
 
 export interface Definition {
   match: RegExp
@@ -11,7 +11,7 @@ export interface Definition {
 
 export let defs: Definition[]
 
-const DEFFAULT_DEFS: Definition[] = [
+const DEFAULT_DEFS: Definition[] = [
   // Begin match with \\? to allow the replacement to be escaped.
   // Global flag must be set on match re's so that the RegExp lastIndex property is set.
   // Replacements and special characters are expanded in replacement groups ($1..).
@@ -113,9 +113,9 @@ const DEFFAULT_DEFS: Definition[] = [
 ]
 
 // Reset definitions to defaults.
-export function initialize(): void {
+export function reset(): void {
   defs = []
-  for (let def of DEFFAULT_DEFS) {
+  for (let def of DEFAULT_DEFS) {
     defs.push(utils.copy(def))
   }
 }

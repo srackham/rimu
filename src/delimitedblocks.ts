@@ -5,7 +5,7 @@ import * as options from './options'
 import * as io from './io'
 import * as macros from './macros'
 import * as lineBlocks from './lineblocks'
-/* tslint:enable */
+///* tslint:enable */
 
 // Multi-line block element definition.
 export interface Definition {
@@ -21,7 +21,7 @@ export interface Definition {
 
 let defs: Definition[]
 
-const DEFFAULT_DEFS: Definition[] = [
+const DEFAULT_DEFS: Definition[] = [
   // Delimited blocks cannot be escaped with a backslash.
 
   // Macro definition block.
@@ -171,9 +171,9 @@ const DEFFAULT_DEFS: Definition[] = [
 ]
 
 // Reset definitions to defaults.
-export function initialize(): void {
+export function reset(): void {
   defs = []
-  for (let def of DEFFAULT_DEFS) {
+  for (let def of DEFAULT_DEFS) {
     defs.push(utils.copy(def))
   }
 }

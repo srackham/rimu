@@ -1,6 +1,6 @@
 /* tslint:disable */
 import * as utils from './utils'
-/* tslint:enable */
+///* tslint:enable */
 
 export interface Definition {
   quote: string     // Single quote character.
@@ -12,7 +12,7 @@ export interface Definition {
 
 let defs: Definition[]
 
-const DEFFAULT_DEFS: Definition[] = [
+const DEFAULT_DEFS: Definition[] = [
   {
     quote: '**',
     openTag: '<strong>',
@@ -61,9 +61,9 @@ export var findRe: RegExp   // Searches for quoted text.
 var unescapeRe: RegExp      // Searches for escaped quotes.
 
 // Reset definitions to defaults.
-export function initialize(): void {
+export function reset(): void {
   defs = []
-  for (let def of DEFFAULT_DEFS) {
+  for (let def of DEFAULT_DEFS) {
     defs.push(utils.copy(def))
   }
   initializeRegExps()

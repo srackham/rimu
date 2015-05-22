@@ -55,8 +55,8 @@ export function replaceMatch(match: RegExpExecArray,
 // Shallow object clone.
 export function copy(source: any): any {
   var result: any = {}
-  for(let key in source) {
-    if(source.hasOwnProperty(key)) {
+  for (let key in source) {
+    if (source.hasOwnProperty(key)) {
       result[key] = source[key]
     }
   }

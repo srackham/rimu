@@ -25,11 +25,11 @@ export function render(source: string): string {
 
 // Set API to default state.
 // TODO change all initialize()'s to reset()
-export function initialize(): void {
-  options.initialize()
-  delimitedBlocks.initialize()
-  macros.initialize()
-  quotes.initialize()
-  replacements.initialize()
+export function reset(): void {
+  options.reset()
+  delimitedBlocks.reset()
+  macros.reset()
+  quotes.reset()
+  replacements.reset()
 }
 

@@ -23,7 +23,7 @@ export interface Macro {
 export var defs: Macro[] = []
 
 // Reset definitions to defaults.
-export function initialize(): void {
+export function reset(): void {
   defs = []
 }
 
