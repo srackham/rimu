@@ -10,7 +10,7 @@ export interface Definition {
   verify?: (match: RegExpExecArray, re: RegExp) => boolean  // Additional match verification checks.
 }
 
-let defs: Definition[]
+let defs: Definition[]  // Mutable definitions initialized by DEFAULT_DEFS.
 
 const DEFAULT_DEFS: Definition[] = [
   {

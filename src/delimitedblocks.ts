@@ -19,7 +19,7 @@ export interface Definition {
   expansionOptions: utils.ExpansionOptions
 }
 
-let defs: Definition[]
+let defs: Definition[]  // Mutable definitions initialized by DEFAULT_DEFS.
 
 const DEFAULT_DEFS: Definition[] = [
   // Delimited blocks cannot be escaped with a backslash.

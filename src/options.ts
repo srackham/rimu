@@ -56,9 +56,7 @@ function setReset(value: boolean|string): void {
 }
 
 export function updateOptions(options: RenderOptions): void {
-  if ('reset' in options) { // Reset takes priority.
-    setReset(options.reset)
-  }
+  if ('reset' in options) setReset(options.reset) // Reset takes priority.
   if ('safeMode' in options) setSafeMode(options.safeMode)
   if ('htmlReplacement' in options) setHtmlReplacement(options.htmlReplacement)
   if ('macroMode' in options) setMacroMode(options.macroMode)

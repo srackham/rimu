@@ -9,7 +9,7 @@ export interface Definition {
   filter?: (match: RegExpExecArray) => string
 }
 
-export let defs: Definition[]
+export let defs: Definition[]  // Mutable definitions initialized by DEFAULT_DEFS.
 
 const DEFAULT_DEFS: Definition[] = [
   // Begin match with \\? to allow the replacement to be escaped.
