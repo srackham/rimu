@@ -87,11 +87,9 @@ export function replaceInline(text: string, expansionOptions: ExpansionOptions):
     return spans.render(text)
   }
   else if (expansionOptions.specials) {
-    return replaceSpecialChars(text)
+    text = replaceSpecialChars(text)
   }
-  else {
-    return text
-  }
+  return text
 }
 
 // Inject HTML attributes from LineBlocks.htmlAttributes into the opening tag.

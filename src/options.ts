@@ -80,8 +80,6 @@ export function safeModeFilter(html: string): string {
       return htmlReplacement
     case 3:   // Render HTML as text.
       return utils.replaceSpecialChars(html)
-    default:
-      throw 'illegal safeMode value'
   }
 }
 

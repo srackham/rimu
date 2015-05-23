@@ -1,6 +1,7 @@
 /* tslint:disable */
 import * as options from './options'
 import * as utils from './utils'
+// TODO tslint for..of incompatibility
 ///* tslint:enable */
 
 export interface Definition {
