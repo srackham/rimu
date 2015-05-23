@@ -173,10 +173,12 @@ are processed:
   2 => Replace HTML with the 'htmlReplacement' option string.
   3 => Render HTML as text.
 
-If `safeMode` is non-zero then all Delimited Block, Paragraph, Macro,
-Quote and Replacement definitions are ignored as are all API Option elements.
-Once a non-zero `safeMode` has been set then it can only be reset by
-a `render()` API call using a `safeMode=0` or `reset=true` option.
+- If `safeMode` is non-zero the following Rimu elements are ignored:
+  * Delimited Block, Paragraph, Macro, Quote and Replacement definitions.
+  * API Options.
+  * HTML attributes in Block Attribute elements.
+- Once a non-zero `safeMode` has been set then it can only be reset by
+  a `render()` API call with a `safeMode:0` or `reset:true` option.
 ..
 
 `htmlReplacement`:: A string that replaces embedded HTML when
@@ -212,7 +214,7 @@ element with the following syntax:
 - The option is applied to Rimu markup that follows the option element.
 - API Option elements are not processed if the `safeMode` is non-zero.
 
-The following example ensures all macro invocations are expanded:
+The following example ensures all subsequent macro invocations are expanded:
 
   .macroMode = '1'
 
@@ -686,10 +688,11 @@ Definition syntax:
 - A macro definition must start at the left margin.
 - Macro definition lines ending with a single-quote character can be
   continued to the next line by appending a backslash character.
-- Macros are expanded in macro definitions when they are defined not
-  when they are invoked.
+- Macros are expanded in macro definitions at the point they are defined not
+  where they are invoked.
 - Macro expansion can be disabled in multi-line macro definitions
   using a preceding _Block Attributes_ `-macros` option.
+- Macro processing behaviour is specified by the `macroMode` API option.
 
 
 ### Macro Invocations
@@ -704,8 +707,10 @@ Invocation syntax:
   {macro-name=pattern}              Inclusion macro invocation
   {macro-name!pattern}              Inclusion macro invocation
 
-- A _Simple_ macro invocation is replaced by the macro value or a
-  blank string if the macro is not defined.
+- By default if a macro is not defined it will be rendered verbatim unless the
+  `macroMode` is set to `1` in which case undefined macros are treated
+  as having a blank value.
+- A _Simple_ macro invocation is replaced by the macro value.
 - An _Existential_ macro invocation is replaced by the macro value or a
   the `default-value` if the macro is not defined.
 - _Parametrized_ macro invocations replace `$1`, `$2` ...  parameter
@@ -717,15 +722,12 @@ Invocation syntax:
     with a backslash character prefix.
   *  Macro invocation parameters can contain inline Rimu elements;
      inline parameter values can span multiple lines.
-- The `\{macro-name=pattern}` _Inclusion_ invocation is replaced by a
+- The `{macro-name=pattern}` _Inclusion_ invocation is replaced by a
   blank string if the macro value matches the `pattern` (where
   `pattern` is a JavaScript regular expression).  If the macro value
-  does not match the `pattern` the containing line is skipped.  If the
-  macro is undefined its value is treated as a blank string for the
-  purpose of pattern matching.  This feature can be used to
-  conditionally include lines of source text.
-- The `\{macro-name!pattern}` _Inclusion_ invocation syntax is the
-  inverse of the `\{macro-name=pattern}` syntax i.e. the macro
+  does not match the `pattern` the containing line is skipped.
+- The `{macro-name!pattern}` _Inclusion_ invocation syntax is the
+  inverse of the `{macro-name=pattern}` syntax i.e. the macro
   invocation is replaced by a blank string if the macro value does not
   match the `pattern`, if it does match the containing line is
   skipped.

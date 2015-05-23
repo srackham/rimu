@@ -11,7 +11,8 @@ for more detailed information.
 - Added _API Option_ element to allow API options to be set in Rimu source.
 - Bug fixes.
 
-### Breaking changes
+Breaking changes:
+
 - Changed default behavior of single-asterisk quote from emphasis to strong to align
   with Markdown. To reinstate old behavior use this quote definition:
 
@@ -21,6 +22,10 @@ for more detailed information.
   were expanded which to often generated surprising results e.g. if the `text` macro
   was not explicitly defined then `${text}` would silently render `$`.
   To revert to the previous behaviour set the `macroMode` API option to `1`.
+
+- The `render()` API no longer sets unspecified `options` properties to their
+  default values. The previous behaviour was surprising and potentially dangerous
+  because it reset the `safeMode` to zero unless it was explicitly specified.
 
 
 ## Version 4.0.1 (2015-05-06)

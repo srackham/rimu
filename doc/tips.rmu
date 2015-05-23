@@ -44,7 +44,7 @@ experimentation.
 
 {generate-rendered-example-2|macros-example}
 
-- The `\{sidebar}` macro shows how you can inject CSS styles into a
+- The `{sidebar}` macro shows how you can inject CSS styles into a
   _Division Block_, but a better way of styling block elements is to
   use <#scoped-css|scoped CSS>.
 - Note how macro definitions can span multiple lines and can contain
@@ -123,8 +123,8 @@ Quote paragraphs:: Paragraphs starting with a `>` character are
 rendered like Markdown Blockquotes.
 
 Text formatting:: `_emphasis_`, `*emphasis*`, `__bold__`, `**bold**`,
-`\`code\`` and `~~strikethrough~~` quotes (strikethrough is GitHub
-Flavored Markdown compatible).
+```code``` , ````code```` and `~~strikethrough~~` quotes (strikethrough
+is GitHub Flavored Markdown compatible).
 
 Lists::
 - Bullet lists with `-` and `*` IDs.
@@ -157,7 +157,7 @@ _rimuc_ command.
 The following example sets the HTML _title_ in the `kotlin-notes.html`
 output document:
 
-  rimuc --styled --prepend "{title}='Kotlin Notes'" kotlin-notes.rmu
+  rimuc --styled --prepend "{--title}='Kotlin Notes'" kotlin-notes.rmu
 
 
 ## Syntax checker
@@ -338,7 +338,7 @@ A MathML block formula:
 {generate-rendered-example-2|mathjax-example}
 
 NOTE: Macro expansion has been disabled in LaTeX formulas to stop
-`\{i=0}` and `\{2}` from being mistaken for Rimu macro invocations.
+`{i=0}` and `{2}` from being mistaken for Rimu macro invocations.
 
 See the [latest MathJax documentation](http://docs.mathjax.org/en/latest/)
 to learn how to use MathJax.
@@ -346,9 +346,7 @@ to learn how to use MathJax.
 
 ## Inline Comments
 Rimu comment elements are block elements and cannot be used inline --
-use an undefined macro to exclude inline text from elements that
-support macro expansion (e.g. paragraphs, lists, HTML blocks). It is
-customary to use the _Undefined_ `--` macro for this purpose:
+use the reserved `--` macro for this purpose:
 
   {--!}This line is skipped,
   and {--|this text is skipped}.
@@ -374,6 +372,7 @@ For example:
 
   {underscore!}<script src="underscore-min.js"></script>
 
+The line is skipped if the value of `underscore` is blank (`''`).
 This works because lines (in a block context) that begin with a macro
 invocation are initially processed as _Line Macro_ elements.
 ..
@@ -384,11 +383,11 @@ To conditionally exclude these multi-line block elements enable the
 `+skip` option with a preceding _Attribute Block_ element. For
 example:
 
-  {macro!}.+skip
+  {foo!}.+skip
   **Lorem ipsum dolor**. Sit amet venenatis. Erat nulla arcu. Lorem
   luctus sem. Mauris vitaei ipsum.
 
-If `macro` is defined and not blank then the `.+skip` Attribute Block
+If macro `foo` value is blank (`''`) then the `.+skip` Attribute Block
 will be processed which causes the following paragraph to be skipped.
 ..
 
@@ -399,27 +398,27 @@ Blocks), then block content can be conditionally included using:
 
 . _Inclusion_ macro invocations to exclude lines of text, for example:
 
-  {macro=} Line is included if macro is undefined or value is blank.
-  {macro!} Line is included if macro is defined and value not blank.
-  {macro=one} Line is included if macro value is 'one'.
-  {macro=two} Line is included if macro value is 'two'.
-  {macro=\d+} Line is included if macro value is a number.
+  {foo=} Line is included if macro foo value is blank.
+  {foo!} Line is included if macro foo value is not blank.
+  {foo=one} Line is included if macro foo value is 'one'.
+  {foo=two} Line is included if macro foo value is 'two'.
+  {foo=\d+} Line is included if macro foo value is a number.
 
 . _Parametrized_  macro invocations to exclude arbitrary portions of
   inline text, for example:
 ...
 ```
-{macro} = ''
-Mauris vitae ipsumi lacus vestibulum sem. {macro|This text
+{foo} = ''
+Mauris vitae ipsumi lacus vestibulum sem. {foo|This text
 is excluded}
 
-{macro} = '$1'
-Mauris vitae ipsumi lacus vestibulum sem. {macro|This text
+{foo} = '$1'
+Mauris vitae ipsumi lacus vestibulum sem. {foo|This text
 is included.}
 ```
-So long as the `macro` value is undefined or blank the text is
-excluded -- set it to `$1` and the text will be included. Note that
-parameter text can encompass multiple lines.
+The macro parameter text is excluded if value of the `foo` macro is blank
+-- set it to `$1` and the text will be included. Note that
+parameter text can be spread over multiple lines.
 ...
 ..
 
@@ -538,7 +537,7 @@ lines that end with a single-quote.
 ```
 ``
 
-The contents of `\{example-42}` are not subject to macro expansion.
+The contents of `{example-42}` are not subject to further macro expansion.
 ..
 - Definition elements cannot be prefixed with an Inclusion macro (see
   <#conditional-inclusion|Conditional Inclusion>).
