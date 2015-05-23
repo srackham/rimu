@@ -154,7 +154,7 @@ HTML script tag example:
 
   <script type="text/javascript" src="rimu-var.js"></script>
   <script type="text/javascript">
-    console.log(Rimu.render('Hello *Rimu*!', {reset:true, safeMode:1}));
+    console.log(Rimu.render('Hello *Rimu*!', {reset:true, safeMode:2}));
   </script>
 
 See `rimuc.js` and `rimuplayground.html` for examples of `render()`
@@ -165,12 +165,19 @@ The `options` argument is an object with zero or more of the following
 properties:
 
 `safeMode`:: This option has a number value that controls how Rimu
-renders embedded HTML:
-
-  0 => Render the raw HTML (default behavior).
-  1 => Delete the HTML.
-  2 => Replace the HTML with the 'htmlReplacement' option string.
+renders embedded HTML and whether or not Rimu definition and option elements
+are processed:
+..
+  0 => Render HTML (default behavior).
+  1 => Delete HTML.
+  2 => Replace HTML with the 'htmlReplacement' option string.
   3 => Render HTML as text.
+
+If `safeMode` is non-zero then all Delimited Block, Paragraph, Macro,
+Quote and Replacement definitions are ignored as are all API Option elements.
+Once a non-zero `safeMode` has been set then it can only be reset by
+a `render()` API call using a `safeMode=0` or `reset=true` option.
+..
 
 `htmlReplacement`:: A string that replaces embedded HTML when
 `safeMode` is set to `2`. Defaults to `<mark>replaced HTML</mark>`.
@@ -179,7 +186,7 @@ renders embedded HTML:
 processed:
 ..
   0 => None
-  1 => All (legacy version 4 behavior)
+  1 => All (legacy version 4 default behavior)
   2 => Only Defined macros
   3 => Only Reserved macros
   4 => Defined or Reserved macros (default behavior)
