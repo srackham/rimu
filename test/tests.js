@@ -445,7 +445,11 @@ exports['Blocks'] = function(test) {
   test_document(
     '.htmlReplacement = \'Foo\'\n.safeMode=\'2\'\n<span>Bar</span>',
     '<p>FooBarFoo</p>',
-    'htmlReplacement option element');
+    'htmlRepacement and safeMode API Option elements');
+  test_document(
+    '.htmlReplacement=\'Foo\'\n<hr>\n\n.safeMode=\'2\'\n<hr>\n\n.safeMode=\'0\'\n<hr>',
+    '<hr>\nFoo\nFoo',
+    'safeMode once set cannot be unset by an API Option');
 
   // The {blockref} is passed through and gets picked up as a paragraph.
   test_document(
