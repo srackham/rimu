@@ -132,12 +132,36 @@
 
 <div id="topic-api">
 <!--
-Rimu has just one API:
+Rimu has just one API to convert Rimu markup to HTML:
 
   render(source [, options])
 
-Where `source` is a string containing Rimu markup and `options` is an
-optional object argument with zero or more of the following
+The `source` argument is a string containing Rimu markup. The return
+value is a string containing the resultant HTML.
+The optional `options` argument controls rendering behaviour.
+
+The `render()` API is stateful: Macros and custom element definitions
+are retained as are API options. Use the `reset` option to set the default
+state.
+
+### Example usage
+Node.js example (Rimu has been installed from npm):
+
+  var Rimu = require('rimu');
+  var html= Rimu.render('Hello *Rimu*!', {safeMode:1});
+
+HTML script tag example:
+
+  <script type="text/javascript" src="rimu-var.js"></script>
+  <script type="text/javascript">
+    console.log(Rimu.render('Hello *Rimu*!', {reset:true, safeMode:1}));
+  </script>
+
+See `rimuc.js` and `rimuplayground.html` for examples of `render()`
+in action.
+
+### API options
+The `options` argument is an object with zero or more of the following
 properties:
 
 `safeMode`:: This option has a number value that controls how Rimu
@@ -151,20 +175,39 @@ renders embedded HTML:
 `htmlReplacement`:: A string that replaces embedded HTML when
 `safeMode` is set to `2`. Defaults to `<mark>replaced HTML</mark>`.
 
-Node.js example (Rimu has been installed from npm):
+`macroMode`:: This option specifies which Rimu macro invocations are
+processed:
+..
+  0 => None
+  1 => All (legacy version 4 behavior)
+  2 => Only Defined macros
+  3 => Only Reserved macros
+  4 => Defined or Reserved macros (default behavior)
 
-  var Rimu = require('rimu');
-  var html= Rimu.render('Hello *Rimu*!', {safeMode: 1});
+Unprocessed macro invocations are rendered verbatim.
+..
 
-HTML script tag example:
+`reset`:: This boolean option causes the `render()` API to be set to its default state
+(default option values; default Quotes, Replacements, Delimited Block
+and Paragraph definitions; no macro definitions). The `reset` option is processed
+before other options.
 
-  <script type="text/javascript" src="rimu-var.js"></script>
-  <script type="text/javascript">
-    console.log(Rimu.render('Hello *Rimu*!', {safeMode: 1}));
-  </script>
+### API Option elements
+API options can be set in the Rimu source using a single-line block
+element with the following syntax:
 
-See `rimuc.js` and `rimuplayground.html` for examples of `render()`
-in action.
+  .option-name = 'option-value'
+
+- `option-name` is `safeMode`, `htmlReplacement` or `macroMode`.
+- The `option-value` is a valid option value.
+- A Delimited Block definition must start at the left margin and must not
+  extend beyond the end of the line.
+- The option is applied to Rimu markup that follows the option element.
+- API Option elements are not processed if the `safeMode` is non-zero.
+
+The following example ensures all macro invocations are expanded:
+
+  .macroMode = '1'
 
 -->
 </div>
@@ -823,6 +866,7 @@ Block elements
         Quote Block
         Quote Paragraph
     Line Blocks
+        API Option
         Element Definitions
             Macro Definition
             Quote Definition
