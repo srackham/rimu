@@ -180,8 +180,7 @@ export function reset(): void {
 // and return true, else return false.
 export function render(reader: io.Reader, writer: io.Writer): boolean {
   if (reader.eof()) throw 'premature eof'
-  for (var i in defs) {
-    var def = defs[i]
+  for (let def of defs) {
     var match = reader.cursor().match(def.openMatch)
     if (match) {
       // Escape non-paragraphs.
@@ -255,9 +254,9 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
 
 // Return block definition or null if not found.
 export function getDefinition(name: string): Definition {
-  for (var i in defs) {
-    if (defs[i].name === name) {
-      return defs[i]
+  for (let def of defs) {
+    if (def.name === name) {
+      return def
     }
   }
   return null
@@ -267,8 +266,7 @@ export function getDefinition(name: string): Definition {
 export function setBlockOptions(blockOptions: utils.ExpansionOptions, optionsString: string): void {
   if (optionsString) {
     var opts = optionsString.trim().split(/\s+/)
-    for (var i in opts) {
-      var opt = opts[i]
+    for (let opt of opts) {
       if (options.isSafe() && opt === '-specials') {
         return
       }

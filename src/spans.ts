@@ -32,8 +32,8 @@ import * as replacements from './replacements'
   // Converts fragments to a string.
   function defrag(fragments: Fragment[]): string {
     var result: string[] = []
-    for (var i in fragments) {
-      result.push(fragments[i].text)
+    for (let fragment of fragments) {
+      result.push(fragment.text)
     }
     return result.join('')
   }
@@ -107,8 +107,7 @@ import * as replacements from './replacements'
       findRe.lastIndex = 0
     }
     // Strip backlash from escaped quotes in non-done fragments.
-    for (var i in fragments) {
-      fragment = fragments[i]
+    for (let fragment of fragments) {
       if (!fragment.done) {
         fragment.text = quotes.unescape(fragment.text)
       }
@@ -116,8 +115,8 @@ import * as replacements from './replacements'
   }
 
   function fragReplacements(fragments: Fragment[]): void {
-    for (var i in replacements.defs) {
-      fragReplacement(fragments, replacements.defs[i])
+    for (let def of replacements.defs) {
+      fragReplacement(fragments, def)
     }
   }
 
@@ -181,8 +180,7 @@ import * as replacements from './replacements'
   function fragSpecials(fragments: Fragment[]): void {
     // Replace special characters in all non-done fragments.
     var fragment: Fragment
-    for (var i in fragments) {
-      fragment = fragments[i]
+    for (let fragment of fragments) {
       if (!fragment.done) {
         fragment.text = utils.replaceSpecialChars(fragment.text)
       }

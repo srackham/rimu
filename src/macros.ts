@@ -27,9 +27,9 @@ export function reset(): void {
 
 // Return named macro value or null if it doesn't exist.
 export function getValue(name: string): string {
-  for (var i in defs) {
-    if (defs[i].name === name) {
-      return defs[i].value
+  for (let def of defs) {
+    if (def.name === name) {
+      return def.value
     }
   }
   return null
@@ -37,9 +37,9 @@ export function getValue(name: string): string {
 
 // Set named macro value or add it if it doesn't exist.
 export function setValue(name: string, value: string): void {
-  for (var i in defs) {
-    if (defs[i].name === name) {
-      defs[i].value = value
+  for (let def of defs) {
+    if (def.name === name) {
+      def.value = value
       return
     }
   }

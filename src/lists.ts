@@ -182,15 +182,15 @@ function matchItem(reader: io.Reader,
   // Check if the line matches a List definition.
   var line = reader.cursor()
   var item = <ItemState>{}    // ItemState factory.
-  for (var i in defs) {
-    var match = defs[i].match.exec(line)
+  for (let def of defs) {
+    var match = def.match.exec(line)
     if (match) {
       if (match[0][0] === '\\') {
         reader.cursor(reader.cursor().slice(1))   // Drop backslash.
         return null
       }
       item.match = match
-      item.def = defs[i]
+      item.def = def
       item.id = match[match.length - 2]
       item.isListItem = true
       return item
@@ -199,7 +199,7 @@ function matchItem(reader: io.Reader,
   // Check if the line matches a Delimited Block definition.
   var def: delimitedBlocks.Definition
   if (options.delimited) {
-    for (var name in {quote: 0, code: 0, division: 0}) {
+    for (let name of ['quote', 'code', 'division']) {
       def = delimitedBlocks.getDefinition(name)
       if (def.openMatch.test(line)) {
         item.isDelimited = true

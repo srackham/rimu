@@ -97,12 +97,12 @@ export function unescape(s: string): string {
 
 // Update existing or add new quote definition.
 export function setDefinition(def: Definition): void {
-  for (var i in defs) {
-    if (defs[i].quote === def.quote) {
+  for (let d of defs) {
+    if (d.quote === def.quote) {
       // Update existing definition.
-      defs[i].openTag = def.openTag
-      defs[i].closeTag = def.closeTag
-      defs[i].spans = def.spans
+      d.openTag = def.openTag
+      d.closeTag = def.closeTag
+      d.spans = def.spans
       return
     }
   }

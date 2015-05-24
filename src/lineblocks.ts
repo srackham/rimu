@@ -225,8 +225,7 @@ export var blockOptions: utils.ExpansionOptions = {}
 // and return true, else return false.
 export function render(reader: io.Reader, writer: io.Writer): boolean {
   if (reader.eof()) throw 'premature eof'
-  for (var i in defs) {
-    var def = defs[i]
+  for (let def of defs) {
     var match = def.match.exec(reader.cursor())
     if (match) {
       if (match[0][0] === '\\') {
@@ -258,9 +257,9 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
 
 // Return def definition or null if not found.
 export function getDefinition(name: string): Definition {
-  for (var i in defs) {
-    if (defs[i].name === name) {
-      return defs[i]
+  for (let def of defs) {
+    if (def.name === name) {
+      return def
     }
   }
   return null
