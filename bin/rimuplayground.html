@@ -692,13 +692,9 @@ Definition syntax:
   where they are invoked.
 - Macro expansion can be disabled in multi-line macro definitions
   using a preceding _Block Attributes_ `-macros` option.
-- Macro processing behaviour is specified by the `macroMode` API option.
 
 
 ### Macro Invocations
-When a macro is invoked the invocation is replaced by text which is
-determined by the macro value.
-
 Invocation syntax:
 
   {macro-name}                      Simple macro invocation
@@ -707,10 +703,10 @@ Invocation syntax:
   {macro-name=pattern}              Inclusion macro invocation
   {macro-name!pattern}              Inclusion macro invocation
 
-- By default if a macro is not defined it will be rendered verbatim unless the
-  `macroMode` is set to `1` in which case undefined macros are treated
-  as having a blank value.
-- A _Simple_ macro invocation is replaced by the macro value.
+- If a macro invocation is excluded by the `macroMode` setting then
+  it will not be processed.
+- A _Simple_ macro invocation is replaced by the macro value or a
+  blank string if the macro is not defined.
 - An _Existential_ macro invocation is replaced by the macro value or a
   the `default-value` if the macro is not defined.
 - _Parametrized_ macro invocations replace `$1`, `$2` ...  parameter
@@ -768,17 +764,16 @@ Visit the {homepage}.
 - Macro invocations are expanded and then processing continues from
   the start of the expanded line.
 - A _Macro Line_ can be the first line in any other block element
-  with the exception of _Line Block_ definition elements i.e. Macro,
-  Quote, Replacement or Delimited Block definitions.
+  with the exception of _Line Block_ definition elements.
 
 These properties allow macros to be used to inject Rimu markup into
 the source stream and allow block elements to be prefixed with
 _Inclusion_ macros.
 
-### Reserved macro names
-Macro names starting with a dash character are reserved for use by
-Rimu. The `- -` (_Undefined_) macro is guaranteed to always be
-undefined.
+### Reserved macros
+Macros with names starting with two hyphen characters are called
+_Reserved_ macros.
+The `- -` macro is guaranteed to always be undefined.
 
 -->
 </div>

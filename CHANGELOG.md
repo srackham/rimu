@@ -4,7 +4,7 @@ See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
 ## Version 5.0.0 (2015-??-??)
-- Added `macroMode` API option to specify how macro invocations are processed.
+- Added `macroMode` API option to specify which macro invocations are processed.
 - Added `reset` API option to reset the API to its default state.
 - Added Markdown compatible double back-tick ```code quotes``` and double
   underline `__strong quotes__`.
@@ -25,7 +25,7 @@ Breaking changes:
 
 - The `render()` API no longer sets unspecified `options` properties to their
   default values. The previous behaviour was surprising and potentially dangerous
-  because it reset the `safeMode` to zero unless it was explicitly specified.
+  because it reset the `safeMode` to zero unless it was explicitly specified otherwise.
 
 
 ## Version 4.0.1 (2015-05-06)
