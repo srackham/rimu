@@ -55,8 +55,8 @@ const DEFAULT_DEFS: Definition[] = [
   },
 ]
 
-export var findRe: RegExp   // Searches for quoted text.
-var unescapeRe: RegExp      // Searches for escaped quotes.
+export let findRe: RegExp   // Searches for quoted text.
+let unescapeRe: RegExp      // Searches for escaped quotes.
 
 // Reset definitions to defaults.
 export function reset(): void {
@@ -69,7 +69,7 @@ export function reset(): void {
 
 // Synthesise re's to find and unescape quotes.
 export function initializeRegExps(): void {
-  var s: string[] = []
+  let s: string[] = []
   for (let def of defs) {
     s.push(utils.escapeRegExp(def.quote))
   }

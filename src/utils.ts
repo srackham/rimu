@@ -44,15 +44,15 @@ export function replaceMatch(match: RegExpExecArray,
                              expansionOptions: ExpansionOptions): string {
   return replacement.replace(/\$\d/g, function (): string {
     // Replace $1, $2 ... with corresponding match groups.
-    var i = Number(arguments[0][1])     // match group number.
-    var text = match[i]                 // match group text.
+    let i = Number(arguments[0][1])     // match group number.
+    let text = match[i]                 // match group text.
     return replaceInline(text, expansionOptions)
   })
 }
 
 // Shallow object clone.
 export function copy(source: any): any {
-  var result: any = {}
+  let result: any = {}
   for (let key in source) {
     if (source.hasOwnProperty(key)) {
       result[key] = source[key]
@@ -107,10 +107,10 @@ export function injectHtmlAttributes(tag: string): string {
     }
   }
   if (lineBlocks.htmlAttributes) {
-    var match = tag.match(/^<([a-zA-Z]+|h[1-6])(?=[ >])/)
+    let match = tag.match(/^<([a-zA-Z]+|h[1-6])(?=[ >])/)
     if (match) {
-      var before = tag.slice(0, match[0].length)
-      var after = tag.slice(match[0].length)
+      let before = tag.slice(0, match[0].length)
+      let after = tag.slice(match[0].length)
       tag = before + ' ' + lineBlocks.htmlAttributes + after
     }
   }

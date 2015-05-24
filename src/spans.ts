@@ -22,7 +22,7 @@ import * as replacements from './replacements'
   }
 
   export function render(source: string): string {
-    var fragments: Fragment[] = [{text: source, done: false}]
+    let fragments: Fragment[] = [{text: source, done: false}]
     fragQuotes(fragments)
     fragReplacements(fragments)
     fragSpecials(fragments)
@@ -31,7 +31,7 @@ import * as replacements from './replacements'
 
   // Converts fragments to a string.
   function defrag(fragments: Fragment[]): string {
-    var result: string[] = []
+    let result: string[] = []
     for (let fragment of fragments) {
       result.push(fragment.text)
     }
@@ -39,11 +39,11 @@ import * as replacements from './replacements'
   }
 
   function fragQuotes(fragments: Fragment[]): void {
-    var findRe = quotes.findRe
-    var fragmentIndex = 0
-    var fragment = fragments[fragmentIndex]
-    var nextFragment: boolean
-    var match: RegExpExecArray
+    let findRe = quotes.findRe
+    let fragmentIndex = 0
+    let fragment = fragments[fragmentIndex]
+    let nextFragment: boolean
+    let match: RegExpExecArray
     findRe.lastIndex = 0
     while (true) {
       if (fragment.done) {
@@ -70,7 +70,7 @@ import * as replacements from './replacements'
         continue
       }
       // Arrive here if we have a matched quote.
-      var def = quotes.getDefinition(match[1])
+      let def = quotes.getDefinition(match[1])
       if (def.verify && !def.verify(match, findRe)) {
         // Restart search after opening quote.
         findRe.lastIndex = match.index + match[1].length + 1
@@ -83,9 +83,9 @@ import * as replacements from './replacements'
         findRe.lastIndex += 1
       }
       // The quotes splits the fragment into 5 fragments.
-      var before = match.input.slice(0, match.index)
-      var quoted = match[2]
-      var after = match.input.slice(findRe.lastIndex)
+      let before = match.input.slice(0, match.index)
+      let quoted = match[2]
+      let after = match.input.slice(findRe.lastIndex)
       fragments.splice(fragmentIndex, 1,
           {text: before, done: false},
           {text: def.openTag, done: true},
@@ -121,11 +121,11 @@ import * as replacements from './replacements'
   }
 
   function fragReplacement(fragments: Fragment[], def: replacements.Definition): void {
-    var findRe = def.match
-    var fragmentIndex = 0
-    var fragment = fragments[fragmentIndex]
-    var nextFragment: boolean
-    var match: RegExpExecArray
+    let findRe = def.match
+    let fragmentIndex = 0
+    let fragment = fragments[fragmentIndex]
+    let nextFragment: boolean
+    let match: RegExpExecArray
     findRe.lastIndex = 0
     while (true) {
       if (fragment.done) {
@@ -148,8 +148,8 @@ import * as replacements from './replacements'
       }
       // Arrive here if we have a matched replacement.
       // The replacement splits the fragment into 3 fragments.
-      var before = match.input.slice(0, match.index)
-      var after = match.input.slice(findRe.lastIndex)
+      let before = match.input.slice(0, match.index)
+      let after = match.input.slice(findRe.lastIndex)
       fragments.splice(fragmentIndex, 1,
           {text: before, done: false},
           {text: '', done: true},
@@ -179,7 +179,7 @@ import * as replacements from './replacements'
 
   function fragSpecials(fragments: Fragment[]): void {
     // Replace special characters in all non-done fragments.
-    var fragment: Fragment
+    let fragment: Fragment
     for (let fragment of fragments) {
       if (!fragment.done) {
         fragment.text = utils.replaceSpecialChars(fragment.text)

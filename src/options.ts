@@ -13,9 +13,9 @@ export interface RenderOptions {
 }
 
 // Global option values.
-export var safeMode: number
-export var htmlReplacement: string
-export var macroMode: number
+export let safeMode: number
+export let htmlReplacement: string
+export let macroMode: number
 
 // Reset options to default values.
 export function setDefaults(): void {

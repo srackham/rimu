@@ -37,8 +37,8 @@
     // Return null if an EOF is encountered.
     // Exit with the reader pointing to the line following the match.
     readTo(find: RegExp): string[] {
-      var result: string[] = []
-      var match: string[]
+      let result: string[] = []
+      let match: string[]
       while (!this.eof()) {
         match = this.cursor().match(find)
         if (match) {

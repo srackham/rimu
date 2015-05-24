@@ -1,24 +1,24 @@
 import * as options from './options'
 
 // Matches macro invocation. $1 = name, $2 = params.
-var MATCH_MACRO = /\{([\w\-]+)([!=|?](?:|[\s\S]*?[^\\]))?\}/
+const MATCH_MACRO = /\{([\w\-]+)([!=|?](?:|[\s\S]*?[^\\]))?\}/
 // Matches all macro invocations. $1 = name, $2 = params.
-var MATCH_MACROS = RegExp('\\\\?' + MATCH_MACRO.source, 'g')
+const MATCH_MACROS = RegExp('\\\\?' + MATCH_MACRO.source, 'g')
 // Matches a line starting with a macro invocation.
-export var MACRO_LINE = RegExp('^' + MATCH_MACRO.source + '.*$')
+export const MACRO_LINE = RegExp('^' + MATCH_MACRO.source + '.*$')
 // Match multi-line macro definition open delimiter. $1 is first line of macro.
-export var MACRO_DEF_OPEN = /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/
+export const MACRO_DEF_OPEN = /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/
 // Match multi-line macro definition open delimiter. $1 is last line of macro.
-export var MACRO_DEF_CLOSE = /^(.*)'$/
+export const MACRO_DEF_CLOSE = /^(.*)'$/
 // Match single-line macro definition. $1 = name, $2 = value.
-export var MACRO_DEF = /^\\?\{([\w\-]+)\}\s*=\s*'(.*)'$/
+export const MACRO_DEF = /^\\?\{([\w\-]+)\}\s*=\s*'(.*)'$/
 
 export interface Macro {
   name: string
   value: string
 }
 
-export var defs: Macro[] = []
+export let defs: Macro[] = []
 
 // Reset definitions to defaults.
 export function reset(): void {
@@ -52,9 +52,9 @@ export function render(text: string): string {
     if (match[0] === '\\') {
       return match.slice(1)
     }
-    var name = args[0]
-    var params = args[1] || ''
-    var value = getValue(name)  // Macro value is null if macro is undefined.
+    let name = args[0]
+    let params = args[1] || ''
+    let value = getValue(name)  // Macro value is null if macro is undefined.
     switch (options.macroMode) {
       case 0: // No macros.
         return match
@@ -83,20 +83,20 @@ export function render(text: string): string {
 
       case '|': // Parametrized macro.
                 // Substitute macro parameters.
-        var paramsList = params.slice(1).split('|')
+        let paramsList = params.slice(1).split('|')
         value = (value || '').replace(/\\?\$\d+/g, function (match: string): string {
           if (match[0] === '\\') {  // Unescape escaped $ characters.
             return match.slice(1)
           }
-          var param = paramsList[Number(match.slice(1)) - 1]
+          let param = paramsList[Number(match.slice(1)) - 1]
           return param === undefined ? '' : param   // Unassigned parameters are replaced with a blank string.
         })
         return value
 
       case '!': // Inclusion macro.
       case '=':
-        var pattern = params.slice(1)
-        var skip = !RegExp('^' + pattern + '$').test(value || '')
+        let pattern = params.slice(1)
+        let skip = !RegExp('^' + pattern + '$').test(value || '')
         if (params[0] === '!') {
           skip = !skip
         }
@@ -109,8 +109,8 @@ export function render(text: string): string {
   })
   // Delete lines marked for deletion by inclusion macros.
   if (text.indexOf('\0') !== -1) {
-    var lines = text.split('\n')
-    for (var i = lines.length - 1; i >= 0; --i) {
+    let lines = text.split('\n')
+    for (let i = lines.length - 1; i >= 0; --i) {
       if (lines[i].indexOf('\0') !== -1) {
         lines.splice(i, 1)  // Delete line[i].
       }

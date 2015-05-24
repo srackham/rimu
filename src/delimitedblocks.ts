@@ -34,7 +34,7 @@ const DEFAULT_DEFS: Definition[] = [
     filter: function (text: string, match: string[], expansionOptions: utils.ExpansionOptions): string {
       // Set macro.
       // Get the macro name from the match in the first line of the block.
-      var name = match[0].match(/^\{([\w\-]+)\}/)[1]
+      let name = match[0].match(/^\{([\w\-]+)\}/)[1]
       text = text.replace(/' *\\\n/g, '\'\n')         // Unescape line-continuations.
       text = text.replace(/(' *[\\]+)\\\n/g, '$1\n')  // Unescape escaped line-continuations.
       text = utils.replaceInline(text, expansionOptions)    // Expand macro invocations.
@@ -120,11 +120,11 @@ const DEFAULT_DEFS: Definition[] = [
     },
     filter: function (text: string): string {
       // Strip indent from start of each line.
-      var first_indent = text.search(/\S/)
-      var buffer = text.split('\n')
-      for (var i in buffer) {
+      let first_indent = text.search(/\S/)
+      let buffer = text.split('\n')
+      for (let i in buffer) {
         // Strip first line indent width or up to first non-space character.
-        var indent = buffer[i].search(/\S/)
+        let indent = buffer[i].search(/\S/)
         if (indent > first_indent) indent = first_indent
         buffer[i] = buffer[i].slice(indent)
       }
@@ -145,8 +145,8 @@ const DEFAULT_DEFS: Definition[] = [
     },
     filter: function (text: string): string {
       // Strip leading > from start of each line and unescape escaped leading >.
-      var buffer = text.split('\n')
-      for (var i in buffer) {
+      let buffer = text.split('\n')
+      for (let i in buffer) {
         buffer[i] = buffer[i].replace(/^>/, '')
         buffer[i] = buffer[i].replace(/^\\>/, '>')
       }
@@ -181,7 +181,7 @@ export function reset(): void {
 export function render(reader: io.Reader, writer: io.Writer): boolean {
   if (reader.eof()) throw 'premature eof'
   for (let def of defs) {
-    var match = reader.cursor().match(def.openMatch)
+    let match = reader.cursor().match(def.openMatch)
     if (match) {
       // Escape non-paragraphs.
       if (match[0][0] === '\\' && def.name !== 'paragraph') {
@@ -192,14 +192,14 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
       if (def.verify && !def.verify(match)) {
         continue
       }
-      var lines: string[] = []
+      let lines: string[] = []
       // Prepend delimiter text.
       if (match.length > 1) {
         lines.push(match[1])    // $1
       }
       // Read content up to the closing delimiter.
       reader.next()
-      var closeMatch: RegExp
+      let closeMatch: RegExp
       if (def.closeMatch === undefined) {
         // Close delimiter matches opening delimiter.
         closeMatch = RegExp('^' + utils.escapeRegExp(match[0]) + '$')
@@ -207,12 +207,12 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
       else {
         closeMatch = def.closeMatch
       }
-      var content = reader.readTo(closeMatch)
+      let content = reader.readTo(closeMatch)
       if (content !== null) {
         lines = lines.concat(content)
       }
       // Set block expansion options.
-      var expansionOptions: utils.ExpansionOptions
+      let expansionOptions: utils.ExpansionOptions
       expansionOptions = {
         macros: false,
         spans: false,
@@ -220,12 +220,12 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
         container: false,
         skip: false
       }
-      var k: string
+      let k: string
       for (k in expansionOptions) expansionOptions[k] = def.expansionOptions[k]
       for (k in lineBlocks.blockOptions) expansionOptions[k] = lineBlocks.blockOptions[k]
       // Process block.
       if (!expansionOptions.skip) {
-        var text = lines.join('\n')
+        let text = lines.join('\n')
         if (def.filter) {
           text = def.filter(text, match, expansionOptions)
         }
@@ -265,7 +265,7 @@ export function getDefinition(name: string): Definition {
 // Parse delimited block expansion options string into blockOptions.
 export function setBlockOptions(blockOptions: utils.ExpansionOptions, optionsString: string): void {
   if (optionsString) {
-    var opts = optionsString.trim().split(/\s+/)
+    let opts = optionsString.trim().split(/\s+/)
     for (let opt of opts) {
       if (options.isSafe() && opt === '-specials') {
         return
@@ -280,8 +280,8 @@ export function setBlockOptions(blockOptions: utils.ExpansionOptions, optionsStr
 // Update existing named definition.
 // Value syntax: <open-tag>|<close-tag> block-options
 export function setDefinition(name: string, value: string): void {
-  var def = getDefinition(name)
-  var match = utils.trim(value).match(/^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/)
+  let def = getDefinition(name)
+  let match = utils.trim(value).match(/^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/)
   if (match) {
     if (match[1]) {
       def.openTag = match[1]

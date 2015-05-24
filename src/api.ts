@@ -8,8 +8,8 @@ import * as quotes from './quotes'
 import * as replacements from './replacements'
 
 export function render(source: string): string {
-  var reader = new io.Reader(source)
-  var writer = new io.Writer()
+  let reader = new io.Reader(source)
+  let writer = new io.Writer()
   while (!reader.eof()) {
     reader.skipBlankLines()
     if (reader.eof()) break

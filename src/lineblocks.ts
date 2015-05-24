@@ -15,7 +15,7 @@ export interface Definition {
   expansionOptions: utils.ExpansionOptions
 }
 
-var defs: Definition[] = [
+let defs: Definition[] = [
   // Prefix match with backslash to allow escaping.
 
   // Delimited Block definition.
@@ -65,9 +65,9 @@ var defs: Definition[] = [
       if (options.isSafe()) {
         return ''   // Skip if a safe mode is set.
       }
-      var pattern = match[1]
-      var flags = match[2]
-      var replacement = match[3]
+      let pattern = match[1]
+      let flags = match[2]
+      let replacement = match[3]
       replacement = utils.replaceInline(replacement, this.expansionOptions)
       replacements.setDefinition(pattern, flags, replacement)
       return ''
@@ -85,8 +85,8 @@ var defs: Definition[] = [
       if (options.isSafe()) {
         return ''   // Skip if a safe mode is set.
       }
-      var name = match[1]
-      var value = match[2]
+      let name = match[1]
+      let value = match[2]
       value = utils.replaceInline(value, this.expansionOptions)
       macros.setValue(name, value)
       return ''
@@ -101,13 +101,13 @@ var defs: Definition[] = [
       return !macros.MACRO_DEF_OPEN.test(match[0])  // Don't match macro definition blocks.
     },
     filter: function (match: RegExpExecArray, reader?: io.Reader): string {
-      var value = macros.render(match[0])
+      let value = macros.render(match[0])
       if (value === match[0]) {
         // Escape macro to prevent infinite recursion if the value is the same as the invocation.
         value = '\\' + value
       }
       // Insert the macro value into the reader just ahead of the cursor.
-      var spliceArgs = (<any[]> [reader.pos + 1, 0]).concat(value.split('\n'))
+      let spliceArgs = (<any[]> [reader.pos + 1, 0]).concat(value.split('\n'))
       Array.prototype.splice.apply(reader.lines, spliceArgs)
       return ''
     }
@@ -175,7 +175,7 @@ var defs: Definition[] = [
     verify: function (match: RegExpExecArray): boolean {
       // Parse Block Attributes.
       // class names = $1, id = $2, html-attributes = $3, block-options = $4
-      var text = match[0]
+      let text = match[0]
       text = utils.replaceInline(text, this.expansionOptions)  // Expand macro references.
       match = /^\\?\.((?:\s*[a-zA-Z][\w\-]*)+)*(?:\s*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text)
       if (!match) {
@@ -217,16 +217,16 @@ var defs: Definition[] = [
 ]
 
 // Globals set by Block Attributes filter.
-export var htmlClasses: string = ''
-export var htmlAttributes: string = ''
-export var blockOptions: utils.ExpansionOptions = {}
+export let htmlClasses: string = ''
+export let htmlAttributes: string = ''
+export let blockOptions: utils.ExpansionOptions = {}
 
 // If the next element in the reader is a valid line block render it
 // and return true, else return false.
 export function render(reader: io.Reader, writer: io.Writer): boolean {
   if (reader.eof()) throw 'premature eof'
   for (let def of defs) {
-    var match = def.match.exec(reader.cursor())
+    let match = def.match.exec(reader.cursor())
     if (match) {
       if (match[0][0] === '\\') {
         // Drop backslash escape and continue.
@@ -236,7 +236,7 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
       if (def.verify && !def.verify(match)) {
         continue
       }
-      var text: string
+      let text: string
       if (!def.filter) {
         text = utils.replaceMatch(match, def.replacement, def.expansionOptions)
       }

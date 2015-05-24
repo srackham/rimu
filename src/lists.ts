@@ -22,7 +22,7 @@ interface ItemState {
   isIndented: boolean
 }
 
-var defs: Definition[] = [
+let defs: Definition[] = [
   // Prefix match with backslash to allow escaping.
 
   // Unordered lists.
@@ -56,11 +56,11 @@ var defs: Definition[] = [
   },
 ]
 
-var ids: string[]   // Stack of open list IDs.
+let ids: string[]   // Stack of open list IDs.
 
 export function render(reader: io.Reader, writer: io.Writer): boolean {
   if (reader.eof()) throw 'premature eof'
-  var startItem: ItemState
+  let startItem: ItemState
   if (!(startItem = matchItem(reader))) {
     return false
   }
@@ -73,7 +73,7 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
 function renderList(startItem: ItemState, reader: io.Reader, writer: io.Writer): ItemState {
   ids.push(startItem.id)
   writer.write(utils.injectHtmlAttributes(startItem.def.listOpenTag))
-  var nextItem: ItemState
+  let nextItem: ItemState
   while (true) {
     nextItem = renderListItem(startItem, reader, writer)
     if (!nextItem || nextItem.id !== startItem.id) {
@@ -87,9 +87,9 @@ function renderList(startItem: ItemState, reader: io.Reader, writer: io.Writer):
 }
 
 function renderListItem(startItem: ItemState, reader: io.Reader, writer: io.Writer): ItemState {
-  var def = startItem.def
-  var match = startItem.match
-  var text: string
+  let def = startItem.def
+  let match = startItem.match
+  let text: string
   if (match.length === 4) { // 3 match groups => definition list.
     writer.write(def.termOpenTag)
     text = utils.replaceInline(match[1], {macros: true, spans: true})
@@ -98,11 +98,11 @@ function renderListItem(startItem: ItemState, reader: io.Reader, writer: io.Writ
   }
   writer.write(def.itemOpenTag)
   // Process of item text.
-  var lines = new io.Writer()
+  let lines = new io.Writer()
   lines.write(match[match.length - 1])  // Item text from first line.
   lines.write('\n')
   reader.next()
-  var nextItem: ItemState
+  let nextItem: ItemState
   nextItem = readToNext(reader, lines)
   text = lines.toString()
   text = utils.replaceInline(text, {macros: true, spans: true})
@@ -128,7 +128,7 @@ function renderListItem(startItem: ItemState, reader: io.Reader, writer: io.Writ
     }
     else if (nextItem.isDelimited || nextItem.isIndented) {
       // Delimited blocks and Indented blocks attach to list items.
-      var savedIds = ids
+      let savedIds = ids
       ids = []
       delimitedBlocks.render(reader, writer)
       ids = savedIds
@@ -151,7 +151,7 @@ function renderListItem(startItem: ItemState, reader: io.Reader, writer: io.Writ
 function readToNext(reader: io.Reader, writer: io.Writer): ItemState {
   // The reader should be at the line following the first line of the list
   // item (or EOF).
-  var next: ItemState
+  let next: ItemState
   while (true) {
     if (reader.eof()) return null
     if (reader.cursor() === '') {
@@ -180,10 +180,10 @@ function readToNext(reader: io.Reader, writer: io.Writer): ItemState {
 function matchItem(reader: io.Reader,
                    options: {delimited?: boolean; indented?: boolean; } = {}): ItemState {
   // Check if the line matches a List definition.
-  var line = reader.cursor()
-  var item = <ItemState>{}    // ItemState factory.
+  let line = reader.cursor()
+  let item = <ItemState>{}    // ItemState factory.
   for (let def of defs) {
-    var match = def.match.exec(line)
+    let match = def.match.exec(line)
     if (match) {
       if (match[0][0] === '\\') {
         reader.cursor(reader.cursor().slice(1))   // Drop backslash.
@@ -197,7 +197,7 @@ function matchItem(reader: io.Reader,
     }
   }
   // Check if the line matches a Delimited Block definition.
-  var def: delimitedBlocks.Definition
+  let def: delimitedBlocks.Definition
   if (options.delimited) {
     for (let name of ['quote', 'code', 'division']) {
       def = delimitedBlocks.getDefinition(name)
