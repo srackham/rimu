@@ -1,8 +1,6 @@
-/* tslint:disable */
 import * as utils from './utils'
 import * as io from './io'
 import * as delimitedBlocks from './delimitedblocks'
-/* tslint:enable */
 
 interface Definition {
   match: RegExp

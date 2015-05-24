@@ -12,11 +12,9 @@
  resultant HTML string.
  */
 
-/* tslint:disable */
 import * as utils from './utils'
 import * as quotes from './quotes'
 import * as replacements from './replacements'
-/* tslint:enable */
 
   interface Fragment {
     text: string

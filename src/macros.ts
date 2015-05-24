@@ -1,6 +1,4 @@
-/* tslint:disable */
 import * as options from './options'
-/* tslint:enable */
 
 // Matches macro invocation. $1 = name, $2 = params.
 var MATCH_MACRO = /\{([\w\-]+)([!=|?](?:|[\s\S]*?[^\\]))?\}/

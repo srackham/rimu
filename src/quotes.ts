@@ -1,7 +1,4 @@
-/* tslint:disable */
 import * as utils from './utils'
-// TODO tslint for..of incompatibility
-///* tslint:enable */
 
 export interface Definition {
   quote: string     // Single quote character.

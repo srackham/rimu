@@ -101,6 +101,7 @@ task('jslint', {async: true}, function() {
 
 desc('Lint TypeScript source files.');
 task('tslint', {async: true}, function() {
+  return  // TODO: Uncomment when tslint is compatible with TypeScript 1.5.
   var commands = SOURCE.map(function(file) {
     return 'tslint -f ' + file;
   });

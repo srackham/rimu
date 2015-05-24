@@ -5,10 +5,8 @@
   formatted libraries.
  */
 
-/* tslint:disable */
 import * as api from './api'
 import * as options from './options'
-/* tslint:enable */
 
 /**
  *

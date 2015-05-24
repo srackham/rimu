@@ -1,4 +1,3 @@
-/* tslint:disable */
 import * as io from './io'
 import * as lineBlocks from './lineblocks'
 import * as delimitedBlocks from './delimitedblocks'
@@ -7,7 +6,6 @@ import * as macros from './macros'
 import * as options from './options'
 import * as quotes from './quotes'
 import * as replacements from './replacements'
-/* tslint:enable */
 
 export function render(source: string): string {
   var reader = new io.Reader(source)

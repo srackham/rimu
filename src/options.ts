@@ -1,7 +1,5 @@
-/* tslint:disable */
 import * as utils from './utils'
 import * as api from './api'
-/* tslint:enable */
 
 /**
  * An object with zero or more optional properties to control Rimu Markup

@@ -1,12 +1,9 @@
-/* tslint:disable */
 import * as api from './api'
 import * as utils from './utils'
 import * as options from './options'
 import * as io from './io'
 import * as macros from './macros'
 import * as lineBlocks from './lineblocks'
-// TODO tslint for..of incompatibility
-///* tslint:enable */
 
 // Multi-line block element definition.
 export interface Definition {
