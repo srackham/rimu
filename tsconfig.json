@@ -14,7 +14,7 @@
     "./src/main.ts",
     "./src/options.ts",
     "./src/quotes.ts",
-    "./src/render.ts",
+    "./src/api.ts",
     "./src/replacements.ts",
     "./src/spans.ts",
     "./src/utils.ts"
