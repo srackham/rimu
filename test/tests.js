@@ -95,6 +95,14 @@ exports['Spans'] = function(test) {
     '<a href="http://example.com"></a>',
     'url with empty caption');
   test_span(
+    '<http://an example.com|foo>',
+    '<a href="http://an example.com">foo</a>',
+    'url with spaces');
+  test_span(
+    '[with spaces](http://url with spaces.com)',
+    '<a href="http://url with spaces.com">with spaces</a>',
+    'Markdown style url with spaces');
+  test_span(
     '\\http://example.com \\<http://example.com> \\[example url](http://example.com)',
     'http://example.com &lt;http://example.com&gt; [example url](http://example.com)',
     'escaped http urls');

@@ -246,12 +246,7 @@ Here's a full list of
 [HTML5 character entities](http://dev.w3.org/html5/html-author/charref).
 
 
-## Whitespace and Underscores in URLs
-Whitespace characters are illegal in URL paths, use _%20_ in place of
-spaces, for example:
-
-  <file:///home/srackham/books/War%20and%20Peace.pdf|War and Peace>
-
+## Underscores in URLs
 Underscore characters are legal in URL paths but they may be
 interpreted as Rimu emphasis quotes, you can use _%5F_ in place of
 underscores or escape them with backslashes.

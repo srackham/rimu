@@ -81,24 +81,24 @@ const DEFAULT_DEFS: Definition[] = [
     }
   },
 
-  // Link: <url|caption>
-  // url = $1, caption = $2
-  {
-    match: /\\?<(\S+?)\|([\s\S]*?)>/g,
-    replacement: '<a href="$1">$2</a>'
-  },
-
   // Link: <url>
   // url = $1
   {
-    match: /\\?<(\S+?)>/g,
+    match: /\\?<([^|]+?)>/g,
     replacement: '<a href="$1">$1</a>'
+  },
+
+  // Link: <url|caption>
+  // url = $1, caption = $2
+  {
+    match: /\\?<(.+?)\|([\s\S]*?)>/g,
+    replacement: '<a href="$1">$2</a>'
   },
 
   // Link: [caption](url)
   // caption = $1, url = $2
   {
-    match: /\\?\[([\s\S]*?)\]\s*\((\S+?)\)/g,
+    match: /\\?\[([\s\S]*?)\]\s*\((.+?)\)/g,
     replacement: '<a href="$2">$1</a>'
   },
 
