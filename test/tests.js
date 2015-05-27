@@ -99,6 +99,10 @@ exports['Spans'] = function(test) {
     '<a href="http://an example.com">foo</a>',
     'url with spaces');
   test_span(
+    'http://a_b_c [](http://a_b_c) <http://a_b_c>',
+    '<a href="http://a_b_c">http://a_b_c</a> <a href="http://a_b_c"></a> <a href="http://a_b_c">http://a_b_c</a>',
+    'quotes not expanded in urls');
+  test_span(
     '[with spaces](http://url with spaces.com)',
     '<a href="http://url with spaces.com">with spaces</a>',
     'Markdown style url with spaces');
@@ -872,8 +876,8 @@ exports['Blocks'] = function(test) {
     '<p><em>emphasized</em></p>',
     'replacement with match groups');
   test_document(
-    "/(^|\\n)\\\\?\\/\\/.*(\\n|$)/g = '$1'\nA paragraph\n//Comment\n//Comment\nwith inline comments.",
-    '<p>A paragraph\nwith inline comments.</p>',
+    "/(^|\\n)\\\\?\\/\\/.*(?=\\n|$)/g = '$1'\nA paragraph\n//Comment\n//Comment\nwith inline comments.",
+    '<p>A paragraph\n\n\nwith inline comments.</p>',
     'Inline comments replacement.');
 
   // Delimited Block definitions.

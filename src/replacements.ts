@@ -4,7 +4,7 @@ import * as utils from './utils'
 export interface Definition {
   match: RegExp
   replacement: string
-  filter?: (match: RegExpExecArray) => string
+  filter?: (submatches: string[]) => string
 }
 
 export let defs: Definition[]  // Mutable definitions initialized by DEFAULT_DEFS.
@@ -19,8 +19,8 @@ const DEFAULT_DEFS: Definition[] = [
   {
     match: /\\?(&[\w#][\w]+;)/g,
     replacement: '',
-    filter: function (match: RegExpExecArray): string {
-      return match[1]   // Pass the entity through verbatim.
+    filter: function (matches: string[]): string {
+      return matches[1]   // Pass the entity through verbatim.
     }
   },
 
@@ -76,8 +76,8 @@ const DEFAULT_DEFS: Definition[] = [
   {
     match: /\\?(<[!\/]?[a-zA-Z\-]+(:?\s+[^<>&]+)?>)/g,
     replacement: '',
-    filter: function (match: RegExpExecArray): string {
-      return options.safeModeFilter(match[1])
+    filter: function (matches: string[]): string {
+      return options.safeModeFilter(matches[1])
     }
   },
 
@@ -104,8 +104,8 @@ const DEFAULT_DEFS: Definition[] = [
 
   // Auto-encode (most) raw HTTP URLs as links.
   {
-    match: /(^|[^<])\b((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/g,
-    replacement: '$1<a href="$2">$2</a>'
+    match: /\\?((?:http|https):\/\/[^\s"']*[A-Za-z0-9/#])/g,
+    replacement: '<a href="$1">$1</a>'
   },
 
 ]

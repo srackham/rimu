@@ -19,23 +19,37 @@ import * as replacements from './replacements'
   interface Fragment {
     text: string
     done: boolean
+    verbatim?: string   // Replacements text rendered verbatim.
   }
 
-  export function render(source: string): string {
-    let fragments: Fragment[] = [{text: source, done: false}]
-    fragQuotes(fragments)
-    fragReplacements(fragments)
-    fragSpecials(fragments)
-    return defrag(fragments)
-  }
+export function render(source: string): string {
+  let result: string
+  result = preReplacements(source)
+  let fragments: Fragment[] = [{text: result, done: false}]
+  fragQuotes(fragments)
+  fragSpecials(fragments)
+  result = defrag(fragments)
+  return postReplacements(result)
+}
 
-  // Converts fragments to a string.
+/*
+ Replace render() with this function to process replacements *after* quotes (pre version 5 behaviour).
+*/
+//export function render(source: string): string {
+//  let fragments: Fragment[] = [{text: source, done: false}]
+//  fragQuotes(fragments)
+//  fragReplacements(fragments)
+//  fragSpecials(fragments)
+//  return defrag(fragments)
+//}
+
+// Converts fragments to a string.
   function defrag(fragments: Fragment[]): string {
-    let result: string[] = []
+    let result: string = ''
     for (let fragment of fragments) {
-      result.push(fragment.text)
+      result += fragment.text
     }
-    return result.join('')
+    return result
   }
 
   function fragQuotes(fragments: Fragment[]): void {
@@ -99,6 +113,7 @@ import * as replacements from './replacements'
       if (!def.spans) {
         fragment.text = quotes.unescape(fragment.text)
         fragment.text = utils.replaceSpecialChars(fragment.text)
+        fragment.text = fragment.text.replace('\u0000', '\u0001')   // Use verbatim replacement.
         fragment.done = true
         // Move to 'after' fragment.
         fragmentIndex += 2
@@ -113,6 +128,44 @@ import * as replacements from './replacements'
       }
     }
   }
+
+// Replacements text set by `preReplacements()`, used by `postReplacements()`.
+let savedReplacements: Fragment[]
+
+// Return text with replacements replaced with placeholders (see `postReplacements()`).
+function preReplacements(text: string): string {
+  savedReplacements = []
+  let fragments: Fragment[] = [{text: text, done: false}]
+  fragReplacements(fragments)
+  // Reassemble text with replacement placeholders.
+  let result: string = ''
+  for (let fragment of fragments) {
+    if (fragment.done) {
+      savedReplacements.push(fragment)  // Save replaced text.
+      result += '\u0000'                // Placeholder for replaced test.
+    }
+    else {
+      result += fragment.text
+    }
+  }
+  return result
+}
+
+// Replace replacements placeholders with replacements text from savedReplacements[].
+function postReplacements(text: string): string {
+  let result: string
+  result = text.replace(/\u0000|\u0001/g, function (match): string {
+    if (savedReplacements.length === 0) {  // TODO drop this
+      console.log('missing replacements')
+    }
+    let fragment = savedReplacements.shift()
+    return (match === '\u0000') ? fragment.text : fragment.verbatim
+  })
+  if (savedReplacements.length !== 0) {  // TODO drop this
+    console.log('to many replacements: ', savedReplacements)
+  }
+  return result
+}
 
   function fragReplacements(fragments: Fragment[]): void {
     for (let def of replacements.defs) {
@@ -160,8 +213,8 @@ import * as replacements from './replacements'
       fragment = fragments[fragmentIndex]
       if (match[0][0] === '\\') {
         // Remove leading backslash.
-        fragment.text = match.input.slice(match.index + 1, findRe.lastIndex)
-        fragment.text = utils.replaceSpecialChars(fragment.text)
+        fragment.text = utils.replaceSpecialChars(match[0].slice(1))
+        fragment.verbatim = fragment.text
       }
       else {
         if (!def.filter) {
@@ -170,6 +223,7 @@ import * as replacements from './replacements'
         else {
           fragment.text = def.filter(match)
         }
+        fragment.verbatim = utils.replaceSpecialChars(match[0])
       }
       fragmentIndex++
       fragment = fragments[fragmentIndex]
