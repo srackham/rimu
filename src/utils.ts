@@ -39,13 +39,13 @@ export function replaceSpecialChars(s: string): string {
 
 // Replace match groups, optionally substituting the replacement groups with
 // the inline elements specified in options.
-export function replaceMatch(matches: string[],
+export function replaceMatch(match: RegExpExecArray,
                              replacement: string,
                              expansionOptions: ExpansionOptions): string {
   return replacement.replace(/\$\d/g, function (): string {
     // Replace $1, $2 ... with corresponding match groups.
     let i = Number(arguments[0][1])  // match group number.
-    let text = matches[i]            // match group text.
+    let text = match[i]            // match group text.
     return replaceInline(text, expansionOptions)
   })
 }

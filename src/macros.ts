@@ -48,12 +48,12 @@ export function setValue(name: string, value: string): void {
 
 // Render all macro invocations in text string.
 export function render(text: string): string {
-  text = text.replace(MATCH_MACROS, function (match: string, ...args: string[]): string {
+  text = text.replace(MATCH_MACROS, function (match: string, ...submatches: string[]): string {
     if (match[0] === '\\') {
       return match.slice(1)
     }
-    let name = args[0]
-    let params = args[1] || ''
+    let name = submatches[0]
+    let params = submatches[1] || ''
     let value = getValue(name)  // Macro value is null if macro is undefined.
     switch (options.macroMode) {
       case 0: // No macros.

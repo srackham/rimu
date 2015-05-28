@@ -129,7 +129,7 @@ function fragQuotes(fragments: Fragment[]): void {
   }
 }
 
-// Replacements text set by `preReplacements()`, used by `postReplacements()`.
+// Replacements fragments set by `preReplacements()`, used by `postReplacements()`.
 let savedReplacements: Fragment[]
 
 // Return text with replacements replaced with placeholders (see `postReplacements()`).
@@ -155,15 +155,9 @@ function preReplacements(text: string): string {
 function postReplacements(text: string): string {
   let result: string
   result = text.replace(/\u0000|\u0001/g, function (match): string {
-    if (savedReplacements.length === 0) {  // TODO drop this
-      console.log('missing replacements')
-    }
     let fragment = savedReplacements.shift()
     return (match === '\u0000') ? fragment.text : fragment.verbatim
   })
-  if (savedReplacements.length !== 0) {  // TODO drop this
-    console.log('to many replacements: ', savedReplacements)
-  }
   return result
 }
 

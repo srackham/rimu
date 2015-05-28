@@ -4,7 +4,7 @@ import * as utils from './utils'
 export interface Definition {
   match: RegExp
   replacement: string
-  filter?: (submatches: string[]) => string
+  filter?: (match: RegExpExecArray) => string
 }
 
 export let defs: Definition[]  // Mutable definitions initialized by DEFAULT_DEFS.
@@ -19,8 +19,8 @@ const DEFAULT_DEFS: Definition[] = [
   {
     match: /\\?(&[\w#][\w]+;)/g,
     replacement: '',
-    filter: function (matches: string[]): string {
-      return matches[1]   // Pass the entity through verbatim.
+    filter: function (match: RegExpExecArray): string {
+      return match[1]   // Pass the entity through verbatim.
     }
   },
 
@@ -76,8 +76,8 @@ const DEFAULT_DEFS: Definition[] = [
   {
     match: /\\?(<[!\/]?[a-zA-Z\-]+(:?\s+[^<>&]+)?>)/g,
     replacement: '',
-    filter: function (matches: string[]): string {
-      return options.safeModeFilter(matches[1])
+    filter: function (match: RegExpExecArray): string {
+      return options.safeModeFilter(match[1])
     }
   },
 
