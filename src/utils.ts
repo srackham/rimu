@@ -61,6 +61,9 @@ export function copy(source: any): any {
   return result
 }
 
+/*
+Unused
+
 // Copy properties in source object to target object.
 export function merge(target: any, source: any): void {
   for (let key in source) {
@@ -74,6 +77,8 @@ export function update(target: any, source: any): void {
     if (key in target) target[key] = source[key]
   }
 }
+*/
+
 // Replace the inline elements specified in options in text and return the result.
 export function replaceInline(text: string, expansionOptions: ExpansionOptions): string {
   if (expansionOptions.macros) {
