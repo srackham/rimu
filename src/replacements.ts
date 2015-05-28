@@ -123,7 +123,7 @@ export function setDefinition(regexp: string, flags: string, replacement: string
   if (!/g/.test(flags)) {
     flags += 'g'
   }
-  for (let def in defs) {
+  for (let def of defs) {
     if (def.match.source === regexp) {
       // Update existing definition.
       // Flag properties are read-only so have to create new RegExp.
