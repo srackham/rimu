@@ -23,9 +23,18 @@ Breaking changes:
   was not explicitly defined then `${text}` would silently render `$`.
   To revert to the previous behaviour set the `macroMode` API option to `1`.
 
+- Replacements are processed before quotes (previously they were processed after quotes).
+  This is ensures quotes are not expanded inside URLs (Markdown behaviour).
+  If there are escaped quotes in URLs they will no longer be unescaped and you will need
+  to remove them e.g. you need to delete the backslash from this link otherwise the
+  backslash will be rendered in the output:
+
+        <http://an\_example_url.com>
+
 - The `render()` API no longer sets unspecified `options` properties to their
   default values. The previous behaviour was surprising and potentially dangerous
-  because it reset the `safeMode` to zero unless it was explicitly specified otherwise.
+  because it reset the `safeMode` to the default unafe value of zero unless it was
+  explicitly specified otherwise.
 
 
 ## Version 4.0.1 (2015-05-06)

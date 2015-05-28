@@ -832,6 +832,7 @@ Example replacement definitions:
 Rimu scans the input text for block elements. When a block element is
 matched it is converted to HTML on the output.
 
+#### Block elements
 Block elements in the source markup are matched in the following order
 (first to last):
 
@@ -840,13 +841,14 @@ Block elements in the source markup are matched in the following order
 . Delimited Blocks
 . Paragraphs
 
+#### Inline elements
 Inline elements are processed in the following order (first to last):
 
 . Macros
-. Quotes
 . Replacements
-. Special characters
+. Quotes
 
+Special character substitution takes place last.
 Inline substitutions in multi-line block elements can be controlled
 using _block-options_ in the _Block Attributes_ element.
 

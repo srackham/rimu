@@ -246,12 +246,6 @@ Here's a full list of
 [HTML5 character entities](http://dev.w3.org/html5/html-author/charref).
 
 
-## Underscores in URLs
-Underscore characters are legal in URL paths but they may be
-interpreted as Rimu emphasis quotes, you can use _%5F_ in place of
-underscores or escape them with backslashes.
-
-
 .#defs-warning
 ## Use Replacement and Quote definitions sparingly
 Adding new Replacement and Quote definitions changes the Rimu syntax
@@ -348,11 +342,13 @@ use the reserved `--` macro for this purpose:
 
 See also <#conditional-inclusion|Conditional Inclusion>.
 
+/*
 You could also implement inline `//` style single-line comments with
 the following custom Replacement definition:
 
-  /(^|\n)\\?\/\/.*(\n|$)/g = '$1'
+  /(^|\n)\\?\/\/.*(?=\n|$)/g = '$1'
 
+*/
 
 .#conditional-inclusion
 ## Conditional Inclusion
@@ -563,7 +559,7 @@ Generates:
 .#scoped-css
 ## Use scoped CSS to generate custom styled elements
 HTML5's [scoped CSS
-attribute](http://www.w3schools.com/tags/att\_style\_scoped.asp)
+attribute](http://www.w3schools.com/tags/att_style_scoped.asp)
 allows you to define CSS outside the document header.  This allows you
 to include CSS in the body of a Rimu document which is very handy for
 tweaking the default CSS and for styling Rimu block elements.
