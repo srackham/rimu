@@ -16,11 +16,11 @@ import * as utils from './utils'
 import * as quotes from './quotes'
 import * as replacements from './replacements'
 
-  interface Fragment {
-    text: string
-    done: boolean
-    verbatim?: string   // Replacements text rendered verbatim.
-  }
+interface Fragment {
+  text: string
+  done: boolean
+  verbatim?: string   // Replacements text rendered verbatim.
+}
 
 export function render(source: string): string {
   let result: string
@@ -34,7 +34,7 @@ export function render(source: string): string {
 
 /*
  Replace render() with this function to process replacements *after* quotes (pre version 5 behaviour).
-*/
+ */
 //export function render(source: string): string {
 //  let fragments: Fragment[] = [{text: source, done: false}]
 //  fragQuotes(fragments)
@@ -44,90 +44,90 @@ export function render(source: string): string {
 //}
 
 // Converts fragments to a string.
-  function defrag(fragments: Fragment[]): string {
-    let result: string = ''
-    for (let fragment of fragments) {
-      result += fragment.text
-    }
-    return result
+function defrag(fragments: Fragment[]): string {
+  let result: string = ''
+  for (let fragment of fragments) {
+    result += fragment.text
   }
+  return result
+}
 
-  function fragQuotes(fragments: Fragment[]): void {
-    let findRe = quotes.findRe
-    let fragmentIndex = 0
-    let fragment = fragments[fragmentIndex]
-    let nextFragment: boolean
-    let match: RegExpExecArray
-    findRe.lastIndex = 0
-    while (true) {
-      if (fragment.done) {
-        nextFragment = true
+function fragQuotes(fragments: Fragment[]): void {
+  let findRe = quotes.findRe
+  let fragmentIndex = 0
+  let fragment = fragments[fragmentIndex]
+  let nextFragment: boolean
+  let match: RegExpExecArray
+  findRe.lastIndex = 0
+  while (true) {
+    if (fragment.done) {
+      nextFragment = true
+    }
+    else {
+      match = findRe.exec(fragment.text)
+      nextFragment = !match
+    }
+    if (nextFragment) {
+      fragmentIndex++
+      if (fragmentIndex >= fragments.length) {
+        break
       }
-      else {
-        match = findRe.exec(fragment.text)
-        nextFragment = !match
+      fragment = fragments[fragmentIndex]
+      if (match) {
+        findRe.lastIndex = 0
       }
-      if (nextFragment) {
-        fragmentIndex++
-        if (fragmentIndex >= fragments.length) {
-          break
-        }
-        fragment = fragments[fragmentIndex]
-        if (match) {
-          findRe.lastIndex = 0
-        }
-        continue
-      }
-      if (match[0][0] === '\\') {
-        // Restart search after opening quote.
-        findRe.lastIndex = match.index + match[1].length + 1
-        continue
-      }
-      // Arrive here if we have a matched quote.
-      let def = quotes.getDefinition(match[1])
-      if (def.verify && !def.verify(match, findRe)) {
-        // Restart search after opening quote.
-        findRe.lastIndex = match.index + match[1].length + 1
-        continue
-      }
-      // Check for same closing quote one character further to the right.
-      while (fragment.text[findRe.lastIndex] === match[1][0]) {
-        // Move to closing quote one character to right.
-        match[2] += match[1][0]
-        findRe.lastIndex += 1
-      }
-      // The quotes splits the fragment into 5 fragments.
-      let before = match.input.slice(0, match.index)
-      let quoted = match[2]
-      let after = match.input.slice(findRe.lastIndex)
-      fragments.splice(fragmentIndex, 1,
-          {text: before, done: false},
-          {text: def.openTag, done: true},
-          {text: quoted, done: false},
-          {text: def.closeTag, done: true},
-          {text: after, done: false}
-      )
-      // Move to 'quoted' fragment.
+      continue
+    }
+    if (match[0][0] === '\\') {
+      // Restart search after opening quote.
+      findRe.lastIndex = match.index + match[1].length + 1
+      continue
+    }
+    // Arrive here if we have a matched quote.
+    let def = quotes.getDefinition(match[1])
+    if (def.verify && !def.verify(match, findRe)) {
+      // Restart search after opening quote.
+      findRe.lastIndex = match.index + match[1].length + 1
+      continue
+    }
+    // Check for same closing quote one character further to the right.
+    while (fragment.text[findRe.lastIndex] === match[1][0]) {
+      // Move to closing quote one character to right.
+      match[2] += match[1][0]
+      findRe.lastIndex += 1
+    }
+    // The quotes splits the fragment into 5 fragments.
+    let before = match.input.slice(0, match.index)
+    let quoted = match[2]
+    let after = match.input.slice(findRe.lastIndex)
+    fragments.splice(fragmentIndex, 1,
+      {text: before, done: false},
+      {text: def.openTag, done: true},
+      {text: quoted, done: false},
+      {text: def.closeTag, done: true},
+      {text: after, done: false}
+    )
+    // Move to 'quoted' fragment.
+    fragmentIndex += 2
+    fragment = fragments[fragmentIndex]
+    if (!def.spans) {
+      fragment.text = quotes.unescape(fragment.text)
+      fragment.text = utils.replaceSpecialChars(fragment.text)
+      fragment.text = fragment.text.replace('\u0000', '\u0001')   // Use verbatim replacement.
+      fragment.done = true
+      // Move to 'after' fragment.
       fragmentIndex += 2
       fragment = fragments[fragmentIndex]
-      if (!def.spans) {
-        fragment.text = quotes.unescape(fragment.text)
-        fragment.text = utils.replaceSpecialChars(fragment.text)
-        fragment.text = fragment.text.replace('\u0000', '\u0001')   // Use verbatim replacement.
-        fragment.done = true
-        // Move to 'after' fragment.
-        fragmentIndex += 2
-        fragment = fragments[fragmentIndex]
-      }
-      findRe.lastIndex = 0
     }
-    // Strip backlash from escaped quotes in non-done fragments.
-    for (let fragment of fragments) {
-      if (!fragment.done) {
-        fragment.text = quotes.unescape(fragment.text)
-      }
+    findRe.lastIndex = 0
+  }
+  // Strip backlash from escaped quotes in non-done fragments.
+  for (let fragment of fragments) {
+    if (!fragment.done) {
+      fragment.text = quotes.unescape(fragment.text)
     }
   }
+}
 
 // Replacements text set by `preReplacements()`, used by `postReplacements()`.
 let savedReplacements: Fragment[]
@@ -167,77 +167,77 @@ function postReplacements(text: string): string {
   return result
 }
 
-  function fragReplacements(fragments: Fragment[]): void {
-    for (let def of replacements.defs) {
-      fragReplacement(fragments, def)
-    }
+function fragReplacements(fragments: Fragment[]): void {
+  for (let def of replacements.defs) {
+    fragReplacement(fragments, def)
   }
+}
 
-  function fragReplacement(fragments: Fragment[], def: replacements.Definition): void {
-    let findRe = def.match
-    let fragmentIndex = 0
-    let fragment = fragments[fragmentIndex]
-    let nextFragment: boolean
-    let match: RegExpExecArray
+function fragReplacement(fragments: Fragment[], def: replacements.Definition): void {
+  let findRe = def.match
+  let fragmentIndex = 0
+  let fragment = fragments[fragmentIndex]
+  let nextFragment: boolean
+  let match: RegExpExecArray
+  findRe.lastIndex = 0
+  while (true) {
+    if (fragment.done) {
+      nextFragment = true
+    }
+    else {
+      match = findRe.exec(fragment.text)
+      nextFragment = !match
+    }
+    if (nextFragment) {
+      fragmentIndex++
+      if (fragmentIndex >= fragments.length) {
+        break
+      }
+      fragment = fragments[fragmentIndex]
+      if (match) {
+        findRe.lastIndex = 0
+      }
+      continue
+    }
+    // Arrive here if we have a matched replacement.
+    // The replacement splits the fragment into 3 fragments.
+    let before = match.input.slice(0, match.index)
+    let after = match.input.slice(findRe.lastIndex)
+    fragments.splice(fragmentIndex, 1,
+      {text: before, done: false},
+      {text: '', done: true},
+      {text: after, done: false}
+    )
+    // Advance to 'matched' fragment and fill in the replacement text.
+    fragmentIndex++
+    fragment = fragments[fragmentIndex]
+    if (match[0][0] === '\\') {
+      // Remove leading backslash.
+      fragment.text = utils.replaceSpecialChars(match[0].slice(1))
+      fragment.verbatim = fragment.text
+    }
+    else {
+      if (!def.filter) {
+        fragment.text = utils.replaceMatch(match, def.replacement, {specials: true})
+      }
+      else {
+        fragment.text = def.filter(match)
+      }
+      fragment.verbatim = utils.replaceSpecialChars(match[0])
+    }
+    fragmentIndex++
+    fragment = fragments[fragmentIndex]
     findRe.lastIndex = 0
-    while (true) {
-      if (fragment.done) {
-        nextFragment = true
-      }
-      else {
-        match = findRe.exec(fragment.text)
-        nextFragment = !match
-      }
-      if (nextFragment) {
-        fragmentIndex++
-        if (fragmentIndex >= fragments.length) {
-          break
-        }
-        fragment = fragments[fragmentIndex]
-        if (match) {
-          findRe.lastIndex = 0
-        }
-        continue
-      }
-      // Arrive here if we have a matched replacement.
-      // The replacement splits the fragment into 3 fragments.
-      let before = match.input.slice(0, match.index)
-      let after = match.input.slice(findRe.lastIndex)
-      fragments.splice(fragmentIndex, 1,
-          {text: before, done: false},
-          {text: '', done: true},
-          {text: after, done: false}
-      )
-      // Advance to 'matched' fragment and fill in the replacement text.
-      fragmentIndex++
-      fragment = fragments[fragmentIndex]
-      if (match[0][0] === '\\') {
-        // Remove leading backslash.
-        fragment.text = utils.replaceSpecialChars(match[0].slice(1))
-        fragment.verbatim = fragment.text
-      }
-      else {
-        if (!def.filter) {
-          fragment.text = utils.replaceMatch(match, def.replacement, {specials: true})
-        }
-        else {
-          fragment.text = def.filter(match)
-        }
-        fragment.verbatim = utils.replaceSpecialChars(match[0])
-      }
-      fragmentIndex++
-      fragment = fragments[fragmentIndex]
-      findRe.lastIndex = 0
-    }
   }
+}
 
-  function fragSpecials(fragments: Fragment[]): void {
-    // Replace special characters in all non-done fragments.
-    let fragment: Fragment
-    for (let fragment of fragments) {
-      if (!fragment.done) {
-        fragment.text = utils.replaceSpecialChars(fragment.text)
-      }
+function fragSpecials(fragments: Fragment[]): void {
+  // Replace special characters in all non-done fragments.
+  let fragment: Fragment
+  for (let fragment of fragments) {
+    if (!fragment.done) {
+      fragment.text = utils.replaceSpecialChars(fragment.text)
     }
   }
+}
 

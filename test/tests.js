@@ -2,7 +2,7 @@ var Rimu = require('../bin/rimu-commonjs2.js');
 
 exports['API check'] = function(test) {
   test.ok(
-      Rimu.render.constructor === Function,
+    Rimu.render.constructor === Function,
     'Rimu.render is a function');
   test.done();
 };
@@ -113,20 +113,20 @@ exports['Spans'] = function(test) {
   test_span(
     '_http://example.com_ **<http://example.com>** <http://example.com|Foo\n& Bar>',
     '<em><a href="http://example.com">http://example.com</a></em> ' +
-      '<strong><a href="http://example.com">http://example.com</a></strong> ' +
-      '<a href="http://example.com">Foo\n&amp; Bar</a>',
+    '<strong><a href="http://example.com">http://example.com</a></strong> ' +
+    '<a href="http://example.com">Foo\n&amp; Bar</a>',
     'quoted and parametrized http urls');
   test_span(
     '<ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt>',
     '<a href="ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt">ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt</a>',
     'ftp url');
   test_span(
-      '<file:///home/joe/downloads/> ' +
-      '<file:///home/joe/doc/user-guide.pdf|User Guide> ' +
-      '\\<file:///home/joe/downloads/>',
-      '<a href="file:///home/joe/downloads/">file:///home/joe/downloads/</a> ' +
-      '<a href="file:///home/joe/doc/user-guide.pdf">User Guide</a> ' +
-      '&lt;file:///home/joe/downloads/&gt;',
+    '<file:///home/joe/downloads/> ' +
+    '<file:///home/joe/doc/user-guide.pdf|User Guide> ' +
+    '\\<file:///home/joe/downloads/>',
+    '<a href="file:///home/joe/downloads/">file:///home/joe/downloads/</a> ' +
+    '<a href="file:///home/joe/doc/user-guide.pdf">User Guide</a> ' +
+    '&lt;file:///home/joe/downloads/&gt;',
     'file urls');
   test_span(
     '&copy; &reg;\\&para;',
@@ -142,28 +142,28 @@ exports['Spans'] = function(test) {
     'Lorum <span id="x1"></span>ipsum <a href="#x1">lorum link</a> &lt;&lt;#x1&gt;&gt;',
     'inline anchors and links');
   test_span(
-      '<image:./images/tiger.png> ' +
-      '<image:http://example.com/tiger.png|Tiger\n& Bar> ' +
-      '![Tiger paws](./images/tiger.png) ' +
-      '![Tiger paws](http://example.com/tiger.png) ' +
-      '\\<image:tiger.png> \\![Tiger paws](./images/tiger.png)',
-      '<img src="./images/tiger.png" alt="./images/tiger.png"> ' +
-      '<img src="http://example.com/tiger.png" alt="Tiger\n&amp; Bar"> ' +
-      '<img src="./images/tiger.png" alt="Tiger paws"> ' +
-      '<img src="http://example.com/tiger.png" alt="Tiger paws"> ' +
-      '&lt;image:tiger.png&gt; ![Tiger paws](./images/tiger.png)',
+    '<image:./images/tiger.png> ' +
+    '<image:http://example.com/tiger.png|Tiger\n& Bar> ' +
+    '![Tiger paws](./images/tiger.png) ' +
+    '![Tiger paws](http://example.com/tiger.png) ' +
+    '\\<image:tiger.png> \\![Tiger paws](./images/tiger.png)',
+    '<img src="./images/tiger.png" alt="./images/tiger.png"> ' +
+    '<img src="http://example.com/tiger.png" alt="Tiger\n&amp; Bar"> ' +
+    '<img src="./images/tiger.png" alt="Tiger paws"> ' +
+    '<img src="http://example.com/tiger.png" alt="Tiger paws"> ' +
+    '&lt;image:tiger.png&gt; ![Tiger paws](./images/tiger.png)',
     'inline images');
   test_span(
     '<image:./images/tiger.png|>',
     '<img src="./images/tiger.png" alt="">',
     'image with empty alt');
   test_span(
-      '<joe.bloggs@example.com> ' +
-      '<joe.bloggs@example.com|Joe\n Bloggs> ' +
-      '\\<joe.bloggs@example.com>',
-      '<a href="mailto:joe.bloggs@example.com">joe.bloggs@example.com</a> ' +
-      '<a href="mailto:joe.bloggs@example.com">Joe\n Bloggs</a> ' +
-      '&lt;joe.bloggs@example.com&gt;',
+    '<joe.bloggs@example.com> ' +
+    '<joe.bloggs@example.com|Joe\n Bloggs> ' +
+    '\\<joe.bloggs@example.com>',
+    '<a href="mailto:joe.bloggs@example.com">joe.bloggs@example.com</a> ' +
+    '<a href="mailto:joe.bloggs@example.com">Joe\n Bloggs</a> ' +
+    '&lt;joe.bloggs@example.com&gt;',
     'email addresses');
   test_span(
     '<u>underlined *text*</u>\\<hr>',
@@ -370,18 +370,18 @@ exports['Blocks'] = function(test) {
     '<ul><li>Item 1\n<pre><code>A\nparagraph</code></pre></li></ul>',
     'list item with attached code block');
   test_document(
-      'a::\n' +
-      '..\n' +
-      '- b\n' +
-      '..\n' +
-      'c::\n' +
-      'd',
-      '<dl><dt>a</dt><dd>\n' +
-      '<div><ul><li>b\n' +
-      '</li></ul></div>\n' +
-      '</dd><dt>c</dt><dd>\n' +
-      'd\n' +
-      '</dd></dl>',
+    'a::\n' +
+    '..\n' +
+    '- b\n' +
+    '..\n' +
+    'c::\n' +
+    'd',
+    '<dl><dt>a</dt><dd>\n' +
+    '<div><ul><li>b\n' +
+    '</li></ul></div>\n' +
+    '</dd><dt>c</dt><dd>\n' +
+    'd\n' +
+    '</dd></dl>',
     'nested list in attached division block');
 
   // Mixed blocks.
@@ -422,25 +422,25 @@ exports['Blocks'] = function(test) {
     '<!--comment-->\n<p>x <!--comment-->y<code>&lt;!--comment--&gt;</code></p>',
     'html block comment and html span comment');
   test_document(
-      'Refer to the <#x1|next paragraph> or the <#x2|second list item\n' +
-      'below>.\n' +
-      '\n' +
-      '.#x1\n' +
-      'Nisl curabitur donec. Vel porttitor et. Et amet vitae. Quam\n' +
-      'porttitor integer. Bibendum neque quis quisque ac commodo. Non et\n' +
-      'cumque. Sit et a consequat.\n\n' +
-      '.#x2\n' +
-      '- Viverra pede turpis.\n' +
-      '- Esse et dui nonummy modi.\n',
+    'Refer to the <#x1|next paragraph> or the <#x2|second list item\n' +
+    'below>.\n' +
+    '\n' +
+    '.#x1\n' +
+    'Nisl curabitur donec. Vel porttitor et. Et amet vitae. Quam\n' +
+    'porttitor integer. Bibendum neque quis quisque ac commodo. Non et\n' +
+    'cumque. Sit et a consequat.\n\n' +
+    '.#x2\n' +
+    '- Viverra pede turpis.\n' +
+    '- Esse et dui nonummy modi.\n',
 
-      '<p>Refer to the <a href="#x1">next paragraph</a> or the <a href="#x2">second list item\n' +
-      'below</a>.</p>\n' +
-      '<p id="x1">Nisl curabitur donec. Vel porttitor et. Et amet vitae. Quam\n' +
-      'porttitor integer. Bibendum neque quis quisque ac commodo. Non et\n' +
-      'cumque. Sit et a consequat.</p>\n' +
-      '<ul id="x2"><li>Viverra pede turpis.\n' +
-      '</li><li>Esse et dui nonummy modi.\n' +
-      '</li></ul>',
+    '<p>Refer to the <a href="#x1">next paragraph</a> or the <a href="#x2">second list item\n' +
+    'below</a>.</p>\n' +
+    '<p id="x1">Nisl curabitur donec. Vel porttitor et. Et amet vitae. Quam\n' +
+    'porttitor integer. Bibendum neque quis quisque ac commodo. Non et\n' +
+    'cumque. Sit et a consequat.</p>\n' +
+    '<ul id="x2"><li>Viverra pede turpis.\n' +
+    '</li><li>Esse et dui nonummy modi.\n' +
+    '</li></ul>',
     'anchors and links');
 
   // API options
