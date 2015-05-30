@@ -141,8 +141,8 @@ value is a string containing the resultant HTML.
 The optional `options` argument controls rendering behaviour.
 
 The `render()` API is stateful: Macros and custom element definitions
-are retained as are API options. Use the `reset` option to set the default
-state.
+are retained across API calls as are API options.
+Use the `reset` option to set the default state.
 
 ### Example usage
 Node.js example (Rimu has been installed from npm):
@@ -178,7 +178,7 @@ are processed:
   * API Options.
   * HTML attributes in Block Attribute elements.
 - Once a non-zero `safeMode` has been set then it can only be reset by
-  a `render()` API call with a `safeMode:0` or `reset:true` option.
+  a `render()` API call with a `safeMode:0` or a `reset:true` option.
 ..
 
 `htmlReplacement`:: A string that replaces embedded HTML when
@@ -209,12 +209,13 @@ element with the following syntax:
 
 - `option-name` is `safeMode`, `htmlReplacement` or `macroMode`.
 - The `option-value` is a valid option value.
-- A Delimited Block definition must start at the left margin and must not
+- An API Option element must start at the left margin and must not
   extend beyond the end of the line.
 - The option is applied to Rimu markup that follows the option element.
 - API Option elements are not processed if the `safeMode` is non-zero.
 
-The following example ensures all subsequent macro invocations are expanded:
+For example, the following API Option element ensures all subsequent
+macro invocations are expanded:
 
   .macroMode = '1'
 
@@ -630,11 +631,11 @@ double-tilde for ~~strikethrough~~.
 
 - Quotes and inline elements can be nested within a quote with the
   exception of the _code_ quote which displays enclosed elements verbatim.
-- Quotes can be escaped with backslash character prefixes. If the text
-  contains multiple quotes of the same type then, to resolve ambiguity,
-  both open and close quotes must be escaped.
-- Quoted text must begin and end with non-whitespace characters and
-  cannot end with a backslash character.
+- Quotes can be escaped by prefixing the opening quote with with a backslash
+  character. If the text contains multiple quotes of the same type then,
+  to resolve ambiguity, additional quotes may have to be escaped.
+  All escaped quotes are displayed verbatim minus the backslash character.
+- Quoted text must begin and end with non-whitespace characters.
 
 You can modify existing quote behavior or add new quotes using _Quote
 definitions_.
@@ -732,8 +733,11 @@ Invocation syntax:
   `+macros` and `-macros` options to enable and disable expansion
   inside multi-line block elements (delimited blocks, paragraphs,
   multi-line macro definitions and HTML).
-- Macro invocations can be escaped with a leading backslash character
-  prefix.
+- Macro invocations can be escaped in block elements that have
+  macro expansion enable using a leading backslash character
+  prefix. Escaped macro invocations are rendered verbatim minus
+  the backslash. Escaping is unnecessary in blocks that do not
+  perform macro expansion (_Code_ blocks and _Indented_ paragraphs).
 - Macro invocations cannot be nested.
 - Macro invocations can contain `}` characters but they must be escaped
   with a backslash character (otherwise they will be mistaken for the
@@ -1015,6 +1019,8 @@ to your taste delete them from the end of the file.
 
 <div id="topic-urls-and-email">
 <!--
+URLs and email address elements are implemented with built-in _Replacements_.
+
 Syntax:
 
   Rimu              HTML

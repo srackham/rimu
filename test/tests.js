@@ -38,6 +38,10 @@ exports['Spans'] = function(test) {
     '*11* <em>22</em> _33_ **44**',
     'escape quotes');
   test_span(
+    '_foo bar\\\\_',
+    '<em>foo bar\\</em>',
+    'quoted text ending with a backslash');
+  test_span(
     '00 \\*11 http://example.com _22_*',
     '00 *11 <a href="http://example.com">http://example.com</a> <em>22</em>*',
     'replacements and quotes nested inside escaped quotes');

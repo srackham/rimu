@@ -4,6 +4,9 @@ See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
 ## Version 5.0.0 (2015-??-??)
+This version adds new API options, an _API Options_ element and more Markdown
+compatibility. It also includes some breaking changes.
+
 - Added `macroMode` API option to specify which macro invocations are processed.
 - Added `reset` API option to reset the API to its default state.
 - Added Markdown compatible double back-tick ```code quotes``` and double
@@ -24,7 +27,8 @@ Breaking changes:
   To revert to the previous behaviour set the `macroMode` API option to `1`.
 
 - Replacements are processed before quotes (previously they were processed after quotes).
-  This is ensures quotes are not expanded inside URLs (Markdown behaviour).
+  This is ensures quotes are not expanded inside URLs (notably underscores) and aligns
+  with Markdown behaviour.
   If there are escaped quotes in URLs they will no longer be unescaped and you will need
   to remove them e.g. you need to delete the backslash from this link otherwise the
   backslash will be rendered in the output:
