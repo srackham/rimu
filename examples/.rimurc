@@ -10,8 +10,6 @@
 // Don't match HTML comment tags.
 /\\?(^|[^!])--(?!>)/ = '$1&mdash;'
 /\\?\.{3}/ = '&hellip;'
-/\\?``/ = '&ldquo;'
-/\\?''/ = '&rdquo;'
 // Don't match HTML close comment tag.
 /\\?(^|[^-])->/ = '$1&rightarrow;'
 /\\?<-/ = '&leftarrow;'
@@ -33,7 +31,10 @@
 /*
   Quotes
 */
+// Underline.
 __ = '<u>|</u>'
+// Left and right quote characters.
+" = '&ldquo;|&rdquo;'
 
 
 /*
