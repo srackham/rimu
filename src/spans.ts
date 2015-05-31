@@ -53,53 +53,51 @@ function defrag(fragments: Fragment[]): string {
 }
 
 function fragQuotes(fragments: Fragment[]): void {
-  let findRe = quotes.findRe
+  let matchRe = quotes.quotesRe
   let fragmentIndex = 0
   let fragment = fragments[fragmentIndex]
-  let nextFragment: boolean
+  let fragmentIsDone: boolean
   let match: RegExpExecArray
-  findRe.lastIndex = 0
+  matchRe.lastIndex = 0
   while (true) {
     if (fragment.done) {
-      nextFragment = true
+      fragmentIsDone = true
     }
     else {
-      match = findRe.exec(fragment.text)
-      nextFragment = !match
+      match = matchRe.exec(fragment.text)
+      fragmentIsDone = !match
     }
-    if (nextFragment) {
+    if (fragmentIsDone) {
       fragmentIndex++
       if (fragmentIndex >= fragments.length) {
-        break
+        break // All fragments processed.
       }
       fragment = fragments[fragmentIndex]
-      if (match) {
-        findRe.lastIndex = 0
-      }
+      matchRe.lastIndex = 0
       continue
     }
     if (match[0][0] === '\\') {
       // Restart search after opening quote.
-      findRe.lastIndex = match.index + match[1].length + 1
+      matchRe.lastIndex = match.index + match[1].length + 1
       continue
     }
     // Arrive here if we have a matched quote.
     let def = quotes.getDefinition(match[1])
-    if (def.verify && !def.verify(match, findRe)) {
+    if (def.verify && !def.verify(match, matchRe)) {
       // Restart search after opening quote.
-      findRe.lastIndex = match.index + match[1].length + 1
+      matchRe.lastIndex = match.index + match[1].length + 1
       continue
     }
     // Check for same closing quote one character further to the right.
-    while (fragment.text[findRe.lastIndex] === match[1][0]) {
+    while (fragment.text[matchRe.lastIndex] === match[1][0]) {
       // Move to closing quote one character to right.
       match[2] += match[1][0]
-      findRe.lastIndex += 1
+      matchRe.lastIndex += 1
     }
     // The quotes splits the fragment into 5 fragments.
     let before = match.input.slice(0, match.index)
     let quoted = match[2]
-    let after = match.input.slice(findRe.lastIndex)
+    let after = match.input.slice(matchRe.lastIndex)
     fragments.splice(fragmentIndex, 1,
       {text: before, done: false},
       {text: def.openTag, done: true},
@@ -119,7 +117,7 @@ function fragQuotes(fragments: Fragment[]): void {
       fragmentIndex += 2
       fragment = fragments[fragmentIndex]
     }
-    findRe.lastIndex = 0
+    matchRe.lastIndex = 0
   }
   // Strip backlash from escaped quotes in non-done fragments.
   for (let fragment of fragments) {
@@ -168,35 +166,35 @@ function fragReplacements(fragments: Fragment[]): void {
 }
 
 function fragReplacement(fragments: Fragment[], def: replacements.Definition): void {
-  let findRe = def.match
+  let replacementRe = def.match
   let fragmentIndex = 0
   let fragment = fragments[fragmentIndex]
-  let nextFragment: boolean
+  let fragmentIsDone: boolean
   let match: RegExpExecArray
-  findRe.lastIndex = 0
+  replacementRe.lastIndex = 0
   while (true) {
     if (fragment.done) {
-      nextFragment = true
+      fragmentIsDone = true
     }
     else {
-      match = findRe.exec(fragment.text)
-      nextFragment = !match
+      match = replacementRe.exec(fragment.text)
+      fragmentIsDone = !match
     }
-    if (nextFragment) {
+    if (fragmentIsDone) {
       fragmentIndex++
       if (fragmentIndex >= fragments.length) {
         break
       }
       fragment = fragments[fragmentIndex]
       if (match) {
-        findRe.lastIndex = 0
+        replacementRe.lastIndex = 0
       }
       continue
     }
     // Arrive here if we have a matched replacement.
     // The replacement splits the fragment into 3 fragments.
     let before = match.input.slice(0, match.index)
-    let after = match.input.slice(findRe.lastIndex)
+    let after = match.input.slice(replacementRe.lastIndex)
     fragments.splice(fragmentIndex, 1,
       {text: before, done: false},
       {text: '', done: true},
@@ -221,7 +219,7 @@ function fragReplacement(fragments: Fragment[], def: replacements.Definition): v
     }
     fragmentIndex++
     fragment = fragments[fragmentIndex]
-    findRe.lastIndex = 0
+    replacementRe.lastIndex = 0
   }
 }
 
