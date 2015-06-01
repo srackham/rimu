@@ -629,13 +629,14 @@ double-tilde for ~~strikethrough~~.
   ~~deleted~~     <del>deleted</del>        Strikethrough
   ___________________________________________________________
 
+- Quoted text must begin and end with non-whitespace characters.
 - Quotes and inline elements can be nested within a quote with the
-  exception of the _code_ quote which displays enclosed elements verbatim.
+  exception of the _code_ quote which displays text verbatim.
 - Quotes can be escaped by prefixing the opening quote with with a backslash
   character. If the text contains multiple quotes of the same type then,
   to resolve ambiguity, additional quotes may have to be escaped.
-  All escaped quotes are displayed verbatim minus the backslash character.
-- Quoted text must begin and end with non-whitespace characters.
+- A backslash immediately preceding a closing _code_ quote is rendered verbatim
+  and does not escape the quote.
 
 You can modify existing quote behavior or add new quotes using _Quote
 definitions_.

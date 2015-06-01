@@ -108,6 +108,14 @@ const DEFAULT_DEFS: Definition[] = [
     replacement: '<a href="$1">$1</a>'
   },
 
+  // This hack ensures backslashes immediately preceding closing code quotes are rendered
+  // verbatim (like Markdown).
+  // Works by finding escaped closing code quotes and replacing the backslash and the character
+  // preceding the closing quote with itself (effectively excluding it from further processing).
+  {
+    match: /(\S\\)(?=`)/g,
+    replacement: '$1'
+  },
 ]
 
 // Reset definitions to defaults.

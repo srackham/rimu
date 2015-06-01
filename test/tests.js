@@ -38,9 +38,17 @@ exports['Spans'] = function(test) {
     '*11* <em>22</em> _33_ **44**',
     'escape quotes');
   test_span(
-    '_foo bar\\\\_',
-    '<em>foo bar\\</em>',
-    'quoted text ending with a backslash');
+    '`foo bar\\` `foo bar\\\\` `foo bar\\\\\\`',
+    '<code>foo bar\\</code> <code>foo bar\\</code> <code>foo bar\\\\</code>',
+    'code quotes ending with backslashs');
+  test_span(
+    '`\\a\\b\\ c\\d \\e\\`',
+    '<code>\\a\\b\\ c\\d \\e\\</code>',
+    'code quotes with backslashs');
+  test_span(
+    '`<http://example.com> \\``',
+    '<code>&lt;http://example.com&gt; `</code>',
+    'code quotes');
   test_span(
     '00 \\*11 http://example.com _22_*',
     '00 *11 <a href="http://example.com">http://example.com</a> <em>22</em>*',
@@ -54,6 +62,10 @@ exports['Spans'] = function(test) {
     '00 _ <code>_11_</code> <em>2<strong>2</strong></em> <em>2**2**</em>',
     'nested quotes');
   test_span(
+    '_**abc `efg`** h<sup>i</sup>_ j',
+    '<em><strong>abc <code>efg</code></strong> h<sup>i</sup></em> j',
+    'nested quotes');
+  test_span(
     '__xyz\\_ abc_',
     '<em>_xyz_ abc</em>',
     'quote containing quote characters');
@@ -61,14 +73,6 @@ exports['Spans'] = function(test) {
     '__xyz abc\\__',
     '<em>_xyz abc_</em>',
     'quote containing quote characters');
-  test_span(
-    '_**abc `efg`** h<sup>i</sup>_ j',
-    '<em><strong>abc <code>efg</code></strong> h<sup>i</sup></em> j',
-    'nested quotes');
-  test_span(
-    '`<http://example.com> \\``',
-    '<code>&lt;http://example.com&gt; `</code>',
-    'code quotes');
   test_span(
     'Some ~~rubbish~~.',
     'Some <del>rubbish</del>.',

@@ -40,6 +40,9 @@ Breaking changes:
   because it reset the `safeMode` to the default unafe value of zero unless it was
   explicitly specified otherwise.
 
+- A backslash immediately preceding a closing _code_ quote is now rendered verbatim
+  and does not escape the quote.
+
 
 ## Version 4.0.1 (2015-05-06)
 Documentation updates (no functional changes).
