@@ -47,7 +47,7 @@ exports['Spans'] = function(test) {
     'code quotes with backslashs');
   test_span(
     '`<http://example.com> \\``',
-    '<code>&lt;http://example.com&gt; `</code>',
+    '<code>&lt;http://example.com&gt; \\`</code>',
     'code quotes');
   test_span(
     '00 \\*11 http://example.com _22_*',

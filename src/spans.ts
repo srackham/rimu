@@ -109,7 +109,6 @@ function fragQuotes(fragments: Fragment[]): void {
     fragmentIndex += 2
     fragment = fragments[fragmentIndex]
     if (!def.spans) {
-      fragment.text = quotes.unescape(fragment.text)
       fragment.text = utils.replaceSpecialChars(fragment.text)
       fragment.text = fragment.text.replace('\u0000', '\u0001')   // Use verbatim replacement.
       fragment.done = true
