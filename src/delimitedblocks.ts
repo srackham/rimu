@@ -170,10 +170,7 @@ const DEFAULT_DEFS: Definition[] = [
 
 // Reset definitions to defaults.
 export function reset(): void {
-  defs = []
-  for (let def of DEFAULT_DEFS) {
-    defs.push(utils.copy(def))
-  }
+  defs = DEFAULT_DEFS.map(def => utils.copy(def))
 }
 
 // If the next element in the reader is a valid delimited block render it
@@ -252,14 +249,9 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
   return false  // No matching delimited block found.
 }
 
-// Return block definition or null if not found.
+// Return block definition or undefined if not found.
 export function getDefinition(name: string): Definition {
-  for (let def of defs) {
-    if (def.name === name) {
-      return def
-    }
-  }
-  return null
+  return defs.filter(def => def.name === name)[0]
 }
 
 // Parse delimited block expansion options string into blockOptions.

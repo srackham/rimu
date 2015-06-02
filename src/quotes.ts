@@ -60,10 +60,7 @@ let unescapeRe: RegExp      // Searches for escaped quotes.
 
 // Reset definitions to defaults.
 export function reset(): void {
-  defs = []
-  for (let def of DEFAULT_DEFS) {
-    defs.push(utils.copy(def))
-  }
+  defs = DEFAULT_DEFS.map(def => utils.copy(def))
   initializeRegExps()
 }
 
@@ -79,12 +76,9 @@ export function initializeRegExps(): void {
   unescapeRe = RegExp('\\\\(' + quotes.join('|') + ')', 'g')
 }
 
-// Return the quote definition corresponding to 'quote' character, return null if not found.
+// Return the quote definition corresponding to 'quote' character, return undefined if not found.
 export function getDefinition(quote: string): Definition {
-  for (let def of defs) {
-    if (def.quote === quote) return def
-  }
-  return null
+  return defs.filter(def => def.quote === quote)[0]
 }
 
 // Strip backslashes from quote characters.

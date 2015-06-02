@@ -255,13 +255,8 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
   return false
 }
 
-// Return def definition or null if not found.
+// Return line block definition or undefined if not found.
 export function getDefinition(name: string): Definition {
-  for (let def of defs) {
-    if (def.name === name) {
-      return def
-    }
-  }
-  return null
+  return defs.filter(def => def.name === name)[0]
 }
 

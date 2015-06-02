@@ -120,10 +120,7 @@ const DEFAULT_DEFS: Definition[] = [
 
 // Reset definitions to defaults.
 export function reset(): void {
-  defs = []
-  for (let def of DEFAULT_DEFS) {
-    defs.push(utils.copy(def))
-  }
+  defs = DEFAULT_DEFS.map(def => utils.copy(def))
 }
 
 // Update existing or add new replacement definition.
