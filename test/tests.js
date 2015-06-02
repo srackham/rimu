@@ -39,7 +39,7 @@ exports['Spans'] = function(test) {
     'escape quotes');
   test_span(
     '`foo bar\\` `foo bar\\\\` `foo bar\\\\\\`',
-    '<code>foo bar\\</code> <code>foo bar\\</code> <code>foo bar\\\\</code>',
+    '<code>foo bar\\</code> <code>foo bar\\\\</code> <code>foo bar\\\\\\</code>',
     'code quotes ending with backslashs');
   test_span(
     '`\\a\\b\\ c\\d \\e\\`',

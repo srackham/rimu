@@ -79,11 +79,14 @@ function fragQuotes(fragments: Fragment[]): void {
     }
     // Arrive here if we have a matched quote.
     let def = quotes.getDefinition(match[1])
+/*
+ Unused
     if (def.verify && !def.verify(match, matchRe)) {
       // Restart search after opening quote.
       matchRe.lastIndex = match.index + match[1].length + 1
       continue
     }
+*/
     // Check for same closing quote one character further to the right.
     while (fragment.text[matchRe.lastIndex] === match[1][0]) {
       // Move to closing quote one character to right.
@@ -147,7 +150,7 @@ function postReplacements(text: string): string {
   let result: string
   result = text.replace(/\u0000|\u0001/g, function (match): string {
     let fragment = savedReplacements.shift()
-    return (match === '\u0000') ? fragment.text : fragment.verbatim
+    return (match === '\u0000') ? fragment.text : utils.replaceSpecialChars(fragment.verbatim)
   })
   return result
 }
@@ -197,7 +200,6 @@ function fragReplacement(fragments: Fragment[], def: replacements.Definition): v
     if (match[0][0] === '\\') {
       // Remove leading backslash.
       fragment.text = utils.replaceSpecialChars(match[0].slice(1))
-      fragment.verbatim = fragment.text
     }
     else {
       if (!def.filter) {
@@ -206,8 +208,8 @@ function fragReplacement(fragments: Fragment[], def: replacements.Definition): v
       else {
         fragment.text = def.filter(match)
       }
-      fragment.verbatim = utils.replaceSpecialChars(match[0])
     }
+    fragment.verbatim = match[0]
     fragmentIndex++
     fragment = fragments[fragmentIndex]
     replacementRe.lastIndex = 0
