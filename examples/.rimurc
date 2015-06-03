@@ -7,11 +7,10 @@
 /*
   Replacements
 */
-// Don't match HTML comment tags.
-/\\?(^|[^!])--(?!>)/ = '$1&mdash;'
+// NOTE: &mdash; and &rightarrow; replacements generate false positives in inline HTML comment tags.
+/\\?--(?!>)/ = '&mdash;'
 /\\?\.{3}/ = '&hellip;'
-// Don't match HTML close comment tag.
-/\\?(^|[^-])->/ = '$1&rightarrow;'
+/\\?->/ = '&rightarrow;'
 /\\?<-/ = '&leftarrow;'
 
 /\\?\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
@@ -31,7 +30,7 @@
 /*
   Quotes
 */
-// Underline.
+// Underline (overrides built-in underline strong quote).
 __ = '<u>|</u>'
 // Left and right quote characters.
 " = '&ldquo;|&rdquo;'
