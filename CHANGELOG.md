@@ -13,6 +13,9 @@ compatibility. It also includes some breaking changes.
   underline `__strong quotes__`.
 - Added _API Option_ element to allow API options to be set in Rimu source.
 - Bug fixes.
+- Add `--macroMode` and `--htmlReplacement` options to `rimuc` command.
+  The `--safe-mode` is renamed to `--safeMode` (`--safe-mode` still works but
+  is deprecated).
 
 Breaking changes:
 
@@ -30,10 +33,7 @@ Breaking changes:
   This is ensures quotes are not expanded inside URLs (notably underscores) and aligns
   with Markdown behaviour.
   If there are escaped quotes in URLs they will no longer be unescaped and you will need
-  to remove them e.g. you need to delete the backslash from this link otherwise the
-  backslash will be rendered in the output:
-
-        <http://an\_example_url.com>
+  to remove them.
 
 - The `render()` API no longer sets unspecified `options` properties to their
   default values. The previous behaviour was surprising and potentially dangerous
@@ -77,11 +77,11 @@ More Markdown compatible syntaxes added to Rimu core
 - Auto-encode (most) raw HTTP URLs as links.
 - Added Markdown compatible Quote Paragraphs (paragraphs starting with `>`
   rendered inside a `<blockquote>` HTML element).
-- Added back-tick delimiter for code blocks - - back-tick is now the normative
+- Added backtick delimiter for code blocks - - backtick is now the normative
   code block delimiter (the older dash delimiter is deprecated but will never
-  be dropped). Back-tick rationale:
+  be dropped). backtick rationale:
 
-    1. Consistency: aligned with use of back-tick to quote inline code.
+    1. Consistency: aligned with use of backtick to quote inline code.
     2. Familarity: looks like a Github Flavored Markdown fenced code block.
 
 

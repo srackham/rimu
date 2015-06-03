@@ -117,7 +117,7 @@ Code blocks::
 - Indented paragraphs (at least four spaces) render like Markdown code
   blocks.
 - [GitHub Flavored Markdown](https://help.github.com/articles/github-flavored-markdown/)
-  _Fenced Blocks_ are compatible with Rimu Back-tick delimited blocks.
+  _Fenced Blocks_ are compatible with Rimu backtick delimited blocks.
 
 Quote paragraphs:: Paragraphs starting with a `>` character are
 rendered like Markdown Blockquotes.
@@ -143,6 +143,21 @@ _npmjs.org_ README formats.
 If you have text that you don't want interpreted as a Rimu element
 then you can render it literally (escape it) by prefixing the element
 with a backslash character.
+
+The text inside _code_ quotes is rendered verbatim -- to include backtick
+characters in code quotes use double-backtick quotes.
+
+Here are some examples:
+
+{escaped-elements-example} = '\_escaped quote_
+
+**escaped closing\** quote**
+
+``backticks in `code quote```
+
+\# Escaped header.'
+
+{generate-rendered-example-1|escaped-elements-example}
 
 
 ## Passing macro values into Rimu documents
@@ -219,9 +234,11 @@ enter these characters (or any Unicode character) as HTML character
 entities or you can enter them literally.
 
 For example, to enter an ellipsis you could either enter `&hellip;` or
-you could enter the actual … character directly (alternatively you
-could define a _Replacement_ for the ellipsis, see the
-[example .rimurc file](https://github.com/srackham/rimu/blob/master/examples/.rimurc)).
+you could enter the actual … character directly.
+See the
+[example .rimurc file](https://github.com/srackham/rimu/blob/master/examples/.rimurc)
+for some common use-cases.
+
 The mechanism for entering Unicode characters directly will be dictated
 by your editor:
 

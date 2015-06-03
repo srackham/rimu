@@ -279,7 +279,7 @@ behavior can be changed using a preceding _Block Attributes_ element.
 The generated HTML is enveloped  with  <pre><code>...</code></pre>
 tags.
 
-The delimiter lines are two or more back-tick characters starting at the
+The delimiter lines are two or more backtick characters starting at the
 left margin.
 ```
 
@@ -615,7 +615,7 @@ Text can be formatted by enclosing it in single or double quote
 characters. The built-in default quote characters are:
 single underscore or asterisk for _emphasized_  *text*;
 double underscore or asterisk for __bold__ **text**;
-single or doubleback-tick for`monospaced text`;
+single or double backtick for`monospaced text`;
 double-tilde for ~~strikethrough~~.
 
   Rimu            HTML                      Font style
@@ -635,8 +635,6 @@ double-tilde for ~~strikethrough~~.
 - Quotes can be escaped by prefixing the opening quote with with a backslash
   character. If the text contains multiple quotes of the same type then,
   to resolve ambiguity, additional quotes may have to be escaped.
-- A backslash immediately preceding a closing _code_ quote is rendered verbatim
-  and does not escape the quote.
 
 You can modify existing quote behavior or add new quotes using _Quote
 definitions_.
