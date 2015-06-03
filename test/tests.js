@@ -66,13 +66,9 @@ exports['Spans'] = function(test) {
     '<em><strong>abc <code>efg</code></strong> h<sup>i</sup></em> j',
     'nested quotes');
   test_span(
-    '__xyz\\_ abc_',
-    '<em>_xyz_ abc</em>',
-    'quote containing quote characters');
-  test_span(
-    '__xyz abc\\__',
-    '<em>_xyz abc_</em>',
-    'quote containing quote characters');
+    '__xyz\\_ abc\\__ \\__xyz *abc*_\\_',
+    '<em>_xyz_ abc_</em> _<em>xyz <em>abc</em></em>_',
+    'nested and escaped quotes');
   test_span(
     'Some ~~rubbish~~.',
     'Some <del>rubbish</del>.',
@@ -860,13 +856,17 @@ exports['Blocks'] = function(test) {
 
   // Replacement definitions.
   test_document(
-    '/\\\\?\\.{3}/=\'&hellip;\'\nTesting...',
-    '<p>Testing&hellip;</p>',
+    '/\\\\?\\.{3}/=\'&hellip;\'\nTesting... ...123',
+    '<p>Testing&hellip; &hellip;123</p>',
     'new replacement');
   test_document_no_reset(
     'Testing\\...',
     '<p>Testing...</p>',
     'escaped replacement');
+  test_document_no_reset(
+    '`Testing..., testing...`',
+    '<p><code>Testing..., testing...</code></p>',
+    'replacements in code quote');
   test_document_no_reset(
     '/skipped/=\'SKIPPED\'\nskipped',
     '<p>skipped</p>',
