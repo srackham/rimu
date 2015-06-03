@@ -20,7 +20,7 @@ var MANPAGE = 'NAME\n' +
     '  the Rimu source is read from FILES.\n' +
     '\n' +
     '  If a file named .rimurc exists in the user\'s home directory\n' +
-    '  then its contents is processed (with safe-mode 0) after\n' +
+    '  then its contents is processed (with safeMode 0) after\n' +
     '  --prepend sources but before any other inputs.\n' +
     '  This behavior can be disabled with the --no-rimurc option.\n' +
     '\n' +
@@ -33,22 +33,34 @@ var MANPAGE = 'NAME\n' +
     '\n' +
     '  -p, --prepend SOURCE\n' +
     '    Process the SOURCE text before other inputs.\n' +
-    '    Rendered with safe-mode 0.\n' +
+    '    Rendered with safeMode 0.\n' +
     '\n' +
     '  --no-rimurc\n' +
     '    Do not process .rimurc from the user\'s home directory.\n' +
-    '\n' +
-    '  --safe-mode NUMBER\n' +
-    '    Specifies how to process inline and block HTML elements.\n' +
-    '    --safe-mode 0 renders raw HTML (default),\n' +
-    '    --safe-mode 1 drops raw HTML,\n' +
-    '    --safe-mode 2 replaces raw HTML with text \'replaced HTML\'.\n' +
-    '    --safe-mode 3 renders raw HTML as text.\n' +
     '\n' +
     '  -s, --styled\n' +
     '    Include HTML header and footer and Bootstrap CSS styling in\n' +
     '    output. If one source file is specified the output is written to\n' +
     '    same-named file with .html extension.\n' +
+    '\n' +
+    '  --safeMode NUMBER\n' +
+    '    Specifies how to process inline and block HTML elements.\n' +
+    '    --safeMode 0 renders raw HTML (default).\n' +
+    '    --safeMode 1 drops raw HTML.\n' +
+    '    --safeMode 2 replaces raw HTML with htmlReplacement option text.\n' +
+    '    --safeMode 3 renders raw HTML as text.\n' +
+    '\n' +
+    '  --macroMode NUMBER\n' +
+    '    Specifies which Rimu macro invocations are processed.\n' +
+    '    --macroMode 0 None.\n' +
+    '    --macroMode 1 All (legacy version 4 default behavior).\n' +
+    '    --macroMode 2 Only Defined macros.\n' +
+    '    --macroMode 3 Only Reserved macros.\n' +
+    '    --macroMode 4 Defined or Reserved macros (default behavior).\n' +
+    '\n' +
+    '  --htmlReplacement\n' +
+    '     A string that replaces embedded HTML when safeMode is set to 2.\n' +
+    '     Defaults to `<mark>replaced HTML</mark>`.\n' +
     '\n' +
     'STYLING MACROS AND CLASSES\n' +
     '  The following macros and CSS classes are available when the\n' +
@@ -81,6 +93,8 @@ function die(message) {
 }
 
 var safeMode = 0;
+var macroMode = 4;
+var htmlReplacement = null;
 var styled = false;
 var no_rimurc = false;
 
@@ -113,11 +127,21 @@ outer:
         case '--no-rimurc':
           no_rimurc = true;
           break;
-        case '--safe-mode':
+        case '--safeMode':
+        case '--safe-mode': // Deprecated in Rimu 5.0.0.
           safeMode = parseInt(process.argv.shift() || 99, 10);
           if (safeMode < 0 || safeMode > 3) {
-            die('illegal --safe-mode option value');
+            die('illegal --safeMode option value');
           }
+          break;
+        case '--macroMode':
+          macroMode = parseInt(process.argv.shift() || 99, 10);
+          if (macroMode < 0 || macroMode > 4) {
+            die('illegal --macroMode option value');
+          }
+          break;
+        case '--htmlReplacement':
+          htmlReplacement = process.argv.shift()
           break;
         case '--styled':
         case '-s':
@@ -168,7 +192,14 @@ while (!!(arg = process.argv.shift())) {
   } catch (e) {
     die('source file permission denied: ' + arg);
   }
-  html += Rimu.render(source, {safeMode: arg === rimurc ? 0 : safeMode}) + '\n';
+  var options = {
+      safeMode: arg === rimurc ? 0 : safeMode,
+      macroMode: macroMode
+    }
+  if (htmlReplacement !== null) {
+    options.htmlReplacement = htmlReplacement
+  }
+  html += Rimu.render(source, options) + '\n';
 }
 html = html.trim() + '\n';
 if (outFile) {
