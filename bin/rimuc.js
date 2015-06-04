@@ -141,7 +141,7 @@ outer:
           }
           break;
         case '--htmlReplacement':
-          htmlReplacement = process.argv.shift()
+          htmlReplacement = process.argv.shift();
           break;
         case '--styled':
         case '-s':
@@ -195,9 +195,9 @@ while (!!(arg = process.argv.shift())) {
   var options = {
       safeMode: arg === rimurc ? 0 : safeMode,
       macroMode: macroMode
-    }
+    };
   if (htmlReplacement !== null) {
-    options.htmlReplacement = htmlReplacement
+    options.htmlReplacement = htmlReplacement;
   }
   html += Rimu.render(source, options) + '\n';
 }
