@@ -40,7 +40,6 @@
     "nodeunit": "^0.9.1",
     "shelljs": "^0.4.0",
     "tslint": "^2.1.1",
-    "typedoc": "^0.3.4",
     "typescript": "^1.5.0-beta",
     "uglify-js": "^2.4.20",
     "w3cjs": "^0.2.0",

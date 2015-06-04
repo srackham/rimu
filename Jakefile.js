@@ -17,9 +17,8 @@ var MAIN_TS = 'src/main.ts';
 var MAIN_JS = 'out/main.js';
 var SOURCE = shelljs.ls('src/*.ts');
 var TESTS = shelljs.ls('test/*.js');
-var TYPEDOC_DIR = 'doc/api';
-var TYPEDOC_INDEX = TYPEDOC_DIR + '/index.html';
 var GH_PAGES_DIR = './gh-pages/';
+var RIMUC = './bin/rimuc.js';
 
 var DOCS = [
   {src: 'README.md', dst: 'doc/index.html', title: 'Rimu Markup'},
@@ -92,7 +91,7 @@ task('release', ['build', 'version', 'tag', 'publish', 'release-gh-pages']);
 
 desc('Lint Javascript and JSON files.');
 task('jslint', {async: true}, function() {
-  var commands = TESTS.map(function(file) {
+  var commands = TESTS.concat([RIMUC]).map(function(file) {
     return 'jshint ' + file;
   });
   commands.push('jsonlint --quiet package.json');
@@ -140,14 +139,6 @@ function minify(src, dst) {
 
 file(RIMU_VAR_LIB_MIN, [RIMU_VAR_LIB], {async: true}, function() {
   minify(RIMU_VAR_LIB, RIMU_VAR_LIB_MIN)
-});
-
-desc('Create TypeDoc API documentation.');
-task('api-docs', [TYPEDOC_INDEX]);
-
-file(TYPEDOC_INDEX, SOURCE, {async: true}, function() {
-  shelljs.rm('-rf', TYPEDOC_DIR);
-  exec('typedoc --out ' + TYPEDOC_DIR + ' ./src');
 });
 
 desc('Generate HTML documentation');
