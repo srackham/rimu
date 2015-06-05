@@ -49,6 +49,8 @@ experimentation.
   use <#scoped-css|scoped CSS>.
 - Note how macro definitions can span multiple lines and can contain
   any valid Rimu markup (including HTML and blank lines).
+- [This document](https://github.com/srackham/rimu/blob/master/doc/tips.rmu)
+  makes extensive use of Rimu macros.
 
 
 ## Intra-Document Links
