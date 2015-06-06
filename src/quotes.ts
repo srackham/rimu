@@ -5,10 +5,6 @@ export interface Definition {
   openTag: string
   closeTag: string
   spans: boolean       // Allow span elements inside quotes.
-/*
- Unused
-  verify?: (match: RegExpExecArray, re: RegExp) => boolean  // Additional match verification checks.
-*/
 }
 
 let defs: Definition[]  // Mutable definitions initialized by DEFAULT_DEFS.
