@@ -126,9 +126,8 @@ compatibility. It also includes some breaking changes.</p>
   is deprecated).
 </li></ul><p>Breaking changes:</p>
 <ul><li>Changed default behavior of single-asterisk quote from strong to emphasis to align
-  with Markdown. To reinstate old behavior use this quote definition:
-<ul><li>= '<strong>|</strong>'
-</li></ul></li><li>By default only defined and reserved macro invocations are expanded. Previously all macros
+  with Markdown. To reinstate old behavior use this quote definition: <code>* = '&lt;strong&gt;|&lt;/strong&gt;'</code>.
+</li><li>By default only defined and reserved macro invocations are expanded. Previously all macros
   were expanded which to often generated surprising results e.g. if the <code>text</code> macro
   was not explicitly defined then <code>${text}</code> would silently render <code>$</code>.
   To revert to the previous behaviour set the <code>macroMode</code> API option to <code>1</code>.
