@@ -20,9 +20,7 @@ compatibility. It also includes some breaking changes.
 Breaking changes:
 
 - Changed default behavior of single-asterisk quote from strong to emphasis to align
-  with Markdown. To reinstate old behavior use this quote definition:
-
-          * = '<strong>|</strong>'
+  with Markdown. To reinstate old behavior use this quote definition: `* = '<strong>|</strong>'`.
 
 - By default only defined and reserved macro invocations are expanded. Previously all macros
   were expanded which to often generated surprising results e.g. if the `text` macro
