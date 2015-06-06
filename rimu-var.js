@@ -51,11 +51,8 @@ var Rimu =
 	  The compiled modules are bundled by Webpack into 'var' (script tag) and 'commonjs' (npm)
 	  formatted libraries.
 	 */
-	/* tslint:disable */
-	var render_1 = __webpack_require__(1);
+	var api = __webpack_require__(1);
 	var options = __webpack_require__(2);
-	var quotes = __webpack_require__(3);
-	/* tslint:enable */
 	/**
 	 *
 	 * This is the single public API which translates Rimu Markup to HTML.
@@ -75,25 +72,33 @@ var Rimu =
 	 */
 	function render(source, opts) {
 	    if (opts === void 0) { opts = {}; }
-	    options.update(opts);
-	    return render_1.renderSource(source);
+	    if (typeof source !== 'string') {
+	        throw new TypeError('render(): source argument is not a string');
+	    }
+	    if (opts !== undefined && typeof opts !== 'object') {
+	        throw new TypeError('render(): options argument is not an object');
+	    }
+	    options.updateOptions(opts);
+	    return api.render(source);
 	}
 	exports.render = render;
-	// Load-time initializations.
-	quotes.initialize();
+	// Load-time initialization.
+	api.reset();
 
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* tslint:disable */
-	var io = __webpack_require__(5);
+	var io = __webpack_require__(3);
 	var lineBlocks = __webpack_require__(4);
-	var delimitedBlocks = __webpack_require__(6);
-	var lists = __webpack_require__(7);
-	/* tslint:enable */
-	function renderSource(source) {
+	var delimitedBlocks = __webpack_require__(5);
+	var lists = __webpack_require__(6);
+	var macros = __webpack_require__(7);
+	var options = __webpack_require__(2);
+	var quotes = __webpack_require__(8);
+	var replacements = __webpack_require__(9);
+	function render(source) {
 	    var reader = new io.Reader(source);
 	    var writer = new io.Writer();
 	    while (!reader.eof()) {
@@ -110,31 +115,79 @@ var Rimu =
 	    }
 	    return writer.toString();
 	}
-	exports.renderSource = renderSource;
+	exports.render = render;
+	// Set API to default state.
+	function reset() {
+	    options.setDefaults();
+	    delimitedBlocks.reset();
+	    macros.reset();
+	    quotes.reset();
+	    replacements.reset();
+	}
+	exports.reset = reset;
 
 
 /***/ },
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* tslint:disable */
-	var utils = __webpack_require__(8);
-	// Option values.
+	var utils = __webpack_require__(10);
+	var api = __webpack_require__(1);
+	// Global option values.
 	exports.safeMode;
 	exports.htmlReplacement;
-	/**
-	 * Set options to values in 'options', those not in 'options' are set to their default value.
-	 *
-	 * @param options
-	 */
-	function update(options) {
-	    exports.safeMode = ('safeMode' in options) ? options.safeMode : 0;
-	    exports.htmlReplacement = ('htmlReplacement' in options) ? options.htmlReplacement : '<mark>replaced HTML</mark>';
+	exports.macroMode;
+	// Reset options to default values.
+	function setDefaults() {
+	    exports.safeMode = 0;
+	    exports.htmlReplacement = '<mark>replaced HTML</mark>';
+	    exports.macroMode = 4;
 	}
-	exports.update = update;
-	/**
-	 * Filter HTML based on current [[safeMode]].
-	 */
+	exports.setDefaults = setDefaults;
+	// Return true if set to a safe mode.
+	function isSafe() {
+	    return exports.safeMode !== 0;
+	}
+	exports.isSafe = isSafe;
+	function setSafeMode(value) {
+	    var n = Number(value);
+	    if (!isNaN(n) && n >= 0 && n <= 3) {
+	        exports.safeMode = n;
+	    }
+	}
+	function setMacroMode(value) {
+	    var n = Number(value);
+	    if (!isNaN(n) && n >= 0 && n <= 4) {
+	        exports.macroMode = n;
+	    }
+	}
+	function setHtmlReplacement(value) {
+	    exports.htmlReplacement = value;
+	}
+	function setReset(value) {
+	    if (value === true || value === 'true') {
+	        api.reset();
+	    }
+	}
+	function updateOptions(options) {
+	    if ('reset' in options)
+	        setReset(options.reset); // Reset takes priority.
+	    if ('safeMode' in options)
+	        setSafeMode(options.safeMode);
+	    if ('htmlReplacement' in options)
+	        setHtmlReplacement(options.htmlReplacement);
+	    if ('macroMode' in options)
+	        setMacroMode(options.macroMode);
+	}
+	exports.updateOptions = updateOptions;
+	// Set named option value.
+	function setOption(name, value) {
+	    var option = {};
+	    option[name] = value;
+	    updateOptions(option);
+	}
+	exports.setOption = setOption;
+	// Filter HTML based on current safeMode.
 	function safeModeFilter(html) {
 	    switch (exports.safeMode) {
 	        case 0:
@@ -145,359 +198,20 @@ var Rimu =
 	            return exports.htmlReplacement;
 	        case 3:
 	            return utils.replaceSpecialChars(html);
-	        default:
-	            throw 'illegal safeMode value';
 	    }
 	}
 	exports.safeModeFilter = safeModeFilter;
-	update({}); // Initialize options to default values.
 
 
 /***/ },
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* tslint:disable */
-	var utils = __webpack_require__(8);
-	exports.defs = [
-	    {
-	        quote: '_',
-	        openTag: '<em>',
-	        closeTag: '</em>',
-	        spans: true
-	    },
-	    {
-	        quote: '**',
-	        openTag: '<strong>',
-	        closeTag: '</strong>',
-	        spans: true
-	    },
-	    {
-	        quote: '*',
-	        openTag: '<strong>',
-	        closeTag: '</strong>',
-	        spans: true
-	    },
-	    {
-	        quote: '`',
-	        openTag: '<code>',
-	        closeTag: '</code>',
-	        spans: false
-	    },
-	    {
-	        quote: '~~',
-	        openTag: '<del>',
-	        closeTag: '</del>',
-	        spans: true
-	    },
-	];
-	exports.findRe; // Searches for quoted text.
-	var unescapeRe; // Searches for escaped quotes.
-	// Synthesise re's to find and unescape quotes.
-	function initialize() {
-	    var s = [];
-	    for (var i in exports.defs) {
-	        s.push(utils.escapeRegExp(exports.defs[i].quote));
-	    }
-	    // $1 is quote character, $2 is quoted text.
-	    // Quoted text cannot begin or end with whitespace.
-	    // Quoted can span multiple lines.
-	    // Quoted text cannot end with a backslash.
-	    exports.findRe = RegExp('\\\\?(' + s.join('|') + ')([^\\s\\\\]|\\S[\\s\\S]*?[^\\s\\\\])\\1', 'g');
-	    // $1 is quote character(s).
-	    unescapeRe = RegExp('\\\\(' + s.join('|') + ')', 'g');
-	}
-	exports.initialize = initialize;
-	// Return the quote definition corresponding to 'quote' character, return null if not found.
-	function getDefinition(quote) {
-	    for (var i in exports.defs) {
-	        if (exports.defs[i].quote === quote)
-	            return exports.defs[i];
-	    }
-	    return null;
-	}
-	exports.getDefinition = getDefinition;
-	// Strip backslashes from quote characters.
-	function unescape(s) {
-	    return s.replace(unescapeRe, '$1');
-	}
-	exports.unescape = unescape;
-	// Update existing or add new quote definition.
-	function setDefinition(def) {
-	    for (var i in exports.defs) {
-	        if (exports.defs[i].quote === def.quote) {
-	            // Update existing definition.
-	            exports.defs[i].openTag = def.openTag;
-	            exports.defs[i].closeTag = def.closeTag;
-	            exports.defs[i].spans = def.spans;
-	            return;
-	        }
-	    }
-	    // Double-quote definitions are prepended to the array so they are matched
-	    // before single-quote definitions (which are appended to the array).
-	    if (def.quote.length === 2) {
-	        exports.defs.unshift(def);
-	    }
-	    else {
-	        exports.defs.push(def);
-	    }
-	    initialize();
-	}
-	exports.setDefinition = setDefinition;
-
-
-/***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* tslint:disable */
-	var utils = __webpack_require__(8);
-	var options = __webpack_require__(2);
-	var delimitedBlocks = __webpack_require__(6);
-	var quotes = __webpack_require__(3);
-	var replacements = __webpack_require__(9);
-	var macros = __webpack_require__(10);
-	var defs = [
-	    // Prefix match with backslash to allow escaping.
-	    // Delimited Block definition.
-	    // name = $1, definition = $2
-	    {
-	        match: /^\\?\|([\w\-]+)\|\s*=\s*'(.*)'$/,
-	        replacement: '',
-	        expansionOptions: {},
-	        filter: function (match) {
-	            if (options.safeMode !== 0) {
-	                return ''; // Skip if a safe mode is set.
-	            }
-	            delimitedBlocks.setDefinition(match[1], match[2]);
-	            return '';
-	        }
-	    },
-	    // Quote definition.
-	    // quote = $1, openTag = $2, separator = $3, closeTag = $4
-	    {
-	        match: /^(\S{1,2})\s*=\s*'([^\|]*)(\|{1,2})(.*)'$/,
-	        replacement: '',
-	        expansionOptions: {
-	            macros: true
-	        },
-	        filter: function (match) {
-	            if (options.safeMode !== 0) {
-	                return ''; // Skip if a safe mode is set.
-	            }
-	            quotes.setDefinition({
-	                quote: match[1],
-	                openTag: utils.replaceInline(match[2], this.expansionOptions),
-	                closeTag: utils.replaceInline(match[4], this.expansionOptions),
-	                spans: match[3] === '|'
-	            });
-	            return '';
-	        }
-	    },
-	    // Replacement definition.
-	    // pattern = $1, flags = $2, replacement = $3
-	    {
-	        match: /^\\?\/(.+)\/([igm]*)\s*=\s*'(.*)'$/,
-	        replacement: '',
-	        expansionOptions: {
-	            macros: true
-	        },
-	        filter: function (match) {
-	            if (options.safeMode !== 0) {
-	                return ''; // Skip if a safe mode is set.
-	            }
-	            var pattern = match[1];
-	            var flags = match[2];
-	            var replacement = match[3];
-	            replacement = utils.replaceInline(replacement, this.expansionOptions);
-	            replacements.setDefinition(pattern, flags, replacement);
-	            return '';
-	        }
-	    },
-	    // Macro definition.
-	    // name = $1, value = $2
-	    {
-	        match: macros.MACRO_DEF,
-	        replacement: '',
-	        expansionOptions: {
-	            macros: true
-	        },
-	        filter: function (match) {
-	            if (options.safeMode !== 0) {
-	                return ''; // Skip if a safe mode is set.
-	            }
-	            var name = match[1];
-	            var value = match[2];
-	            value = utils.replaceInline(value, this.expansionOptions);
-	            macros.setValue(name, value);
-	            return '';
-	        }
-	    },
-	    // Macro Line block.
-	    {
-	        match: macros.MACRO_LINE,
-	        replacement: '',
-	        expansionOptions: {},
-	        verify: function (match) {
-	            return !macros.MACRO_DEF_OPEN.test(match[0]); // Don't match macro definition blocks.
-	        },
-	        filter: function (match, reader) {
-	            var value = macros.render(match[0]);
-	            // Insert the macro value into the reader just ahead of the cursor.
-	            var spliceArgs = [reader.pos + 1, 0].concat(value.split('\n'));
-	            Array.prototype.splice.apply(reader.lines, spliceArgs);
-	            return '';
-	        }
-	    },
-	    // Headers.
-	    // $1 is ID, $2 is header text.
-	    {
-	        match: /^\\?((?:#|=){1,6})\s+(.+?)(?:\s+(?:#|=){1,6})?$/,
-	        replacement: '<h$1>$2</h$1>',
-	        expansionOptions: {
-	            macros: true,
-	            spans: true
-	        },
-	        filter: function (match) {
-	            match[1] = match[1].length.toString(); // Replace $1 with header number.
-	            return utils.replaceMatch(match, this.replacement, this.expansionOptions);
-	        }
-	    },
-	    // Comment line.
-	    {
-	        match: /^\\?\/{2}(.*)$/,
-	        replacement: '',
-	        expansionOptions: {}
-	    },
-	    // Block image: <image:src|alt>
-	    // src = $1, alt = $2
-	    {
-	        match: /^\\?<image:([^\s\|]+)\|([\s\S]+?)>$/,
-	        replacement: '<img src="$1" alt="$2">',
-	        expansionOptions: {
-	            macros: true,
-	            specials: true
-	        }
-	    },
-	    // Block image: <image:src>
-	    // src = $1, alt = $1
-	    {
-	        match: /^\\?<image:([^\s\|]+?)>$/,
-	        replacement: '<img src="$1" alt="$1">',
-	        expansionOptions: {
-	            macros: true,
-	            specials: true
-	        }
-	    },
-	    // DEPRECATED as of 3.4.0.
-	    // Block anchor: <<#id>>
-	    // id = $1
-	    {
-	        match: /^\\?<<#([a-zA-Z][\w\-]*)>>$/,
-	        replacement: '<div id="$1"></div>',
-	        expansionOptions: {
-	            macros: true,
-	            specials: true
-	        }
-	    },
-	    // Block Attributes.
-	    // Syntax: .class-names #id [html-attributes] block-options
-	    {
-	        name: 'attributes',
-	        match: /^\\?\.[a-zA-Z#\[+-].*$/,
-	        replacement: '',
-	        expansionOptions: {
-	            macros: true
-	        },
-	        verify: function (match) {
-	            // Parse Block Attributes.
-	            // class names = $1, id = $2, html-attributes = $3, block-options = $4
-	            var text = match[0];
-	            text = utils.replaceInline(text, this.expansionOptions); // Expand macro references.
-	            match = /^\\?\.([a-zA-Z][\w\ -]*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text);
-	            if (!match) {
-	                return false;
-	            }
-	            if (match[1]) {
-	                exports.htmlClasses += ' ' + utils.trim(match[1]);
-	                exports.htmlClasses = utils.trim(exports.htmlClasses);
-	            }
-	            if (match[2]) {
-	                exports.htmlAttributes += ' id="' + utils.trim(match[2]).slice(1) + '"';
-	            }
-	            if (match[3] && options.safeMode === 0) {
-	                exports.htmlAttributes += ' ' + utils.trim(match[3].slice(1, match[3].length - 1));
-	            }
-	            exports.htmlAttributes = utils.trim(exports.htmlAttributes);
-	            delimitedBlocks.setBlockOptions(exports.blockOptions, match[4]);
-	            return true;
-	        },
-	        filter: function (match) {
-	            return '';
-	        }
-	    },
-	];
-	// Globals set by Block Attributes filter.
-	exports.htmlClasses = '';
-	exports.htmlAttributes = '';
-	exports.blockOptions = {};
-	// If the next element in the reader is a valid line block render it
-	// and return true, else return false.
-	function render(reader, writer) {
-	    if (reader.eof())
-	        throw 'premature eof';
-	    for (var i in defs) {
-	        var def = defs[i];
-	        var match = def.match.exec(reader.cursor());
-	        if (match) {
-	            if (match[0][0] === '\\') {
-	                // Drop backslash escape and continue.
-	                reader.cursor(reader.cursor().slice(1));
-	                continue;
-	            }
-	            if (def.verify && !def.verify(match)) {
-	                continue;
-	            }
-	            var text;
-	            if (!def.filter) {
-	                text = utils.replaceMatch(match, def.replacement, def.expansionOptions);
-	            }
-	            else {
-	                text = def.filter(match, reader);
-	            }
-	            text = utils.injectHtmlAttributes(text);
-	            writer.write(text);
-	            reader.next();
-	            if (text && !reader.eof()) {
-	                writer.write('\n'); // Add a trailing '\n' if there are more lines.
-	            }
-	            return true;
-	        }
-	    }
-	    return false;
-	}
-	exports.render = render;
-	// Return def definition or null if not found.
-	function getDefinition(name) {
-	    for (var i in defs) {
-	        if (defs[i].name === name) {
-	            return defs[i];
-	        }
-	    }
-	    return null;
-	}
-	exports.getDefinition = getDefinition;
-
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var Reader = (function () {
 	    function Reader(text) {
 	        // Split lines on newline boundaries.
 	        // http://stackoverflow.com/questions/1155678/javascript-string-newline-character
-	        // TODO split is broken on IE8 e.g. 'X\n\nX'.split(/\n/g).length) returns 2 but should return 3.
+	        // Split is broken on IE8 e.g. 'X\n\nX'.split(/\n/g).length) returns 2 but should return 3.
 	        this.lines = text.split(/\r\n|\r|\n/g);
 	        this.pos = 0;
 	    }
@@ -575,16 +289,272 @@ var Rimu =
 
 
 /***/ },
-/* 6 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* tslint:disable */
-	var render_1 = __webpack_require__(1);
-	var utils = __webpack_require__(8);
+	var utils = __webpack_require__(10);
 	var options = __webpack_require__(2);
-	var macros = __webpack_require__(10);
-	var lineBlocks = __webpack_require__(4);
+	var delimitedBlocks = __webpack_require__(5);
+	var quotes = __webpack_require__(8);
+	var replacements = __webpack_require__(9);
+	var macros = __webpack_require__(7);
 	var defs = [
+	    // Prefix match with backslash to allow escaping.
+	    // Delimited Block definition.
+	    // name = $1, definition = $2
+	    {
+	        match: /^\\?\|([\w\-]+)\|\s*=\s*'(.*)'$/,
+	        replacement: '',
+	        expansionOptions: {},
+	        filter: function (match) {
+	            if (options.isSafe()) {
+	                return ''; // Skip if a safe mode is set.
+	            }
+	            delimitedBlocks.setDefinition(match[1], match[2]);
+	            return '';
+	        }
+	    },
+	    // Quote definition.
+	    // quote = $1, openTag = $2, separator = $3, closeTag = $4
+	    {
+	        match: /^(\S{1,2})\s*=\s*'([^\|]*)(\|{1,2})(.*)'$/,
+	        replacement: '',
+	        expansionOptions: {
+	            macros: true
+	        },
+	        filter: function (match) {
+	            if (options.isSafe()) {
+	                return ''; // Skip if a safe mode is set.
+	            }
+	            quotes.setDefinition({
+	                quote: match[1],
+	                openTag: utils.replaceInline(match[2], this.expansionOptions),
+	                closeTag: utils.replaceInline(match[4], this.expansionOptions),
+	                spans: match[3] === '|'
+	            });
+	            return '';
+	        }
+	    },
+	    // Replacement definition.
+	    // pattern = $1, flags = $2, replacement = $3
+	    {
+	        match: /^\\?\/(.+)\/([igm]*)\s*=\s*'(.*)'$/,
+	        replacement: '',
+	        expansionOptions: {
+	            macros: true
+	        },
+	        filter: function (match) {
+	            if (options.isSafe()) {
+	                return ''; // Skip if a safe mode is set.
+	            }
+	            var pattern = match[1];
+	            var flags = match[2];
+	            var replacement = match[3];
+	            replacement = utils.replaceInline(replacement, this.expansionOptions);
+	            replacements.setDefinition(pattern, flags, replacement);
+	            return '';
+	        }
+	    },
+	    // Macro definition.
+	    // name = $1, value = $2
+	    {
+	        match: macros.MACRO_DEF,
+	        replacement: '',
+	        expansionOptions: {
+	            macros: true
+	        },
+	        filter: function (match) {
+	            if (options.isSafe()) {
+	                return ''; // Skip if a safe mode is set.
+	            }
+	            var name = match[1];
+	            var value = match[2];
+	            value = utils.replaceInline(value, this.expansionOptions);
+	            macros.setValue(name, value);
+	            return '';
+	        }
+	    },
+	    // Macro Line block.
+	    {
+	        match: macros.MACRO_LINE,
+	        replacement: '',
+	        expansionOptions: {},
+	        verify: function (match) {
+	            return !macros.MACRO_DEF_OPEN.test(match[0]); // Don't match macro definition blocks.
+	        },
+	        filter: function (match, reader) {
+	            var value = macros.render(match[0]);
+	            if (value === match[0]) {
+	                // Escape macro to prevent infinite recursion if the value is the same as the invocation.
+	                value = '\\' + value;
+	            }
+	            // Insert the macro value into the reader just ahead of the cursor.
+	            var spliceArgs = [reader.pos + 1, 0].concat(value.split('\n'));
+	            Array.prototype.splice.apply(reader.lines, spliceArgs);
+	            return '';
+	        }
+	    },
+	    // Headers.
+	    // $1 is ID, $2 is header text.
+	    {
+	        match: /^\\?((?:#|=){1,6})\s+(.+?)(?:\s+(?:#|=){1,6})?$/,
+	        replacement: '<h$1>$2</h$1>',
+	        expansionOptions: {
+	            macros: true,
+	            spans: true
+	        },
+	        filter: function (match) {
+	            match[1] = match[1].length.toString(); // Replace $1 with header number.
+	            return utils.replaceMatch(match, this.replacement, this.expansionOptions);
+	        }
+	    },
+	    // Comment line.
+	    {
+	        match: /^\\?\/{2}(.*)$/,
+	        replacement: '',
+	        expansionOptions: {}
+	    },
+	    // Block image: <image:src|alt>
+	    // src = $1, alt = $2
+	    {
+	        match: /^\\?<image:([^\s\|]+)\|([\s\S]+?)>$/,
+	        replacement: '<img src="$1" alt="$2">',
+	        expansionOptions: {
+	            macros: true,
+	            specials: true
+	        }
+	    },
+	    // Block image: <image:src>
+	    // src = $1, alt = $1
+	    {
+	        match: /^\\?<image:([^\s\|]+?)>$/,
+	        replacement: '<img src="$1" alt="$1">',
+	        expansionOptions: {
+	            macros: true,
+	            specials: true
+	        }
+	    },
+	    // DEPRECATED as of 3.4.0.
+	    // Block anchor: <<#id>>
+	    // id = $1
+	    {
+	        match: /^\\?<<#([a-zA-Z][\w\-]*)>>$/,
+	        replacement: '<div id="$1"></div>',
+	        expansionOptions: {
+	            macros: true,
+	            specials: true
+	        }
+	    },
+	    // Block Attributes.
+	    // Syntax: .class-names #id [html-attributes] block-options
+	    {
+	        name: 'attributes',
+	        match: /^\\?\.[a-zA-Z#\[+-].*$/,
+	        replacement: '',
+	        expansionOptions: {
+	            macros: true
+	        },
+	        verify: function (match) {
+	            // Parse Block Attributes.
+	            // class names = $1, id = $2, html-attributes = $3, block-options = $4
+	            var text = match[0];
+	            text = utils.replaceInline(text, this.expansionOptions); // Expand macro references.
+	            match = /^\\?\.((?:\s*[a-zA-Z][\w\-]*)+)*(?:\s*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text);
+	            if (!match) {
+	                return false;
+	            }
+	            if (match[1]) {
+	                exports.htmlClasses += ' ' + utils.trim(match[1]);
+	                exports.htmlClasses = utils.trim(exports.htmlClasses);
+	            }
+	            if (match[2]) {
+	                exports.htmlAttributes += ' id="' + utils.trim(match[2]).slice(1) + '"';
+	            }
+	            if (match[3] && !options.isSafe()) {
+	                exports.htmlAttributes += ' ' + utils.trim(match[3].slice(1, match[3].length - 1));
+	            }
+	            exports.htmlAttributes = utils.trim(exports.htmlAttributes);
+	            delimitedBlocks.setBlockOptions(exports.blockOptions, match[4]);
+	            return true;
+	        },
+	        filter: function (match) {
+	            return '';
+	        }
+	    },
+	    // API Option.
+	    // name = $1, value = $2
+	    {
+	        match: /^\\?\.(safeMode|htmlReplacement|macroMode|reset)\s*=\s*'(.*)'$/,
+	        replacement: '',
+	        expansionOptions: {
+	            macros: true
+	        },
+	        filter: function (match) {
+	            if (!options.isSafe()) {
+	                options.setOption(match[1], match[2]);
+	            }
+	            return '';
+	        }
+	    },
+	];
+	// Globals set by Block Attributes filter.
+	exports.htmlClasses = '';
+	exports.htmlAttributes = '';
+	exports.blockOptions = {};
+	// If the next element in the reader is a valid line block render it
+	// and return true, else return false.
+	function render(reader, writer) {
+	    if (reader.eof())
+	        throw 'premature eof';
+	    for (var _i = 0; _i < defs.length; _i++) {
+	        var def = defs[_i];
+	        var match = def.match.exec(reader.cursor());
+	        if (match) {
+	            if (match[0][0] === '\\') {
+	                // Drop backslash escape and continue.
+	                reader.cursor(reader.cursor().slice(1));
+	                continue;
+	            }
+	            if (def.verify && !def.verify(match)) {
+	                continue;
+	            }
+	            var text = void 0;
+	            if (!def.filter) {
+	                text = utils.replaceMatch(match, def.replacement, def.expansionOptions);
+	            }
+	            else {
+	                text = def.filter(match, reader);
+	            }
+	            text = utils.injectHtmlAttributes(text);
+	            writer.write(text);
+	            reader.next();
+	            if (text && !reader.eof()) {
+	                writer.write('\n'); // Add a trailing '\n' if there are more lines.
+	            }
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+	exports.render = render;
+	// Return line block definition or undefined if not found.
+	function getDefinition(name) {
+	    return defs.filter(function (def) { return def.name === name; })[0];
+	}
+	exports.getDefinition = getDefinition;
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var api = __webpack_require__(1);
+	var utils = __webpack_require__(10);
+	var options = __webpack_require__(2);
+	var macros = __webpack_require__(7);
+	var lineBlocks = __webpack_require__(4);
+	var defs; // Mutable definitions initialized by DEFAULT_DEFS.
+	var DEFAULT_DEFS = [
 	    // Delimited blocks cannot be escaped with a backslash.
 	    // Macro definition block.
 	    {
@@ -732,13 +702,18 @@ var Rimu =
 	        }
 	    },
 	];
+	// Reset definitions to defaults.
+	function reset() {
+	    defs = DEFAULT_DEFS.map(function (def) { return utils.copy(def); });
+	}
+	exports.reset = reset;
 	// If the next element in the reader is a valid delimited block render it
 	// and return true, else return false.
 	function render(reader, writer) {
 	    if (reader.eof())
 	        throw 'premature eof';
-	    for (var i in defs) {
-	        var def = defs[i];
+	    for (var _i = 0; _i < defs.length; _i++) {
+	        var def = defs[_i];
 	        var match = reader.cursor().match(def.openMatch);
 	        if (match) {
 	            // Escape non-paragraphs.
@@ -757,7 +732,7 @@ var Rimu =
 	            }
 	            // Read content up to the closing delimiter.
 	            reader.next();
-	            var closeMatch;
+	            var closeMatch = void 0;
 	            if (def.closeMatch === undefined) {
 	                // Close delimiter matches opening delimiter.
 	                closeMatch = RegExp('^' + utils.escapeRegExp(match[0]) + '$');
@@ -770,7 +745,7 @@ var Rimu =
 	                lines = lines.concat(content);
 	            }
 	            // Set block expansion options.
-	            var expansionOptions;
+	            var expansionOptions = void 0;
 	            expansionOptions = {
 	                macros: false,
 	                spans: false,
@@ -778,7 +753,7 @@ var Rimu =
 	                container: false,
 	                skip: false
 	            };
-	            var k;
+	            var k = void 0;
 	            for (k in expansionOptions)
 	                expansionOptions[k] = def.expansionOptions[k];
 	            for (k in lineBlocks.blockOptions)
@@ -791,7 +766,8 @@ var Rimu =
 	                }
 	                writer.write(utils.injectHtmlAttributes(def.openTag));
 	                if (expansionOptions.container) {
-	                    text = render_1.renderSource(text);
+	                    delete lineBlocks.blockOptions.container; // Consume before recursion.
+	                    text = api.render(text);
 	                }
 	                else {
 	                    text = utils.replaceInline(text, expansionOptions);
@@ -811,23 +787,18 @@ var Rimu =
 	    return false; // No matching delimited block found.
 	}
 	exports.render = render;
-	// Return block definition or null if not found.
+	// Return block definition or undefined if not found.
 	function getDefinition(name) {
-	    for (var i in defs) {
-	        if (defs[i].name === name) {
-	            return defs[i];
-	        }
-	    }
-	    return null;
+	    return defs.filter(function (def) { return def.name === name; })[0];
 	}
 	exports.getDefinition = getDefinition;
 	// Parse delimited block expansion options string into blockOptions.
 	function setBlockOptions(blockOptions, optionsString) {
 	    if (optionsString) {
 	        var opts = optionsString.trim().split(/\s+/);
-	        for (var i in opts) {
-	            var opt = opts[i];
-	            if (options.safeMode !== 0 && opt === '-specials') {
+	        for (var _i = 0; _i < opts.length; _i++) {
+	            var opt = opts[_i];
+	            if (options.isSafe() && opt === '-specials') {
 	                return;
 	            }
 	            if (/^[+-](macros|spans|specials|container|skip)$/.test(opt)) {
@@ -854,13 +825,12 @@ var Rimu =
 
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* tslint:disable */
-	var utils = __webpack_require__(8);
-	var io = __webpack_require__(5);
-	var delimitedBlocks = __webpack_require__(6);
+	var utils = __webpack_require__(10);
+	var io = __webpack_require__(3);
+	var delimitedBlocks = __webpack_require__(5);
 	var defs = [
 	    // Prefix match with backslash to allow escaping.
 	    // Unordered lists.
@@ -1018,15 +988,16 @@ var Rimu =
 	    // Check if the line matches a List definition.
 	    var line = reader.cursor();
 	    var item = {}; // ItemState factory.
-	    for (var i in defs) {
-	        var match = defs[i].match.exec(line);
+	    for (var _i = 0; _i < defs.length; _i++) {
+	        var def_1 = defs[_i];
+	        var match = def_1.match.exec(line);
 	        if (match) {
 	            if (match[0][0] === '\\') {
 	                reader.cursor(reader.cursor().slice(1)); // Drop backslash.
 	                return null;
 	            }
 	            item.match = match;
-	            item.def = defs[i];
+	            item.def = def_1;
 	            item.id = match[match.length - 2];
 	            item.isListItem = true;
 	            return item;
@@ -1035,8 +1006,9 @@ var Rimu =
 	    // Check if the line matches a Delimited Block definition.
 	    var def;
 	    if (options.delimited) {
-	        for (var name in { quote: 0, code: 0, division: 0 }) {
-	            def = delimitedBlocks.getDefinition(name);
+	        for (var _a = 0, _b = ['quote', 'code', 'division']; _a < _b.length; _a++) {
+	            var name_1 = _b[_a];
+	            def = delimitedBlocks.getDefinition(name_1);
 	            if (def.openMatch.test(line)) {
 	                item.isDelimited = true;
 	                return item;
@@ -1056,105 +1028,240 @@ var Rimu =
 
 
 /***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var options = __webpack_require__(2);
+	// Matches macro invocation. $1 = name, $2 = params.
+	var MATCH_MACRO = /\{([\w\-]+)([!=|?](?:|[\s\S]*?[^\\]))?\}/;
+	// Matches all macro invocations. $1 = name, $2 = params.
+	var MATCH_MACROS = RegExp('\\\\?' + MATCH_MACRO.source, 'g');
+	// Matches a line starting with a macro invocation.
+	exports.MACRO_LINE = RegExp('^' + MATCH_MACRO.source + '.*$');
+	// Match multi-line macro definition open delimiter. $1 is first line of macro.
+	exports.MACRO_DEF_OPEN = /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/;
+	// Match multi-line macro definition open delimiter. $1 is last line of macro.
+	exports.MACRO_DEF_CLOSE = /^(.*)'$/;
+	// Match single-line macro definition. $1 = name, $2 = value.
+	exports.MACRO_DEF = /^\\?\{([\w\-]+)\}\s*=\s*'(.*)'$/;
+	exports.defs = [];
+	// Reset definitions to defaults.
+	function reset() {
+	    exports.defs = [];
+	}
+	exports.reset = reset;
+	// Return named macro value or null if it doesn't exist.
+	function getValue(name) {
+	    for (var _i = 0; _i < exports.defs.length; _i++) {
+	        var def = exports.defs[_i];
+	        if (def.name === name) {
+	            return def.value;
+	        }
+	    }
+	    return null;
+	}
+	exports.getValue = getValue;
+	// Set named macro value or add it if it doesn't exist.
+	function setValue(name, value) {
+	    for (var _i = 0; _i < exports.defs.length; _i++) {
+	        var def = exports.defs[_i];
+	        if (def.name === name) {
+	            def.value = value;
+	            return;
+	        }
+	    }
+	    exports.defs.push({ name: name, value: value });
+	}
+	exports.setValue = setValue;
+	// Render all macro invocations in text string.
+	function render(text) {
+	    text = text.replace(MATCH_MACROS, function (match) {
+	        var submatches = [];
+	        for (var _i = 1; _i < arguments.length; _i++) {
+	            submatches[_i - 1] = arguments[_i];
+	        }
+	        if (match[0] === '\\') {
+	            return match.slice(1);
+	        }
+	        var name = submatches[0];
+	        var params = submatches[1] || '';
+	        var value = getValue(name); // Macro value is null if macro is undefined.
+	        switch (options.macroMode) {
+	            case 0:
+	                return match;
+	            case 1:
+	                break;
+	            case 2:
+	                if (value === null) {
+	                    return match;
+	                }
+	                break;
+	            case 3:
+	                if (!/^--/.test(name)) {
+	                    return match;
+	                }
+	                break;
+	            case 4:
+	                if (value === null && !/^--/.test(name)) {
+	                    return match;
+	                }
+	                break;
+	        }
+	        params = params.replace(/\\\}/g, '}'); // Unescape escaped } characters.
+	        switch (params[0]) {
+	            case '?':
+	                return value === null ? params.slice(1) : value;
+	            case '|':
+	                // Substitute macro parameters.
+	                var paramsList = params.slice(1).split('|');
+	                value = (value || '').replace(/\\?\$\d+/g, function (match) {
+	                    if (match[0] === '\\') {
+	                        return match.slice(1);
+	                    }
+	                    var param = paramsList[Number(match.slice(1)) - 1];
+	                    return param === undefined ? '' : param; // Unassigned parameters are replaced with a blank string.
+	                });
+	                return value;
+	            case '!': // Inclusion macro.
+	            case '=':
+	                var pattern = params.slice(1);
+	                var skip = !RegExp('^' + pattern + '$').test(value || '');
+	                if (params[0] === '!') {
+	                    skip = !skip;
+	                }
+	                return skip ? '\0' : ''; // '\0' flags line for deletion.
+	            default:
+	                return value || ''; // Undefined macro replaced by empty string.
+	        }
+	    });
+	    // Delete lines marked for deletion by inclusion macros.
+	    if (text.indexOf('\0') !== -1) {
+	        var lines = text.split('\n');
+	        for (var i = lines.length - 1; i >= 0; --i) {
+	            if (lines[i].indexOf('\0') !== -1) {
+	                lines.splice(i, 1); // Delete line[i].
+	            }
+	        }
+	        text = lines.join('\n');
+	    }
+	    return text;
+	}
+	exports.render = render;
+
+
+/***/ },
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* tslint:disable */
-	var macros = __webpack_require__(10);
-	var spans = __webpack_require__(11);
-	var lineBlocks = __webpack_require__(4);
-	// Whitespace strippers.
-	function trimLeft(s) {
-	    return s.replace(/^\s+/g, '');
+	var utils = __webpack_require__(10);
+	var defs; // Mutable definitions initialized by DEFAULT_DEFS.
+	var DEFAULT_DEFS = [
+	    {
+	        quote: '**',
+	        openTag: '<strong>',
+	        closeTag: '</strong>',
+	        spans: true
+	    },
+	    {
+	        quote: '*',
+	        openTag: '<em>',
+	        closeTag: '</em>',
+	        spans: true
+	    },
+	    {
+	        quote: '__',
+	        openTag: '<strong>',
+	        closeTag: '</strong>',
+	        spans: true
+	    },
+	    {
+	        quote: '_',
+	        openTag: '<em>',
+	        closeTag: '</em>',
+	        spans: true
+	    },
+	    {
+	        quote: '``',
+	        openTag: '<code>',
+	        closeTag: '</code>',
+	        spans: false
+	    },
+	    {
+	        quote: '`',
+	        openTag: '<code>',
+	        closeTag: '</code>',
+	        spans: false
+	    },
+	    {
+	        quote: '~~',
+	        openTag: '<del>',
+	        closeTag: '</del>',
+	        spans: true
+	    },
+	];
+	exports.quotesRe; // Searches for quoted text.
+	var unescapeRe; // Searches for escaped quotes.
+	// Reset definitions to defaults.
+	function reset() {
+	    defs = DEFAULT_DEFS.map(function (def) { return utils.copy(def); });
+	    initializeRegExps();
 	}
-	exports.trimLeft = trimLeft;
-	function trimRight(s) {
-	    return s.replace(/\s+$/g, '');
+	exports.reset = reset;
+	// Synthesise re's to find and unescape quotes.
+	function initializeRegExps() {
+	    var quotes = defs.map(function (def) { return utils.escapeRegExp(def.quote); });
+	    // $1 is quote character, $2 is quoted text.
+	    // Quoted text cannot begin or end with whitespace.
+	    // Quoted can span multiple lines.
+	    // Quoted text cannot end with a backslash.
+	    exports.quotesRe = RegExp('\\\\?(' + quotes.join('|') + ')([^\\s\\\\]|\\S[\\s\\S]*?[^\\s\\\\])\\1', 'g');
+	    // $1 is quote character(s).
+	    unescapeRe = RegExp('\\\\(' + quotes.join('|') + ')', 'g');
 	}
-	exports.trimRight = trimRight;
-	function trim(s) {
-	    return s.replace(/^\s+|\s+$/g, '');
+	exports.initializeRegExps = initializeRegExps;
+	// Return the quote definition corresponding to 'quote' character, return undefined if not found.
+	function getDefinition(quote) {
+	    return defs.filter(function (def) { return def.quote === quote; })[0];
 	}
-	exports.trim = trim;
-	// http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
-	function escapeRegExp(s) {
-	    return s.replace(/[\-\/\\\^$*+?.()|\[\]{}]/g, '\\$&');
+	exports.getDefinition = getDefinition;
+	// Strip backslashes from quote characters.
+	function unescape(s) {
+	    return s.replace(unescapeRe, '$1');
 	}
-	exports.escapeRegExp = escapeRegExp;
-	function replaceSpecialChars(s) {
-	    return s.replace(/&/g, '&amp;')
-	        .replace(/>/g, '&gt;')
-	        .replace(/</g, '&lt;');
-	}
-	exports.replaceSpecialChars = replaceSpecialChars;
-	// Replace match groups, optionally substituting the replacement groups with
-	// the inline elements specified in options.
-	function replaceMatch(match, replacement, expansionOptions) {
-	    return replacement.replace(/\$\d/g, function () {
-	        // Replace $1, $2 ... with corresponding match groups.
-	        var i = parseInt(arguments[0][1]); // match group number.
-	        var text = match[i]; // match group text.
-	        return replaceInline(text, expansionOptions);
-	    });
-	}
-	exports.replaceMatch = replaceMatch;
-	// Replace the inline elements specified in options in text and return the result.
-	function replaceInline(text, expansionOptions) {
-	    if (expansionOptions.macros) {
-	        text = macros.render(text);
-	        text = text === null ? '' : text;
+	exports.unescape = unescape;
+	// Update existing or add new quote definition.
+	function setDefinition(def) {
+	    for (var _i = 0; _i < defs.length; _i++) {
+	        var d = defs[_i];
+	        if (d.quote === def.quote) {
+	            // Update existing definition.
+	            d.openTag = def.openTag;
+	            d.closeTag = def.closeTag;
+	            d.spans = def.spans;
+	            return;
+	        }
 	    }
-	    // Spans also expand special characters.
-	    if (expansionOptions.spans) {
-	        return spans.render(text);
-	    }
-	    else if (expansionOptions.specials) {
-	        return replaceSpecialChars(text);
+	    // Double-quote definitions are prepended to the array so they are matched
+	    // before single-quote definitions (which are appended to the array).
+	    if (def.quote.length === 2) {
+	        defs.unshift(def);
 	    }
 	    else {
-	        return text;
+	        defs.push(def);
 	    }
+	    initializeRegExps();
 	}
-	exports.replaceInline = replaceInline;
-	// Inject HTML attributes from LineBlocks.htmlAttributes into the opening tag.
-	// Consume LineBlocks.htmlAttributes unless the 'tag' argument is blank.
-	function injectHtmlAttributes(tag) {
-	    if (!tag) {
-	        return tag;
-	    }
-	    if (lineBlocks.htmlClasses) {
-	        if (/class="\S.*"/.test(tag)) {
-	            // Inject class names into existing class attribute.
-	            tag = tag.replace(/class="(\S.*?)"/, 'class="' + lineBlocks.htmlClasses + ' $1"');
-	        }
-	        else {
-	            // Prepend new class attribute to HTML attributes.
-	            lineBlocks.htmlAttributes = trim('class="' + lineBlocks.htmlClasses + '" ' + lineBlocks.htmlAttributes);
-	        }
-	    }
-	    if (lineBlocks.htmlAttributes) {
-	        var match = tag.match(/^<([a-zA-Z]+|h[1-6])(?=[ >])/);
-	        if (match) {
-	            var before = tag.slice(0, match[0].length);
-	            var after = tag.slice(match[0].length);
-	            tag = before + ' ' + lineBlocks.htmlAttributes + after;
-	        }
-	    }
-	    // Consume the attributes.
-	    lineBlocks.htmlClasses = '';
-	    lineBlocks.htmlAttributes = '';
-	    return tag;
-	}
-	exports.injectHtmlAttributes = injectHtmlAttributes;
+	exports.setDefinition = setDefinition;
 
 
 /***/ },
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* tslint:disable */
 	var options = __webpack_require__(2);
-	exports.defs = [
+	var utils = __webpack_require__(10);
+	exports.defs; // Mutable definitions initialized by DEFAULT_DEFS.
+	var DEFAULT_DEFS = [
 	    // Begin match with \\? to allow the replacement to be escaped.
 	    // Global flag must be set on match re's so that the RegExp lastIndex property is set.
 	    // Replacements and special characters are expanded in replacement groups ($1..).
@@ -1216,41 +1323,55 @@ var Rimu =
 	            return options.safeModeFilter(match[1]);
 	        }
 	    },
-	    // Link: <url|caption>
-	    // url = $1, caption = $2
-	    {
-	        match: /\\?<(\S+?)\|([\s\S]*?)>/g,
-	        replacement: '<a href="$1">$2</a>'
-	    },
 	    // Link: <url>
 	    // url = $1
 	    {
-	        match: /\\?<(\S+?)>/g,
+	        match: /\\?<([^|]+?)>/g,
 	        replacement: '<a href="$1">$1</a>'
+	    },
+	    // Link: <url|caption>
+	    // url = $1, caption = $2
+	    {
+	        match: /\\?<(.+?)\|([\s\S]*?)>/g,
+	        replacement: '<a href="$1">$2</a>'
 	    },
 	    // Link: [caption](url)
 	    // caption = $1, url = $2
 	    {
-	        match: /\\?\[([\s\S]*?)\]\s*\((\S+?)\)/g,
+	        match: /\\?\[([\s\S]*?)\]\s*\((.+?)\)/g,
 	        replacement: '<a href="$2">$1</a>'
 	    },
 	    // Auto-encode (most) raw HTTP URLs as links.
 	    {
-	        match: /(^|[^<])\b((?:http|https):\/\/[^\s"']*[^\s"',.;?)])/g,
-	        replacement: '$1<a href="$2">$2</a>'
+	        match: /\\?((?:http|https):\/\/[^\s"']*[A-Za-z0-9/#])/g,
+	        replacement: '<a href="$1">$1</a>'
+	    },
+	    // This hack ensures backslashes immediately preceding closing code quotes are rendered
+	    // verbatim (like Markdown).
+	    // Works by finding escaped closing code quotes and replacing the backslash and the character
+	    // preceding the closing quote with the same two characters.
+	    {
+	        match: /(\S\\)(?=`)/g,
+	        replacement: '$1'
 	    },
 	];
+	// Reset definitions to defaults.
+	function reset() {
+	    exports.defs = DEFAULT_DEFS.map(function (def) { return utils.copy(def); });
+	}
+	exports.reset = reset;
 	// Update existing or add new replacement definition.
 	function setDefinition(regexp, flags, replacement) {
 	    if (!/g/.test(flags)) {
 	        flags += 'g';
 	    }
-	    for (var i in exports.defs) {
-	        if (exports.defs[i].match.source === regexp) {
+	    for (var _i = 0; _i < exports.defs.length; _i++) {
+	        var def = exports.defs[_i];
+	        if (def.match.source === regexp) {
 	            // Update existing definition.
 	            // Flag properties are read-only so have to create new RegExp.
-	            exports.defs[i].match = new RegExp(regexp, flags);
-	            exports.defs[i].replacement = replacement;
+	            def.match = new RegExp(regexp, flags);
+	            def.replacement = replacement;
 	            return;
 	        }
 	    }
@@ -1264,95 +1385,118 @@ var Rimu =
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// Matches macro invocation. $1 = name, $2 = params.
-	var MATCH_MACRO = /\{([\w\-]+)([!=|?](?:|[\s\S]*?[^\\]))?\}/;
-	// Matches all macro invocations. $1 = name, $2 = params.
-	var MATCH_MACROS = RegExp('\\\\?' + MATCH_MACRO.source, 'g');
-	// Matches a line starting with a macro invocation.
-	exports.MACRO_LINE = RegExp('^' + MATCH_MACRO.source + '.*$');
-	// Match multi-line macro definition open delimiter. $1 is first line of macro.
-	exports.MACRO_DEF_OPEN = /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/;
-	// Match multi-line macro definition open delimiter. $1 is last line of macro.
-	exports.MACRO_DEF_CLOSE = /^(.*)'$/;
-	// Match single-line macro definition. $1 = name, $2 = value.
-	exports.MACRO_DEF = /^\\?\{([\w\-]+)\}\s*=\s*'(.*)'$/;
-	exports.defs = [];
-	// Return named macro value or null if it doesn't exist.
-	function getValue(name) {
-	    for (var i in exports.defs) {
-	        if (exports.defs[i].name === name) {
-	            return exports.defs[i].value;
-	        }
-	    }
-	    return null;
+	var macros = __webpack_require__(7);
+	var spans = __webpack_require__(11);
+	var lineBlocks = __webpack_require__(4);
+	// Whitespace strippers.
+	function trimLeft(s) {
+	    return s.replace(/^\s+/g, '');
 	}
-	exports.getValue = getValue;
-	// Set named macro value or add it if it doesn't exist.
-	function setValue(name, value) {
-	    for (var i in exports.defs) {
-	        if (exports.defs[i].name === name) {
-	            exports.defs[i].value = value;
-	            return;
-	        }
-	    }
-	    exports.defs.push({ name: name, value: value });
+	exports.trimLeft = trimLeft;
+	function trimRight(s) {
+	    return s.replace(/\s+$/g, '');
 	}
-	exports.setValue = setValue;
-	// Render all macro invocations in text string.
-	function render(text) {
-	    text = text.replace(MATCH_MACROS, function (match) {
-	        var args = [];
-	        for (var _i = 1; _i < arguments.length; _i++) {
-	            args[_i - 1] = arguments[_i];
-	        }
-	        if (match[0] === '\\') {
-	            return match.slice(1);
-	        }
-	        var name = args[0];
-	        /* $1 */
-	        var params = args[1] || '';
-	        /* $2 */
-	        var value = getValue(name); // Macro value is null if macro is undefined.
-	        params = params.replace(/\\\}/g, '}'); // Unescape escaped } characters.
-	        switch (params[0]) {
-	            case '?':
-	                return value === null ? params.slice(1) : value;
-	            case '|':
-	                // Substitute macro parameters.
-	                var paramsList = params.slice(1).split('|');
-	                value = (value || '').replace(/\\?\$\d+/g, function (match) {
-	                    if (match[0] === '\\') {
-	                        return match.slice(1);
-	                    }
-	                    var param = paramsList[parseInt(match.slice(1)) - 1];
-	                    return param === undefined ? '' : param; // Unassigned parameters are replaced with a blank string.
-	                });
-	                return value;
-	            case '!': // Inclusion macro.
-	            case '=':
-	                var pattern = params.slice(1);
-	                var skip = !RegExp('^' + pattern + '$').test(value || '');
-	                if (params[0] === '!') {
-	                    skip = !skip;
-	                }
-	                return skip ? '\0' : ''; // '\0' flags line for deletion.
-	            default:
-	                return value || ''; // Undefined macro replaced by empty string.
-	        }
+	exports.trimRight = trimRight;
+	function trim(s) {
+	    return s.replace(/^\s+|\s+$/g, '');
+	}
+	exports.trim = trim;
+	// http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
+	function escapeRegExp(s) {
+	    return s.replace(/[\-\/\\\^$*+?.()|\[\]{}]/g, '\\$&');
+	}
+	exports.escapeRegExp = escapeRegExp;
+	function replaceSpecialChars(s) {
+	    return s.replace(/&/g, '&amp;')
+	        .replace(/>/g, '&gt;')
+	        .replace(/</g, '&lt;');
+	}
+	exports.replaceSpecialChars = replaceSpecialChars;
+	// Replace match groups, optionally substituting the replacement groups with
+	// the inline elements specified in options.
+	function replaceMatch(match, replacement, expansionOptions) {
+	    return replacement.replace(/\$\d/g, function () {
+	        // Replace $1, $2 ... with corresponding match groups.
+	        var i = Number(arguments[0][1]); // match group number.
+	        var text = match[i]; // match group text.
+	        return replaceInline(text, expansionOptions);
 	    });
-	    // Delete lines marked for deletion by inclusion macros.
-	    if (text.indexOf('\0') !== -1) {
-	        var lines = text.split('\n');
-	        for (var i = lines.length - 1; i >= 0; --i) {
-	            if (lines[i].indexOf('\0') !== -1) {
-	                lines.splice(i, 1); // Delete line[i].
-	            }
+	}
+	exports.replaceMatch = replaceMatch;
+	// Shallow object clone.
+	function copy(source) {
+	    var result = {};
+	    for (var key in source) {
+	        if (source.hasOwnProperty(key)) {
+	            result[key] = source[key];
 	        }
-	        text = lines.join('\n');
+	    }
+	    return result;
+	}
+	exports.copy = copy;
+	/*
+	Unused
+
+	// Copy properties in source object to target object.
+	export function merge(target: any, source: any): void {
+	  for (let key in source) {
+	    target[key] = source[key]
+	  }
+	}
+
+	// Update existing target object properties with same-named source object properties.
+	export function update(target: any, source: any): void {
+	  for (let key in source) {
+	    if (key in target) target[key] = source[key]
+	  }
+	}
+	*/
+	// Replace the inline elements specified in options in text and return the result.
+	function replaceInline(text, expansionOptions) {
+	    if (expansionOptions.macros) {
+	        text = macros.render(text);
+	        text = text === null ? '' : text;
+	    }
+	    // Spans also expand special characters.
+	    if (expansionOptions.spans) {
+	        return spans.render(text);
+	    }
+	    else if (expansionOptions.specials) {
+	        text = replaceSpecialChars(text);
 	    }
 	    return text;
 	}
-	exports.render = render;
+	exports.replaceInline = replaceInline;
+	// Inject HTML attributes from LineBlocks.htmlAttributes into the opening tag.
+	// Consume LineBlocks.htmlAttributes unless the 'tag' argument is blank.
+	function injectHtmlAttributes(tag) {
+	    if (!tag) {
+	        return tag;
+	    }
+	    if (lineBlocks.htmlClasses) {
+	        if (/class="\S.*"/.test(tag)) {
+	            // Inject class names into existing class attribute.
+	            tag = tag.replace(/class="(\S.*?)"/, 'class="' + lineBlocks.htmlClasses + ' $1"');
+	        }
+	        else {
+	            // Prepend new class attribute to HTML attributes.
+	            lineBlocks.htmlAttributes = trim('class="' + lineBlocks.htmlClasses + '" ' + lineBlocks.htmlAttributes);
+	        }
+	    }
+	    if (lineBlocks.htmlAttributes) {
+	        var match = tag.match(/^<([a-zA-Z]+|h[1-6])(?=[ >])/);
+	        if (match) {
+	            var before = tag.slice(0, match[0].length);
+	            var after = tag.slice(match[0].length);
+	            tag = before + ' ' + lineBlocks.htmlAttributes + after;
+	        }
+	    }
+	    // Consume the attributes.
+	    lineBlocks.htmlClasses = '';
+	    lineBlocks.htmlAttributes = '';
+	    return tag;
+	}
+	exports.injectHtmlAttributes = injectHtmlAttributes;
 
 
 /***/ },
@@ -1360,168 +1504,177 @@ var Rimu =
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
-	 This module renders text containing Quote and Replacement elements.
+	 This module renders inline text containing Quote and Replacement elements.
 
 	 Quote and replacement processing involves splitting the source text into
-	 fragments where a quote or a replacement occurs then splicing the fragments
-	 containing HTML markup into the breaks.  A fragment is flagged as 'done' to
-	 exclude it from further substitutions.
+	 fragments where at the points where quotes and replacements occur then splicing fragments
+	 containing output markup into the breaks. A fragment is flagged as 'done' to
+	 exclude it from further processing.
 
 	 Once all quotes and replacements are processed fragments not yet flagged as
 	 'done' have special characters (&, <, >) replaced with corresponding special
 	 character entities. The fragments are then reassembled (defraged) into a
 	 resultant HTML string.
 	 */
-	/* tslint:disable */
-	var utils = __webpack_require__(8);
-	var quotes = __webpack_require__(3);
+	var utils = __webpack_require__(10);
+	var quotes = __webpack_require__(8);
 	var replacements = __webpack_require__(9);
 	function render(source) {
-	    var fragments = [{ text: source, done: false }];
-	    fragQuotes(fragments);
-	    fragReplacements(fragments);
+	    var result;
+	    result = preReplacements(source);
+	    var fragments = [{ text: result, done: false }];
+	    fragments = fragQuotes(fragments);
 	    fragSpecials(fragments);
-	    return defrag(fragments);
+	    result = defrag(fragments);
+	    return postReplacements(result);
 	}
 	exports.render = render;
 	// Converts fragments to a string.
 	function defrag(fragments) {
-	    var result = [];
-	    for (var i in fragments) {
-	        result.push(fragments[i].text);
-	    }
-	    return result.join('');
+	    return fragments.reduce(function (result, fragment) { return result + fragment.text; }, '');
 	}
+	// Fragment quotes in all fragments and return resulting fragments array.
 	function fragQuotes(fragments) {
-	    var findRe = quotes.findRe;
-	    var fragmentIndex = 0;
-	    var fragment = fragments[fragmentIndex];
-	    var nextFragment;
-	    var match;
-	    findRe.lastIndex = 0;
-	    while (true) {
-	        if (fragment.done) {
-	            nextFragment = true;
-	        }
-	        else {
-	            match = findRe.exec(fragment.text);
-	            nextFragment = !match;
-	        }
-	        if (nextFragment) {
-	            fragmentIndex++;
-	            if (fragmentIndex >= fragments.length) {
-	                break;
-	            }
-	            fragment = fragments[fragmentIndex];
-	            if (match) {
-	                findRe.lastIndex = 0;
-	            }
-	            continue;
-	        }
-	        if (match[0][0] === '\\') {
-	            // Restart search after opening quote.
-	            findRe.lastIndex = match.index + match[1].length + 1;
-	            continue;
-	        }
-	        // Arrive here if we have a matched quote.
-	        var def = quotes.getDefinition(match[1]);
-	        if (def.verify && !def.verify(match, findRe)) {
-	            // Restart search after opening quote.
-	            findRe.lastIndex = match.index + match[1].length + 1;
-	            continue;
-	        }
-	        // The quotes splits the fragment into 5 fragments.
-	        var before = match.input.slice(0, match.index);
-	        var quoted = match[2];
-	        var after = match.input.slice(findRe.lastIndex);
-	        fragments.splice(fragmentIndex, 1, { text: before, done: false }, { text: def.openTag, done: true }, { text: quoted, done: false }, { text: def.closeTag, done: true }, { text: after, done: false });
-	        // Move to 'quoted' fragment.
-	        fragmentIndex += 2;
-	        fragment = fragments[fragmentIndex];
-	        if (!def.spans) {
-	            fragment.text = quotes.unescape(fragment.text);
-	            fragment.text = utils.replaceSpecialChars(fragment.text);
-	            fragment.done = true;
-	            // Move to 'after' fragment.
-	            fragmentIndex += 2;
-	            fragment = fragments[fragmentIndex];
-	        }
-	        findRe.lastIndex = 0;
-	    }
+	    var result;
+	    result = [];
+	    fragments.forEach(function (fragment) {
+	        result.push.apply(result, fragQuote(fragment));
+	    });
 	    // Strip backlash from escaped quotes in non-done fragments.
-	    for (var i in fragments) {
-	        fragment = fragments[i];
-	        if (!fragment.done) {
-	            fragment.text = quotes.unescape(fragment.text);
-	        }
-	    }
+	    result
+	        .filter(function (fragment) { return !fragment.done; })
+	        .forEach(function (fragment) { return fragment.text = quotes.unescape(fragment.text); });
+	    return result;
 	}
-	function fragReplacements(fragments) {
-	    for (var i in replacements.defs) {
-	        fragReplacement(fragments, replacements.defs[i]);
+	// Fragment quotes in a single fragment and return resulting fragments array.
+	function fragQuote(fragment) {
+	    if (fragment.done) {
+	        return [fragment];
 	    }
-	}
-	function fragReplacement(fragments, def) {
-	    var findRe = def.match;
-	    var fragmentIndex = 0;
-	    var fragment = fragments[fragmentIndex];
-	    var nextFragment;
+	    var quotesRe = quotes.quotesRe;
 	    var match;
-	    findRe.lastIndex = 0;
+	    quotesRe.lastIndex = 0;
 	    while (true) {
-	        if (fragment.done) {
-	            nextFragment = true;
+	        match = quotesRe.exec(fragment.text);
+	        if (!match) {
+	            return [fragment];
 	        }
-	        else {
-	            match = findRe.exec(fragment.text);
-	            nextFragment = !match;
+	        if (match[0][0] !== '\\') {
+	            break;
 	        }
-	        if (nextFragment) {
-	            fragmentIndex++;
-	            if (fragmentIndex >= fragments.length) {
-	                break;
-	            }
-	            fragment = fragments[fragmentIndex];
-	            if (match) {
-	                findRe.lastIndex = 0;
-	            }
-	            continue;
-	        }
-	        // Arrive here if we have a matched replacement.
-	        // The replacement splits the fragment into 3 fragments.
-	        var before = match.input.slice(0, match.index);
-	        var after = match.input.slice(findRe.lastIndex);
-	        fragments.splice(fragmentIndex, 1, { text: before, done: false }, { text: '', done: true }, { text: after, done: false });
-	        // Advance to 'matched' fragment and fill in the replacement text.
-	        fragmentIndex++;
-	        fragment = fragments[fragmentIndex];
-	        if (match[0][0] === '\\') {
-	            // Remove leading backslash.
-	            fragment.text = match.input.slice(match.index + 1, findRe.lastIndex);
-	            fragment.text = utils.replaceSpecialChars(fragment.text);
-	        }
-	        else {
-	            if (!def.filter) {
-	                fragment.text = utils.replaceMatch(match, def.replacement, { specials: true });
-	            }
-	            else {
-	                fragment.text = def.filter(match);
-	            }
-	        }
-	        fragmentIndex++;
-	        fragment = fragments[fragmentIndex];
-	        findRe.lastIndex = 0;
+	        // Restart search after escaped opening quote.
+	        quotesRe.lastIndex = match.index + match[1].length + 1;
 	    }
+	    var result = [];
+	    // Arrive here if we have a matched quote.
+	    // The quote splits the input fragment into 5 or more output fragments:
+	    // Text before the quote, left quote tag, quoted text, right quote tag and text after the quote.
+	    var def = quotes.getDefinition(match[1]);
+	    // Check for same closing quote one character further to the right.
+	    while (fragment.text[quotesRe.lastIndex] === match[1][0]) {
+	        // Move to closing quote one character to right.
+	        match[2] += match[1][0];
+	        quotesRe.lastIndex += 1;
+	    }
+	    var before = match.input.slice(0, match.index);
+	    var quoted = match[2];
+	    var after = match.input.slice(quotesRe.lastIndex);
+	    result.push({ text: before, done: false });
+	    result.push({ text: def.openTag, done: true });
+	    if (!def.spans) {
+	        // Spans are disabled so render the quoted text verbatim.
+	        quoted = utils.replaceSpecialChars(quoted);
+	        quoted = quoted.replace(/\u0000/g, '\u0001'); // Substitute verbatim replacement placeholder.
+	        result.push({ text: quoted, done: true });
+	    }
+	    else {
+	        // Recursively process the quoted text.
+	        result.push.apply(result, fragQuote({ text: quoted, done: false }));
+	    }
+	    result.push({ text: def.closeTag, done: true });
+	    // Recursively process the following text.
+	    result.push.apply(result, fragQuote({ text: after, done: false }));
+	    return result;
+	}
+	// Stores placeholder replacement fragments saved by `preReplacements()` and restored by `postReplacements()`.
+	var savedReplacements;
+	// Return text with replacements replaced with placeholders (see `postReplacements()`).
+	function preReplacements(text) {
+	    savedReplacements = [];
+	    var fragments = fragReplacements([{ text: text, done: false }]);
+	    // Reassemble text with replacement placeholders.
+	    return fragments.reduce(function (result, fragment) {
+	        if (fragment.done) {
+	            savedReplacements.push(fragment); // Save replaced text.
+	            return result + '\u0000'; // Placeholder for replaced text.
+	        }
+	        else {
+	            return result + fragment.text;
+	        }
+	    }, '');
+	}
+	// Replace replacements placeholders with replacements text from savedReplacements[].
+	function postReplacements(text) {
+	    return text.replace(/\u0000|\u0001/g, function (match) {
+	        var fragment = savedReplacements.shift();
+	        return (match === '\u0000') ? fragment.text : utils.replaceSpecialChars(fragment.verbatim);
+	    });
+	}
+	// Fragment replacements in all fragments and return resulting fragments array.
+	function fragReplacements(fragments) {
+	    var result;
+	    replacements.defs.forEach(function (def) {
+	        result = [];
+	        fragments.forEach(function (fragment) {
+	            result.push.apply(result, fragReplacement(fragment, def));
+	        });
+	        fragments = result;
+	    });
+	    return result;
+	}
+	// Fragment replacements in a single fragment for a single replacement definition.
+	// Return resulting fragments array.
+	function fragReplacement(fragment, def) {
+	    if (fragment.done) {
+	        return [fragment];
+	    }
+	    var replacementRe = def.match;
+	    var match;
+	    replacementRe.lastIndex = 0;
+	    match = replacementRe.exec(fragment.text);
+	    if (!match) {
+	        return [fragment];
+	    }
+	    var result = [];
+	    // Arrive here if we have a matched replacement.
+	    // The replacement splits the input fragment into 3 output fragments:
+	    // Text before the replacement, replaced text and text after the replacement.
+	    var before = match.input.slice(0, match.index);
+	    result.push({ text: before, done: false });
+	    var replacement;
+	    if (match[0][0] === '\\') {
+	        // Remove leading backslash.
+	        replacement = utils.replaceSpecialChars(match[0].slice(1));
+	    }
+	    else {
+	        if (!def.filter) {
+	            replacement = utils.replaceMatch(match, def.replacement, { specials: true });
+	        }
+	        else {
+	            replacement = def.filter(match);
+	        }
+	    }
+	    result.push({ text: replacement, done: true, verbatim: match[0] });
+	    var after = match.input.slice(replacementRe.lastIndex);
+	    // Recursively process the remaining text.
+	    result.push.apply(result, fragReplacement({ text: after, done: false }, def));
+	    return result;
 	}
 	function fragSpecials(fragments) {
 	    // Replace special characters in all non-done fragments.
-	    var fragment;
-	    for (var i in fragments) {
-	        fragment = fragments[i];
-	        if (!fragment.done) {
-	            fragment.text = utils.replaceSpecialChars(fragment.text);
-	        }
-	    }
+	    fragments
+	        .filter(function (fragment) { return !fragment.done; })
+	        .forEach(function (fragment) { return fragment.text = utils.replaceSpecialChars(fragment.text); });
 	}
 
 

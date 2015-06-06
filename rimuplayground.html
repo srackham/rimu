@@ -83,6 +83,7 @@
       <option value="topic-character-entities">Character entities</option>
       <option value="topic-comments">Comments</option>
       <option value="topic-delimited-blocks">Delimited blocks</option>
+      <option value="topic-documents">Documents</option>
       <option value="topic-headers">Headers</option>
       <option value="topic-html-markup">HTML Markup</option>
       <option value="topic-images">Images</option>
@@ -131,39 +132,92 @@
 
 <div id="topic-api">
 <!--
-Rimu has just one API:
+Rimu has just one API to convert Rimu markup to HTML:
 
   render(source [, options])
 
-Where `source` is a string containing Rimu markup and `options` is an
-optional object argument with zero or more of the following
-properties:
+The `source` argument is a string containing Rimu markup. The return
+value is a string containing the resultant HTML.
+The optional `options` argument controls rendering behaviour.
 
-`safeMode`:: This option has a number value that controls how Rimu
-renders embedded HTML:
+The `render()` API is stateful: Macros and custom element definitions
+are retained across API calls along with API options.
+Use the `reset` option to set the default state.
 
-  0 => Render the raw HTML (default behavior).
-  1 => Delete the HTML.
-  2 => Replace the HTML with the 'htmlReplacement' option string.
-  3 => Render HTML as text.
-
-`htmlReplacement`:: A string that replaces embedded HTML when
-`safeMode` is set to `2`. Defaults to `<mark>replaced HTML</mark>`.
-
+### Example usage
 Node.js example (Rimu has been installed from npm):
 
   var Rimu = require('rimu');
-  var html= Rimu.render('Hello *Rimu*!', {safeMode: 1});
+  var html= Rimu.render('Hello *Rimu*!', {safeMode:1});
 
 HTML script tag example:
 
   <script type="text/javascript" src="rimu-var.js"></script>
   <script type="text/javascript">
-    console.log(Rimu.render('Hello *Rimu*!', {safeMode: 1}));
+    console.log(Rimu.render('Hello *Rimu*!', {reset:true, safeMode:2}));
   </script>
 
 See `rimuc.js` and `rimuplayground.html` for examples of `render()`
 in action.
+
+### API options
+The `options` argument is an object with zero or more of the following
+properties:
+
+`safeMode`:: This option has a number value that controls how Rimu
+renders embedded HTML and whether or not Rimu definition and option elements
+are processed:
+..
+  0 => Render HTML (default behavior).
+  1 => Delete HTML.
+  2 => Replace HTML with the 'htmlReplacement' option string.
+  3 => Render HTML as text.
+
+- If `safeMode` is non-zero the following Rimu elements are ignored:
+  * Delimited Block, Paragraph, Macro, Quote and Replacement definitions.
+  * API Options.
+  * HTML attributes in Block Attribute elements.
+- Once a non-zero `safeMode` has been set then it can only be reset by
+  a `render()` API call with a `safeMode:0` or a `reset:true` option.
+..
+
+`htmlReplacement`:: A string that replaces embedded HTML when
+`safeMode` is set to `2`. Defaults to `<mark>replaced HTML</mark>`.
+
+`macroMode`:: This option specifies which Rimu macro invocations are
+processed:
+..
+  0 => None
+  1 => All (legacy version 4 default behavior)
+  2 => Only Defined macros
+  3 => Only Reserved macros
+  4 => Defined or Reserved macros (default behavior)
+
+Unprocessed macro invocations are rendered verbatim.
+..
+
+`reset`:: This boolean option causes the `render()` API to be set to its default state
+(default option values; default Quotes, Replacements, Delimited Block
+and Paragraph definitions; no macro definitions). The `reset` option is processed
+before other options.
+
+### API Option elements
+API options can be set in the Rimu source using a single-line block
+element with the following syntax:
+
+  .option-name = 'option-value'
+
+- `option-name` is `safeMode`, `htmlReplacement` or `macroMode`.
+- The `option-value` is a valid option value.
+- An API Option element must start at the left margin and must not
+  extend beyond the end of the line.
+- The option is applied to Rimu markup that follows the option element.
+- API Option elements are not processed if the `safeMode` is non-zero.
+
+For example, the following API Option element ensures all subsequent
+macro invocations are expanded:
+
+  .macroMode = '1'
 
 -->
 </div>
@@ -182,17 +236,16 @@ Character entities can be escaped with a backslash character prefix.
 <div id="topic-comments">
 <!--
 A _multi-line comment_ starts with a line containing only `/*` and
-ends with a line containing only `*/` for example:
+ends with a line containing only `*/`.
 
-  /*
-    This comment does not appear in the
-    rendered HTML.
-  */
+/*
+  This comment does not appear in the
+  rendered HTML.
+*/
 
-A _single-line comment_ is any line of text starting with `//`
-for example:
+A _single-line comment_ is any line of text starting with `//`.
 
-  // This comment does not appear in the rendered HTML.
+// This comment does not appear in the rendered HTML.
 
 - Comments are not included in the HTML output.
 - Comments are block elements and cannot be used inline, for example
@@ -226,7 +279,7 @@ behavior can be changed using a preceding _Block Attributes_ element.
 The generated HTML is enveloped  with  <pre><code>...</code></pre>
 tags.
 
-The delimiter lines are two or more back-tick characters starting at the
+The delimiter lines are two or more backtick characters starting at the
 left margin.
 ```
 
@@ -273,11 +326,13 @@ Definition syntax:
   `-spans`:: Disable span element processing.
   `+specials`:: Enable special character entities.
   `-specials`:: Disable special character entities.
-  `+container`:: The block is a container for Rimu elements.
+  `+container`:: The block is a container for Rimu block elements.
   `-container`:: Turn off the container option.
   `+skip`:: Skip the block.
   `-skip`:: Turn off the skip option.
 
+- Do not apply `macros`, `spans` `or specials` block options to
+  Division blocks or Quote blocks (container blocks) or Lists.
 - _Quote_ and _Replacement_ elements are collectively refered to as
   _Spans_.
 - The `-specials` option is ignored if the API _safeMode_ option is
@@ -494,7 +549,8 @@ non magnis facilisi scelerisque luctus. Quis praesent pulvinar.
 <div id="topic-paragraphs">
 <!--
 Paragraph block elements are terminated by a blank line (lines
-containing only space characters do not terminate a paragraph).
+containing only space characters do not terminate a paragraph)
+or a closing Division Block or Quote Block delimiter.
 
 There are three paragraph types:
 
@@ -512,6 +568,7 @@ Line breaks can be escaped by prefixing the trailing backslash
 with another backslash character.
 
 #### Indented paragraphs
+  Indented paragraphs begin with one or more space characters.
   By default the all text in an _Indented Paragraph_ is rendered
   verbatim. This behavior can be changed using a preceding _Block
   Attributes_ element.  The generated HTML is enveloped  with
@@ -554,27 +611,30 @@ interactive sandbox for learning and experimenting with Rimu markup:
 
 <div id="topic-quotes">
 <!--
-Text can be formatted by enclosing it with quote characters. The
-built-in quote characters are: underscore for _emphasized text_;
-single and double-asterisk for *bold text*; back-tick for
-`monospaced text`, double-tilde for ~~strikethrough~~.
+Text can be formatted by enclosing it in single or double quote
+characters. The built-in default quote characters are:
+single underscore or asterisk for _emphasized_  *text*;
+double underscore or asterisk for __bold__ **text**;
+single or double backtick for`monospaced text`;
+double-tilde for ~~strikethrough~~.
 
   Rimu            HTML                      Font style
   ___________________________________________________________
   _emphasis_      <em>emphasis</em>         Italic
-  *strong*        <strong>strong</strong>   Bold
+  *emphasis*      <em>emphasis</em>         Italic
+  __strong__      <strong>strong</strong>   Bold
   **strong**      <strong>strong</strong>   Bold
   `code`          <code>code</code>         Monospaced
+  ``code``        <code>code</code>         Monospaced
   ~~deleted~~     <del>deleted</del>        Strikethrough
   ___________________________________________________________
 
+- Quoted text must begin and end with non-whitespace characters.
 - Quotes and inline elements can be nested within a quote with the
-  exception of the _code_ quote which displays enclosed elements verbatim.
-- Quotes can be escaped with backslash character prefixes. If the text
-  contains multiple quotes of the same type then, to resolve ambiguity,
-  both open and close quotes must be escaped.
-- Quoted text must begin and end with non-whitespace characters and
-  cannot end with a backslash character.
+  exception of the _code_ quote which displays text verbatim.
+- Quotes can be escaped by prefixing the opening quote with with a backslash
+  character. If the text contains multiple quotes of the same type then,
+  to resolve ambiguity, additional quotes may have to be escaped.
 
 You can modify existing quote behavior or add new quotes using _Quote
 definitions_.
@@ -628,16 +688,13 @@ Definition syntax:
 - A macro definition must start at the left margin.
 - Macro definition lines ending with a single-quote character can be
   continued to the next line by appending a backslash character.
-- Macros are expanded in macro definitions when they are defined not
-  when they are invoked.
+- Macros are expanded in macro definitions at the point they are defined not
+  where they are invoked.
 - Macro expansion can be disabled in multi-line macro definitions
   using a preceding _Block Attributes_ `-macros` option.
 
 
 ### Macro Invocations
-When a macro is invoked the invocation is replaced by text which is
-determined by the macro value.
-
 Invocation syntax:
 
   {macro-name}                      Simple macro invocation
@@ -646,6 +703,8 @@ Invocation syntax:
   {macro-name=pattern}              Inclusion macro invocation
   {macro-name!pattern}              Inclusion macro invocation
 
+- If a macro invocation is excluded by the `macroMode` setting then
+  it will not be processed.
 - A _Simple_ macro invocation is replaced by the macro value or a
   blank string if the macro is not defined.
 - An _Existential_ macro invocation is replaced by the macro value or a
@@ -659,15 +718,12 @@ Invocation syntax:
     with a backslash character prefix.
   *  Macro invocation parameters can contain inline Rimu elements;
      inline parameter values can span multiple lines.
-- The `\{macro-name=pattern}` _Inclusion_ invocation is replaced by a
+- The `{macro-name=pattern}` _Inclusion_ invocation is replaced by a
   blank string if the macro value matches the `pattern` (where
   `pattern` is a JavaScript regular expression).  If the macro value
-  does not match the `pattern` the containing line is skipped.  If the
-  macro is undefined its value is treated as a blank string for the
-  purpose of pattern matching.  This feature can be used to
-  conditionally include lines of source text.
-- The `\{macro-name!pattern}` _Inclusion_ invocation syntax is the
-  inverse of the `\{macro-name=pattern}` syntax i.e. the macro
+  does not match the `pattern` the containing line is skipped.
+- The `{macro-name!pattern}` _Inclusion_ invocation syntax is the
+  inverse of the `{macro-name=pattern}` syntax i.e. the macro
   invocation is replaced by a blank string if the macro value does not
   match the `pattern`, if it does match the containing line is
   skipped.
@@ -676,8 +732,11 @@ Invocation syntax:
   `+macros` and `-macros` options to enable and disable expansion
   inside multi-line block elements (delimited blocks, paragraphs,
   multi-line macro definitions and HTML).
-- Macro invocations can be escaped with a leading backslash character
-  prefix.
+- Macro invocations can be escaped in block elements that have
+  macro expansion enable using a leading backslash character
+  prefix. Escaped macro invocations are rendered verbatim minus
+  the backslash. Escaping is unnecessary in blocks that do not
+  perform macro expansion (_Code_ blocks and _Indented_ paragraphs).
 - Macro invocations cannot be nested.
 - Macro invocations can contain `}` characters but they must be escaped
   with a backslash character (otherwise they will be mistaken for the
@@ -708,17 +767,16 @@ Visit the {homepage}.
 - Macro invocations are expanded and then processing continues from
   the start of the expanded line.
 - A _Macro Line_ can be the first line in any other block element
-  with the exception of _Line Block_ definition elements i.e. Macro,
-  Quote, Replacement or Delimited Block definitions.
+  with the exception of _Line Block_ definition elements.
 
 These properties allow macros to be used to inject Rimu markup into
 the source stream and allow block elements to be prefixed with
 _Inclusion_ macros.
 
-### Reserved macro names
-Macro names starting with a dash character are reserved for use by
-Rimu. The `- -` (_Undefined_) macro is guaranteed to always be
-undefined.
+### Reserved macros
+Macros with names starting with two hyphen characters are called
+_Reserved_ macros.
+The `- -` macro is guaranteed to always be undefined.
 
 -->
 </div>
@@ -760,7 +818,7 @@ Example replacement definitions:
 -->
 </div>
 
-<div id="topic-taxonomy">
+<div id="topic-documents">
 <!--
 #### Document structure
 - A Rimu document consists of zero or more _Block_ elements.
@@ -770,6 +828,38 @@ Example replacement definitions:
   * A _Line Block_ element consists of just one line.
 - _Inline_ elements are contained within the textual content of Block
   elements.
+- See the _Taxonomy_ section for a full list of Rimu element types.
+
+
+#### Document processing
+Rimu scans the input text for block elements. When a block element is
+matched it is converted to HTML on the output.
+
+#### Block elements
+Block elements in the source markup are matched in the following order
+(first to last):
+
+. Line Blocks
+. Lists
+. Delimited Blocks
+. Paragraphs
+
+#### Inline elements
+Inline elements are processed in the following order (first to last):
+
+. Macros
+. Replacements
+. Quotes
+
+Special character substitution takes place last.
+Inline substitutions in multi-line block elements can be controlled
+using _block-options_ in the _Block Attributes_ element.
+
+-->
+</div>
+
+<div id="topic-taxonomy">
+<!--
 
 #### Element taxonomy
 ```
@@ -785,6 +875,7 @@ Block elements
         Quote Block
         Quote Paragraph
     Line Blocks
+        API Option
         Element Definitions
             Macro Definition
             Quote Definition
@@ -836,13 +927,14 @@ SYNOPSIS
   rimuc [OPTIONS...] [FILES...]
 
 DESCRIPTION
-  Reads Rimu source markup from stdin, converts it to HTML
+  Reads Rimu source markup from stdin, converts them to HTML
   then writes the HTML to stdout. If FILES are specified
   the Rimu source is read from FILES.
 
   If a file named .rimurc exists in the user's home directory
-  then its contents is processed after - -prepend sources but before
-  any other inputs. Rendered with safe-mode 0.
+  then its contents is processed (with safeMode 0) after
+  - -prepend sources but before any other inputs.
+  This behavior can be disabled with the - -no-rimurc option.
 
 OPTIONS
   -h, - -help
@@ -853,22 +945,34 @@ OPTIONS
 
   -p, - -prepend SOURCE
     Process the SOURCE text before other inputs.
-    Rendered with safe-mode 0.
+    Rendered with safeMode 0.
 
   - -no-rimurc
     Do not process .rimurc from the user's home directory.
-
-  - -safe-mode NUMBER
-    Specifies how to process inline and block HTML elements.
-    - -safe-mode 0 renders raw HTML (default),
-    - -safe-mode 1 drops raw HTML,
-    - -safe-mode 2 replaces raw HTML with text 'replaced HTML'.
-    - -safe-mode 3 renders raw HTML as text.
 
   -s, - -styled
     Include HTML header and footer and Bootstrap CSS styling in
     output. If one source file is specified the output is written to
     same-named file with .html extension.
+
+  - -safeMode NUMBER
+    Specifies how to process inline and block HTML elements.
+    - -safeMode 0 renders raw HTML (default).
+    - -safeMode 1 drops raw HTML.
+    - -safeMode 2 replaces raw HTML with htmlReplacement option text.
+    - -safeMode 3 renders raw HTML as text.
+
+  - -macroMode NUMBER
+    Specifies which Rimu macro invocations are processed.
+    - -macroMode 0 None.
+    - -macroMode 1 All (legacy version 4 default behavior).
+    - -macroMode 2 Only Defined macros.
+    - -macroMode 3 Only Reserved macros.
+    - -macroMode 4 Defined or Reserved macros (default behavior).
+
+  - -htmlReplacement
+     A string that replaces embedded HTML when safeMode is set to 2.
+     Defaults to `<mark>replaced HTML</mark>`.
 
 STYLING MACROS AND CLASSES
   The following macros and CSS classes are available when the
@@ -927,6 +1031,8 @@ to your taste delete them from the end of the file.
 
 <div id="topic-urls-and-email">
 <!--
+URLs and email address elements are implemented with built-in _Replacements_.
+
 Syntax:
 
   Rimu              HTML

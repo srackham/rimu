@@ -53,7 +53,6 @@
       font-size: inherit;
     }
     *:not(pre) > code {
-      white-space: nowrap;
       border: none;
       background-color: #f8f8f8;
     }
@@ -113,7 +112,38 @@
 <h1>Rimu Markup CHANGELOG</h1>
 <p>See the <a href="https://github.com/srackham/rimu/commits/">Git commit log</a>
 for more detailed information.</p>
-<h2>Version 4.0.1 (2015-05-06)</h2>
+<h2>Version 5.0.0 (2015-06-07)</h2>
+<p>This version adds new API options, an <em>API Options</em> element and more Markdown
+compatibility. It also includes some breaking changes.</p>
+<ul><li>Added <code>macroMode</code> API option to specify which macro invocations are processed.
+</li><li>Added <code>reset</code> API option to reset the API to its default state.
+</li><li>Added Markdown compatible double back-tick <code>`code quotes`</code> and double
+  underline <code>__strong quotes__</code>.
+</li><li>Added <em>API Option</em> element to allow API options to be set in Rimu source.
+</li><li>Bug fixes.
+</li><li>Add <code>--macroMode</code> and <code>--htmlReplacement</code> options to <code>rimuc</code> command.
+  The <code>--safe-mode</code> is renamed to <code>--safeMode</code> (<code>--safe-mode</code> still works but
+  is deprecated).
+</li></ul><p>Breaking changes:</p>
+<ul><li>Changed default behavior of single-asterisk quote from strong to emphasis to align
+  with Markdown. To reinstate old behavior use this quote definition:
+<ul><li>= '<strong>|</strong>'
+</li></ul></li><li>By default only defined and reserved macro invocations are expanded. Previously all macros
+  were expanded which to often generated surprising results e.g. if the <code>text</code> macro
+  was not explicitly defined then <code>${text}</code> would silently render <code>$</code>.
+  To revert to the previous behaviour set the <code>macroMode</code> API option to <code>1</code>.
+</li><li>Replacements are processed before quotes (previously they were processed after quotes).
+  This is ensures quotes are not expanded inside URLs (notably underscores) and aligns
+  with Markdown behaviour.
+  If there are escaped quotes in URLs they will no longer be unescaped and you will need
+  to remove them.
+</li><li>The <code>render()</code> API only changes <code>options</code> that are explicitly specified.
+  Previously, unspecified <code>options</code> were set to their default values which was
+  surprising and potentially dangerous because it reset the <code>safeMode</code> to the default
+  unsafe value of zero unless <code>safeMode</code> was explicitly specified otherwise.
+</li><li>A backslash immediately preceding a closing <em>code</em> quote is now rendered verbatim
+  and does not escape the quote.
+</li></ul><h2>Version 4.0.1 (2015-05-06)</h2>
 <p>Documentation updates (no functional changes).</p>
 <ul><li>Use Markdown links and headers syntax in documentation.
   Most users will already know and use Markdown so this makes Rimu
@@ -137,17 +167,17 @@ for more detailed information.</p>
 <ul><li>Auto-encode (most) raw HTTP URLs as links.
 </li><li>Added Markdown compatible Quote Paragraphs (paragraphs starting with <code>&gt;</code>
   rendered inside a <code>&lt;blockquote&gt;</code> HTML element).
-</li><li>Added back-tick delimiter for code blocks - - back-tick is now the normative
+</li><li>Added backtick delimiter for code blocks - - backtick is now the normative
   code block delimiter (the older dash delimiter is deprecated but will never
-  be dropped). Back-tick rationale:
-<ol><li>Consistency: aligned with use of back-tick to quote inline code.
+  be dropped). backtick rationale:
+<ol><li>Consistency: aligned with use of backtick to quote inline code.
 </li><li>Familarity: looks like a Github Flavored Markdown fenced code block.
 </li></ol></li></ul><h2>Version 3.0 (2013-10-28)</h2>
 <ul><li>Added <em>Delimited Block</em> definitions.
 </li><li>Enhanced and refined Macros.
 </li><li>Many other enhancements, additions and documentation updates.
 </li><li><em>Indented Paragraphs</em> and <em>Code Blocks</em> no longer expand macro
-  invocations by default. To reinstate old behavior use this delimited
+  invocations by default. To reinstate old behavior use these delimited
   block definitions:
 <pre class="no-highlight"><code>|code| = '+macros'
 |indented| = '+macros'</code></pre>
