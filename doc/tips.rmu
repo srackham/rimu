@@ -53,7 +53,7 @@ experimentation.
   makes extensive use of Rimu macros.
 
 
-## Intra-Document Links
+## Intra-document Links
 To link to another place within a document: Create an ID for the
 element you want to link to (using the Rimu _Block Attribute_ element)
 then create a link to it using a fragment identifier URL. For example:
@@ -71,17 +71,18 @@ So does [this link](#link-target).'
 
 
 .#syntax-highlighting
-## Syntax highlighting
-[Highlight.js](https://github.com/isagalaev/highlight.js) is a nice
-syntax highlighter that makes it trivial to add syntax highlighting to
-Rimu Code blocks and Indented paragraphs.  The _rimuc_ tool `--styled`
-option includes Highlight.js if you set the `\{--highlightjs}` macro to
-a non-blank value. It does this by linking to CSS and JavaScript files
-on the _Highlight.js_ website.
+## Code syntax highlighting
+The _rimuc_ tool `--styled` option can be used to enable code syntax
+highlighting in Rimu Code blocks and Indented paragraphs using the
+[Highlight.js](https://github.com/isagalaev/highlight.js) syntax
+highlighter. This is achieved using macros and is not baked in to Rimu
+so you are free to use other syntax highlighters.
 
-_Highlight.js_ automatically detects the language in Code Blocks and
-Indented Paragraphs. You can also set the language explicitly by
-adding a code block class, for example:
+The _rimuc_ tool `--styled` option includes _Highlight.js_ if you set
+the `\{--highlightjs}` macro to a non-blank value.  _Highlight.js_
+automatically detects the language in Code Blocks and Indented
+Paragraphs. You can also set the language explicitly by adding a code
+block class, for example:
 
 {highlightjs-example} = '\{--highlightjs} = 'yes'\
 
@@ -103,7 +104,9 @@ function die(message) {
 Set the `no-highlight` class to disable syntax highlighting for a code
 block.  Adding the `no-highlight` class to all code blocks using
 _Delimited Block Definitions_ effectively turns off auto-highlighting
-unless the language class is explicitly set:
+unless the language class is explicitly set. The [example .rimurc
+file](https://github.com/srackham/rimu/blob/master/examples/.rimurc)
+does this by with these custom definitions:
 
   |code| = '<pre class="no-highlight"><code>|</code></pre>'
   |indented| = '<pre class="no-highlight"><code>|</code></pre>'
@@ -142,12 +145,9 @@ _npmjs.org_ README formats.
 
 
 ## Escaping Rimu syntax
-If you have text that you don't want interpreted as a Rimu element
-then you can render it literally (escape it) by prefixing the element
-with a backslash character.
-
-The text inside _code_ quotes is rendered verbatim -- to include backtick
-characters in code quotes use double-backtick quotes.
+If you have text that you don't want interpreted as a Rimu
+element then you can render it literally (escape it) by prefixing the
+element with a backslash character.
 
 Here are some examples:
 
@@ -160,6 +160,9 @@ Here are some examples:
 \# Escaped header.'
 
 {generate-rendered-example-1|escaped-elements-example}
+
+NOTE: The text inside _code_ quotes is always rendered verbatim -- to
+include backtick characters in code quotes use double-backtick quotes.
 
 
 ## Passing macro values into Rimu documents
@@ -177,14 +180,22 @@ output document:
   rimuc --styled --prepend "{--title}='Kotlin Notes'" kotlin-notes.rmu
 
 
-## Syntax checker
-The Vim editor syntax highlighter is a big help when writing (and
-reading) Rimu markup.
-
-
-## The Rimu markup looks ok but the generated HTML is wrong
+## The Rimu markup looks correct but the generated HTML is wrong
 Using an editor with Rimu syntax highlighting support (see previous
-topic) makes it much easier to spot syntax errors.
+topic) makes it much easier to spot syntax errors.  Rimu includes a
+Vim editor syntax highlighter, see the _Tools_ section of the [Rimu
+Playground](http://srackham.github.io/rimu/rimuplayground.html) for
+details.
+
+
+## Extending the Vim syntax highlighter
+If you've added custom replacements and quotes you can highlight them
+in Vim by creating a custom `~/.vim/after/syntax/rimu.vim` syntax
+file (Vim loads files from the `after` directory after loading normal
+syntax files).  The distributed [example ~/.vim/after/syntax/rimu.vim
+syntax file](https://github.com/srackham/rimu/blob/master/examples/rimu.vim)
+highlights custom syntax definitions from the [example .rimurc
+file](https://github.com/srackham/rimu/blob/master/examples/.rimurc).
 
 
 ## Render contiguous Indented paragraphs with a single element
@@ -208,7 +219,18 @@ containing one or more space characters:
   consectetuer commodo.
   
   Neque a massa. Porttitor
-  consectetuer commodo.'
+  consectetuer commodo.
+
+
+#### Use a code block instead
+
+```
+Neque a massa. Porttitor
+consectetuer commodo.
+
+Neque a massa. Porttitor
+consectetuer commodo.
+```'
 
 {generate-rendered-example-1|joined-paragraphs-example}
 
@@ -275,17 +297,8 @@ source non-portable and less readable.
 .#example-rimurc
 ## Example .rimurc file
 The Rimu distribution includes an [example .rimurc
-file](https://github.com/srackham/rimu/blob/master/examples/.rimurc).
-
-
-## Extending the Vim syntax highlighter
-If you've added custom replacements and quotes you can highlight them
-in Vim by creating a custom `~/.vim/after/syntax/rimu.vim` syntax
-file (Vim loads files from the `after` directory after loading normal
-syntax files).  The distributed [example ~/.vim/after/syntax/rimu.vim
-syntax file](https://github.com/srackham/rimu/blob/master/examples/rimu.vim)
-highlights custom syntax definitions from the [example .rimurc
-file](https://github.com/srackham/rimu/blob/master/examples/.rimurc).
+file](https://github.com/srackham/rimu/blob/master/examples/.rimurc)
+containing a number or useful niceties.
 
 
 ## Using Macro, Replacement and Quote definitions in Safe Mode
@@ -348,8 +361,12 @@ A MathML block formula:
 NOTE: Macro expansion has been disabled in LaTeX formulas to stop
 `{i=0}` and `{2}` from being mistaken for Rimu macro invocations.
 
-See the [latest MathJax documentation](http://docs.mathjax.org/en/latest/)
-to learn how to use MathJax.
+See the [latest MathJax
+documentation](http://docs.mathjax.org/en/latest/) to learn how to use
+MathJax.
+
+As with [code syntax highlighting](#syntax-highlighting), this
+behaviour is achieved using macros and is not baked in to Rimu.
 
 
 ## Inline Comments
@@ -387,7 +404,7 @@ This works because lines (in a block context) that begin with a macro
 invocation are initially processed as _Line Macro_ elements.
 ..
 
-Delmited Blocks, HTML Blocks and Paragraphs::
+Delimited Blocks, HTML Blocks and Paragraphs::
 ..
 To conditionally exclude these multi-line block elements enable the
 `+skip` option with a preceding _Attribute Block_ element. For

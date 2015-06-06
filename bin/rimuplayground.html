@@ -141,7 +141,7 @@ value is a string containing the resultant HTML.
 The optional `options` argument controls rendering behaviour.
 
 The `render()` API is stateful: Macros and custom element definitions
-are retained across API calls as are API options.
+are retained across API calls along with API options.
 Use the `reset` option to set the default state.
 
 ### Example usage
@@ -927,13 +927,14 @@ SYNOPSIS
   rimuc [OPTIONS...] [FILES...]
 
 DESCRIPTION
-  Reads Rimu source markup from stdin, converts it to HTML
+  Reads Rimu source markup from stdin, converts them to HTML
   then writes the HTML to stdout. If FILES are specified
   the Rimu source is read from FILES.
 
   If a file named .rimurc exists in the user's home directory
-  then its contents is processed after - -prepend sources but before
-  any other inputs. Rendered with safe-mode 0.
+  then its contents is processed (with safeMode 0) after
+  - -prepend sources but before any other inputs.
+  This behavior can be disabled with the - -no-rimurc option.
 
 OPTIONS
   -h, - -help
@@ -944,22 +945,34 @@ OPTIONS
 
   -p, - -prepend SOURCE
     Process the SOURCE text before other inputs.
-    Rendered with safe-mode 0.
+    Rendered with safeMode 0.
 
   - -no-rimurc
     Do not process .rimurc from the user's home directory.
-
-  - -safe-mode NUMBER
-    Specifies how to process inline and block HTML elements.
-    - -safe-mode 0 renders raw HTML (default),
-    - -safe-mode 1 drops raw HTML,
-    - -safe-mode 2 replaces raw HTML with text 'replaced HTML'.
-    - -safe-mode 3 renders raw HTML as text.
 
   -s, - -styled
     Include HTML header and footer and Bootstrap CSS styling in
     output. If one source file is specified the output is written to
     same-named file with .html extension.
+
+  - -safeMode NUMBER
+    Specifies how to process inline and block HTML elements.
+    - -safeMode 0 renders raw HTML (default).
+    - -safeMode 1 drops raw HTML.
+    - -safeMode 2 replaces raw HTML with htmlReplacement option text.
+    - -safeMode 3 renders raw HTML as text.
+
+  - -macroMode NUMBER
+    Specifies which Rimu macro invocations are processed.
+    - -macroMode 0 None.
+    - -macroMode 1 All (legacy version 4 default behavior).
+    - -macroMode 2 Only Defined macros.
+    - -macroMode 3 Only Reserved macros.
+    - -macroMode 4 Defined or Reserved macros (default behavior).
+
+  - -htmlReplacement
+     A string that replaces embedded HTML when safeMode is set to 2.
+     Defaults to `<mark>replaced HTML</mark>`.
 
 STYLING MACROS AND CLASSES
   The following macros and CSS classes are available when the

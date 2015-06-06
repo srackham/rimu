@@ -3,7 +3,7 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
-## Version 5.0.0 (2015-??-??)
+## Version 5.0.0 (2015-06-07)
 This version adds new API options, an _API Options_ element and more Markdown
 compatibility. It also includes some breaking changes.
 
@@ -19,10 +19,10 @@ compatibility. It also includes some breaking changes.
 
 Breaking changes:
 
-- Changed default behavior of single-asterisk quote from emphasis to strong to align
+- Changed default behavior of single-asterisk quote from strong to emphasis to align
   with Markdown. To reinstate old behavior use this quote definition:
 
-          * = '<em>|</em>'
+          * = '<strong>|</strong>'
 
 - By default only defined and reserved macro invocations are expanded. Previously all macros
   were expanded which to often generated surprising results e.g. if the `text` macro
@@ -35,10 +35,10 @@ Breaking changes:
   If there are escaped quotes in URLs they will no longer be unescaped and you will need
   to remove them.
 
-- The `render()` API no longer sets unspecified `options` properties to their
-  default values. The previous behaviour was surprising and potentially dangerous
-  because it reset the `safeMode` to the default unafe value of zero unless it was
-  explicitly specified otherwise.
+- The `render()` API only changes `options` that are explicitly specified.
+  Previously, unspecified `options` were set to their default values which was
+  surprising and potentially dangerous because it reset the `safeMode` to the default
+  unsafe value of zero unless `safeMode` was explicitly specified otherwise.
 
 - A backslash immediately preceding a closing _code_ quote is now rendered verbatim
   and does not escape the quote.

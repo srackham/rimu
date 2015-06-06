@@ -772,7 +772,7 @@ exports['Blocks'] = function(test) {
   test_document(
     '.-spans -specials\n_&foo_',
     '<p>_&amp;foo_</p>',
-    'specials expansion cannot be disabled in safe-mode', {safeMode: 1});
+    'specials expansion cannot be disabled in safeMode', {safeMode: 1});
   test_document(
     '.-spans\n_&foo_',
     '<p>_&amp;foo_</p>',
