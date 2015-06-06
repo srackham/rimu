@@ -37,6 +37,7 @@ function defrag(fragments: Fragment[]): string {
   return fragments.reduce((result, fragment) => result + fragment.text, '')
 }
 
+// Fragment quotes in all fragments and return resulting fragments array.
 function fragQuotes(fragments: Fragment[]): Fragment[] {
   let result: Fragment[]
   result = []
@@ -50,6 +51,7 @@ function fragQuotes(fragments: Fragment[]): Fragment[] {
   return result
 }
 
+// Fragment quotes in a single fragment and return resulting fragments array.
 function fragQuote(fragment: Fragment): Fragment[] {
   if (fragment.done) {
     return [fragment]
@@ -127,6 +129,7 @@ function postReplacements(text: string): string {
   })
 }
 
+// Fragment replacements in all fragments and return resulting fragments array.
 function fragReplacements(fragments: Fragment[]): Fragment[] {
   let result: Fragment[]
   replacements.defs.forEach( function (def) {
@@ -139,13 +142,15 @@ function fragReplacements(fragments: Fragment[]): Fragment[] {
   return result
 }
 
+// Fragment replacements in a single fragment for a single replacement definition.
+// Return resulting fragments array.
 function fragReplacement(fragment: Fragment, def: replacements.Definition): Fragment[] {
   if (fragment.done) {
     return [fragment]
   }
   let replacementRe = def.match
   let match: RegExpExecArray
-  replacementRe.lastIndex = 0 // TODO: Should not be necessary once 'g' option is not used.
+  replacementRe.lastIndex = 0
   match = replacementRe.exec(fragment.text)
   if (!match) {
     return [fragment]
