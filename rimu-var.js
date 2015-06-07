@@ -871,6 +871,9 @@ var Rimu =
 	    if (!(startItem = matchItem(reader))) {
 	        return false;
 	    }
+	    if (/^ {4,}/.test(reader.cursor())) {
+	        return false; // First list item cannot be indented by more than 3 spaces (Markdown compatibility).
+	    }
 	    ids = [];
 	    renderList(startItem, reader, writer);
 	    // ids should now be empty.
