@@ -9,7 +9,7 @@ compatibility. It also includes some breaking changes.
 
 - Added `macroMode` API option to specify which macro invocations are processed.
 - Added `reset` API option to reset the API to its default state.
-- Added Markdown compatible double back-tick ```code quotes``` and double
+- Added Markdown compatible double back-tick ````code quotes```` and double
   underline `__strong quotes__`.
 - Added _API Option_ element to allow API options to be set in Rimu source.
 - Bug fixes.
