@@ -75,29 +75,30 @@ So does [this link](#link-target).'
 The _rimuc_ tool `--styled` option can be used to enable code syntax
 highlighting in Rimu Code blocks and Indented paragraphs using the
 [Highlight.js](https://github.com/isagalaev/highlight.js) syntax
-highlighter. This is achieved using macros and is not baked in to Rimu
+highlighter. integration is achieved using macros and is not baked in to Rimu
 so you are free to use other syntax highlighters.
 
 The _rimuc_ tool `--styled` option includes _Highlight.js_ if you set
 the `\{--highlightjs}` macro to a non-blank value.  _Highlight.js_
 automatically detects the language in Code Blocks and Indented
-Paragraphs. You can also set the language explicitly by adding a code
-block class, for example:
+Paragraphs. You can set the language explicitly by injecting the
+language name into the code block. Here are two examples: the first uses
+GFM style syntax, the second uses Rimu's Block Attributes element:
 
 {highlightjs-example} = '\{--highlightjs} = 'yes'\
 
-.javascript
-```
-function die(message) {
-  if (message) {
-    console.error(message);
-  }
-  else {
-    console.error('fatal error');
-  }
-  process.exit(1);
+``` javascript
+if (message) {
+  console.error('Error: ' + message);
 }
-```'
+```
+
+.python
+``
+x = 1
+if x == 1:
+    print "x is 1."
+``'
 
 {generate-rendered-example-1|highlightjs-example}
 

@@ -3,6 +3,21 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
+## Version 5.1.0 (2015-06-??)
+New features:
+
+- You can append CSS class names to Delimited Block opening delimiter lines and they
+  will be injected into the block's opening HTML tag (this is
+  an alternative to using a _Block Attributes_ element and was
+  added for compatibility with Github Flavored Markdown's code block highlighting).
+  For example:
+
+    ``` javascript
+    if (message) {
+      console.error('Error: ' + message);
+    }
+    ```
+
 ## Version 5.0.0 (2015-06-07)
 This version adds new API options, an _API Options_ element and more Markdown
 compatibility. It also includes some breaking changes.

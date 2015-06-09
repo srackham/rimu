@@ -42,7 +42,7 @@
       while (!this.eof()) {
         match = this.cursor().match(find)
         if (match) {
-          if (match.length > 1) {
+          if (match[1] !== undefined) {
             result.push(match[1])   // $1
           }
           this.next()

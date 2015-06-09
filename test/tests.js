@@ -323,7 +323,23 @@ exports['Blocks'] = function(test) {
   test_document(
     '..\nTo be...\n\n...\nTo be...\n\nor not to be!\n...\n\nor not to be!\n..',
     '<div><p>To be...</p>\n<div><p>To be...</p>\n<p>or not to be!</p></div>\n<p>or not to be!</p></div>',
-    'nested delimited block of the same type');
+    'nested Division blocks');
+  test_document(
+    '``\nTo be...\n\n```\nTo be...\n\nor not to be!\n```\n\nor not to be!\n``',
+    '<pre><code>To be...\n\n```\nTo be...\n\nor not to be!\n```\n\nor not to be!</code></pre>',
+    'nested Code blocks');
+  test_document(
+    '`` js\nvar x = 42;\n``',
+    '<pre class="js"><code>var x = 42;</code></pre>',
+    'Code block with class injection');
+  test_document(
+    '"" quote highlight\nTo be...\n""',
+    '<blockquote class="quote highlight"><p>To be...</p></blockquote>',
+    'Quote block with class injection');
+  test_document(
+    '..one two \nTo be...\n..',
+    '<div class="one two"><p>To be...</p></div>',
+    'Division block with class injection');
 
   // Lists.
   test_document(

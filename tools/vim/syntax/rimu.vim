@@ -42,7 +42,7 @@ syn match rimuSpanCode /\\\@<!`[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[ \t\n]\@<!`
 syn match rimuSpanCode /\\\@<!``[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[ \t\n]\@<!``/
 syn match rimuSpanDeleted /\\\@<!\~\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\~\~/ contains=rimuSpanEntity
 syn region rimuHeader matchgroup=rimuHeaderStartEnd start=/^\(=\|#\)\{1,6}\s\+/ end=/\(\s\+\(=\|#\)\{1,6}\)\?\_$/ contains=rimuSpan.* oneline keepend
-syn match rimuBlockDelimiter /^\("\|\.\)\{2,}$/
+syn match rimuBlockDelimiter /^\("\{2,}\|\.\{2,}\)\([0-9a-zA-Z-]\|\s\)*$/
 syn region rimuCodeBlock start=/^-\{2,}$/ end=/^-\{2,}$/ keepend
 syn region rimuCodeBlock start=/^`\{2,}$/ end=/^`\{2,}$/ keepend
 syn region rimuIndentedParagraph start=/\(\%^\|\_^\n\|^\(=\|#\)\{1,6}\s\+\S\+.*\n\|^\.\{2,}\n\)\@<=\s\+\S/ end=/\n\(\.\.\|""\|\n\)\@=/ keepend

@@ -8,12 +8,12 @@ import * as lineBlocks from './lineblocks'
 // Multi-line block element definition.
 export interface Definition {
   name?: string        // Optional unique identifier.
-  openMatch: RegExp    // $1 (if defined) is prepended to block content.
-  closeMatch?: RegExp  // $1 (if defined) is appended to block content. If closeMatch is undefined then it must match opening delimiter.
+  openMatch: RegExp
+  closeMatch?: RegExp  // $1 (if defined) is appended to block content.
   openTag: string
   closeTag: string
-  filter?: (text: string, match?: string[], expansionOptions?: utils.ExpansionOptions) => string
-  verify?: (match: string[]) => boolean   // Additional match verification checks.
+  delimiterFilter?: (match: string[]) => string   // Process opening delimiter. Return any delimiter content.
+  contentfilter?: (text: string, match?: string[], expansionOptions?: utils.ExpansionOptions) => string
   expansionOptions: utils.ExpansionOptions
 }
 
@@ -31,10 +31,10 @@ const DEFAULT_DEFS: Definition[] = [
     expansionOptions: {
       macros: true
     },
-    filter: function (text: string, match: string[], expansionOptions: utils.ExpansionOptions): string {
-      // Set macro.
-      // Get the macro name from the match in the first line of the block.
-      let name = match[0].match(/^\{([\w\-]+)\}/)[1]
+    delimiterFilter: delimiterTextFilter,
+    contentfilter: function (text, match, expansionOptions): string {
+      // Process macro definition.
+      let name = match[0].match(/^\{([\w\-]+)\}/)[1]  // Get the macro name from opening delimiter.
       text = text.replace(/' *\\\n/g, '\'\n')         // Unescape line-continuations.
       text = text.replace(/(' *[\\]+)\\\n/g, '$1\n')  // Unescape escaped line-continuations.
       text = utils.replaceInline(text, expansionOptions)    // Expand macro invocations.
@@ -57,37 +57,40 @@ const DEFAULT_DEFS: Definition[] = [
   // Division block.
   {
     name: 'division',
-    openMatch: /^\\?\.{2,}$/,
+    openMatch: /^\\?(\.{2,})([\w\s-]*)$/, // $1 is delimiter text, $2 is optional class names.
     openTag: '<div>',
     closeTag: '</div>',
     expansionOptions: {
       container: true,
       specials: true // Fall-back if container is disabled.
-    }
+    },
+    delimiterFilter: classInjectionFilter
   },
   // Quote block.
   {
     name: 'quote',
-    openMatch: /^\\?"{2,}$/,
+    openMatch: /^\\?("{2,})([\w\s-]*)$/, // $1 is delimiter text, $2 is optional class names.
     openTag: '<blockquote>',
     closeTag: '</blockquote>',
     expansionOptions: {
       container: true,
       specials: true // Fall-back if container is disabled.
-    }
+    },
+    delimiterFilter: classInjectionFilter
   },
   // Code block.
   {
     name: 'code',
     // Backtick hex literal \x60 to work arount eslint problem.
     // See https://github.com/palantir/tslint/issues/357.
-    openMatch: /^\\?(?:\-{2,}|\x60{2,})$/,
+    openMatch: /^\\?(\-{2,}|\x60{2,})([\w\s-]*)$/, // $1 is delimiter text, $2 is optional class names.
     openTag: '<pre><code>',
     closeTag: '</code></pre>',
     expansionOptions: {
       macros: false,
       specials: true
-    }
+    },
+    delimiterFilter: classInjectionFilter
   },
   // HTML block.
   {
@@ -103,9 +106,8 @@ const DEFAULT_DEFS: Definition[] = [
     expansionOptions: {
       macros: true
     },
-    filter: function (text: string): string {
-      return options.safeModeFilter(text)
-    }
+    delimiterFilter: delimiterTextFilter,
+    contentfilter: options.safeModeFilter
   },
   // Indented paragraph.
   {
@@ -118,7 +120,8 @@ const DEFAULT_DEFS: Definition[] = [
       macros: false,
       specials: true
     },
-    filter: function (text: string): string {
+    delimiterFilter: delimiterTextFilter,
+    contentfilter: function (text: string): string {
       // Strip indent from start of each line.
       let first_indent = text.search(/\S/)
       let buffer = text.split('\n')
@@ -143,7 +146,8 @@ const DEFAULT_DEFS: Definition[] = [
       spans: true,
       specials: true       // Fall-back if spans is disabled.
     },
-    filter: function (text: string): string {
+    delimiterFilter: delimiterTextFilter,
+    contentfilter: function (text: string): string {
       // Strip leading > from start of each line and unescape escaped leading >.
       let buffer = text.split('\n')
       for (let i in buffer) {
@@ -164,7 +168,8 @@ const DEFAULT_DEFS: Definition[] = [
       macros: true,
       spans: true,
       specials: true       // Fall-back if spans is disabled.
-    }
+    },
+    delimiterFilter: delimiterTextFilter
   },
 ]
 
@@ -186,45 +191,34 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
         reader.cursor(reader.cursor().slice(1))
         continue
       }
-      if (def.verify && !def.verify(match)) {
-        continue
-      }
+      // Process opening delimiter.
+      let delimiterText = def.delimiterFilter ? def.delimiterFilter(match) : ''
+      // Read block content into lines.
       let lines: string[] = []
-      // Prepend delimiter text.
-      if (match.length > 1) {
-        lines.push(match[1])    // $1
+      if (delimiterText) {
+        lines.push(delimiterText)
       }
       // Read content up to the closing delimiter.
       reader.next()
-      let closeMatch: RegExp
-      if (def.closeMatch === undefined) {
-        // Close delimiter matches opening delimiter.
-        closeMatch = RegExp('^' + utils.escapeRegExp(match[0]) + '$')
-      }
-      else {
-        closeMatch = def.closeMatch
-      }
-      let content = reader.readTo(closeMatch)
-      if (content !== null) {
+      let content = reader.readTo(def.closeMatch)
+      if (content) {
         lines = lines.concat(content)
       }
-      // Set block expansion options.
-      let expansionOptions: utils.ExpansionOptions
-      expansionOptions = {
+      // Calculate block expansion options.
+      let expansionOptions: utils.ExpansionOptions = {
         macros: false,
         spans: false,
         specials: false,
         container: false,
         skip: false
       }
-      let k: string
-      for (k in expansionOptions) expansionOptions[k] = def.expansionOptions[k]
-      for (k in lineBlocks.blockOptions) expansionOptions[k] = lineBlocks.blockOptions[k]
-      // Process block.
+      utils.merge(expansionOptions, def.expansionOptions)
+      utils.merge(expansionOptions, lineBlocks.blockOptions)
+      // Translate block.
       if (!expansionOptions.skip) {
         let text = lines.join('\n')
-        if (def.filter) {
-          text = def.filter(text, match, expansionOptions)
+        if (def.contentfilter) {
+          text = def.contentfilter(text, match, expansionOptions)
         }
         writer.write(utils.injectHtmlAttributes(def.openTag))
         if (expansionOptions.container) {
@@ -254,7 +248,7 @@ export function getDefinition(name: string): Definition {
   return defs.filter(def => def.name === name)[0]
 }
 
-// Parse delimited block expansion options string into blockOptions.
+// Parse block-options string into blockOptions.
 export function setBlockOptions(blockOptions: utils.ExpansionOptions, optionsString: string): void {
   if (optionsString) {
     let opts = optionsString.trim().split(/\s+/)
@@ -281,5 +275,23 @@ export function setDefinition(name: string, value: string): void {
     }
     setBlockOptions(def.expansionOptions, match[3])
   }
+}
+
+// delimiterFilter that returns opening delimiter line text from match group $1.
+function delimiterTextFilter(match: string[]): string {
+  return match[1]
+}
+
+// delimiterFilter for code, division and quote blocks.
+// Inject $2 into block class attribute, set close delimiter to $1.
+function classInjectionFilter(match: string[]): string {
+  if (match[2]) {
+    let p1: string
+    if ((p1 = utils.trim(match[2]))) {
+      lineBlocks.htmlClasses = p1
+    }
+  }
+  this.closeMatch = RegExp('^' + utils.escapeRegExp(match[1]) + '$')
+  return ''
 }
 
