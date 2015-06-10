@@ -46,6 +46,10 @@ exports['Spans'] = function(test) {
     '<code>\\a\\b\\ c\\d \\e\\</code>',
     'code quotes with backslashs');
   test_span(
+    'a_b_c _d_e_f_ _g*h_i*j_',
+    'a_b_c <em>d_e_f</em> <em>g<em>h_i</em>j</em>',
+    'underscores in words');
+  test_span(
     '`<http://example.com> \\``',
     '<code>&lt;http://example.com&gt; \\`</code>',
     'code quotes');
@@ -513,7 +517,7 @@ exports['Blocks'] = function(test) {
     '<p>1\n2 and 3\n4</p>',
     'multi-line macro values rendered inline');
   test_document(
-    "{v}='$1 and $2'\n{v|a|b_c_} {v|d|e\nfg}.",
+    "{v}='$1 and $2'\n{v|a|b*c*} {v|d|e\nfg}.",
     '<p>a and b<em>c</em> d and e\nfg.</p>',
     'parametrized macros');
   test_document(

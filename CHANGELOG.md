@@ -12,11 +12,14 @@ New features:
   added for compatibility with Github Flavored Markdown's code block highlighting).
   For example:
 
-    ``` javascript
-    if (message) {
-      console.error('Error: ' + message);
-    }
-    ```
+        ``` javascript
+        if (message) {
+          console.error('Error: ' + message);
+        }
+        ```
+- Underscores within words rendered verbatim and are not treated as
+  underscore emphasis quotes (Github Flavored Markdown behaviour).
+
 
 ## Version 5.0.0 (2015-06-07)
 This version adds new API options, an _API Options_ element and more Markdown

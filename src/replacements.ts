@@ -109,11 +109,18 @@ const DEFAULT_DEFS: Definition[] = [
   },
 
   // This hack ensures backslashes immediately preceding closing code quotes are rendered
-  // verbatim (like Markdown).
+  // verbatim (Markdown behaviour).
   // Works by finding escaped closing code quotes and replacing the backslash and the character
-  // preceding the closing quote with the same two characters.
+  // preceding the closing quote with itself.
   {
     match: /(\S\\)(?=`)/g,
+    replacement: '$1'
+  },
+
+  // This hack ensures underscores within words rendered verbatim and are not treated as
+  // underscore emphasis quotes (GFM behaviour).
+  {
+    match: /([a-zA-Z0-9]_)(?=[a-zA-Z0-9])/g,
     replacement: '$1'
   },
 ]

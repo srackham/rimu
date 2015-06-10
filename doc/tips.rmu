@@ -92,7 +92,6 @@ if (message) {
   console.error('Error: ' + message);
 }
 ```
-
 .python
 ``
 x = 1
@@ -122,15 +121,19 @@ Headers:: Headers using `#` character header IDs.
 Code blocks::
 - Indented paragraphs (at least four spaces) render like Markdown code
   blocks.
-- [GitHub Flavored Markdown](https://help.github.com/articles/github-flavored-markdown/)
-  _Fenced Blocks_ are compatible with Rimu backtick delimited blocks.
+- Rimu backtick delimited Code blocks are compatible with
+  [GitHub Flavored Markdown](https://help.github.com/articles/github-flavored-markdown/)
+  _Fenced Blocks_.
 
 Quote paragraphs:: Paragraphs starting with a `>` character are
 rendered like Markdown Blockquotes.
 
-Text formatting:: `_emphasis_`, `*emphasis*`, `__bold__`, `**bold**`,
-```code``` , ````code```` and `~~strikethrough~~` quotes (strikethrough
-is GitHub Flavored Markdown compatible).
+Text formatting::
+- `_emphasis_`, `*emphasis*`, `__bold__`, `**bold**`,
+  ```code``` , ````code```` quoting.
+- `~~strikethrough~~` quotes (GitHub Flavored Markdown behaviour).
+- Underscores within words rendered verbatim and are not treated as
+  underscore emphasis quotes (Github Flavored Markdown behaviour).
 
 Lists::
 - Bullet lists with `-` and `*` IDs.
