@@ -28,7 +28,7 @@ let defs: Definition[] = [
   // Unordered lists.
   // $1 is list ID $2 is item text.
   {
-    match: /^\\?\s*(-|\*{1,4})\s+(.*)$/,
+    match: /^\\?\s*(-|\+|\*{1,4})\s+(.*)$/,
     listOpenTag: '<ul>',
     listCloseTag: '</ul>',
     itemOpenTag: '<li>',

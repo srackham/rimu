@@ -19,6 +19,7 @@ New features:
         ```
 - Underscores within words rendered verbatim and are not treated as
   underscore emphasis quotes (Github Flavored Markdown behaviour).
+- Add `+` bulleted list ID (Markdown syntax).
 
 
 ## Version 5.0.0 (2015-06-07)

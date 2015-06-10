@@ -136,7 +136,7 @@ Text formatting::
   underscore emphasis quotes (Github Flavored Markdown behaviour).
 
 Lists::
-- Bullet lists with `-` and `*` IDs.
+- Bullet lists with `-`, `+`  and `*` IDs.
 - Numbered lists with explicit numbering.
 
 URLs and Email addresses:: `[caption](url)`, `<url>` and `<email>`

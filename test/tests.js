@@ -362,6 +362,10 @@ exports['Blocks'] = function(test) {
     '. Item 1\n. Item 2',
     '<ol><li>Item 1\n</li><li>Item 2\n</li></ol>',
     'ordered list');
+  test_document(
+    '+ Item 1\n+ Item 2',
+    '<ul><li>Item 1\n</li><li>Item 2\n</li></ul>',
+    'list using "+" list IDs');
 
   /*
    - List item1.
