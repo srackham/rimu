@@ -54,7 +54,7 @@ const DEFAULT_DEFS: Definition[] = [
   },
 ]
 
-export let quotesRe: RegExp   // Searches for quoted text.
+export let quotesRe: RegExp // Searches for quoted text.
 let unescapeRe: RegExp      // Searches for escaped quotes.
 
 // Reset definitions to defaults.
@@ -66,7 +66,7 @@ export function reset(): void {
 // Synthesise re's to find and unescape quotes.
 export function initializeRegExps(): void {
   let quotes = defs.map(def => utils.escapeRegExp(def.quote))
-  // $1 is quote character, $2 is quoted text.
+  // $1 is quote character(s), $2 is quoted text.
   // Quoted text cannot begin or end with whitespace.
   // Quoted can span multiple lines.
   // Quoted text cannot end with a backslash.

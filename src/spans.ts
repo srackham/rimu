@@ -64,11 +64,13 @@ function fragQuote(fragment: Fragment): Fragment[] {
     if (!match) {
       return [fragment]
     }
-    if (match[0][0] !== '\\') {
-      break
+    // Check if quote is escaped.
+    if (match[0][0] === '\\') {
+      // Restart search after escaped opening quote.
+      quotesRe.lastIndex = match.index + match[1].length + 1
+      continue
     }
-    // Restart search after escaped opening quote.
-    quotesRe.lastIndex = match.index + match[1].length + 1
+    break
   }
   let result: Fragment[] = []
   // Arrive here if we have a matched quote.
@@ -132,7 +134,7 @@ function postReplacements(text: string): string {
 // Fragment replacements in all fragments and return resulting fragments array.
 function fragReplacements(fragments: Fragment[]): Fragment[] {
   let result: Fragment[]
-  replacements.defs.forEach( function (def) {
+  replacements.defs.forEach(function (def) {
     result = []
     fragments.forEach(function (fragment) {
       result.push.apply(result, fragReplacement(fragment, def))
