@@ -730,3 +730,10 @@ lacus!
 ""'
 
 {generate-rendered-example-1|nested-delimited-blocks-example}
+
+
+## List termination
+List termination can be forced by following the list by two or more blank
+lines. This comes in handy if you want to follow one list immediately by
+another you want to separate an Indented list from a preceding list item.
+

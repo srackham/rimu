@@ -147,7 +147,7 @@ function renderListItem(startItem: ItemState, reader: io.Reader, writer: io.Writ
 
 // Translate the list item in the reader to the writer until the next element
 // is encountered. Return 'next' containing the next element's match and
-// identity information.
+// identity information or null if there are no more list elements.
 function readToNext(reader: io.Reader, writer: io.Writer): ItemState {
   // The reader should be at the line following the first line of the list
   // item (or EOF).
@@ -156,6 +156,11 @@ function readToNext(reader: io.Reader, writer: io.Writer): ItemState {
     if (reader.eof()) return null
     if (reader.cursor() === '') {
       // Encountered blank line.
+      reader.next()
+      if (reader.cursor() === '') {
+        // A second blank line terminates the list.
+        return null
+      }
       // Can be followed by new list item or attached indented paragraph.
       reader.skipBlankLines()
       if (reader.eof()) return null
@@ -173,8 +178,8 @@ function readToNext(reader: io.Reader, writer: io.Writer): ItemState {
   }
 }
 
-// Check if the line at the reader cursor matches a list related element. If
-// does return list item information else return null.  It matches
+// Check if the line at the reader cursor matches a list related element.
+// If it does return list item information else return null.  It matches
 // list item elements but 'options' can be included to also match delimited
 // blocks or indented paragraphs.
 function matchItem(reader: io.Reader,

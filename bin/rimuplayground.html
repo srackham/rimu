@@ -338,8 +338,6 @@ Definition syntax:
   Division blocks or Quote blocks (container blocks) or Lists.
 - _Quote_ and _Replacement_ elements are collectively refered to as
   _Spans_.
-- The `-specials` option is ignored if the API _safeMode_ option is
-  not zero (see the _API_ topic).
 - A Delimited Block definition must start at the left margin and must not
   extend beyond the end of the line.
 - Delimited Block definitions are not processed if the _Safe Mode_ is
@@ -430,6 +428,8 @@ Syntax:
   option is not zero (see the _API_ topic).
 - `block-options` is used to control the processing of multi-line
   block element contents (see _Delimited Blocks_ definitions).
+- The `-specials` block option is ignored if the API _safeMode_ option is
+  not zero (see the _API_ topic).
 - Successive Block Attributes elements accumulate attribute items until
   they are consumed by a block element.
 
@@ -498,11 +498,13 @@ and groups list items into lists.
   semantic significance.
 - List items can be escaped with a backslash at the beginning of the
   line.
-- If an _Indented_ paragraph immediately follows a list item then it
-  is rendered with the list item.
-- If a delimited block (_Code_, _Quote_ or _Division_ block)
+- If an _Indented_ paragraph is separated from a preceding list item
+  by a single blank line then it is rendered with the list item.
+- If a Delimited block (_Code_, _Quote_ or _Division_ block)
   immediately follows a list item without any intervening blank lines
   then it is rendered with the list item.
+- Lists are terminated by two or more blank lines or when the following
+  element is not an Indented paragraph or a Delimited block.
 - There are no explicit numbering or bullet styles, this is best left
   to CSS which can apply a consistent set of list styles.
 
@@ -635,6 +637,8 @@ double-tilde for ~~strikethrough~~.
 - Quoted text must begin and end with non-whitespace characters.
 - Quotes and inline elements can be nested within a quote with the
   exception of the _code_ quote which displays text verbatim.
+- Single underscore quote characters will be ignored if they are flanked
+  on both sides by alphanumeric characters.
 - Quotes can be escaped by prefixing the opening quote with with a backslash
   character. If the text contains multiple quotes of the same type then,
   to resolve ambiguity, additional quotes may have to be escaped.

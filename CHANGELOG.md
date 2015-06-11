@@ -20,6 +20,9 @@ New features:
 - Underscores within words rendered verbatim and are not treated as
   underscore emphasis quotes (Github Flavored Markdown behaviour).
 - Add `+` bulleted list ID (Markdown syntax).
+- Lists are terminated by two or more blank lines.
+- Lots of typographical nicities added to the
+  [example .rimurc file](https://github.com/srackham/rimu/blob/master/examples/.rimurc).
 
 
 ## Version 5.0.0 (2015-06-07)

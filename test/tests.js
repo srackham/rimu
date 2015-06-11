@@ -411,6 +411,18 @@ exports['Blocks'] = function(test) {
     'd\n' +
     '</dd></dl>',
     'nested list in attached division block');
+  test_document(
+    '- Item 1\n\n```\nA\nparagraph\n```',
+    '<ul><li>Item 1\n</li></ul><pre><code>A\nparagraph</code></pre>',
+    'list item with unattached code block');
+  test_document(
+    '- Item 1\n\n\n  An\n  indented paragraph',
+    '<ul><li>Item 1\n</li></ul><pre><code>An\nindented paragraph</code></pre>',
+    'list item with unattached indented paragraph (2 blank lines separation');
+  test_document(
+    '- List 1\n\n\n* List 2',
+    '<ul><li>List 1\n</li></ul><ul><li>List 2\n</li></ul>',
+    'list terminated by two blank lines');
 
   // Mixed blocks.
   test_document(
