@@ -7,12 +7,17 @@
 /*
   Replacements
 */
+// Typographic replacements.
 // NOTE: &mdash; and &rightarrow; replacements generate false positives in inline HTML comment tags.
 /\\?--(?!>)/ = '&mdash;'
 /\\?\.{3}/ = '&hellip;'
 /\\?->/ = '&rightarrow;'
 /\\?<-/ = '&leftarrow;'
+/\\?\([cC]\)/ = '&copy;'
+/\\?\((tm|TM)\)/ = '&trade;'
+/\\?\+-/ = '&plusmn;'
 
+// Admonishments.
 /\\?\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
 /^\\?(NOTES?|IMPORTANT|WARNINGS?|TIPS?):/ = '<b>$1</b>:'
 
@@ -20,20 +25,26 @@
 /*
   Macros
 */
+// Text formatting e.g. H{sub|2}O.
 {mark} = '<mark>$1</mark>'
 {del} = '<del>$1</del>'
 {ins} = '<ins>$1</ins>'
 {sup} = '<sup>$1</sup>'
 {sub} = '<sub>$1</sub>'
 
+// Bootstrap icons e.g. {icon|trash}.
+// See http://getbootstrap.com/components/#glyphicons
+{icon} = '<span class="icon-$1"></span>'
 
 /*
   Quotes
 */
-// Underline (overrides built-in underline strong quote).
+// Underline (overrides built-in strong quote).
 __ = '<u>|</u>'
-// Left and right quote characters.
+// Left and right double-quote characters.
 " = '&ldquo;|&rdquo;'
+// Left and right single-quote characters.
+' = '&lsquo;|&rsquo;'
 
 
 /*
