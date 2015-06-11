@@ -637,12 +637,14 @@ double-tilde for ~~strikethrough~~.
 - Quoted text must begin and end with non-whitespace characters.
 - Quotes and inline elements can be nested within a quote with the
   exception of the _code_ quote which displays text verbatim.
-- Single underscore quote characters will be ignored if they are flanked
-  on both sides by alphanumeric characters.
+- Single underscore quote characters within words are ignored if
+  they are flanked on both sides by alphanumeric characters
+  (use single asterisk quotes instead).
 - Quotes can be escaped by prefixing the opening quote with with a backslash
   character. If the text contains multiple quotes of the same type then,
   to resolve ambiguity, additional quotes may have to be escaped.
 
+### Quote Definitions
 You can modify existing quote behavior or add new quotes using _Quote
 definitions_.
 

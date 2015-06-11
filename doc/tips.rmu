@@ -81,9 +81,12 @@ so you are free to use other syntax highlighters.
 The _rimuc_ tool `--styled` option includes _Highlight.js_ if you set
 the `\{--highlightjs}` macro to a non-blank value.  _Highlight.js_
 automatically detects the language in Code Blocks and Indented
-Paragraphs. You can set the language explicitly by injecting the
-language name into the code block. Here are two examples: the first uses
-GFM style syntax, the second uses Rimu's Block Attributes element:
+Paragraphs.
+
+You can set the language explicitly by injecting the
+language CSS class name into the code block. Here are two examples:
+the first uses GFM style syntax, the second uses Rimu's Block Attributes
+element:
 
 {highlightjs-example} = '\{--highlightjs} = 'yes'\
 
@@ -106,7 +109,7 @@ block.  Adding the `no-highlight` class to all code blocks using
 _Delimited Block Definitions_ effectively turns off auto-highlighting
 unless the language class is explicitly set. The [example .rimurc
 file](https://github.com/srackham/rimu/blob/master/examples/.rimurc)
-does this by with these custom definitions:
+does this with these custom definitions:
 
   |code| = '<pre class="no-highlight"><code>|</code></pre>'
   |indented| = '<pre class="no-highlight"><code>|</code></pre>'
@@ -239,56 +242,13 @@ consectetuer commodo.
 {generate-rendered-example-1|joined-paragraphs-example}
 
 
-## Display contiguous block images vertically
-Unless they are separated by other block elements, multiple block
-image elements flow inline like text (this is because the HTML `img`
-element is an "inline block" element), you can flow them vertically by
-enclosing them in a _Division Block_ (HTML `div` element). For
-example:
-
-{block-images-example} = '<image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
-..
-.#big-logo [width="150"]
-<image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
-..'
-
-{generate-rendered-example-2|block-images-example}
-
-
-## Entering non-ASCII characters
-A number of non-ASCII Unicode characters are commonly used for
-punctuation e.g.  em dash, ellipsis and quotation characters. You can
-enter these characters (or any Unicode character) as HTML character
-entities or you can enter them literally.
-
-For example, to enter an ellipsis you could either enter `&hellip;` or
-you could enter the actual … character directly.
-See the
-[example .rimurc file](https://github.com/srackham/rimu/blob/master/examples/.rimurc)
-for some common use-cases.
-
-The mechanism for entering Unicode characters directly will be dictated
-by your editor:
-
-Vim:: Enter _Ctrl+V_ followed by the the character _u_ followed by the
-hexidecimal character code e.g. to enter an em dash enter _Ctrl+V_
-followed by _u2014_
-
-Linux console input:: Enter _Ctrl+Shift+U_ followed by the hexadecimal
-character code followed by the _Enter_ key.
-
-Common Unicode characters:
-
-  Character     HTML entity    Hexadecimal code
-  ---------     -----------    ----------------
-  —             &mdash;        2014
-  …             &hellip;       2026
-  “             &ldquo;        201c
-  ”             &rdquo;        201d
-  →             &rightarrow;   2192
-
-Here's a full list of
-[HTML5 character entities](http://dev.w3.org/html5/html-author/charref).
+## Entering non-keyboard characters
+Characters that are unavailable on your keyboard can be entered as 
+[HTML character entities](http://dev.w3.org/html5/html-author/charref)
+e.g. enter `&micro;` to display &micro;. The 
+[example .rimurc file](#example-rimurc)
+includes replacements for common use-cases such as em dash, ellipsis and
+quotation characters.
 
 
 .#defs-warning
@@ -302,34 +262,109 @@ source non-portable and less readable.
 ## Example .rimurc file
 The Rimu distribution includes an [example .rimurc
 file](https://github.com/srackham/rimu/blob/master/examples/.rimurc)
-containing a number or useful niceties.
+containing useful macros, quotes and replacement definitions.
+
+It is important to note that these niceties have been defined in
+Rimu Markup -- Rimu has been extended using Rimu. No plugins
+or special configuration file syntax were necessary.
+Example usage:
+
+{rimurc-examples} = 'Turn <- left then right ->
+
+Pencil \{icon|pencil} file \{icon|file}
+and trash \{icon|trash} icons.
+
+Copyright (C) 2015 -- trademarked(TM).
+
+"Left and right double-quotes",
+'left and right single-quotes'.
+
+The 3\{sup|rd} H\{sub|2}O molecule...
+
+IMPORTANT: Admonition.
+
+TODO 10 examples +-2'
+
+{generate-rendered-example-1|rimurc-examples}
+
+
+.#scoped-css
+## Use scoped CSS to generate custom styled elements
+HTML5's [scoped CSS
+attribute](http://www.w3schools.com/tags/att_style_scoped.asp)
+allows you to define CSS outside the document header.  This allows you
+to include CSS in the body of a Rimu document which is very handy for
+tweaking the default CSS and for styling Rimu block elements.
+Examples:
+
+{scoped-css-example} = '<style type="text/css" scoped>
+.verse {
+  margin: 1.5em 20px;
+}
+div.verse p, p.verse {
+  font-family: serif;
+  white-space:pre;
+}
+.sidebar {
+  border: 1px solid silver;
+  border-radius:4px;
+  background: #ffffee;
+  padding: 10px;
+  margin: 1.5em 20px;
+}
+div.sidebar *:first-child {
+  margin-top: 0.2em;
+}
+</style>
+
+.verse
+Neque a massa.
+Porttitor consectetuer commodo.
+
+.verse
+..
+#### Lorum Ipsum
+Neque a massa.
+Porttitor consectetuer commodo.
+
+Nunc mauris tempor.
+Pede mauris sed.
+Scelerisque feugiat massa alias.
+..
+
+.sidebar
+Neque a massa.
+Porttitor consectetuer commodo.
+
+.sidebar
+..
+#### Lorum Ipsum
+Neque a massa.
+Porttitor consectetuer commodo.
+
+Nunc mauris tempor.
+Pede mauris sed.
+Scelerisque feugiat massa alias.
+..'
+
+{generate-rendered-example-1|scoped-css-example}
+
+- The above _verse_ and _sidebar_ CSS styles are automatically
+  included when you use the _rimuc_ tool `--styled` option.
+- HTML5 stipulates that scoped _style_ element must be the first child
+  element -- in practice  most browsers don't care where it occurs.
 
 
 ## Using Macro, Replacement and Quote definitions in Safe Mode
 _Macro_, _Replacement_ and _Quote_ definitions are not processed in
 Safe Mode. To apply Macro, Replacement or Quote definitions to Rimu
-markup processed in Safe Mode you need to load the definitions with a
+markup that is processed in Safe Mode you need to load the definitions with a
 separate API call, for example:
 
 ```
-Rimu.render(trusted_rimu_definitions); // safeMode is off by default.
+Rimu.render(trusted_rimu_definitions, {safeMode: 0});
 var html = Rimu.render(untrusted_rimu_markup, {safeMode: 1});
 ```
-
-
-## Modifying built-in Quotes and Replacements
-You can (with <#defs-warning|caveats>) redefine built-in _Quotes_ and
-_Replacements_, here are a couple of examples:
-
-```
-_ = '<em class="emphasis">|</em>'
-/\\?<(\S+@[\w\.\-]+)>/g = '<a class="mailto" href="mailto:$1">$1</a>'
-```
-
-Refer to the Rimu source files
-[quotes.ts](https://github.com/srackham/rimu/blob/master/src/quotes.ts)
-and
-[replacements.ts](https://github.com/srackham/rimu/blob/master/src/replacements.ts).
 
 
 ## Mathematical formulae using MathJax
@@ -522,27 +557,23 @@ links and table of contents entries from a section identifier and
 title:
 
 .-macros
-{meta-macros-example} = '// Macro to generate section link, header and TOC entry macros.
+{meta-macros-example} = '// toc macro generates section TOC entry, link macro, header macro.
 // $1 = section ID, $2 = section title.
-{section-definition} = '\
-{$1} = '<#$1|$2>' \\
+{toc} = '{$1} = '<#$1|$2>' \\
 {$1-header} = '.#$1
 ## $2' \\
-{$1-toc} = '{$1} \' \\
+{$1}
 '\
-// Generate section macros.
-{section-definition|section1|Section One}
-{section-definition|section2|Section Two}
 
 #### Table of Contents
-{section1-toc}
-{section2-toc}
+{toc|section1|Section One}
+{toc|section2|Section Two}
 
-// Section One section.
+// Section One.
 {section1-header}
 Link to {section2}.
 
-// Section Two section.
+// Section Two .
 {section2-header}
 Link to {section1}.'
 
@@ -594,73 +625,6 @@ Generates:
 <p>foo bar</p>
 ```
 ..
-
-
-.#scoped-css
-## Use scoped CSS to generate custom styled elements
-HTML5's [scoped CSS
-attribute](http://www.w3schools.com/tags/att_style_scoped.asp)
-allows you to define CSS outside the document header.  This allows you
-to include CSS in the body of a Rimu document which is very handy for
-tweaking the default CSS and for styling Rimu block elements.
-Examples:
-
-{scoped-css-example} = '<style type="text/css" scoped>
-.verse {
-  margin: 1.5em 20px;
-}
-div.verse p, p.verse {
-  font-family: serif;
-  white-space:pre;
-}
-.sidebar {
-  border: 1px solid silver;
-  border-radius:4px;
-  background: #ffffee;
-  padding: 10px;
-  margin: 1.5em 20px;
-}
-div.sidebar *:first-child {
-  margin-top: 0.2em;
-}
-</style>
-
-.verse
-Neque a massa.
-Porttitor consectetuer commodo.
-
-.verse
-..
-#### Lorum Ipsum
-Neque a massa.
-Porttitor consectetuer commodo.
-
-Nunc mauris tempor.
-Pede mauris sed.
-Scelerisque feugiat massa alias.
-..
-
-.sidebar
-Neque a massa.
-Porttitor consectetuer commodo.
-
-.sidebar
-..
-#### Lorum Ipsum
-Neque a massa.
-Porttitor consectetuer commodo.
-
-Nunc mauris tempor.
-Pede mauris sed.
-Scelerisque feugiat massa alias.
-..'
-
-{generate-rendered-example-1|scoped-css-example}
-
-- The above _verse_ and _sidebar_ CSS styles are automatically
-  included when you use the _rimuc_ tool `--styled` option.
-- HTML5 stipulates that scoped _style_ element must be the first child
-  element -- in practice  most browsers don't care where it occurs.
 
 
 ## List item counters
@@ -735,5 +699,20 @@ lacus!
 ## List termination
 List termination can be forced by following the list by two or more blank
 lines. This comes in handy if you want to follow one list immediately by
-another you want to separate an Indented list from a preceding list item.
+another you want to separate an Indented paragraph from a preceding list item.
 
+
+## Nested list item ambiguity
+To render an indented list item as an Indented paragraph change it
+to a delimited code block, for example:
+
+{list-ambiguity-example} = '- List item.
+
+  * Rendered as nested list item.
+
+- List item.
+``
+* Rendered as code block.
+``'
+
+{generate-rendered-example-1|list-ambiguity-example}
