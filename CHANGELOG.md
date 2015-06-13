@@ -17,10 +17,11 @@ New features:
           console.error('Error: ' + message);
         }
         ```
+
 - Underscores within words rendered verbatim and are not treated as
   underscore emphasis quotes (Github Flavored Markdown behaviour).
 - Add `+` bulleted list ID (Markdown syntax).
-- Lists are terminated by two or more blank lines.
+- Lists can be terminated by two or more blank lines.
 - Typographical nicities added to the
   [example .rimurc file](https://github.com/srackham/rimu/blob/master/examples/.rimurc).
 
