@@ -151,6 +151,7 @@ task('html-docs', {async: true}, function() {
   exec(commands);
 });
 
+// TODO: Patched w3cjs with PR #18 https://github.com/thomasdavis/w3cjs/pull/18
 desc('Validate HTML documents with W3C Validator.');
 task('validate-html', {async: true}, function() {
   var commands = HTML.map(function(file) {
@@ -216,6 +217,7 @@ task('commit-gh-pages', ['test'], {async: true}, function() {
   shelljs.cd(GH_PAGES_DIR);
   exec('git commit -a -m "' + msg + '"', function () {
     shelljs.cd('..');
+    complete();
   });
 });
 
@@ -224,5 +226,6 @@ task('push-gh-pages', ['test'], {async: true}, function() {
   shelljs.cd(GH_PAGES_DIR);
   exec('git push origin gh-pages', function () {
     shelljs.cd('..');
+    complete();
   });
 });
