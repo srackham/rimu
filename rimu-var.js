@@ -248,7 +248,7 @@ var Rimu =
 	        while (!this.eof()) {
 	            match = this.cursor().match(find);
 	            if (match) {
-	                if (match.length > 1) {
+	                if (match[1] !== undefined) {
 	                    result.push(match[1]); // $1
 	                }
 	                this.next();
@@ -565,10 +565,10 @@ var Rimu =
 	        expansionOptions: {
 	            macros: true
 	        },
-	        filter: function (text, match, expansionOptions) {
-	            // Set macro.
-	            // Get the macro name from the match in the first line of the block.
-	            var name = match[0].match(/^\{([\w\-]+)\}/)[1];
+	        delimiterFilter: delimiterTextFilter,
+	        contentfilter: function (text, match, expansionOptions) {
+	            // Process macro definition.
+	            var name = match[0].match(/^\{([\w\-]+)\}/)[1]; // Get the macro name from opening delimiter.
 	            text = text.replace(/' *\\\n/g, '\'\n'); // Unescape line-continuations.
 	            text = text.replace(/(' *[\\]+)\\\n/g, '$1\n'); // Unescape escaped line-continuations.
 	            text = utils.replaceInline(text, expansionOptions); // Expand macro invocations.
@@ -591,37 +591,40 @@ var Rimu =
 	    // Division block.
 	    {
 	        name: 'division',
-	        openMatch: /^\\?\.{2,}$/,
+	        openMatch: /^\\?(\.{2,})([\w\s-]*)$/,
 	        openTag: '<div>',
 	        closeTag: '</div>',
 	        expansionOptions: {
 	            container: true,
 	            specials: true // Fall-back if container is disabled.
-	        }
+	        },
+	        delimiterFilter: classInjectionFilter
 	    },
 	    // Quote block.
 	    {
 	        name: 'quote',
-	        openMatch: /^\\?"{2,}$/,
+	        openMatch: /^\\?("{2,})([\w\s-]*)$/,
 	        openTag: '<blockquote>',
 	        closeTag: '</blockquote>',
 	        expansionOptions: {
 	            container: true,
 	            specials: true // Fall-back if container is disabled.
-	        }
+	        },
+	        delimiterFilter: classInjectionFilter
 	    },
 	    // Code block.
 	    {
 	        name: 'code',
 	        // Backtick hex literal \x60 to work arount eslint problem.
 	        // See https://github.com/palantir/tslint/issues/357.
-	        openMatch: /^\\?(?:\-{2,}|\x60{2,})$/,
+	        openMatch: /^\\?(\-{2,}|\x60{2,})([\w\s-]*)$/,
 	        openTag: '<pre><code>',
 	        closeTag: '</code></pre>',
 	        expansionOptions: {
 	            macros: false,
 	            specials: true
-	        }
+	        },
+	        delimiterFilter: classInjectionFilter
 	    },
 	    // HTML block.
 	    {
@@ -637,9 +640,8 @@ var Rimu =
 	        expansionOptions: {
 	            macros: true
 	        },
-	        filter: function (text) {
-	            return options.safeModeFilter(text);
-	        }
+	        delimiterFilter: delimiterTextFilter,
+	        contentfilter: options.safeModeFilter
 	    },
 	    // Indented paragraph.
 	    {
@@ -652,7 +654,8 @@ var Rimu =
 	            macros: false,
 	            specials: true
 	        },
-	        filter: function (text) {
+	        delimiterFilter: delimiterTextFilter,
+	        contentfilter: function (text) {
 	            // Strip indent from start of each line.
 	            var first_indent = text.search(/\S/);
 	            var buffer = text.split('\n');
@@ -678,7 +681,8 @@ var Rimu =
 	            spans: true,
 	            specials: true // Fall-back if spans is disabled.
 	        },
-	        filter: function (text) {
+	        delimiterFilter: delimiterTextFilter,
+	        contentfilter: function (text) {
 	            // Strip leading > from start of each line and unescape escaped leading >.
 	            var buffer = text.split('\n');
 	            for (var i in buffer) {
@@ -699,7 +703,8 @@ var Rimu =
 	            macros: true,
 	            spans: true,
 	            specials: true // Fall-back if spans is disabled.
-	        }
+	        },
+	        delimiterFilter: delimiterTextFilter
 	    },
 	];
 	// Reset definitions to defaults.
@@ -722,47 +727,34 @@ var Rimu =
 	                reader.cursor(reader.cursor().slice(1));
 	                continue;
 	            }
-	            if (def.verify && !def.verify(match)) {
-	                continue;
-	            }
+	            // Process opening delimiter.
+	            var delimiterText = def.delimiterFilter ? def.delimiterFilter(match) : '';
+	            // Read block content into lines.
 	            var lines = [];
-	            // Prepend delimiter text.
-	            if (match.length > 1) {
-	                lines.push(match[1]); // $1
+	            if (delimiterText) {
+	                lines.push(delimiterText);
 	            }
 	            // Read content up to the closing delimiter.
 	            reader.next();
-	            var closeMatch = void 0;
-	            if (def.closeMatch === undefined) {
-	                // Close delimiter matches opening delimiter.
-	                closeMatch = RegExp('^' + utils.escapeRegExp(match[0]) + '$');
-	            }
-	            else {
-	                closeMatch = def.closeMatch;
-	            }
-	            var content = reader.readTo(closeMatch);
-	            if (content !== null) {
+	            var content = reader.readTo(def.closeMatch);
+	            if (content) {
 	                lines = lines.concat(content);
 	            }
-	            // Set block expansion options.
-	            var expansionOptions = void 0;
-	            expansionOptions = {
+	            // Calculate block expansion options.
+	            var expansionOptions = {
 	                macros: false,
 	                spans: false,
 	                specials: false,
 	                container: false,
 	                skip: false
 	            };
-	            var k = void 0;
-	            for (k in expansionOptions)
-	                expansionOptions[k] = def.expansionOptions[k];
-	            for (k in lineBlocks.blockOptions)
-	                expansionOptions[k] = lineBlocks.blockOptions[k];
-	            // Process block.
+	            utils.merge(expansionOptions, def.expansionOptions);
+	            utils.merge(expansionOptions, lineBlocks.blockOptions);
+	            // Translate block.
 	            if (!expansionOptions.skip) {
 	                var text = lines.join('\n');
-	                if (def.filter) {
-	                    text = def.filter(text, match, expansionOptions);
+	                if (def.contentfilter) {
+	                    text = def.contentfilter(text, match, expansionOptions);
 	                }
 	                writer.write(utils.injectHtmlAttributes(def.openTag));
 	                if (expansionOptions.container) {
@@ -792,7 +784,7 @@ var Rimu =
 	    return defs.filter(function (def) { return def.name === name; })[0];
 	}
 	exports.getDefinition = getDefinition;
-	// Parse delimited block expansion options string into blockOptions.
+	// Parse block-options string into blockOptions.
 	function setBlockOptions(blockOptions, optionsString) {
 	    if (optionsString) {
 	        var opts = optionsString.trim().split(/\s+/);
@@ -822,6 +814,22 @@ var Rimu =
 	    }
 	}
 	exports.setDefinition = setDefinition;
+	// delimiterFilter that returns opening delimiter line text from match group $1.
+	function delimiterTextFilter(match) {
+	    return match[1];
+	}
+	// delimiterFilter for code, division and quote blocks.
+	// Inject $2 into block class attribute, set close delimiter to $1.
+	function classInjectionFilter(match) {
+	    if (match[2]) {
+	        var p1;
+	        if ((p1 = utils.trim(match[2]))) {
+	            lineBlocks.htmlClasses = p1;
+	        }
+	    }
+	    this.closeMatch = RegExp('^' + utils.escapeRegExp(match[1]) + '$');
+	    return '';
+	}
 
 
 /***/ },
@@ -836,7 +844,7 @@ var Rimu =
 	    // Unordered lists.
 	    // $1 is list ID $2 is item text.
 	    {
-	        match: /^\\?\s*(-|\*{1,4})\s+(.*)$/,
+	        match: /^\\?\s*(-|\+|\*{1,4})\s+(.*)$/,
 	        listOpenTag: '<ul>',
 	        listCloseTag: '</ul>',
 	        itemOpenTag: '<li>',
@@ -870,9 +878,6 @@ var Rimu =
 	    var startItem;
 	    if (!(startItem = matchItem(reader))) {
 	        return false;
-	    }
-	    if (/^ {4,}/.test(reader.cursor())) {
-	        return false; // First list item cannot be indented by more than 3 spaces (Markdown compatibility).
 	    }
 	    ids = [];
 	    renderList(startItem, reader, writer);
@@ -955,7 +960,7 @@ var Rimu =
 	}
 	// Translate the list item in the reader to the writer until the next element
 	// is encountered. Return 'next' containing the next element's match and
-	// identity information.
+	// identity information or null if there are no more list elements.
 	function readToNext(reader, writer) {
 	    // The reader should be at the line following the first line of the list
 	    // item (or EOF).
@@ -965,6 +970,11 @@ var Rimu =
 	            return null;
 	        if (reader.cursor() === '') {
 	            // Encountered blank line.
+	            reader.next();
+	            if (reader.cursor() === '') {
+	                // A second blank line terminates the list.
+	                return null;
+	            }
 	            // Can be followed by new list item or attached indented paragraph.
 	            reader.skipBlankLines();
 	            if (reader.eof())
@@ -982,8 +992,8 @@ var Rimu =
 	        reader.next();
 	    }
 	}
-	// Check if the line at the reader cursor matches a list related element. If
-	// does return list item information else return null.  It matches
+	// Check if the line at the reader cursor matches a list related element.
+	// If it does return list item information else return null.  It matches
 	// list item elements but 'options' can be included to also match delimited
 	// blocks or indented paragraphs.
 	function matchItem(reader, options) {
@@ -1213,7 +1223,7 @@ var Rimu =
 	// Synthesise re's to find and unescape quotes.
 	function initializeRegExps() {
 	    var quotes = defs.map(function (def) { return utils.escapeRegExp(def.quote); });
-	    // $1 is quote character, $2 is quoted text.
+	    // $1 is quote character(s), $2 is quoted text.
 	    // Quoted text cannot begin or end with whitespace.
 	    // Quoted can span multiple lines.
 	    // Quoted text cannot end with a backslash.
@@ -1350,11 +1360,17 @@ var Rimu =
 	        replacement: '<a href="$1">$1</a>'
 	    },
 	    // This hack ensures backslashes immediately preceding closing code quotes are rendered
-	    // verbatim (like Markdown).
+	    // verbatim (Markdown behaviour).
 	    // Works by finding escaped closing code quotes and replacing the backslash and the character
-	    // preceding the closing quote with the same two characters.
+	    // preceding the closing quote with itself.
 	    {
 	        match: /(\S\\)(?=`)/g,
+	        replacement: '$1'
+	    },
+	    // This hack ensures underscores within words rendered verbatim and are not treated as
+	    // underscore emphasis quotes (GFM behaviour).
+	    {
+	        match: /([a-zA-Z0-9]_)(?=[a-zA-Z0-9])/g,
 	        replacement: '$1'
 	    },
 	];
@@ -1437,23 +1453,13 @@ var Rimu =
 	    return result;
 	}
 	exports.copy = copy;
-	/*
-	Unused
-
 	// Copy properties in source object to target object.
-	export function merge(target: any, source: any): void {
-	  for (let key in source) {
-	    target[key] = source[key]
-	  }
+	function merge(target, source) {
+	    for (var key in source) {
+	        target[key] = source[key];
+	    }
 	}
-
-	// Update existing target object properties with same-named source object properties.
-	export function update(target: any, source: any): void {
-	  for (let key in source) {
-	    if (key in target) target[key] = source[key]
-	  }
-	}
-	*/
+	exports.merge = merge;
 	// Replace the inline elements specified in options in text and return the result.
 	function replaceInline(text, expansionOptions) {
 	    if (expansionOptions.macros) {
@@ -1562,11 +1568,13 @@ var Rimu =
 	        if (!match) {
 	            return [fragment];
 	        }
-	        if (match[0][0] !== '\\') {
-	            break;
+	        // Check if quote is escaped.
+	        if (match[0][0] === '\\') {
+	            // Restart search after escaped opening quote.
+	            quotesRe.lastIndex = match.index + match[1].length + 1;
+	            continue;
 	        }
-	        // Restart search after escaped opening quote.
-	        quotesRe.lastIndex = match.index + match[1].length + 1;
+	        break;
 	    }
 	    var result = [];
 	    // Arrive here if we have a matched quote.

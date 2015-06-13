@@ -112,7 +112,25 @@
 <h1>Rimu Markup CHANGELOG</h1>
 <p>See the <a href="https://github.com/srackham/rimu/commits/">Git commit log</a>
 for more detailed information.</p>
-<h2>Version 5.0.0 (2015-06-07)</h2>
+<h2>Version 5.1.0 (2015-06-13)</h2>
+<p>New features:</p>
+<ul><li>You can append CSS class names to Delimited Block opening delimiter lines and they
+  will be injected into the block&lsquo;s opening HTML tag (this is
+  an alternative to using a <em>Block Attributes</em> element and was
+  added primarily for compatibility with Github Flavored Markdown&rsquo;s code block highlighting).
+  For example:
+<pre class="no-highlight"><code>``` javascript
+if (message) {
+  console.error('Error: ' + message);
+}
+```</code></pre>
+</li><li>Underscores within words rendered verbatim and are not treated as
+  underscore emphasis quotes (Github Flavored Markdown behaviour).
+</li><li>Add <code>+</code> bulleted list ID (Markdown syntax).
+</li><li>Lists can be terminated by two or more blank lines.
+</li><li>Typographical nicities added to the
+  <a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example .rimurc file</a>.
+</li></ul><h2>Version 5.0.0 (2015-06-07)</h2>
 <p>This version adds new API options, an <em>API Options</em> element and more Markdown
 compatibility. It also includes some breaking changes.</p>
 <ul><li>Added <code>macroMode</code> API option to specify which macro invocations are processed.

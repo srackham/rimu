@@ -191,48 +191,47 @@ the above paragraph.</p>
 <p>The <em>rimuc</em> tool <code>--styled</code> option can be used to enable code syntax
 highlighting in Rimu Code blocks and Indented paragraphs using the
 <a href="https://github.com/isagalaev/highlight.js">Highlight.js</a> syntax
-highlighter. This is achieved using macros and is not baked in to Rimu
+highlighter. integration is achieved using macros and is not baked in to Rimu
 so you are free to use other syntax highlighters.</p>
 <p>The <em>rimuc</em> tool <code>--styled</code> option includes <em>Highlight.js</em> if you set
 the <code>{--highlightjs}</code> macro to a non-blank value.  <em>Highlight.js</em>
 automatically detects the language in Code Blocks and Indented
-Paragraphs. You can also set the language explicitly by adding a code
-block class, for example:</p>
+Paragraphs.</p>
+<p>You can set the language explicitly by injecting the
+language CSS class name into the code block. Here are two examples:
+the first uses GFM style syntax, the second uses Rimu's Block Attributes
+element:</p>
 <table class="example table table-bordered"><thead><tr style="color:#527bbd;">
 <th style="width:50%;">Rimu source</th>
 <th style="width:50%;">Rendered HTML</th>
 </tr></thead><tbody><tr><td style="width: 50%; padding: 4px;">
 <pre style="border:none; background-color:inherit;" class="no-highlight"><code>{--highlightjs} = 'yes'
 
-.javascript
-```
-function die(message) {
-  if (message) {
-    console.error(message);
-  }
-  else {
-    console.error('fatal error');
-  }
-  process.exit(1);
+``` javascript
+if (message) {
+  console.error('Error: ' + message);
 }
-```</code></pre>
+```
+.python
+``
+x = 1
+if x == 1:
+    print "x is 1."
+``</code></pre>
 </td><td style="width:50%; padding: 4px;">
-<pre class="javascript no-highlight"><code>function die(message) {
-  if (message) {
-    console.error(message);
-  }
-  else {
-    console.error('fatal error');
-  }
-  process.exit(1);
+<pre class="javascript no-highlight"><code>if (message) {
+  console.error('Error: ' + message);
 }</code></pre>
+<pre class="python no-highlight"><code>x = 1
+if x == 1:
+    print "x is 1."</code></pre>
 </td></tr></tbody></table>
 <p>Set the <code>no-highlight</code> class to disable syntax highlighting for a code
 block.  Adding the <code>no-highlight</code> class to all code blocks using
 <em>Delimited Block Definitions</em> effectively turns off auto-highlighting
 unless the language class is explicitly set. The <a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example .rimurc
 file</a>
-does this by with these custom definitions:</p>
+does this with these custom definitions:</p>
 <pre class="no-highlight"><code>|code| = '&lt;pre class="no-highlight"&gt;&lt;code&gt;|&lt;/code&gt;&lt;/pre&gt;'
 |indented| = '&lt;pre class="no-highlight"&gt;&lt;code&gt;|&lt;/code&gt;&lt;/pre&gt;'</code></pre>
 <h2 id="markdown-compatible">Syntax shared with Markdown</h2>
@@ -241,15 +240,19 @@ does this by with these custom definitions:</p>
 </dd><dt>Code blocks</dt><dd>
 <ul><li>Indented paragraphs (at least four spaces) render like Markdown code
   blocks.
-</li><li><a href="https://help.github.com/articles/github-flavored-markdown/">GitHub Flavored Markdown</a>
-  <em>Fenced Blocks</em> are compatible with Rimu backtick delimited blocks.
+</li><li>Rimu backtick delimited Code blocks are compatible with
+  <a href="https://help.github.com/articles/github-flavored-markdown/">GitHub Flavored Markdown</a>
+  <em>Fenced Blocks</em>.
 </li></ul></dd><dt>Quote paragraphs</dt><dd> Paragraphs starting with a <code>&gt;</code> character are
 rendered like Markdown Blockquotes.
-</dd><dt>Text formatting</dt><dd> <code>_emphasis_</code>, <code>*emphasis*</code>, <code>__bold__</code>, <code>**bold**</code>,
-<code>`code`</code> , <code>``code``</code> and <code>~~strikethrough~~</code> quotes (strikethrough
-is GitHub Flavored Markdown compatible).
-</dd><dt>Lists</dt><dd>
-<ul><li>Bullet lists with <code>-</code> and <code>*</code> IDs.
+</dd><dt>Text formatting</dt><dd>
+<ul><li><code>_emphasis_</code>, <code>*emphasis*</code>, <code>__bold__</code>, <code>**bold**</code>,
+  <code>`code`</code> , <code>``code``</code> quoting.
+</li><li><code>~~strikethrough~~</code> quotes (GitHub Flavored Markdown behaviour).
+</li><li>Underscores within words rendered verbatim and are not treated as
+  underscore emphasis quotes (Github Flavored Markdown behaviour).
+</li></ul></dd><dt>Lists</dt><dd>
+<ul><li>Bullet lists with <code>-</code>, <code>+</code>  and <code>*</code> IDs.
 </li><li>Numbered lists with explicit numbering.
 </li></ul></dd><dt>URLs and Email addresses</dt><dd> <code>[caption](url)</code>, <code>&lt;url&gt;</code> and <code>&lt;email&gt;</code>
 syntaxes plus Github Flavored Markdown <em>URL autolinking</em>.
@@ -359,56 +362,13 @@ consectetuer commodo.
 Neque a massa. Porttitor
 consectetuer commodo.</code></pre>
 </td></tr></tbody></table>
-<h2>Display contiguous block images vertically</h2>
-<p>Unless they are separated by other block elements, multiple block
-image elements flow inline like text (this is because the HTML <code>img</code>
-element is an &ldquo;inline block&rdquo; element), you can flow them vertically by
-enclosing them in a <em>Division Block</em> (HTML <code>div</code> element). For
-example:</p>
-<table class="example table table-bordered">
-<tbody>
-<tr>
-<td style="width:10%; color:#527bbd; font-weight:bold;">Rimu source</td>
-<td>
-<pre style="border:none; background-color:inherit;" class="no-highlight"><code>&lt;image:http://www.w3.org/Icons/w3c_home.png|W3C logo&gt;
-..
-.#big-logo [width="150"]
-&lt;image:http://www.w3.org/Icons/w3c_home.png|W3C logo&gt;
-..</code></pre>
-</td>
-</tr>
-<tr><td style="width:10%; color:#527bbd; font-weight:bold;">Rendered HTML</td>
-<td>
-<img src="http://www.w3.org/Icons/w3c_home.png" alt="W3C logo">
-<div><img id="big-logo" width="150" src="http://www.w3.org/Icons/w3c_home.png" alt="W3C logo"></div>
-</td></tr></table>
-<h2>Entering non-ASCII characters</h2>
-<p>A number of non-ASCII Unicode characters are commonly used for
-punctuation e.g.  em dash, ellipsis and quotation characters. You can
-enter these characters (or any Unicode character) as HTML character
-entities or you can enter them literally.</p>
-<p>For example, to enter an ellipsis you could either enter <code>&amp;hellip;</code> or
-you could enter the actual … character directly.
-See the
-<a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example .rimurc file</a>
-for some common use-cases.</p>
-<p>The mechanism for entering Unicode characters directly will be dictated
-by your editor:</p>
-<dl><dt>Vim</dt><dd> Enter <em>Ctrl+V</em> followed by the the character <em>u</em> followed by the
-hexidecimal character code e.g. to enter an em dash enter <em>Ctrl+V</em>
-followed by <em>u2014</em>
-</dd><dt>Linux console input</dt><dd> Enter <em>Ctrl+Shift+U</em> followed by the hexadecimal
-character code followed by the <em>Enter</em> key.
-</dd></dl><p>Common Unicode characters:</p>
-<pre class="no-highlight"><code>Character     HTML entity    Hexadecimal code
----------     -----------    ----------------
-—             &amp;mdash;        2014
-…             &amp;hellip;       2026
-“             &amp;ldquo;        201c
-”             &amp;rdquo;        201d
-→             &amp;rightarrow;   2192</code></pre>
-<p>Here's a full list of
-<a href="http://dev.w3.org/html5/html-author/charref">HTML5 character entities</a>.</p>
+<h2>Entering non-keyboard characters</h2>
+<p>Characters that are unavailable on your keyboard can be entered as 
+<a href="http://dev.w3.org/html5/html-author/charref">HTML character entities</a>
+e.g. enter <code>&amp;micro;</code> to display &micro;. The 
+<a href="#example-rimurc">example .rimurc file</a>
+includes replacements for common use-cases such as em dash, ellipsis and
+quotation characters.</p>
 <h2 id="defs-warning">Use Replacement and Quote definitions sparingly</h2>
 <p>Adding new Replacement and Quote definitions changes the Rimu syntax
 which can produce unexpected results. It can also make your Rimu
@@ -416,23 +376,149 @@ source non-portable and less readable.</p>
 <h2 id="example-rimurc">Example .rimurc file</h2>
 <p>The Rimu distribution includes an <a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example .rimurc
 file</a>
-containing a number or useful niceties.</p>
-<h2>Using Macro, Replacement and Quote definitions in Safe Mode</h2>
+containing useful macros, quotes and replacement definitions.</p>
+<p>It is important to note that these niceties have been defined in
+Rimu Markup &mdash; Rimu has been extended using Rimu. No plugins
+or special configuration file syntax were necessary.
+Example usage:</p>
+<table class="example table table-bordered"><thead><tr style="color:#527bbd;">
+<th style="width:50%;">Rimu source</th>
+<th style="width:50%;">Rendered HTML</th>
+</tr></thead><tbody><tr><td style="width: 50%; padding: 4px;">
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>Turn &lt;- left then right -&gt;
+
+Pencil {icon|pencil} file {icon|file}
+and trash {icon|trash} icons.
+
+Copyright (C) 2015 -- trademarked(TM).
+
+"Left and right double-quotes",
+'left and right single-quotes'.
+
+The 3{sup|rd} H{sub|2}O molecule...
+
+IMPORTANT: Admonition.
+
+TODO 10 examples +-2</code></pre>
+</td><td style="width:50%; padding: 4px;">
+<p>Turn &leftarrow; left then right &rightarrow;</p>
+<p>Pencil <span class="icon-pencil"></span> file <span class="icon-file"></span>
+and trash <span class="icon-trash"></span> icons.</p>
+<p>Copyright &copy; 2015 &mdash; trademarked&trade;.</p>
+<p>&ldquo;Left and right double-quotes&rdquo;,
+&lsquo;left and right single-quotes&rsquo;.</p>
+<p>The 3<sup>rd</sup> H<sub>2</sub>O molecule&hellip;</p>
+<p><b>IMPORTANT</b>: Admonition.</p>
+<p><b style="color: red; background-color: yellow;">TODO</b> 10 examples &plusmn;2</p>
+</td></tr></tbody></table>
+<h2 id="scoped-css">Use scoped CSS to generate custom styled elements</h2>
+<p>HTML5's <a href="http://www.w3schools.com/tags/att_style_scoped.asp">scoped CSS
+attribute</a>
+allows you to define CSS outside the document header.  This allows you
+to include CSS in the body of a Rimu document which is very handy for
+tweaking the default CSS and for styling Rimu block elements.
+Examples:</p>
+<table class="example table table-bordered"><thead><tr style="color:#527bbd;">
+<th style="width:50%;">Rimu source</th>
+<th style="width:50%;">Rendered HTML</th>
+</tr></thead><tbody><tr><td style="width: 50%; padding: 4px;">
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>&lt;style type="text/css" scoped&gt;
+.verse {
+  margin: 1.5em 20px;
+}
+div.verse p, p.verse {
+  font-family: serif;
+  white-space:pre;
+}
+.sidebar {
+  border: 1px solid silver;
+  border-radius:4px;
+  background: #ffffee;
+  padding: 10px;
+  margin: 1.5em 20px;
+}
+div.sidebar *:first-child {
+  margin-top: 0.2em;
+}
+&lt;/style&gt;
+
+.verse
+Neque a massa.
+Porttitor consectetuer commodo.
+
+.verse
+..
+#### Lorum Ipsum
+Neque a massa.
+Porttitor consectetuer commodo.
+
+Nunc mauris tempor.
+Pede mauris sed.
+Scelerisque feugiat massa alias.
+..
+
+.sidebar
+Neque a massa.
+Porttitor consectetuer commodo.
+
+.sidebar
+..
+#### Lorum Ipsum
+Neque a massa.
+Porttitor consectetuer commodo.
+
+Nunc mauris tempor.
+Pede mauris sed.
+Scelerisque feugiat massa alias.
+..</code></pre>
+</td><td style="width:50%; padding: 4px;">
+<style type="text/css" scoped>
+.verse {
+  margin: 1.5em 20px;
+}
+div.verse p, p.verse {
+  font-family: serif;
+  white-space:pre;
+}
+.sidebar {
+  border: 1px solid silver;
+  border-radius:4px;
+  background: #ffffee;
+  padding: 10px;
+  margin: 1.5em 20px;
+}
+div.sidebar *:first-child {
+  margin-top: 0.2em;
+}
+</style>
+<p class="verse">Neque a massa.
+Porttitor consectetuer commodo.</p>
+<div class="verse"><h4>Lorum Ipsum</h4>
+<p>Neque a massa.
+Porttitor consectetuer commodo.</p>
+<p>Nunc mauris tempor.
+Pede mauris sed.
+Scelerisque feugiat massa alias.</p></div>
+<p class="sidebar">Neque a massa.
+Porttitor consectetuer commodo.</p>
+<div class="sidebar"><h4>Lorum Ipsum</h4>
+<p>Neque a massa.
+Porttitor consectetuer commodo.</p>
+<p>Nunc mauris tempor.
+Pede mauris sed.
+Scelerisque feugiat massa alias.</p></div>
+</td></tr></tbody></table>
+<ul><li>The above <em>verse</em> and <em>sidebar</em> CSS styles are automatically
+  included when you use the <em>rimuc</em> tool <code>--styled</code> option.
+</li><li>HTML5 stipulates that scoped <em>style</em> element must be the first child
+  element &mdash; in practice  most browsers don't care where it occurs.
+</li></ul><h2>Using Macro, Replacement and Quote definitions in Safe Mode</h2>
 <p><em>Macro</em>, <em>Replacement</em> and <em>Quote</em> definitions are not processed in
 Safe Mode. To apply Macro, Replacement or Quote definitions to Rimu
-markup processed in Safe Mode you need to load the definitions with a
+markup that is processed in Safe Mode you need to load the definitions with a
 separate API call, for example:</p>
-<pre class="no-highlight"><code>Rimu.render(trusted_rimu_definitions); // safeMode is off by default.
+<pre class="no-highlight"><code>Rimu.render(trusted_rimu_definitions, {safeMode: 0});
 var html = Rimu.render(untrusted_rimu_markup, {safeMode: 1});</code></pre>
-<h2>Modifying built-in Quotes and Replacements</h2>
-<p>You can (with <a href="#defs-warning">caveats</a>) redefine built-in <em>Quotes</em> and
-<em>Replacements</em>, here are a couple of examples:</p>
-<pre class="no-highlight"><code>_ = '&lt;em class="emphasis"&gt;|&lt;/em&gt;'
-/\\?&lt;(\S+@[\w\.\-]+)&gt;/g = '&lt;a class="mailto" href="mailto:$1"&gt;$1&lt;/a&gt;'</code></pre>
-<p>Refer to the Rimu source files
-<a href="https://github.com/srackham/rimu/blob/master/src/quotes.ts">quotes.ts</a>
-and
-<a href="https://github.com/srackham/rimu/blob/master/src/replacements.ts">replacements.ts</a>.</p>
 <h2>Mathematical formulae using MathJax</h2>
 <p>You can include math formulas written in LaTeX or MathML using
 <a href="http://www.mathjax.org/">MathJax</a>. The <code>rimuc</code> command <code>--styled</code>
@@ -641,27 +727,23 @@ title:</p>
 <tr>
 <td style="width:10%; color:#527bbd; font-weight:bold;">Rimu source</td>
 <td>
-<pre style="border:none; background-color:inherit;" class="no-highlight"><code>// Macro to generate section link, header and TOC entry macros.
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>// toc macro generates section TOC entry, link macro, header macro.
 // $1 = section ID, $2 = section title.
-{section-definition} = '
-{$1} = '&lt;#$1|$2&gt;' \
+{toc} = '{$1} = '&lt;#$1|$2&gt;' \
 {$1-header} = '.#$1
 ## $2' \
-{$1-toc} = '{$1} \' \
+{$1}
 '
-// Generate section macros.
-{section-definition|section1|Section One}
-{section-definition|section2|Section Two}
 
 #### Table of Contents
-{section1-toc}
-{section2-toc}
+{toc|section1|Section One}
+{toc|section2|Section Two}
 
-// Section One section.
+// Section One.
 {section1-header}
 Link to {section2}.
 
-// Section Two section.
+// Section Two .
 {section2-header}
 Link to {section1}.</code></pre>
 </td>
@@ -669,8 +751,8 @@ Link to {section1}.</code></pre>
 <tr><td style="width:10%; color:#527bbd; font-weight:bold;">Rendered HTML</td>
 <td>
 <h4>Table of Contents</h4>
-<p><a href="#section1">Section One</a><br>
-<a href="#section2">Section Two</a><br></p>
+<p><a href="#section1">Section One</a></p>
+<p><a href="#section2">Section Two</a></p>
 <h2 id="section1">Section One</h2>
 <p>Link to <a href="#section2">Section Two</a>.</p>
 <h2 id="section2">Section Two</h2>
@@ -707,107 +789,6 @@ lines that end with a single-quote.</p>
 <p>Generates:</p>
 <pre class="no-highlight"><code>&lt;p&gt;foo foo&lt;/p&gt;
 &lt;p&gt;foo bar&lt;/p&gt;</code></pre></div>
-</li></ul><h2 id="scoped-css">Use scoped CSS to generate custom styled elements</h2>
-<p>HTML5's <a href="http://www.w3schools.com/tags/att_style_scoped.asp">scoped CSS
-attribute</a>
-allows you to define CSS outside the document header.  This allows you
-to include CSS in the body of a Rimu document which is very handy for
-tweaking the default CSS and for styling Rimu block elements.
-Examples:</p>
-<table class="example table table-bordered"><thead><tr style="color:#527bbd;">
-<th style="width:50%;">Rimu source</th>
-<th style="width:50%;">Rendered HTML</th>
-</tr></thead><tbody><tr><td style="width: 50%; padding: 4px;">
-<pre style="border:none; background-color:inherit;" class="no-highlight"><code>&lt;style type="text/css" scoped&gt;
-.verse {
-  margin: 1.5em 20px;
-}
-div.verse p, p.verse {
-  font-family: serif;
-  white-space:pre;
-}
-.sidebar {
-  border: 1px solid silver;
-  border-radius:4px;
-  background: #ffffee;
-  padding: 10px;
-  margin: 1.5em 20px;
-}
-div.sidebar *:first-child {
-  margin-top: 0.2em;
-}
-&lt;/style&gt;
-
-.verse
-Neque a massa.
-Porttitor consectetuer commodo.
-
-.verse
-..
-#### Lorum Ipsum
-Neque a massa.
-Porttitor consectetuer commodo.
-
-Nunc mauris tempor.
-Pede mauris sed.
-Scelerisque feugiat massa alias.
-..
-
-.sidebar
-Neque a massa.
-Porttitor consectetuer commodo.
-
-.sidebar
-..
-#### Lorum Ipsum
-Neque a massa.
-Porttitor consectetuer commodo.
-
-Nunc mauris tempor.
-Pede mauris sed.
-Scelerisque feugiat massa alias.
-..</code></pre>
-</td><td style="width:50%; padding: 4px;">
-<style type="text/css" scoped>
-.verse {
-  margin: 1.5em 20px;
-}
-div.verse p, p.verse {
-  font-family: serif;
-  white-space:pre;
-}
-.sidebar {
-  border: 1px solid silver;
-  border-radius:4px;
-  background: #ffffee;
-  padding: 10px;
-  margin: 1.5em 20px;
-}
-div.sidebar *:first-child {
-  margin-top: 0.2em;
-}
-</style>
-<p class="verse">Neque a massa.
-Porttitor consectetuer commodo.</p>
-<div class="verse"><h4>Lorum Ipsum</h4>
-<p>Neque a massa.
-Porttitor consectetuer commodo.</p>
-<p>Nunc mauris tempor.
-Pede mauris sed.
-Scelerisque feugiat massa alias.</p></div>
-<p class="sidebar">Neque a massa.
-Porttitor consectetuer commodo.</p>
-<div class="sidebar"><h4>Lorum Ipsum</h4>
-<p>Neque a massa.
-Porttitor consectetuer commodo.</p>
-<p>Nunc mauris tempor.
-Pede mauris sed.
-Scelerisque feugiat massa alias.</p></div>
-</td></tr></tbody></table>
-<ul><li>The above <em>verse</em> and <em>sidebar</em> CSS styles are automatically
-  included when you use the <em>rimuc</em> tool <code>--styled</code> option.
-</li><li>HTML5 stipulates that scoped <em>style</em> element must be the first child
-  element &mdash; in practice  most browsers don't care where it occurs.
 </li></ul><h2>List item counters</h2>
 <p>In addition to the <em>verse</em> and <em>sidebar</em> CSS styles the  <em>rimuc</em> tool
 <code>--styled</code> option also includes CSS classes for counting list items
@@ -902,6 +883,31 @@ Nisi! Amet.</p></blockquote>
 <p>Duis in tincidunt rhoncus nascetur
 lacus!</p></blockquote>
 </td></tr></tbody></table>
+<h2>List termination</h2>
+<p>List termination can be forced by following the list by two or more blank
+lines. This comes in handy if you want to follow one list immediately by
+another you want to separate an Indented paragraph from a preceding list item.</p>
+<h2>Nested list item ambiguity</h2>
+<p>To render an indented list item as an Indented paragraph change it
+to a delimited code block, for example:</p>
+<table class="example table table-bordered"><thead><tr style="color:#527bbd;">
+<th style="width:50%;">Rimu source</th>
+<th style="width:50%;">Rendered HTML</th>
+</tr></thead><tbody><tr><td style="width: 50%; padding: 4px;">
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>- List item.
+
+  * Rendered as nested list item.
+
+- List item.
+``
+* Rendered as code block.
+``</code></pre>
+</td><td style="width:50%; padding: 4px;">
+<ul><li>List item.
+<ul><li>Rendered as nested list item.
+</li></ul></li><li>List item.
+<pre class="no-highlight"><code>* Rendered as code block.</code></pre>
+</li></ul></td></tr></tbody></table>
 
 <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
