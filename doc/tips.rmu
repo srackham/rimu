@@ -699,7 +699,8 @@ lacus!
 ## List termination
 List termination can be forced by following the list by two or more blank
 lines. This comes in handy if you want to follow one list immediately by
-another you want to separate an Indented paragraph from a preceding list item.
+another or if you want to separate an Indented paragraph from a
+preceding list item.
 
 
 ## Nested list item ambiguity

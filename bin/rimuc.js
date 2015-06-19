@@ -40,8 +40,9 @@ var MANPAGE = 'NAME\n' +
     '\n' +
     '  -s, --styled\n' +
     '    Include HTML header and footer and Bootstrap CSS styling in\n' +
-    '    output. If one source file is specified the output is written to\n' +
-    '    same-named file with .html extension.\n' +
+    '    output. If only one source file is specified and the --output option\n' +
+    '    is not used then the output is written to a same-named file with\n' +
+    '    an .html extension.\n' +
     '\n' +
     '  --safeMode NUMBER\n' +
     '    Specifies how to process inline and block HTML elements.\n' +
@@ -80,7 +81,7 @@ var MANPAGE = 'NAME\n' +
     '  ______________________________________________________________\n' +
     '  verse            Verse format (paragraphs, division blocks).\n' +
     '  sidebar          Sidebar format (paragraphs, division blocks).\n' +
-    '  dl-numbered      Number labeled list items .\n' +
+    '  dl-numbered      Number labeled list items.\n' +
     '  dl-counter       Prepend dl item counter to element content.\n' +
     '  ol-counter       Prepend ol item counter to element content.\n' +
     '  ul-counter       Prepend ul item counter to element content.\n' +
