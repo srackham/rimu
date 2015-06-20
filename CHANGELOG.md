@@ -3,6 +3,16 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
+## Version 5.2.0 (2015-06-20)
+The `rimuc` command can now generate a table of contents: If the `--toc` macro is defined
+and is not blank then the `rimuc` command `--styled` option generates a table of contents.
+For example:
+
+    rimuc --styled --prepend "{--toc}='yes'" README.md
+
+Top-level `h1`, `h2` and `h3` HTML tags contribute to the table of contents.
+
+
 ## Version 5.1.0 (2015-06-13)
 New features:
 
