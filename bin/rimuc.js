@@ -75,7 +75,7 @@ var MANPAGE = 'NAME\n' +
     '  --mathjax          Set to a non-blank value to enable MathJax.\n' +
     '  --toc              Set to a non-blank value to generate a\n' +
     '                     table of contents (1).\n' +
-    '  --section-numbers  Apply h1 and h2 section numbering (1).\n' +
+    '  --section-numbers  Apply h2 and h3 section numbering (1).\n' +
     '  ______________________________________________________________\n' +
     '  (1) Must be defined prior to header (--prepend or .rimurc).\n' +
     '\n' +
