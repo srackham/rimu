@@ -145,6 +145,14 @@
   body {
     padding-left: 21em;
   }
+  @media print {
+    #toc {
+      display: none;
+    }
+    body {
+      padding-left: 1em;
+    }
+  }
   #toc {
     position: fixed;
     top: 0;
