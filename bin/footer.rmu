@@ -2,9 +2,36 @@
   Used by rimuc.js --styled option.
 */
 
+// Close contents div.
+</div>
+
 {--highlightjs!}<script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>
 
 {--mathjax!}<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+// Build table of contents.
+{--toc=}.+skip
+<script>
+window.onload = function() {
+  var toc = document.getElementById('toc');
+  var headings = [].slice.call(document.body.querySelectorAll('#contents>h1, #contents>h2, #contents>h3'));
+  headings.forEach(function(heading) {
+    var title = heading.textContent;
+    var id = heading.getAttribute('id');
+    if (!id) {
+      id = title.replace(/\s+/g, '-').toLowerCase();
+    }
+    heading.setAttribute('id', id);
+    var tocLink = document.createElement('a');
+    tocLink.setAttribute('href', '#' + id);
+    tocLink.textContent = title;
+    var tocEntry = document.createElement('div');
+    tocEntry.setAttribute('class', heading.tagName.toLowerCase());
+    tocEntry.appendChild(tocLink);
+    toc.appendChild(tocEntry);
+  });
+}
+</script>
 
 </body>
 </html>

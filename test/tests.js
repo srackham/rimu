@@ -601,6 +601,10 @@ exports['Blocks'] = function(test) {
     '',
     'comment out delimited block with inclusion macro');
   test_document(
+    "{--v=}.+skip\nfoobar",
+    '',
+    'comment out delimited block if macro not defined');
+  test_document(
     'Hello {undefined?undefined macro.}',
     '<p>Hello undefined macro.</p>',
     'existential macro invocation', {macroMode: 1});

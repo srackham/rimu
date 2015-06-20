@@ -9,7 +9,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>{--title? }</title>
+  <title>{--title?&nbsp;}</title>
   <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
   <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
 
@@ -139,5 +139,46 @@
   }
 </style>
 
+{--toc=}.+skip
+<style>
+  /* TOC styles */
+  body {
+    padding-left: 21em;
+  }
+  #toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 18em;
+    padding: 1em;
+    border-right: 1px solid #cccccc;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+  }
+  #toc .h1 {
+    font-size: 110%;
+    font-weight: bold;
+    margin-top: 0.5em;
+    margin-bottom: 0.4em;
+  }
+  #toc .h2 {
+    margin-top: 0.4em;
+  }
+  #toc .h3 {
+    margin-left: 1.5em;
+    font-size: 90%;
+  }
+  #toc div:nth-child(even) {
+    background-color: #f8f8f8;
+  }
+</style>
+
 </head>
 <body>
+
+{--toc!}<div id="toc"></div>
+
+<div id="contents">
+

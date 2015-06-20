@@ -7,113 +7,154 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="description" content="Rimu is a readable text to HTML
-    markup language inspired by AsciiDoc and Markdown.">
-  <title>{--title}</title>
-  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
-  <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
-  <style>
-    /* Bootstrap tweaks. */
-    body {
-      margin: 1em;
-      max-width: 50em;
-    }
-    h1, h2, h3, h4, h5, h6 { color: #527bbd; }
-    h1 { font-size: 2.2em; }
-    h2 { font-size: 1.5em; }
-    h3 { font-size: 1.3em; }
-    h4 { font-size: 1.1em; }
-    h5 { font-size: 1.0em; }
-    h6 { font-size: 0.9em; }
-    h2, h3, h4, h5, h6 {
-      line-height: normal;
-      margin-top: 1.5em;
-      margin-bottom: 0.2em;
-    }
-    h2 {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-    }
-    a, a:hover { color: #527bbd; }
-    li, dd {
-      margin-bottom: 0.25em;
-    }
-    p, pre, ul, ol, dl, blockquote p {
-      font-size: inherit;
-      margin-top: 0.5em;
-      margin-bottom: 0.5em;
-    }
-    pre {
-      padding: 6px;
-      line-height: normal;
-    }
-    .breadcrumb {
-      font-weight: bold;
-      background-color: white;
-      margin: 0;
-      margin-top: 5px;
-      padding: 0;
-    }
-    code {
-      color: inherit;
-      font-size: inherit;
-    }
-    *:not(pre) > code {
-      border: none;
-      background-color: #f8f8f8;
-    }
-    .dl-horizontal > dt {
-      text-align: left;
-    }
-    /* highlight.js tweaks. */
-    pre > code {
-      background-color: inherit;
-      padding: 0;
-    }
-    pre span {
-      opacity: 1 !important;
-    }
-    /* List item counters and definition list numbering. */
-    dl {
-      counter-reset: dl-counter;
-    }
-    dl > dt {
-      counter-increment: dl-counter;
-    }
-    ol {
-      counter-reset: ol-counter;
-    }
-    ol > li {
-      counter-increment: ol-counter;
-    }
-    ul {
-      counter-reset: ul-counter;
-    }
-    ul > li {
-      counter-increment: ul-counter;
-    }
-    .dl-counter:before {
-      content: counter(dl-counter) " ";
-    }
-    .ol-counter:before {
-      content: counter(ol-counter) " ";
-    }
-    .ul-counter:before {
-      content: counter(ul-counter) " ";
-    }
-    .dl-numbered > dt:before {
-      content: counter(dl-counter) ". ";
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="description" content="Rimu is a readable text to HTML
+  markup language inspired by AsciiDoc and Markdown.">
+<title>{--title}</title>
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
+<link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
+<style>
+  /* Bootstrap tweaks. */
+  body {
+    margin: 1em;
+    max-width: 50em;
+  }
+  h1, h2, h3, h4, h5, h6 { color: #527bbd; }
+  h1 { font-size: 2.2em; }
+  h2 { font-size: 1.5em; }
+  h3 { font-size: 1.3em; }
+  h4 { font-size: 1.1em; }
+  h5 { font-size: 1.0em; }
+  h6 { font-size: 0.9em; }
+  h2, h3, h4, h5, h6 {
+    line-height: normal;
+    margin-top: 1.5em;
+    margin-bottom: 0.2em;
+  }
+  h2 {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  }
+  a, a:hover { color: #527bbd; }
+  li, dd {
+    margin-bottom: 0.25em;
+  }
+  p, pre, ul, ol, dl, blockquote p {
+    font-size: inherit;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+  pre {
+    padding: 6px;
+    line-height: normal;
+  }
+  .breadcrumb {
+    font-weight: bold;
+    background-color: white;
+    margin: 0;
+    margin-top: 5px;
+    padding: 0;
+  }
+  code {
+    color: inherit;
+    font-size: inherit;
+  }
+  *:not(pre) > code {
+    border: none;
+    background-color: #f8f8f8;
+  }
+  .dl-horizontal > dt {
+    text-align: left;
+  }
+  /* highlight.js tweaks. */
+  pre > code {
+    background-color: inherit;
+    padding: 0;
+  }
+  pre span {
+    opacity: 1 !important;
+  }
+  /* List item counters and definition list numbering. */
+  dl {
+    counter-reset: dl-counter;
+  }
+  dl > dt {
+    counter-increment: dl-counter;
+  }
+  ol {
+    counter-reset: ol-counter;
+  }
+  ol > li {
+    counter-increment: ol-counter;
+  }
+  ul {
+    counter-reset: ul-counter;
+  }
+  ul > li {
+    counter-increment: ul-counter;
+  }
+  .dl-counter:before {
+    content: counter(dl-counter) " ";
+  }
+  .ol-counter:before {
+    content: counter(ol-counter) " ";
+  }
+  .ul-counter:before {
+    content: counter(ul-counter) " ";
+  }
+  .dl-numbered > dt:before {
+    content: counter(dl-counter) ". ";
+  }
+</style>
+
+{--toc=}.+skip
+<style>
+  /* TOC styles */
+  body {
+    padding-left: 21em;
+  }
+  #toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 18em;
+    padding: 1em;
+    border-right: 1px solid #cccccc;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+  }
+  #toc .h1 {
+    font-size: 110%;
+    font-weight: bold;
+    margin-top: 0.5em;
+    margin-bottom: 0.4em;
+  }
+  #toc .h2 {
+    margin-top: 0.4em;
+  }
+  #toc .h3 {
+    margin-left: 1.5em;
+    font-size: 90%;
+  }
+  #toc div:nth-child(even) {
+    background-color: #f8f8f8;
+  }
+</style>
+
 </head>
 <body>
-  <ul class="breadcrumb pull-right">
-    <li><a href="index.html">Home</a> <span class="divider">|</span></li>
-    <li><a href="rimuplayground.html">Playground and Docs</a> <span class="divider">|</span></li>
-    <li><a href="tips.html">Tips</a> <span class="divider">|</span></li>
-    <li><a href="http://github.com/srackham/rimu">Github</a> <span class="divider">|</span></li>
-    <li><a href="https://npmjs.org/package/rimu">npm</a></li>
-  </ul>
+
+{--toc!}<div id="toc"></div>
+
+<div id="contents">
+<ul class="breadcrumb pull-right">
+  <li><a href="index.html">Home</a> <span class="divider">|</span></li>
+  <li><a href="rimuplayground.html">Playground and Docs</a> <span class="divider">|</span></li>
+  <li><a href="tips.html">Tips</a> <span class="divider">|</span></li>
+  <li><a href="http://github.com/srackham/rimu">Github</a> <span class="divider">|</span></li>
+  <li><a href="https://npmjs.org/package/rimu">npm</a></li>
+</ul>
 
 // Macro to render code listing from content macro $1.
 {example-code-listing} = '.+macros
@@ -171,3 +212,4 @@
 // Turn off Highlight.js auto-hightlighting.
 |code| = '<pre class="no-highlight"><code>|</code></pre>'
 |indented| = '<pre class="no-highlight"><code>|</code></pre>'
+

@@ -997,6 +997,8 @@ STYLING MACROS AND CLASSES
   - -highlightjs      Set to non-blank value to enable syntax
                      highlighting with Highlight.js.
   - -mathjax          Set to a non-blank value to enable MathJax.
+  - -toc              Set to a non-blank value to generate a
+                     table of contents (1).
   - -section-numbers  Apply h1 and h2 section numbering (1).
   ______________________________________________________________
   (1) Must be defined prior to header (- -prepend or .rimurc).
@@ -1018,11 +1020,15 @@ Example usage:
 
   echo 'Hello *Rimu*!' | rimuc
 
-2. Generate styled HTML Web page and use MathJax to process MathML:
+2. Generate a styled HTML Web page with a table of contents:
+
+  rimuc - -styled - -prepend "{- -toc}='yes'" README.md
+
+3. Generate a styled HTML Web page and use MathJax to process MathML:
 
   rimuc - -styled - -prepend "{- -mathjax}='yes'" showcase.rmu
 
-3. Compile multiple source files to single output file:
+4. Compile multiple source files to single output file:
 
   rimuc -o book.html frontmatter.rmu chapter*.rmu backmatter.rmu
 
