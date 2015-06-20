@@ -266,17 +266,19 @@ A _single-line comment_ is any line of text starting with `//`.
 Delimited blocks are blocks of one or more lines bounded by opening
 and closing delimiter lines.
 
-- Delimited blocks can be escaped by prefixing the opening delimiter
-  with a backslash character.
+- Delimiter lines consist of two or more delimiter characters
+  starting at the left margin.
 - The number of characters in the closing delimiter must exactly match
   the number in the he opening delimiter - - this feature allows
   delimited blocks of the same type to be nested.
 - CSS class names appended to the opening delimiter line
   will be injected into the block's opening HTML tag (this is
   an alternative to using a _Block Attributes_ element).
+- Delimited blocks can be escaped by prefixing the opening delimiter
+  with a backslash character.
 
 ### Code Block
-```
+``
 By default the all text in a _Code Block_ is rendered verbatim. This
 behavior can be changed using a preceding _Block Attributes_ element.
 The generated HTML is enveloped  with  <pre><code>...</code></pre>
@@ -284,7 +286,7 @@ tags.
 
 The delimiter lines are two or more backtick characters starting at the
 left margin.
-```
+``
 
 ### Quote Block
 ""
@@ -961,8 +963,10 @@ OPTIONS
 
   -s, - -styled
     Include HTML header and footer and Bootstrap CSS styling in
-    output. If one source file is specified the output is written to
-    same-named file with .html extension.
+    output. If only one source file is specified and the - -output option
+    is not used then the output is written to a same-named file with
+    an .html extension.
+
 
   - -safeMode NUMBER
     Specifies how to process inline and block HTML elements.
@@ -993,6 +997,8 @@ STYLING MACROS AND CLASSES
   - -highlightjs      Set to non-blank value to enable syntax
                      highlighting with Highlight.js.
   - -mathjax          Set to a non-blank value to enable MathJax.
+  - -toc              Set to a non-blank value to generate a
+                     table of contents (1).
   - -section-numbers  Apply h1 and h2 section numbering (1).
   ______________________________________________________________
   (1) Must be defined prior to header (- -prepend or .rimurc).
@@ -1001,7 +1007,7 @@ STYLING MACROS AND CLASSES
   ______________________________________________________________
   verse            Verse format (paragraphs, division blocks).
   sidebar          Sidebar format (paragraphs, division blocks).
-  dl-numbered      Number labeled list items .
+  dl-numbered      Number labeled list items.
   dl-counter       Prepend dl item counter to element content.
   ol-counter       Prepend ol item counter to element content.
   ul-counter       Prepend ul item counter to element content.
@@ -1014,11 +1020,15 @@ Example usage:
 
   echo 'Hello *Rimu*!' | rimuc
 
-2. Generate styled HTML Web page and use MathJax to process MathML:
+2. Generate a styled HTML Web page with a table of contents:
+
+  rimuc - -styled - -prepend "{- -toc}='yes'" README.md
+
+3. Generate a styled HTML Web page and use MathJax to process MathML:
 
   rimuc - -styled - -prepend "{- -mathjax}='yes'" showcase.rmu
 
-3. Compile multiple source files to single output file:
+4. Compile multiple source files to single output file:
 
   rimuc -o book.html frontmatter.rmu chapter*.rmu backmatter.rmu
 
