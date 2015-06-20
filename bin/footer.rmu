@@ -20,8 +20,8 @@ window.onload = function() {
     var id = heading.getAttribute('id');
     if (!id) {
       id = title.replace(/\s+/g, '-').toLowerCase();
+      heading.setAttribute('id', id);
     }
-    heading.setAttribute('id', id);
     var tocLink = document.createElement('a');
     tocLink.setAttribute('href', '#' + id);
     tocLink.textContent = title;
