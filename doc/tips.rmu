@@ -106,7 +106,7 @@ if x == 1:
 
 Set the `no-highlight` class to disable syntax highlighting for a code
 block.  Adding the `no-highlight` class to all code blocks using
-_Delimited Block Definitions_ effectively turns off auto-highlighting
+_Delimited Block Definitions_ turns off highlighting
 unless the language class is explicitly set. The [example .rimurc
 file](https://github.com/srackham/rimu/blob/master/examples/.rimurc)
 does this with these custom definitions:

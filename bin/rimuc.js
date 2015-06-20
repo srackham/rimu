@@ -60,8 +60,16 @@ var MANPAGE = 'NAME\n' +
     '    --macroMode 4 Defined or Reserved macros (default behavior).\n' +
     '\n' +
     '  --htmlReplacement\n' +
-    '     A string that replaces embedded HTML when safeMode is set to 2.\n' +
-    '     Defaults to `<mark>replaced HTML</mark>`.\n' +
+    '    A string that replaces embedded HTML when safeMode is set to 2.\n' +
+    '    Defaults to `<mark>replaced HTML</mark>`.\n' +
+    '\n' +
+    '  --title TITLE, --highlightjs, --mathjax, --toc, --section-numbers\n' +
+    '    Shortcuts for prepended styling macro definitions:\n' +
+    '    --prepend "{--title}=\'TITLE\'"\n' +
+    '    --prepend "{--highlightjs}=\'true\'"\n' +
+    '    --prepend "{--mathjax}=\'true\'"\n' +
+    '    --prepend "{--toc}=\'true\'"\n' +
+    '    --prepend "{--section-numbers}=\'true\'"\n' +
     '\n' +
     'STYLING MACROS AND CLASSES\n' +
     '  The following macros and CSS classes are available when the\n' +
@@ -149,6 +157,15 @@ outer:
         case '--styled':
         case '-s':
           styled = true;
+          break;
+        // Styling macro definitions shortcut options.
+        case '--highlightjs':
+        case '--mathjax':
+        case '--section-numbers':
+        case '--title':
+        case '--toc':
+          var macroValue = arg === '--title' ? process.argv.shift() : 'true';
+          source += '{' + arg + "}='" + macroValue + "'\n";
           break;
         default:
           if (arg[0] === '-') {

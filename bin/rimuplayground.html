@@ -967,7 +967,6 @@ OPTIONS
     is not used then the output is written to a same-named file with
     an .html extension.
 
-
   - -safeMode NUMBER
     Specifies how to process inline and block HTML elements.
     - -safeMode 0 renders raw HTML (default).
@@ -984,8 +983,16 @@ OPTIONS
     - -macroMode 4 Defined or Reserved macros (default behavior).
 
   - -htmlReplacement
-     A string that replaces embedded HTML when safeMode is set to 2.
-     Defaults to `<mark>replaced HTML</mark>`.
+    A string that replaces embedded HTML when safeMode is set to 2.
+    Defaults to `<mark>replaced HTML</mark>`.
+
+  - -title TITLE, - -highlightjs, - -mathjax, - -toc, - -section-numbers
+    Shortcuts for prepended styling macro definitions:
+    - -prepend "{- -title}='TITLE'"
+    - -prepend "{- -highlightjs}='true'"
+    - -prepend "{- -mathjax}='true'"
+    - -prepend "{- -toc}='true'"
+    - -prepend "{- -section-numbers}='true'"
 
 STYLING MACROS AND CLASSES
   The following macros and CSS classes are available when the
@@ -1020,13 +1027,14 @@ Example usage:
 
   echo 'Hello *Rimu*!' | rimuc
 
-2. Generate a styled HTML Web page with a table of contents:
+2. Generate a styled HTML Web page including table of contents
+   and code syntax highlighting styling macro shortcut options:
 
-  rimuc - -styled - -prepend "{- -toc}='yes'" README.md
+  rimuc - -styled - -toc - -highlightjs README.md
 
-3. Generate a styled HTML Web page and use MathJax to process MathML:
+3. Prefix a custom macro definition:
 
-  rimuc - -styled - -prepend "{- -mathjax}='yes'" showcase.rmu
+  rimuc - -prepend "{annotations}='yes'" showcase.rmu
 
 4. Compile multiple source files to single output file:
 

@@ -144,9 +144,10 @@ file(RIMU_VAR_LIB_MIN, [RIMU_VAR_LIB], {async: true}, function() {
 desc('Generate HTML documentation');
 task('html-docs', {async: true}, function() {
   var commands = DOCS.map(function(doc) {
-    return 'node ./bin/rimuc.js --output ' + doc.dst +
-      ' --prepend "{--title}=\'' + doc.title + '\'"' +
-      (doc.hasToc ? ' --prepend "{--toc}=\'yes\'"' :  '' ) +
+    return 'node ./bin/rimuc.js' +
+      ' --output "' + doc.dst + '"' +
+      ' --title "' + doc.title + '"' +
+      (doc.hasToc ? ' --toc' :  '' ) +
       ' doc/doc-header.rmu ' + doc.src + ' doc/doc-footer.rmu';
   });
   exec(commands);
