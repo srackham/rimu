@@ -152,11 +152,10 @@ task('html-docs', {async: true}, function() {
   exec(commands);
 });
 
-// TODO: Patched w3cjs with PR #18 https://github.com/thomasdavis/w3cjs/pull/18
 desc('Validate HTML documents with W3C Validator.');
 task('validate-html', {async: true}, function() {
   var commands = HTML.map(function(file) {
-    return 'w3cjs validate ' + file;
+    return 'html-validator --file ' + file + ' >/dev/null';
   });
   exec(commands);
 });
