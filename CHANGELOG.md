@@ -3,7 +3,7 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
-## Version 5.3.0 (2015-06-21)
+## Version 5.3.0 (2015-06-22)
 Added `--title TITLE`, `--highlightjs`, `--mathjax`, `--toc`, `--section-numbers`
 styling macro shortcut options to `rimuc`. The preceding example can now be
 shortened to:
