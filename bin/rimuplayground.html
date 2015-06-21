@@ -5,8 +5,7 @@
   <meta name="description" content="An interactive sandbox for learning and
     experimenting with Rimu markup plus documentation.">
   <title>Rimu Playground</title>
-  <style type="text/css">
-    /*<![CDATA[*/
+  <style>
     body {
       margin: 1em;
       font-family: Helvetica, Arial, sans-serif;
@@ -69,7 +68,6 @@
     #navbar .divider {
       color: silver;
     }
-    /*]]>*/
   </style>
 </head>
 <body>
@@ -152,8 +150,8 @@ Node.js example (Rimu has been installed from npm):
 
 HTML script tag example:
 
-  <script type="text/javascript" src="rimu-var.js"></script>
-  <script type="text/javascript">
+  <script src="rimu-var.js"></script>
+  <script>
     console.log(Rimu.render('Hello *Rimu*!', {reset:true, safeMode:2}));
   </script>
 
@@ -1095,9 +1093,8 @@ Syntax:
 -->
 </div>
 
-  <script type="text/javascript" src="rimu-var.js"></script>
-  <script type="text/javascript">
-    // <![CDATA[
+  <script src="rimu-var.js"></script>
+  <script>
     function escapeSpecialChars(s) {
       return s.replace(/&/g, '&amp;')
               .replace(/>/g, '&gt;')
@@ -1157,7 +1154,6 @@ Syntax:
       previewElement.innerHTML = html;
     }
     window.onload = function () { renderTopic(); };
-    // ]]>
   </script>
 </body>
 </html>

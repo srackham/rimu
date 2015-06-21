@@ -297,7 +297,7 @@ to include CSS in the body of a Rimu document which is very handy for
 tweaking the default CSS and for styling Rimu block elements.
 Examples:
 
-{scoped-css-example} = '<style type="text/css" scoped>
+{scoped-css-example} = '<style scoped>
 .verse {
   margin: 1.5em 20px;
 }
