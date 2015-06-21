@@ -174,7 +174,7 @@ task('version', {async: true}, function() {
     }
     shelljs.sed('-i', /(\n\s*"version"\s*:\s*)"\d+\.\d+\.\d+"/, '$1' + '"' + version + '"', 'package.json');
     pkg.version = version;
-    exec('git commit -m "bump version number" package.json');
+    exec('git commit -m "Bump version number." package.json');
   }
 });
 
