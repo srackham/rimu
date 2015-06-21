@@ -48,6 +48,11 @@
     margin-top: 5px;
     padding: 0;
   }
+  @media print {
+    .breadcrumb {
+      display: none;
+    }
+  }
   code {
     color: inherit;
     font-size: inherit;
@@ -103,6 +108,14 @@
   /* TOC styles */
   body {
     padding-left: 21em;
+  }
+  @media print {
+    #toc {
+      display: none;
+    }
+    body {
+      padding-left: 1em;
+    }
   }
   #toc {
     position: fixed;
@@ -206,8 +219,8 @@ window.onload = function() {
     var id = heading.getAttribute('id');
     if (!id) {
       id = title.replace(/\s+/g, '-').toLowerCase();
+      heading.setAttribute('id', id);
     }
-    heading.setAttribute('id', id);
     var tocLink = document.createElement('a');
     tocLink.setAttribute('href', '#' + id);
     tocLink.textContent = title;

@@ -5,8 +5,7 @@
   <meta name="description" content="An interactive sandbox for learning and
     experimenting with Rimu markup plus documentation.">
   <title>Rimu Playground</title>
-  <style type="text/css">
-    /*<![CDATA[*/
+  <style>
     body {
       margin: 1em;
       font-family: Helvetica, Arial, sans-serif;
@@ -69,7 +68,6 @@
     #navbar .divider {
       color: silver;
     }
-    /*]]>*/
   </style>
 </head>
 <body>
@@ -152,8 +150,8 @@ Node.js example (Rimu has been installed from npm):
 
 HTML script tag example:
 
-  <script type="text/javascript" src="rimu-var.js"></script>
-  <script type="text/javascript">
+  <script src="rimu-var.js"></script>
+  <script>
     console.log(Rimu.render('Hello *Rimu*!', {reset:true, safeMode:2}));
   </script>
 
@@ -967,7 +965,6 @@ OPTIONS
     is not used then the output is written to a same-named file with
     an .html extension.
 
-
   - -safeMode NUMBER
     Specifies how to process inline and block HTML elements.
     - -safeMode 0 renders raw HTML (default).
@@ -984,8 +981,16 @@ OPTIONS
     - -macroMode 4 Defined or Reserved macros (default behavior).
 
   - -htmlReplacement
-     A string that replaces embedded HTML when safeMode is set to 2.
-     Defaults to `<mark>replaced HTML</mark>`.
+    A string that replaces embedded HTML when safeMode is set to 2.
+    Defaults to `<mark>replaced HTML</mark>`.
+
+  - -title TITLE, - -highlightjs, - -mathjax, - -toc, - -section-numbers
+    Shortcuts for prepended styling macro definitions:
+    - -prepend "{- -title}='TITLE'"
+    - -prepend "{- -highlightjs}='true'"
+    - -prepend "{- -mathjax}='true'"
+    - -prepend "{- -toc}='true'"
+    - -prepend "{- -section-numbers}='true'"
 
 STYLING MACROS AND CLASSES
   The following macros and CSS classes are available when the
@@ -999,7 +1004,7 @@ STYLING MACROS AND CLASSES
   - -mathjax          Set to a non-blank value to enable MathJax.
   - -toc              Set to a non-blank value to generate a
                      table of contents (1).
-  - -section-numbers  Apply h1 and h2 section numbering (1).
+  - -section-numbers  Apply h2 and h3 section numbering (1).
   ______________________________________________________________
   (1) Must be defined prior to header (- -prepend or .rimurc).
 
@@ -1020,13 +1025,14 @@ Example usage:
 
   echo 'Hello *Rimu*!' | rimuc
 
-2. Generate a styled HTML Web page with a table of contents:
+2. Generate a styled HTML Web page including table of contents
+   and code syntax highlighting styling macro shortcut options:
 
-  rimuc - -styled - -prepend "{- -toc}='yes'" README.md
+  rimuc - -styled - -toc - -highlightjs README.md
 
-3. Generate a styled HTML Web page and use MathJax to process MathML:
+3. Prefix a custom macro definition:
 
-  rimuc - -styled - -prepend "{- -mathjax}='yes'" showcase.rmu
+  rimuc - -prepend "{annotations}='yes'" showcase.rmu
 
 4. Compile multiple source files to single output file:
 
@@ -1087,9 +1093,8 @@ Syntax:
 -->
 </div>
 
-  <script type="text/javascript" src="rimu-var.js"></script>
-  <script type="text/javascript">
-    // <![CDATA[
+  <script src="rimu-var.js"></script>
+  <script>
     function escapeSpecialChars(s) {
       return s.replace(/&/g, '&amp;')
               .replace(/>/g, '&gt;')
@@ -1149,7 +1154,6 @@ Syntax:
       previewElement.innerHTML = html;
     }
     window.onload = function () { renderTopic(); };
-    // ]]>
   </script>
 </body>
 </html>

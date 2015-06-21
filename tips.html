@@ -48,6 +48,11 @@
     margin-top: 5px;
     padding: 0;
   }
+  @media print {
+    .breadcrumb {
+      display: none;
+    }
+  }
   code {
     color: inherit;
     font-size: inherit;
@@ -103,6 +108,14 @@
   /* TOC styles */
   body {
     padding-left: 21em;
+  }
+  @media print {
+    #toc {
+      display: none;
+    }
+    body {
+      padding-left: 1em;
+    }
   }
   #toc {
     position: fixed;
@@ -264,7 +277,7 @@ if x == 1:
 </td></tr></tbody></table>
 <p>Set the <code>no-highlight</code> class to disable syntax highlighting for a code
 block.  Adding the <code>no-highlight</code> class to all code blocks using
-<em>Delimited Block Definitions</em> effectively turns off auto-highlighting
+<em>Delimited Block Definitions</em> turns off highlighting
 unless the language class is explicitly set. The <a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example .rimurc
 file</a>
 does this with these custom definitions:</p>
@@ -458,7 +471,7 @@ Examples:</p>
 <th style="width:50%;">Rimu source</th>
 <th style="width:50%;">Rendered HTML</th>
 </tr></thead><tbody><tr><td style="width: 50%; padding: 4px;">
-<pre style="border:none; background-color:inherit;" class="no-highlight"><code>&lt;style type="text/css" scoped&gt;
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>&lt;style scoped&gt;
 .verse {
   margin: 1.5em 20px;
 }
@@ -508,7 +521,7 @@ Pede mauris sed.
 Scelerisque feugiat massa alias.
 ..</code></pre>
 </td><td style="width:50%; padding: 4px;">
-<style type="text/css" scoped>
+<style scoped>
 .verse {
   margin: 1.5em 20px;
 }
@@ -948,7 +961,7 @@ to a delimited code block, for example:</p>
 
 </div>
 <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <script>
 window.onload = function() {
   var toc = document.getElementById('toc');
@@ -958,8 +971,8 @@ window.onload = function() {
     var id = heading.getAttribute('id');
     if (!id) {
       id = title.replace(/\s+/g, '-').toLowerCase();
+      heading.setAttribute('id', id);
     }
-    heading.setAttribute('id', id);
     var tocLink = document.createElement('a');
     tocLink.setAttribute('href', '#' + id);
     tocLink.textContent = title;

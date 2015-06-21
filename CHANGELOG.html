@@ -48,6 +48,11 @@
     margin-top: 5px;
     padding: 0;
   }
+  @media print {
+    .breadcrumb {
+      display: none;
+    }
+  }
   code {
     color: inherit;
     font-size: inherit;
@@ -104,6 +109,14 @@
   body {
     padding-left: 21em;
   }
+  @media print {
+    #toc {
+      display: none;
+    }
+    body {
+      padding-left: 1em;
+    }
+  }
   #toc {
     position: fixed;
     top: 0;
@@ -148,6 +161,11 @@
 <h1>Rimu Markup CHANGELOG</h1>
 <p>See the <a href="https://github.com/srackham/rimu/commits/">Git commit log</a>
 for more detailed information.</p>
+<h2>Version 5.3.0 (2015-06-22)</h2>
+<p>Added <code>--title TITLE</code>, <code>--highlightjs</code>, <code>--mathjax</code>, <code>--toc</code>, <code>--section-numbers</code>
+styling macro shortcut options to <code>rimuc</code>. The preceding example can now be
+shortened to:</p>
+<pre class="no-highlight"><code>rimuc --styled --toc README.md</code></pre>
 <h2>Version 5.2.0 (2015-06-20)</h2>
 <p>The <code>rimuc</code> command can now generate a table of contents: If the <code>--toc</code> macro is defined
 and is not blank then the <code>rimuc</code> command <code>--styled</code> option generates a table of contents.
@@ -261,8 +279,8 @@ window.onload = function() {
     var id = heading.getAttribute('id');
     if (!id) {
       id = title.replace(/\s+/g, '-').toLowerCase();
+      heading.setAttribute('id', id);
     }
-    heading.setAttribute('id', id);
     var tocLink = document.createElement('a');
     tocLink.setAttribute('href', '#' + id);
     tocLink.textContent = title;
