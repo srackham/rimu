@@ -3,6 +3,14 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
+## Version 5.3.0 (2015-06-21)
+Added `--title TITLE`, `--highlightjs`, `--mathjax`, `--toc`, `--section-numbers`
+styling macro shortcut options to `rimuc`. The preceding example can now be
+shortened to:
+
+    rimuc --styled --toc README.md
+
+
 ## Version 5.2.0 (2015-06-20)
 The `rimuc` command can now generate a table of contents: If the `--toc` macro is defined
 and is not blank then the `rimuc` command `--styled` option generates a table of contents.
