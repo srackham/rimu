@@ -115,7 +115,7 @@ process.argv.shift(); // Skip rimuc script path.
 
 // Parse command-line options.
 var source = '';
-var outFile;
+var outfile;
 outer:
     while (!!(arg = process.argv.shift())) {
       switch (arg) {
@@ -126,8 +126,8 @@ outer:
           break;
         case '--output':
         case '-o':
-          outFile = process.argv.shift();
-          if (!outFile) {
+          outfile = process.argv.shift();
+          if (!outfile) {
             die('missing --output file name');
           }
           break;
@@ -177,25 +177,26 @@ outer:
     }
 
 // process.argv contains the list of source files.
-if (process.argv.length === 0) {
-  process.argv.push('/dev/stdin');
+var files = process.argv;
+if (files.length === 0) {
+  files.push('/dev/stdin');
 }
-else if (styled && !outFile && process.argv.length === 1) {
+else if (styled && !outfile && files.length === 1) {
   // Use the source file name with .html extension for the output file.
-  var inFile = process.argv[0];
-  outFile = inFile.substr(0, inFile.lastIndexOf('.')) + '.html';
+  outfile = files[0].substr(0, files[0].lastIndexOf('.')) + '.html';
 }
 
 if (styled) {
-  process.argv.unshift(path.resolve(__dirname, 'header.rmu'));
-  process.argv.push(path.resolve(__dirname, 'footer.rmu'));
+  // Envelope source files with header and footer.
+  files.unshift(path.resolve(__dirname, 'header.rmu'));
+  files.push(path.resolve(__dirname, 'footer.rmu'));
 }
 
-// Include $HOME/.rimurc file if it exists.
+// Prepend $HOME/.rimurc file if it exists.
 var homeDir = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
 var rimurc =  path.resolve(homeDir, '.rimurc');
 if (!no_rimurc && fs.existsSync(rimurc)) {
-  process.argv.unshift(rimurc);
+  files.unshift(rimurc);
 }
 
 // Convert Rimu source files to HTML.
@@ -203,27 +204,27 @@ var html = '';
 if (source !== '') {
   html += Rimu.render(source) + '\n'; // --prepend option source.
 }
-while (!!(arg = process.argv.shift())) {
-  if (!fs.existsSync(arg)) {
-    die('source file does not exist: ' + arg);
+files.forEach(function (infile) {
+  if (!fs.existsSync(infile)) {
+    die('source file does not exist: ' + infile);
   }
   try {
-    source = fs.readFileSync(arg).toString();
+    source = fs.readFileSync(infile).toString();
   } catch (e) {
-    die('source file permission denied: ' + arg);
+    die('source file permission denied: ' + infile);
   }
   var options = {
-      safeMode: arg === rimurc ? 0 : safeMode,
+      safeMode: infile === rimurc ? 0 : safeMode,
       macroMode: macroMode
     };
   if (htmlReplacement !== null) {
     options.htmlReplacement = htmlReplacement;
   }
   html += Rimu.render(source, options) + '\n';
-}
+});
 html = html.trim() + '\n';
-if (outFile) {
-  fs.writeFileSync(outFile, html);
+if (outfile) {
+  fs.writeFileSync(outfile, html);
 }
 else {
   console.log(html);
