@@ -22,16 +22,17 @@
   h1, h2, h3, h4, h5, h6 { color: #527bbd; }
   h1 { font-size: 2.2em; }
   h2 { font-size: 1.5em; }
-  h3 { font-size: 1.3em; }
+  h3 { font-size: 1.2em; }
   h4 { font-size: 1.1em; }
   h5 { font-size: 1.0em; }
   h6 { font-size: 0.9em; }
   h2, h3, h4, h5, h6 {
     line-height: normal;
-    margin-top: 1.5em;
+    margin-top: 1.0em;
     margin-bottom: 0.2em;
   }
   h2 {
+    margin-top: 1.5em;
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   }
   a, a:hover { color: #527bbd; }
@@ -46,6 +47,10 @@
   pre {
     padding: 6px;
     line-height: normal;
+  }
+  .light-background {
+    background-color: #f8f8f8;
+    border: none;
   }
   .breadcrumb {
     font-weight: bold;
@@ -69,6 +74,10 @@
   }
   .dl-horizontal > dt {
     text-align: left;
+    margin-top: 1.0em;
+  }
+  .dl-horizontal > dd {
+    margin-top: 1.0em;
   }
   /* highlight.js tweaks. */
   pre > code {
@@ -163,7 +172,8 @@
 <div id="contents">
 <ul class="breadcrumb pull-right">
   <li><a href="index.html">Home</a> <span class="divider">|</span></li>
-  <li><a href="rimuplayground.html">Playground and Docs</a> <span class="divider">|</span></li>
+  <li><a href="rimuplayground.html">Playground</a> <span class="divider">|</span></li>
+  <li><a href="reference.html">Reference</a> <span class="divider">|</span></li>
   <li><a href="tips.html">Tips</a> <span class="divider">|</span></li>
   <li><a href="http://github.com/srackham/rimu">Github</a> <span class="divider">|</span></li>
   <li><a href="https://npmjs.org/package/rimu">npm</a></li>
@@ -178,7 +188,7 @@
 // Macro to generate Rimu markup and rendered example (stacked horizontally).
 // $1 = name of example content macro.
 .-macros
-{generate-rendered-example-1} = '
+{generate-rendered-example-1} = '#### Examples
 <table class="example table table-bordered"><thead><tr style="color:#527bbd;">
 <th style="width:50%;">Rimu source</th>
 <th style="width:50%;">Rendered HTML</th>
@@ -200,7 +210,7 @@
 // Macro to generate Rimu markup and rendered example (stacked vertically).
 // $1 = name of example content macro.
 .-macros
-{generate-rendered-example-2} = '
+{generate-rendered-example-2} = '#### Examples
 <table class="example table table-bordered">
 <tbody>
 <tr>
@@ -225,4 +235,12 @@
 // Turn off Highlight.js auto-hightlighting.
 |code| = '<pre class="no-highlight"><code>|</code></pre>'
 |indented| = '<pre class="no-highlight"><code>|</code></pre>'
+
+// Web pages.
+{playground} = 'rimuplayground.html'
+{changelog} = 'CHANGELOG.html'
+{reference} = 'reference.html'
+{github} = 'http://github.com/srackham/rimu'
+{npm} = 'https://npmjs.org/package/rimu'
+{tips} = 'tips.html'
 
