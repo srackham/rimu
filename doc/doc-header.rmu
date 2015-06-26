@@ -162,6 +162,11 @@
   #toc div:nth-child(even) {
     background-color: #f8f8f8;
   }
+  .broken-fragment {
+    color: white;
+    background-color: #990000;
+    font-weight: bold;
+  }
 </style>
 
 </head>
