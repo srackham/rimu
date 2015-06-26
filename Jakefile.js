@@ -23,6 +23,7 @@ var RIMUC = './bin/rimuc.js';
 var DOCS = [
   {src: 'README.md', dst: 'doc/index.html', title: 'Rimu Markup', hasToc: true},
   {src: 'CHANGELOG.md', dst: 'doc/CHANGELOG.html', title: 'Rimu Change Log', hasToc: true},
+  {src: 'doc/reference.rmu', dst: 'doc/reference.html', title: 'Rimu Reference', hasToc: true},
   {src: 'doc/tips.rmu', dst: 'doc/tips.html', title: 'Rimu Tips', hasToc: true}
 ];
 
