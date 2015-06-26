@@ -5,26 +5,29 @@
 
 {--mathjax!}<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
-{--toc=}.+skip
 <script>
 window.onload = function() {
-  // Build table of contents.
+  // Generate header slugs and build table of contents.
   var toc = document.getElementById('toc');
   var headings = [].slice.call(document.body.querySelectorAll('#contents>h1, #contents>h2, #contents>h3'));
   headings.forEach(function(heading) {
     var title = heading.textContent;
     var id = heading.getAttribute('id');
     if (!id) {
-      id = title.replace(/\s+/g, '-').toLowerCase();
+      id = title.replace(/\s+/g, '-') // Repace spaces with dashes.
+          .replace(/[^\w-]/g, '')     // Retain alphanumeric, '-' and '_' characters.
+          .toLowerCase()
       heading.setAttribute('id', id);
     }
-    var tocLink = document.createElement('a');
-    tocLink.setAttribute('href', '#' + id);
-    tocLink.textContent = title;
-    var tocEntry = document.createElement('div');
-    tocEntry.setAttribute('class', heading.tagName.toLowerCase());
-    tocEntry.appendChild(tocLink);
-    toc.appendChild(tocEntry);
+    if (toc) {
+      var tocLink = document.createElement('a');
+      tocLink.setAttribute('href', '#' + id);
+      tocLink.textContent = title;
+      var tocEntry = document.createElement('div');
+      tocEntry.setAttribute('class', heading.tagName.toLowerCase());
+      tocEntry.appendChild(tocLink);
+      toc.appendChild(tocEntry);
+    }
   });
   // Highlight broken local URL fragments.
   var links = [].slice.call(document.body.getElementsByTagName('a'));
