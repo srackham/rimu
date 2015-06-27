@@ -23,15 +23,16 @@
   h1 { font-size: 2.2em; }
   h2 { font-size: 1.5em; }
   h3 { font-size: 1.2em; }
-  h4 { font-size: 1.0em; }
-  h5 { font-size: 0.9em; }
+  h4 { font-size: 1.1em; }
+  h5 { font-size: 1.0em; }
   h6 { font-size: 0.9em; }
   h2, h3, h4, h5, h6 {
     line-height: normal;
-    margin-top: 1.5em;
+    margin-top: 1.0em;
     margin-bottom: 0.2em;
   }
   h2 {
+    margin-top: 1.5em;
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   }
   a, a:hover { color: #527bbd; }
@@ -47,6 +48,22 @@
     padding: 6px;
     line-height: normal;
   }
+  .light-background {
+    background-color: #f8f8f8;
+    border: none;
+  }
+  .breadcrumb {
+    font-weight: bold;
+    background-color: white;
+    margin: 0;
+    margin-top: 5px;
+    padding: 0;
+  }
+  @media print {
+    .breadcrumb {
+      display: none;
+    }
+  }
   code {
     color: inherit;
     font-size: inherit;
@@ -57,6 +74,10 @@
   }
   .dl-horizontal > dt {
     text-align: left;
+    margin-top: 1.0em;
+  }
+  .dl-horizontal > dd {
+    margin-top: 1.0em;
   }
   /* highlight.js tweaks. */
   pre > code {
@@ -121,6 +142,11 @@
 {--!} Number labeled list items.
   .dl-numbered > dt:before {
     content: counter(dl-counter) ". ";
+  }
+  .broken-fragment {
+    color: white;
+    background-color: #990000;
+    font-weight: bold;
   }
 </style>
 
