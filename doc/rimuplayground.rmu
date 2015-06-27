@@ -1,12 +1,9 @@
 # Rimu Playground
 
 <style scoped>
-h4 {
-  background-color: #f0f0f0;
-}
 #rimu, #preview, #html {
   margin: 0;
-  height: 12em;
+  min-height: 12em;
 }
 #rimu {
   background-color: #ffe;
@@ -22,36 +19,43 @@ h4 {
 }
 </style>
 
-{welcome} = 'This is the _Rimu Playground_, it's an interactive sandbox for learning and experimenting with Rimu markup.
+{examples} = '
+Some **bold text**, some _emphasized text_, some `monospaced text` and some ~~deleted text~~.
 
-1. Type Rimu markup into the **Rimu** text box.
-2. View the results in the **Preview** and **HTML** boxes.'
+A [link to the Rimu website](http://rimumarkup.org/), an auto-encoded link: http://rimumarkup.org/.
 
-#### Rimu
+  Indented paragraph.
+
+> Quote paragraph.
+
+```
+Code block.
+```
+
+""
+Quote block.
+""
+
+- A bullet list item.
+- A 2nd bullet list item.
+  . Nested numbered list item.
+
+Definition list:: Definition 1.
+Term 2:: Definition 2.
+'
+
+## Rimu markup
+Edit these examples or add your own:
+
 <div>
-  <textarea id="rimu" onkeyup="convert()">{welcome}</textarea>
+  <textarea id="rimu" onkeyup="convert()">{examples}</textarea>
 </div>
 
-#### Preview
+## HTML preview
 <div id="preview"></div>
 
-#### HTML
+## HTML markup
 <pre id="html"></pre>
-
-{example-title} = '#### Cheatsheet'
-{cheatsheet} = '# h1 header
-## h2 header
-### h3 header
-#### h4 header
-##### h5 header
-###### h6 header
-
-Some **bold text**,
-some _emphasized text_,
-some `monospaced text` and
-some ~~deleted text~~.
-'
-{generate-rendered-example-1|cheatsheet}
 
 <script src="rimu-var.js"></script>
 <script>

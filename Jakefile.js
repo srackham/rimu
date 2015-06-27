@@ -25,7 +25,7 @@ var DOCS = [
   {src: 'CHANGELOG.md', dst: 'doc/CHANGELOG.html', title: 'Rimu Change Log', hasToc: true},
   {src: 'doc/reference.rmu', dst: 'doc/reference.html', title: 'Rimu Reference', hasToc: true},
   {src: 'doc/tips.rmu', dst: 'doc/tips.html', title: 'Rimu Tips', hasToc: true},
-  {src: 'doc/rimuplayground.rmu', dst: 'doc/rimuplayground.html', title: 'Rimu Playground'}
+  {src: 'doc/rimuplayground.rmu', dst: 'doc/rimuplayground.html', title: 'Rimu Playground', hasToc: true}
 ];
 
 var HTML = [];
