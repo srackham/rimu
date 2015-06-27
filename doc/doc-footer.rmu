@@ -17,6 +17,7 @@ window.onload = function() {
       id = title.replace(/\s+/g, '-') // Repace spaces with dashes.
           .replace(/[^\w-]/g, '')     // Retain alphanumeric, '-' and '_' characters.
           .toLowerCase()
+      if (!id) id = 'x';
       if (document.getElementById(id)) { // Another element already has that id.
         var i = 2, prefix = id;
         while (document.getElementById(id = prefix + '-' + i++)) {}
