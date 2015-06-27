@@ -289,7 +289,7 @@ matching postfix is optional.
 
 {headers-example} = '# h1 header
 ## h2 header ##
-#### h3 header
+### h3 header
 #### h4 _header_ ####
 ===== h5 header
 ====== h6 header'
@@ -891,7 +891,7 @@ undefined.
 ## Tools
 ### rimuc
 _rimuc_ is a Node.js command-line tool that converts Rimu source to
-HTML.
+HTML. Run `rimuc --help` to view the `rimuc` manpage:
 
 .light-background
 ``
