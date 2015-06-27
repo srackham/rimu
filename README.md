@@ -20,7 +20,7 @@ Plus:
 - Rimu is fast (same speed as _marked 0.3.2_ compiling Rimu `README.md`).
 
 
-## Implementation
+## Features summary
 
 - Single lightweight JavaScript file (less than 27KB minified) that
   can be dropped onto a Web page or used as a Node module.
@@ -37,7 +37,7 @@ Plus:
 - MIT license.
 
 
-## Learn More
+## Learn more
 
 Read the documentation and experiment with Rimu in the [Rimu
 Playground](http://srackham.github.io/rimu/rimuplayground.html) or open the
@@ -57,7 +57,7 @@ the latest changes.
 - Get the source from [Github](https://github.com/srackham/rimu).
 
 
-## Example Apps
+## Example applications
 
 See the _API_ documentation topic in the [Rimu
 Playground](http://srackham.github.io/rimu/rimuplayground.html).

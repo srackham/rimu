@@ -4,7 +4,8 @@
 ## HTML is valid Rimu
 You are free to mix any valid HTML into a Rimu document &mdash; no
 special syntax or relearning  is required (in this sense Rimu can be
-thought of as an HTML superset).
+thought of as an HTML superset). Just remember that included HTML is
+only processed if `safeMode` is non-zero.
 
 
 ## Converting Rimu to PDF
@@ -24,7 +25,7 @@ to PDF:
 
 ## Extend Rimu with Macros
 Macros provide a simple, consistent mechanism for extending the Rimu
-markup vocabulary. For example:
+markup vocabulary.
 
 .-macros
 {macros-example} = '{sidebar} = '#### $1
@@ -56,7 +57,7 @@ experimentation.
 ## Intra-document Links
 To link to another place within a document: Create an ID for the
 element you want to link to (using the Rimu _Block Attribute_ element)
-then create a link to it using a fragment identifier URL. For example:
+then create a link to it using a fragment identifier URL.
 
 {document-links-example} = '.#link-target
 This paragraph has ID `link-target`.
@@ -68,6 +69,9 @@ the above paragraph.
 So does [this link](#link-target).'
 
 {generate-rendered-example-1|document-links-example}
+
+NOTE: The [rimuc]({reference}#rimuc) `--styled` option automatically
+generates top level `h1`, `h2` and `h3` header IDs.
 
 
 .#syntax-highlighting
@@ -86,7 +90,7 @@ Paragraphs.
 You can set the language explicitly by injecting the
 language CSS class name into the code block. Here are two examples:
 the first uses GFM style syntax, the second uses Rimu's Block Attributes
-element:
+element.
 
 {highlightjs-example} = '\{--highlightjs} = 'yes'\
 
@@ -124,7 +128,7 @@ Headers:: Headers using `#` character header IDs.
 Code blocks::
 - Indented paragraphs (at least four spaces) render like Markdown code
   blocks.
-- Rimu backtick delimited Code blocks are compatible with
+- Rimu Fenced Code blocks with three or more backticks are compatible with
   [GitHub Flavored Markdown](https://help.github.com/articles/github-flavored-markdown/)
   _Fenced Blocks_.
 
@@ -155,8 +159,6 @@ _npmjs.org_ README formats.
 If you have text that you don't want interpreted as a Rimu
 element then you can render it literally (escape it) by prefixing the
 element with a backslash character.
-
-Here are some examples:
 
 {escaped-elements-example} = '\_escaped quote_
 
@@ -209,7 +211,7 @@ file](https://github.com/srackham/rimu/blob/master/examples/.rimurc).
 When you have multiple Indented paragraphs separated by blank lines
 the usual expectation is that they will be contained in a single
 listing -- to achieve this separate the paragraphs with lines
-containing one or more space characters:
+containing one or more space characters.
 
 {joined-paragraphs-example} = '#### Separator line is blank
 
@@ -267,7 +269,6 @@ containing useful macros, quotes and replacement definitions.
 It is important to note that these niceties have been defined in
 Rimu Markup -- Rimu has been extended using Rimu. No plugins
 or special configuration file syntax were necessary.
-Example usage:
 
 {rimurc-examples} = 'Turn <- left then right ->
 
@@ -295,7 +296,11 @@ attribute](http://www.w3schools.com/tags/att_style_scoped.asp)
 allows you to define CSS outside the document header.  This allows you
 to include CSS in the body of a Rimu document which is very handy for
 tweaking the default CSS and for styling Rimu block elements.
-Examples:
+
+- The _verse_ and _sidebar_ CSS styles shown below are automatically
+  included when you use the _rimuc_ tool `--styled` option.
+- HTML5 stipulates that scoped _style_ element must be the first child
+  element -- in practice  most browsers don't care where it occurs.
 
 {scoped-css-example} = '<style scoped>
 .verse {
@@ -349,11 +354,6 @@ Scelerisque feugiat massa alias.
 
 {generate-rendered-example-1|scoped-css-example}
 
-- The above _verse_ and _sidebar_ CSS styles are automatically
-  included when you use the _rimuc_ tool `--styled` option.
-- HTML5 stipulates that scoped _style_ element must be the first child
-  element -- in practice  most browsers don't care where it occurs.
-
 
 ## Using Macro, Replacement and Quote definitions in Safe Mode
 _Macro_, _Replacement_ and _Quote_ definitions are not processed in
@@ -371,7 +371,7 @@ var html = Rimu.render(untrusted_rimu_markup, {safeMode: 1});
 You can include math formulas written in LaTeX or MathML using
 [MathJax](http://www.mathjax.org/). The `rimuc` command `--styled`
 option will include MathJax support if the `\{--mathjax}` macro is
-defined. Examples:
+defined.
 
 .-macros
 {mathjax-example} = '{--mathjax} = 'yes'\
@@ -443,7 +443,7 @@ This works because lines (in a block context) that begin with a macro
 invocation are initially processed as _Line Macro_ elements.
 ..
 
-Delimited Blocks, HTML Blocks and Paragraphs::
+Delimited Blocks::
 ..
 To conditionally exclude these multi-line block elements enable the
 `+skip` option with a preceding _Attribute Block_ element. For
@@ -499,7 +499,7 @@ must start at the left margin and end with a blank line.
 The `rimuc` `--styled` option includes
 [Bootstrap](http://getbootstrap.com/) so you can use
 [Bootstrap tables classes](http://getbootstrap.com/css/#tables) to
-create nicely formatted tables. For example:
+create nicely formatted tables.
 
 .-macros
 {tables-example} = '<table class="table table-bordered">
@@ -554,7 +554,7 @@ Lobortis lacus vestibulum sem.
 You can define macros which, when invoked, generate other macros. A
 good example of this is the generation of document section headers,
 links and table of contents entries from a section identifier and
-title:
+title.
 
 .-macros
 {meta-macros-example} = '// toc macro generates section TOC entry, link macro, header macro.
@@ -569,11 +569,9 @@ title:
 {toc|section1|Section One}
 {toc|section2|Section Two}
 
-// Section One.
 {section1-header}
 Link to {section2}.
 
-// Section Two .
 {section2-header}
 Link to {section1}.'
 
@@ -630,7 +628,7 @@ Generates:
 ## List item counters
 In addition to the _verse_ and _sidebar_ CSS styles the  _rimuc_ tool
 `--styled` option also includes CSS classes for counting list items
-and for numbering labeled list items:
+and for numbering labeled list items.
 
 {list-item-counters-example} = '#### Numbered labeled list
 .dl-numbered
@@ -664,18 +662,17 @@ ordered list items.'
 If you define the `--section-numbers` macro the  _rimuc_ tool
 `--styled` option will emit CSS to automatically number _h2_ sections
 and _h3_ sub-sections. You need to define the `--section-numbers`
-macro on the command-line (using the `--prepend` option) or in your
-`.rimurc` file. For example:
+macro, either on the command-line using the `rimuc` `--section-numbers` option, or
+globally in your `.rimurc` file. For example:
 
-  rimuc --styled --prepend "{--section-numbers}='yes'" mydoc.rmu
+  rimuc --styled --section-numbers mydoc.rmu
 
 
-## Nested Delimited Blocks
-Delimited blocks of the same type can be nested by using differing
-numbers of delimiter characters to distinguish between them. Here is
-an example of a Quote block nested within a Quote block:
+## Nested Fenced Blocks
+Fenced blocks of the same type can be nested by using differing
+numbers of delimiter characters to distinguish between them.
 
-{nested-delimited-blocks-example} = '""
+{nested-fenced-blocks-example} = '""
 Urna aliquam pid, pulvinar augue ut
 aenean enim cum lectus sed, duis odio
 lectus, augue non egestas amet? Magna
@@ -693,7 +690,7 @@ Duis in tincidunt rhoncus nascetur
 lacus!
 ""'
 
-{generate-rendered-example-1|nested-delimited-blocks-example}
+{generate-rendered-example-1|nested-fenced-blocks-example}
 
 
 ## List termination
@@ -705,7 +702,7 @@ preceding list item.
 
 ## Nested list item ambiguity
 To render an indented list item as an Indented paragraph change it
-to a delimited code block, for example:
+to a fenced code block.
 
 {list-ambiguity-example} = '- List item.
 

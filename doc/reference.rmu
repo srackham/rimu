@@ -512,7 +512,7 @@ ___________________________________________________________
   exception of the _Code_ quote which displays text verbatim.
 - Single underscore quote characters within words are ignored if they
   are flanked on both sides by alphanumeric characters (use single
-  asterisk quotes to emphaise text within words).
+  asterisk quotes to emphasize text within words).
 - Quotes can be escaped by prefixing the opening quote with with a
   backslash character. If the text contains multiple quotes of the
   same type then, to resolve ambiguity, additional quotes may have to
@@ -812,15 +812,16 @@ Invocation syntax:
   it will not be processed.
 - A _Simple_ macro invocation is replaced by the macro value or a
   blank string if the macro is not defined.
-- An _Existential_ macro invocation is replaced by the macro value or a
-  the `default-value` if the macro is not defined.
+- An _Existential_ macro invocation is replaced by the `default-value`
+  if the macro is not defined. If the macro is defined the invocation
+  is replaced by the macro value.
 - _Parametrized_ macro invocations replace `$1`, `$2` ...  parameter
   names in the macro definition value with the corresponding parameter
   values.
   * If a macro parameter value is not specified then the corresponding
     parameter name is replaced by a blank string.
-  * Parameter names in macro definition values can be escaped
-    with a backslash character prefix.
+  * Parameter names in macro definition values can be escaped with a
+    backslash character prefix.
   *  Macro invocation parameters can contain inline Rimu elements;
      inline parameter values can span multiple lines.
 - The `{macro-name=pattern}` _Inclusion_ invocation is replaced by a
@@ -1009,7 +1010,7 @@ The `--styled` option prepends a header file and appends footer file to
 the other source files. The header and footer ensures:
 
 - The output document is a valid HTML5 document.
-- The output document inlcudes
+- The output document includes
   [Bootstrap](http://getbootstrap.com/2.3.2/) for styling.
 - If the `--highlightjs` macro is defined
   [Highlightjs](https://highlightjs.org/) is included.
@@ -1019,13 +1020,16 @@ the other source files. The header and footer ensures:
   from top level `h1`, `h2` and `h3` HTML header elements.
 - A slug is synthesized and assigned to the `id` attribute of top
   level `h1`, `h2` and `h3` HTML header elements that do not already
-  have an `id`.  For example the header `The End!` is assigned the
-  slug `the-end`.  Slugs are generated from the header title by:
+  have an `id`.  For example a header with the title `The End!` is
+  assigned an `id` attribute value
+  `the-end`. Slug ids are generated from the header title by:
 
   . Converting the title to lowercase.
   . Replacing spaces with a dash.
   . Removing characters that are not alphanumeric, dashes or
-    underscores.
+    underscores. If no characters remain the slug is set to `x`.
+  . If an existing element has that id then the slug is successively
+    postfixed with `-2`, `-3`... until a unique id is found.
 
 - In addition to Bootstrap CSS style classes there are styles for
   verses, sidebars and section numbering (see `rimuc --help` command

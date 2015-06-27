@@ -3,6 +3,18 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
+## Version 5.4.0 (2015-06-28)
+- Moved Rimu reference documentation from the _Rimu Playground_ into a
+  separate updated _Reference_ manual.
+- Restyled and simplified the _Playground_.
+- Features added to the `rimuc` command `--styled` option (details in
+  the new _Reference_ manual):
+  * Now generates unique slug ids for top level `h1`, `h2` and `h3`
+    headers irrespective of the `--toc` option (previously it was
+    possible to generate non-unique slug ids).
+  * It Highlights broken fragment URLs.
+
+
 ## Version 5.3.0 (2015-06-22)
 Added `--title TITLE`, `--highlightjs`, `--mathjax`, `--toc`, `--section-numbers`
 styling macro shortcut options to `rimuc`. The preceding example can now be

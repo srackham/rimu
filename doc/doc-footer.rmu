@@ -14,7 +14,7 @@ window.onload = function() {
     var title = heading.textContent;
     var id = heading.getAttribute('id');
     if (!id) {
-      id = title.replace(/\s+/g, '-') // Repace spaces with dashes.
+      id = title.replace(/\s+/g, '-') // Replace spaces with dashes.
           .replace(/[^\w-]/g, '')     // Retain alphanumeric, '-' and '_' characters.
           .toLowerCase()
       if (!id) id = 'x';
