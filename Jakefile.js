@@ -147,10 +147,11 @@ desc('Generate HTML documentation');
 task('html-docs', {async: true}, function() {
   var commands = DOCS.map(function(doc) {
     return 'node ./bin/rimuc.js' +
+      ' --styled' +
       ' --output "' + doc.dst + '"' +
       ' --title "' + doc.title + '"' +
-      (doc.hasToc ? ' --toc' :  '' ) +
-      ' doc/doc-header.rmu ' + doc.src + ' doc/doc-footer.rmu';
+      (doc.hasToc ? ' --toc' : '' ) +
+      ' doc/doc-header.rmu ' + doc.src;
   });
   exec(commands);
 });

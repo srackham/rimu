@@ -52,18 +52,6 @@
     background-color: #f8f8f8;
     border: none;
   }
-  .breadcrumb {
-    font-weight: bold;
-    background-color: white;
-    margin: 0;
-    margin-top: 5px;
-    padding: 0;
-  }
-  @media print {
-    .breadcrumb {
-      display: none;
-    }
-  }
   code {
     color: inherit;
     font-size: inherit;
