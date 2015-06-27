@@ -1,0 +1,73 @@
+# Rimu Playground
+
+<style scoped>
+h4 {
+  background-color: #f0f0f0;
+}
+#rimu, #preview, #html {
+  margin: 0;
+  height: 12em;
+}
+#rimu {
+  background-color: #ffe;
+  border: 2px solid #eee;
+  width: 100%;
+  box-sizing: border-box;
+}
+#preview {
+  padding: 0 0.5em;
+}
+#html {
+  padding: 0.5em;
+}
+</style>
+
+{welcome} = 'This is the _Rimu Playground_, it's an interactive sandbox for learning and experimenting with Rimu markup.
+
+1. Type Rimu markup into the **Rimu** text box.
+2. View the results in the **Preview** and **HTML** boxes.'
+
+#### Rimu
+<div>
+  <textarea id="rimu" onkeyup="convert()">{welcome}</textarea>
+</div>
+
+#### Preview
+<div id="preview"></div>
+
+#### HTML
+<pre id="html"></pre>
+
+{example-title} = '#### Cheatsheet'
+{cheatsheet} = '# h1 header
+## h2 header
+### h3 header
+#### h4 header
+##### h5 header
+###### h6 header
+
+Some **bold text**,
+some _emphasized text_,
+some `monospaced text` and
+some ~~deleted text~~.
+'
+{generate-rendered-example-1|cheatsheet}
+
+<script src="rimu-var.js"></script>
+<script>
+function escapeSpecialChars(s) {
+  return s.replace(/&/g, '&amp;')
+          .replace(/>/g, '&gt;')
+          .replace(/</g, '&lt;');
+}
+function convert() {
+  var source = document.getElementById('rimu').value;
+  var htmlRaw = Rimu.render(source);
+  var htmlEscaped = escapeSpecialChars(htmlRaw);
+  var htmlElement = document.getElementById('html');
+  var previewElement = document.getElementById('preview');
+  htmlElement.innerHTML = htmlEscaped;
+  previewElement.innerHTML = htmlRaw;
+}
+convert();
+</script>

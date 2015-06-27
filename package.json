@@ -25,7 +25,6 @@
   "files": [
     "bin/rimu-commonjs2.js",
     "bin/rimuc.js",
-    "bin/rimuplayground.html",
     "bin/header.rmu",
     "bin/footer.rmu"
   ],
