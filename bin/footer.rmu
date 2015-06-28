@@ -18,17 +18,11 @@ window.onload = function() {
     var title = heading.textContent;
     var id = heading.getAttribute('id');
     if (!id) {
-      id = title.replace(/\s+/g, '-') // Replace spaces with dashes.
-          .replace(/[^\w-]/g, '')     // Retain alphanumeric, '-' and '_' characters.
-          .toLowerCase()
-      if (!id) id = 'x';
-      if (document.getElementById(id)) { // Another element already has that id.
-        var i = 2, prefix = id;
-        while (document.getElementById(id = prefix + '-' + i++)) {}
-      }
+      id = slugify(title);
       heading.setAttribute('id', id);
     }
     if (toc) {
+      // Append TOC entry.
       var tocLink = document.createElement('a');
       tocLink.setAttribute('href', '#' + id);
       tocLink.textContent = title;
@@ -38,6 +32,20 @@ window.onload = function() {
       toc.appendChild(tocEntry);
     }
   });
+  checkUrlFragments();
+}
+function slugify(text) {
+  var slug = text.replace(/\s+/g, '-') // Replace spaces with dashes.
+      .replace(/[^\w-]/g, '')          // Retain alphanumeric, '-' and '_' characters.
+      .toLowerCase()
+  if (!slug) slug = 'x';
+  if (document.getElementById(slug)) { // Another element already has that id.
+    var i = 2, prefix = slug;
+    while (document.getElementById(slug = prefix + '-' + i++)) {}
+  }
+  return slug;
+}
+function checkUrlFragments() {
   // Highlight broken local URL fragments.
   var links = [].slice.call(document.body.getElementsByTagName('a'));
   links.forEach(function(link) {
