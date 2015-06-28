@@ -1022,21 +1022,22 @@ the other source files. The header and footer ensures:
   level `h1`, `h2` and `h3` HTML header elements that do not already
   have an `id`.  For example a header with the title `The End!` is
   assigned an `id` attribute value
-  `the-end`. Slug ids are generated from the header title by:
+  `the-end`. Slug ids are generated from the header title as follows:
 
-  . Converting the title to lowercase.
-  . Replacing spaces with a dash.
-  . Removing characters that are not alphanumeric, dashes or
+  . Convert the title to lowercase.
+  . Replace spaces with a dash.
+  . Remove characters that are not alphanumeric, dashes or
     underscores. If no characters remain the slug is set to `x`.
-  . If an existing element has that id then the slug is successively
-    postfixed with `-2`, `-3`... until a unique id is found.
+  . If an existing element has a matching id then the slug is
+    successively postfixed with `-2`, `-3`... until a unique id is
+    found.
 
 - In addition to Bootstrap CSS style classes there are styles for
   verses, sidebars and section numbering (see `rimuc --help` command
   and [Rimu Tips]({tips})).
 
 The styled option includes code which dynamically checks all local
-links (links with URLS starting with a `#`) that have a corresponding
+links (links with URLS starting with a `#`) have a corresponding
 target element with a matching `id` attribute.  When the page is
 displayed in a browser local links without a matching target element
 are highlighted with the words _Broken fragment_.  This feature is
