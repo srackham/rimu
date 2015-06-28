@@ -1,12 +1,10 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="description" content="Rimu is a readable text to HTML
-  markup language inspired by AsciiDoc and Markdown.">
-<title>Rimu Tips</title>
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
-<link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
+  <meta charset="UTF-8">
+  <title>Rimu Tips</title>
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
+  <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
 <style>
   /* Bootstrap tweaks. */
   body {
@@ -16,16 +14,17 @@
   h1, h2, h3, h4, h5, h6 { color: #527bbd; }
   h1 { font-size: 2.2em; }
   h2 { font-size: 1.5em; }
-  h3 { font-size: 1.3em; }
+  h3 { font-size: 1.2em; }
   h4 { font-size: 1.1em; }
   h5 { font-size: 1.0em; }
   h6 { font-size: 0.9em; }
   h2, h3, h4, h5, h6 {
     line-height: normal;
-    margin-top: 1.5em;
+    margin-top: 1.0em;
     margin-bottom: 0.2em;
   }
   h2 {
+    margin-top: 1.5em;
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   }
   a, a:hover { color: #527bbd; }
@@ -41,17 +40,9 @@
     padding: 6px;
     line-height: normal;
   }
-  .breadcrumb {
-    font-weight: bold;
-    background-color: white;
-    margin: 0;
-    margin-top: 5px;
-    padding: 0;
-  }
-  @media print {
-    .breadcrumb {
-      display: none;
-    }
+  .light-background {
+    background-color: #f8f8f8;
+    border: none;
   }
   code {
     color: inherit;
@@ -63,6 +54,10 @@
   }
   .dl-horizontal > dt {
     text-align: left;
+    margin-top: 1.0em;
+  }
+  .dl-horizontal > dd {
+    margin-top: 1.0em;
   }
   /* highlight.js tweaks. */
   pre > code {
@@ -71,6 +66,26 @@
   }
   pre span {
     opacity: 1 !important;
+  }
+  /* Rimu styles. */
+  .verse {
+    margin: 1.5em 20px;
+  }
+  div.verse p, p.verse {
+    font-family: serif;
+    white-space:pre;
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+  }
+  .sidebar {
+    border: 1px solid silver;
+    border-radius:4px;
+    background: #ffffee;
+    padding: 10px;
+    margin: 1.5em 20px;
+  }
+  div.sidebar *:first-child {
+    margin-top: 0.2em;
   }
   /* List item counters and definition list numbering. */
   dl {
@@ -102,6 +117,11 @@
   }
   .dl-numbered > dt:before {
     content: counter(dl-counter) ". ";
+  }
+  .broken-fragment {
+    color: white;
+    background-color: #990000;
+    font-weight: bold;
   }
 </style>
 <style>
@@ -150,9 +170,26 @@
 <body>
 <div id="toc"></div>
 <div id="contents">
+
+
+<style scoped>
+  .breadcrumb {
+    font-weight: bold;
+    background-color: white;
+    margin: 0;
+    margin-top: 5px;
+    padding: 0;
+  }
+  @media print {
+    .breadcrumb {
+      display: none;
+    }
+  }
+</style>
 <ul class="breadcrumb pull-right">
   <li><a href="index.html">Home</a> <span class="divider">|</span></li>
-  <li><a href="rimuplayground.html">Playground and Docs</a> <span class="divider">|</span></li>
+  <li><a href="rimuplayground.html">Playground</a> <span class="divider">|</span></li>
+  <li><a href="reference.html">Reference</a> <span class="divider">|</span></li>
   <li><a href="tips.html">Tips</a> <span class="divider">|</span></li>
   <li><a href="http://github.com/srackham/rimu">Github</a> <span class="divider">|</span></li>
   <li><a href="https://npmjs.org/package/rimu">npm</a></li>
@@ -162,7 +199,8 @@
 <h2>HTML is valid Rimu</h2>
 <p>You are free to mix any valid HTML into a Rimu document &mdash; no
 special syntax or relearning  is required (in this sense Rimu can be
-thought of as an HTML superset).</p>
+thought of as an HTML superset). Just remember that included HTML is
+only processed if <code>safeMode</code> is non-zero.</p>
 <h2>Converting Rimu to PDF</h2>
 <p>First convert Rimu markup to HTML using the <code>rimuc</code> tool and then
 convert the HTML to PDF.  Here are a few options for converting HTML
@@ -177,7 +215,8 @@ to PDF:</p>
   <a href="http://www.htmldoc.org/">HTMLDOC</a>.
 </li></ol><h2>Extend Rimu with Macros</h2>
 <p>Macros provide a simple, consistent mechanism for extending the Rimu
-markup vocabulary. For example:</p>
+markup vocabulary.</p>
+<h4>Examples</h4>
 <table class="example table table-bordered">
 <tbody>
 <tr>
@@ -217,7 +256,8 @@ experimentation.</p>
 </li></ul><h2>Intra-document Links</h2>
 <p>To link to another place within a document: Create an ID for the
 element you want to link to (using the Rimu <em>Block Attribute</em> element)
-then create a link to it using a fragment identifier URL. For example:</p>
+then create a link to it using a fragment identifier URL.</p>
+<h4>Examples</h4>
 <table class="example table table-bordered"><thead><tr style="color:#527bbd;">
 <th style="width:50%;">Rimu source</th>
 <th style="width:50%;">Rendered HTML</th>
@@ -236,6 +276,8 @@ So does [this link](#link-target).</code></pre>
 the above paragraph.</p>
 <p>So does <a href="#link-target">this link</a>.</p>
 </td></tr></tbody></table>
+<p><b>NOTE</b>: The <a href="reference.html#rimuc">rimuc</a> <code>--styled</code> option automatically
+generates top level <code>h1</code>, <code>h2</code> and <code>h3</code> header IDs.</p>
 <h2 id="syntax-highlighting">Code syntax highlighting</h2>
 <p>The <em>rimuc</em> tool <code>--styled</code> option can be used to enable code syntax
 highlighting in Rimu Code blocks and Indented paragraphs using the
@@ -249,7 +291,8 @@ Paragraphs.</p>
 <p>You can set the language explicitly by injecting the
 language CSS class name into the code block. Here are two examples:
 the first uses GFM style syntax, the second uses Rimu's Block Attributes
-element:</p>
+element.</p>
+<h4>Examples</h4>
 <table class="example table table-bordered"><thead><tr style="color:#527bbd;">
 <th style="width:50%;">Rimu source</th>
 <th style="width:50%;">Rendered HTML</th>
@@ -289,7 +332,7 @@ does this with these custom definitions:</p>
 </dd><dt>Code blocks</dt><dd>
 <ul><li>Indented paragraphs (at least four spaces) render like Markdown code
   blocks.
-</li><li>Rimu backtick delimited Code blocks are compatible with
+</li><li>Rimu Fenced Code blocks with three or more backticks are compatible with
   <a href="https://help.github.com/articles/github-flavored-markdown/">GitHub Flavored Markdown</a>
   <em>Fenced Blocks</em>.
 </li></ul></dd><dt>Quote paragraphs</dt><dd> Paragraphs starting with a <code>&gt;</code> character are
@@ -312,7 +355,7 @@ syntaxes plus Github Flavored Markdown <em>URL autolinking</em>.
 <p>If you have text that you don't want interpreted as a Rimu
 element then you can render it literally (escape it) by prefixing the
 element with a backslash character.</p>
-<p>Here are some examples:</p>
+<h4>Examples</h4>
 <table class="example table table-bordered"><thead><tr style="color:#527bbd;">
 <th style="width:50%;">Rimu source</th>
 <th style="width:50%;">Rendered HTML</th>
@@ -360,7 +403,8 @@ file</a>.</p>
 <p>When you have multiple Indented paragraphs separated by blank lines
 the usual expectation is that they will be contained in a single
 listing &mdash; to achieve this separate the paragraphs with lines
-containing one or more space characters:</p>
+containing one or more space characters.</p>
+<h4>Examples</h4>
 <table class="example table table-bordered"><thead><tr style="color:#527bbd;">
 <th style="width:50%;">Rimu source</th>
 <th style="width:50%;">Rendered HTML</th>
@@ -428,8 +472,8 @@ file</a>
 containing useful macros, quotes and replacement definitions.</p>
 <p>It is important to note that these niceties have been defined in
 Rimu Markup &mdash; Rimu has been extended using Rimu. No plugins
-or special configuration file syntax were necessary.
-Example usage:</p>
+or special configuration file syntax were necessary.</p>
+<h4>Examples</h4>
 <table class="example table table-bordered"><thead><tr style="color:#527bbd;">
 <th style="width:50%;">Rimu source</th>
 <th style="width:50%;">Rendered HTML</th>
@@ -465,8 +509,12 @@ and trash <span class="icon-trash"></span> icons.</p>
 attribute</a>
 allows you to define CSS outside the document header.  This allows you
 to include CSS in the body of a Rimu document which is very handy for
-tweaking the default CSS and for styling Rimu block elements.
-Examples:</p>
+tweaking the default CSS and for styling Rimu block elements.</p>
+<ul><li>The <em>verse</em> and <em>sidebar</em> CSS styles shown below are automatically
+  included when you use the <em>rimuc</em> tool <code>--styled</code> option.
+</li><li>HTML5 stipulates that scoped <em>style</em> element must be the first child
+  element &mdash; in practice  most browsers don't care where it occurs.
+</li></ul><h4>Examples</h4>
 <table class="example table table-bordered"><thead><tr style="color:#527bbd;">
 <th style="width:50%;">Rimu source</th>
 <th style="width:50%;">Rendered HTML</th>
@@ -557,11 +605,7 @@ Porttitor consectetuer commodo.</p>
 Pede mauris sed.
 Scelerisque feugiat massa alias.</p></div>
 </td></tr></tbody></table>
-<ul><li>The above <em>verse</em> and <em>sidebar</em> CSS styles are automatically
-  included when you use the <em>rimuc</em> tool <code>--styled</code> option.
-</li><li>HTML5 stipulates that scoped <em>style</em> element must be the first child
-  element &mdash; in practice  most browsers don't care where it occurs.
-</li></ul><h2>Using Macro, Replacement and Quote definitions in Safe Mode</h2>
+<h2>Using Macro, Replacement and Quote definitions in Safe Mode</h2>
 <p><em>Macro</em>, <em>Replacement</em> and <em>Quote</em> definitions are not processed in
 Safe Mode. To apply Macro, Replacement or Quote definitions to Rimu
 markup that is processed in Safe Mode you need to load the definitions with a
@@ -572,7 +616,8 @@ var html = Rimu.render(untrusted_rimu_markup, {safeMode: 1});</code></pre>
 <p>You can include math formulas written in LaTeX or MathML using
 <a href="http://www.mathjax.org/">MathJax</a>. The <code>rimuc</code> command <code>--styled</code>
 option will include MathJax support if the <code>{--mathjax}</code> macro is
-defined. Examples:</p>
+defined.</p>
+<h4>Examples</h4>
 <table class="example table table-bordered">
 <tbody>
 <tr>
@@ -638,7 +683,7 @@ For example:</p>
 <p>The line is skipped if the value of <code>underscore</code> is blank (<code>''</code>).
 This works because lines (in a block context) that begin with a macro
 invocation are initially processed as <em>Line Macro</em> elements.</p></div>
-</dd><dt>Delimited Blocks, HTML Blocks and Paragraphs</dt><dd>
+</dd><dt>Delimited Blocks</dt><dd>
 <div><p>To conditionally exclude these multi-line block elements enable the
 <code>+skip</code> option with a preceding <em>Attribute Block</em> element. For
 example:</p>
@@ -676,7 +721,8 @@ must start at the left margin and end with a blank line.</p>
 <p>The <code>rimuc</code> <code>--styled</code> option includes
 <a href="http://getbootstrap.com/">Bootstrap</a> so you can use
 <a href="http://getbootstrap.com/css/#tables">Bootstrap tables classes</a> to
-create nicely formatted tables. For example:</p>
+create nicely formatted tables.</p>
+<h4>Examples</h4>
 <table class="example table table-bordered">
 <tbody>
 <tr>
@@ -770,7 +816,8 @@ included in the list item.</code></pre>
 <p>You can define macros which, when invoked, generate other macros. A
 good example of this is the generation of document section headers,
 links and table of contents entries from a section identifier and
-title:</p>
+title.</p>
+<h4>Examples</h4>
 <table class="example table table-bordered">
 <tbody>
 <tr>
@@ -788,11 +835,9 @@ title:</p>
 {toc|section1|Section One}
 {toc|section2|Section Two}
 
-// Section One.
 {section1-header}
 Link to {section2}.
 
-// Section Two .
 {section2-header}
 Link to {section1}.</code></pre>
 </td>
@@ -841,7 +886,8 @@ lines that end with a single-quote.</p>
 </li></ul><h2>List item counters</h2>
 <p>In addition to the <em>verse</em> and <em>sidebar</em> CSS styles the  <em>rimuc</em> tool
 <code>--styled</code> option also includes CSS classes for counting list items
-and for numbering labeled list items:</p>
+and for numbering labeled list items.</p>
+<h4>Examples</h4>
 <table class="example table table-bordered"><thead><tr style="color:#527bbd;">
 <th style="width:50%;">Rimu source</th>
 <th style="width:50%;">Rendered HTML</th>
@@ -891,13 +937,13 @@ ordered list items.</code></pre>
 <p>If you define the <code>--section-numbers</code> macro the  <em>rimuc</em> tool
 <code>--styled</code> option will emit CSS to automatically number <em>h2</em> sections
 and <em>h3</em> sub-sections. You need to define the <code>--section-numbers</code>
-macro on the command-line (using the <code>--prepend</code> option) or in your
-<code>.rimurc</code> file. For example:</p>
-<pre class="no-highlight"><code>rimuc --styled --prepend "{--section-numbers}='yes'" mydoc.rmu</code></pre>
-<h2>Nested Delimited Blocks</h2>
-<p>Delimited blocks of the same type can be nested by using differing
-numbers of delimiter characters to distinguish between them. Here is
-an example of a Quote block nested within a Quote block:</p>
+macro, either on the command-line using the <code>rimuc</code> <code>--section-numbers</code> option, or
+globally in your <code>.rimurc</code> file. For example:</p>
+<pre class="no-highlight"><code>rimuc --styled --section-numbers mydoc.rmu</code></pre>
+<h2>Nested Fenced Blocks</h2>
+<p>Fenced blocks of the same type can be nested by using differing
+numbers of delimiter characters to distinguish between them.</p>
+<h4>Examples</h4>
 <table class="example table table-bordered"><thead><tr style="color:#527bbd;">
 <th style="width:50%;">Rimu source</th>
 <th style="width:50%;">Rendered HTML</th>
@@ -939,7 +985,8 @@ another or if you want to separate an Indented paragraph from a
 preceding list item.</p>
 <h2>Nested list item ambiguity</h2>
 <p>To render an indented list item as an Indented paragraph change it
-to a delimited code block, for example:</p>
+to a fenced code block.</p>
+<h4>Examples</h4>
 <table class="example table table-bordered"><thead><tr style="color:#527bbd;">
 <th style="width:50%;">Rimu source</th>
 <th style="width:50%;">Rendered HTML</th>
@@ -964,22 +1011,50 @@ to a delimited code block, for example:</p>
 <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <script>
 window.onload = function() {
+  // Generate header slugs and build table of contents.
   var toc = document.getElementById('toc');
   var headings = [].slice.call(document.body.querySelectorAll('#contents>h1, #contents>h2, #contents>h3'));
   headings.forEach(function(heading) {
     var title = heading.textContent;
     var id = heading.getAttribute('id');
     if (!id) {
-      id = title.replace(/\s+/g, '-').toLowerCase();
+      id = slugify(title);
       heading.setAttribute('id', id);
     }
-    var tocLink = document.createElement('a');
-    tocLink.setAttribute('href', '#' + id);
-    tocLink.textContent = title;
-    var tocEntry = document.createElement('div');
-    tocEntry.setAttribute('class', heading.tagName.toLowerCase());
-    tocEntry.appendChild(tocLink);
-    toc.appendChild(tocEntry);
+    if (toc) {
+      // Append TOC entry.
+      var tocLink = document.createElement('a');
+      tocLink.setAttribute('href', '#' + id);
+      tocLink.textContent = title;
+      var tocEntry = document.createElement('div');
+      tocEntry.setAttribute('class', heading.tagName.toLowerCase());
+      tocEntry.appendChild(tocLink);
+      toc.appendChild(tocEntry);
+    }
+  });
+  checkUrlFragments();
+}
+function slugify(text) {
+  var slug = text.replace(/\s+/g, '-') // Replace spaces with dashes.
+      .replace(/[^\w-]/g, '')          // Retain alphanumeric, '-' and '_' characters.
+      .toLowerCase()
+  if (!slug) slug = 'x';
+  if (document.getElementById(slug)) { // Another element already has that id.
+    var i = 2, prefix = slug;
+    while (document.getElementById(slug = prefix + '-' + i++)) {}
+  }
+  return slug;
+}
+function checkUrlFragments() {
+  // Highlight broken local URL fragments.
+  var links = [].slice.call(document.body.getElementsByTagName('a'));
+  links.forEach(function(link) {
+    var url = link.getAttribute('href');
+    if (url[0] === '#' && !document.getElementById(url.slice(1))) {
+      link.classList.add('broken-fragment');
+      link.textContent = 'Broken fragment: ' + link.textContent;
+      console.log('broken fragment: ' + url);
+    }
   });
 }
 </script>

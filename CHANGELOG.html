@@ -1,12 +1,10 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="description" content="Rimu is a readable text to HTML
-  markup language inspired by AsciiDoc and Markdown.">
-<title>Rimu Change Log</title>
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
-<link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
+  <meta charset="UTF-8">
+  <title>Rimu Change Log</title>
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
+  <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
 <style>
   /* Bootstrap tweaks. */
   body {
@@ -16,16 +14,17 @@
   h1, h2, h3, h4, h5, h6 { color: #527bbd; }
   h1 { font-size: 2.2em; }
   h2 { font-size: 1.5em; }
-  h3 { font-size: 1.3em; }
+  h3 { font-size: 1.2em; }
   h4 { font-size: 1.1em; }
   h5 { font-size: 1.0em; }
   h6 { font-size: 0.9em; }
   h2, h3, h4, h5, h6 {
     line-height: normal;
-    margin-top: 1.5em;
+    margin-top: 1.0em;
     margin-bottom: 0.2em;
   }
   h2 {
+    margin-top: 1.5em;
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   }
   a, a:hover { color: #527bbd; }
@@ -41,17 +40,9 @@
     padding: 6px;
     line-height: normal;
   }
-  .breadcrumb {
-    font-weight: bold;
-    background-color: white;
-    margin: 0;
-    margin-top: 5px;
-    padding: 0;
-  }
-  @media print {
-    .breadcrumb {
-      display: none;
-    }
+  .light-background {
+    background-color: #f8f8f8;
+    border: none;
   }
   code {
     color: inherit;
@@ -63,6 +54,10 @@
   }
   .dl-horizontal > dt {
     text-align: left;
+    margin-top: 1.0em;
+  }
+  .dl-horizontal > dd {
+    margin-top: 1.0em;
   }
   /* highlight.js tweaks. */
   pre > code {
@@ -71,6 +66,26 @@
   }
   pre span {
     opacity: 1 !important;
+  }
+  /* Rimu styles. */
+  .verse {
+    margin: 1.5em 20px;
+  }
+  div.verse p, p.verse {
+    font-family: serif;
+    white-space:pre;
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+  }
+  .sidebar {
+    border: 1px solid silver;
+    border-radius:4px;
+    background: #ffffee;
+    padding: 10px;
+    margin: 1.5em 20px;
+  }
+  div.sidebar *:first-child {
+    margin-top: 0.2em;
   }
   /* List item counters and definition list numbering. */
   dl {
@@ -102,6 +117,11 @@
   }
   .dl-numbered > dt:before {
     content: counter(dl-counter) ". ";
+  }
+  .broken-fragment {
+    color: white;
+    background-color: #990000;
+    font-weight: bold;
   }
 </style>
 <style>
@@ -150,9 +170,26 @@
 <body>
 <div id="toc"></div>
 <div id="contents">
+
+
+<style scoped>
+  .breadcrumb {
+    font-weight: bold;
+    background-color: white;
+    margin: 0;
+    margin-top: 5px;
+    padding: 0;
+  }
+  @media print {
+    .breadcrumb {
+      display: none;
+    }
+  }
+</style>
 <ul class="breadcrumb pull-right">
   <li><a href="index.html">Home</a> <span class="divider">|</span></li>
-  <li><a href="rimuplayground.html">Playground and Docs</a> <span class="divider">|</span></li>
+  <li><a href="rimuplayground.html">Playground</a> <span class="divider">|</span></li>
+  <li><a href="reference.html">Reference</a> <span class="divider">|</span></li>
   <li><a href="tips.html">Tips</a> <span class="divider">|</span></li>
   <li><a href="http://github.com/srackham/rimu">Github</a> <span class="divider">|</span></li>
   <li><a href="https://npmjs.org/package/rimu">npm</a></li>
@@ -161,7 +198,17 @@
 <h1>Rimu Markup CHANGELOG</h1>
 <p>See the <a href="https://github.com/srackham/rimu/commits/">Git commit log</a>
 for more detailed information.</p>
-<h2>Version 5.3.0 (2015-06-22)</h2>
+<h2>Version 5.4.0 (2015-06-28)</h2>
+<ul><li>Moved Rimu reference documentation from the <em>Rimu Playground</em> into a
+  separate updated <em>Reference</em> manual.
+</li><li>Restyled and simplified the <em>Playground</em>.
+</li><li>Features added to the <code>rimuc</code> command <code>--styled</code> option (details in
+  the new <em>Reference</em> manual):
+<ul><li>Now generates unique slug ids for top level <code>h1</code>, <code>h2</code> and <code>h3</code>
+    headers irrespective of the <code>--toc</code> option (previously it was
+    possible to generate non-unique slug ids).
+</li><li>It Highlights broken fragment URLs.
+</li></ul></li></ul><h2>Version 5.3.0 (2015-06-22)</h2>
 <p>Added <code>--title TITLE</code>, <code>--highlightjs</code>, <code>--mathjax</code>, <code>--toc</code>, <code>--section-numbers</code>
 styling macro shortcut options to <code>rimuc</code>. The preceding example can now be
 shortened to:</p>
@@ -272,22 +319,50 @@ compatibility. It also includes some breaking changes.</p>
 </div>
 <script>
 window.onload = function() {
+  // Generate header slugs and build table of contents.
   var toc = document.getElementById('toc');
   var headings = [].slice.call(document.body.querySelectorAll('#contents>h1, #contents>h2, #contents>h3'));
   headings.forEach(function(heading) {
     var title = heading.textContent;
     var id = heading.getAttribute('id');
     if (!id) {
-      id = title.replace(/\s+/g, '-').toLowerCase();
+      id = slugify(title);
       heading.setAttribute('id', id);
     }
-    var tocLink = document.createElement('a');
-    tocLink.setAttribute('href', '#' + id);
-    tocLink.textContent = title;
-    var tocEntry = document.createElement('div');
-    tocEntry.setAttribute('class', heading.tagName.toLowerCase());
-    tocEntry.appendChild(tocLink);
-    toc.appendChild(tocEntry);
+    if (toc) {
+      // Append TOC entry.
+      var tocLink = document.createElement('a');
+      tocLink.setAttribute('href', '#' + id);
+      tocLink.textContent = title;
+      var tocEntry = document.createElement('div');
+      tocEntry.setAttribute('class', heading.tagName.toLowerCase());
+      tocEntry.appendChild(tocLink);
+      toc.appendChild(tocEntry);
+    }
+  });
+  checkUrlFragments();
+}
+function slugify(text) {
+  var slug = text.replace(/\s+/g, '-') // Replace spaces with dashes.
+      .replace(/[^\w-]/g, '')          // Retain alphanumeric, '-' and '_' characters.
+      .toLowerCase()
+  if (!slug) slug = 'x';
+  if (document.getElementById(slug)) { // Another element already has that id.
+    var i = 2, prefix = slug;
+    while (document.getElementById(slug = prefix + '-' + i++)) {}
+  }
+  return slug;
+}
+function checkUrlFragments() {
+  // Highlight broken local URL fragments.
+  var links = [].slice.call(document.body.getElementsByTagName('a'));
+  links.forEach(function(link) {
+    var url = link.getAttribute('href');
+    if (url[0] === '#' && !document.getElementById(url.slice(1))) {
+      link.classList.add('broken-fragment');
+      link.textContent = 'Broken fragment: ' + link.textContent;
+      console.log('broken fragment: ' + url);
+    }
   });
 }
 </script>

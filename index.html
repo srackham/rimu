@@ -1,12 +1,10 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="description" content="Rimu is a readable text to HTML
-  markup language inspired by AsciiDoc and Markdown.">
-<title>Rimu Markup</title>
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
-<link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
+  <meta charset="UTF-8">
+  <title>Rimu Markup</title>
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
+  <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
 <style>
   /* Bootstrap tweaks. */
   body {
@@ -16,16 +14,17 @@
   h1, h2, h3, h4, h5, h6 { color: #527bbd; }
   h1 { font-size: 2.2em; }
   h2 { font-size: 1.5em; }
-  h3 { font-size: 1.3em; }
+  h3 { font-size: 1.2em; }
   h4 { font-size: 1.1em; }
   h5 { font-size: 1.0em; }
   h6 { font-size: 0.9em; }
   h2, h3, h4, h5, h6 {
     line-height: normal;
-    margin-top: 1.5em;
+    margin-top: 1.0em;
     margin-bottom: 0.2em;
   }
   h2 {
+    margin-top: 1.5em;
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   }
   a, a:hover { color: #527bbd; }
@@ -41,17 +40,9 @@
     padding: 6px;
     line-height: normal;
   }
-  .breadcrumb {
-    font-weight: bold;
-    background-color: white;
-    margin: 0;
-    margin-top: 5px;
-    padding: 0;
-  }
-  @media print {
-    .breadcrumb {
-      display: none;
-    }
+  .light-background {
+    background-color: #f8f8f8;
+    border: none;
   }
   code {
     color: inherit;
@@ -63,6 +54,10 @@
   }
   .dl-horizontal > dt {
     text-align: left;
+    margin-top: 1.0em;
+  }
+  .dl-horizontal > dd {
+    margin-top: 1.0em;
   }
   /* highlight.js tweaks. */
   pre > code {
@@ -71,6 +66,26 @@
   }
   pre span {
     opacity: 1 !important;
+  }
+  /* Rimu styles. */
+  .verse {
+    margin: 1.5em 20px;
+  }
+  div.verse p, p.verse {
+    font-family: serif;
+    white-space:pre;
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+  }
+  .sidebar {
+    border: 1px solid silver;
+    border-radius:4px;
+    background: #ffffee;
+    padding: 10px;
+    margin: 1.5em 20px;
+  }
+  div.sidebar *:first-child {
+    margin-top: 0.2em;
   }
   /* List item counters and definition list numbering. */
   dl {
@@ -102,6 +117,11 @@
   }
   .dl-numbered > dt:before {
     content: counter(dl-counter) ". ";
+  }
+  .broken-fragment {
+    color: white;
+    background-color: #990000;
+    font-weight: bold;
   }
 </style>
 <style>
@@ -150,9 +170,26 @@
 <body>
 <div id="toc"></div>
 <div id="contents">
+
+
+<style scoped>
+  .breadcrumb {
+    font-weight: bold;
+    background-color: white;
+    margin: 0;
+    margin-top: 5px;
+    padding: 0;
+  }
+  @media print {
+    .breadcrumb {
+      display: none;
+    }
+  }
+</style>
 <ul class="breadcrumb pull-right">
   <li><a href="index.html">Home</a> <span class="divider">|</span></li>
-  <li><a href="rimuplayground.html">Playground and Docs</a> <span class="divider">|</span></li>
+  <li><a href="rimuplayground.html">Playground</a> <span class="divider">|</span></li>
+  <li><a href="reference.html">Reference</a> <span class="divider">|</span></li>
   <li><a href="tips.html">Tips</a> <span class="divider">|</span></li>
   <li><a href="http://github.com/srackham/rimu">Github</a> <span class="divider">|</span></li>
   <li><a href="https://npmjs.org/package/rimu">npm</a></li>
@@ -171,7 +208,7 @@ into the Rimu markup syntax):</p>
 <ul><li>A large subset of Rimu syntax is <a href="http://srackham.github.io/rimu/tips.html#markdown-compatible">Markdown
   compatible</a>.
 </li><li>Rimu is fast (same speed as <em>marked 0.3.2</em> compiling Rimu <code>README.md</code>).
-</li></ul><h2>Implementation</h2>
+</li></ul><h2>Features summary</h2>
 <ul><li>Single lightweight JavaScript file (less than 27KB minified) that
   can be dropped onto a Web page or used as a Node module.
 </li><li>No dependencies.
@@ -185,7 +222,7 @@ into the Rimu markup syntax):</p>
   library declaration file, playground GUI,
   Vim syntax highlighter and a unit test suite.
 </li><li>MIT license.
-</li></ul><h2>Learn More</h2>
+</li></ul><h2>Learn more</h2>
 <p>Read the documentation and experiment with Rimu in the <a href="http://srackham.github.io/rimu/rimuplayground.html">Rimu
 Playground</a> or open the
 <code>rimuplayground.html</code> file locally in your browser.</p>
@@ -196,7 +233,7 @@ the latest changes.</p>
   tool, run <code>rimuc --help</code>):
 <pre class="no-highlight"><code>sudo npm install -g rimu</code></pre>
 </li><li>Get the source from <a href="https://github.com/srackham/rimu">Github</a>.
-</li></ul><h2>Example Apps</h2>
+</li></ul><h2>Example applications</h2>
 <p>See the <em>API</em> documentation topic in the <a href="http://srackham.github.io/rimu/rimuplayground.html">Rimu
 Playground</a>.</p>
 <ul><li>Rimu includes the <em>rimuc</em> command-line tool (<code>./bin/rimuc.js</code>) and
@@ -212,22 +249,50 @@ Chrome, seems OK on Android 4 and iOS. Does not run on IE8.</p>
 </div>
 <script>
 window.onload = function() {
+  // Generate header slugs and build table of contents.
   var toc = document.getElementById('toc');
   var headings = [].slice.call(document.body.querySelectorAll('#contents>h1, #contents>h2, #contents>h3'));
   headings.forEach(function(heading) {
     var title = heading.textContent;
     var id = heading.getAttribute('id');
     if (!id) {
-      id = title.replace(/\s+/g, '-').toLowerCase();
+      id = slugify(title);
       heading.setAttribute('id', id);
     }
-    var tocLink = document.createElement('a');
-    tocLink.setAttribute('href', '#' + id);
-    tocLink.textContent = title;
-    var tocEntry = document.createElement('div');
-    tocEntry.setAttribute('class', heading.tagName.toLowerCase());
-    tocEntry.appendChild(tocLink);
-    toc.appendChild(tocEntry);
+    if (toc) {
+      // Append TOC entry.
+      var tocLink = document.createElement('a');
+      tocLink.setAttribute('href', '#' + id);
+      tocLink.textContent = title;
+      var tocEntry = document.createElement('div');
+      tocEntry.setAttribute('class', heading.tagName.toLowerCase());
+      tocEntry.appendChild(tocLink);
+      toc.appendChild(tocEntry);
+    }
+  });
+  checkUrlFragments();
+}
+function slugify(text) {
+  var slug = text.replace(/\s+/g, '-') // Replace spaces with dashes.
+      .replace(/[^\w-]/g, '')          // Retain alphanumeric, '-' and '_' characters.
+      .toLowerCase()
+  if (!slug) slug = 'x';
+  if (document.getElementById(slug)) { // Another element already has that id.
+    var i = 2, prefix = slug;
+    while (document.getElementById(slug = prefix + '-' + i++)) {}
+  }
+  return slug;
+}
+function checkUrlFragments() {
+  // Highlight broken local URL fragments.
+  var links = [].slice.call(document.body.getElementsByTagName('a'));
+  links.forEach(function(link) {
+    var url = link.getAttribute('href');
+    if (url[0] === '#' && !document.getElementById(url.slice(1))) {
+      link.classList.add('broken-fragment');
+      link.textContent = 'Broken fragment: ' + link.textContent;
+      console.log('broken fragment: ' + url);
+    }
   });
 }
 </script>
