@@ -278,8 +278,7 @@ and trash \{icon|trash} icons.
 
 Copyright (C) 2015 -- trademarked(TM).
 
-"Left and right double-quotes",
-'left and right single-quotes'.
+"Left and right double-quotes".
 
 The 3\{sup|rd} H\{sub|2}O molecule...
 
@@ -462,8 +461,8 @@ If an element supports macro expansion (e.g. Normal paragraphs, HTML
 Blocks, Quote Blocks, Division blocks), then block content can be
 conditionally included:
 
-. Use _Inclusion_ macro invocations to exclude lines of text, for
-  example:
+. Use _Inclusion_ and _Exclusion_ macro invocations to exclude lines
+of text, for example:
 
   This {foo=} Line is included if macro foo value is blank.
   This {foo!} Line is included if macro foo value is not blank.
@@ -600,8 +599,8 @@ lines that end with a single-quote.
 
 The contents of `{example-42}` are not subject to further macro expansion.
 ..
-- Definition elements cannot be prefixed with an Inclusion macro (see
-  <#conditional-inclusion|Conditional Inclusion>).
+- Definition elements cannot be prefixed with an Inclusion/Exclusion
+  macro (see <#conditional-inclusion|Conditional Inclusion>).
 - Macro invocations in macro definition values are expanded when the
   macro is declared, not when it is invoked. You can defer evaluation
   until the macro is invoked by escaping macro invocations or (in the

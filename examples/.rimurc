@@ -43,8 +43,6 @@
 __ = '<u>|</u>'
 // Left and right double-quote characters.
 " = '&ldquo;|&rdquo;'
-// Left and right single-quote characters.
-' = '&lsquo;|&rsquo;'
 
 
 /*
