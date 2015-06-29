@@ -71,7 +71,8 @@ So does [this link](#link-target).'
 {generate-rendered-example-1|document-links-example}
 
 NOTE: The [rimuc]({reference}#rimuc) `--styled` option automatically
-generates top level `h1`, `h2` and `h3` header IDs.
+synthesises `id` attributes for top level `#`, `##` and `###` header
+elements that do not already have an `id`.
 
 
 .#syntax-highlighting
@@ -123,7 +124,7 @@ does this with these custom definitions:
 ## Syntax shared with Markdown
 The following subset of _Rimu_ elements is compatible with Markdown:
 
-Headers:: Headers using `#` character header IDs.
+Headers:: Headers using `#` character header prefixes.
 
 Code blocks::
 - Indented paragraphs (at least four spaces) render like Markdown code
@@ -143,7 +144,7 @@ Text formatting::
   underscore emphasis quotes (Github Flavored Markdown behaviour).
 
 Lists::
-- Bullet lists with `-`, `+`  and `*` IDs.
+- Bullet lists with `-`, `+`  and `*` prefixes.
 - Numbered lists with explicit numbering.
 
 URLs and Email addresses:: `[caption](url)`, `<url>` and `<email>`
@@ -429,49 +430,49 @@ the following custom Replacement definition:
 ## Conditional Inclusion
 Macro invocations can be used to conditionally include source text.
 
-Single-line Blocks::
+Single-line blocks::
 ..
-Single-line block elements (e.g. Headers, Block Attributes,
-single-line Paragraphs and single-line HTML blocks) can be
-conditionally excluded by prefixing an _Inclusion_ macro invocation.
-For example:
+Single-line block elements (e.g. Headers, Block Attributes, element
+definitions) can be conditionally excluded by prefixing an _Inclusion_
+or an _Exclusion_ macro invocation.  For example:
 
   {underscore!}<script src="underscore-min.js"></script>
 
-The line is skipped if the value of `underscore` is blank (`''`).
-This works because lines (in a block context) that begin with a macro
-invocation are initially processed as _Line Macro_ elements.
+The line is retained only if the value of `underscore` is not blank.
 ..
 
 Delimited Blocks::
 ..
-To conditionally exclude these multi-line block elements enable the
-`+skip` option with a preceding _Attribute Block_ element. For
-example:
+To conditionally exclude Delimited Block elements enable the `+skip`
+option in a preceding _Attribute Block_ element. For example:
 
   {foo!}.+skip
   **Lorem ipsum dolor**. Sit amet venenatis. Erat nulla arcu. Lorem
   luctus sem. Mauris vitaei ipsum.
 
-If macro `foo` value is blank (`''`) then the `.+skip` Attribute Block
-will be processed which causes the following paragraph to be skipped.
+If macro `foo` value is non-blank the `.+skip` Attribute Block is
+retained, this causes the following paragraph to be skipped. If `foo`
+is blank then the `.+skip` Attribute Block is dropped and the
+succeeding paragraph will be processed.
 ..
 
 Inline content::
 ..
-If an element supports macro expansion (e.g. Paragraphs and HTML
-Blocks), then block content can be conditionally included using:
+If an element supports macro expansion (e.g. Normal paragraphs, HTML
+Blocks, Quote Blocks, Division blocks), then block content can be
+conditionally included:
 
-. _Inclusion_ macro invocations to exclude lines of text, for example:
+. Use _Inclusion_ macro invocations to exclude lines of text, for
+  example:
 
-  {foo=} Line is included if macro foo value is blank.
-  {foo!} Line is included if macro foo value is not blank.
-  {foo=one} Line is included if macro foo value is 'one'.
-  {foo=two} Line is included if macro foo value is 'two'.
-  {foo=\d+} Line is included if macro foo value is a number.
+  This {foo=} Line is included if macro foo value is blank.
+  This {foo!} Line is included if macro foo value is not blank.
+  This {foo=one} Line is included if macro foo value is 'one'.
+  This {foo=two} Line is included if macro foo value is 'two'.
+  This {foo=\d+} Line is included if macro foo value is a number.
 
-. _Parametrized_  macro invocations to exclude arbitrary portions of
-  inline text, for example:
+. Use _Parametrized_  macro invocations to exclude arbitrary portions
+  of inline text, for example:
 ...
 ```
 {foo} = ''
@@ -482,9 +483,9 @@ is excluded}
 Mauris vitae ipsumi lacus vestibulum sem. {foo|This text
 is included.}
 ```
-The macro parameter text is excluded if value of the `foo` macro is blank
--- set it to `$1` and the text will be included. Note that
-parameter text can be spread over multiple lines.
+The macro parameter text is excluded if value of the `foo` macro is
+blank -- set it to `$1` and the text will be included.  Parameter text
+can be spread over multiple lines.
 ...
 ..
 

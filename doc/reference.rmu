@@ -165,9 +165,9 @@ behaviour is [user customizable](#delimited-block-definition).
 
 
 ### Line Blocks
-A Line Block consists of a single line. [Headers](#headers),
-[single-line comments](#comments) and _Element Definitions_ are all
-Line Block elements.
+A Line Block consists of a single line. [Headers](#headers), [Block
+Attributes](#block-attributes), [single-line comments](#comments) and
+_Element Definitions_ are all Line Block elements.
 
 
 ### Inline elements
@@ -280,8 +280,8 @@ A _Single-line comment_ is a line of text starting with `//`.
 
 ## Headers
 A _Header_ is a [Line Block](#line-blocks)  element containing a title
-which is prefixed by 1 to 6 `#` or `=` characters (the header ID). A
-matching postfix is optional.
+which is prefixed by 1 to 6 `#` or `=` characters. A matching postfix
+is optional.
 
 - Header prefixes and postfixes must be separated from the title text
   by whitespace.
@@ -428,12 +428,13 @@ behave the same as [Normal paragraphs](#normal-paragraph).
 
 
 ## Lists
-List items are prefixed with an identifier that the list type and
-groups list items into lists.
+Each list item includes an identifier that groups items into lists.
+There are three types of list: _Bullet_, _Numbered_ and _Labeled_,
+each with its own unique set of list IDs.
 
 .light-background
 ``
-List item prefixes            List type
+List item ID                  List type
 ___________________________________________
 -, +, *, **, ***, ****        Bullet list
 ., .., ..., ....              Numbered list
@@ -441,17 +442,41 @@ ___________________________________________
 ___________________________________________
 ``
 
+{bullet-lists-example} = '
+- First item.
+  . Nested numbered item.
+- Second item of first list.'
+
+{labeled-lists-example} = '
+First term:: Definition one.
+Second term::
+Definition for second term.'
+
+- _Bullet_ and _Numbered_ list items begin with the list ID.  The list
+  ID must be separated by one or more spaces from the list item text.
+..
+{generate-rendered-example-1|bullet-lists-example}
+..
+- _Labeled_ list items begin with the _term_ text followed
+  immediately by the list ID, then one or more spaces or a line break,
+  then the _definition_ text.
+..
+{generate-rendered-example-1|labeled-lists-example}
+..
+- A list item can span multiple contiguous lines.
 - List items can be indented but this has no semantic significance.
-- Number list can include a leading number but the number has no
+- _Numbered_ list IDs can be prefixed with numbers but the number has no
   semantic significance.
+- When a list item is followed by an item with a different ID the
+  successor list is nested.
 - List items can be escaped with a backslash at the beginning of the
   line.
 - If an [Indented Paragraph](#indented-paragraph) is separated from a
   preceding list item by a single blank line then it is rendered with
   the list item.
-- If a [Fenced Block](#fenced-blocks) (_Code_, _Quote_ or _Division_
-  block) immediately follows a list item without any intervening blank
-  lines then it is rendered with the list item.
+- If a [Fenced Block](#fenced-blocks) immediately follows a list item
+  without any intervening blank lines then it is rendered with the
+  list item.
 - Lists are terminated by two or more blank lines or when the
   following element is not an Indented Paragraph or a Fenced Block.
 - There are no explicit numbering or bullet styles -- this is best
@@ -850,8 +875,16 @@ Invocation syntax:
 - Inline macro invocations are expanded before other inline elements
   are processed.
 - Macro definitions are not processed if the _Safe Mode_ is non-zero.
-
-Examples:
+- If the first line of a block element is prefixed with a Macro
+  Invocation then macro invocations in the first line are expanded
+  prior to all other processing.  [Macro
+  Definitions](#macro-definition)  are the exception to this rule and
+  cannot be prefixed with a macro invocation.  This behaviour has a
+  number of use cases:
+  . It allows macro invocations to be used to inject Rimu Markup into
+    the source stream.
+  . It can be used to conditionally include [Line Block](#line-blocks)
+    elements by prefixing them with _Inclusion_ or _Exclusion_ macros.
 
 .-macros
 {macros-example} = '{sidebar} = '#### $1
@@ -870,18 +903,6 @@ experimentation.
 ..'
 
 {generate-rendered-example-2|macros-example}
-
-### Macro Lines
-- A _Macro Line_ block element is a single line starting with a  macro
-  invocation.
-- Macro invocations are expanded and then processing continues from
-  the start of the expanded line.
-- A _Macro Line_ can be the first line in any block element with the
-  exception of _Line Block_ definition elements.
-
-These properties allow macros to be used to inject Rimu markup into
-the source stream and allow block elements to be prefixed with
-_Inclusion_ and _Exclusion_macros.
 
 ### Reserved macros
 Macros with names starting with two hyphen characters are called
