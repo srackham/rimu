@@ -864,6 +864,27 @@ var Rimu =
 	var macros = __webpack_require__(2);
 	var defs = [
 	    // Prefix match with backslash to allow escaping.
+	    // Expand lines prefixed with a macro invocation prior to all other processing.
+	    {
+	        match: macros.MACRO_LINE,
+	        replacement: '',
+	        expansionOptions: {},
+	        verify: function (match) {
+	            // Do not process macro definitions.
+	            return !macros.MACRO_DEF_OPEN.test(match[0]);
+	        },
+	        filter: function (match, reader) {
+	            var value = macros.render(match[0]);
+	            if (value === match[0]) {
+	                // Escape macro to prevent infinite recursion if the value is the same as the invocation.
+	                value = '\\' + value;
+	            }
+	            // Insert the macro value into the reader just ahead of the cursor.
+	            var spliceArgs = [reader.pos + 1, 0].concat(value.split('\n'));
+	            Array.prototype.splice.apply(reader.lines, spliceArgs);
+	            return '';
+	        }
+	    },
 	    // Delimited Block definition.
 	    // name = $1, definition = $2
 	    {
@@ -935,26 +956,6 @@ var Rimu =
 	            var value = match[2];
 	            value = utils.replaceInline(value, this.expansionOptions);
 	            macros.setValue(name, value);
-	            return '';
-	        }
-	    },
-	    // Macro Line block.
-	    {
-	        match: macros.MACRO_LINE,
-	        replacement: '',
-	        expansionOptions: {},
-	        verify: function (match) {
-	            return !macros.MACRO_DEF_OPEN.test(match[0]); // Don't match macro definition blocks.
-	        },
-	        filter: function (match, reader) {
-	            var value = macros.render(match[0]);
-	            if (value === match[0]) {
-	                // Escape macro to prevent infinite recursion if the value is the same as the invocation.
-	                value = '\\' + value;
-	            }
-	            // Insert the macro value into the reader just ahead of the cursor.
-	            var spliceArgs = [reader.pos + 1, 0].concat(value.split('\n'));
-	            Array.prototype.splice.apply(reader.lines, spliceArgs);
 	            return '';
 	        }
 	    },

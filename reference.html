@@ -306,9 +306,9 @@ contain textual content. <a href="#paragraphs">Paragraphs</a> and <a href="#fenc
 Blocks</a> are Delimited Blocks. Delimited Block
 behaviour is <a href="#delimited-block-definition">user customizable</a>.</p>
 <h3>Line Blocks</h3>
-<p>A Line Block consists of a single line. <a href="#headers">Headers</a>,
-<a href="#comments">single-line comments</a> and <em>Element Definitions</em> are all
-Line Block elements.</p>
+<p>A Line Block consists of a single line. <a href="#headers">Headers</a>, <a href="#block-attributes">Block
+Attributes</a>, <a href="#comments">single-line comments</a> and
+<em>Element Definitions</em> are all Line Block elements.</p>
 <h3>Inline elements</h3>
 <p>Inline elements are contained within the textual content of some block
 elements. There are three types of Inline elements: <a href="#macro-invocations">Macro
@@ -411,8 +411,8 @@ ends with a line containing only <code>*/</code>.</p>
 </td></tr></table>
 <h2>Headers</h2>
 <p>A <em>Header</em> is a <a href="#line-blocks">Line Block</a>  element containing a title
-which is prefixed by 1 to 6 <code>#</code> or <code>=</code> characters (the header ID). A
-matching postfix is optional.</p>
+which is prefixed by 1 to 6 <code>#</code> or <code>=</code> characters. A matching postfix
+is optional.</p>
 <ul><li>Header prefixes and postfixes must be separated from the title text
   by whitespace.
 </li><li><a href="#inline-elements">Inline elements</a> are allowed in the header title.
@@ -609,25 +609,62 @@ behave the same as <a href="#normal-paragraph">Normal paragraphs</a>.</p>
   Scelerisque feugiat massa alias.</p></blockquote>
 </td></tr></tbody></table>
 <h2>Lists</h2>
-<p>List items are prefixed with an identifier that the list type and
-groups list items into lists.</p>
-<pre class="light-background no-highlight"><code>List item prefixes            List type
+<p>Each list item includes an identifier that groups items into lists.
+There are three types of list: <em>Bullet</em>, <em>Numbered</em> and <em>Labeled</em>,
+each with its own unique set of list IDs.</p>
+<pre class="light-background no-highlight"><code>List item ID                  List type
 ___________________________________________
 -, +, *, **, ***, ****        Bullet list
 ., .., ..., ....              Numbered list
 ::, :::, ::::                 Labeled list
 ___________________________________________</code></pre>
-<ul><li>List items can be indented but this has no semantic significance.
-</li><li>Number list can include a leading number but the number has no
+<ul><li><em>Bullet</em> and <em>Numbered</em> list items begin with the list ID.  The list
+  ID must be separated by one or more spaces from the list item text.
+<div><h4>Examples</h4>
+<table class="example table table-bordered"><thead><tr style="color:#527bbd;">
+<th style="width:50%;">Rimu source</th>
+<th style="width:50%;">Rendered HTML</th>
+</tr></thead><tbody><tr><td style="width: 50%; padding: 4px;">
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>- First item.
+  . Nested numbered item.
+- Second item of first list.</code></pre>
+</td><td style="width:50%; padding: 4px;">
+<ul><li>First item.
+<ol><li>Nested numbered item.
+</li></ol></li><li>Second item of first list.
+</li></ul></td></tr></tbody></table>
+</div>
+</li><li><em>Labeled</em> list items begin with the <em>term</em> text followed
+  immediately by the list ID, then one or more spaces or a line break,
+  then the <em>definition</em> text.
+<div><h4>Examples</h4>
+<table class="example table table-bordered"><thead><tr style="color:#527bbd;">
+<th style="width:50%;">Rimu source</th>
+<th style="width:50%;">Rendered HTML</th>
+</tr></thead><tbody><tr><td style="width: 50%; padding: 4px;">
+<pre style="border:none; background-color:inherit;" class="no-highlight"><code>First term:: Definition one.
+Second term::
+Definition for second term.</code></pre>
+</td><td style="width:50%; padding: 4px;">
+<dl><dt>First term</dt><dd> Definition one.
+</dd><dt>Second term</dt><dd>
+Definition for second term.
+</dd></dl></td></tr></tbody></table>
+</div>
+</li><li>A list item can span multiple contiguous lines.
+</li><li>List items can be indented but this has no semantic significance.
+</li><li><em>Numbered</em> list IDs can be prefixed with numbers but the number has no
   semantic significance.
+</li><li>When a list item is followed by an item with a different ID the
+  successor list is nested.
 </li><li>List items can be escaped with a backslash at the beginning of the
   line.
 </li><li>If an <a href="#indented-paragraph">Indented Paragraph</a> is separated from a
   preceding list item by a single blank line then it is rendered with
   the list item.
-</li><li>If a <a href="#fenced-blocks">Fenced Block</a> (<em>Code</em>, <em>Quote</em> or <em>Division</em>
-  block) immediately follows a list item without any intervening blank
-  lines then it is rendered with the list item.
+</li><li>If a <a href="#fenced-blocks">Fenced Block</a> immediately follows a list item
+  without any intervening blank lines then it is rendered with the
+  list item.
 </li><li>Lists are terminated by two or more blank lines or when the
   following element is not an Indented Paragraph or a Fenced Block.
 </li><li>There are no explicit numbering or bullet styles &mdash; this is best
@@ -1035,8 +1072,17 @@ name.</p>
 </li><li>Inline macro invocations are expanded before other inline elements
   are processed.
 </li><li>Macro definitions are not processed if the <em>Safe Mode</em> is non-zero.
-</li></ul><p>Examples:</p>
-<h4>Examples</h4>
+</li><li>If the first line of a block element is prefixed with a Macro
+  Invocation then macro invocations in the first line are expanded
+  prior to all other processing.  <a href="#macro-definition">Macro
+  Definitions</a>  are the exception to this rule and
+  cannot be prefixed with a macro invocation.  This behaviour has a
+  number of use cases:
+<ol><li>It allows macro invocations to be used to inject Rimu Markup into
+    the source stream.
+</li><li>It can be used to conditionally include <a href="#line-blocks">Line Block</a>
+    elements by prefixing them with <em>Inclusion</em> or <em>Exclusion</em> macros.
+</li></ol></li></ul><h4>Examples</h4>
 <table class="example table table-bordered">
 <tbody>
 <tr>
@@ -1065,16 +1111,6 @@ experimentation.
 experimentation.</p>
 <p><span class="label label-info">Note</span> <mark>This document is not yet finished.</mark></p></div>
 </td></tr></table>
-<h3>Macro Lines</h3>
-<ul><li>A <em>Macro Line</em> block element is a single line starting with a  macro
-  invocation.
-</li><li>Macro invocations are expanded and then processing continues from
-  the start of the expanded line.
-</li><li>A <em>Macro Line</em> can be the first line in any block element with the
-  exception of <em>Line Block</em> definition elements.
-</li></ul><p>These properties allow macros to be used to inject Rimu markup into
-the source stream and allow block elements to be prefixed with
-<em>Inclusion</em> and _Exclusion_macros.</p>
 <h3>Reserved macros</h3>
 <p>Macros with names starting with two hyphen characters are called
 <em>Reserved</em> macros.  The <code>--</code> reserved macro is guaranteed to always be

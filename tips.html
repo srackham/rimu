@@ -277,7 +277,8 @@ the above paragraph.</p>
 <p>So does <a href="#link-target">this link</a>.</p>
 </td></tr></tbody></table>
 <p><b>NOTE</b>: The <a href="reference.html#rimuc">rimuc</a> <code>--styled</code> option automatically
-generates top level <code>h1</code>, <code>h2</code> and <code>h3</code> header IDs.</p>
+synthesises <code>id</code> attributes for top level <code>#</code>, <code>##</code> and <code>###</code> header
+elements that do not already have an <code>id</code>.</p>
 <h2 id="syntax-highlighting">Code syntax highlighting</h2>
 <p>The <em>rimuc</em> tool <code>--styled</code> option can be used to enable code syntax
 highlighting in Rimu Code blocks and Indented paragraphs using the
@@ -328,7 +329,7 @@ does this with these custom definitions:</p>
 |indented| = '&lt;pre class="no-highlight"&gt;&lt;code&gt;|&lt;/code&gt;&lt;/pre&gt;'</code></pre>
 <h2 id="markdown-compatible">Syntax shared with Markdown</h2>
 <p>The following subset of <em>Rimu</em> elements is compatible with Markdown:</p>
-<dl><dt>Headers</dt><dd> Headers using <code>#</code> character header IDs.
+<dl><dt>Headers</dt><dd> Headers using <code>#</code> character header prefixes.
 </dd><dt>Code blocks</dt><dd>
 <ul><li>Indented paragraphs (at least four spaces) render like Markdown code
   blocks.
@@ -344,7 +345,7 @@ rendered like Markdown Blockquotes.
 </li><li>Underscores within words rendered verbatim and are not treated as
   underscore emphasis quotes (Github Flavored Markdown behaviour).
 </li></ul></dd><dt>Lists</dt><dd>
-<ul><li>Bullet lists with <code>-</code>, <code>+</code>  and <code>*</code> IDs.
+<ul><li>Bullet lists with <code>-</code>, <code>+</code>  and <code>*</code> prefixes.
 </li><li>Numbered lists with explicit numbering.
 </li></ul></dd><dt>URLs and Email addresses</dt><dd> <code>[caption](url)</code>, <code>&lt;url&gt;</code> and <code>&lt;email&gt;</code>
 syntaxes plus Github Flavored Markdown <em>URL autolinking</em>.
@@ -674,35 +675,35 @@ and {--|this text is skipped}.</code></pre>
 <p>See also <a href="#conditional-inclusion">Conditional Inclusion</a>.</p>
 <h2 id="conditional-inclusion">Conditional Inclusion</h2>
 <p>Macro invocations can be used to conditionally include source text.</p>
-<dl><dt>Single-line Blocks</dt><dd>
-<div><p>Single-line block elements (e.g. Headers, Block Attributes,
-single-line Paragraphs and single-line HTML blocks) can be
-conditionally excluded by prefixing an <em>Inclusion</em> macro invocation.
-For example:</p>
+<dl><dt>Single-line blocks</dt><dd>
+<div><p>Single-line block elements (e.g. Headers, Block Attributes, element
+definitions) can be conditionally excluded by prefixing an <em>Inclusion</em>
+or an <em>Exclusion</em> macro invocation.  For example:</p>
 <pre class="no-highlight"><code>{underscore!}&lt;script src="underscore-min.js"&gt;&lt;/script&gt;</code></pre>
-<p>The line is skipped if the value of <code>underscore</code> is blank (<code>''</code>).
-This works because lines (in a block context) that begin with a macro
-invocation are initially processed as <em>Line Macro</em> elements.</p></div>
+<p>The line is retained only if the value of <code>underscore</code> is not blank.</p></div>
 </dd><dt>Delimited Blocks</dt><dd>
-<div><p>To conditionally exclude these multi-line block elements enable the
-<code>+skip</code> option with a preceding <em>Attribute Block</em> element. For
-example:</p>
+<div><p>To conditionally exclude Delimited Block elements enable the <code>+skip</code>
+option in a preceding <em>Attribute Block</em> element. For example:</p>
 <pre class="no-highlight"><code>{foo!}.+skip
 **Lorem ipsum dolor**. Sit amet venenatis. Erat nulla arcu. Lorem
 luctus sem. Mauris vitaei ipsum.</code></pre>
-<p>If macro <code>foo</code> value is blank (<code>''</code>) then the <code>.+skip</code> Attribute Block
-will be processed which causes the following paragraph to be skipped.</p></div>
+<p>If macro <code>foo</code> value is non-blank the <code>.+skip</code> Attribute Block is
+retained, this causes the following paragraph to be skipped. If <code>foo</code>
+is blank then the <code>.+skip</code> Attribute Block is dropped and the
+succeeding paragraph will be processed.</p></div>
 </dd><dt>Inline content</dt><dd>
-<div><p>If an element supports macro expansion (e.g. Paragraphs and HTML
-Blocks), then block content can be conditionally included using:</p>
-<ol><li><em>Inclusion</em> macro invocations to exclude lines of text, for example:
-<pre class="no-highlight"><code>{foo=} Line is included if macro foo value is blank.
-{foo!} Line is included if macro foo value is not blank.
-{foo=one} Line is included if macro foo value is 'one'.
-{foo=two} Line is included if macro foo value is 'two'.
-{foo=\d+} Line is included if macro foo value is a number.</code></pre>
-</li><li><em>Parametrized</em>  macro invocations to exclude arbitrary portions of
-  inline text, for example:
+<div><p>If an element supports macro expansion (e.g. Normal paragraphs, HTML
+Blocks, Quote Blocks, Division blocks), then block content can be
+conditionally included:</p>
+<ol><li>Use <em>Inclusion</em> macro invocations to exclude lines of text, for
+  example:
+<pre class="no-highlight"><code>This {foo=} Line is included if macro foo value is blank.
+This {foo!} Line is included if macro foo value is not blank.
+This {foo=one} Line is included if macro foo value is 'one'.
+This {foo=two} Line is included if macro foo value is 'two'.
+This {foo=\d+} Line is included if macro foo value is a number.</code></pre>
+</li><li>Use <em>Parametrized</em>  macro invocations to exclude arbitrary portions
+  of inline text, for example:
 <div><pre class="no-highlight"><code>{foo} = ''
 Mauris vitae ipsumi lacus vestibulum sem. {foo|This text
 is excluded}
@@ -710,9 +711,9 @@ is excluded}
 {foo} = '$1'
 Mauris vitae ipsumi lacus vestibulum sem. {foo|This text
 is included.}</code></pre>
-<p>The macro parameter text is excluded if value of the <code>foo</code> macro is blank
-&mdash; set it to <code>$1</code> and the text will be included. Note that
-parameter text can be spread over multiple lines.</p></div></li></ol></div>
+<p>The macro parameter text is excluded if value of the <code>foo</code> macro is
+blank &mdash; set it to <code>$1</code> and the text will be included.  Parameter text
+can be spread over multiple lines.</p></div></li></ol></div>
 </dd></dl><h2>Tables</h2>
 <p>Create tables using the HTML table syntax (Rimu has no special syntax
 for tables).</p>
