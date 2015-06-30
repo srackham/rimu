@@ -131,7 +131,7 @@
   .dl-numbered > dt:before {
     content: counter(dl-counter) ". ";
   }
-  .broken-fragment {
+  .broken-fragment, .undefined-macro, #diagnostics {
     color: white;
     background-color: #990000;
     font-weight: bold;
@@ -199,6 +199,8 @@
 
 </head>
 <body>
+
+<div id="diagnostics"></div>
 
 {--toc!}<div id="toc"></div>
 

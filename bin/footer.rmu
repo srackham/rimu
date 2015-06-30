@@ -33,6 +33,22 @@ window.onload = function() {
     }
   });
   checkUrlFragments();
+  // Display diagnostic messages.
+  var diagnostics = document.getElementById('diagnostics');
+  if (diagnostics) {
+    var broken_links = document.body.querySelectorAll('.broken-fragment').length;
+    var undefined_macros = document.body.querySelectorAll('.undefined-macro').length;
+    var message = '';
+    if (broken_links) {
+      message += '<p>Broken links: ' + broken_links + '</p>';
+    }
+    if (undefined_macros) {
+      message += '<p>Undefined macros: ' + undefined_macros + '</p>';
+    }
+    if (message) {
+      diagnostics.innerHTML = message;
+    }
+  }
 }
 function slugify(text) {
   var slug = text.replace(/\s+/g, '-') // Replace spaces with dashes.
@@ -52,8 +68,6 @@ function checkUrlFragments() {
     var url = link.getAttribute('href');
     if (url[0] === '#' && !document.getElementById(url.slice(1))) {
       link.classList.add('broken-fragment');
-      link.textContent = 'Broken fragment: ' + link.textContent;
-      console.log('broken fragment: ' + url);
     }
   });
 }

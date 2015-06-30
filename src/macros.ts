@@ -47,7 +47,7 @@ export function setValue(name: string, value: string): void {
 }
 
 // Render all macro invocations in text string.
-export function render(text: string): string {
+export function render(text: string, inline: boolean=true): string {
   text = text.replace(MATCH_MACROS, function (match: string, ...submatches: string[]): string {
     if (match[0] === '\\') {
       return match.slice(1)
@@ -55,6 +55,7 @@ export function render(text: string): string {
     let name = submatches[0]
     let params = submatches[1] || ''
     let value = getValue(name)  // Macro value is null if macro is undefined.
+    let missing = inline ? '<span class="undefined-macro">' + match + '</span>' : match
     switch (options.macroMode) {
       case 0: // No macros.
         return match
@@ -62,7 +63,7 @@ export function render(text: string): string {
         break
       case 2: // Only defined macros.
         if (value === null) {
-          return match
+          return missing
         }
         break
       case 3: // Only reserved macros.
@@ -72,7 +73,7 @@ export function render(text: string): string {
         break
       case 4: // Defined or reserved macros.
         if (value === null && !/^--/.test(name)) {
-          return match
+          return missing
         }
         break
     }
