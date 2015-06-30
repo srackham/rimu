@@ -33,22 +33,7 @@ window.onload = function() {
     }
   });
   checkUrlFragments();
-  // Display diagnostic messages.
-  var diagnostics = document.getElementById('diagnostics');
-  if (diagnostics) {
-    var broken_links = document.body.querySelectorAll('.broken-fragment').length;
-    var undefined_macros = document.body.querySelectorAll('.undefined-macro').length;
-    var message = '';
-    if (broken_links) {
-      message += '<p>Broken links: ' + broken_links + '</p>';
-    }
-    if (undefined_macros) {
-      message += '<p>Undefined macros: ' + undefined_macros + '</p>';
-    }
-    if (message) {
-      diagnostics.innerHTML = message;
-    }
-  }
+  showDiagnostics();
 }
 function slugify(text) {
   var slug = text.replace(/\s+/g, '-') // Replace spaces with dashes.
@@ -70,6 +55,30 @@ function checkUrlFragments() {
       link.classList.add('broken-fragment');
     }
   });
+}
+function showDiagnostics() {
+  // Display diagnostic messages.
+  var diagnostics = document.getElementById('diagnostics');
+  if (diagnostics) {
+    function diagnosticMessage(title, nodes, callback) {
+      title = '<u>' + nodes.length + ' ' + title + (nodes.length === 1 ? '' : 's') + ':</u>';
+      return [].slice.call(nodes).reduce(callback, title);
+    }
+    var broken_links = document.body.querySelectorAll('.broken-fragment');
+    var undefined_macros = document.body.querySelectorAll('.undefined-macro');
+    var message = '';
+    if (broken_links.length > 0) {
+      message += '<p>' + diagnosticMessage('broken link', broken_links,
+          function (previous, current) { return previous + ' ' + current.getAttribute('href');}) + '</p>';
+    }
+    if (undefined_macros.length > 0) {
+      message += '<p>' + diagnosticMessage('undefined macro', undefined_macros,
+          function (previous, current) { return previous + ' ' + current.textContent;}) + '</p>';
+    }
+    if (message) {
+      diagnostics.innerHTML = message;
+    }
+  }
 }
 </script>
 
