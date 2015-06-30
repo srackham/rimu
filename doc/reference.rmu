@@ -727,9 +727,9 @@ Lorum ipsum.
 .info #ref2 [style="color:green"]
 Ac curabitur elementum.
 
-{quote-style} = '.[style="padding-left: 10px; border-left: 4px solid silver;"]'\
+\{quote-style} = '.[style="padding-left: 10px; border-left: 4px solid silver;"]'\
 
-{quote-style}
+\{quote-style}
 ""
 Lorem ipsum dolor sit amet sapien. Nascetur et mattis maecenas morbi
 porttitor. Vitae vestibulum voluptate. Quam elit id. In eu wisi.
@@ -737,7 +737,7 @@ Imperdiet pellentesque minim. Metus mauris tortor. Torquent leo vel.
 ""
 
 .-macros
-Macro {invocations} are not expanded when the `-macros` block option
+Macro \{invocations} are not expanded when the `-macros` block option
 is set.'
 
 {generate-rendered-example-2|quote-paragraph-example}
