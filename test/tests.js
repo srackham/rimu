@@ -874,25 +874,37 @@ exports['Blocks'] = function(test) {
 
   // macroMode option.
   test_document(
-    '{defined}=\'\'\n{defined}{undefinded}{--undefined}',
-    '<p>{defined}{undefinded}{--undefined}</p>',
+    '{defined}=\'\'\n{defined}{undefined}{--undefined}',
+    '<p>{defined}{undefined}{--undefined}</p>',
     'macroMode=0', {macroMode: 0});
   test_document(
-    '{defined}=\'\'\n{defined}{undefinded}{--undefined}',
-    '<p>{undefinded}{--undefined}</p>',
+    '{defined}=\'\'\n{defined}{undefined}{--undefined}',
+    '<p><span class="undefined-macro">{undefined}</span><span class="undefined-macro">{--undefined}</span></p>',
     'macroMode=2', {macroMode: 2});
   test_document(
-    '.macroMode=\'3\'\n{defined}=\'\'\n{defined}{undefinded}{--undefined}',
-    '<p>{defined}{undefinded}</p>',
+    '.macroMode=\'3\'\n{defined}=\'\'\n{defined}{undefined}{--undefined}',
+    '<p>{defined}{undefined}</p>',
     'macroMode=3');
   test_document(
-    '{defined}=\'\'\n{defined}{undefinded}{--undefined}',
-    '<p>{undefinded}</p>',
+    '{defined}=\'\'\n{defined}{undefined}{--undefined}',
+    '<p><span class="undefined-macro">{undefined}</span></p>',
     'macroMode=4', {macroMode: 4});
   test_document(
-    '.safeMode=\'1\'\n.macroMode=\'3\'\n{defined}=\'\'\n{defined}{undefinded}{--undefined}',
-    '<p>{defined}{undefinded}</p>',
+    '.safeMode=\'1\'\n.macroMode=\'3\'\n{defined}=\'\'\n{defined}{undefined}{--undefined}',
+    '<p>{defined}{undefined}</p>',
     'API elements disabled by safeMode');
+  test_document(
+    '{undefined}',
+    '<p><span class="undefined-macro">{undefined}</span></p>',
+    'undefined stand-alone macro invocation');
+  test_document(
+    'An {undefined}',
+    '<p>An <span class="undefined-macro">{undefined}</span></p>',
+    'undefined macro invocation');
+  test_document(
+    '{undefined|&p1}',
+    '<p><span class="undefined-macro">{undefined|&amp;p1}</span></p>',
+    'undefined macro with parameters');
 
   // Replacement definitions.
   test_document(
