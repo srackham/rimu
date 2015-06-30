@@ -17,7 +17,8 @@ var MANPAGE = 'NAME\n' +
     'DESCRIPTION\n' +
     '  Reads Rimu source markup from stdin, converts them to HTML\n' +
     '  then writes the HTML to stdout. If FILES are specified\n' +
-    '  the Rimu source is read from FILES.\n' +
+    '  the Rimu source is read from FILES. The contents of files\n' +
+    '  with an .html extension are passed directly to the output.\n' +
     '\n' +
     '  If a file named .rimurc exists in the user\'s home directory\n' +
     '  then its contents is processed (with safeMode 0) after\n' +
@@ -212,6 +213,11 @@ files.forEach(function (infile) {
     source = fs.readFileSync(infile).toString();
   } catch (e) {
     die('source file permission denied: ' + infile);
+  }
+  var ext = infile.split('.').pop();
+  if (ext === 'html') {
+    html += source;
+    return;
   }
   var options = {
       // rimurc processed with default safeMode and macroMode.
