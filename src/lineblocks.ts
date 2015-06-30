@@ -19,19 +19,25 @@ let defs: Definition[] = [
   // Prefix match with backslash to allow escaping.
 
   // Expand lines prefixed with a macro invocation prior to all other processing.
+  // macro name = $1, macro value = $2
   {
     match: macros.MACRO_LINE,
     replacement: '',
     expansionOptions: {},
+    stop: false,  // Flag to stop recursion.
     verify: function (match: RegExpExecArray): boolean {
+      if (this.stop) {
+        this.stop = false
+        return false
+      }
       // Do not process macro definitions.
       return !macros.MACRO_DEF_OPEN.test(match[0])
     },
     filter: function (match: RegExpExecArray, reader?: io.Reader): string {
       let value = macros.render(match[0])
       if (value === match[0]) {
-        // Escape macro to prevent infinite recursion if the value is the same as the invocation.
-        value = '\\' + value
+        // Stop infinite recursion if the macro value is the same as the invocation.
+        this.stop = true
       }
       // Insert the macro value into the reader just ahead of the cursor.
       let spliceArgs = (<any[]> [reader.pos + 1, 0]).concat(value.split('\n'))
