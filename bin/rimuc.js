@@ -214,8 +214,9 @@ files.forEach(function (infile) {
     die('source file permission denied: ' + infile);
   }
   var options = {
+      // rimurc processed with default safeMode and macroMode.
       safeMode: infile === rimurc ? 0 : safeMode,
-      macroMode: macroMode
+      macroMode: infile === rimurc ? 4 : macroMode
     };
   if (htmlReplacement !== null) {
     options.htmlReplacement = htmlReplacement;
