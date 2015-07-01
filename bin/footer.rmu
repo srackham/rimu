@@ -11,8 +11,6 @@
 
 <script>
 window.onload = function() {
-  // Generate header slugs and build table of contents.
-  var toc = document.getElementById('toc');
   var headings = [].slice.call(document.body.querySelectorAll('#contents>h1, #contents>h2, #contents>h3'));
   headings.forEach(function(heading) {
     var title = heading.textContent;
@@ -21,16 +19,7 @@ window.onload = function() {
       id = slugify(title);
       heading.setAttribute('id', id);
     }
-    if (toc) {
-      // Append TOC entry.
-      var tocLink = document.createElement('a');
-      tocLink.setAttribute('href', '#' + id);
-      tocLink.textContent = title;
-      var tocEntry = document.createElement('div');
-      tocEntry.setAttribute('class', heading.tagName.toLowerCase());
-      tocEntry.appendChild(tocLink);
-      toc.appendChild(tocEntry);
-    }
+{--toc!}    appendTocEntry(heading, id);
   });
 {--debug!}  checkUrlFragments();
 {--debug!}  showDiagnostics();
@@ -45,6 +34,22 @@ function slugify(text) {
     while (document.getElementById(slug = prefix + '-' + i++)) {}
   }
   return slug;
+}
+</script>
+
+{--toc=}.+skip
+<script>
+function appendTocEntry(heading, id) {
+  var toc = document.getElementById('toc');
+  if (toc) {
+    var tocLink = document.createElement('a');
+    tocLink.setAttribute('href', '#' + id);
+    tocLink.textContent = heading.textContent;
+    var tocEntry = document.createElement('div');
+    tocEntry.setAttribute('class', heading.tagName.toLowerCase());
+    tocEntry.appendChild(tocLink);
+    toc.appendChild(tocEntry);
+  }
 }
 </script>
 
