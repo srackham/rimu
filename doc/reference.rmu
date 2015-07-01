@@ -926,7 +926,8 @@ SYNOPSIS
 DESCRIPTION
   Reads Rimu source markup from stdin, converts them to HTML
   then writes the HTML to stdout. If FILES are specified
-  the Rimu source is read from FILES.
+  the Rimu source is read from FILES. The contents of files
+  with an .html extension are passed directly to the output.
 
   If a file named .rimurc exists in the user's home directory
   then its contents is processed (with safeMode 0) after
@@ -972,9 +973,10 @@ OPTIONS
     A string that replaces embedded HTML when safeMode is set to 2.
     Defaults to `<mark>replaced HTML</mark>`.
 
-  --title TITLE, --highlightjs, --mathjax, --toc, --section-numbers
+  --title TITLE, --debug, --highlightjs, --mathjax, --toc, --section-numbers
     Shortcuts for prepended styling macro definitions:
     --prepend "{--title}='TITLE'"
+    --prepend "{--debug}='true'"
     --prepend "{--highlightjs}='true'"
     --prepend "{--mathjax}='true'"
     --prepend "{--toc}='true'"
@@ -1026,7 +1028,7 @@ Example usage:
 
   rimuc -o book.html frontmatter.rmu chapter*.rmu backmatter.rmu
 
-#### The `--styled` option
+#### `--styled` option
 The `--styled` option prepends a header file and appends footer file to
 the other source files. The header and footer ensures:
 
@@ -1057,13 +1059,22 @@ the other source files. The header and footer ensures:
   verses, sidebars and section numbering (see `rimuc --help` command
   and [Rimu Tips]({tips})).
 
-The styled option includes code which dynamically checks all local
-links (links with URLS starting with a `#`) have a corresponding
-target element with a matching `id` attribute.  When the page is
-displayed in a browser local links without a matching target element
-are highlighted with the words _Broken fragment_.  This feature is
-useful because static HTML validators are unable to process
-dynamically generated content.
+#### `--debug` option
+The `--debug` option works in conjunction with the `--styled` option.
+It includes code in the output HTML file which:
+
+. Dynamically checks all local links (links with URLS starting with a
+  `#`) have a corresponding target element with a matching `id`
+  attribute.  When the page is displayed in a browser local links
+  without a matching target element are highlighted.  This feature is
+  useful because static HTML validators are unable to process
+  dynamically generated content.
+
+. Highlights macro invocations that have no macro definition (enabled
+  for [macroMode](#api-options) values 2 and 4).
+
+If any anomalies are found a highlighted summary is displayed at the
+beginning of the page.
 
 ### Vim syntax file
 The Rimu distribution includes a

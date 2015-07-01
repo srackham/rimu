@@ -131,11 +131,6 @@
   .dl-numbered > dt:before {
     content: counter(dl-counter) ". ";
   }
-  .broken-fragment, .undefined-macro, #diagnostics {
-    color: white;
-    background-color: #990000;
-    font-weight: bold;
-  }
 </style>
 
 {--section-numbers=}.+skip
@@ -197,12 +192,17 @@
   }
 </style>
 
+{--debug=}.+skip
+<style>
+  .broken-fragment, .undefined-macro, #diagnostics {
+    color: white;
+    background-color: #990000;
+    font-weight: bold;
+  }
+</style>
+
 </head>
 <body>
-
-<div id="diagnostics"></div>
-
+{--debug!}<div id="diagnostics"></div>
 {--toc!}<div id="toc"></div>
-
 <div id="contents">
-

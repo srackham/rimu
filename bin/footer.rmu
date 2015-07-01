@@ -32,8 +32,8 @@ window.onload = function() {
       toc.appendChild(tocEntry);
     }
   });
-  checkUrlFragments();
-  showDiagnostics();
+{--debug!}  checkUrlFragments();
+{--debug!}  showDiagnostics();
 }
 function slugify(text) {
   var slug = text.replace(/\s+/g, '-') // Replace spaces with dashes.
@@ -46,6 +46,10 @@ function slugify(text) {
   }
   return slug;
 }
+</script>
+
+{--debug=}.+skip
+<script>
 function checkUrlFragments() {
   // Highlight broken local URL fragments.
   var links = [].slice.call(document.body.getElementsByTagName('a'));
