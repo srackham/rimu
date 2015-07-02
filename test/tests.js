@@ -772,7 +772,7 @@ exports['Blocks'] = function(test) {
     '.+macros\n {undefined}\n\n {undefined}',
     '<pre><code></code></pre>\n<pre><code>{undefined}</code></pre>',
     'enable macro expansion in Indented paragraph', {macroMode: 1});
-  // Attribute Block expansion options.
+  // Block Attributes expansion options.
   test_document(
     '.-macros\nThis is `{undefined}`\n\nThis is `{undefined}`',
     '<p>This is <code>{undefined}</code></p>\n<p>This is ``</p>',
@@ -879,7 +879,7 @@ exports['Blocks'] = function(test) {
     'macroMode=0', {macroMode: 0});
   test_document(
     '{defined}=\'\'\n{defined}{undefined}{--undefined}',
-    '<p><span class="undefined-macro">{undefined}</span><span class="undefined-macro">{--undefined}</span></p>',
+    '<p>{undefined}{--undefined}</p>',
     'macroMode=2', {macroMode: 2});
   test_document(
     '.macroMode=\'3\'\n{defined}=\'\'\n{defined}{undefined}{--undefined}',
@@ -887,7 +887,7 @@ exports['Blocks'] = function(test) {
     'macroMode=3');
   test_document(
     '{defined}=\'\'\n{defined}{undefined}{--undefined}',
-    '<p><span class="undefined-macro">{undefined}</span></p>',
+    '<p>{undefined}</p>',
     'macroMode=4', {macroMode: 4});
   test_document(
     '.safeMode=\'1\'\n.macroMode=\'3\'\n{defined}=\'\'\n{defined}{undefined}{--undefined}',
@@ -895,15 +895,15 @@ exports['Blocks'] = function(test) {
     'API elements disabled by safeMode');
   test_document(
     '{undefined}',
-    '<p><span class="undefined-macro">{undefined}</span></p>',
+    '<p>{undefined}</p>',
     'undefined stand-alone macro invocation');
   test_document(
     'An {undefined}',
-    '<p>An <span class="undefined-macro">{undefined}</span></p>',
+    '<p>An {undefined}</p>',
     'undefined macro invocation');
   test_document(
     '{undefined|&p1}',
-    '<p><span class="undefined-macro">{undefined|&amp;p1}</span></p>',
+    '<p>{undefined|&amp;p1}</p>',
     'undefined macro with parameters');
 
   // Replacement definitions.

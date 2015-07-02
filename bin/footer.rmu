@@ -22,7 +22,6 @@ window.onload = function() {
 {--toc!}    appendTocEntry(heading, id);
   });
 {--debug!}  checkUrlFragments();
-{--debug!}  showDiagnostics();
 }
 function slugify(text) {
   var slug = text.replace(/\s+/g, '-') // Replace spaces with dashes.
@@ -57,36 +56,21 @@ function appendTocEntry(heading, id) {
 <script>
 function checkUrlFragments() {
   // Highlight broken local URL fragments.
+  var urls = [];
   var links = [].slice.call(document.body.getElementsByTagName('a'));
   links.forEach(function(link) {
     var url = link.getAttribute('href');
     if (url[0] === '#' && !document.getElementById(url.slice(1))) {
       link.classList.add('broken-fragment');
+      urls.push(url);
     }
   });
-}
-function showDiagnostics() {
-  // Display diagnostic messages.
-  var diagnostics = document.getElementById('diagnostics');
-  if (diagnostics) {
-    function diagnosticMessage(title, nodes, callback) {
-      title = '<u>' + nodes.length + ' ' + title + (nodes.length === 1 ? '' : 's') + ':</u>';
-      return [].slice.call(nodes).reduce(callback, title);
-    }
-    var broken_links = document.body.querySelectorAll('.broken-fragment');
-    var undefined_macros = document.body.querySelectorAll('.undefined-macro');
-    var message = '';
-    if (broken_links.length > 0) {
-      message += '<p>' + diagnosticMessage('broken link', broken_links,
-          function (previous, current) { return previous + ' ' + current.getAttribute('href');}) + '</p>';
-    }
-    if (undefined_macros.length > 0) {
-      message += '<p>' + diagnosticMessage('undefined macro', undefined_macros,
-          function (previous, current) { return previous + ' ' + current.textContent;}) + '</p>';
-    }
-    if (message) {
-      diagnostics.innerHTML = message;
-    }
+  // Display diagnostics summary.
+  if (urls.length > 0 ) {
+    var message = '<u>' + urls.length + ' broken link' + (urls.length === 1 ? '' : 's') + '</u>: ';
+    message += urls.join(' ');
+    var diagnostics = document.getElementById('diagnostics');
+    diagnostics.innerHTML = diagnostics.innerHTML + '<p>' + message + '</p>';
   }
 }
 </script>

@@ -194,7 +194,7 @@
 
 {--debug=}.+skip
 <style>
-  .broken-fragment, .undefined-macro, #diagnostics {
+  .broken-fragment, #diagnostics p {
     color: white;
     background-color: #990000;
     font-weight: bold;

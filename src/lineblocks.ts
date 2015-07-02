@@ -34,7 +34,7 @@ let defs: Definition[] = [
       return !macros.MACRO_DEF_OPEN.test(match[0])
     },
     filter: function (match: RegExpExecArray, reader?: io.Reader): string {
-      let value = macros.render(match[0], false)
+      let value = macros.render(match[0])
       if (value === match[0]) {
         // Stop infinite recursion if the macro value is the same as the invocation.
         this.stop = true
