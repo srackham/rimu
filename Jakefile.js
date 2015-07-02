@@ -122,6 +122,7 @@ desc('Compile Typescript to JavaScript then bundle CommonJS and scriptable libra
 task('compile', [MAIN_JS, RIMU_VAR_LIB, RIMU_COMMONJS2_LIB, RIMU_VAR_LIB_MIN]);
 
 file(MAIN_JS, SOURCE, {async: true}, function() {
+  shelljs.rm('./out/*');
   exec('tsc --project .');
 });
 
@@ -147,7 +148,7 @@ desc('Generate HTML documentation');
 task('html-docs', {async: true}, function() {
   var commands = DOCS.map(function(doc) {
     return 'node ./bin/rimuc.js' +
-      ' --styled --no-rimurc' +
+      ' --styled --debug --no-rimurc' +
       ' --output "' + doc.dst + '"' +
       ' --title "' + doc.title + '"' +
       (doc.hasToc ? ' --toc' : '' ) +
