@@ -85,11 +85,11 @@ function exec(commands, callback) {
 desc('Run test task.');
 task('default', ['test']);
 
-desc('compile, jslint, test, tslint, build-gh-pages, validate-html.');
-task('build', ['test', 'tslint', 'build-gh-pages', 'validate-html']);
+desc('compile, lint and test.');
+task('build', ['test', 'tslint']);
 
 desc('Update version number, tag and push to Github and npm. Use vers=x.y.z argument to set a new version number. Finally, rebuild and publish docs website.');
-task('release', ['build', 'version', 'tag', 'publish', 'release-gh-pages']);
+task('release', ['build','build-gh-pages', 'version', 'tag', 'publish', 'release-gh-pages']);
 
 desc('Lint Javascript and JSON files.');
 task('jslint', {async: true}, function() {
@@ -144,17 +144,27 @@ file(RIMU_VAR_LIB_MIN, [RIMU_VAR_LIB], {async: true}, function() {
   minify(RIMU_VAR_LIB, RIMU_VAR_LIB_MIN)
 });
 
-desc('Generate HTML documentation');
-task('html-docs', {async: true}, function() {
-  var commands = DOCS.map(function(doc) {
+// Return array of rimuc commands to generate HTML documentation files.
+function htmlDocCommands(debug) {
+  return DOCS.map(function(doc) {
     return 'node ./bin/rimuc.js' +
-      ' --styled --debug --no-rimurc' +
+      ' --styled --no-rimurc' +
+      (debug ? ' --debug' : '') +
       ' --output "' + doc.dst + '"' +
       ' --title "' + doc.title + '"' +
       (doc.hasToc ? ' --toc' : '' ) +
       ' ./examples/.rimurc ./doc/doc-header.rmu ' + doc.src;
   });
-  exec(commands);
+}
+
+desc('Generate HTML documentation');
+task('html-docs', {async: true}, function() {
+  exec(htmlDocCommands());
+});
+
+desc('Generate HTML documentation with rimuc --debug option');
+task('html-docs-debug', {async: true}, function() {
+  exec(htmlDocCommands(true));
 });
 
 desc('Validate HTML documents with W3C Validator.');
@@ -164,6 +174,9 @@ task('validate-html', {async: true}, function() {
   });
   exec(commands);
 });
+
+desc('Build HTML documentation with rimuc --debug option');
+task('build-docs', ['build', 'html-docs-debug', 'validate-html']);
 
 desc('Display or update the project version number. Use vers=x.y.z argument to set a new version number.');
 task('version', {async: true}, function() {
@@ -208,12 +221,12 @@ task('publish-npm', {async: true}, ['test'], function() {
 desc('Rebuild and validate documentation then commit and publish to GitHub Pages');
 task('release-gh-pages', ['build-gh-pages', 'commit-gh-pages', 'push-gh-pages']);
 
-desc('Generate documentation and copy to gh-pages repo');
+desc('Generate documentation and copy to local gh-pages repo');
 task('build-gh-pages', ['html-docs', 'validate-html'], function() {
   shelljs.cp('-f', HTML.concat(RIMU_VAR_LIB), GH_PAGES_DIR)
 });
 
-desc('Commit changes to local Github Pages repo. Use msg=\'commit message\' to set a custom commit message.');
+desc('Commit changes to local gh-pages repo. Use msg=\'commit message\' to set a custom commit message.');
 task('commit-gh-pages', ['test'], {async: true}, function() {
   var msg = process.env.msg;
   if (!msg) {
@@ -226,7 +239,7 @@ task('commit-gh-pages', ['test'], {async: true}, function() {
   });
 });
 
-desc('Push Github Pages commits to Github.');
+desc('Push gh-pages commits to Github.');
 task('push-gh-pages', ['test'], {async: true}, function() {
   shelljs.cd(GH_PAGES_DIR);
   exec('git push origin gh-pages', function () {
