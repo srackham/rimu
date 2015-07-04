@@ -8,6 +8,8 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
+{--!} Force IE into Standards mode.
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta charset="UTF-8">
   <title>{--title?&nbsp;}</title>
   <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
