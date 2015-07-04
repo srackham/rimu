@@ -40,15 +40,13 @@ function slugify(text) {
 <script>
 function appendTocEntry(heading, id) {
   var toc = document.getElementById('toc');
-  if (toc) {
-    var tocLink = document.createElement('a');
-    tocLink.setAttribute('href', '#' + id);
-    tocLink.textContent = heading.textContent;
-    var tocEntry = document.createElement('div');
-    tocEntry.setAttribute('class', heading.tagName.toLowerCase());
-    tocEntry.appendChild(tocLink);
-    toc.appendChild(tocEntry);
-  }
+  var tocLink = document.createElement('a');
+  tocLink.setAttribute('href', '#' + id);
+  tocLink.textContent = heading.textContent;
+  var tocEntry = document.createElement('div');
+  tocEntry.setAttribute('class', heading.tagName.toLowerCase());
+  tocEntry.appendChild(tocLink);
+  toc.appendChild(tocEntry);
 }
 </script>
 
