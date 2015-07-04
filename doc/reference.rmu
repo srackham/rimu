@@ -45,9 +45,9 @@ on IE8.
 
 See the [API documentation](#api).
 
-- Rimu includes the [rimuc](#rimuc) command-line tool and the [Rimu
-  Playground]({playground}) -- examples of using Rimu in Node.js and
-  in the browser respectively.
+- Rimu includes the [rimuc](#rimuc-command) command-line tool and the
+  [Rimu Playground]({playground}) -- examples of using Rimu in Node.js
+  and in the browser respectively.
 - A [Chrome browser
   extension](https://github.com/srackham/rimu-chrome-extension.git)
   for rendering Rimu Markup files directly in the browser.
@@ -534,7 +534,7 @@ ___________________________________________________________
 
 - Quoted text must begin and end with non-whitespace characters.
 - Quotes and inline elements can be nested within a quote with the
-  exception of the _Code_ quote which displays text verbatim.
+  exception of the _Code_ quote.
 - Single underscore quote characters within words are ignored if they
   are flanked on both sides by alphanumeric characters (use single
   asterisk quotes to emphasize text within words).
@@ -542,6 +542,8 @@ ___________________________________________________________
   backslash character. If the text contains multiple quotes of the
   same type then, to resolve ambiguity, additional quotes may have to
   be escaped.
+- The _Code_ quote renders quoted text verbatim with the exception of
+  [Macro Invocations](#macro-invocations).
 
 {quote-example} = 'Some **bold text**,
 some _emphasized text_,
@@ -849,12 +851,12 @@ Invocation syntax:
     backslash character prefix.
   *  Macro invocation parameters can contain inline Rimu elements;
      inline parameter values can span multiple lines.
-- The `{macro-name=pattern}` _Inclusion_ invocation is replaced by a
+- The `\{macro-name=pattern}` _Inclusion_ invocation is replaced by a
   blank string if the macro value matches the `pattern` (where
   `pattern` is a JavaScript regular expression).  If the macro value
   does not match the `pattern` the containing line is skipped.
-- The `{macro-name!pattern}` _Exclusion_ invocation syntax is the
-  inverse of the `{macro-name=pattern}` syntax i.e. the macro
+- The `\{macro-name!pattern}` _Exclusion_ invocation syntax is the
+  inverse of the `\{macro-name=pattern}` syntax i.e. the macro
   invocation is replaced by a blank string if the macro value does not
   match the `pattern`, if it does match the containing line is
   skipped.
@@ -910,8 +912,7 @@ _Reserved_ macros.  The `--` reserved macro is guaranteed to always be
 undefined.
 
 
-## Tools
-### rimuc
+## `rimuc` command
 _rimuc_ is a Node.js command-line tool that converts Rimu source to
 HTML. Run `rimuc --help` to view the `rimuc` manpage:
 
@@ -1028,7 +1029,7 @@ Example usage:
 
   rimuc -o book.html frontmatter.rmu chapter*.rmu backmatter.rmu
 
-#### `--styled` option
+### `--styled` option
 The `--styled` option prepends a header file and appends footer file to
 the other source files. The header and footer ensures:
 
@@ -1059,7 +1060,7 @@ the other source files. The header and footer ensures:
   verses, sidebars and section numbering (see `rimuc --help` command
   and [Rimu Tips]({tips})).
 
-#### `--debug` option
+### `--debug` option
 The `--debug` option works in conjunction with the `--styled` option.
 It includes code in the output HTML file which:
 
@@ -1070,13 +1071,11 @@ It includes code in the output HTML file which:
   useful because static HTML validators are unable to process
   dynamically generated content.
 
-. Highlights macro invocations that have no macro definition (enabled
-  for [macroMode](#api-options) values 2 and 4).
-
 If any anomalies are found a highlighted summary is displayed at the
 beginning of the page.
 
-### Vim syntax file
+
+## Vim syntax file
 The Rimu distribution includes a
 <https://raw.github.com/srackham/rimu/master/tools/vim/syntax/rimu.vim|syntax
 highlighter> for the Vim editor. Copy `rimu.vim` to your
