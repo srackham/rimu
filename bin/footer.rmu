@@ -11,7 +11,7 @@
 
 <script>
 window.onload = function() {
-  var headings = [].slice.call(document.body.querySelectorAll('#contents>h1, #contents>h2, #contents>h3'));
+  var headings = [].slice.call(document.body.querySelectorAll('#contents > h1, #contents > h2, #contents > h3'));
   headings.forEach(function(heading) {
     var title = heading.textContent;
     var id = heading.getAttribute('id');
