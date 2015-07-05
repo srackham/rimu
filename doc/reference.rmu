@@ -723,7 +723,7 @@ Syntax:
   until they are consumed by the first succeeding Delimited Block
   element.
 
-{quote-paragraph-example} = '.error [style="color:red"]
+{block-attributes-example} = '.error [style="color:red"]
 Lorum ipsum.
 
 .info #ref2 [style="color:green"]
@@ -742,7 +742,7 @@ Imperdiet pellentesque minim. Metus mauris tortor. Torquent leo vel.
 Macro \{invocations} are not expanded when the `-macros` block option
 is set.'
 
-{generate-rendered-example-2|quote-paragraph-example}
+{generate-rendered-example-2|block-attributes-example}
 
 
 ## Delimited Block Definition
