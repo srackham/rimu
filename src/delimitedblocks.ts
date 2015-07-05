@@ -98,7 +98,7 @@ const DEFAULT_DEFS: Definition[] = [
     // Must start with  an <! or a block-level element start or end tag.
     // $1 is first line of block.
     /* tslint:disable:max-line-length */
-    openMatch: /^(<!.*|(?:<\/?(?:html|head|body|iframe|script|style|address|article|aside|audio|blockquote|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|img|math|nav|noscript|ol|output|p|pre|section|table|tfoot|td|th|tr|ul|video)(?:[ >].*)?))$/i,
+    openMatch: /^(<!.*|(?:<\/?(?:html|head|body|iframe|script|style|address|article|aside|audio|blockquote|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|img|math|nav|noscript|ol|output|p|pre|section|table|textarea|tfoot|td|th|tr|ul|video)(?:[ >].*)?))$/i,
     /* tslint:enable:max-line-length */
     closeMatch: /^$/, // Blank line or EOF.
     openTag: '',
