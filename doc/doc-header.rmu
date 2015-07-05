@@ -67,11 +67,14 @@ function updateExample(name) {
 
 // Macro to generate Rimu markup and rendered example (stacked horizontally).
 // $1 = name of example content macro.
+// $2 = optional, if non-blank then do not allow editing.
 .-macros
 {generate-rendered-example-1} = '{example-title}
 <table class="example table table-bordered">
 <thead><tr class="example-header">
-<th>{example-edit-icon|$1} Rimu source</th>
+<th>
+{--=$2}{example-edit-icon|$1}
+Rimu source</th>
 <th>Rendered HTML</th>
 </tr></thead><tbody><tr>
 <td style="width:50%;">
@@ -94,12 +97,15 @@ function updateExample(name) {
 
 // Macro to generate Rimu markup and rendered example (stacked vertically).
 // $1 = name of example content macro.
+// $2 = optional, if non-blank then do not allow editing.
 .-macros
 {generate-rendered-example-2} = '{example-title}
 <table class="example table table-bordered">
 <tbody>
 <tr>
-<td class="example-header" style="width:10%;">{example-edit-icon|$1} Rimu source</td>
+<td class="example-header" style="width:10%;">
+{--=$2}{example-edit-icon|$1}
+Rimu source</td>
 <td>
 
 .example-source #$1-source +macros

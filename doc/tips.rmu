@@ -107,7 +107,7 @@ if x == 1:
     print "x is 1."
 ``'
 
-{generate-rendered-example-1|highlightjs-example}
+{generate-rendered-example-1|highlightjs-example|no-edit}
 
 Set the `no-highlight` class to disable syntax highlighting for a code
 block.  Adding the `no-highlight` class to all code blocks using
@@ -286,7 +286,7 @@ IMPORTANT: Admonition.
 
 TODO 10 examples +-2'
 
-{generate-rendered-example-1|rimurc-examples}
+{generate-rendered-example-1|rimurc-examples|no-edit}
 
 
 .#scoped-css
@@ -395,7 +395,7 @@ A MathML block formula:
   <mi>E</mi><mo>=</mo><mrow><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow>
 </math>'
 
-{generate-rendered-example-2|mathjax-example}
+{generate-rendered-example-2|mathjax-example|no-edit}
 
 NOTE: Macro expansion has been disabled in LaTeX formulas to stop
 `{i=0}` and `{2}` from being mistaken for Rimu macro invocations.
