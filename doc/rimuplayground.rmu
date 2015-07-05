@@ -1,5 +1,6 @@
 # Rimu Playground
 
+<div>
 <style scoped>
 #rimu, #preview, #html {
   margin: 0;
@@ -75,3 +76,4 @@ function convert() {
 }
 convert();
 </script>
+</div>
