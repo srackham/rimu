@@ -18,21 +18,51 @@
   }
 </style>
 
-// Header menu.
-<ul class="breadcrumb pull-right">
-  <li><a href="index.html">Home</a> <span class="divider">|</span></li>
-  <li><a href="rimuplayground.html">Playground</a> <span class="divider">|</span></li>
-  <li><a href="reference.html">Reference</a> <span class="divider">|</span></li>
-  <li><a href="tips.html">Tips</a> <span class="divider">|</span></li>
-  <li><a href="http://github.com/srackham/rimu">Github</a> <span class="divider">|</span></li>
-  <li><a href="https://npmjs.org/package/rimu">npm</a></li>
-</ul>
+// Examples styles.
+<style scoped>
+.example td {
+  margin: 0;
+  padding: 0;
+}
+.example-header {
+  color:#527bbd;
+  font-weight:bold;
+  padding: 0.5em !important;
+}
+.example pre, .example div {
+  border: none;
+  background-color: inherit;
+  margin: 0;
+  padding: 0.6em;
+}
+.example textarea {
+  margin: 0;
+  border: 0;
+  width: 100%;
+  background-color: #ffe;
+  box-sizing: border-box;
+  display: none;
+}
+</style>
 
-// Macro to render code listing from content macro $1.
-{example-code-listing} = '.+macros
-```
-{$1}
-```'
+// Examples handlers.
+<script src="rimu-var.js"></script>
+<script>
+function editExample(name) {
+  var source = document.getElementById(name + '-source');
+  var edit = document.getElementById(name + '-edit');
+  edit.value = source.textContent;
+  edit.style.height = edit.parentNode.offsetHeight + 'px';
+  edit.style.display = 'block';
+  source.style.display = 'none';
+}
+function updateExample(name) {
+  var edit = document.getElementById(name + '-edit');
+  var html = document.getElementById(name + '-html');
+  html.innerHTML = Rimu.render(edit.value);
+  edit.style.height = edit.parentNode.offsetHeight + 'px';
+}
+</script>
 
 // Default examples title.
 {example-title} = '#### Examples'
@@ -41,20 +71,24 @@
 // $1 = name of example content macro.
 .-macros
 {generate-rendered-example-1} = '{example-title}
-<table class="example table table-bordered"><thead><tr style="color:#527bbd;">
-<th style="width:50%;">Rimu source</th>
-<th style="width:50%;">Rendered HTML</th>
-</tr></thead><tbody><tr><td style="width: 50%; padding: 4px;">
+<table class="example table table-bordered"><thead><tr class="example-header">
+<th>Rimu source</th>
+<th>Rendered HTML</th>
+</tr></thead><tbody><tr>
+<td style="width:50%;">
 
-.[style="border:none; background-color:inherit;"] +macros
+.#$1-source [onclick="editExample('$1')"] +macros
 ```
 {$1}
 ```
-
-</td><td style="width:50%; padding: 4px;">
+<textarea id="$1-edit" onkeyup="updateExample('$1')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="$1-html">
 
 {$1}
 
+</div>
 </td></tr></tbody></table>
 
 '
@@ -66,20 +100,23 @@
 <table class="example table table-bordered">
 <tbody>
 <tr>
-<td style="width:10%; color:#527bbd; font-weight:bold;">Rimu source</td>
+<td class="example-header" style="width:10%;">Rimu source</td>
 <td>
 
-.[style="border:none; background-color:inherit;"] +macros
+.#$1-source [onclick="editExample('$1')"] +macros
 ```
 {$1}
 ```
+<textarea id="$1-edit" onkeyup="updateExample('$1')"></textarea>
 </td>
 </tr>
-<tr><td style="width:10%; color:#527bbd; font-weight:bold;">Rendered HTML</td>
+<tr><td class="example-header" style="width:10%;">Rendered HTML</td>
 <td>
+<div id="$1-html">
 
 {$1}
 
+</div>
 </td></tr></table>
 
 '
@@ -91,4 +128,14 @@
 {github} = 'http://github.com/srackham/rimu'
 {npm} = 'https://npmjs.org/package/rimu'
 {tips} = 'tips.html'
+
+// Header menu.
+<ul class="breadcrumb pull-right">
+  <li><a href="index.html">Home</a> <span class="divider">|</span></li>
+  <li><a href="rimuplayground.html">Playground</a> <span class="divider">|</span></li>
+  <li><a href="reference.html">Reference</a> <span class="divider">|</span></li>
+  <li><a href="tips.html">Tips</a> <span class="divider">|</span></li>
+  <li><a href="http://github.com/srackham/rimu">Github</a> <span class="divider">|</span></li>
+  <li><a href="https://npmjs.org/package/rimu">npm</a></li>
+</ul>
 
