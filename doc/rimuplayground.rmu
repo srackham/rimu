@@ -20,6 +20,7 @@
 }
 </style>
 
+// NOTE: HTML special characters are escaped.
 {examples} = '
 Some **bold text**, some _emphasized text_, some `monospaced text` and some ~~deleted text~~.
 
@@ -27,7 +28,7 @@ A [link to the Rimu website](http://rimumarkup.org/), an auto-encoded link: http
 
   Indented paragraph.
 
-> Quote paragraph.
+&gt; Quote paragraph.
 
 ```
 Code block.
