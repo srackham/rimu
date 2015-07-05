@@ -4,18 +4,13 @@
 
 // Header menu styles.
 <style scoped>
-  .breadcrumb {
-    font-weight: bold;
-    background-color: white;
-    margin: 0;
-    margin-top: 5px;
-    padding: 0;
-  }
-  @media print {
-    .breadcrumb {
-      display: none;
-    }
-  }
+.breadcrumb {
+  font-weight: bold;
+  background-color: white;
+  margin: 0;
+  margin-top: 5px;
+  padding: 0;
+}
 </style>
 
 // Examples styles.
@@ -25,17 +20,17 @@
   padding: 0;
 }
 .example-header {
-  color:#527bbd;
-  font-weight:bold;
+  color: #527bbd;
+  font-weight: bold;
   padding: 0.5em !important;
 }
-.example pre, .example div {
+.example-source, .example-rendered {
   border: none;
   background-color: inherit;
   margin: 0;
   padding: 0.6em;
 }
-.example textarea {
+.example-edit {
   margin: 0;
   border: 0;
   width: 100%;
@@ -58,8 +53,8 @@ function editExample(name) {
 }
 function updateExample(name) {
   var edit = document.getElementById(name + '-edit');
-  var html = document.getElementById(name + '-html');
-  html.innerHTML = Rimu.render(edit.value);
+  var rendered = document.getElementById(name + '-rendered');
+  rendered.innerHTML = Rimu.render(edit.value);
   edit.style.height = edit.parentNode.offsetHeight + 'px';
 }
 </script>
@@ -67,24 +62,28 @@ function updateExample(name) {
 // Default examples title.
 {example-title} = '#### Examples'
 
+// Clickable icon button to edit the example.
+{example-edit-icon} = '<span class="icon-edit no-print" title="Edit example" style="cursor:pointer;" onclick="editExample('$1')"></span>'
+
 // Macro to generate Rimu markup and rendered example (stacked horizontally).
 // $1 = name of example content macro.
 .-macros
 {generate-rendered-example-1} = '{example-title}
-<table class="example table table-bordered"><thead><tr class="example-header">
-<th>Rimu source</th>
+<table class="example table table-bordered">
+<thead><tr class="example-header">
+<th>{example-edit-icon|$1} Rimu source</th>
 <th>Rendered HTML</th>
 </tr></thead><tbody><tr>
 <td style="width:50%;">
 
-.#$1-source [onclick="editExample('$1')"] +macros
+.example-source #$1-source +macros
 ```
 {$1}
 ```
-<textarea id="$1-edit" onkeyup="updateExample('$1')"></textarea>
+<textarea id="$1-edit" class="example-edit" onkeyup="updateExample('$1')"></textarea>
 </td>
 <td style="width:50%;">
-<div id="$1-html">
+<div id="$1-rendered" class="example-rendered">
 
 {$1}
 
@@ -100,19 +99,19 @@ function updateExample(name) {
 <table class="example table table-bordered">
 <tbody>
 <tr>
-<td class="example-header" style="width:10%;">Rimu source</td>
+<td class="example-header" style="width:10%;">{example-edit-icon|$1} Rimu source</td>
 <td>
 
-.#$1-source [onclick="editExample('$1')"] +macros
+.example-source #$1-source +macros
 ```
 {$1}
 ```
-<textarea id="$1-edit" onkeyup="updateExample('$1')"></textarea>
+<textarea id="$1-edit" class="example-edit" onkeyup="updateExample('$1')"></textarea>
 </td>
 </tr>
 <tr><td class="example-header" style="width:10%;">Rendered HTML</td>
 <td>
-<div id="$1-html">
+<div id="$1-rendered" class="example-rendered">
 
 {$1}
 
@@ -130,7 +129,7 @@ function updateExample(name) {
 {tips} = 'tips.html'
 
 // Header menu.
-<ul class="breadcrumb pull-right">
+<ul class="breadcrumb pull-right no-print">
   <li><a href="index.html">Home</a> <span class="divider">|</span></li>
   <li><a href="rimuplayground.html">Playground</a> <span class="divider">|</span></li>
   <li><a href="reference.html">Reference</a> <span class="divider">|</span></li>
