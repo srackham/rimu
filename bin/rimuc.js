@@ -93,6 +93,7 @@ var MANPAGE = 'NAME\n' +
     '  ______________________________________________________________\n' +
     '  verse            Verse format (paragraphs, division blocks).\n' +
     '  sidebar          Sidebar format (paragraphs, division blocks).\n' +
+    '  no-print         Do not print.\n' +
     '  dl-numbered      Number labeled list items.\n' +
     '  dl-counter       Prepend dl item counter to element content.\n' +
     '  ol-counter       Prepend ol item counter to element content.\n' +
