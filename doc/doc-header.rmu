@@ -45,6 +45,9 @@
 <script>
 function editExample(name) {
   var source = document.getElementById(name + '-source');
+  if (source.style.display === 'none') {
+    return;
+  }
   var edit = document.getElementById(name + '-edit');
   edit.value = source.textContent;
   edit.style.height = (edit.parentNode.offsetHeight - 1) + 'px';
