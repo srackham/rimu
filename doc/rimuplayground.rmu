@@ -1,25 +1,5 @@
 # Rimu Playground
 
-<div>
-<style scoped>
-#rimu, #preview, #html {
-  margin: 0;
-  min-height: 12em;
-}
-#rimu {
-  background-color: #ffe;
-  border: 2px solid #eee;
-  width: 100%;
-  box-sizing: border-box;
-}
-#preview {
-  padding: 0 0.5em;
-}
-#html {
-  padding: 0.5em;
-}
-</style>
-
 // NOTE: HTML special characters are escaped.
 {examples} = '
 Some **bold text**, some _emphasized text_, some `monospaced text` and some ~~deleted text~~.
@@ -50,14 +30,25 @@ Term 2:: Definition 2.
 Edit these examples or add your own:
 
 <div>
-  <textarea id="rimu" onkeyup="convert()">{examples}</textarea>
+  <textarea id="playground-source"
+      style="
+        background-color: #ffe;
+        border: 2px solid #eee;
+        width: 100%;
+        min-height: 16em;
+        box-sizing: border-box;"
+      onkeyup="convert()">{examples}</textarea>
 </div>
 
 ## HTML preview
-<div id="preview"></div>
+.#playground-preview
+..
+..
 
 ## HTML markup
-<pre id="html"></pre>
+.#playground-html
+``
+``
 
 <script src="rimu-var.js"></script>
 <script>
@@ -67,14 +58,13 @@ function escapeSpecialChars(s) {
           .replace(/</g, '&lt;');
 }
 function convert() {
-  var source = document.getElementById('rimu').value;
+  var source = document.getElementById('playground-source').value;
   var htmlRaw = Rimu.render(source);
   var htmlEscaped = escapeSpecialChars(htmlRaw);
-  var htmlElement = document.getElementById('html');
-  var previewElement = document.getElementById('preview');
+  var htmlElement = document.getElementById('playground-html');
+  var previewElement = document.getElementById('playground-preview');
   htmlElement.innerHTML = htmlEscaped;
   previewElement.innerHTML = htmlRaw;
 }
 convert();
 </script>
-</div>
