@@ -21,11 +21,11 @@ var GH_PAGES_DIR = './gh-pages/';
 var RIMUC = './bin/rimuc.js';
 
 var DOCS = [
-  {src: 'README.md', dst: 'doc/index.html', title: 'Rimu Markup', hasToc: true},
-  {src: 'CHANGELOG.md', dst: 'doc/CHANGELOG.html', title: 'Rimu Change Log', hasToc: true},
-  {src: 'doc/reference.rmu', dst: 'doc/reference.html', title: 'Rimu Reference', hasToc: true},
-  {src: 'doc/tips.rmu', dst: 'doc/tips.html', title: 'Rimu Tips', hasToc: true},
-  {src: 'doc/rimuplayground.rmu', dst: 'doc/rimuplayground.html', title: 'Rimu Playground', hasToc: true}
+  {src: 'README.md', dst: 'doc/index.html', title: 'Rimu Markup', rimucOptions: '--toc'},
+  {src: 'CHANGELOG.md', dst: 'doc/CHANGELOG.html', title: 'Rimu Change Log', rimucOptions: '--toc'},
+  {src: 'doc/reference.rmu', dst: 'doc/reference.html', title: 'Rimu Reference', rimucOptions: '--toc'},
+  {src: 'doc/tips.rmu', dst: 'doc/tips.html', title: 'Rimu Tips', rimucOptions: '--toc'},
+  {src: 'doc/rimuplayground.rmu', dst: 'doc/rimuplayground.html', title: 'Rimu Playground', rimucOptions: '--toc'}
 ];
 
 var HTML = [];
@@ -151,7 +151,7 @@ task('html-docs', {async: true}, function() {
       ' --styled --no-rimurc' +
       ' --output "' + doc.dst + '"' +
       ' --title "' + doc.title + '"' +
-      (doc.hasToc ? ' --toc' : '' ) +
+      ' ' + doc.rimucOptions + ' ' +
       ' ./examples/.rimurc ./doc/doc-header.rmu ' + doc.src;
   });
   exec(commands);
