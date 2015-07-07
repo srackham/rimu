@@ -21,7 +21,6 @@ window.onload = function() {
     }
 {--toc!}    appendTocEntry(heading, id);
   });
-{--debug!}  checkUrlFragments();
 }
 function slugify(text) {
   var slug = text.replace(/\s+/g, '-') // Replace spaces with dashes.
@@ -47,29 +46,6 @@ function appendTocEntry(heading, id) {
   tocEntry.setAttribute('class', heading.tagName.toLowerCase());
   tocEntry.appendChild(tocLink);
   toc.appendChild(tocEntry);
-}
-</script>
-
-{--debug=}.+skip
-<script>
-function checkUrlFragments() {
-  // Highlight broken local URL fragments.
-  var urls = [];
-  var links = [].slice.call(document.body.getElementsByTagName('a'));
-  links.forEach(function(link) {
-    var url = link.getAttribute('href');
-    if (url[0] === '#' && !document.getElementById(url.slice(1))) {
-      link.classList.add('broken-fragment');
-      urls.push(url);
-    }
-  });
-  // Display diagnostics summary.
-  if (urls.length > 0 ) {
-    var message = '<u>' + urls.length + ' broken link' + (urls.length === 1 ? '' : 's') + '</u>: ';
-    message += urls.join(' ');
-    var diagnostics = document.getElementById('diagnostics');
-    diagnostics.innerHTML = diagnostics.innerHTML + '<p>' + message + '</p>';
-  }
 }
 </script>
 

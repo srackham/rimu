@@ -64,10 +64,9 @@ var MANPAGE = 'NAME\n' +
     '    A string that replaces embedded HTML when safeMode is set to 2.\n' +
     '    Defaults to `<mark>replaced HTML</mark>`.\n' +
     '\n' +
-    '  --title TITLE, --debug, --highlightjs, --mathjax, --toc, --section-numbers\n' +
+    '  --title TITLE, --highlightjs, --mathjax, --toc, --section-numbers\n' +
     '    Shortcuts for prepended styling macro definitions:\n' +
     '    --prepend "{--title}=\'TITLE\'"\n' +
-    '    --prepend "{--debug}=\'true\'"\n' +
     '    --prepend "{--highlightjs}=\'true\'"\n' +
     '    --prepend "{--mathjax}=\'true\'"\n' +
     '    --prepend "{--toc}=\'true\'"\n' +
@@ -162,7 +161,6 @@ outer:
           styled = true;
           break;
         // Styling macro definitions shortcut options.
-        case '--debug':
         case '--highlightjs':
         case '--mathjax':
         case '--section-numbers':

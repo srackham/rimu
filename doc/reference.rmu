@@ -974,10 +974,9 @@ OPTIONS
     A string that replaces embedded HTML when safeMode is set to 2.
     Defaults to `<mark>replaced HTML</mark>`.
 
-  --title TITLE, --debug, --highlightjs, --mathjax, --toc, --section-numbers
+  --title TITLE, --highlightjs, --mathjax, --toc, --section-numbers
     Shortcuts for prepended styling macro definitions:
     --prepend "{--title}='TITLE'"
-    --prepend "{--debug}='true'"
     --prepend "{--highlightjs}='true'"
     --prepend "{--mathjax}='true'"
     --prepend "{--toc}='true'"
@@ -1060,20 +1059,6 @@ the other source files. The header and footer ensures:
 - In addition to Bootstrap CSS style classes there are styles for
   verses, sidebars and section numbering (see `rimuc --help` command
   and [Rimu Tips]({tips})).
-
-### `--debug` option
-The `--debug` option works in conjunction with the `--styled` option.
-It includes code in the output HTML file which:
-
-. Dynamically checks all local links (links with URLS starting with a
-  `#`) have a corresponding target element with a matching `id`
-  attribute.  When the page is displayed in a browser local links
-  without a matching target element are highlighted.  This feature is
-  useful because static HTML validators are unable to process
-  dynamically generated content.
-
-If any anomalies are found a highlighted summary is displayed at the
-beginning of the page.
 
 
 ## Vim syntax file

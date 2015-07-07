@@ -194,17 +194,7 @@
   }
 </style>
 
-{--debug=}.+skip
-<style>
-  .broken-fragment, #diagnostics p {
-    color: white;
-    background-color: #990000;
-    font-weight: bold;
-  }
-</style>
-
 </head>
 <body>
-{--debug!}<div id="diagnostics"></div>
 {--toc!}<div id="toc" class="no-print"></div>
 <div id="contents">
