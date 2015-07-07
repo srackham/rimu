@@ -21,11 +21,26 @@ var GH_PAGES_DIR = './gh-pages/';
 var RIMUC = './bin/rimuc.js';
 
 var DOCS = [
-  {src: 'README.md', dst: 'doc/index.html', title: 'Rimu Markup', rimucOptions: '--toc'},
-  {src: 'CHANGELOG.md', dst: 'doc/CHANGELOG.html', title: 'Rimu Change Log', rimucOptions: '--toc'},
-  {src: 'doc/reference.rmu', dst: 'doc/reference.html', title: 'Rimu Reference', rimucOptions: '--toc'},
-  {src: 'doc/tips.rmu', dst: 'doc/tips.html', title: 'Rimu Tips', rimucOptions: '--toc'},
-  {src: 'doc/rimuplayground.rmu', dst: 'doc/rimuplayground.html', title: 'Rimu Playground', rimucOptions: '--toc'}
+  {
+    src: 'README.md', dst: 'doc/index.html', title: 'Rimu Markup',
+    rimucOptions: '--toc'
+  },
+  {
+    src: 'CHANGELOG.md', dst: 'doc/CHANGELOG.html', title: 'Rimu Change Log',
+    rimucOptions: '--toc'
+  },
+  {
+    src: 'doc/reference.rmu', dst: 'doc/reference.html', title: 'Rimu Reference',
+    rimucOptions: '--toc --prepend "{generate-examples}=\'true\'"'
+  },
+  {
+    src: 'doc/tips.rmu', dst: 'doc/tips.html', title: 'Rimu Tips',
+    rimucOptions: '--toc --prepend "{generate-examples}=\'true\'"'
+  },
+  {
+    src: 'doc/rimuplayground.rmu', dst: 'doc/rimuplayground.html', title: 'Rimu Playground',
+    rimucOptions: '--toc --prepend "{generate-examples}=\'true\'"'
+  }
 ];
 
 var HTML = [];
@@ -53,7 +68,8 @@ function exec(commands, callback) {
   var remaining = commands.length;
   if (remaining === 0) {
     callback();
-  } else {
+  }
+  else {
     commands.forEach(function(command) {
       jake.logger.log('Starting: ' + command);
       child_process.exec(command, function(error, stdout, stderr) {

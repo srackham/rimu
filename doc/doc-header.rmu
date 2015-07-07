@@ -2,6 +2,9 @@
   Documentation specific HTML, styling and macros.
 */
 
+// By default examples generation is disabled.
+{generate-examples} = ''
+
 // Header menu styles.
 <style scoped>
 .breadcrumb {
@@ -14,6 +17,7 @@
 </style>
 
 // Examples styles.
+{generate-examples=}.+skip
 <style scoped>
 .example td {
   margin: 0;
@@ -41,6 +45,7 @@
 </style>
 
 // Examples handlers.
+{generate-examples=}.+skip
 <script src="rimu-var.js"></script>
 <script>
 function editExample(name) {
@@ -71,6 +76,7 @@ function updateExample(name) {
 // Macro to generate Rimu markup and rendered example (stacked horizontally).
 // $1 = name of example content macro.
 // $2 = optional, if non-blank then do not allow editing.
+{generate-examples=}.+skip
 .-macros
 {generate-rendered-example-1} = '{example-title}
 <table class="example table table-bordered">
@@ -101,6 +107,7 @@ Rimu source</th>
 // Macro to generate Rimu markup and rendered example (stacked vertically).
 // $1 = name of example content macro.
 // $2 = optional, if non-blank then do not allow editing.
+{generate-examples=}.+skip
 .-macros
 {generate-rendered-example-2} = '{example-title}
 <table class="example table table-bordered">
