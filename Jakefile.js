@@ -160,7 +160,7 @@ task('html-docs', {async: true}, function() {
 desc('Validate HTML documents with W3C Validator.');
 task('validate-html', {async: true}, function() {
   var commands = HTML.map(function(file) {
-    return 'html-validator --file ' + file + ' >/dev/null';
+    return 'nu-html-checker ' + file;
   });
   exec(commands);
 });
