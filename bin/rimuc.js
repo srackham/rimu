@@ -203,6 +203,7 @@ if (!no_rimurc && fs.existsSync(rimurc)) {
 
 // Convert Rimu source files to HTML.
 var html = '';
+var errors = 0;
 if (source !== '') {
   html += Rimu.render(source) + '\n'; // --prepend options source.
 }
@@ -228,8 +229,16 @@ files.forEach(function (infile) {
   if (htmlReplacement !== null) {
     options.htmlReplacement = htmlReplacement;
   }
-  html += Rimu.render(source, options) + '\n';
+  html += Rimu.render(source, options,
+      function(message) {
+        console.log(message.type + ': ' + message.text);
+        errors += 1;
+      }
+    ) + '\n';
 });
+if (errors) {
+  process.exit(1);
+}
 html = html.trim() + '\n';
 if (outfile) {
   fs.writeFileSync(outfile, html);

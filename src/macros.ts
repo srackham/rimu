@@ -1,3 +1,4 @@
+import * as api from './api'
 import * as options from './options'
 
 // Matches macro invocation. $1 = name, $2 = params.
@@ -55,7 +56,7 @@ export function setValue(name: string, value: string): void {
 }
 
 // Render all macro invocations in text string.
-export function render(text: string): string {
+export function render(text: string, inline = true): string {
   text = text.replace(MATCH_MACROS, function (match: string, ...submatches: string[]): string {
     if (match[0] === '\\') {
       return match.slice(1)
@@ -70,6 +71,7 @@ export function render(text: string): string {
         break
       case 2: // Only defined macros.
         if (value === null) {
+          if (inline) api.error('undefined macro: ' + name + ': ' + text)
           return match
         }
         break
@@ -80,6 +82,7 @@ export function render(text: string): string {
         break
       case 4: // Defined or reserved macros.
         if (value === null && !/^--/.test(name)) {
+          if (inline) api.error('undefined macro: ' + name + ': ' + text)
           return match
         }
         break
