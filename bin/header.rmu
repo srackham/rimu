@@ -7,11 +7,11 @@
 
 // Set macro default values.
 {--} = ''
-{--title?} = '&nbsp;'
 {--highlightjs?} = ''
 {--mathjax?} = ''
-{--toc?} = ''
 {--section-numbers?} = ''
+{--title?} = '&nbsp;'
+{--toc?} = ''
 
 <!DOCTYPE HTML>
 <html lang="en">
