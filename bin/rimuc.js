@@ -29,6 +29,9 @@ var MANPAGE = 'NAME\n' +
     '  -h, --help\n' +
     '    Display help message.\n' +
     '\n' +
+    '  -l, --lint\n' +
+    '    Check the Rimu source for inconsistencies and errors.\n' +
+    '\n' +
     '  -o, --output OUTFILE\n' +
     '    Write output to file OUTFILE instead of stdout.\n' +
     '\n' +
@@ -110,6 +113,7 @@ var macroMode = 4;
 var htmlReplacement = null;
 var styled = false;
 var no_rimurc = false;
+var lint = false;
 
 // Skip executable and script paths.
 process.argv.shift(); // Skip executable path.
@@ -125,6 +129,10 @@ outer:
         case '-h':
           console.log('\n' + MANPAGE);
           process.exit();
+          break;
+        case '--lint':
+        case '-l':
+          lint = true;
           break;
         case '--output':
         case '-o':
@@ -207,6 +215,10 @@ var errors = 0;
 if (source !== '') {
   html += Rimu.render(source) + '\n'; // --prepend options source.
 }
+var options = {};
+if (htmlReplacement !== null) {
+  options.htmlReplacement = htmlReplacement;
+}
 files.forEach(function (infile) {
   if (!fs.existsSync(infile)) {
     die('source file does not exist: ' + infile);
@@ -221,18 +233,15 @@ files.forEach(function (infile) {
     html += source;
     return;
   }
-  var options = {
-      // rimurc processed with default safeMode and macroMode.
-      safeMode: infile === rimurc ? 0 : safeMode,
-      macroMode: infile === rimurc ? 4 : macroMode
+  // rimurc processed with default safeMode and macroMode.
+  options.safeMode = infile === rimurc ? 0 : safeMode;
+  options.macroMode = infile === rimurc ? 4 : macroMode;
+  if (lint) {
+    options.callback = function(message) {
+      console.log(message.type + ': ' + infile + ': ' + message.text);
+      errors += 1;
     };
-  if (htmlReplacement !== null) {
-    options.htmlReplacement = htmlReplacement;
   }
-  options.callback = function(message) {
-    console.log(message.type + ': ' + infile + ': ' + message.text);
-    errors += 1;
-  };
   html += Rimu.render(source, options) + '\n';
 });
 if (errors) {

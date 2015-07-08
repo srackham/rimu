@@ -164,7 +164,7 @@ desc('Generate HTML documentation');
 task('html-docs', {async: true}, function() {
   var commands = DOCS.map(function(doc) {
     return 'node ./bin/rimuc.js' +
-      ' --styled --no-rimurc' +
+      ' --styled --lint --no-rimurc' +
       ' --output "' + doc.dst + '"' +
       ' --title "' + doc.title + '"' +
       ' ' + doc.rimucOptions + ' ' +
