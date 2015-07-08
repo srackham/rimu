@@ -3,6 +3,16 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
+## Version 5.5.0 (2015-07-11)
+- Added Existential macro definition syntax: `{macro-name?} = 'macro-value'`
+  Existential macro definitions are only processed if the macro has not been defined.
+- `rimuc` passes the contents of files with an `.html` extension directly to the output.
+  This allows `rimuc` to process HTML from other sources.
+- The highlighting of broken fragments by `rimuc --styled` outputs has been removed
+  -- it's in the wrong place, errors should be caught at compile-time and this feature
+  will probably be added to a future version of the `rimuc` compiler.
+
+
 ## Version 5.4.0 (2015-06-28)
 - Moved Rimu reference documentation from the _Rimu Playground_ into a
   separate updated _Reference_ manual.
