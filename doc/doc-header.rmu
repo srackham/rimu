@@ -3,7 +3,7 @@
 */
 
 // By default examples generation is disabled.
-{generate-examples} = ''
+{generate-examples?} = ''
 
 // Header menu styles.
 <style scoped>
