@@ -398,7 +398,7 @@ A MathML block formula:
 {generate-rendered-example-2|mathjax-example|no-edit}
 
 NOTE: Macro expansion has been disabled in LaTeX formulas to stop
-`{i=0}` and `{2}` from being mistaken for Rimu macro invocations.
+`\{i=0}` and `\{2}` from being mistaken for Rimu macro invocations.
 
 See the [latest MathJax
 documentation](http://docs.mathjax.org/en/latest/) to learn how to use
@@ -597,7 +597,7 @@ lines that end with a single-quote.
 ```
 ``
 
-The contents of `{example-42}` are not subject to further macro expansion.
+The contents of `\{example-42}` are not subject to further macro expansion.
 ..
 - Definition elements cannot be prefixed with an Inclusion/Exclusion
   macro (see <#conditional-inclusion|Conditional Inclusion>).

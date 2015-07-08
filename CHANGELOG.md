@@ -4,7 +4,7 @@ See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
 ## Version 5.5.0 (2015-07-11)
-- Added Existential macro definition syntax: `{macro-name?} = 'macro-value'`
+- Added Existential macro definition syntax: `\{macro-name?} = 'macro-value'`
   Existential macro definitions are only processed if the macro has not been defined.
 - `rimuc` passes the contents of files with an `.html` extension directly to the output.
   This allows `rimuc` to process HTML from other sources.
@@ -87,7 +87,7 @@ Breaking changes:
 
 - By default only defined and reserved macro invocations are expanded. Previously all macros
   were expanded which to often generated surprising results e.g. if the `text` macro
-  was not explicitly defined then `${text}` would silently render `$`.
+  was not explicitly defined then `$\{text}` would silently render `$`.
   To revert to the previous behaviour set the `macroMode` API option to `1`.
 
 - Replacements are processed before quotes (previously they were processed after quotes).
