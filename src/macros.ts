@@ -1,4 +1,3 @@
-import * as api from './api'
 import * as options from './options'
 
 // Matches macro invocation. $1 = name, $2 = params.
@@ -71,7 +70,7 @@ export function render(text: string, inline = true): string {
         break
       case 2: // Only defined macros.
         if (value === null) {
-          if (inline) api.error('undefined macro: ' + name + ': ' + text)
+          if (inline) options.errorCallback('undefined macro: ' + name + ': ' + text)
           return match
         }
         break
@@ -82,7 +81,7 @@ export function render(text: string, inline = true): string {
         break
       case 4: // Defined or reserved macros.
         if (value === null && !/^--/.test(name)) {
-          if (inline) api.error('undefined macro: ' + name + ': ' + text)
+          if (inline) options.errorCallback('undefined macro: ' + name + ': ' + text)
           return match
         }
         break

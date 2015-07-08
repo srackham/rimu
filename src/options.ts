@@ -10,12 +10,21 @@ export interface RenderOptions {
   htmlReplacement?: string
   macroMode?: number
   reset?: boolean
+  callback?: CallbackFunction
 }
+
+interface CallbackMessage {
+  type: string
+  text: string
+}
+
+type CallbackFunction = (message: CallbackMessage) => void
 
 // Global option values.
 export let safeMode: number
 export let htmlReplacement: string
 export let macroMode: number
+let callback: CallbackFunction
 
 // Reset options to default values.
 export function setDefaults(): void {
@@ -58,6 +67,7 @@ export function updateOptions(options: RenderOptions): void {
   if ('safeMode' in options) setSafeMode(options.safeMode)
   if ('htmlReplacement' in options) setHtmlReplacement(options.htmlReplacement)
   if ('macroMode' in options) setMacroMode(options.macroMode)
+  if ('callback' in options) callback = options.callback
 }
 
 // Set named option value.
@@ -81,3 +91,22 @@ export function safeModeFilter(html: string): string {
   }
 }
 
+export function errorCallback(message: string) {
+  if (callback) {
+    callback({type: 'error', text: message})
+  }
+}
+
+/*
+ export function warningCallback(message: string) {
+ if (callback) {
+ callback({type: 'warning', text: message})
+ }
+ }
+
+ export function infoCallback(message: string) {
+ if (callback) {
+ callback({type: 'info', text: message})
+ }
+ }
+ */

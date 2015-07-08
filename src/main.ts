@@ -9,32 +9,17 @@ import * as api from './api'
 import * as options from './options'
 
 /*
-  This is the single public API which translates Rimu Markup to HTML:
+  The single public API which translates Rimu Markup to HTML:
 
-    render(source [, options] [, callback])
-*/
-
-export function render(source: string, ...args: any[]): string {
+    render(source [, options])
+ */
+export function render(source: string, opts: options.RenderOptions = {}): string {
   if (typeof source !== 'string') {
-    throw new TypeError('render(): first argument is not a string')
+    throw new TypeError('render(): source argument is not a string')
   }
-  let arg: any
-  let opts: options.RenderOptions = {}
-  let callback: Function
-  args = args.slice(0, 2)   // Only process first two.
-  while (arg = args.shift()) {
-    switch (typeof arg) {
-      case 'object':
-        opts = arg
-        break
-      case 'function':
-        callback = arg
-        break
-      default:
-        throw new TypeError('render(): optional second and third arguments must be an object or a function')
-    }
+  if (opts !== undefined && typeof opts !== 'object') {
+    throw new TypeError('render(): options argument is not an object')
   }
-  api.callback = callback
   options.updateOptions(opts)
   return api.render(source)
 }

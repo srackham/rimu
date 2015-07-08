@@ -29,25 +29,3 @@ export function reset(): void {
   quotes.reset()
   replacements.reset()
 }
-
-export var callback: Function;
-
-export function error(message: string) {
-  if (callback) {
-    callback({type: 'error', text: message})
-  }
-}
-
-/*
-export function warning(message: string) {
-  if (callback) {
-    callback({type: 'warning', text: message})
-  }
-}
-
-export function info(message: string) {
-  if (callback) {
-    callback({type: 'info', text: message})
-  }
-}
-*/

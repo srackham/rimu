@@ -229,12 +229,11 @@ files.forEach(function (infile) {
   if (htmlReplacement !== null) {
     options.htmlReplacement = htmlReplacement;
   }
-  html += Rimu.render(source, options,
-      function(message) {
-        console.log(message.type + ': ' + message.text);
-        errors += 1;
-      }
-    ) + '\n';
+  options.callback = function(message) {
+    console.log(message.type + ': ' + message.text);
+    errors += 1;
+  };
+  html += Rimu.render(source, options) + '\n';
 });
 if (errors) {
   process.exit(1);
