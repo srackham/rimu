@@ -31,6 +31,7 @@ export function setDefaults(): void {
   safeMode = 0
   htmlReplacement = '<mark>replaced HTML</mark>'
   macroMode = 4
+  callback = undefined
 }
 
 // Return true if set to a safe mode.
