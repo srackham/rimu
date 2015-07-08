@@ -230,7 +230,7 @@ files.forEach(function (infile) {
     options.htmlReplacement = htmlReplacement;
   }
   options.callback = function(message) {
-    console.log(message.type + ': ' + message.text);
+    console.log(message.type + ': ' + infile + ': ' + message.text);
     errors += 1;
   };
   html += Rimu.render(source, options) + '\n';
