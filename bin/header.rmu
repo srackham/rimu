@@ -5,13 +5,21 @@
   Bootstrap and Highlight.js sourced from CDNs.
 */
 
+// Set macro default values.
+{--} = ''
+{--title?} = '&nbsp;'
+{--highlightjs?} = ''
+{--mathjax?} = ''
+{--toc?} = ''
+{--section-numbers?} = ''
+
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
 {--!} Force IE into Standards mode.
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta charset="UTF-8">
-  <title>{--title?&nbsp;}</title>
+  <title>{--title}</title>
   <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
   <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
 
