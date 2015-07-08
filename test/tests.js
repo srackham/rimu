@@ -233,6 +233,14 @@ exports['Blocks'] = function(test) {
     '<p>nested macro: macro value2</p>',
     'nested macro value');
   test_document(
+    "{macro1} = 'XXX'\n{macro1}\n\n{macro1?}='YYY'\n{macro2?} = 'ZZZ'\n{macro1} {macro2}",
+    '<p>XXX</p>\n<p>XXX ZZZ</p>',
+    'existential macro definitions');
+  test_document(
+    "{macro1} = 'XXX\nXXX'\n{macro1}\n\n{macro1?}='YYY\nYYY'\n{macro2?} = 'ZZZ\nZZZ'\n{macro1} {macro2}",
+    '<p>XXX\nXXX</p>\n<p>XXX\nXXX ZZZ\nZZZ</p>',
+    'multi-line existential macro definitions');
+  test_document(
     "{tiger} = './images/tiger.png'\n<image:{tiger}>",
     '<img src="./images/tiger.png" alt="./images/tiger.png">',
     'macro invocation in image url');

@@ -7,11 +7,11 @@ const MATCH_MACROS = RegExp('\\\\?' + MATCH_MACRO.source, 'g')
 // Matches a line starting with a macro invocation.
 export const MACRO_LINE = RegExp('^' + MATCH_MACRO.source + '.*$')
 // Match multi-line macro definition open delimiter. $1 is first line of macro.
-export const MACRO_DEF_OPEN = /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/
+export const MACRO_DEF_OPEN = /^\\?\{[\w\-]+\??\}\s*=\s*'(.*)$/
 // Match multi-line macro definition open delimiter. $1 is last line of macro.
 export const MACRO_DEF_CLOSE = /^(.*)'$/
 // Match single-line macro definition. $1 = name, $2 = value.
-export const MACRO_DEF = /^\\?\{([\w\-]+)\}\s*=\s*'(.*)'$/
+export const MACRO_DEF = /^\\?\{([\w\-]+\??)\}\s*=\s*'(.*)'$/
 
 export interface Macro {
   name: string
@@ -36,10 +36,18 @@ export function getValue(name: string): string {
 }
 
 // Set named macro value or add it if it doesn't exist.
+// If the name ends with '?' then don't set the macro if it already exists.
 export function setValue(name: string, value: string): void {
+  let existential = false;
+  if (name.slice(-1) === '?') {
+    name = name.slice(0, -1)
+    existential = true
+  }
   for (let def of defs) {
     if (def.name === name) {
-      def.value = value
+      if (!existential) {
+        def.value = value
+      }
       return
     }
   }

@@ -189,7 +189,7 @@ Rimu markup elements are categorized as follows:
                         [Code Block](#code-block)
                         [Division Block](#division-block)
                         [Quote Block](#quote-block)
-                [Macro Definition](#macro-definition)
+                [Macro Definition](#macro-definitions)
                 [Multi-line Comment](#comments)
                 [Paragraphs](#paragraphs)
                         [Indented Paragraph](#indented-paragraph)
@@ -200,7 +200,7 @@ Rimu markup elements are categorized as follows:
                 [Block Attributes](#block-attributes)
                 [Block Image](#images)
                 [Element Definitions](#taxonomy)
-                        [Macro Definition](#macro-definition)
+                        [Macro Definition](#macro-definitions)
                         [Quote Definition](#quote-definition)
                         [Replacement Definition](#replacement-definition)
                         [Delimited Block Definition](#delimited-block-definition)
@@ -799,14 +799,21 @@ Rimu provides elements for defining and invoking macros and includes
 features like macro parametrization, conditional processing and
 meta-programming.
 
-### Macro Definition
+### Macro Definitions
 A macro definition assigns one or more lines of Rimu markup to a macro
 name.
 
 Definition syntax:
 
-  {macro-name} = 'macro-value'
+.light-background
+``
+{macro-name} = 'macro-value'      Simple macro definition
+{macro-name?} = 'macro-value'     Existential macro definition
+``
 
+- _Simple_ macro definitions are processed unconditionally;
+  _Existential_ macro definitions are only processed if the macro
+  has not been defined.
 - A macro name consists of one or more alphanumeric, underscore or
   dash characters.
 - Macro definition values are enclosed by single-quote characters
@@ -880,7 +887,7 @@ Invocation syntax:
 - If the first line of a block element is prefixed with a Macro
   Invocation then macro invocations in the first line are expanded
   prior to all other processing.  [Macro
-  Definitions](#macro-definition)  are the exception to this rule and
+  Definitions](#macro-definitions)  are the exception to this rule and
   cannot be prefixed with a macro invocation.  This behaviour has a
   number of use cases:
   . It allows macro invocations to be used to inject Rimu Markup into
