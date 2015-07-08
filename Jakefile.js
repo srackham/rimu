@@ -31,15 +31,15 @@ var DOCS = [
   },
   {
     src: 'doc/reference.rmu', dst: 'doc/reference.html', title: 'Rimu Reference',
-    rimucOptions: '--toc --prepend "{generate-examples}=\'true\'"'
+    rimucOptions: '--toc --prepend "{generate-examples}=\'yes\'"'
   },
   {
     src: 'doc/tips.rmu', dst: 'doc/tips.html', title: 'Rimu Tips',
-    rimucOptions: '--toc --prepend "{generate-examples}=\'true\'"'
+    rimucOptions: '--toc --prepend "{generate-examples}=\'yes\'"'
   },
   {
     src: 'doc/rimuplayground.rmu', dst: 'doc/rimuplayground.html', title: 'Rimu Playground',
-    rimucOptions: '--toc --prepend "{generate-examples}=\'true\'"'
+    rimucOptions: '--toc --prepend "{generate-examples}=\'yes\'"'
   }
 ];
 
