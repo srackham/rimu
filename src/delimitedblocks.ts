@@ -201,6 +201,9 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
       // Read content up to the closing delimiter.
       reader.next()
       let content = reader.readTo(def.closeMatch)
+      if (content === null) {
+        options.errorCallback('unterminated delimited block: ' + match[0])
+      }
       if (content) {
         lines = lines.concat(content)
       }
