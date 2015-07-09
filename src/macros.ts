@@ -71,9 +71,6 @@ export function render(text: string, inline = true): string {
       case 2: // Only defined macros.
         if (value === null) {
           if (inline) {
-            if (text.length > 20) {
-              text = text.slice(0, 20) + '...'
-            }
             options.errorCallback('undefined macro: ' + match + ': ' + text)
           }
           return match
@@ -87,9 +84,6 @@ export function render(text: string, inline = true): string {
       case 4: // Defined or reserved macros.
         if (value === null && !/^--/.test(name)) {
           if (inline) {
-            if (text.length > 20) {
-              text = text.slice(0, 20) + '...'
-            }
             options.errorCallback('undefined macro: ' + match + ': ' + text)
           }
           return match

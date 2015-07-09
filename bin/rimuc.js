@@ -238,7 +238,11 @@ files.forEach(function (infile) {
   options.macroMode = infile === rimurc ? 4 : macroMode;
   if (lint) {
     options.callback = function(message) {
-      console.log(message.type + ': ' + infile + ': ' + message.text);
+      var msg = message.type + ': ' + infile + ': ' + message.text;
+      if (msg.length > 120) {
+        msg = msg.slice(0, 117) + '...';
+      }
+      console.log(msg);
       errors += 1;
     };
   }
