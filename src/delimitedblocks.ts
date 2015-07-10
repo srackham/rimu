@@ -257,10 +257,14 @@ export function setBlockOptions(blockOptions: utils.ExpansionOptions, optionsStr
     let opts = optionsString.trim().split(/\s+/)
     for (let opt of opts) {
       if (options.isSafe() && opt === '-specials') {
-        return
+        options.errorCallback('-specials block option not valid in safeMode')
+        continue
       }
       if (/^[+-](macros|spans|specials|container|skip)$/.test(opt)) {
         blockOptions[opt.slice(1)] = opt[0] === '+'
+      }
+      else {
+        options.errorCallback('illegal block option: ' + opt)
       }
     }
   }
