@@ -215,7 +215,7 @@ let defs: Definition[] = [
       macros: true,
     },
     filter: function (match: RegExpExecArray): string {
-      if (!/^(safeMode|htmlReplacement|macroMode|callback|reset)$/.test(match[1])) {
+      if (!/^(safeMode|htmlReplacement|macroMode|reset)$/.test(match[1])) {
         options.errorCallback('illegal API option: ' + match[1] + ': ' + match[0])
         return
       }
