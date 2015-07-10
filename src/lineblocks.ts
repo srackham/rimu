@@ -209,12 +209,16 @@ let defs: Definition[] = [
   // API Option.
   // name = $1, value = $2
   {
-    match: /^\\?\.(safeMode|htmlReplacement|macroMode|reset)\s*=\s*'(.*)'$/,
+    match: /^\\?\.(\w+)\s*=\s*'(.*)'$/,
     replacement: '',
     expansionOptions: {
       macros: true,
     },
     filter: function (match: RegExpExecArray): string {
+      if (!/^(safeMode|htmlReplacement|macroMode|callback|reset)$/.test(match[1])) {
+        options.errorCallback('illegal API option: ' + match[1] + ': ' + match[0])
+        return
+      }
       if (!options.isSafe()) {
         options.setOption(match[1], match[2])
       }
