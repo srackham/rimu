@@ -91,7 +91,8 @@ The `options` argument is an object with zero or more of the following
 properties:
 
 .dl-horizontal
-`safeMode`:: This option has a number value that controls how Rimu
+`safeMode`::
+This option has a number value that controls how Rimu
 renders embedded HTML and whether or not Rimu definition and option elements
 are processed:
 ..
@@ -109,11 +110,12 @@ are processed:
   a `render()` API call with a `safeMode:0` or a `reset:true` option.
 ..
 
-`htmlReplacement`:: A string that replaces embedded HTML when
+`htmlReplacement`::
+A string that replaces embedded HTML when
 `safeMode` is set to `2`. Defaults to `<mark>replaced HTML</mark>`.
 
-`macroMode`:: This option specifies which Rimu macro invocations are
-processed:
+`macroMode`::
+This option specifies which Rimu macro invocations are processed:
 ..
 .light-background
   0 => None
@@ -125,14 +127,30 @@ processed:
 Unprocessed macro invocations are rendered verbatim.
 ..
 
-`reset`:: This boolean option causes the `render()` API to be set to
+`callback`::
+`callback` is a function that handles diagnostic events emitted by the
+`render()` API.  The `callback` function `message` argument is an object
+with a `type` property (`'error'`, `'warning'` or `'info'`) and a
+`text` property (a string containing the diagnostic message). Example
+usage:
+`` javascript
+var html = Rimu.render('Hello *Rimu*!', {
+  callback: function(message) {
+    console.log(message.type + ': ' + message.text);
+  }
+});
+``
+
+`reset`::
+This boolean option causes the `render()` API to be set to
 its default state (default option values; default Quotes, Replacements
-and Delimited Block definitions; no macro definitions). The `reset`
-option is processed before other options.
+and Delimited Block definitions; no macro definitions; no callback).
+The `reset` option is processed before other options.
 
 ### API Option elements
-API options can be set in the Rimu source using a [Line
-Block](#line-blocks) element with the following syntax:
+`safeMode` and `htmlReplacement` API options can be set in the Rimu
+source using a [Line Block](#line-blocks) element with the following
+syntax:
 
   .option-name = 'option-value'
 
@@ -148,6 +166,18 @@ macro invocations are expanded:
 
   .macroMode = '1'
 
+### API callback messages
+The `callback` function `message` argument is an object with a `type`
+property (`'error'`, `'warning'` or `'info'`) and a `text` property (a
+string containing the diagnostic message). Example usage:
+
+`` javascript
+var html = Rimu.render('Hello *Rimu*!', {
+  callback: function(message) {
+    console.log(message.type + ': ' + message.text);
+  }
+});
+``
 
 ## Documents
 A Rimu document consists of a sequence of zero or more _Block_
