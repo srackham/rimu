@@ -84,6 +84,7 @@ export function render(text: string, inline = true): string {
       case 4: // Defined or reserved macros.
         if (value === null && !/^--/.test(name)) {
           if (inline) {
+            // TODO Error or warning???
             options.errorCallback('undefined macro: ' + match + ': ' + text)
           }
           return match

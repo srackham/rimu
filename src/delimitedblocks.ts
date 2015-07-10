@@ -274,6 +274,10 @@ export function setBlockOptions(blockOptions: utils.ExpansionOptions, optionsStr
 // Value syntax: <open-tag>|<close-tag> block-options
 export function setDefinition(name: string, value: string): void {
   let def = getDefinition(name)
+  if (!def) {
+    options.errorCallback('illegal delimited block name: ' + name + ': |' + name + "|='" + value + "'")
+    return
+  }
   let match = utils.trim(value).match(/^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/)
   if (match) {
     if (match[1]) {
