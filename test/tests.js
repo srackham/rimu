@@ -958,5 +958,42 @@ exports['Blocks'] = function(test) {
     '<p><em>Lorum</em> &amp; .</p>\n<p><em>Lorum</em> &amp; {ipsum}.</p>\n<p class="normal">_Lorum_ &amp; .</p>',
     'paragraph expansion options', {macroMode: 1});
 
+  // Callback API option.
+  function test_callback(source, expected, message) {
+    var msg = '';
+    Rimu.render(source, {
+      callback: function(message) {
+        msg = message.type + ': ' + message.text;
+      },
+      reset:true
+    });
+    test.equal(msg.slice(0, expected.length), expected, message);
+  }
+
+  test_callback(
+    '{undefined}',
+    'error: undefined macro',
+    'callback api: undefined macro');
+  test_callback(
+    '..',
+    'error: unterminated delimited block',
+    'callback api: unterminated delimited block');
+  test_callback(
+    '.safeMode = \'1\'\n.-specials \nOpps!',
+    'error: -specials block option not valid in safeMode',
+    'callback api: -specials block option not valid in safeMode');
+  test_callback(
+    '|foobar| = \'<p>|</p>\'',
+    'error: illegal delimited block name: foobar',
+    'callback api: illegal delimited block name');
+  test_callback(
+    '.-zacros',
+    'error: illegal block option: -zacros',
+    'callback api: illegal block option');
+  test_callback(
+    '.zafeMode=\'2\'',
+    'error: illegal API option: zafeMode',
+    'callback api: illegal API option');
+
   test.done();
 };
