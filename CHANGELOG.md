@@ -4,7 +4,7 @@ See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
 ## Version 6.0.0 (2015-07-27)
-Misspelled and unescaped macro invocations are insidious and easily overlooked.
+Misspelled macro invocations are insidious and easily overlooked.
 The problem has finally been resolved with the introduction of an API callback
 option that emits diagnostic messages (the misguided `macroMode` option introduced
 in version 5.0.0 was mostly in response to this problem).
@@ -14,13 +14,20 @@ If a macro is not defined its invocation is rendered verbatim.
 The `rimuc` command `--lint` option will emit an error if a macro is undefined
 (to supress these warnings unescape the macro invocation).
 
+- The examples in the Rimu Reference documentation are now live -- you can edit
+  them by clicking the _Edit_ icon. The _live edit_ is implemented with the help
+  of Rimu macros.
+
 - Added `callback` API option. The `callback` function handles diagnostic events
   emitted by the `render` API as it parses the Rimu source. Diagnostic events
   include:
   * Undefined macro invocation.
   * Unterminated Delimited Block.
   * Illegal and invalid block options.
-  
+  * Illegal Delimited Block name.
+  * Illegal API Option name.
+  * Deprecated existential macro invocation.
+
 - Added Existential macro definition syntax: `\{macro-name?} = 'macro-value'`
   Existential macro definitions are only processed if the macro has not been defined.
 - `rimuc` passes the contents of files with an `.html` extension directly to the output.
@@ -30,6 +37,12 @@ The `rimuc` command `--lint` option will emit an error if a macro is undefined
   will probably be added to a future version of the `rimuc` compiler.
 
 Breaking changes:
+
+- Existential macro invocations (`\{name?default}`) no longer supported. This is
+  because it is now considered an error to invoke an undefined macro. Instead
+  you should define default macro values using Existential macro definitions.
+  Existential invocations are rendered verbatim and the `rimuc` `--lint`
+  option emits a deprecation error.
 
 
 ## Version 5.4.0 (2015-06-28)
