@@ -1,6 +1,7 @@
 import * as options from './options'
 
 // Matches macro invocation. $1 = name, $2 = params.
+// DEPRECATED: Matches existential macro invocations.
 const MATCH_MACRO = /\{([\w\-]+)([!=|?](?:|[\s\S]*?[^\\]))?\}/
 // Matches all macro invocations. $1 = name, $2 = params.
 const MATCH_MACROS = RegExp('\\\\?' + MATCH_MACRO.source, 'g')
@@ -62,6 +63,10 @@ export function render(text: string, inline = true): string {
     }
     let name = submatches[0]
     let params = submatches[1] || ''
+    if (params[0] === '?') { // DEPRECATED: Existential macro invocation.
+      if (inline) options.errorCallback('existential macro invocations are deprecated: ' + match)
+      return match
+    }
     let value = getValue(name)  // Macro value is null if macro is undefined.
     switch (options.macroMode) {
       case 0: // No macros.
@@ -93,9 +98,6 @@ export function render(text: string, inline = true): string {
     }
     params = params.replace(/\\\}/g, '}')   // Unescape escaped } characters.
     switch (params[0]) {
-      case '?': // Existential macro.
-        return value === null ? params.slice(1) : value
-
       case '|': // Parametrized macro.
                 // Substitute macro parameters.
         let paramsList = params.slice(1).split('|')

@@ -242,7 +242,6 @@ Rimu markup elements are categorized as follows:
                 [Labeled List](#lists)
 [Inline elements](#inline-elements)
         [Macro Invocations](#macro-invocations)
-                [Existential](#macro-invocations)
                 [Exclusion](#macro-invocations)
                 [Inclusion](#macro-invocations)
                 [Parametrized](#macro-invocations)
@@ -866,7 +865,6 @@ Invocation syntax:
 .light-background
 ``
 {macro-name}                      Simple macro invocation
-{macro-name?default-value}        Existential macro invocation
 {macro-name|param1[|param2...]}   Parametrized macro invocation
 {macro-name=pattern}              Inclusion macro invocation
 {macro-name!pattern}              Exclusion macro invocation
@@ -876,9 +874,6 @@ Invocation syntax:
   it will not be processed.
 - A _Simple_ macro invocation is replaced by the macro value or a
   blank string if the macro is not defined.
-- An _Existential_ macro invocation is replaced by the `default-value`
-  if the macro is not defined. If the macro is defined the invocation
-  is replaced by the macro value.
 - _Parametrized_ macro invocations replace `$1`, `$2` ...  parameter
   names in the macro definition value with the corresponding parameter
   values.

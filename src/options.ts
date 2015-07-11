@@ -97,17 +97,3 @@ export function errorCallback(message: string) {
     callback({type: 'error', text: message})
   }
 }
-
-/*
- export function warningCallback(message: string) {
- if (callback) {
- callback({type: 'warning', text: message})
- }
- }
-
- export function infoCallback(message: string) {
- if (callback) {
- callback({type: 'info', text: message})
- }
- }
- */

@@ -613,10 +613,6 @@ exports['Blocks'] = function(test) {
     '',
     'comment out delimited block if macro not defined');
   test_document(
-    'Hello {undefined?undefined macro.}',
-    '<p>Hello undefined macro.</p>',
-    'existential macro invocation', {macroMode: 1});
-  test_document(
     "{v1}='<div>\n\n'\n{v2}='\n\n</div>\n\n'\n{v1}\nfoo\n\n{v2}\nbar",
     '<div>\n<p>foo</p>\n</div>\n<p>bar</p>',
     'macros with blank lines');
@@ -724,10 +720,6 @@ exports['Blocks'] = function(test) {
     "{v}='foo $1 \\$1'\n{v1}='{v|1}'\n{v1|2}",
     "<p>foo 1 2</p>",
     'meta-macro with deferred parameter evaluation');
-  test_document(
-    '{skipped} = \'SKIPPED\'\n{skipped?foobar}',
-    '<p>foobar</p>',
-    'skip macro definitions in safe mode', {safeMode: 1, macroMode: 1});
   test_document(
     '{x}=\'\\{x}\'\n{x}',
     '<p>{x}</p>',
@@ -994,6 +986,10 @@ exports['Blocks'] = function(test) {
     '.zafeMode=\'2\'',
     'error: illegal API option: zafeMode',
     'callback api: illegal API option');
+  test_callback(
+    '{undefined?foobar}',
+    'error: existential macro invocations are deprecated: {undefined?foobar}',
+    'callback api: existential macro invocations are deprecated');
 
   test.done();
 };
