@@ -27,6 +27,8 @@ suppress these warnings escape the macro invocation with a backslash).
   * Illegal API Option name.
   * Deprecated existential macro invocation.
 
+- Added `--lint` option to the `rimuc` command which checks the Rimu
+  source for inconsistencies and errors.
 - Added Existential macro definition syntax: `\{macro-name?} =
   'macro-value'` Existential macro definitions are only processed if
   the macro has not been defined and are useful for establishing
