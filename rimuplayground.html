@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta charset="UTF-8">
   <title>Rimu Playground</title>
   <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
@@ -118,11 +119,6 @@
   .dl-numbered > dt:before {
     content: counter(dl-counter) ". ";
   }
-  .broken-fragment {
-    color: white;
-    background-color: #990000;
-    font-weight: bold;
-  }
 </style>
 <style>
   /* TOC styles */
@@ -130,8 +126,8 @@
     padding-left: 21em;
   }
   @media print {
-    #toc {
-      display: none;
+    .no-print, .no-print * {
+      display: none !important;
     }
     body {
       padding-left: 1em;
@@ -168,25 +164,64 @@
 </style>
 </head>
 <body>
-<div id="toc"></div>
+<div id="toc" class="no-print"></div>
 <div id="contents">
 
-
 <style scoped>
-  .breadcrumb {
-    font-weight: bold;
-    background-color: white;
-    margin: 0;
-    margin-top: 5px;
-    padding: 0;
-  }
-  @media print {
-    .breadcrumb {
-      display: none;
-    }
-  }
+.breadcrumb {
+  font-weight: bold;
+  background-color: white;
+  margin: 0;
+  margin-top: 5px;
+  padding: 0;
+}
 </style>
-<ul class="breadcrumb pull-right">
+<style scoped>
+.example td {
+  margin: 0;
+  padding: 0;
+}
+.example-header {
+  color: #527bbd;
+  font-weight: bold;
+  padding: 0.5em !important;
+}
+.example-source, .example-rendered {
+  border: none;
+  background-color: inherit;
+  margin: 0;
+  padding: 0.6em;
+}
+.example-edit {
+  margin: 0;
+  border: 0;
+  width: 100%;
+  background-color: #ffe;
+  box-sizing: border-box;
+  display: none;
+}
+</style>
+<script src="rimu-var.js"></script>
+<script>
+function editExample(name) {
+  var source = document.getElementById(name + '-source');
+  if (source.style.display === 'none') {
+    return;
+  }
+  var edit = document.getElementById(name + '-edit');
+  edit.value = source.textContent;
+  edit.style.height = (edit.parentNode.offsetHeight - 1) + 'px';
+  edit.style.display = 'block';
+  source.style.display = 'none';
+}
+function updateExample(name) {
+  var edit = document.getElementById(name + '-edit');
+  var rendered = document.getElementById(name + '-rendered');
+  rendered.innerHTML = Rimu.render(edit.value);
+  edit.style.height = edit.parentNode.offsetHeight + 'px';
+}
+</script>
+<ul class="breadcrumb pull-right no-print">
   <li><a href="index.html">Home</a> <span class="divider">|</span></li>
   <li><a href="rimuplayground.html">Playground</a> <span class="divider">|</span></li>
   <li><a href="reference.html">Reference</a> <span class="divider">|</span></li>
@@ -196,34 +231,23 @@
 </ul>
 
 <h1>Rimu Playground</h1>
-<style scoped>
-#rimu, #preview, #html {
-  margin: 0;
-  min-height: 12em;
-}
-#rimu {
-  background-color: #ffe;
-  border: 2px solid #eee;
-  width: 100%;
-  box-sizing: border-box;
-}
-#preview {
-  padding: 0 0.5em;
-}
-#html {
-  padding: 0.5em;
-}
-</style>
 <h2>Rimu markup</h2>
 <p>Edit these examples or add your own:</p>
 <div>
-  <textarea id="rimu" onkeyup="convert()">Some **bold text**, some _emphasized text_, some `monospaced text` and some ~~deleted text~~.
+  <textarea id="playground-source"
+      style="
+        background-color: #ffe;
+        border: 2px solid #eee;
+        width: 100%;
+        min-height: 16em;
+        box-sizing: border-box;"
+      onkeyup="convert()">Some **bold text**, some _emphasized text_, some `monospaced text` and some ~~deleted text~~.
 
 A [link to the Rimu website](http://rimumarkup.org/), an auto-encoded link: http://rimumarkup.org/.
 
   Indented paragraph.
 
-> Quote paragraph.
+&gt; Quote paragraph.
 
 ```
 Code block.
@@ -242,9 +266,9 @@ Term 2:: Definition 2.
 </textarea>
 </div>
 <h2>HTML preview</h2>
-<div id="preview"></div>
+<div id="playground-preview"></div>
 <h2>HTML markup</h2>
-<pre id="html"></pre>
+<pre id="playground-html" class="no-highlight"><code></code></pre>
 <script src="rimu-var.js"></script>
 <script>
 function escapeSpecialChars(s) {
@@ -253,11 +277,11 @@ function escapeSpecialChars(s) {
           .replace(/</g, '&lt;');
 }
 function convert() {
-  var source = document.getElementById('rimu').value;
+  var source = document.getElementById('playground-source').value;
   var htmlRaw = Rimu.render(source);
   var htmlEscaped = escapeSpecialChars(htmlRaw);
-  var htmlElement = document.getElementById('html');
-  var previewElement = document.getElementById('preview');
+  var htmlElement = document.getElementById('playground-html');
+  var previewElement = document.getElementById('playground-preview');
   htmlElement.innerHTML = htmlEscaped;
   previewElement.innerHTML = htmlRaw;
 }
@@ -266,9 +290,7 @@ convert();
 </div>
 <script>
 window.onload = function() {
-  // Generate header slugs and build table of contents.
-  var toc = document.getElementById('toc');
-  var headings = [].slice.call(document.body.querySelectorAll('#contents>h1, #contents>h2, #contents>h3'));
+  var headings = [].slice.call(document.body.querySelectorAll('#contents > h1, #contents > h2, #contents > h3'));
   headings.forEach(function(heading) {
     var title = heading.textContent;
     var id = heading.getAttribute('id');
@@ -276,18 +298,8 @@ window.onload = function() {
       id = slugify(title);
       heading.setAttribute('id', id);
     }
-    if (toc) {
-      // Append TOC entry.
-      var tocLink = document.createElement('a');
-      tocLink.setAttribute('href', '#' + id);
-      tocLink.textContent = title;
-      var tocEntry = document.createElement('div');
-      tocEntry.setAttribute('class', heading.tagName.toLowerCase());
-      tocEntry.appendChild(tocLink);
-      toc.appendChild(tocEntry);
-    }
+    appendTocEntry(heading, id);
   });
-  checkUrlFragments();
 }
 function slugify(text) {
   var slug = text.replace(/\s+/g, '-') // Replace spaces with dashes.
@@ -300,17 +312,17 @@ function slugify(text) {
   }
   return slug;
 }
-function checkUrlFragments() {
-  // Highlight broken local URL fragments.
-  var links = [].slice.call(document.body.getElementsByTagName('a'));
-  links.forEach(function(link) {
-    var url = link.getAttribute('href');
-    if (url[0] === '#' && !document.getElementById(url.slice(1))) {
-      link.classList.add('broken-fragment');
-      link.textContent = 'Broken fragment: ' + link.textContent;
-      console.log('broken fragment: ' + url);
-    }
-  });
+</script>
+<script>
+function appendTocEntry(heading, id) {
+  var toc = document.getElementById('toc');
+  var tocLink = document.createElement('a');
+  tocLink.setAttribute('href', '#' + id);
+  tocLink.textContent = heading.textContent;
+  var tocEntry = document.createElement('div');
+  tocEntry.setAttribute('class', heading.tagName.toLowerCase());
+  tocEntry.appendChild(tocLink);
+  toc.appendChild(tocEntry);
 }
 </script>
 </body>

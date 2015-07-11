@@ -46,29 +46,17 @@ var Rimu =
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
-	  This is the main module, it exports the 'render' API.
+	 This is the main module, it exports the 'render' API.
 
-	  The compiled modules are bundled by Webpack into 'var' (script tag) and 'commonjs' (npm)
-	  formatted libraries.
+	 The compiled modules are bundled by Webpack into 'var' (script tag) and 'commonjs' (npm)
+	 formatted libraries.
 	 */
 	var api = __webpack_require__(1);
 	var options = __webpack_require__(3);
-	/**
-	 *
-	 * This is the single public API which translates Rimu Markup to HTML.
-	 *
-	 * @param source
-	 * Input text containing Rimu Markup.
-	 *
-	 * @param opts
-	 * Markup translation options.
-	 *
-	 * @returns Returns HTML output text.
-	 *
-	 * Example:
-	 *
-	 *     Rimu.render('Hello *Rimu*!', {safeMode: 1})
-	 *
+	/*
+	  The single public API which translates Rimu Markup to HTML:
+
+	    render(source [, options])
 	 */
 	function render(source, opts) {
 	    if (opts === void 0) { opts = {}; }
@@ -133,17 +121,18 @@ var Rimu =
 
 	var options = __webpack_require__(3);
 	// Matches macro invocation. $1 = name, $2 = params.
+	// DEPRECATED: Matches existential macro invocations.
 	var MATCH_MACRO = /\{([\w\-]+)([!=|?](?:|[\s\S]*?[^\\]))?\}/;
 	// Matches all macro invocations. $1 = name, $2 = params.
 	var MATCH_MACROS = RegExp('\\\\?' + MATCH_MACRO.source, 'g');
 	// Matches a line starting with a macro invocation.
 	exports.MACRO_LINE = RegExp('^' + MATCH_MACRO.source + '.*$');
 	// Match multi-line macro definition open delimiter. $1 is first line of macro.
-	exports.MACRO_DEF_OPEN = /^\\?\{[\w\-]+\}\s*=\s*'(.*)$/;
+	exports.MACRO_DEF_OPEN = /^\\?\{[\w\-]+\??\}\s*=\s*'(.*)$/;
 	// Match multi-line macro definition open delimiter. $1 is last line of macro.
 	exports.MACRO_DEF_CLOSE = /^(.*)'$/;
 	// Match single-line macro definition. $1 = name, $2 = value.
-	exports.MACRO_DEF = /^\\?\{([\w\-]+)\}\s*=\s*'(.*)'$/;
+	exports.MACRO_DEF = /^\\?\{([\w\-]+\??)\}\s*=\s*'(.*)'$/;
 	exports.defs = [];
 	// Reset definitions to defaults.
 	function reset() {
@@ -162,11 +151,19 @@ var Rimu =
 	}
 	exports.getValue = getValue;
 	// Set named macro value or add it if it doesn't exist.
+	// If the name ends with '?' then don't set the macro if it already exists.
 	function setValue(name, value) {
+	    var existential = false;
+	    if (name.slice(-1) === '?') {
+	        name = name.slice(0, -1);
+	        existential = true;
+	    }
 	    for (var _i = 0; _i < exports.defs.length; _i++) {
 	        var def = exports.defs[_i];
 	        if (def.name === name) {
-	            def.value = value;
+	            if (!existential) {
+	                def.value = value;
+	            }
 	            return;
 	        }
 	    }
@@ -174,7 +171,8 @@ var Rimu =
 	}
 	exports.setValue = setValue;
 	// Render all macro invocations in text string.
-	function render(text) {
+	function render(text, inline) {
+	    if (inline === void 0) { inline = true; }
 	    text = text.replace(MATCH_MACROS, function (match) {
 	        var submatches = [];
 	        for (var _i = 1; _i < arguments.length; _i++) {
@@ -185,32 +183,20 @@ var Rimu =
 	        }
 	        var name = submatches[0];
 	        var params = submatches[1] || '';
+	        if (params[0] === '?') {
+	            if (inline)
+	                options.errorCallback('existential macro invocations are deprecated: ' + match);
+	            return match;
+	        }
 	        var value = getValue(name); // Macro value is null if macro is undefined.
-	        switch (options.macroMode) {
-	            case 0:
-	                return match;
-	            case 1:
-	                break;
-	            case 2:
-	                if (value === null) {
-	                    return match;
-	                }
-	                break;
-	            case 3:
-	                if (!/^--/.test(name)) {
-	                    return match;
-	                }
-	                break;
-	            case 4:
-	                if (value === null && !/^--/.test(name)) {
-	                    return match;
-	                }
-	                break;
+	        if (value === null) {
+	            if (inline) {
+	                options.errorCallback('undefined macro: ' + match + ': ' + text);
+	            }
+	            return match;
 	        }
 	        params = params.replace(/\\\}/g, '}'); // Unescape escaped } characters.
 	        switch (params[0]) {
-	            case '?':
-	                return value === null ? params.slice(1) : value;
 	            case '|':
 	                // Substitute macro parameters.
 	                var paramsList = params.slice(1).split('|');
@@ -258,12 +244,12 @@ var Rimu =
 	// Global option values.
 	exports.safeMode;
 	exports.htmlReplacement;
-	exports.macroMode;
+	var callback;
 	// Reset options to default values.
 	function setDefaults() {
 	    exports.safeMode = 0;
 	    exports.htmlReplacement = '<mark>replaced HTML</mark>';
-	    exports.macroMode = 4;
+	    callback = undefined;
 	}
 	exports.setDefaults = setDefaults;
 	// Return true if set to a safe mode.
@@ -275,12 +261,6 @@ var Rimu =
 	    var n = Number(value);
 	    if (!isNaN(n) && n >= 0 && n <= 3) {
 	        exports.safeMode = n;
-	    }
-	}
-	function setMacroMode(value) {
-	    var n = Number(value);
-	    if (!isNaN(n) && n >= 0 && n <= 4) {
-	        exports.macroMode = n;
 	    }
 	}
 	function setHtmlReplacement(value) {
@@ -298,8 +278,8 @@ var Rimu =
 	        setSafeMode(options.safeMode);
 	    if ('htmlReplacement' in options)
 	        setHtmlReplacement(options.htmlReplacement);
-	    if ('macroMode' in options)
-	        setMacroMode(options.macroMode);
+	    if ('callback' in options)
+	        callback = options.callback;
 	}
 	exports.updateOptions = updateOptions;
 	// Set named option value.
@@ -323,6 +303,12 @@ var Rimu =
 	    }
 	}
 	exports.safeModeFilter = safeModeFilter;
+	function errorCallback(message) {
+	    if (callback) {
+	        callback({ type: 'error', text: message });
+	    }
+	}
+	exports.errorCallback = errorCallback;
 
 
 /***/ },
@@ -865,19 +851,25 @@ var Rimu =
 	var defs = [
 	    // Prefix match with backslash to allow escaping.
 	    // Expand lines prefixed with a macro invocation prior to all other processing.
+	    // macro name = $1, macro value = $2
 	    {
 	        match: macros.MACRO_LINE,
 	        replacement: '',
 	        expansionOptions: {},
+	        stop: false,
 	        verify: function (match) {
+	            if (this.stop) {
+	                this.stop = false;
+	                return false;
+	            }
 	            // Do not process macro definitions.
 	            return !macros.MACRO_DEF_OPEN.test(match[0]);
 	        },
 	        filter: function (match, reader) {
-	            var value = macros.render(match[0]);
+	            var value = macros.render(match[0], false);
 	            if (value === match[0]) {
-	                // Escape macro to prevent infinite recursion if the value is the same as the invocation.
-	                value = '\\' + value;
+	                // Stop infinite recursion if the macro value is the same as the invocation.
+	                this.stop = true;
 	            }
 	            // Insert the macro value into the reader just ahead of the cursor.
 	            var spliceArgs = [reader.pos + 1, 0].concat(value.split('\n'));
@@ -1049,13 +1041,16 @@ var Rimu =
 	    // API Option.
 	    // name = $1, value = $2
 	    {
-	        match: /^\\?\.(safeMode|htmlReplacement|macroMode|reset)\s*=\s*'(.*)'$/,
+	        match: /^\\?\.(\w+)\s*=\s*'(.*)'$/,
 	        replacement: '',
 	        expansionOptions: {
 	            macros: true
 	        },
 	        filter: function (match) {
-	            if (!options.isSafe()) {
+	            if (!/^(safeMode|htmlReplacement|reset)$/.test(match[1])) {
+	                options.errorCallback('illegal API option: ' + match[1] + ': ' + match[0]);
+	            }
+	            else if (!options.isSafe()) {
 	                options.setOption(match[1], match[2]);
 	            }
 	            return '';
@@ -1133,7 +1128,7 @@ var Rimu =
 	        delimiterFilter: delimiterTextFilter,
 	        contentfilter: function (text, match, expansionOptions) {
 	            // Process macro definition.
-	            var name = match[0].match(/^\{([\w\-]+)\}/)[1]; // Get the macro name from opening delimiter.
+	            var name = match[0].match(/^\{([\w\-]+\??)\}/)[1]; // Get the macro name from opening delimiter.
 	            text = text.replace(/' *\\\n/g, '\'\n'); // Unescape line-continuations.
 	            text = text.replace(/(' *[\\]+)\\\n/g, '$1\n'); // Unescape escaped line-continuations.
 	            text = utils.replaceInline(text, expansionOptions); // Expand macro invocations.
@@ -1197,7 +1192,7 @@ var Rimu =
 	        // Must start with  an <! or a block-level element start or end tag.
 	        // $1 is first line of block.
 	        /* tslint:disable:max-line-length */
-	        openMatch: /^(<!.*|(?:<\/?(?:html|head|body|iframe|script|style|address|article|aside|audio|blockquote|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|img|math|nav|noscript|ol|output|p|pre|section|table|tfoot|td|th|tr|ul|video)(?:[ >].*)?))$/i,
+	        openMatch: /^(<!.*|(?:<\/?(?:html|head|body|iframe|script|style|address|article|aside|audio|blockquote|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|img|math|nav|noscript|ol|output|p|pre|section|table|textarea|tfoot|td|th|tr|ul|video)(?:[ >].*)?))$/i,
 	        /* tslint:enable:max-line-length */
 	        closeMatch: /^$/,
 	        openTag: '',
@@ -1302,6 +1297,9 @@ var Rimu =
 	            // Read content up to the closing delimiter.
 	            reader.next();
 	            var content = reader.readTo(def.closeMatch);
+	            if (content === null) {
+	                options.errorCallback('unterminated delimited block: ' + match[0]);
+	            }
 	            if (content) {
 	                lines = lines.concat(content);
 	            }
@@ -1356,10 +1354,14 @@ var Rimu =
 	        for (var _i = 0; _i < opts.length; _i++) {
 	            var opt = opts[_i];
 	            if (options.isSafe() && opt === '-specials') {
-	                return;
+	                options.errorCallback('-specials block option not valid in safeMode');
+	                continue;
 	            }
 	            if (/^[+-](macros|spans|specials|container|skip)$/.test(opt)) {
 	                blockOptions[opt.slice(1)] = opt[0] === '+';
+	            }
+	            else {
+	                options.errorCallback('illegal block option: ' + opt);
 	            }
 	        }
 	    }
@@ -1369,6 +1371,10 @@ var Rimu =
 	// Value syntax: <open-tag>|<close-tag> block-options
 	function setDefinition(name, value) {
 	    var def = getDefinition(name);
+	    if (!def) {
+	        options.errorCallback('illegal delimited block name: ' + name + ': |' + name + "|='" + value + "'");
+	        return;
+	    }
 	    var match = utils.trim(value).match(/^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/);
 	    if (match) {
 	        if (match[1]) {
