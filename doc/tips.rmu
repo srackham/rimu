@@ -408,23 +408,6 @@ As with [code syntax highlighting](#syntax-highlighting), this
 behaviour is achieved using macros and is not baked in to Rimu.
 
 
-## Inline Comments
-Rimu comment elements are block elements and cannot be used inline --
-use the reserved `--` macro for this purpose:
-
-  {--!}This line is skipped,
-  and {--|this text is skipped}.
-
-See also <#conditional-inclusion|Conditional Inclusion>.
-
-/*
-You could also implement inline `//` style single-line comments with
-the following custom Replacement definition:
-
-  /(^|\n)\\?\/\/.*(?=\n|$)/g = '$1'
-
-*/
-
 .#conditional-inclusion
 ## Conditional Inclusion
 Macro invocations can be used to conditionally include source text.

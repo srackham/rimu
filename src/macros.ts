@@ -68,33 +68,11 @@ export function render(text: string, inline = true): string {
       return match
     }
     let value = getValue(name)  // Macro value is null if macro is undefined.
-    switch (options.macroMode) {
-      case 0: // No macros.
-        return match
-      case 1: // All macros.
-        break
-      case 2: // Only defined macros.
-        if (value === null) {
-          if (inline) {
-            options.errorCallback('undefined macro: ' + match + ': ' + text)
-          }
-          return match
-        }
-        break
-      case 3: // Only reserved macros.
-        if (!/^--/.test(name)) {
-          return match
-        }
-        break
-      case 4: // Defined or reserved macros.
-        if (value === null && !/^--/.test(name)) {
-          if (inline) {
-            // TODO Error or warning???
-            options.errorCallback('undefined macro: ' + match + ': ' + text)
-          }
-          return match
-        }
-        break
+    if (value === null) {
+      if (inline) {
+        options.errorCallback('undefined macro: ' + match + ': ' + text)
+      }
+      return match
     }
     params = params.replace(/\\\}/g, '}')   // Unescape escaped } characters.
     switch (params[0]) {

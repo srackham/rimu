@@ -55,14 +55,6 @@ var MANPAGE = 'NAME\n' +
     '    --safeMode 2 replaces raw HTML with htmlReplacement option text.\n' +
     '    --safeMode 3 renders raw HTML as text.\n' +
     '\n' +
-    '  --macroMode NUMBER\n' +
-    '    Specifies which Rimu macro invocations are processed.\n' +
-    '    --macroMode 0 None.\n' +
-    '    --macroMode 1 All (legacy version 4 default behavior).\n' +
-    '    --macroMode 2 Only Defined macros.\n' +
-    '    --macroMode 3 Only Reserved macros.\n' +
-    '    --macroMode 4 Defined or Reserved macros (default behavior).\n' +
-    '\n' +
     '  --htmlReplacement\n' +
     '    A string that replaces embedded HTML when safeMode is set to 2.\n' +
     '    Defaults to `<mark>replaced HTML</mark>`.\n' +
@@ -109,7 +101,6 @@ function die(message) {
 }
 
 var safeMode = 0;
-var macroMode = 4;
 var htmlReplacement = null;
 var styled = false;
 var no_rimurc = false;
@@ -153,12 +144,6 @@ outer:
           safeMode = parseInt(process.argv.shift() || 99, 10);
           if (safeMode < 0 || safeMode > 3) {
             die('illegal --safeMode option value');
-          }
-          break;
-        case '--macroMode':
-          macroMode = parseInt(process.argv.shift() || 99, 10);
-          if (macroMode < 0 || macroMode > 4) {
-            die('illegal --macroMode option value');
           }
           break;
         case '--htmlReplacement':
@@ -233,9 +218,8 @@ files.forEach(function (infile) {
     html += source;
     return;
   }
-  // rimurc processed with default safeMode and macroMode.
+  // rimurc processed with default safeMode.
   options.safeMode = infile === rimurc ? 0 : safeMode;
-  options.macroMode = infile === rimurc ? 4 : macroMode;
   if (lint) {
     options.callback = function(message) {
       var msg = message.type + ': ' + infile + ': ' + message.text;

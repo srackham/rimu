@@ -521,9 +521,9 @@ exports['Blocks'] = function(test) {
     '<p>{v1}</p>',
     'escaped stand-alone macro invocation');
   test_document(
-    '{undefined!}',
+    '{v?}=\'\'\n{v!}',
     '',
-    'inclusion macro: empty document corner case', {macroMode: 1});
+    'inclusion macro: empty document corner case');
   test_document(
     '\\<img href="url" alt="alt">',
     '<p>&lt;img href="url" alt="alt"&gt;</p>',
@@ -565,11 +565,11 @@ exports['Blocks'] = function(test) {
     '<p>one and  and \n and  and </p>',
     'undefined parametrized arguments replaced by an empty string');
   test_document(
-    '{undefined|one|two}',
+    '{v?}=\'\'\n{v|one|two}',
     '',
-    'undefined macro invoked with arguments', {macroMode: 1});
+    'blank macro invoked with arguments');
   test_document(
-    ".-macros\n{v1}='{undefined}\n'\n {v1}",
+    "{v1}='foo\n'\n.-macros\n {v1}",
     '<pre><code>{v1}</code></pre>',
     'multi-line macro definition defined with macros disabled');
   test_document(
@@ -591,119 +591,95 @@ exports['Blocks'] = function(test) {
   test_document_no_reset(
     'A \\{v}',
     '<p>A {v}</p>',
-    'escaped undefined macros are unescaped');
+    'escaped macros are unescaped');
   test_document_no_reset(
     '{v}',
     "<p>This 'and' that</p>",
     'macros are preserved across Rimu.render() invocations');
   test_document(
-    'Hello {undefined}',
-    '<p>Hello </p>',
-    'undefined macro', {macroMode: 1});
-  test_document(
-    'foo\n{undefined!}1\nbar {undefined|2\n3} four',
-    '<p>foo\nbar  four</p>',
-    'comment out block contents with inclusion and parametrized macros', {macroMode: 1});
+    '{v}=\'\'\nfoo\n{v!}1\nbar',
+    '<p>foo\nbar</p>',
+    'comment out block contents with inclusion macro');
   test_document(
     "{v}='yes'\n{v!}.+skip\nfoobar",
     '',
     'comment out delimited block with inclusion macro');
   test_document(
-    "{--v=}.+skip\nfoobar",
+    "{v}=\'\'\n{v=}.+skip\nfoobar",
     '',
-    'comment out delimited block if macro not defined');
+    'comment out delimited block if macro is blank');
   test_document(
     "{v1}='<div>\n\n'\n{v2}='\n\n</div>\n\n'\n{v1}\nfoo\n\n{v2}\nbar",
     '<div>\n<p>foo</p>\n</div>\n<p>bar</p>',
     'macros with blank lines');
   test_document(
-    'foo\n{undefined!}bar\nmacro',
-    '<p>foo\nmacro</p>',
-    'inclusion macro: ! syntax: undefined macro and empty pattern: skipped', {macroMode: 1});
-  test_document(
     "{v}='xxx'\nfoo\n{v!}bar\nmacro",
     '<p>foo\nbar\nmacro</p>',
-    'inclusion macro: ! syntax: defined macro and empty pattern: included');
+    'exclusion macro: non-blank value and empty pattern: included');
   test_document(
     "{v}=''\nfoo\n{v!}bar\nmacro",
     '<p>foo\nmacro</p>',
-    'inclusion macro: ! syntax: blank value and empty pattern: skipped');
-  test_document(
-    'foo\n{undefined=}bar\nmacro',
-    '<p>foo\nbar\nmacro</p>',
-    'inclusion macro: = syntax: undefined macro and empty pattern: included', {macroMode: 1});
-  test_document(
-    'foo\n{undefined=xxx}bar\nmacro',
-    '<p>foo\nmacro</p>',
-    'inclusion macro: = syntax: undefined macro and non-empty pattern: skipped', {macroMode: 1});
-  test_document(
-    'foo\n{undefined=}bar\nmacro',
-    '<p>foo\nbar\nmacro</p>',
-    'inclusion macro: = syntax: undefined macro and empty pattern: included', {macroMode: 1});
+    'exclusion macro: blank value and empty pattern: skipped');
   test_document(
     "{v}=''\nfoo\n{v=}bar\nmacro",
     '<p>foo\nbar\nmacro</p>',
-    'inclusion macro: = syntax: blank value and empty pattern: included');
+    'inclusion macro: blank value and empty pattern: included');
   test_document(
     "{v}=''\nfoo\n{v=xxx}bar\nmacro",
     '<p>foo\nmacro</p>',
-    'inclusion macro: = syntax: blank value and non-empty pattern: skipped');
+    'inclusion macro: blank value and non-empty pattern: skipped');
   test_document(
     "{v}='xyz'\nfoo\n{v=.*z}bar\nmacro",
     '<p>foo\nbar\nmacro</p>',
-    'inclusion macro: = syntax: value matches pattern: included');
+    'inclusion macro: value matches pattern: included');
   test_document(
     "{v}='1234'\nfoo\n{v=\\d+}bar\nmacro",
     '<p>foo\nbar\nmacro</p>',
-    'inclusion macro: = syntax: value matches pattern: included');
+    'inclusion macro: value matches pattern: included');
   test_document(
     "{v}='xyz'\nfoo\n{v!.*z}bar\nmacro",
     '<p>foo\nmacro</p>',
-    'inclusion macro: ! syntax: value matches pattern: skipped');
+    'exclusion macro: value matches pattern: skipped');
   test_document(
     "{v}='xxyz'\nfoo\n{v=x.z}bar\nmacro",
     '<p>foo\nmacro</p>',
-    'inclusion macro: = syntax: value does not match pattern: skipped');
+    'inclusion macro: value does not match pattern: skipped');
   test_document(
     "{v}='xxyz'\nfoo\n{v!x.z}bar\nmacro",
     '<p>foo\nbar\nmacro</p>',
-    'inclusion macro: ! syntax: value does not match pattern: included');
+    'exclusion macro: value does not match pattern: included');
   test_document(
     "{v}='xxyz'\nfoo\n{v=x{2,\\}yz}bar\nmacro",
     '<p>foo\nbar\nmacro</p>',
-    'inclusion macro: = syntax: matched pattern with escaped } character');
+    'inclusion macro: matched pattern with escaped } character');
   test_document(
     "{v}='[style=\"margin:0;\"]'\n.bar {v}\nfoobar",
     '<p class="bar" style="margin:0;">foobar</p>',
     'macro expansion in Block Attributes');
   test_document(
-    '.bar {undefined!}\nfoobar',
-    '<p>foobar</p>',
-    'undefined macro in Block Attributes', {macroMode: 1});
-  test_document(
-    '.#x1\n.foo\n.bar\n.[style="color:red;"]\n.[data-duration="5"]\n.-macros\n.-spans\n_foobar_ {undefined}\n\n_foobar_ {undefined}',
-    '<p class="foo bar" id="x1" style="color:red;" data-duration="5">_foobar_ {undefined}</p>\n<p><em>foobar</em> </p>',
-    'accumulated Block Attributes', {macroMode: 1});
+    '.#x1\n.foo\n.bar\n.[style="color:red;"]\n.[data-duration="5"]\n.-macros\n.-spans\n_foobar_ {undefined}\n\n_foobar_',
+    '<p class="foo bar" id="x1" style="color:red;" data-duration="5">_foobar_ {undefined}</p>\n<p><em>foobar</em></p>',
+    'accumulated Block Attributes');
   test_document(
     "{v}='xxx'\n<div>\nfoo {v} bar</div>",
     '<div>\nfoo xxx bar</div>',
     'macro expansion in html delimited block');
   test_document(
-    '<div>{undefined!}</div>',
+    '{v}=\'\'\n<div>{v!}</div>',
     '',
-    'inclusion macro: ! syntax: HTML line block', {macroMode: 1});
+    'exclusion macro: HTML line block');
   test_document(
-    '<div>{undefined=xxx}</div>',
+    '{v}=\'\'\n<div>{v=xxx}</div>',
     '',
-    'inclusion macro: = syntax: HTML line block', {macroMode: 1});
+    'inclusion macro: HTML line block');
   test_document(
     "{v}='xxx'\n<div>{v!}foobar</div>",
     '<div>foobar</div>',
-    'inclusion macro: ! syntax: in html line block', {macroMode: 1});
+    'exclusion macro: in html line block');
   test_document(
     "{v}='xxx'\n<div>{v=..x}foobar</div>",
     '<div>foobar</div>',
-    'inclusion macro: = syntax: in html line block', {macroMode: 1});
+    'inclusion macro: in html line block');
   test_document(
     "{v}='{$1} = 'foobar''\n{v|v1}\n{v1}",
     '<p>foobar</p>',
@@ -762,29 +738,29 @@ exports['Blocks'] = function(test) {
     'html attributes assigned to macro');
   test_document(
     '{undefined}',
-    '',
-    'single undefined macro', {macroMode: 1});
+    '<p>{undefined}</p>',
+    'single undefined macro');
   test_document(
     '{undefined=}',
-    '',
-    'single undefined inclusion macro', {macroMode: 1});
+    '<p>{undefined=}</p>',
+    'single undefined inclusion macro');
   test_document(
-    '.+macros\n {undefined}\n\n {undefined}',
-    '<pre><code></code></pre>\n<pre><code>{undefined}</code></pre>',
-    'enable macro expansion in Indented paragraph', {macroMode: 1});
+    '{v}=\'xxx\'\n.+macros\n {v}\n\n {v}',
+    '<pre><code>xxx</code></pre>\n<pre><code>{v}</code></pre>',
+    'enable macro expansion in Indented paragraph');
   // Block Attributes expansion options.
   test_document(
-    '.-macros\nThis is `{undefined}`\n\nThis is `{undefined}`',
-    '<p>This is <code>{undefined}</code></p>\n<p>This is ``</p>',
-    'disable macro expansion in normal paragraph', {macroMode: 1});
+    '{v}=\'\'\n.-macros\nThis is `{v}`\n\nThis is `{v}`',
+    '<p>This is <code>{v}</code></p>\n<p>This is ``</p>',
+    'disable macro expansion in normal paragraph');
   test_document(
-    '.+macros\n--\n{undefined}\n--\n--\n{undefined}\n--',
-    '<pre><code></code></pre>\n<pre><code>{undefined}</code></pre>',
-    'enable macro expansion in Code Block', {macroMode: 1});
+    '{v}=\'\'\n.+macros\n--\n{v}\n--\n--\n{v}\n--',
+    '<pre><code></code></pre>\n<pre><code>{v}</code></pre>',
+    'enable macro expansion in Code Block');
   test_document(
-    '.-macros\n<div>{undefined}</div>\n\n<div>{undefined}</div>',
-    '<div>{undefined}</div>\n<div></div>',
-    'disable macro expansion in HTML Block', {macroMode: 1});
+    '{v}=\'\'\n.-macros\n<div>{v}</div>\n\n<div>{v}</div>',
+    '<div>{v}</div>\n<div></div>',
+    'disable macro expansion in HTML Block');
   test_document(
     '.class1 -macros\nA {macro}',
     '<p class="class1">A {macro}</p>',
@@ -872,40 +848,6 @@ exports['Blocks'] = function(test) {
     '<p><strong>Testing</strong> <em>123</em></p>',
     'modify built-in quote');
 
-  // macroMode option.
-  test_document(
-    '{defined}=\'\'\n{defined}{undefined}{--undefined}',
-    '<p>{defined}{undefined}{--undefined}</p>',
-    'macroMode=0', {macroMode: 0});
-  test_document(
-    '{defined}=\'\'\n{defined}{undefined}{--undefined}',
-    '<p>{undefined}{--undefined}</p>',
-    'macroMode=2', {macroMode: 2});
-  test_document(
-    '.macroMode=\'3\'\n{defined}=\'\'\n{defined}{undefined}{--undefined}',
-    '<p>{defined}{undefined}</p>',
-    'macroMode=3');
-  test_document(
-    '{defined}=\'\'\n{defined}{undefined}{--undefined}',
-    '<p>{undefined}</p>',
-    'macroMode=4', {macroMode: 4});
-  test_document(
-    '.safeMode=\'1\'\n.macroMode=\'3\'\n{defined}=\'\'\n{defined}{undefined}{--undefined}',
-    '<p>{defined}{undefined}</p>',
-    'API elements disabled by safeMode');
-  test_document(
-    '{undefined}',
-    '<p>{undefined}</p>',
-    'undefined stand-alone macro invocation');
-  test_document(
-    'An {undefined}',
-    '<p>An {undefined}</p>',
-    'undefined macro invocation');
-  test_document(
-    '{undefined|&p1}',
-    '<p>{undefined|&amp;p1}</p>',
-    'undefined macro with parameters');
-
   // Replacement definitions.
   test_document(
     '/\\\\?\\.{3}/=\'&hellip;\'\nTesting... ...123',
@@ -946,9 +888,9 @@ exports['Blocks'] = function(test) {
     '<p class="normal">foobar</p>\n<p class="test1 test2 normal">foobar</p>',
     'update HTML tags and test class injection');
   test_document(
-    "|paragraph| = '<p>|</p>'\n_Lorum_ & {ipsum}.\n\n|paragraph| = '-macros'\n\n_Lorum_ & {ipsum}.\n\n|paragraph| = '<p class=\"normal\">|</p> -spans +macros'\n\n_Lorum_ & {ipsum}.",
+    "{ipsum}=\'\'\n|paragraph| = '<p>|</p>'\n_Lorum_ & {ipsum}.\n\n|paragraph| = '-macros'\n\n_Lorum_ & {ipsum}.\n\n|paragraph| = '<p class=\"normal\">|</p> -spans +macros'\n\n_Lorum_ & {ipsum}.",
     '<p><em>Lorum</em> &amp; .</p>\n<p><em>Lorum</em> &amp; {ipsum}.</p>\n<p class="normal">_Lorum_ &amp; .</p>',
-    'paragraph expansion options', {macroMode: 1});
+    'paragraph expansion options');
 
   // Callback API option.
   function test_callback(source, expected, message) {

@@ -114,19 +114,6 @@ are processed:
 A string that replaces embedded HTML when
 `safeMode` is set to `2`. Defaults to `<mark>replaced HTML</mark>`.
 
-`macroMode`::
-This option specifies which Rimu macro invocations are processed:
-..
-.light-background
-  0 => None
-  1 => All (legacy version 4 default behavior)
-  2 => Only Defined macros
-  3 => Only Reserved macros
-  4 => Defined or Reserved macros (default behavior)
-
-Unprocessed macro invocations are rendered verbatim.
-..
-
 `callback`::
 `callback` is a function that handles diagnostic events emitted by the
 `render()` API.  The `callback` function `message` argument is an object
@@ -154,7 +141,7 @@ syntax:
 
   .option-name = 'option-value'
 
-- `option-name` is `safeMode`, `htmlReplacement` or `macroMode`.
+- `option-name` is `safeMode`, `htmlReplacement` or `reset`.
 - The `option-value` is a valid option value.
 - An API Option element must start at the left margin and must not
   extend beyond the end of the line.
@@ -162,9 +149,9 @@ syntax:
 - API Option elements are not processed if the `safeMode` is non-zero.
 
 For example, the following API Option element ensures all subsequent
-macro invocations are expanded:
+raw HTML is not passed to the output:
 
-  .macroMode = '1'
+  .safeMode = '1'
 
 ### API callback messages
 The `callback` function `message` argument is an object with a `type`
@@ -870,10 +857,7 @@ Invocation syntax:
 {macro-name!pattern}              Exclusion macro invocation
 ``
 
-- If a macro invocation is excluded by the `macroMode` setting then
-  it will not be processed.
-- A _Simple_ macro invocation is replaced by the macro value or a
-  blank string if the macro is not defined.
+- A _Simple_ macro invocation is replaced by the macro value.
 - _Parametrized_ macro invocations replace `$1`, `$2` ...  parameter
   names in the macro definition value with the corresponding parameter
   values.
@@ -897,6 +881,8 @@ Invocation syntax:
   Attributes](#block-attributes) `+macros` and `-macros` options to
   enable and disable expansion inside [Delimited
   blocks](#delimited-blocks).
+- Undefined macro invocations are not processed and are passed verbatim
+  to the output.
 - Macro invocations can be escaped in block elements that have macro
   expansion enable using a leading backslash character prefix. Escaped
   macro invocations are rendered verbatim minus the backslash.
@@ -940,8 +926,7 @@ experimentation.
 
 ### Reserved macros
 Macros with names starting with two hyphen characters are called
-_Reserved_ macros.  The `--` reserved macro is guaranteed to always be
-undefined.
+_Reserved_ macros.
 
 
 ## `rimuc` command
@@ -950,6 +935,7 @@ HTML. Run `rimuc --help` to view the `rimuc` manpage:
 
 .light-background
 ``
+
 NAME
   rimuc - convert Rimu source to HTML
 
@@ -970,6 +956,9 @@ DESCRIPTION
 OPTIONS
   -h, --help
     Display help message.
+
+  -l, --lint
+    Check the Rimu source for inconsistencies and errors.
 
   -o, --output OUTFILE
     Write output to file OUTFILE instead of stdout.
@@ -993,14 +982,6 @@ OPTIONS
     --safeMode 1 drops raw HTML.
     --safeMode 2 replaces raw HTML with htmlReplacement option text.
     --safeMode 3 renders raw HTML as text.
-
-  --macroMode NUMBER
-    Specifies which Rimu macro invocations are processed.
-    --macroMode 0 None.
-    --macroMode 1 All (legacy version 4 default behavior).
-    --macroMode 2 Only Defined macros.
-    --macroMode 3 Only Reserved macros.
-    --macroMode 4 Defined or Reserved macros (default behavior).
 
   --htmlReplacement
     A string that replaces embedded HTML when safeMode is set to 2.
