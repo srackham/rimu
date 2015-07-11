@@ -909,7 +909,7 @@ exports['Blocks'] = function(test) {
     'error: undefined macro',
     'callback api: undefined macro');
   test_callback(
-    '..',
+    '..\nLorum ipsum',
     'error: unterminated delimited block',
     'callback api: unterminated delimited block');
   test_callback(

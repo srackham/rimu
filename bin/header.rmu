@@ -6,12 +6,14 @@
 */
 
 // Set macro default values.
-{--} = ''
 {--highlightjs?} = ''
 {--mathjax?} = ''
 {--section-numbers?} = ''
 {--title?} = '&nbsp;'
 {--toc?} = ''
+
+// "Blank" macro.
+{--} = ''
 
 <!DOCTYPE HTML>
 <html lang="en">
