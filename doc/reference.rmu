@@ -153,18 +153,6 @@ raw HTML is not passed to the output:
 
   .safeMode = '1'
 
-### API callback messages
-The `callback` function `message` argument is an object with a `type`
-property (`'error'`, `'warning'` or `'info'`) and a `text` property (a
-string containing the diagnostic message). Example usage:
-
-`` javascript
-var html = Rimu.render('Hello *Rimu*!', {
-  callback: function(message) {
-    console.log(message.type + ': ' + message.text);
-  }
-});
-``
 
 ## Documents
 A Rimu document consists of a sequence of zero or more _Block_
@@ -852,7 +840,7 @@ Invocation syntax:
 .light-background
 ``
 {macro-name}                      Simple macro invocation
-{macro-name|param1[|param2...]}   Parametrized macro invocation
+{macro-name|[param1|param2...]}   Parametrized macro invocation
 {macro-name=pattern}              Inclusion macro invocation
 {macro-name!pattern}              Exclusion macro invocation
 ``
@@ -925,8 +913,9 @@ experimentation.
 {generate-rendered-example-2|macros-example}
 
 ### Reserved macros
-Macros with names starting with two hyphen characters are called
-_Reserved_ macros.
+Macros with names starting with two hyphen characters are _Reserved_
+macros, a number of reserved macros are defined by the [rimuc
+command](#rimuc-command).
 
 
 ## `rimuc` command

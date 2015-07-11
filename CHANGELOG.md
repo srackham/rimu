@@ -3,23 +3,23 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
-## Version 6.0.0 (2015-07-27)
+## Version 6.0.0 (2015-07-12)
 Misspelled macro invocations are insidious and easily overlooked.  The
 problem has finally been resolved with the introduction of an API
 callback option that emits diagnostic messages.
 
 The rule for macro expansion is now very simple: If a macro is not
 defined its invocation is rendered verbatim.  The `rimuc` command
-`--lint` option will emit an error if a macro is undefined (to supress
-these warnings unescape the macro invocation).
+`--lint` option will emit an error if a macro is undefined (to
+suppress these warnings escape the macro invocation with a backslash).
 
-- The examples in the Rimu Reference documentation are now live -- you
-  can edit them by clicking the _Edit_ icon. The _live edit_ is
-  implemented using Rimu macros.
+- Many of the examples in the Rimu documentation are now live -- you
+  can edit them by clicking the _Edit_ icon. _Live edit_ is a good
+  example of using Rimu macros to refactor repetitive chunks of code.
 
 - Added `callback` API option. The `callback` function handles
-  diagnostic events emitted by the `render` API as it parses the Rimu
-  source. Diagnostic events include:
+  diagnostic events emitted by the `render()` API as it parses the
+  Rimu source. Diagnostic events include:
   * Undefined macro invocation.
   * Unterminated Delimited Block.
   * Illegal and invalid block options.
@@ -29,7 +29,8 @@ these warnings unescape the macro invocation).
 
 - Added Existential macro definition syntax: `\{macro-name?} =
   'macro-value'` Existential macro definitions are only processed if
-  the macro has not been defined.
+  the macro has not been defined and are useful for establishing
+  default values.
 - `rimuc` passes the contents of files with an `.html` extension
   directly to the output.  This allows `rimuc` to process HTML from
   other sources.
@@ -41,19 +42,25 @@ these warnings unescape the macro invocation).
 Breaking changes:
 
 - The `macroMode` option is no longer supported. It was introduced in
-  version 5.0.0 in a attempt to tighten up on undefined macros -- the
-  default mode made undefined macro invocations visible in the output
-  but didn't solve the problem. Worst of all different modes had
-  different rendering semantics.  `macroMode` has been superceded by a
-  combination of callback diagnostics and the new _Existential_ macro
-  definition syntax.
+  version 5.0.0 and was a poorly thought-out attempt to tighten up on
+  undefined macros -- the default _macroMode_ did make undefined macro
+  invocations visible in the output but didn't really solve the problem.
+  Worst of all, different modes had different rendering semantics.
+  There is now a single semantic for undefined macro invocations (they
+  are rendered verbatim) and are flagged as errors via the `render()`
+  API `callback` option.
 
 - Existential macro invocations (`\{name?default}`) no longer
-  supported. This is because it is now considered an error to invoke
-  an undefined macro. Instead you should define default macro values
-  using Existential macro definitions.  Existential invocations are
+  supported. This is because invoking and undefined macro is now
+  considered an error.  You can specify default macro values using
+  _Existential Macro Definitions_.  Existential invocations are
   rendered verbatim and the `rimuc` `--lint` option emits a
   deprecation error.
+
+- The previously undefined `\{--}` macro is now set to an empty string
+  when the `rimuc` `--styled` option is used so it will still work
+  with Inclusion and Exclusion macro invocations -- if you use it
+  in other contexts you should define it: `\{--} = ''`.
 
 
 ## Version 5.4.0 (2015-06-28)
