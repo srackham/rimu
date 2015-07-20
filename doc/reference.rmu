@@ -135,9 +135,8 @@ and Delimited Block definitions; no macro definitions; no callback).
 The `reset` option is processed before other options.
 
 ### API Option elements
-`safeMode` and `htmlReplacement` API options can be set in the Rimu
-source using a [Line Block](#line-blocks) element with the following
-syntax:
+API options can be set in the Rimu source using a [Line
+Block](#line-blocks) element with the following syntax:
 
   .option-name = 'option-value'
 
