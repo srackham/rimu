@@ -7,7 +7,7 @@ exports['API check'] = function(test) {
   test.done();
 };
 
-exports['Spans'] = function(test) {
+exports['spans'] = function(test) {
 
   function test_span(source, expected, message) {
     test.equal(Rimu.render(source), '<p>' + expected + '</p>', message);
@@ -198,7 +198,7 @@ exports['Spans'] = function(test) {
 };
 
 
-exports['Blocks'] = function(test) {
+exports['blocks'] = function(test) {
 
   // The render API is reset by default unless `supporessReset` is true.
   function test_document(source, expected, message, options, suppressReset) {
@@ -891,6 +891,11 @@ exports['Blocks'] = function(test) {
     "{ipsum}=\'\'\n|paragraph| = '<p>|</p>'\n_Lorum_ & {ipsum}.\n\n|paragraph| = '-macros'\n\n_Lorum_ & {ipsum}.\n\n|paragraph| = '<p class=\"normal\">|</p> -spans +macros'\n\n_Lorum_ & {ipsum}.",
     '<p><em>Lorum</em> &amp; .</p>\n<p><em>Lorum</em> &amp; {ipsum}.</p>\n<p class="normal">_Lorum_ &amp; .</p>',
     'paragraph expansion options');
+
+  test.done();
+};
+
+exports['callbacks'] = function(test) {
 
   // Callback API option.
   function test_callback(source, expected, message) {
