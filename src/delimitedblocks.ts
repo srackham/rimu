@@ -81,9 +81,7 @@ const DEFAULT_DEFS: Definition[] = [
   // Code block.
   {
     name: 'code',
-    // Backtick hex literal \x60 to work arount eslint problem.
-    // See https://github.com/palantir/tslint/issues/357.
-    openMatch: /^\\?(\-{2,}|\x60{2,})([\w\s-]*)$/, // $1 is delimiter text, $2 is optional class names.
+    openMatch: /^\\?(\-{2,}|`{2,})([\w\s-]*)$/, // $1 is delimiter text, $2 is optional class names.
     openTag: '<pre><code>',
     closeTag: '</code></pre>',
     expansionOptions: {
@@ -275,7 +273,7 @@ export function setBlockOptions(blockOptions: utils.ExpansionOptions, optionsStr
 export function setDefinition(name: string, value: string): void {
   let def = getDefinition(name)
   if (!def) {
-    options.errorCallback('illegal delimited block name: ' + name + ': |' + name + "|='" + value + "'")
+    options.errorCallback('illegal delimited block name: ' + name + ': |' + name + '|=\'' + value + '\'')
     return
   }
   let match = utils.trim(value).match(/^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/)

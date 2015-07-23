@@ -118,9 +118,8 @@ task('jslint', {async: true}, function() {
 
 desc('Lint TypeScript source files.');
 task('tslint', {async: true}, function() {
-  complete(); return  // TODO: Uncomment when tslint is compatible with TypeScript 1.5.
   var commands = SOURCE.map(function(file) {
-    return 'tslint -f ' + file;
+    return 'tslint ' + file;
   });
   exec(commands);
 });
@@ -133,7 +132,6 @@ task('test', ['compile', 'jslint'], {async: true}, function() {
   exec(commands);
 });
 
-// TODO: Fix me.
 desc('Compile Typescript to JavaScript then bundle CommonJS and scriptable libraries.');
 task('compile', [MAIN_JS, RIMU_VAR_LIB, RIMU_COMMONJS2_LIB, RIMU_VAR_LIB_MIN]);
 

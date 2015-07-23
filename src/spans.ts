@@ -41,7 +41,7 @@ function defrag(fragments: Fragment[]): string {
 function fragQuotes(fragments: Fragment[]): Fragment[] {
   let result: Fragment[]
   result = []
-  fragments.forEach(function (fragment) {
+  fragments.forEach(fragment => {
     result.push.apply(result, fragQuote(fragment))
   })
   // Strip backlash from escaped quotes in non-done fragments.
@@ -112,7 +112,7 @@ function preReplacements(text: string): string {
   savedReplacements = []
   let fragments = fragReplacements([{text: text, done: false}])
   // Reassemble text with replacement placeholders.
-  return fragments.reduce(function (result, fragment) {
+  return fragments.reduce((result, fragment) => {
     if (fragment.done) {
       savedReplacements.push(fragment)  // Save replaced text.
       return result + '\u0000'          // Placeholder for replaced text.
@@ -134,9 +134,9 @@ function postReplacements(text: string): string {
 // Fragment replacements in all fragments and return resulting fragments array.
 function fragReplacements(fragments: Fragment[]): Fragment[] {
   let result: Fragment[]
-  replacements.defs.forEach(function (def) {
+  replacements.defs.forEach(def => {
     result = []
-    fragments.forEach(function (fragment) {
+    fragments.forEach(fragment => {
       result.push.apply(result, fragReplacement(fragment, def))
     })
     fragments = result

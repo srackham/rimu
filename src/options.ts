@@ -81,7 +81,7 @@ export function safeModeFilter(html: string): string {
   }
 }
 
-export function errorCallback(message: string) {
+export function errorCallback(message: string): void {
   if (callback) {
     callback({type: 'error', text: message})
   }

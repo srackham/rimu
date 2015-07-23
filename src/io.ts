@@ -1,6 +1,6 @@
   export class Reader {
     lines: string[]
-    pos: number       // line index of current line.
+    pos: number       // Line index of current line.
 
     constructor(text: string) {
       // Split lines on newline boundaries.

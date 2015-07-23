@@ -39,9 +39,9 @@
     "nodeunit": "^0.9.1",
     "nu-html-checker": "^0.1.0",
     "shelljs": "^0.5.1",
-    "tslint": "^2.4.0",
+    "tslint": "^2.4.2",
     "typescript": "^1.5.3",
-    "uglify-js": "^2.4.23",
+    "uglify-js": "^2.4.24",
     "webpack": "^1.10.1"
   }
 }
