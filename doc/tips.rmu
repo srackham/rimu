@@ -361,7 +361,7 @@ Safe Mode. To apply Macro, Replacement or Quote definitions to Rimu
 markup that is processed in Safe Mode you need to load the definitions with a
 separate API call, for example:
 
-```
+``` javascript
 Rimu.render(trusted_rimu_definitions, {safeMode: 0});
 var html = Rimu.render(untrusted_rimu_markup, {safeMode: 1});
 ```

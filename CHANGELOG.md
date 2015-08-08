@@ -53,16 +53,16 @@ Breaking changes:
   API `callback` option.
 
 - Existential macro invocations (`\{name?default}`) no longer
-  supported. This is because invoking and undefined macro is now
+  supported. This is because invoking an undefined macro is now
   considered an error.  You can specify default macro values using
-  _Existential Macro Definitions_.  Existential invocations are
-  rendered verbatim and the `rimuc` `--lint` option emits a
-  deprecation error.
+  the new _Existential Macro Definition_ syntax. Legacy Existential
+  invocations are rendered verbatim and the `rimuc` `--lint` option
+  will emit a deprecation error.
 
-- The previously undefined `\{--}` macro is now set to an empty string
-  when the `rimuc` `--styled` option is used so it will still work
+- The previously undefined `\{--}` reserved macro is now set to an empty string
+  when the `rimuc` `--styled` option is used so it still behaves the same
   with Inclusion and Exclusion macro invocations -- if you use it
-  in other contexts you should define it: `\{--} = ''`.
+  in other contexts you should explicitly set it: `\{--} = ''`.
 
 
 ## Version 5.4.0 (2015-06-28)
