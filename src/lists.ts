@@ -179,9 +179,8 @@ function readToNext(reader: io.Reader, writer: io.Writer): ItemState {
 }
 
 // Check if the line at the reader cursor matches a list related element.
-// If it does return list item information else return null.  It matches
-// list item elements but 'options' can be included to also match delimited
-// blocks or indented paragraphs.
+// If it does return list item information else return null.
+// 'options' can be included to also match delimited blocks or indented paragraphs.
 function matchItem(reader: io.Reader,
                    options: {delimited?: boolean; indented?: boolean; } = {}): ItemState {
   // Check if the line matches a List definition.
@@ -202,8 +201,8 @@ function matchItem(reader: io.Reader,
     }
   }
   // Check if the line matches a Delimited Block definition.
-  let def: delimitedBlocks.Definition
   if (options.delimited) {
+    let def: delimitedBlocks.Definition
     for (let name of ['quote', 'code', 'division']) {
       def = delimitedBlocks.getDefinition(name)
       if (def.openMatch.test(line)) {
@@ -214,7 +213,7 @@ function matchItem(reader: io.Reader,
   }
   // Check if the line matches an Indented Paragraph definition.
   if (options.indented) {
-    def = delimitedBlocks.getDefinition('indented')
+    let def = delimitedBlocks.getDefinition('indented')
     if (def.openMatch.test(line)) {
       item.isIndented = true
       return item
