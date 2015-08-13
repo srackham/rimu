@@ -161,7 +161,10 @@ function fragReplacement(fragment: Fragment, def: replacements.Definition): Frag
   // Arrive here if we have a matched replacement.
   // The replacement splits the input fragment into 3 output fragments:
   // Text before the replacement, replaced text and text after the replacement.
+  // NOTE: Because this function is called recursively must ensure mutable index and
+  //       lastIndex properties are read before the recursive call.
   let before: string = match.input.slice(0, match.index)
+  let after: string = match.input.slice(replacementRe.lastIndex)
   result.push({text: before, done: false})
   let replacement: string
   if (match[0][0] === '\\') {
@@ -170,14 +173,13 @@ function fragReplacement(fragment: Fragment, def: replacements.Definition): Frag
   }
   else {
     if (!def.filter) {
-      replacement = utils.replaceMatch(match, def.replacement, {specials: true})
+      replacement = utils.replaceMatch(match, def.replacement)
     }
     else {
       replacement = def.filter(match)
     }
   }
   result.push({text: replacement, done: true, verbatim: match[0]})
-  let after: string = match.input.slice(replacementRe.lastIndex)
   // Recursively process the remaining text.
   result.push.apply(result, fragReplacement({text: after, done: false}, def))
   return result

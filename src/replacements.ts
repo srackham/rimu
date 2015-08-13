@@ -62,7 +62,7 @@ const DEFAULT_DEFS: Definition[] = [
   // address = $1, caption = $2
   {
     match: /\\?<(\S+@[\w\.\-]+)\|([\s\S]+?)>/g,
-    replacement: '<a href="mailto:$1">$2</a>'
+    replacement: '<a href="mailto:$1">$$2</a>'
   },
 
   // Email: <address>
@@ -92,14 +92,14 @@ const DEFAULT_DEFS: Definition[] = [
   // url = $1, caption = $2
   {
     match: /\\?<(.+?)\|([\s\S]*?)>/g,
-    replacement: '<a href="$1">$2</a>'
+    replacement: '<a href="$1">$$2</a>'
   },
 
   // Link: [caption](url)
   // caption = $1, url = $2
   {
     match: /\\?\[([\s\S]*?)\]\s*\((.+?)\)/g,
-    replacement: '<a href="$2">$1</a>'
+    replacement: '<a href="$2">$$1</a>'
   },
 
   // Auto-encode (most) raw HTTP URLs as links.

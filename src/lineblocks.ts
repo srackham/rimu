@@ -11,8 +11,7 @@ export interface Definition {
   filter?: (match: RegExpExecArray, reader?: io.Reader) => string
   verify?: (match: RegExpExecArray) => boolean   // Additional match verification checks.
   match: RegExp
-  replacement: string
-  expansionOptions: utils.ExpansionOptions
+  replacement?: string
 }
 
 let defs: Definition[] = [
@@ -22,8 +21,6 @@ let defs: Definition[] = [
   // macro name = $1, macro value = $2
   {
     match: macros.MACRO_LINE,
-    replacement: '',
-    expansionOptions: {},
     stop: false,  // Flag to stop recursion.
     verify: function (match: RegExpExecArray): boolean {
       if (this.stop) {
@@ -49,8 +46,6 @@ let defs: Definition[] = [
   // name = $1, definition = $2
   {
     match: /^\\?\|([\w\-]+)\|\s*=\s*'(.*)'$/,
-    replacement: '',
-    expansionOptions: {},
     filter: function (match: RegExpExecArray): string {
       if (options.isSafe()) {
         return ''   // Skip if a safe mode is set.
@@ -63,18 +58,14 @@ let defs: Definition[] = [
   // quote = $1, openTag = $2, separator = $3, closeTag = $4
   {
     match: /^(\S{1,2})\s*=\s*'([^\|]*)(\|{1,2})(.*)'$/,
-    replacement: '',
-    expansionOptions: {
-      macros: true,
-    },
     filter: function (match: RegExpExecArray): string {
       if (options.isSafe()) {
         return ''   // Skip if a safe mode is set.
       }
       quotes.setDefinition({
         quote: match[1],
-        openTag: utils.replaceInline(match[2], this.expansionOptions),
-        closeTag: utils.replaceInline(match[4], this.expansionOptions),
+        openTag: utils.replaceInline(match[2], {macros: true}),
+        closeTag: utils.replaceInline(match[4], {macros: true}),
         spans: match[3] === '|'
       })
       return ''
@@ -84,10 +75,6 @@ let defs: Definition[] = [
   // pattern = $1, flags = $2, replacement = $3
   {
     match: /^\\?\/(.+)\/([igm]*)\s*=\s*'(.*)'$/,
-    replacement: '',
-    expansionOptions: {
-      macros: true,
-    },
     filter: function (match: RegExpExecArray): string {
       if (options.isSafe()) {
         return ''   // Skip if a safe mode is set.
@@ -95,7 +82,7 @@ let defs: Definition[] = [
       let pattern = match[1]
       let flags = match[2]
       let replacement = match[3]
-      replacement = utils.replaceInline(replacement, this.expansionOptions)
+      replacement = utils.replaceInline(replacement, {macros: true})
       replacements.setDefinition(pattern, flags, replacement)
       return ''
     }
@@ -104,17 +91,13 @@ let defs: Definition[] = [
   // name = $1, value = $2
   {
     match: macros.MACRO_DEF,
-    replacement: '',
-    expansionOptions: {
-      macros: true,
-    },
     filter: function (match: RegExpExecArray): string {
       if (options.isSafe()) {
         return ''   // Skip if a safe mode is set.
       }
       let name = match[1]
       let value = match[2]
-      value = utils.replaceInline(value, this.expansionOptions)
+      value = utils.replaceInline(value, {macros: true})
       macros.setValue(name, value)
       return ''
     }
@@ -123,41 +106,28 @@ let defs: Definition[] = [
   // $1 is ID, $2 is header text.
   {
     match: /^\\?((?:#|=){1,6})\s+(.+?)(?:\s+(?:#|=){1,6})?$/,
-    replacement: '<h$1>$2</h$1>',
-    expansionOptions: {
-      macros: true,
-      spans: true,
-    },
+    replacement: '<h$1>$$2</h$1>',
     filter: function (match: RegExpExecArray): string {
       match[1] = match[1].length.toString()  // Replace $1 with header number.
-      return utils.replaceMatch(match, this.replacement, this.expansionOptions)
+      match[2] = utils.replaceInline(match[2], {macros: true})
+      return utils.replaceMatch(match, this.replacement)
     }
   },
   // Comment line.
   {
     match: /^\\?\/{2}(.*)$/,
-    replacement: '',
-    expansionOptions: {}
   },
   // Block image: <image:src|alt>
   // src = $1, alt = $2
   {
     match: /^\\?<image:([^\s\|]+)\|([\s\S]+?)>$/,
     replacement: '<img src="$1" alt="$2">',
-    expansionOptions: {
-      macros: true,
-      specials: true,
-    }
   },
   // Block image: <image:src>
   // src = $1, alt = $1
   {
     match: /^\\?<image:([^\s\|]+?)>$/,
     replacement: '<img src="$1" alt="$1">',
-    expansionOptions: {
-      macros: true,
-      specials: true,
-    }
   },
   // DEPRECATED as of 3.4.0.
   // Block anchor: <<#id>>
@@ -165,25 +135,17 @@ let defs: Definition[] = [
   {
     match: /^\\?<<#([a-zA-Z][\w\-]*)>>$/,
     replacement: '<div id="$1"></div>',
-    expansionOptions: {
-      macros: true,
-      specials: true,
-    }
   },
   // Block Attributes.
   // Syntax: .class-names #id [html-attributes] block-options
   {
     name: 'attributes',
     match: /^\\?\.[a-zA-Z#\[+-].*$/,  // A loose match because Block Attributes can contain macro references.
-    replacement: '',
-    expansionOptions: {
-      macros: true,
-    },
     verify: function (match: RegExpExecArray): boolean {
       // Parse Block Attributes.
       // class names = $1, id = $2, html-attributes = $3, block-options = $4
       let text = match[0]
-      text = utils.replaceInline(text, this.expansionOptions)  // Expand macro references.
+      text = utils.replaceInline(text, {macros: true})
       match = /^\\?\.((?:\s*[a-zA-Z][\w\-]*)+)*(?:\s*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text)
       if (!match) {
         return false
@@ -210,10 +172,6 @@ let defs: Definition[] = [
   // name = $1, value = $2
   {
     match: /^\\?\.(\w+)\s*=\s*'(.*)'$/,
-    replacement: '',
-    expansionOptions: {
-      macros: true,
-    },
     filter: function (match: RegExpExecArray): string {
       if (!/^(safeMode|htmlReplacement|reset)$/.test(match[1])) {
         options.errorCallback('illegal API option: ' + match[1] + ': ' + match[0])
@@ -236,19 +194,27 @@ export let blockOptions: utils.ExpansionOptions = {}
 export function render(reader: io.Reader, writer: io.Writer): boolean {
   if (reader.eof()) throw 'premature eof'
   for (let def of defs) {
-    let match = def.match.exec(reader.cursor())
+    let text: string = reader.cursor()
+    if (!def.filter) {
+      text = utils.replaceInline(text, {macros: true})
+    }
+    let match = def.match.exec(text)
     if (match) {
       if (match[0][0] === '\\') {
         // Drop backslash escape and continue.
-        reader.cursor(reader.cursor().slice(1))
+        reader.cursor(text.slice(1))
         continue
       }
       if (def.verify && !def.verify(match)) {
         continue
       }
-      let text: string
       if (!def.filter) {
-        text = utils.replaceMatch(match, def.replacement, def.expansionOptions)
+        if (def.replacement) {
+          text = utils.replaceMatch(match, def.replacement)
+        }
+        else {
+          text = ''
+        }
       }
       else {
         text = def.filter(match, reader)
