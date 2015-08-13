@@ -177,7 +177,8 @@ let defs: Definition[] = [
         options.errorCallback('illegal API option: ' + match[1] + ': ' + match[0])
       }
       else if (!options.isSafe()) {
-        options.setOption(match[1], match[2])
+        let value = utils.replaceInline(match[2], {macros: true})
+        options.setOption(match[1], value)
       }
       return ''
     }
