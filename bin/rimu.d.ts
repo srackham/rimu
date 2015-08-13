@@ -1,14 +1,21 @@
 // Type definitions for Rimu Markup
 // Project: https://github.com/srackham/rimu
 
-declare module Rimu {
-    interface Options {
-        safeMode?: number;
-        htmlReplacement?: string;
-        macroMode?: number;
-        reset?: boolean;
-    }
-    function render(source: string, options?: Rimu.Options): string;
+declare namespace Rimu {
+  interface Options {
+    safeMode?: number;
+    htmlReplacement?: string;
+    macroMode?: number;
+    reset?: boolean;
+    callback?: CallbackFunction;
+  }
+  type CallbackFunction = (message: CallbackMessage) => void;
+  interface CallbackMessage {
+    type: string;
+    text: string;
+  }
+
+  function render(source: string, options?: Options): string;
 }
 
 export = Rimu;
