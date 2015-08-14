@@ -7,10 +7,15 @@ exports['API check'] = function(test) {
   test.done();
 };
 
+function catchLint(message) { // Should never be called.
+  console.log(message.type + ': ' + message.text);
+  throw new Error();
+}
+
 exports['spans'] = function(test) {
 
   function test_span(source, expected, message) {
-    test.equal(Rimu.render(source), '<p>' + expected + '</p>', message);
+    test.equal(Rimu.render(source, {callback: catchLint}), '<p>' + expected + '</p>', message);
   }
 
   test_span(
@@ -203,6 +208,7 @@ exports['blocks'] = function(test) {
   // The render API is reset by default unless `supporessReset` is true.
   function test_document(source, expected, message, options, suppressReset) {
     options = options || {};
+    options.callback = catchLint;
     if (!suppressReset) options.reset = true;
     test.equal(Rimu.render(source, options), expected, message);
   }
@@ -737,14 +743,6 @@ exports['blocks'] = function(test) {
     '<p class="info" id="ref2" style="color:green">greeny</p>\n<p>normal</p>\n<p>paragraph 1</p>\n<p>paragraph2</p>',
     'html attributes assigned to macro');
   test_document(
-    '{undefined}',
-    '<p>{undefined}</p>',
-    'single undefined macro');
-  test_document(
-    '{undefined=}',
-    '<p>{undefined=}</p>',
-    'single undefined inclusion macro');
-  test_document(
     '{v}=\'xxx\'\n.+macros\n {v}\n\n {v}',
     '<pre><code>xxx</code></pre>\n<pre><code>{v}</code></pre>',
     'enable macro expansion in Indented paragraph');
@@ -785,10 +783,6 @@ exports['blocks'] = function(test) {
     '.-spans -specials\n&foo',
     '<p>&foo</p>',
     'disable specials (both spans and specials must off)');
-  test_document(
-    '.-spans -specials\n_&foo_',
-    '<p>_&amp;foo_</p>',
-    'specials expansion cannot be disabled in safeMode', {safeMode: 1});
   test_document(
     '.-spans\n_&foo_',
     '<p>_&amp;foo_</p>',
@@ -913,6 +907,10 @@ exports['callbacks'] = function(test) {
     '{undefined}',
     'error: undefined macro',
     'callback api: undefined macro');
+  test_callback(
+    '{undefined=}',
+    'error: undefined macro',
+    'callback api: undefined inclusion macro');
   test_callback(
     '..\nLorum ipsum',
     'error: unterminated delimited block',
