@@ -107,9 +107,9 @@ exports['spans'] = function(test) {
     '<a href="http://an example.com">foo</a>',
     'url with spaces');
   test_span(
-    'http://a_b_c [](http://a_b_c) <http://a_b_c>',
-    '<a href="http://a_b_c">http://a_b_c</a> <a href="http://a_b_c"></a> <a href="http://a_b_c">http://a_b_c</a>',
-    'quotes not expanded in urls');
+    '[*foo* &mdash; bar](http://_foobar_) <http://_foobar_|*foo* &mdash; bar> <joe@example.com|**Joe &mdash; Bloggs**>',
+    '<a href="http://_foobar_"><em>foo</em> &mdash; bar</a> <a href="http://_foobar_"><em>foo</em> &mdash; bar</a> <a href="mailto:joe@example.com"><strong>Joe &mdash; Bloggs</strong></a>',
+    'quotes expanded in url and mail address captions');
   test_span(
     '[with spaces](http://url with spaces.com)',
     '<a href="http://url with spaces.com">with spaces</a>',
