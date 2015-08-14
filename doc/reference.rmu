@@ -598,9 +598,14 @@ Definition syntax:
   JavaScript's [RegExp
   literal](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/RegExp)
   syntax.
-- `$1`, `$2`... in `replacement` are replaced by the corresponding
-  regular expression match groups. `$0` is replaced by the entire
-  match.
+- `$1`, `$2`..., `$$1`, `$$2`... patterns in `replacement` are
+  replaced by the corresponding regular expression match groups. `$0`
+  and `$$0` are replaced by the entire match.
+
+  * Special characters are escaped in the `$1`, `$2`...  patterns.
+  * [Quotes](#quotes) are expanded and special characters escaped in
+    the `$$1`, `$$2`... patterns.
+
 - Replacements are only expanded in inline contexts.
 - Replacements are not expanded inside [Code quotes](#quotes), [Code
   blocks](#code-block) or [Indented paragraphs](#indented-paragraph).
