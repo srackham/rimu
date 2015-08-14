@@ -15,21 +15,6 @@ const DEFAULT_DEFS: Definition[] = [
   // Replacements and special characters are expanded in replacement groups ($1..).
   // Replacement order is important.
 
-  // Character entity.
-  {
-    match: /\\?(&[\w#][\w]+;)/g,
-    replacement: '',
-    filter: function (match: RegExpExecArray): string {
-      return match[1]   // Pass the entity through verbatim.
-    }
-  },
-
-  // Line-break (space followed by \ at end of line).
-  {
-    match: /[\\ ]\\(\n|$)/g,
-    replacement: '<br>$1'
-  },
-
   // DEPRECATED as of 3.4.0.
   // Anchor: <<#id>>
   {
@@ -72,6 +57,13 @@ const DEFAULT_DEFS: Definition[] = [
     replacement: '<a href="mailto:$1">$1</a>'
   },
 
+  // Link: [caption](url)
+  // caption = $1, url = $2
+  {
+    match: /\\?\[([\s\S]*?)\]\s*\((.+?)\)/g,
+    replacement: '<a href="$2">$$1</a>'
+  },
+
   // HTML tags.
   {
     match: /\\?(<[!\/]?[a-zA-Z\-]+(:?\s+[^<>&]+)?>)/g,
@@ -95,17 +87,25 @@ const DEFAULT_DEFS: Definition[] = [
     replacement: '<a href="$1">$$2</a>'
   },
 
-  // Link: [caption](url)
-  // caption = $1, url = $2
-  {
-    match: /\\?\[([\s\S]*?)\]\s*\((.+?)\)/g,
-    replacement: '<a href="$2">$$1</a>'
-  },
-
   // Auto-encode (most) raw HTTP URLs as links.
   {
     match: /\\?((?:http|https):\/\/[^\s"']*[A-Za-z0-9/#])/g,
     replacement: '<a href="$1">$1</a>'
+  },
+
+  // Character entity.
+  {
+    match: /\\?(&[\w#][\w]+;)/g,
+    replacement: '',
+    filter: function (match: RegExpExecArray): string {
+      return match[1]   // Pass the entity through verbatim.
+    }
+  },
+
+  // Line-break (space followed by \ at end of line).
+  {
+    match: /[\\ ]\\(\n|$)/g,
+    replacement: '<br>$1'
   },
 
   // This hack ensures backslashes immediately preceding closing code quotes are rendered
