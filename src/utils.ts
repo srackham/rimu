@@ -84,7 +84,7 @@ export function replaceInline(text: string, expansionOptions: ExpansionOptions):
   }
   // Spans also expand special characters.
   if (expansionOptions.spans) {
-    return spans.render(text)
+    text = spans.render(text)
   }
   else if (expansionOptions.specials) {
     text = replaceSpecialChars(text)
