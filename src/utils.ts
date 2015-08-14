@@ -38,12 +38,20 @@ export function replaceSpecialChars(s: string): string {
 }
 
 // Replace pattern '$1' or '$$1', '$2' or '$$2'... in `replacement` with corresponding match groups
-// from `match`. If pattern starts with one '$' substitute specials in matched group, if it starts
-// with two substitute spans and speicals.
-export function replaceMatch(match: RegExpExecArray, replacement: string): string {
+// from `match`. If pattern starts with one '$' character add specials to `expansionOptions`,
+// if it starts with two '$' characters add spans to `expansionOptions`.
+export function replaceMatch(match: RegExpExecArray,
+                             replacement: string,
+                             expansionOptions: ExpansionOptions = {}): string
+{
   return replacement.replace(/(\${1,2})(\d)/g, function (): string {
     // Replace $1, $2 ... with corresponding match groups.
-    let expansionOptions: ExpansionOptions = arguments[1] === '$$' ? {spans: true} : {specials: true}
+    if (arguments[1] === '$$') {
+      expansionOptions.spans = true
+    }
+    else {
+      expansionOptions.specials = true
+    }
     let i = Number(arguments[2])  // match group number.
     let text = match[i]           // match group text.
     return replaceInline(text, expansionOptions)

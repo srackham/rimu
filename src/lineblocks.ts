@@ -109,8 +109,7 @@ let defs: Definition[] = [
     replacement: '<h$1>$$2</h$1>',
     filter: function (match: RegExpExecArray): string {
       match[1] = match[1].length.toString()  // Replace $1 with header number.
-      match[2] = utils.replaceInline(match[2], {macros: true})
-      return utils.replaceMatch(match, this.replacement)
+      return utils.replaceMatch(match, this.replacement, {macros: true})
     }
   },
   // Comment line.
@@ -195,23 +194,20 @@ export let blockOptions: utils.ExpansionOptions = {}
 export function render(reader: io.Reader, writer: io.Writer): boolean {
   if (reader.eof()) throw 'premature eof'
   for (let def of defs) {
-    let text: string = reader.cursor()
-    if (!def.filter && def.replacement) {
-      text = utils.replaceInline(text, {macros: true})
-    }
-    let match = def.match.exec(text)
+    let match = def.match.exec(reader.cursor())
     if (match) {
       if (match[0][0] === '\\') {
         // Drop backslash escape and continue.
-        reader.cursor(text.slice(1))
+        reader.cursor(reader.cursor().slice(1))
         continue
       }
       if (def.verify && !def.verify(match)) {
         continue
       }
+      let text: string
       if (!def.filter) {
         if (def.replacement) {
-          text = utils.replaceMatch(match, def.replacement)
+          text = utils.replaceMatch(match, def.replacement, {macros: true})
         }
         else {
           text = ''
