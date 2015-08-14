@@ -196,7 +196,7 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
   if (reader.eof()) throw 'premature eof'
   for (let def of defs) {
     let text: string = reader.cursor()
-    if (!def.filter) {
+    if (!def.filter && def.replacement) {
       text = utils.replaceInline(text, {macros: true})
     }
     let match = def.match.exec(text)
