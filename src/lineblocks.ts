@@ -163,9 +163,6 @@ let defs: Definition[] = [
       delimitedBlocks.setBlockOptions(blockOptions, match[4])
       return true
     },
-    filter: function (match: RegExpExecArray): string {
-      return ''
-    }
   },
   // API Option.
   // name = $1, value = $2
@@ -216,11 +213,16 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
       else {
         text = def.filter(match, reader)
       }
-      text = utils.injectHtmlAttributes(text)
-      writer.write(text)
-      reader.next()
-      if (text && !reader.eof()) {
-        writer.write('\n')  // Add a trailing '\n' if there are more lines.
+      if (text) {
+        text = utils.injectHtmlAttributes(text)
+        writer.write(text)
+        reader.next()
+        if (!reader.eof()) {
+          writer.write('\n')  // Add a trailing '\n' if there are more lines.
+        }
+      }
+      else {
+        reader.next()
       }
       return true
     }
