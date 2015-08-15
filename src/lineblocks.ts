@@ -203,12 +203,7 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
       }
       let text: string
       if (!def.filter) {
-        if (def.replacement) {
-          text = utils.replaceMatch(match, def.replacement, {macros: true})
-        }
-        else {
-          text = ''
-        }
+        text = def.replacement ? utils.replaceMatch(match, def.replacement, {macros: true}) : ''
       }
       else {
         text = def.filter(match, reader)
