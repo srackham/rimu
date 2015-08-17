@@ -38,7 +38,7 @@
     "jshint": "^2.8.0",
     "jsonlint": "^1.6.2",
     "nu-html-checker": "^0.1.0",
-    "shelljs": "^0.5.1",
+    "shelljs": "^0.5.3",
     "tape": "^4.2.0",
     "tslint": "^2.4.2",
     "typescript": "^1.5.3",
