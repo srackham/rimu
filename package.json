@@ -33,12 +33,13 @@
     "url": "https://github.com/srackham/rimu.git"
   },
   "devDependencies": {
+    "faucet": "0.0.1",
     "jake": "^8.0.12",
     "jshint": "^2.8.0",
     "jsonlint": "^1.6.2",
-    "nodeunit": "^0.9.1",
     "nu-html-checker": "^0.1.0",
     "shelljs": "^0.5.1",
+    "tape": "^4.2.0",
     "tslint": "^2.4.2",
     "typescript": "^1.5.3",
     "uglify-js": "^2.4.24",

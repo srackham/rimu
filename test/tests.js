@@ -1,21 +1,22 @@
+var test = require('tape');
 var Rimu = require('../bin/rimu-commonjs2.js');
 
-exports['API check'] = function(test) {
-  test.ok(
+test('API check', function(t) {
+  t.ok(
     Rimu.render.constructor === Function,
     'Rimu.render is a function');
-  test.done();
-};
+  t.end();
+});
 
 function catchLint(message) { // Should never be called.
   console.log(message.type + ': ' + message.text);
   throw new Error();
 }
 
-exports['spans'] = function(test) {
+test('spans', function(t) {
 
   function test_span(source, expected, message) {
-    test.equal(Rimu.render(source, {callback: catchLint}), '<p>' + expected + '</p>', message);
+    t.equal(Rimu.render(source, {callback: catchLint}), '<p>' + expected + '</p>', message);
   }
 
   test_span(
@@ -199,18 +200,18 @@ exports['spans'] = function(test) {
     '<a href="./chapter1.html#x1">Foo bar</a>',
     'parametrized relative url');
 
-  test.done();
-};
+  t.end();
+});
 
 
-exports['blocks'] = function(test) {
+test('blocks', function(t) {
 
   // The render API is reset by default unless `supporessReset` is true.
   function test_document(source, expected, message, options, suppressReset) {
     options = options || {};
     options.callback = catchLint;
     if (!suppressReset) options.reset = true;
-    test.equal(Rimu.render(source, options), expected, message);
+    t.equal(Rimu.render(source, options), expected, message);
   }
 
   function test_document_no_reset(source, expected, message, options) {
@@ -886,10 +887,10 @@ exports['blocks'] = function(test) {
     '<p><em>Lorum</em> &amp; .</p>\n<p><em>Lorum</em> &amp; {ipsum}.</p>\n<p class="normal">_Lorum_ &amp; .</p>',
     'paragraph expansion options');
 
-  test.done();
-};
+  t.end();
+});
 
-exports['callbacks'] = function(test) {
+test('callbacks', function(t) {
 
   // Callback API option.
   function test_callback(source, expected, message) {
@@ -900,7 +901,7 @@ exports['callbacks'] = function(test) {
       },
       reset:true
     });
-    test.equal(msg.slice(0, expected.length), expected, message);
+    t.equal(msg.slice(0, expected.length), expected, message);
   }
 
   test_callback(
@@ -936,5 +937,5 @@ exports['callbacks'] = function(test) {
     'error: existential macro invocations are deprecated: {undefined?foobar}',
     'callback api: existential macro invocations are deprecated');
 
-  test.done();
-};
+  t.end();
+});

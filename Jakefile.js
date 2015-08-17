@@ -127,7 +127,7 @@ task('tslint', {async: true}, function() {
 desc('Run tests (recompile if necessary).');
 task('test', ['compile', 'jslint'], {async: true}, function() {
   var commands = TESTS.map(function(file) {
-    return 'nodeunit ' + file;
+    return 'tape ' + file + ' | faucet';
   });
   exec(commands);
 });
