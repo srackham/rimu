@@ -3,6 +3,13 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
+## Version 6.1.0 (2015-08-19)
+- Allow macro invocations in _API Option_ element values.
+- Allow _Quote_ elements in URL and and email address captions.
+- Add `callback` API to `rimu.d.ts` type definitions file.
+- Replaced _nodeunit_ with [Tape](https://github.com/substack/tape) for unit tests.
+
+
 ## Version 6.0.0 (2015-07-12)
 Misspelled macro invocations are insidious and easily overlooked.  The
 problem has finally been resolved with the introduction of an API
