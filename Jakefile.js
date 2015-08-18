@@ -161,7 +161,7 @@ file(RIMU_VAR_LIB_MIN, [RIMU_VAR_LIB], {async: true}, function() {
 desc('Generate HTML documentation');
 task('html-docs', {async: true}, function() {
   var commands = DOCS.map(function(doc) {
-    return 'node ./bin/rimuc.js' +
+    return 'node ' + RIMUC +
       ' --styled --lint --no-rimurc' +
       ' --output "' + doc.dst + '"' +
       ' --title "' + doc.title + '"' +
