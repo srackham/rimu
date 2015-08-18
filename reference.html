@@ -322,9 +322,8 @@ its default state (default option values; default Quotes, Replacements
 and Delimited Block definitions; no macro definitions; no callback).
 The <code>reset</code> option is processed before other options.
 </dd></dl><h3>API Option elements</h3>
-<p><code>safeMode</code> and <code>htmlReplacement</code> API options can be set in the Rimu
-source using a <a href="#line-blocks">Line Block</a> element with the following
-syntax:</p>
+<p>API options can be set in the Rimu source using a <a href="#line-blocks">Line
+Block</a> element with the following syntax:</p>
 <pre class="no-highlight"><code>.option-name = 'option-value'</code></pre>
 <ul><li><code>option-name</code> is <code>safeMode</code>, <code>htmlReplacement</code> or <code>reset</code>.
 </li><li>The <code>option-value</code> is a valid option value.
@@ -939,10 +938,13 @@ images</a>, <a href="#html-elements">inline HTML tags</a>.</p>
   JavaScript's <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/RegExp">RegExp
   literal</a>
   syntax.
-</li><li><code>$1</code>, <code>$2</code>&hellip; in <code>replacement</code> are replaced by the corresponding
-  regular expression match groups. <code>$0</code> is replaced by the entire
-  match.
-</li><li>Replacements are only expanded in inline contexts.
+</li><li><code>$1</code>, <code>$2</code>&hellip;, <code>$$1</code>, <code>$$2</code>&hellip; in <code>replacement</code> are replaced by the
+  corresponding regular expression match groups. <code>$0</code> and <code>$$0</code> are
+  replaced by the entire match.
+<ul><li>Special characters are escaped in the <code>$1</code>, <code>$2</code>&hellip;
+</li><li><a href="#quotes">Quotes</a> are expanded and special characters escaped in
+    the <code>$$1</code>, <code>$$2</code>&hellip;
+</li></ul></li><li>Replacements are only expanded in inline contexts.
 </li><li>Replacements are not expanded inside <a href="#quotes">Code quotes</a>, <a href="#code-block">Code
   blocks</a> or <a href="#indented-paragraph">Indented paragraphs</a>.
 </li><li>If the first matched character is a backslash then replacement will

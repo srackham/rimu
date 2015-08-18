@@ -52,7 +52,7 @@ var Rimu =
 	 formatted libraries.
 	 */
 	var api = __webpack_require__(1);
-	var options = __webpack_require__(3);
+	var options = __webpack_require__(6);
 	/*
 	  The single public API which translates Rimu Markup to HTML:
 
@@ -78,14 +78,14 @@ var Rimu =
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var io = __webpack_require__(10);
-	var lineBlocks = __webpack_require__(8);
-	var delimitedBlocks = __webpack_require__(9);
+	var io = __webpack_require__(2);
+	var lineBlocks = __webpack_require__(3);
+	var delimitedBlocks = __webpack_require__(10);
 	var lists = __webpack_require__(11);
-	var macros = __webpack_require__(2);
-	var options = __webpack_require__(3);
-	var quotes = __webpack_require__(6);
-	var replacements = __webpack_require__(7);
+	var macros = __webpack_require__(5);
+	var options = __webpack_require__(6);
+	var quotes = __webpack_require__(8);
+	var replacements = __webpack_require__(9);
 	function render(source) {
 	    var reader = new io.Reader(source);
 	    var writer = new io.Writer();
@@ -117,9 +117,437 @@ var Rimu =
 
 /***/ },
 /* 2 */
+/***/ function(module, exports) {
+
+	var Reader = (function () {
+	    function Reader(text) {
+	        // Split lines on newline boundaries.
+	        // http://stackoverflow.com/questions/1155678/javascript-string-newline-character
+	        // Split is broken on IE8 e.g. 'X\n\nX'.split(/\n/g).length) returns 2 but should return 3.
+	        this.lines = text.split(/\r\n|\r|\n/g);
+	        this.pos = 0;
+	    }
+	    // Getter/setter for current line, return null if EOF.
+	    Reader.prototype.cursor = function (value) {
+	        if (value === void 0) { value = null; }
+	        if (this.eof())
+	            return null;
+	        if (value !== null) {
+	            this.lines[this.pos] = value;
+	        }
+	        return this.lines[this.pos];
+	    };
+	    Reader.prototype.eof = function () {
+	        return this.pos >= this.lines.length;
+	    };
+	    // Read the next line, return null if EOF.
+	    Reader.prototype.next = function () {
+	        if (this.eof())
+	            return null;
+	        this.pos++;
+	        if (this.eof())
+	            return null;
+	        return this.lines[this.pos];
+	    };
+	    // Read to the first line matching the re.
+	    // Return the array of lines preceding the match plus a line containing
+	    // the $1 match group (if it exists).
+	    // Return null if an EOF is encountered.
+	    // Exit with the reader pointing to the line following the match.
+	    Reader.prototype.readTo = function (find) {
+	        var result = [];
+	        var match;
+	        while (!this.eof()) {
+	            match = this.cursor().match(find);
+	            if (match) {
+	                if (match[1] !== undefined) {
+	                    result.push(match[1]); // $1
+	                }
+	                this.next();
+	                break;
+	            }
+	            result.push(this.cursor());
+	            this.next();
+	        }
+	        // Blank line matches EOF.
+	        if (match || find.toString() === '/^$/' && this.eof()) {
+	            return result;
+	        }
+	        else {
+	            return null;
+	        }
+	    };
+	    Reader.prototype.skipBlankLines = function () {
+	        while (this.cursor() === '') {
+	            this.next();
+	        }
+	    };
+	    return Reader;
+	})();
+	exports.Reader = Reader;
+	var Writer = (function () {
+	    function Writer() {
+	        this.buffer = [];
+	    }
+	    Writer.prototype.write = function (s) {
+	        this.buffer.push(s);
+	    };
+	    Writer.prototype.toString = function () {
+	        return this.buffer.join('');
+	    };
+	    return Writer;
+	})();
+	exports.Writer = Writer;
+
+
+/***/ },
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var options = __webpack_require__(3);
+	var utils = __webpack_require__(4);
+	var options = __webpack_require__(6);
+	var delimitedBlocks = __webpack_require__(10);
+	var quotes = __webpack_require__(8);
+	var replacements = __webpack_require__(9);
+	var macros = __webpack_require__(5);
+	var defs = [
+	    // Prefix match with backslash to allow escaping.
+	    // Expand lines prefixed with a macro invocation prior to all other processing.
+	    // macro name = $1, macro value = $2
+	    {
+	        match: macros.MACRO_LINE,
+	        stop: false,
+	        verify: function (match) {
+	            if (this.stop) {
+	                this.stop = false;
+	                return false;
+	            }
+	            // Do not process macro definitions.
+	            return !macros.MACRO_DEF_OPEN.test(match[0]);
+	        },
+	        filter: function (match, reader) {
+	            var value = macros.render(match[0], false);
+	            if (value === match[0]) {
+	                // Stop infinite recursion if the macro value is the same as the invocation.
+	                this.stop = true;
+	            }
+	            // Insert the macro value into the reader just ahead of the cursor.
+	            var spliceArgs = [reader.pos + 1, 0].concat(value.split('\n'));
+	            Array.prototype.splice.apply(reader.lines, spliceArgs);
+	            return '';
+	        }
+	    },
+	    // Delimited Block definition.
+	    // name = $1, definition = $2
+	    {
+	        match: /^\\?\|([\w\-]+)\|\s*=\s*'(.*)'$/,
+	        filter: function (match) {
+	            if (options.isSafe()) {
+	                return ''; // Skip if a safe mode is set.
+	            }
+	            delimitedBlocks.setDefinition(match[1], match[2]);
+	            return '';
+	        }
+	    },
+	    // Quote definition.
+	    // quote = $1, openTag = $2, separator = $3, closeTag = $4
+	    {
+	        match: /^(\S{1,2})\s*=\s*'([^\|]*)(\|{1,2})(.*)'$/,
+	        filter: function (match) {
+	            if (options.isSafe()) {
+	                return ''; // Skip if a safe mode is set.
+	            }
+	            quotes.setDefinition({
+	                quote: match[1],
+	                openTag: utils.replaceInline(match[2], { macros: true }),
+	                closeTag: utils.replaceInline(match[4], { macros: true }),
+	                spans: match[3] === '|'
+	            });
+	            return '';
+	        }
+	    },
+	    // Replacement definition.
+	    // pattern = $1, flags = $2, replacement = $3
+	    {
+	        match: /^\\?\/(.+)\/([igm]*)\s*=\s*'(.*)'$/,
+	        filter: function (match) {
+	            if (options.isSafe()) {
+	                return ''; // Skip if a safe mode is set.
+	            }
+	            var pattern = match[1];
+	            var flags = match[2];
+	            var replacement = match[3];
+	            replacement = utils.replaceInline(replacement, { macros: true });
+	            replacements.setDefinition(pattern, flags, replacement);
+	            return '';
+	        }
+	    },
+	    // Macro definition.
+	    // name = $1, value = $2
+	    {
+	        match: macros.MACRO_DEF,
+	        filter: function (match) {
+	            if (options.isSafe()) {
+	                return ''; // Skip if a safe mode is set.
+	            }
+	            var name = match[1];
+	            var value = match[2];
+	            value = utils.replaceInline(value, { macros: true });
+	            macros.setValue(name, value);
+	            return '';
+	        }
+	    },
+	    // Headers.
+	    // $1 is ID, $2 is header text.
+	    {
+	        match: /^\\?((?:#|=){1,6})\s+(.+?)(?:\s+(?:#|=){1,6})?$/,
+	        replacement: '<h$1>$$2</h$1>',
+	        filter: function (match) {
+	            match[1] = match[1].length.toString(); // Replace $1 with header number.
+	            return utils.replaceMatch(match, this.replacement, { macros: true });
+	        }
+	    },
+	    // Comment line.
+	    {
+	        match: /^\\?\/{2}(.*)$/
+	    },
+	    // Block image: <image:src|alt>
+	    // src = $1, alt = $2
+	    {
+	        match: /^\\?<image:([^\s\|]+)\|([\s\S]+?)>$/,
+	        replacement: '<img src="$1" alt="$2">'
+	    },
+	    // Block image: <image:src>
+	    // src = $1, alt = $1
+	    {
+	        match: /^\\?<image:([^\s\|]+?)>$/,
+	        replacement: '<img src="$1" alt="$1">'
+	    },
+	    // DEPRECATED as of 3.4.0.
+	    // Block anchor: <<#id>>
+	    // id = $1
+	    {
+	        match: /^\\?<<#([a-zA-Z][\w\-]*)>>$/,
+	        replacement: '<div id="$1"></div>'
+	    },
+	    // Block Attributes.
+	    // Syntax: .class-names #id [html-attributes] block-options
+	    {
+	        name: 'attributes',
+	        match: /^\\?\.[a-zA-Z#\[+-].*$/,
+	        verify: function (match) {
+	            // Parse Block Attributes.
+	            // class names = $1, id = $2, html-attributes = $3, block-options = $4
+	            var text = match[0];
+	            text = utils.replaceInline(text, { macros: true });
+	            match = /^\\?\.((?:\s*[a-zA-Z][\w\-]*)+)*(?:\s*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text);
+	            if (!match) {
+	                return false;
+	            }
+	            if (match[1]) {
+	                exports.htmlClasses += ' ' + utils.trim(match[1]);
+	                exports.htmlClasses = utils.trim(exports.htmlClasses);
+	            }
+	            if (match[2]) {
+	                exports.htmlAttributes += ' id="' + utils.trim(match[2]).slice(1) + '"';
+	            }
+	            if (match[3] && !options.isSafe()) {
+	                exports.htmlAttributes += ' ' + utils.trim(match[3].slice(1, match[3].length - 1));
+	            }
+	            exports.htmlAttributes = utils.trim(exports.htmlAttributes);
+	            delimitedBlocks.setBlockOptions(exports.blockOptions, match[4]);
+	            return true;
+	        }
+	    },
+	    // API Option.
+	    // name = $1, value = $2
+	    {
+	        match: /^\\?\.(\w+)\s*=\s*'(.*)'$/,
+	        filter: function (match) {
+	            if (!/^(safeMode|htmlReplacement|reset)$/.test(match[1])) {
+	                options.errorCallback('illegal API option: ' + match[1] + ': ' + match[0]);
+	            }
+	            else if (!options.isSafe()) {
+	                var value = utils.replaceInline(match[2], { macros: true });
+	                options.setOption(match[1], value);
+	            }
+	            return '';
+	        }
+	    },
+	];
+	// Globals set by Block Attributes filter.
+	exports.htmlClasses = '';
+	exports.htmlAttributes = '';
+	exports.blockOptions = {};
+	// If the next element in the reader is a valid line block render it
+	// and return true, else return false.
+	function render(reader, writer) {
+	    if (reader.eof())
+	        throw 'premature eof';
+	    for (var _i = 0; _i < defs.length; _i++) {
+	        var def = defs[_i];
+	        var match = def.match.exec(reader.cursor());
+	        if (match) {
+	            if (match[0][0] === '\\') {
+	                // Drop backslash escape and continue.
+	                reader.cursor(reader.cursor().slice(1));
+	                continue;
+	            }
+	            if (def.verify && !def.verify(match)) {
+	                continue;
+	            }
+	            var text = void 0;
+	            if (!def.filter) {
+	                text = def.replacement ? utils.replaceMatch(match, def.replacement, { macros: true }) : '';
+	            }
+	            else {
+	                text = def.filter(match, reader);
+	            }
+	            if (text) {
+	                text = utils.injectHtmlAttributes(text);
+	                writer.write(text);
+	                reader.next();
+	                if (!reader.eof()) {
+	                    writer.write('\n'); // Add a trailing '\n' if there are more lines.
+	                }
+	            }
+	            else {
+	                reader.next();
+	            }
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+	exports.render = render;
+	// Return line block definition or undefined if not found.
+	function getDefinition(name) {
+	    return defs.filter(function (def) { return def.name === name; })[0];
+	}
+	exports.getDefinition = getDefinition;
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var macros = __webpack_require__(5);
+	var spans = __webpack_require__(7);
+	var lineBlocks = __webpack_require__(3);
+	// Whitespace strippers.
+	function trimLeft(s) {
+	    return s.replace(/^\s+/g, '');
+	}
+	exports.trimLeft = trimLeft;
+	function trimRight(s) {
+	    return s.replace(/\s+$/g, '');
+	}
+	exports.trimRight = trimRight;
+	function trim(s) {
+	    return s.replace(/^\s+|\s+$/g, '');
+	}
+	exports.trim = trim;
+	// http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
+	function escapeRegExp(s) {
+	    return s.replace(/[\-\/\\\^$*+?.()|\[\]{}]/g, '\\$&');
+	}
+	exports.escapeRegExp = escapeRegExp;
+	function replaceSpecialChars(s) {
+	    return s.replace(/&/g, '&amp;')
+	        .replace(/>/g, '&gt;')
+	        .replace(/</g, '&lt;');
+	}
+	exports.replaceSpecialChars = replaceSpecialChars;
+	// Replace pattern '$1' or '$$1', '$2' or '$$2'... in `replacement` with corresponding match groups
+	// from `match`. If pattern starts with one '$' character add specials to `expansionOptions`,
+	// if it starts with two '$' characters add spans to `expansionOptions`.
+	function replaceMatch(match, replacement, expansionOptions) {
+	    if (expansionOptions === void 0) { expansionOptions = {}; }
+	    return replacement.replace(/(\${1,2})(\d)/g, function () {
+	        // Replace $1, $2 ... with corresponding match groups.
+	        if (arguments[1] === '$$') {
+	            expansionOptions.spans = true;
+	        }
+	        else {
+	            expansionOptions.specials = true;
+	        }
+	        var i = Number(arguments[2]); // match group number.
+	        var text = match[i]; // match group text.
+	        return replaceInline(text, expansionOptions);
+	    });
+	}
+	exports.replaceMatch = replaceMatch;
+	// Shallow object clone.
+	function copy(source) {
+	    var result = {};
+	    for (var key in source) {
+	        if (source.hasOwnProperty(key)) {
+	            result[key] = source[key];
+	        }
+	    }
+	    return result;
+	}
+	exports.copy = copy;
+	// Copy properties in source object to target object.
+	function merge(target, source) {
+	    for (var key in source) {
+	        target[key] = source[key];
+	    }
+	}
+	exports.merge = merge;
+	// Replace the inline elements specified in options in text and return the result.
+	function replaceInline(text, expansionOptions) {
+	    if (expansionOptions.macros) {
+	        text = macros.render(text);
+	        text = text === null ? '' : text;
+	    }
+	    // Spans also expand special characters.
+	    if (expansionOptions.spans) {
+	        text = spans.render(text);
+	    }
+	    else if (expansionOptions.specials) {
+	        text = replaceSpecialChars(text);
+	    }
+	    return text;
+	}
+	exports.replaceInline = replaceInline;
+	// Inject HTML attributes from LineBlocks.htmlAttributes into the opening tag.
+	// Consume LineBlocks.htmlAttributes unless the 'tag' argument is blank.
+	function injectHtmlAttributes(tag) {
+	    if (!tag) {
+	        return tag;
+	    }
+	    if (lineBlocks.htmlClasses) {
+	        if (/class="\S.*"/.test(tag)) {
+	            // Inject class names into existing class attribute.
+	            tag = tag.replace(/class="(\S.*?)"/, 'class="' + lineBlocks.htmlClasses + ' $1"');
+	        }
+	        else {
+	            // Prepend new class attribute to HTML attributes.
+	            lineBlocks.htmlAttributes = trim('class="' + lineBlocks.htmlClasses + '" ' + lineBlocks.htmlAttributes);
+	        }
+	    }
+	    if (lineBlocks.htmlAttributes) {
+	        var match = tag.match(/^<([a-zA-Z]+|h[1-6])(?=[ >])/);
+	        if (match) {
+	            var before = tag.slice(0, match[0].length);
+	            var after = tag.slice(match[0].length);
+	            tag = before + ' ' + lineBlocks.htmlAttributes + after;
+	        }
+	    }
+	    // Consume the attributes.
+	    lineBlocks.htmlClasses = '';
+	    lineBlocks.htmlAttributes = '';
+	    return tag;
+	}
+	exports.injectHtmlAttributes = injectHtmlAttributes;
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var options = __webpack_require__(6);
 	// Matches macro invocation. $1 = name, $2 = params.
 	// DEPRECATED: Matches existential macro invocations.
 	var MATCH_MACRO = /\{([\w\-]+)([!=|?](?:|[\s\S]*?[^\\]))?\}/;
@@ -236,7 +664,7 @@ var Rimu =
 
 
 /***/ },
-/* 3 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(4);
@@ -312,115 +740,7 @@ var Rimu =
 
 
 /***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var macros = __webpack_require__(2);
-	var spans = __webpack_require__(5);
-	var lineBlocks = __webpack_require__(8);
-	// Whitespace strippers.
-	function trimLeft(s) {
-	    return s.replace(/^\s+/g, '');
-	}
-	exports.trimLeft = trimLeft;
-	function trimRight(s) {
-	    return s.replace(/\s+$/g, '');
-	}
-	exports.trimRight = trimRight;
-	function trim(s) {
-	    return s.replace(/^\s+|\s+$/g, '');
-	}
-	exports.trim = trim;
-	// http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
-	function escapeRegExp(s) {
-	    return s.replace(/[\-\/\\\^$*+?.()|\[\]{}]/g, '\\$&');
-	}
-	exports.escapeRegExp = escapeRegExp;
-	function replaceSpecialChars(s) {
-	    return s.replace(/&/g, '&amp;')
-	        .replace(/>/g, '&gt;')
-	        .replace(/</g, '&lt;');
-	}
-	exports.replaceSpecialChars = replaceSpecialChars;
-	// Replace match groups, optionally substituting the replacement groups with
-	// the inline elements specified in options.
-	function replaceMatch(match, replacement, expansionOptions) {
-	    return replacement.replace(/\$\d/g, function () {
-	        // Replace $1, $2 ... with corresponding match groups.
-	        var i = Number(arguments[0][1]); // match group number.
-	        var text = match[i]; // match group text.
-	        return replaceInline(text, expansionOptions);
-	    });
-	}
-	exports.replaceMatch = replaceMatch;
-	// Shallow object clone.
-	function copy(source) {
-	    var result = {};
-	    for (var key in source) {
-	        if (source.hasOwnProperty(key)) {
-	            result[key] = source[key];
-	        }
-	    }
-	    return result;
-	}
-	exports.copy = copy;
-	// Copy properties in source object to target object.
-	function merge(target, source) {
-	    for (var key in source) {
-	        target[key] = source[key];
-	    }
-	}
-	exports.merge = merge;
-	// Replace the inline elements specified in options in text and return the result.
-	function replaceInline(text, expansionOptions) {
-	    if (expansionOptions.macros) {
-	        text = macros.render(text);
-	        text = text === null ? '' : text;
-	    }
-	    // Spans also expand special characters.
-	    if (expansionOptions.spans) {
-	        return spans.render(text);
-	    }
-	    else if (expansionOptions.specials) {
-	        text = replaceSpecialChars(text);
-	    }
-	    return text;
-	}
-	exports.replaceInline = replaceInline;
-	// Inject HTML attributes from LineBlocks.htmlAttributes into the opening tag.
-	// Consume LineBlocks.htmlAttributes unless the 'tag' argument is blank.
-	function injectHtmlAttributes(tag) {
-	    if (!tag) {
-	        return tag;
-	    }
-	    if (lineBlocks.htmlClasses) {
-	        if (/class="\S.*"/.test(tag)) {
-	            // Inject class names into existing class attribute.
-	            tag = tag.replace(/class="(\S.*?)"/, 'class="' + lineBlocks.htmlClasses + ' $1"');
-	        }
-	        else {
-	            // Prepend new class attribute to HTML attributes.
-	            lineBlocks.htmlAttributes = trim('class="' + lineBlocks.htmlClasses + '" ' + lineBlocks.htmlAttributes);
-	        }
-	    }
-	    if (lineBlocks.htmlAttributes) {
-	        var match = tag.match(/^<([a-zA-Z]+|h[1-6])(?=[ >])/);
-	        if (match) {
-	            var before = tag.slice(0, match[0].length);
-	            var after = tag.slice(match[0].length);
-	            tag = before + ' ' + lineBlocks.htmlAttributes + after;
-	        }
-	    }
-	    // Consume the attributes.
-	    lineBlocks.htmlClasses = '';
-	    lineBlocks.htmlAttributes = '';
-	    return tag;
-	}
-	exports.injectHtmlAttributes = injectHtmlAttributes;
-
-
-/***/ },
-/* 5 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -437,8 +757,8 @@ var Rimu =
 	 resultant HTML string.
 	 */
 	var utils = __webpack_require__(4);
-	var quotes = __webpack_require__(6);
-	var replacements = __webpack_require__(7);
+	var quotes = __webpack_require__(8);
+	var replacements = __webpack_require__(9);
 	function render(source) {
 	    var result;
 	    result = preReplacements(source);
@@ -571,7 +891,10 @@ var Rimu =
 	    // Arrive here if we have a matched replacement.
 	    // The replacement splits the input fragment into 3 output fragments:
 	    // Text before the replacement, replaced text and text after the replacement.
+	    // NOTE: Because this function is called recursively must ensure mutable index and
+	    //       lastIndex properties are read before the recursive call.
 	    var before = match.input.slice(0, match.index);
+	    var after = match.input.slice(replacementRe.lastIndex);
 	    result.push({ text: before, done: false });
 	    var replacement;
 	    if (match[0][0] === '\\') {
@@ -580,14 +903,13 @@ var Rimu =
 	    }
 	    else {
 	        if (!def.filter) {
-	            replacement = utils.replaceMatch(match, def.replacement, { specials: true });
+	            replacement = utils.replaceMatch(match, def.replacement);
 	        }
 	        else {
 	            replacement = def.filter(match);
 	        }
 	    }
 	    result.push({ text: replacement, done: true, verbatim: match[0] });
-	    var after = match.input.slice(replacementRe.lastIndex);
 	    // Recursively process the remaining text.
 	    result.push.apply(result, fragReplacement({ text: after, done: false }, def));
 	    return result;
@@ -601,7 +923,7 @@ var Rimu =
 
 
 /***/ },
-/* 6 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(4);
@@ -706,10 +1028,10 @@ var Rimu =
 
 
 /***/ },
-/* 7 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var options = __webpack_require__(3);
+	var options = __webpack_require__(6);
 	var utils = __webpack_require__(4);
 	exports.defs; // Mutable definitions initialized by DEFAULT_DEFS.
 	var DEFAULT_DEFS = [
@@ -717,19 +1039,6 @@ var Rimu =
 	    // Global flag must be set on match re's so that the RegExp lastIndex property is set.
 	    // Replacements and special characters are expanded in replacement groups ($1..).
 	    // Replacement order is important.
-	    // Character entity.
-	    {
-	        match: /\\?(&[\w#][\w]+;)/g,
-	        replacement: '',
-	        filter: function (match) {
-	            return match[1]; // Pass the entity through verbatim.
-	        }
-	    },
-	    // Line-break (space followed by \ at end of line).
-	    {
-	        match: /[\\ ]\\(\n|$)/g,
-	        replacement: '<br>$1'
-	    },
 	    // DEPRECATED as of 3.4.0.
 	    // Anchor: <<#id>>
 	    {
@@ -758,13 +1067,19 @@ var Rimu =
 	    // address = $1, caption = $2
 	    {
 	        match: /\\?<(\S+@[\w\.\-]+)\|([\s\S]+?)>/g,
-	        replacement: '<a href="mailto:$1">$2</a>'
+	        replacement: '<a href="mailto:$1">$$2</a>'
 	    },
 	    // Email: <address>
 	    // address = $1, caption = $1
 	    {
 	        match: /\\?<(\S+@[\w\.\-]+)>/g,
 	        replacement: '<a href="mailto:$1">$1</a>'
+	    },
+	    // Link: [caption](url)
+	    // caption = $1, url = $2
+	    {
+	        match: /\\?\[([\s\S]*?)\]\s*\((.+?)\)/g,
+	        replacement: '<a href="$2">$$1</a>'
 	    },
 	    // HTML tags.
 	    {
@@ -784,18 +1099,25 @@ var Rimu =
 	    // url = $1, caption = $2
 	    {
 	        match: /\\?<(.+?)\|([\s\S]*?)>/g,
-	        replacement: '<a href="$1">$2</a>'
-	    },
-	    // Link: [caption](url)
-	    // caption = $1, url = $2
-	    {
-	        match: /\\?\[([\s\S]*?)\]\s*\((.+?)\)/g,
-	        replacement: '<a href="$2">$1</a>'
+	        replacement: '<a href="$1">$$2</a>'
 	    },
 	    // Auto-encode (most) raw HTTP URLs as links.
 	    {
 	        match: /\\?((?:http|https):\/\/[^\s"']*[A-Za-z0-9/#])/g,
 	        replacement: '<a href="$1">$1</a>'
+	    },
+	    // Character entity.
+	    {
+	        match: /\\?(&[\w#][\w]+;)/g,
+	        replacement: '',
+	        filter: function (match) {
+	            return match[1]; // Pass the entity through verbatim.
+	        }
+	    },
+	    // Line-break (space followed by \ at end of line).
+	    {
+	        match: /[\\ ]\\(\n|$)/g,
+	        replacement: '<br>$1'
 	    },
 	    // This hack ensures backslashes immediately preceding closing code quotes are rendered
 	    // verbatim (Markdown behaviour).
@@ -839,280 +1161,14 @@ var Rimu =
 
 
 /***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var utils = __webpack_require__(4);
-	var options = __webpack_require__(3);
-	var delimitedBlocks = __webpack_require__(9);
-	var quotes = __webpack_require__(6);
-	var replacements = __webpack_require__(7);
-	var macros = __webpack_require__(2);
-	var defs = [
-	    // Prefix match with backslash to allow escaping.
-	    // Expand lines prefixed with a macro invocation prior to all other processing.
-	    // macro name = $1, macro value = $2
-	    {
-	        match: macros.MACRO_LINE,
-	        replacement: '',
-	        expansionOptions: {},
-	        stop: false,
-	        verify: function (match) {
-	            if (this.stop) {
-	                this.stop = false;
-	                return false;
-	            }
-	            // Do not process macro definitions.
-	            return !macros.MACRO_DEF_OPEN.test(match[0]);
-	        },
-	        filter: function (match, reader) {
-	            var value = macros.render(match[0], false);
-	            if (value === match[0]) {
-	                // Stop infinite recursion if the macro value is the same as the invocation.
-	                this.stop = true;
-	            }
-	            // Insert the macro value into the reader just ahead of the cursor.
-	            var spliceArgs = [reader.pos + 1, 0].concat(value.split('\n'));
-	            Array.prototype.splice.apply(reader.lines, spliceArgs);
-	            return '';
-	        }
-	    },
-	    // Delimited Block definition.
-	    // name = $1, definition = $2
-	    {
-	        match: /^\\?\|([\w\-]+)\|\s*=\s*'(.*)'$/,
-	        replacement: '',
-	        expansionOptions: {},
-	        filter: function (match) {
-	            if (options.isSafe()) {
-	                return ''; // Skip if a safe mode is set.
-	            }
-	            delimitedBlocks.setDefinition(match[1], match[2]);
-	            return '';
-	        }
-	    },
-	    // Quote definition.
-	    // quote = $1, openTag = $2, separator = $3, closeTag = $4
-	    {
-	        match: /^(\S{1,2})\s*=\s*'([^\|]*)(\|{1,2})(.*)'$/,
-	        replacement: '',
-	        expansionOptions: {
-	            macros: true
-	        },
-	        filter: function (match) {
-	            if (options.isSafe()) {
-	                return ''; // Skip if a safe mode is set.
-	            }
-	            quotes.setDefinition({
-	                quote: match[1],
-	                openTag: utils.replaceInline(match[2], this.expansionOptions),
-	                closeTag: utils.replaceInline(match[4], this.expansionOptions),
-	                spans: match[3] === '|'
-	            });
-	            return '';
-	        }
-	    },
-	    // Replacement definition.
-	    // pattern = $1, flags = $2, replacement = $3
-	    {
-	        match: /^\\?\/(.+)\/([igm]*)\s*=\s*'(.*)'$/,
-	        replacement: '',
-	        expansionOptions: {
-	            macros: true
-	        },
-	        filter: function (match) {
-	            if (options.isSafe()) {
-	                return ''; // Skip if a safe mode is set.
-	            }
-	            var pattern = match[1];
-	            var flags = match[2];
-	            var replacement = match[3];
-	            replacement = utils.replaceInline(replacement, this.expansionOptions);
-	            replacements.setDefinition(pattern, flags, replacement);
-	            return '';
-	        }
-	    },
-	    // Macro definition.
-	    // name = $1, value = $2
-	    {
-	        match: macros.MACRO_DEF,
-	        replacement: '',
-	        expansionOptions: {
-	            macros: true
-	        },
-	        filter: function (match) {
-	            if (options.isSafe()) {
-	                return ''; // Skip if a safe mode is set.
-	            }
-	            var name = match[1];
-	            var value = match[2];
-	            value = utils.replaceInline(value, this.expansionOptions);
-	            macros.setValue(name, value);
-	            return '';
-	        }
-	    },
-	    // Headers.
-	    // $1 is ID, $2 is header text.
-	    {
-	        match: /^\\?((?:#|=){1,6})\s+(.+?)(?:\s+(?:#|=){1,6})?$/,
-	        replacement: '<h$1>$2</h$1>',
-	        expansionOptions: {
-	            macros: true,
-	            spans: true
-	        },
-	        filter: function (match) {
-	            match[1] = match[1].length.toString(); // Replace $1 with header number.
-	            return utils.replaceMatch(match, this.replacement, this.expansionOptions);
-	        }
-	    },
-	    // Comment line.
-	    {
-	        match: /^\\?\/{2}(.*)$/,
-	        replacement: '',
-	        expansionOptions: {}
-	    },
-	    // Block image: <image:src|alt>
-	    // src = $1, alt = $2
-	    {
-	        match: /^\\?<image:([^\s\|]+)\|([\s\S]+?)>$/,
-	        replacement: '<img src="$1" alt="$2">',
-	        expansionOptions: {
-	            macros: true,
-	            specials: true
-	        }
-	    },
-	    // Block image: <image:src>
-	    // src = $1, alt = $1
-	    {
-	        match: /^\\?<image:([^\s\|]+?)>$/,
-	        replacement: '<img src="$1" alt="$1">',
-	        expansionOptions: {
-	            macros: true,
-	            specials: true
-	        }
-	    },
-	    // DEPRECATED as of 3.4.0.
-	    // Block anchor: <<#id>>
-	    // id = $1
-	    {
-	        match: /^\\?<<#([a-zA-Z][\w\-]*)>>$/,
-	        replacement: '<div id="$1"></div>',
-	        expansionOptions: {
-	            macros: true,
-	            specials: true
-	        }
-	    },
-	    // Block Attributes.
-	    // Syntax: .class-names #id [html-attributes] block-options
-	    {
-	        name: 'attributes',
-	        match: /^\\?\.[a-zA-Z#\[+-].*$/,
-	        replacement: '',
-	        expansionOptions: {
-	            macros: true
-	        },
-	        verify: function (match) {
-	            // Parse Block Attributes.
-	            // class names = $1, id = $2, html-attributes = $3, block-options = $4
-	            var text = match[0];
-	            text = utils.replaceInline(text, this.expansionOptions); // Expand macro references.
-	            match = /^\\?\.((?:\s*[a-zA-Z][\w\-]*)+)*(?:\s*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text);
-	            if (!match) {
-	                return false;
-	            }
-	            if (match[1]) {
-	                exports.htmlClasses += ' ' + utils.trim(match[1]);
-	                exports.htmlClasses = utils.trim(exports.htmlClasses);
-	            }
-	            if (match[2]) {
-	                exports.htmlAttributes += ' id="' + utils.trim(match[2]).slice(1) + '"';
-	            }
-	            if (match[3] && !options.isSafe()) {
-	                exports.htmlAttributes += ' ' + utils.trim(match[3].slice(1, match[3].length - 1));
-	            }
-	            exports.htmlAttributes = utils.trim(exports.htmlAttributes);
-	            delimitedBlocks.setBlockOptions(exports.blockOptions, match[4]);
-	            return true;
-	        },
-	        filter: function (match) {
-	            return '';
-	        }
-	    },
-	    // API Option.
-	    // name = $1, value = $2
-	    {
-	        match: /^\\?\.(\w+)\s*=\s*'(.*)'$/,
-	        replacement: '',
-	        expansionOptions: {
-	            macros: true
-	        },
-	        filter: function (match) {
-	            if (!/^(safeMode|htmlReplacement|reset)$/.test(match[1])) {
-	                options.errorCallback('illegal API option: ' + match[1] + ': ' + match[0]);
-	            }
-	            else if (!options.isSafe()) {
-	                options.setOption(match[1], match[2]);
-	            }
-	            return '';
-	        }
-	    },
-	];
-	// Globals set by Block Attributes filter.
-	exports.htmlClasses = '';
-	exports.htmlAttributes = '';
-	exports.blockOptions = {};
-	// If the next element in the reader is a valid line block render it
-	// and return true, else return false.
-	function render(reader, writer) {
-	    if (reader.eof())
-	        throw 'premature eof';
-	    for (var _i = 0; _i < defs.length; _i++) {
-	        var def = defs[_i];
-	        var match = def.match.exec(reader.cursor());
-	        if (match) {
-	            if (match[0][0] === '\\') {
-	                // Drop backslash escape and continue.
-	                reader.cursor(reader.cursor().slice(1));
-	                continue;
-	            }
-	            if (def.verify && !def.verify(match)) {
-	                continue;
-	            }
-	            var text = void 0;
-	            if (!def.filter) {
-	                text = utils.replaceMatch(match, def.replacement, def.expansionOptions);
-	            }
-	            else {
-	                text = def.filter(match, reader);
-	            }
-	            text = utils.injectHtmlAttributes(text);
-	            writer.write(text);
-	            reader.next();
-	            if (text && !reader.eof()) {
-	                writer.write('\n'); // Add a trailing '\n' if there are more lines.
-	            }
-	            return true;
-	        }
-	    }
-	    return false;
-	}
-	exports.render = render;
-	// Return line block definition or undefined if not found.
-	function getDefinition(name) {
-	    return defs.filter(function (def) { return def.name === name; })[0];
-	}
-	exports.getDefinition = getDefinition;
-
-
-/***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var api = __webpack_require__(1);
 	var utils = __webpack_require__(4);
-	var options = __webpack_require__(3);
-	var macros = __webpack_require__(2);
-	var lineBlocks = __webpack_require__(8);
+	var options = __webpack_require__(6);
+	var macros = __webpack_require__(5);
+	var lineBlocks = __webpack_require__(3);
 	var defs; // Mutable definitions initialized by DEFAULT_DEFS.
 	var DEFAULT_DEFS = [
 	    // Delimited blocks cannot be escaped with a backslash.
@@ -1175,9 +1231,7 @@ var Rimu =
 	    // Code block.
 	    {
 	        name: 'code',
-	        // Backtick hex literal \x60 to work arount eslint problem.
-	        // See https://github.com/palantir/tslint/issues/357.
-	        openMatch: /^\\?(\-{2,}|\x60{2,})([\w\s-]*)$/,
+	        openMatch: /^\\?(\-{2,}|`{2,})([\w\s-]*)$/,
 	        openTag: '<pre><code>',
 	        closeTag: '</code></pre>',
 	        expansionOptions: {
@@ -1372,7 +1426,7 @@ var Rimu =
 	function setDefinition(name, value) {
 	    var def = getDefinition(name);
 	    if (!def) {
-	        options.errorCallback('illegal delimited block name: ' + name + ': |' + name + "|='" + value + "'");
+	        options.errorCallback('illegal delimited block name: ' + name + ': |' + name + '|=\'' + value + '\'');
 	        return;
 	    }
 	    var match = utils.trim(value).match(/^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/);
@@ -1404,97 +1458,12 @@ var Rimu =
 
 
 /***/ },
-/* 10 */
-/***/ function(module, exports) {
-
-	var Reader = (function () {
-	    function Reader(text) {
-	        // Split lines on newline boundaries.
-	        // http://stackoverflow.com/questions/1155678/javascript-string-newline-character
-	        // Split is broken on IE8 e.g. 'X\n\nX'.split(/\n/g).length) returns 2 but should return 3.
-	        this.lines = text.split(/\r\n|\r|\n/g);
-	        this.pos = 0;
-	    }
-	    // Getter/setter for current line, return null if EOF.
-	    Reader.prototype.cursor = function (value) {
-	        if (value === void 0) { value = null; }
-	        if (this.eof())
-	            return null;
-	        if (value !== null) {
-	            this.lines[this.pos] = value;
-	        }
-	        return this.lines[this.pos];
-	    };
-	    Reader.prototype.eof = function () {
-	        return this.pos >= this.lines.length;
-	    };
-	    // Read the next line, return null if EOF.
-	    Reader.prototype.next = function () {
-	        if (this.eof())
-	            return null;
-	        this.pos++;
-	        if (this.eof())
-	            return null;
-	        return this.lines[this.pos];
-	    };
-	    // Read to the first line matching the re.
-	    // Return the array of lines preceding the match plus a line containing
-	    // the $1 match group (if it exists).
-	    // Return null if an EOF is encountered.
-	    // Exit with the reader pointing to the line following the match.
-	    Reader.prototype.readTo = function (find) {
-	        var result = [];
-	        var match;
-	        while (!this.eof()) {
-	            match = this.cursor().match(find);
-	            if (match) {
-	                if (match[1] !== undefined) {
-	                    result.push(match[1]); // $1
-	                }
-	                this.next();
-	                break;
-	            }
-	            result.push(this.cursor());
-	            this.next();
-	        }
-	        // Blank line matches EOF.
-	        if (match || find.toString() === '/^$/' && this.eof()) {
-	            return result;
-	        }
-	        else {
-	            return null;
-	        }
-	    };
-	    Reader.prototype.skipBlankLines = function () {
-	        while (this.cursor() === '') {
-	            this.next();
-	        }
-	    };
-	    return Reader;
-	})();
-	exports.Reader = Reader;
-	var Writer = (function () {
-	    function Writer() {
-	        this.buffer = [];
-	    }
-	    Writer.prototype.write = function (s) {
-	        this.buffer.push(s);
-	    };
-	    Writer.prototype.toString = function () {
-	        return this.buffer.join('');
-	    };
-	    return Writer;
-	})();
-	exports.Writer = Writer;
-
-
-/***/ },
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(4);
-	var io = __webpack_require__(10);
-	var delimitedBlocks = __webpack_require__(9);
+	var io = __webpack_require__(2);
+	var delimitedBlocks = __webpack_require__(10);
 	var defs = [
 	    // Prefix match with backslash to allow escaping.
 	    // Unordered lists.
@@ -1649,32 +1618,31 @@ var Rimu =
 	    }
 	}
 	// Check if the line at the reader cursor matches a list related element.
-	// If it does return list item information else return null.  It matches
-	// list item elements but 'options' can be included to also match delimited
-	// blocks or indented paragraphs.
+	// If it does return list item information else return null.
+	// 'options' can be included to also match delimited blocks or indented paragraphs.
 	function matchItem(reader, options) {
 	    if (options === void 0) { options = {}; }
 	    // Check if the line matches a List definition.
 	    var line = reader.cursor();
 	    var item = {}; // ItemState factory.
 	    for (var _i = 0; _i < defs.length; _i++) {
-	        var def_1 = defs[_i];
-	        var match = def_1.match.exec(line);
+	        var def = defs[_i];
+	        var match = def.match.exec(line);
 	        if (match) {
 	            if (match[0][0] === '\\') {
 	                reader.cursor(reader.cursor().slice(1)); // Drop backslash.
 	                return null;
 	            }
 	            item.match = match;
-	            item.def = def_1;
+	            item.def = def;
 	            item.id = match[match.length - 2];
 	            item.isListItem = true;
 	            return item;
 	        }
 	    }
 	    // Check if the line matches a Delimited Block definition.
-	    var def;
 	    if (options.delimited) {
+	        var def;
 	        for (var _a = 0, _b = ['quote', 'code', 'division']; _a < _b.length; _a++) {
 	            var name_1 = _b[_a];
 	            def = delimitedBlocks.getDefinition(name_1);
@@ -1686,7 +1654,7 @@ var Rimu =
 	    }
 	    // Check if the line matches an Indented Paragraph definition.
 	    if (options.indented) {
-	        def = delimitedBlocks.getDefinition('indented');
+	        var def = delimitedBlocks.getDefinition('indented');
 	        if (def.openMatch.test(line)) {
 	            item.isIndented = true;
 	            return item;

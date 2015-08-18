@@ -188,7 +188,12 @@
 <h1>Rimu Markup CHANGELOG</h1>
 <p>See the <a href="https://github.com/srackham/rimu/commits/">Git commit log</a>
 for more detailed information.</p>
-<h2>Version 6.0.0 (2015-07-12)</h2>
+<h2>Version 6.1.0 (2015-08-19)</h2>
+<ul><li>Allow macro invocations in <em>API Option</em> element values.
+</li><li>Allow <em>Quote</em> elements in URL and and email address captions.
+</li><li>Add <code>callback</code> API to <code>rimu.d.ts</code> type definitions file.
+</li><li>Replaced <em>nodeunit</em> with <a href="https://github.com/substack/tape">Tape</a> for unit tests.
+</li></ul><h2>Version 6.0.0 (2015-07-12)</h2>
 <p>Misspelled macro invocations are insidious and easily overlooked.  The
 problem has finally been resolved with the introduction of an API
 callback option that emits diagnostic messages.</p>
@@ -231,15 +236,15 @@ suppress these warnings escape the macro invocation with a backslash).</p>
   are rendered verbatim) and are flagged as errors via the <code>render()</code>
   API <code>callback</code> option.
 </li><li>Existential macro invocations (<code>{name?default}</code>) no longer
-  supported. This is because invoking and undefined macro is now
+  supported. This is because invoking an undefined macro is now
   considered an error.  You can specify default macro values using
-  <em>Existential Macro Definitions</em>.  Existential invocations are
-  rendered verbatim and the <code>rimuc</code> <code>--lint</code> option emits a
-  deprecation error.
-</li><li>The previously undefined <code>{--}</code> macro is now set to an empty string
-  when the <code>rimuc</code> <code>--styled</code> option is used so it will still work
+  the new <em>Existential Macro Definition</em> syntax. Legacy Existential
+  invocations are rendered verbatim and the <code>rimuc</code> <code>--lint</code> option
+  will emit a deprecation error.
+</li><li>The previously undefined <code>{--}</code> reserved macro is now set to an empty string
+  when the <code>rimuc</code> <code>--styled</code> option is used so it still behaves the same
   with Inclusion and Exclusion macro invocations &mdash; if you use it
-  in other contexts you should define it: <code>{--} = ''</code>.
+  in other contexts you should explicitly set it: <code>{--} = ''</code>.
 </li></ul><h2>Version 5.4.0 (2015-06-28)</h2>
 <ul><li>Moved Rimu reference documentation from the <em>Rimu Playground</em> into a
   separate updated <em>Reference</em> manual.
