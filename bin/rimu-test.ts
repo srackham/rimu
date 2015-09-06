@@ -6,7 +6,8 @@
 
  */
 
-import Rimu = require('rimu');  // Implicitly imports rimu.d.ts
+///<reference path='rimu.d.ts' />
+import Rimu = require('rimu');
 
 console.log(Rimu.render('Hello *Rimu*!', {safeMode:1}));
 
