@@ -185,7 +185,7 @@ function matchItem(reader: io.Reader,
                    options: {delimited?: boolean; indented?: boolean; } = {}): ItemState {
   // Check if the line matches a List definition.
   let line = reader.cursor()
-  let item = <ItemState>{}    // ItemState factory.
+  let item = {} as ItemState    // ItemState factory.
   for (let def of defs) {
     let match = def.match.exec(line)
     if (match) {

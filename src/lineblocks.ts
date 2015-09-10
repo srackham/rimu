@@ -36,7 +36,7 @@ let defs: Definition[] = [
     filter: function (match: RegExpExecArray, reader?: io.Reader): string {
       // Insert the macro value into the reader just ahead of the cursor.
       let value = macros.render(match[0], false)
-      let spliceArgs = (<any[]> [reader.pos + 1, 0]).concat(value.split('\n'))
+      let spliceArgs = ([reader.pos + 1, 0]).concat(value.split('\n') as any[])
       Array.prototype.splice.apply(reader.lines, spliceArgs)
       return ''
     }
