@@ -12,7 +12,6 @@ export interface Definition {
   verify?: (match: RegExpExecArray) => boolean   // Additional match verification checks.
   match: RegExp
   replacement?: string
-  stop?: boolean   // Flag to stop recursion in macro lines.
 }
 
 let defs: Definition[] = [
@@ -22,22 +21,21 @@ let defs: Definition[] = [
   // macro name = $1, macro value = $2
   {
     match: macros.MACRO_LINE,
-    stop: false,  // Flag to stop recursion.
     verify: function (match: RegExpExecArray): boolean {
-      if (this.stop) {
-        this.stop = false
+      // Do not process macro definitions.
+      if (macros.MACRO_DEF_OPEN.test(match[0])) {
         return false
       }
-      // Do not process macro definitions.
-      return !macros.MACRO_DEF_OPEN.test(match[0])
-    },
-    filter: function (match: RegExpExecArray, reader?: io.Reader): string {
+      // Stop if the macro value is the same as the invocation (to stop infinite recursion).
       let value = macros.render(match[0], false)
       if (value === match[0]) {
-        // Stop infinite recursion if the macro value is the same as the invocation.
-        this.stop = true
+        return false
       }
+      return true
+    },
+    filter: function (match: RegExpExecArray, reader?: io.Reader): string {
       // Insert the macro value into the reader just ahead of the cursor.
+      let value = macros.render(match[0], false)
       let spliceArgs = (<any[]> [reader.pos + 1, 0]).concat(value.split('\n'))
       Array.prototype.splice.apply(reader.lines, spliceArgs)
       return ''
