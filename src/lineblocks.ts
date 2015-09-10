@@ -12,6 +12,7 @@ export interface Definition {
   verify?: (match: RegExpExecArray) => boolean   // Additional match verification checks.
   match: RegExp
   replacement?: string
+  stop?: boolean   // Flag to stop recursion in macro lines.
 }
 
 let defs: Definition[] = [
