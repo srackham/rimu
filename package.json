@@ -9,12 +9,7 @@
     "asciidoc",
     "markdown"
   ],
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://raw.github.com/srackham/rimu/master/LICENSE"
-    }
-  ],
+  "license": "MIT",
   "engines": {
     "node": ">=0.8"
   },
