@@ -201,7 +201,7 @@
   display: none;
 }
 </style>
-<script src="rimu-var.js"></script>
+<script src="rimu.min.js"></script>
 <script>
 function editExample(name) {
   var source = document.getElementById(name + '-source');
@@ -278,7 +278,7 @@ Use the <code>reset</code> option to set the default state.</p>
 <pre class="javascript no-highlight"><code>var Rimu = require('rimu');
 var html= Rimu.render('Hello *Rimu*!', {safeMode:1});</code></pre>
 <p>HTML script tag example:</p>
-<pre class="xml no-highlight"><code>&lt;script src="rimu-var.js"&gt;&lt;/script&gt;
+<pre class="xml no-highlight"><code>&lt;script src="rimu.min.js"&gt;&lt;/script&gt;
 &lt;script&gt;
   console.log(Rimu.render('Hello *Rimu*!', {reset:true, safeMode:2}));
 &lt;/script&gt;</code></pre>
