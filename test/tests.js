@@ -1,5 +1,5 @@
 var test = require('tape');
-var Rimu = require('../bin/rimu-commonjs2.js');
+var Rimu = require('../bin/rimu.js');
 
 test('API check', function(t) {
   t.ok(

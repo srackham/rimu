@@ -1,14 +1,19 @@
 module.exports = {
-  entry: './out/main.js',
+  entry: './src/main.ts',
   output: {
     path: __dirname,
-    filename: './bin/rimu-commonjs2.js',
+    filename: './bin/rimu.js',
     library: 'Rimu',
-    libraryTarget: 'commonjs2',
+    libraryTarget: 'umd',
+    devtoolModuleFilenameTemplate: "webpack:///.[resource-path]",
+  },
+  resolve: {
+    extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']
   },
   module: {
     loaders: [
-      { test: /\.css$/, loader: 'style!css' }
+      { test: /\.css$/, loader: 'style!css' },
+      { test: /\.tsx?$/, loader: 'ts-loader' }
     ]
   }
 };

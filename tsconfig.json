@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "noImplicitAny": true,
-    "preserveConstEnums": true,
-    "outDir": "./out"
+    "noImplicitAny": true
   },
   "files": [
     "./src/delimitedblocks.ts",

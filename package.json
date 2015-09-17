@@ -13,16 +13,18 @@
   "engines": {
     "node": ">=0.8"
   },
-  "main": "bin/rimu-commonjs2.js",
+  "main": "bin/rimu.js",
   "bin": {
     "rimuc": "bin/rimuc.js"
   },
   "files": [
-    "bin/rimu-commonjs2.js",
+    "bin/rimu.js",
+    "bin/rimu.min.js",
     "bin/rimuc.js",
     "bin/header.rmu",
     "bin/footer.rmu"
   ],
+  "typings": "bin/rimu.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/srackham/rimu.git"
@@ -35,9 +37,10 @@
     "nu-html-checker": "^0.1.0",
     "shelljs": "^0.5.3",
     "tape": "^4.2.0",
+    "ts-loader": "^0.5.5",
     "tslint": "^2.5.0-beta",
-    "typescript": "^1.6.0-beta",
+    "typescript": "^1.6.2",
     "uglify-js": "^2.4.24",
-    "webpack": "^1.12.1"
+    "webpack": "^1.12.2"
   }
 }

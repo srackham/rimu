@@ -46,7 +46,7 @@
 
 // Examples handlers.
 {generate-examples=}.+skip
-<script src="rimu-var.js"></script>
+<script src="rimu.min.js"></script>
 <script>
 function editExample(name) {
   var source = document.getElementById(name + '-source');

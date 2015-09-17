@@ -10,11 +10,9 @@ var child_process = require('child_process');
 
 /* Inputs and outputs */
 
-var RIMU_VAR_LIB = 'bin/rimu-var.js';  // Script tag library format.
-var RIMU_VAR_LIB_MIN = 'bin/rimu-var.min.js';
-var RIMU_COMMONJS2_LIB = 'bin/rimu-commonjs2.js';  // Npm library format.
+var RIMU_LIB = 'bin/rimu.js';
+var RIMU_LIB_MIN = 'bin/rimu.min.js';
 var MAIN_TS = 'src/main.ts';
-var MAIN_JS = 'out/main.js';
 var SOURCE = shelljs.ls('src/*.ts');
 var TESTS = shelljs.ls('test/*.js');
 var GH_PAGES_DIR = './gh-pages/';
@@ -133,33 +131,18 @@ task('test', ['compile', 'jslint'], {async: true}, function() {
 });
 
 desc('Compile Typescript to JavaScript then bundle CommonJS and scriptable libraries.');
-task('compile', [MAIN_JS, RIMU_VAR_LIB, RIMU_COMMONJS2_LIB, RIMU_VAR_LIB_MIN]);
+task('compile', [RIMU_LIB]);
 
-file(MAIN_JS, SOURCE, {async: true}, function() {
-  shelljs.rm('./out/*');
-  exec('tsc --project .');
+file(RIMU_LIB, [MAIN_TS], {async: true}, function() {
+  exec('webpack -d');
 });
 
-file(RIMU_COMMONJS2_LIB, [MAIN_JS], {async: true}, function() {
-  exec('webpack');
-});
-
-file(RIMU_VAR_LIB, [MAIN_JS], {async: true}, function() {
-  exec('webpack --output-library-target var --output-file ' + RIMU_VAR_LIB);
-});
-
-function minify(src, dst) {
-  var preamble = '/* ' + pkg.name + ' ' + pkg.version + ' (' + pkg.repository.url + ') */';
-  var command = 'uglifyjs  --preamble "' + preamble + '" --output ' + dst + ' ' + src;
-  exec(command);
-};
-
-file(RIMU_VAR_LIB_MIN, [RIMU_VAR_LIB], {async: true}, function() {
-  minify(RIMU_VAR_LIB, RIMU_VAR_LIB_MIN)
+file(RIMU_LIB_MIN, [MAIN_TS], {async: true}, function() {
+  exec('webpack -p --output-filename ' + RIMU_LIB_MIN);
 });
 
 desc('Generate HTML documentation');
-task('html-docs', {async: true}, function() {
+task('html-docs', [RIMU_LIB_MIN], {async: true}, function() {
   var commands = DOCS.map(function(doc) {
     return 'node ' + RIMUC +
       ' --styled --lint --no-rimurc' +
@@ -215,7 +198,7 @@ task('push', ['test'], {async: true}, function() {
 });
 
 desc('Publish to npm.');
-task('publish-npm', {async: true}, ['test'], function() {
+task('publish-npm', {async: true}, ['test', RIMU_LIB_MIN], function() {
   exec('npm publish');
 });
 
@@ -224,7 +207,7 @@ task('release-gh-pages', ['build-gh-pages', 'commit-gh-pages', 'push-gh-pages'])
 
 desc('Generate documentation and copy to local gh-pages repo');
 task('build-gh-pages', ['html-docs', 'validate-html'], function() {
-  shelljs.cp('-f', HTML.concat(RIMU_VAR_LIB), GH_PAGES_DIR)
+  shelljs.cp('-f', HTML.concat(RIMU_LIB_MIN), GH_PAGES_DIR)
 });
 
 desc('Commit changes to local gh-pages repo. Use msg=\'commit message\' to set a custom commit message.');

@@ -77,7 +77,7 @@ var html= Rimu.render('Hello *Rimu*!', {safeMode:1});
 HTML script tag example:
 
 `` xml
-<script src="rimu-var.js"></script>
+<script src="rimu.min.js"></script>
 <script>
   console.log(Rimu.render('Hello *Rimu*!', {reset:true, safeMode:2}));
 </script>

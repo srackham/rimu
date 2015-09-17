@@ -50,7 +50,6 @@ Edit these examples or add your own:
 ``
 ``
 
-<script src="rimu-var.js"></script>
 <script>
 function escapeSpecialChars(s) {
   return s.replace(/&/g, '&amp;')
