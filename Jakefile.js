@@ -138,7 +138,12 @@ file(RIMU_LIB, [MAIN_TS], {async: true}, function() {
 });
 
 file(RIMU_LIB_MIN, [MAIN_TS], {async: true}, function() {
-  exec('webpack -p --output-filename ' + RIMU_LIB_MIN);
+  exec('webpack -p --output-filename ' + RIMU_LIB_MIN, function () {
+    // Prepend package name and version.
+    var preamble = '/* ' + pkg.name + ' ' + pkg.version + ' (' + pkg.repository.url + ') */\n';
+    (preamble + shelljs.cat(RIMU_LIB_MIN)).to(RIMU_LIB_MIN);
+    complete();
+  });
 });
 
 desc('Generate HTML documentation');
