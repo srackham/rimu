@@ -50,8 +50,7 @@ DOCS.forEach(function(doc) {
 /* Utility functions. */
 
 /*
- Execute shell commands in parallel then run the callback when they have all finished.
- `callback` defaults to the Jake async `complete` function.
+ Execute shell commands in parallel then run the `callback` when they have all finished.
  Abort if an error occurs.
  Write command output to the inherited stdout (unless the Jake --quiet option is set).
  Print a status message when each command starts and finishes (unless the Jake --quiet option is set).
@@ -62,7 +61,6 @@ function exec(commands, callback) {
   if (typeof commands === 'string') {
     commands = [commands];
   }
-  callback = callback || complete;
   var remaining = commands.length;
   if (remaining === 0) {
     callback();
@@ -111,7 +109,7 @@ task('jslint', {async: true}, function() {
     return 'jshint ' + file;
   });
   commands.push('jsonlint --quiet package.json');
-  exec(commands);
+  exec(commands, complete);
 });
 
 desc('Lint TypeScript source files.');
@@ -119,7 +117,7 @@ task('tslint', {async: true}, function() {
   var commands = SOURCE.map(function(file) {
     return 'tslint ' + file;
   });
-  exec(commands);
+  exec(commands, complete);
 });
 
 desc('Run tests (recompile if necessary).');
@@ -127,14 +125,14 @@ task('test', ['compile', 'jslint'], {async: true}, function() {
   var commands = TESTS.map(function(file) {
     return 'tape ' + file + ' | faucet';
   });
-  exec(commands);
+  exec(commands, complete);
 });
 
 desc('Compile Typescript to JavaScript then bundle CommonJS and scriptable libraries.');
 task('compile', [RIMU_LIB]);
 
 file(RIMU_LIB, [MAIN_TS], {async: true}, function() {
-  exec('webpack -d');
+  exec('webpack -d', complete);
 });
 
 file(RIMU_LIB_MIN, [MAIN_TS], {async: true}, function() {
@@ -156,7 +154,7 @@ task('html-docs', [RIMU_LIB_MIN], {async: true}, function() {
       ' ' + doc.rimucOptions + ' ' +
       ' ./examples/.rimurc ./doc/doc-header.rmu ' + doc.src;
   });
-  exec(commands);
+  exec(commands, complete);
 });
 
 desc('Validate HTML documents with W3C Validator.');
@@ -164,7 +162,7 @@ task('validate-html', {async: true}, function() {
   var commands = HTML.map(function(file) {
     return 'nu-html-checker ' + file;
   });
-  exec(commands);
+  exec(commands, complete);
 });
 
 desc('Display or update the project version number. Use vers=x.y.z argument to set a new version number.');
@@ -180,13 +178,13 @@ task('version', {async: true}, function() {
     }
     shelljs.sed('-i', /(\n\s*"version"\s*:\s*)"\d+\.\d+\.\d+"/, '$1' + '"' + version + '"', 'package.json');
     pkg.version = version;
-    exec('git commit -m "Bump version number." package.json');
+    exec('git commit -m "Bump version number." package.json', complete);
   }
 });
 
 desc('Create tag ' + pkg.version);
 task('tag', ['test'], {async: true}, function() {
-  exec('git tag -a -m "Tag ' + pkg.version + '" ' + pkg.version);
+  exec('git tag -a -m "Tag ' + pkg.version + '" ' + pkg.version, complete);
 });
 
 desc('Commit changes to local Git repo.');
@@ -199,12 +197,12 @@ task('publish', ['push', 'publish-npm']);
 
 desc('Push local commits to Github.');
 task('push', ['test'], {async: true}, function() {
-  exec('git push -u --tags origin master');
+  exec('git push -u --tags origin master', complete);
 });
 
 desc('Publish to npm.');
 task('publish-npm', {async: true}, ['test', RIMU_LIB_MIN], function() {
-  exec('npm publish');
+  exec('npm publish', complete);
 });
 
 desc('Rebuild and validate documentation then commit and publish to GitHub Pages');
