@@ -38,7 +38,7 @@
     "shelljs": "^0.5.3",
     "tape": "^4.2.0",
     "ts-loader": "^0.5.5",
-    "tslint": "^2.5.0-beta",
+    "tslint": "^2.5.0",
     "typescript": "^1.6.2",
     "uglify-js": "^2.4.24",
     "webpack": "^1.12.2"
