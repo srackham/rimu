@@ -129,10 +129,10 @@ file(RIMU_LIB, [MAIN_TS], {async: true}, function() {
 })
 
 file(RIMU_LIB_MIN, [MAIN_TS], {async: true}, function() {
-  exec('webpack -p --output-filename ' + RIMU_LIB_MIN, function () {
-    // Prepend package name and version.
-    let preamble = `/* ${pkg.name} ${pkg.version} (${pkg.repository.url}) */`;
-    `${preamble}\n${shelljs.cat(RIMU_LIB_MIN)}`.to(RIMU_LIB_MIN)
+  exec('webpack -p --output-filename ' + RIMU_LIB_MIN, function() {
+    // Prepend package name and version comment to minified library file.
+    `/* ${pkg.name} ${pkg.version} (${pkg.repository.url}) */\n${shelljs.cat(RIMU_LIB_MIN)}`
+      .to(RIMU_LIB_MIN)
     complete()
   })
 })
@@ -140,12 +140,12 @@ file(RIMU_LIB_MIN, [MAIN_TS], {async: true}, function() {
 desc(`Generate HTML documentation`)
 task('html-docs', [RIMU_LIB_MIN], {async: true}, function() {
   let commands = DOCS.map(doc =>
-      'node ' + RIMUC +
-      ' --styled --lint --no-rimurc' +
-      ' --output "' + doc.dst + '"' +
-      ' --title "' + doc.title + '"' +
-      ' ' + doc.rimucOptions + ' ' +
-      ' ./examples/.rimurc ./doc/doc-header.rmu ' + doc.src
+    'node ' + RIMUC +
+    ' --styled --lint --no-rimurc' +
+    ' --output "' + doc.dst + '"' +
+    ' --title "' + doc.title + '"' +
+    ' ' + doc.rimucOptions + ' ' +
+    ' ./examples/.rimurc ./doc/doc-header.rmu ' + doc.src
   )
   exec(commands, complete)
 })
@@ -220,7 +220,7 @@ task('commit-gh-pages', ['test'], {async: true}, function() {
 desc(`Push gh-pages commits to Github.`)
 task('push-gh-pages', ['test'], {async: true}, function() {
   shelljs.cd(GH_PAGES_DIR)
-  exec('git push origin gh-pages', function () {
+  exec('git push origin gh-pages', function() {
     shelljs.cd('..')
     complete()
   })
