@@ -17,7 +17,6 @@ let SOURCE = shelljs.ls('src/*.ts')
 let TESTS = shelljs.ls('test/*.js')
 let GH_PAGES_DIR = './gh-pages/'
 let RIMUC = './bin/rimuc.js'
-
 let DOCS = [
   {
     src: 'README.md', dst: 'doc/index.html', title: 'Rimu Markup',
@@ -40,7 +39,6 @@ let DOCS = [
     rimucOptions: '--toc --prepend "{generate-examples}=\'yes\'"'
   }
 ]
-
 let HTML = DOCS.map(doc => doc.dst)
 
 
@@ -91,32 +89,26 @@ function exec(commands, callback) {
  The `exec` function ensures shell commands within each task run in parallel.
  */
 
-desc(`Run test task.`)
+desc(`Run tests.`)
 task('default', ['test'])
 
-desc(`compile, jslint, test, tslint, build-gh-pages, validate-html.`)
-task('build', ['test', 'tslint', 'build-gh-pages', 'validate-html'])
+desc(`compile, lint, test, build-gh-pages, validate-html.`)
+task('build', ['test', 'build-gh-pages', 'validate-html'])
 
 desc(`Update version number, tag and push to Github and npm. Use vers=x.y.z argument to set a new version number. Finally, rebuild and publish docs website.`)
 task('release', ['build', 'version', 'tag', 'publish', 'release-gh-pages'])
 
-desc(`Lint Javascript and JSON files.`)
-task('jslint', {async: true}, function() {
-  let commands = TESTS.concat([RIMUC]).map(function(file) {
-    return 'jshint ' + file
-  })
-  commands.push('jsonlint --quiet package.json')
-  exec(commands, complete)
-})
-
-desc(`Lint TypeScript source files.`)
-task('tslint', {async: true}, function() {
-  let commands = SOURCE.map(file => 'tslint ' + file)
+desc(`Lint TypeScript, Javascript and JSON files.`)
+task('lint', {async: true}, function() {
+  let commands = []
+    .concat(SOURCE.map(file => 'tslint ' + file))
+    .concat(TESTS.concat([RIMUC]).map(file => 'jshint ' + file))
+    .concat(['jsonlint --quiet package.json'])
   exec(commands, complete)
 })
 
 desc(`Run tests (recompile if necessary).`)
-task('test', ['compile', 'jslint'], {async: true}, function() {
+task('test', ['compile'], {async: true}, function() {
   let commands = TESTS.map(file => 'tape ' + file + ' | faucet')
   exec(commands, complete)
 })
@@ -124,11 +116,11 @@ task('test', ['compile', 'jslint'], {async: true}, function() {
 desc(`Compile Typescript to JavaScript then bundle CommonJS and scriptable libraries.`)
 task('compile', [RIMU_LIB])
 
-file(RIMU_LIB, [MAIN_TS], {async: true}, function() {
+file(RIMU_LIB, SOURCE, {async: true}, function() {
   exec('webpack -d', complete)
 })
 
-file(RIMU_LIB_MIN, [MAIN_TS], {async: true}, function() {
+file(RIMU_LIB_MIN, SOURCE, {async: true}, function() {
   exec('webpack -p --output-filename ' + RIMU_LIB_MIN, function() {
     // Prepend package name and version comment to minified library file.
     `/* ${pkg.name} ${pkg.version} (${pkg.repository.url}) */\n${shelljs.cat(RIMU_LIB_MIN)}`
