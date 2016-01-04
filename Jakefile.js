@@ -108,7 +108,7 @@ task('lint', {async: true}, function() {
 })
 
 desc(`Run tests (recompile if necessary).`)
-task('test', ['compile'], {async: true}, function() {
+task('test', ['compile', 'build-rimuc'], {async: true}, function() {
   let commands = TESTS.map(file => 'tape ' + file + ' | faucet')
   exec(commands, complete)
 })
