@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true
+  },
+  "files": [
+    "delimitedblocks.ts",
+    "io.ts",
+    "lineblocks.ts",
+    "lists.ts",
+    "macros.ts",
+    "main.ts",
+    "options.ts",
+    "quotes.ts",
+    "api.ts",
+    "replacements.ts",
+    "spans.ts",
+    "utils.ts"
+  ]
+}

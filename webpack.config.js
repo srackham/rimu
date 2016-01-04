@@ -1,5 +1,5 @@
 module.exports = {
-  entry: './src/main.ts',
+  entry: './src/rimu/main.ts',
   output: {
     path: __dirname,
     filename: './bin/rimu.js',
