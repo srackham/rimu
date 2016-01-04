@@ -1,7 +1,7 @@
 // Type definitions for Rimu Markup
 // Project: https://github.com/srackham/rimu
 
-declare module "rimu" {
+declare module 'rimu' {
   export interface Options {
     safeMode?: number;
     htmlReplacement?: string;

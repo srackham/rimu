@@ -12,11 +12,15 @@ let child_process = require('child_process')
 
 let RIMU_LIB = 'bin/rimu.js'
 let RIMU_LIB_MIN = 'bin/rimu.min.js'
-let MAIN_TS = 'src/main.ts'
 let SOURCE = shelljs.ls('src/*.ts')
-let TESTS = shelljs.ls('test/*.js')
+let TESTS = shelljs.ls('tests/*.js')
 let GH_PAGES_DIR = './gh-pages/'
+
 let RIMUC = './bin/rimuc.js'
+let RIMUC_TS = './src/tools/rimuc.ts'
+let NODE_TSD = './typings/node.d.ts'
+let RIMU_TSD = './typings/rimu.d.ts'
+
 let DOCS = [
   {
     src: 'README.md', dst: 'doc/index.html', title: 'Rimu Markup',
@@ -125,6 +129,15 @@ file(RIMU_LIB_MIN, SOURCE, {async: true}, function() {
     // Prepend package name and version comment to minified library file.
     `/* ${pkg.name} ${pkg.version} (${pkg.repository.url}) */\n${shelljs.cat(RIMU_LIB_MIN)}`
       .to(RIMU_LIB_MIN)
+    complete()
+  })
+})
+
+desc(`Build rimuc.`)
+task('build-rimuc', {async: true}, function() {
+  exec(`tsc -m commonjs --noImplicitAny --outDir ./bin/ --preserveConstEnums ${NODE_TSD} ${RIMU_TSD} ${RIMUC_TS}`, function() {
+    `#!/usr/bin/env node\n${shelljs.cat(RIMUC)}`.to(RIMUC) // Prepend Shebang line.
+    shelljs.chmod('+x', RIMUC)
     complete()
   })
 })

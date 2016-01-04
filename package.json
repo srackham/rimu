@@ -22,9 +22,10 @@
     "bin/rimu.min.js",
     "bin/rimuc.js",
     "bin/header.rmu",
-    "bin/footer.rmu"
+    "bin/footer.rmu",
+    "typings/rimu.d.ts"
   ],
-  "typings": "bin/rimu.d.ts",
+  "typings": "typings/rimu.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/srackham/rimu.git"
