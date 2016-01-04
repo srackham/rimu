@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "outDir": "../../bin",
+    "module": "commonjs",
+    "noImplicitAny": true
+  },
+  "files": [
+    "../../typings/node.d.ts",
+    "../../typings/rimu.d.ts",
+    "rimuc.ts"
+  ]
+}

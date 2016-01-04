@@ -15,11 +15,7 @@ let RIMU_LIB_MIN = 'bin/rimu.min.js'
 let SOURCE = shelljs.ls('src/*.ts')
 let TESTS = shelljs.ls('tests/*.js')
 let GH_PAGES_DIR = './gh-pages/'
-
 let RIMUC = './bin/rimuc.js'
-let RIMUC_TS = './src/tools/rimuc.ts'
-let NODE_TSD = './typings/node.d.ts'
-let RIMU_TSD = './typings/rimu.d.ts'
 
 let DOCS = [
   {
@@ -135,7 +131,7 @@ file(RIMU_LIB_MIN, SOURCE, {async: true}, function() {
 
 desc(`Build rimuc.`)
 task('build-rimuc', {async: true}, function() {
-  exec(`tsc -m commonjs --noImplicitAny --outDir ./bin/ --preserveConstEnums ${NODE_TSD} ${RIMU_TSD} ${RIMUC_TS}`, function() {
+    exec(`tsc -p src/rimuc`, function() {
     `#!/usr/bin/env node\n${shelljs.cat(RIMUC)}`.to(RIMUC) // Prepend Shebang line.
     shelljs.chmod('+x', RIMUC)
     complete()
