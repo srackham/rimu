@@ -12,10 +12,11 @@ let child_process = require('child_process')
 
 let RIMU_LIB = 'bin/rimu.js'
 let RIMU_LIB_MIN = 'bin/rimu.min.js'
-let SOURCE = shelljs.ls('src/*.ts')
+let RIMU_SRC = shelljs.ls('src/rimu/*.ts')
 let TESTS = shelljs.ls('tests/*.js')
 let GH_PAGES_DIR = './gh-pages/'
 let RIMUC = './bin/rimuc.js'
+let RIMUC_SRC = shelljs.ls('src/rimuc/*.ts')
 
 let DOCS = [
   {
@@ -92,8 +93,8 @@ function exec(commands, callback) {
 desc(`Run tests.`)
 task('default', ['test'])
 
-desc(`compile, lint, test, build-gh-pages, validate-html.`)
-task('build', ['test', 'build-gh-pages', 'validate-html'])
+desc(`build, lint and test rimu and tools, build gh-pages, validate HTML.`)
+task('build', ['test', 'lint', 'build-gh-pages', 'validate-html'])
 
 desc(`Update version number, tag and push to Github and npm. Use vers=x.y.z argument to set a new version number. Finally, rebuild and publish docs website.`)
 task('release', ['build', 'version', 'tag', 'publish', 'release-gh-pages'])
@@ -101,26 +102,29 @@ task('release', ['build', 'version', 'tag', 'publish', 'release-gh-pages'])
 desc(`Lint TypeScript, Javascript and JSON files.`)
 task('lint', {async: true}, function() {
   let commands = []
-    .concat(SOURCE.map(file => 'tslint ' + file))
-    .concat(TESTS.concat([RIMUC]).map(file => 'jshint ' + file))
+    .concat(RIMU_SRC.concat(RIMUC_SRC).map(file => 'tslint ' + file))
+    .concat(TESTS.map(file => 'jshint ' + file))
     .concat(['jsonlint --quiet package.json'])
   exec(commands, complete)
 })
 
-desc(`Run tests (recompile if necessary).`)
-task('test', ['compile', 'build-rimuc'], {async: true}, function() {
+desc(`Run tests (rebuild if necessary).`)
+task('test', ['build-rimu', 'build-rimuc'], {async: true}, function() {
   let commands = TESTS.map(file => 'tape ' + file + ' | faucet')
   exec(commands, complete)
 })
 
-desc(`Compile Typescript to JavaScript then bundle CommonJS and scriptable libraries.`)
-task('compile', [RIMU_LIB])
+desc(`Compile and bundle Rimu to (unminified) JavaScript library.`)
+task('build-rimu', [RIMU_LIB])
 
-file(RIMU_LIB, SOURCE, {async: true}, function() {
+file(RIMU_LIB, RIMU_SRC, {async: true}, function() {
   exec('webpack -d', complete)
 })
 
-file(RIMU_LIB_MIN, SOURCE, {async: true}, function() {
+desc(`Compile and bundle Rimu to minified JavaScript library.`)
+task('build-rimu-min', [RIMU_LIB_MIN])
+
+file(RIMU_LIB_MIN, RIMU_SRC, {async: true}, function() {
   exec('webpack -p --output-filename ' + RIMU_LIB_MIN, function() {
     // Prepend package name and version comment to minified library file.
     `/* ${pkg.name} ${pkg.version} (${pkg.repository.url}) */\n${shelljs.cat(RIMU_LIB_MIN)}`
@@ -129,7 +133,7 @@ file(RIMU_LIB_MIN, SOURCE, {async: true}, function() {
   })
 })
 
-desc(`Build rimuc.`)
+desc(`Compile rimuc to JavaScript executable.`)
 task('build-rimuc', {async: true}, function() {
     exec(`tsc -p src/rimuc`, function() {
     `#!/usr/bin/env node\n${shelljs.cat(RIMUC)}`.to(RIMUC) // Prepend Shebang line.
@@ -139,7 +143,7 @@ task('build-rimuc', {async: true}, function() {
 })
 
 desc(`Generate HTML documentation`)
-task('html-docs', [RIMU_LIB_MIN], {async: true}, function() {
+task('html-docs', ['build-rimu-min'], {async: true}, function() {
   let commands = DOCS.map(doc =>
     'node ' + RIMUC +
     ' --styled --lint --no-rimurc' +
@@ -184,7 +188,7 @@ task('commit', ['test'], {async: true}, function() {
   jake.exec('git commit -a', {interactive: true}, complete)
 })
 
-desc(`push, publish-npm.`)
+desc(`Push to Github and publish to npm.`)
 task('publish', ['push', 'publish-npm'])
 
 desc(`Push local commits to Github.`)
@@ -193,7 +197,7 @@ task('push', ['test'], {async: true}, function() {
 })
 
 desc(`Publish to npm.`)
-task('publish-npm', {async: true}, ['test', RIMU_LIB_MIN], function() {
+task('publish-npm', {async: true}, ['test', 'build-rimu-min'], function() {
   exec('npm publish', complete)
 })
 
@@ -201,7 +205,7 @@ desc(`Rebuild and validate documentation then commit and publish to GitHub Pages
 task('release-gh-pages', ['build-gh-pages', 'commit-gh-pages', 'push-gh-pages'])
 
 desc(`Generate documentation and copy to local gh-pages repo`)
-task('build-gh-pages', ['html-docs', 'validate-html'], function() {
+task('build-gh-pages', ['build-rimu-min', 'html-docs', 'validate-html'], function() {
   shelljs.cp('-f', HTML.concat(RIMU_LIB_MIN), GH_PAGES_DIR)
 })
 
