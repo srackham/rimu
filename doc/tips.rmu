@@ -532,6 +532,19 @@ Lobortis lacus vestibulum sem.
 
 {generate-rendered-example-2|tables-example}
 
+The use of inline HTML for tables instead of a Rimu-specific table
+syntax was a deliberate design decision:
+
+- A large number of formatting options (e.g. for headers and footers;
+  cell widths, heights, alignment and spans) are required to
+  accommodate all but the simplest of tables. This makes for a complex
+  and noisy syntax -- precisely what we're trying to avoid.
+- Coming up with a syntax that is both recognizably tabular and easily
+  written is difficult -- imagine trying to write the example above in
+  a way that maintains the side-by-side cell layout.
+- At first blush tables come across as a hugely useful feature, but
+  most documentation makes surprising little use of tables.
+
 
 ## Macro meta-programming
 You can define macros which, when invoked, generate other macros. A
