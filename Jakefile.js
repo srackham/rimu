@@ -125,7 +125,7 @@ desc(`Compile and bundle Rimu to minified JavaScript library.`)
 task('build-rimu-min', [RIMU_LIB_MIN])
 
 file(RIMU_LIB_MIN, RIMU_SRC, {async: true}, function() {
-  exec('webpack -p --output-filename ' + RIMU_LIB_MIN, function() {
+  exec('webpack --optimize-minimize --output-filename ' + RIMU_LIB_MIN, function() {
     // Prepend package name and version comment to minified library file.
     `/* ${pkg.name} ${pkg.version} (${pkg.repository.url}) */\n${shelljs.cat(RIMU_LIB_MIN)}`
       .to(RIMU_LIB_MIN)
@@ -135,7 +135,7 @@ file(RIMU_LIB_MIN, RIMU_SRC, {async: true}, function() {
 
 desc(`Compile rimuc to JavaScript executable.`)
 task('build-rimuc', {async: true}, function() {
-    exec(`tsc -p src/rimuc`, function() {
+    exec(`tsc --project src/rimuc`, function() {
     `#!/usr/bin/env node\n${shelljs.cat(RIMUC)}`.to(RIMUC) // Prepend Shebang line.
     shelljs.chmod('+x', RIMUC)
     complete()
