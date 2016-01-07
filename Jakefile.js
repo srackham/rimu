@@ -153,7 +153,7 @@ task('html-docs', ['build-rimu-min'], {async: true}, function() {
     ' --output "' + doc.dst + '"' +
     ' --title "' + doc.title + '"' +
     ' ' + doc.rimucOptions + ' ' +
-    ' ./src/rimuc/example-rimurc.rmu ./doc/doc-header.rmu ' + doc.src
+    ' ./src/examples/example-rimurc.rmu ./doc/doc-header.rmu ' + doc.src
   )
   exec(commands, complete)
 })
