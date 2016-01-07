@@ -5,7 +5,7 @@
     "noImplicitAny": true
   },
   "files": [
-    "../../typings/node.d.ts",
+    "node.d.ts",
     "rimu.d.ts",
     "rimuc.ts"
   ]
