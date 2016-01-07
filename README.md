@@ -30,7 +30,6 @@ Plus:
   and parametrized macros.
 - Element syntax and behavior can be modified and extended.
 - Written in TypeScript.
-- Browser and npm compatible library.
 - Includes command-line compiler, JavaScript library, TypeScript
   library declaration file, playground GUI,
   Vim syntax highlighter and a unit test suite.
