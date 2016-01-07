@@ -3,13 +3,9 @@
   Run 'node rimu.js --help' for details.
 */
 
-// Kludge to ensure rimu.js is loaded from same directory as rimuc.js.
-// See https://gist.github.com/branneman/8048520
-(module as any).paths.unshift(__dirname);
-
 import path = require('path')
 import fs = require('fs')
-import Rimu = require('rimu')
+import Rimu = require('./rimu')
 
 const MANPAGE = `NAME
   rimuc - convert Rimu source to HTML

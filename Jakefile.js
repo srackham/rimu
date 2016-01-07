@@ -13,10 +13,11 @@ let child_process = require('child_process')
 let RIMU_LIB = 'bin/rimu.js'
 let RIMU_LIB_MIN = 'bin/rimu.min.js'
 let RIMU_SRC = shelljs.ls('src/rimu/*.ts')
+let RIMU_TSD = 'typings/rimu.d.ts'
 let TESTS = shelljs.ls('tests/*.js')
-let GH_PAGES_DIR = './gh-pages/'
-let RIMUC = './bin/rimuc.js'
-let RIMUC_SRC = shelljs.ls('src/rimuc/*.ts')
+let GH_PAGES_DIR = 'gh-pages/'
+let RIMUC = 'bin/rimuc.js'
+let RIMUC_TS = 'src/rimuc/rimuc.ts'
 
 let DOCS = [
   {
@@ -102,7 +103,8 @@ task('release', ['build', 'version', 'tag', 'publish', 'release-gh-pages'])
 desc(`Lint TypeScript, Javascript and JSON files.`)
 task('lint', {async: true}, function() {
   let commands = []
-    .concat(RIMU_SRC.concat(RIMUC_SRC).map(file => 'tslint ' + file))
+    .concat(RIMU_SRC.concat([RIMUC_TS, RIMU_TSD])
+      .map(file => 'tslint ' + file))
     .concat(TESTS.map(file => 'jshint ' + file))
     .concat(['jsonlint --quiet package.json'])
   exec(commands, complete)
@@ -135,7 +137,8 @@ file(RIMU_LIB_MIN, RIMU_SRC, {async: true}, function() {
 
 desc(`Compile rimuc to JavaScript executable.`)
 task('build-rimuc', {async: true}, function() {
-    exec(`tsc --project src/rimuc`, function() {
+  shelljs.cp('-f', RIMU_TSD, 'src/rimuc/')  // Kludge: Because there is no way to redirect module references.
+  exec(`tsc --project src/rimuc`, function() {
     `#!/usr/bin/env node\n${shelljs.cat(RIMUC)}`.to(RIMUC) // Prepend Shebang line.
     shelljs.chmod('+x', RIMUC)
     complete()
@@ -150,7 +153,7 @@ task('html-docs', ['build-rimu-min'], {async: true}, function() {
     ' --output "' + doc.dst + '"' +
     ' --title "' + doc.title + '"' +
     ' ' + doc.rimucOptions + ' ' +
-    ' ./examples/.rimurc ./doc/doc-header.rmu ' + doc.src
+    ' ./src/rimuc/example-rimurc.rmu ./doc/doc-header.rmu ' + doc.src
   )
   exec(commands, complete)
 })

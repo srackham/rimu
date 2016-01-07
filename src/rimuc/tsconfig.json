@@ -6,7 +6,7 @@
   },
   "files": [
     "../../typings/node.d.ts",
-    "../../typings/rimu.d.ts",
+    "rimu.d.ts",
     "rimuc.ts"
   ]
 }
