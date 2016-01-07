@@ -113,8 +113,7 @@ Set the `no-highlight` class to disable syntax highlighting for a code
 block.  Adding the `no-highlight` class to all code blocks using
 _Delimited Block Definitions_ turns off highlighting
 unless the language class is explicitly set. The [example .rimurc
-file](https://github.com/srackham/rimu/blob/master/examples/.rimurc)
-does this with these custom definitions:
+file]({example-rimurc}) does this with these custom definitions:
 
   |code| = '<pre class="no-highlight"><code>|</code></pre>'
   |indented| = '<pre class="no-highlight"><code>|</code></pre>'
@@ -202,10 +201,10 @@ details.
 If you've added custom replacements and quotes you can highlight them
 in Vim by creating a custom `~/.vim/after/syntax/rimu.vim` syntax
 file (Vim loads files from the `after` directory after loading normal
-syntax files).  The distributed [example ~/.vim/after/syntax/rimu.vim
-syntax file](https://github.com/srackham/rimu/blob/master/examples/rimu.vim)
-highlights custom syntax definitions from the [example .rimurc
-file](https://github.com/srackham/rimu/blob/master/examples/.rimurc).
+syntax files).  The distributed example
+[~/.vim/after/syntax/rimu.vim](https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.vim)
+syntax file highlights custom syntax definitions from the [example
+.rimurc file]({example-rimurc}).
 
 
 ## Render contiguous Indented paragraphs with a single element
@@ -264,8 +263,8 @@ source non-portable and less readable.
 .#example-rimurc
 ## Example .rimurc file
 The Rimu distribution includes an [example .rimurc
-file](https://github.com/srackham/rimu/blob/master/examples/.rimurc)
-containing useful macros, quotes and replacement definitions.
+file]({example-rimurc}) containing useful macros, quotes and
+replacement definitions.
 
 It is important to note that these niceties have been defined in
 Rimu Markup -- Rimu has been extended using Rimu. No plugins

@@ -143,6 +143,8 @@ Rimu source</td>
 {github} = 'http://github.com/srackham/rimu'
 {npm} = 'https://npmjs.org/package/rimu'
 {tips} = 'tips.html'
+{example-rimurc} = 'https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.rmu'
+
 
 // Header menu.
 <ul class="breadcrumb pull-right no-print">
