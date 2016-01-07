@@ -467,7 +467,9 @@ Definition for second term.'
 {generate-rendered-example-1|labeled-lists-example}
 ..
 - A list item can span multiple contiguous lines.
-- List items can be indented but this has no semantic significance.
+- List items can be indented but this has no semantic significance
+  (indents are fussy to write and are prone to editor tab expansion
+  and copy-and-paste corruption).
 - _Numbered_ list IDs can be prefixed with numbers but the number has no
   semantic significance.
 - When a list item is followed by an item with a different ID the
