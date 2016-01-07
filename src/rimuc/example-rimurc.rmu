@@ -1,6 +1,6 @@
 /*
-  ~/.rimurc file containing custom Rimu Markup definitions used by
-  rimuc command.
+  Custom Rimu Markup definitions for use by the rimuc command.
+  Rename this file to ~/.rimurc and it will be loaded automatically by rimurc.
 */
 
 
