@@ -654,6 +654,19 @@ ordered list items.'
 {generate-rendered-example-1|list-item-counters-example}
 
 
+## Horizontal labeled lists
+Use the _rimuc_ tool `--styled` option along with the `dl-horizontal`
+CSS class to format labeled lists horizontally.
+
+{horizontal-list-example} = '.dl-horizontal
+First term::
+    Definition one.
+Second term::
+    Definition for second term.'
+
+{generate-rendered-example-1|horizontal-list-example}
+
+
 ## Section numbering
 If you define the `--section-numbers` macro the  _rimuc_ tool
 `--styled` option will emit CSS to automatically number _h2_ sections
