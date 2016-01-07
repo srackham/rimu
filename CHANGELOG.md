@@ -3,6 +3,28 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
+## Version 7.0.0 (2016-01-08)
+- **BREAKING CHANGE:** A single UMD formatted Rimu library file
+  `rimu.js` (along with the minified version `rimu.min.js`) are now
+  distributed instead of previous separate CommonJS and browser
+  versions (`rimu-commonjs2.js`, `rimu-var.js`, `rimu-var.min.js`) so
+  you will need to rename the latter in code that imports the Rimu
+  library.
+- Ported `rimuc` to TypeScript and added a test suite for `rimuc`.
+- The Rimu `rimu.d.ts` ships with the npm package and is specified in
+  `package.json` using the TypeScript 1.6 [typings for npm
+  packages](https://github.com/Microsoft/TypeScript/wiki/Typings-for-npm-packages)
+  feature. The upshot being that TypeScript declarations are loaded
+  automatically when you require the library from TypeScript source:
+
+          // Automatically loads node_modules/rimu/bin/rimu.d.ts
+          import Rimu = require('rimu')
+
+- Use Webpack to minify the Rimu library -- this reduced the minified
+  `rimu.min.js` to 18.7KB (previously was 28.2KB).
+- Upgrade all build tools to latest versions.
+
+
 ## Version 6.1.0 (2015-08-19)
 - Allow macro invocations in _API Option_ element values.
 - Allow _Quote_ elements in URL and and email address captions.
