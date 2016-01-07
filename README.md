@@ -30,7 +30,7 @@ Plus:
   and parametrized macros.
 - Element syntax and behavior can be modified and extended.
 - Written in TypeScript.
-- Available from Github and as an npm module.
+- Browser and npm compatible library.
 - Includes command-line compiler, JavaScript library, TypeScript
   library declaration file, playground GUI,
   Vim syntax highlighter and a unit test suite.
@@ -49,23 +49,47 @@ the latest changes.
 
 ## Installing Rimu
 
-- Install Rimu as a Node.js module (includes the `rimuc` command-line
-  tool, run `rimuc --help`):
+Install Rimu as a Node.js module (includes the `rimu` library and the
+`rimuc` command-line tool):
 
         sudo npm install -g rimu
 
-- Get the source from [Github](https://github.com/srackham/rimu).
+
+## Building Rimu
+
+To build Rimu and the Rimu documentation from source:
+
+1. Install the Git repository from [Github](https://github.com/srackham/rimu).
+
+        git clone git@github.com:srackham/rimu.git
+
+2. Install gh-pages sub-repository:
+
+        cd rimu
+        git clone git@github.com:srackham/rimu.git -b gh-pages gh-pages
+
+3. Install dependencies:
+
+        npm install
+
+4. Build Rimu:
+
+        jake build
 
 
-## Example applications
+## Using the Rimu library
 
-See the _API_ documentation topic in the [Rimu
-Playground](http://srackham.github.io/rimu/rimuplayground.html).
-
-- Rimu includes the _rimuc_ command-line tool (`./bin/rimuc.js`) and
-  the _Rimu Playground_ (`./bin/rimuplayground.html`) -- examples of
-  using Rimu in Node.js and in the browser respectively.
-- A [Chrome browser
+- First read the [Rimu
+  API](http://srackham.github.io/rimu/reference.html#api)
+  documentation.
+- A minimal TypeScript example
+  [minimal-example.ts](https://github.com/srackham/rimu/blob/master/src/examples/minimal-example.ts).
+- Rimu includes the
+  [rimuc](https://github.com/srackham/rimu/blob/master/src/rimuc/rimuc.ts)
+  command-line tool  and the [Rimu
+  Playground](http://srackham.github.io/rimu/rimuplayground.html) --
+  examples of using Rimu in Node.js and in the browser respectively.
+- A simple [Chrome browser
   extension](https://github.com/srackham/rimu-chrome-extension.git)
   for rendering Rimu Markup files directly in the browser.
 
@@ -74,4 +98,4 @@ Playground](http://srackham.github.io/rimu/rimuplayground.html).
 
 The generated HTML is compatible with all browsers. The Rimu
 JavaScript library works with the latest versions of IE, Firefox and
-Chrome, seems OK on Android 4 and iOS. Does not run on IE8.
+Chrome, seems OK on Android and iOS. Does not run on IE8.

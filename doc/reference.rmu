@@ -67,14 +67,16 @@ are retained across API calls along with API options.
 Use the `reset` option to set the default state.
 
 ### Example usage
-Node.js example (Rimu has been installed from [npm]({npm})):
+Node.js example (Rimu has been previously installed from
+[npm]({npm})):
 
 `` javascript
 var Rimu = require('rimu');
 var html= Rimu.render('Hello *Rimu*!', {safeMode:1});
 ``
 
-HTML script tag example:
+HTML script tag example (compiled and minified JavaScript libraries
+can be found in the package `./rimu/bin` folder):
 
 `` xml
 <script src="rimu.min.js"></script>
@@ -83,8 +85,6 @@ HTML script tag example:
 </script>
 ``
 
-See `rimuc.js` and `rimuplayground.html` for examples of `render()`
-in action.
 
 ### API options
 The `options` argument is an object with zero or more of the following
