@@ -1,8 +1,8 @@
 /*
- Simplest TypeScript application.
+ Simplest Rimu TypeScript application.
 
- tsc --module commonjs rimu-typings-test.ts   # Compile.
- node rimu-typings-test.js                    # Run.
+ tsc --module commonjs minimal-example.ts   # Compile.
+ node minimal-example.js                    # Run.
 
  */
 
