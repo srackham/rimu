@@ -18,20 +18,15 @@ Plus:
   compatible]({tips}#markdown-compatible).
 - Rimu is fast (same speed as _marked 0.3.2_ compiling Rimu
   `README.md`).
+- The generated HTML is compatible with all modeern browsers.
 
 
 ## Installing Rimu
 
-- Install Rimu as a Node.js module (includes the `rimuc` command-line
-  tool, run `rimuc --help`):
+Install Rimu as a Node.js module (includes the `rimu` library and the
+`rimuc` command-line tool):
 
         sudo npm install -g rimu
-
-- Get the source from [Github]({github}).
-
-The generated HTML is compatible with all browsers.  The Rimu
-JavaScript library works with all modern browsers but it does not run
-on IE8.
 
 
 ## Resources

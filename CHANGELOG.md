@@ -12,10 +12,11 @@ for more detailed information.
   library.
 - Ported `rimuc` to TypeScript and added a test suite for `rimuc`.
 - The Rimu `rimu.d.ts` ships with the npm package and is specified in
-  `package.json` using the TypeScript 1.6 [typings for npm
+  `package.json` using the [TypeScript 1.6 typings for npm
   packages](https://github.com/Microsoft/TypeScript/wiki/Typings-for-npm-packages)
-  feature. The upshot being that TypeScript declarations are loaded
-  automatically when you require the library from TypeScript source:
+  feature. The upshot being that Rimu's TypeScript declarations are loaded
+  automatically from the _rimu_ npm package when you import the Rimu
+  library from a TypeScript source file:
 
           // Automatically loads node_modules/rimu/bin/rimu.d.ts
           import Rimu = require('rimu')

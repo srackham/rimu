@@ -158,7 +158,7 @@ task('html-docs', ['build-rimu-min'], {async: true}, function() {
   exec(commands, complete)
 })
 
-desc(`Validate HTML documents with W3C Validator.`)
+desc(`Validate HTML documents.`)
 task('validate-html', {async: true}, function() {
   let commands = HTML.map(file => 'nu-html-checker ' + file)
   exec(commands, complete)
