@@ -3,6 +3,10 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
+## Version 7.0.1 (2016-01-08)
+- npm publication glitch -- did not pick up README.
+
+
 ## Version 7.0.0 (2016-01-08)
 - **BREAKING CHANGE:** A single UMD formatted Rimu library file
   `rimu.js` (along with the minified version `rimu.min.js`) are now
