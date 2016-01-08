@@ -377,9 +377,8 @@ if x == 1:
 <p>Set the <code>no-highlight</code> class to disable syntax highlighting for a code
 block.  Adding the <code>no-highlight</code> class to all code blocks using
 <em>Delimited Block Definitions</em> turns off highlighting
-unless the language class is explicitly set. The <a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example .rimurc
-file</a>
-does this with these custom definitions:</p>
+unless the language class is explicitly set. The <a href="https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.rmu">example .rimurc
+file</a> does this with these custom definitions:</p>
 <pre class="no-highlight"><code>|code| = '&lt;pre class="no-highlight"&gt;&lt;code&gt;|&lt;/code&gt;&lt;/pre&gt;'
 |indented| = '&lt;pre class="no-highlight"&gt;&lt;code&gt;|&lt;/code&gt;&lt;/pre&gt;'</code></pre>
 <h2 id="markdown-compatible">Syntax shared with Markdown</h2>
@@ -459,10 +458,10 @@ details.</p>
 <p>If you've added custom replacements and quotes you can highlight them
 in Vim by creating a custom <code>~/.vim/after/syntax/rimu.vim</code> syntax
 file (Vim loads files from the <code>after</code> directory after loading normal
-syntax files).  The distributed <a href="https://github.com/srackham/rimu/blob/master/examples/rimu.vim">example ~/.vim/after/syntax/rimu.vim
-syntax file</a>
-highlights custom syntax definitions from the <a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example .rimurc
-file</a>.</p>
+syntax files).  The distributed example
+<a href="https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.vim">~/.vim/after/syntax/rimu.vim</a>
+syntax file highlights custom syntax definitions from the <a href="https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.rmu">example
+.rimurc file</a>.</p>
 <h2>Render contiguous Indented paragraphs with a single element</h2>
 <p>When you have multiple Indented paragraphs separated by blank lines
 the usual expectation is that they will be contained in a single
@@ -539,9 +538,9 @@ quotation characters.</p>
 which can produce unexpected results. It can also make your Rimu
 source non-portable and less readable.</p>
 <h2 id="example-rimurc">Example .rimurc file</h2>
-<p>The Rimu distribution includes an <a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example .rimurc
-file</a>
-containing useful macros, quotes and replacement definitions.</p>
+<p>The Rimu distribution includes an <a href="https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.rmu">example .rimurc
+file</a> containing useful macros, quotes and
+replacement definitions.</p>
 <p>It is important to note that these niceties have been defined in
 Rimu Markup &mdash; Rimu has been extended using Rimu. No plugins
 or special configuration file syntax were necessary.</p>
@@ -900,7 +899,18 @@ included in the list item.</code></pre>
 </table>
 </div>
 </td></tr></table>
-<h2>Macro meta-programming</h2>
+<p>The use of inline HTML for tables instead of a Rimu-specific table
+syntax was a deliberate design decision:</p>
+<ul><li>A large number of formatting options (e.g. for headers and footers;
+  cell widths, heights, alignment and spans) are required to
+  accommodate all but the simplest of tables. This makes for a complex
+  and noisy syntax &mdash; precisely what we're trying to avoid.
+</li><li>Coming up with a syntax that is both recognizably tabular and easily
+  written is difficult &mdash; imagine trying to write the example above in
+  a way that maintains the side-by-side cell layout.
+</li><li>At first blush tables come across as a hugely useful feature, but
+  most documentation makes surprising little use of tables.
+</li></ul><h2>Macro meta-programming</h2>
 <p>You can define macros which, when invoked, generate other macros. A
 good example of this is the generation of document section headers,
 links and table of contents entries from a section identifier and
@@ -1033,6 +1043,33 @@ ordered list items.</code></pre>
 </li><li>Item two.
 </li></ol><p class="ol-counter">ordered list items.</p>
 </div>
+</td></tr></tbody></table>
+<h2>Horizontal labeled lists</h2>
+<p>Use the <em>rimuc</em> tool <code>--styled</code> option along with the <code>dl-horizontal</code>
+CSS class to format labeled lists horizontally.</p>
+<h4>Examples</h4>
+<table class="example table table-bordered">
+<thead><tr class="example-header">
+<th>
+<span class="icon-edit no-print" title="Edit example" style="cursor:pointer;" onclick="editExample('horizontal-list-example')"></span>
+Rimu source</th>
+<th>Rendered HTML</th>
+</tr></thead><tbody><tr>
+<td style="width:50%;">
+<pre id="horizontal-list-example-source" class="example-source no-highlight"><code>.dl-horizontal
+First term::
+    Definition one.
+Second term::
+    Definition for second term.</code></pre>
+<textarea id="horizontal-list-example-edit" class="example-edit" onkeyup="updateExample('horizontal-list-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="horizontal-list-example-rendered" class="example-rendered">
+<dl class="dl-horizontal"><dt>First term</dt><dd>
+    Definition one.
+</dd><dt>Second term</dt><dd>
+    Definition for second term.
+</dd></dl></div>
 </td></tr></tbody></table>
 <h2>Section numbering</h2>
 <p>If you define the <code>--section-numbers</code> macro the  <em>rimuc</em> tool

@@ -243,14 +243,11 @@ into the Rimu markup syntax):</p>
   compatible</a>.
 </li><li>Rimu is fast (same speed as <em>marked 0.3.2</em> compiling Rimu
   <code>README.md</code>).
+</li><li>The generated HTML is compatible with all modeern browsers.
 </li></ul><h2>Installing Rimu</h2>
-<ul><li>Install Rimu as a Node.js module (includes the <code>rimuc</code> command-line
-  tool, run <code>rimuc --help</code>):
+<p>Install Rimu as a Node.js module (includes the <code>rimu</code> library and the
+<code>rimuc</code> command-line tool):</p>
 <pre class="no-highlight"><code>sudo npm install -g rimu</code></pre>
-</li><li>Get the source from <a href="http://github.com/srackham/rimu">Github</a>.
-</li></ul><p>The generated HTML is compatible with all browsers.  The Rimu
-JavaScript library works with all modern browsers but it does not run
-on IE8.</p>
 <h2>Resources</h2>
 <h3>Learning</h3>
 <ul><li>Experiment with Rimu in the <a href="rimuplayground.html">Rimu Playground</a> or open
@@ -274,16 +271,16 @@ The optional <code>options</code> argument controls rendering behaviour.</p>
 are retained across API calls along with API options.
 Use the <code>reset</code> option to set the default state.</p>
 <h3>Example usage</h3>
-<p>Node.js example (Rimu has been installed from <a href="https://npmjs.org/package/rimu">npm</a>):</p>
+<p>Node.js example (Rimu has been previously installed from
+<a href="https://npmjs.org/package/rimu">npm</a>):</p>
 <pre class="javascript no-highlight"><code>var Rimu = require('rimu');
 var html= Rimu.render('Hello *Rimu*!', {safeMode:1});</code></pre>
-<p>HTML script tag example:</p>
+<p>HTML script tag example (compiled and minified JavaScript libraries
+can be found in the package <code>./rimu/bin</code> folder):</p>
 <pre class="xml no-highlight"><code>&lt;script src="rimu.min.js"&gt;&lt;/script&gt;
 &lt;script&gt;
   console.log(Rimu.render('Hello *Rimu*!', {reset:true, safeMode:2}));
 &lt;/script&gt;</code></pre>
-<p>See <code>rimuc.js</code> and <code>rimuplayground.html</code> for examples of <code>render()</code>
-in action.</p>
 <h3>API options</h3>
 <p>The <code>options</code> argument is an object with zero or more of the following
 properties:</p>
@@ -774,7 +771,9 @@ Definition for second term.
 </td></tr></tbody></table>
 </div>
 </li><li>A list item can span multiple contiguous lines.
-</li><li>List items can be indented but this has no semantic significance.
+</li><li>List items can be indented but this has no semantic significance
+  (indents are fussy to write and are prone to editor tab expansion
+  and copy-and-paste corruption).
 </li><li><em>Numbered</em> list IDs can be prefixed with numbers but the number has no
   semantic significance.
 </li><li>When a list item is followed by an item with a different ID the

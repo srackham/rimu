@@ -188,7 +188,26 @@
 <h1>Rimu Markup CHANGELOG</h1>
 <p>See the <a href="https://github.com/srackham/rimu/commits/">Git commit log</a>
 for more detailed information.</p>
-<h2>Version 6.1.0 (2015-08-19)</h2>
+<h2>Version 7.0.0 (2016-01-08)</h2>
+<ul><li><strong>BREAKING CHANGE:</strong> A single UMD formatted Rimu library file
+  <code>rimu.js</code> (along with the minified version <code>rimu.min.js</code>) are now
+  distributed instead of previous separate CommonJS and browser
+  versions (<code>rimu-commonjs2.js</code>, <code>rimu-var.js</code>, <code>rimu-var.min.js</code>) so
+  you will need to rename the latter in code that imports the Rimu
+  library.
+</li><li>Ported <code>rimuc</code> to TypeScript and added a test suite for <code>rimuc</code>.
+</li><li>The Rimu <code>rimu.d.ts</code> ships with the npm package and is specified in
+  <code>package.json</code> using the <a href="https://github.com/Microsoft/TypeScript/wiki/Typings-for-npm-packages">TypeScript 1.6 typings for npm
+  packages</a>
+  feature. The upshot being that Rimu's TypeScript declarations are loaded
+  automatically from the <em>rimu</em> npm package when you import the Rimu
+  library from a TypeScript source file:
+<pre class="no-highlight"><code>// Automatically loads node_modules/rimu/bin/rimu.d.ts
+import Rimu = require('rimu')</code></pre>
+</li><li>Use Webpack to minify the Rimu library &mdash; this reduced the minified
+  <code>rimu.min.js</code> to 18.7KB (previously was 28.2KB).
+</li><li>Upgrade all build tools to latest versions.
+</li></ul><h2>Version 6.1.0 (2015-08-19)</h2>
 <ul><li>Allow macro invocations in <em>API Option</em> element values.
 </li><li>Allow <em>Quote</em> elements in URL and and email address captions.
 </li><li>Add <code>callback</code> API to <code>rimu.d.ts</code> type definitions file.
