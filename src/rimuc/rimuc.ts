@@ -88,6 +88,7 @@ STYLING MACROS AND CLASSES
   sidebar          Sidebar format (paragraphs, division blocks).
   no-print         Do not print.
   dl-numbered      Number labeled list items.
+  dl-horizontal    Format labeled lists horizontally.
   dl-counter       Prepend dl item counter to element content.
   ol-counter       Prepend ol item counter to element content.
   ul-counter       Prepend ul item counter to element content.

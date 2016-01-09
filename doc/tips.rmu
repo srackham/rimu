@@ -70,9 +70,9 @@ So does [this link](#link-target).'
 
 {generate-rendered-example-1|document-links-example}
 
-NOTE: The [rimuc]({reference}#rimuc) `--styled` option automatically
-synthesises `id` attributes for top level `#`, `##` and `###` header
-elements that do not already have an `id`.
+NOTE: The [rimuc]({reference}#rimuc-command) `--styled` option
+automatically synthesises `id` attributes for top level `#`, `##` and
+`###` header elements that do not already have an `id`.
 
 
 .#syntax-highlighting
@@ -666,6 +666,26 @@ Second term::
 {generate-rendered-example-1|horizontal-list-example}
 
 
+## Include arbitrary elements in list items
+A Division Block can be used to group and append arbitrary block
+elements to a list item.
+
+{composite-list-item-example} = '- First list item.
+..
+Include a paragraph in the list item.
+
+> And a Quoted paragraph.
+..
+
+- Second list item.'
+
+{generate-rendered-example-1|composite-list-item-example}
+
+This works because if a [Fenced Block]({reference}#fenced-blocks)
+immediately follows a list item without any intervening blank lines
+then it will be rendered with the list item.
+
+
 ## Section numbering
 If you define the `--section-numbers` macro the  _rimuc_ tool
 `--styled` option will emit CSS to automatically number _h2_ sections
@@ -677,8 +697,9 @@ globally in your `.rimurc` file. For example:
 
 
 ## Nested Fenced Blocks
-Fenced blocks of the same type can be nested by using differing
-numbers of delimiter characters to distinguish between them.
+[Fenced blocks]({reference}#fenced-blocks) of the same type can be
+nested by using differing numbers of delimiter characters to
+distinguish between them.
 
 {nested-fenced-blocks-example} = '""
 Urna aliquam pid, pulvinar augue ut

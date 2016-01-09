@@ -48,6 +48,7 @@ See the [API documentation](#api).
   for rendering Rimu Markup files directly in the browser.
 
 
+.#api
 ## API
 Rimu has just one API to convert Rimu markup to HTML:
 
@@ -294,6 +295,7 @@ is optional.
 {generate-rendered-example-1|headers-example}
 
 
+.#fenced-blocks
 ## Fenced Blocks
 Fenced blocks are [Delimited Blocks](#delimited-blocks) bounded by
 opening and closing delimiter lines consisting of two or more
@@ -919,6 +921,7 @@ macros, a number of reserved macros are defined by the [rimuc
 command](#rimuc-command).
 
 
+.#rimuc-command
 ## `rimuc` command
 _rimuc_ is a Node.js command-line tool that converts Rimu source to
 HTML. Run `rimuc --help` to view the `rimuc` manpage:
@@ -1007,6 +1010,7 @@ STYLING MACROS AND CLASSES
   sidebar          Sidebar format (paragraphs, division blocks).
   no-print         Do not print.
   dl-numbered      Number labeled list items.
+  dl-horizontal    Format labeled lists horizontally.
   dl-counter       Prepend dl item counter to element content.
   ol-counter       Prepend ol item counter to element content.
   ul-counter       Prepend ul item counter to element content.
@@ -1050,7 +1054,7 @@ the other source files. The header and footer ensures:
   have an `id`.  For example a header with the title `The End!` is
   assigned an `id` attribute value
   `the-end`. Slug ids are generated from the header title as follows:
-
+..
   . Convert the title to lowercase.
   . Replace spaces with a dash.
   . Remove characters that are not alphanumeric, dashes or
@@ -1059,6 +1063,12 @@ the other source files. The header and footer ensures:
     successively postfixed with `-2`, `-3`... until a unique id is
     found.
 
+NOTE: Synthesised slugs are generated dynamically when the page is
+rendered and are not visible from other documents -- if you want to
+link the location from another document you will need to create an
+explicit anchor e.g. using a [Block Attribute](#block-attributes)
+_id_.
+..
 - In addition to Bootstrap CSS style classes there are styles for
   verses, sidebars and section numbering (see `rimuc --help` command
   and [Rimu Tips]({tips})).
@@ -1066,7 +1076,7 @@ the other source files. The header and footer ensures:
 
 ## Vim syntax file
 The Rimu distribution includes a
-<https://raw.github.com/srackham/rimu/master/tools/vim/syntax/rimu.vim|syntax
+<https://github.com/srackham/rimu/blob/master/src/vim/syntax/rimu.vim|syntax
 highlighter> for the Vim editor. Copy `rimu.vim` to your
 `$HOME/.vim/syntax` directory and then use the Vim `:set syn=rimu`
 command or put this line in your `$HOME/.vimrc` file to enable Rimu
