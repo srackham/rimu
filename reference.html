@@ -261,7 +261,7 @@ into the Rimu markup syntax):</p>
 </li><li>A <a href="https://github.com/srackham/rimu-chrome-extension.git">Chrome browser
   extension</a>
   for rendering Rimu Markup files directly in the browser.
-</li></ul><h2>API</h2>
+</li></ul><h2 id="api">API</h2>
 <p>Rimu has just one API to convert Rimu markup to HTML:</p>
 <pre class="no-highlight"><code>render(source [, options])</code></pre>
 <p>The <code>source</code> argument is a string containing Rimu markup. The return
@@ -485,7 +485,7 @@ Rimu source</th>
 <h6>h6 header</h6>
 </div>
 </td></tr></tbody></table>
-<h2>Fenced Blocks</h2>
+<h2 id="fenced-blocks">Fenced Blocks</h2>
 <p>Fenced blocks are <a href="#delimited-blocks">Delimited Blocks</a> bounded by
 opening and closing delimiter lines consisting of two or more
 delimiter characters starting at the left margin.</p>
@@ -1287,7 +1287,7 @@ experimentation.</p>
 <p>Macros with names starting with two hyphen characters are <em>Reserved</em>
 macros, a number of reserved macros are defined by the <a href="#rimuc-command">rimuc
 command</a>.</p>
-<h2><code>rimuc</code> command</h2>
+<h2 id="rimuc-command"><code>rimuc</code> command</h2>
 <p><em>rimuc</em> is a Node.js command-line tool that converts Rimu source to
 HTML. Run <code>rimuc --help</code> to view the <code>rimuc</code> manpage:</p>
 <pre class="light-background no-highlight"><code>
@@ -1372,6 +1372,7 @@ STYLING MACROS AND CLASSES
   sidebar          Sidebar format (paragraphs, division blocks).
   no-print         Do not print.
   dl-numbered      Number labeled list items.
+  dl-horizontal    Format labeled lists horizontally.
   dl-counter       Prepend dl item counter to element content.
   ol-counter       Prepend ol item counter to element content.
   ul-counter       Prepend ul item counter to element content.
@@ -1403,19 +1404,24 @@ the other source files. The header and footer ensures:</p>
   have an <code>id</code>.  For example a header with the title <code>The End!</code> is
   assigned an <code>id</code> attribute value
   <code>the-end</code>. Slug ids are generated from the header title as follows:
-<ol><li>Convert the title to lowercase.
+<div><ol><li>Convert the title to lowercase.
 </li><li>Replace spaces with a dash.
 </li><li>Remove characters that are not alphanumeric, dashes or
     underscores. If no characters remain the slug is set to <code>x</code>.
 </li><li>If an existing element has a matching id then the slug is
     successively postfixed with <code>-2</code>, <code>-3</code>&hellip; until a unique id is
     found.
-</li></ol></li><li>In addition to Bootstrap CSS style classes there are styles for
+</li></ol><p><b>NOTE</b>: Synthesised slugs are generated dynamically when the page is
+rendered and are not visible from other documents &mdash; if you want to
+link the location from another document you will need to create an
+explicit anchor e.g. using a <a href="#block-attributes">Block Attribute</a>
+<em>id</em>.</p></div>
+</li><li>In addition to Bootstrap CSS style classes there are styles for
   verses, sidebars and section numbering (see <code>rimuc --help</code> command
   and <a href="tips.html">Rimu Tips</a>).
 </li></ul><h2>Vim syntax file</h2>
 <p>The Rimu distribution includes a
-<a href="https://raw.github.com/srackham/rimu/master/tools/vim/syntax/rimu.vim">syntax
+<a href="https://github.com/srackham/rimu/blob/master/src/vim/syntax/rimu.vim">syntax
 highlighter</a> for the Vim editor. Copy <code>rimu.vim</code> to your
 <code>$HOME/.vim/syntax</code> directory and then use the Vim <code>:set syn=rimu</code>
 command or put this line in your <code>$HOME/.vimrc</code> file to enable Rimu
