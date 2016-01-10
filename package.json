@@ -18,6 +18,8 @@
     "rimuc": "bin/rimuc.js"
   },
   "files": [
+    "LICENSE",
+    "README.md",
     "bin/rimu.js",
     "bin/rimu.min.js",
     "bin/rimuc.js",
