@@ -667,7 +667,7 @@ Second term::
 
 
 ## Include arbitrary elements in list items
-A Division Block can be used to group and append arbitrary block
+A _Division Block_ can be used to group and append arbitrary block
 elements to a list item.
 
 {composite-list-item-example} = '- First list item.
@@ -676,7 +676,6 @@ Include a paragraph in the list item.
 
 > And a Quoted paragraph.
 ..
-
 - Second list item.'
 
 {generate-rendered-example-1|composite-list-item-example}

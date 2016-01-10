@@ -3,8 +3,13 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
+## Version 7.0.2 (2016-01-10)
+- Documentation updates.
+
+
 ## Version 7.0.1 (2016-01-08)
-- npm publication glitch -- did not pick up README.
+- npm publication glitch -- did not pick up README. The "glitch"
+  was subsequently found to be bogus.
 
 
 ## Version 7.0.0 (2016-01-08)
