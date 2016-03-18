@@ -192,9 +192,10 @@ output document:
 ## The Rimu markup looks correct but the generated HTML is wrong
 Using an editor with Rimu syntax highlighting support (see previous
 topic) makes it much easier to spot syntax errors.  Rimu includes a
-Vim editor syntax highlighter, see the _Tools_ section of the [Rimu
-Playground](http://srackham.github.io/rimu/rimuplayground.html) for
-details.
+Vim editor syntax highlighter, see the [Vim syntax
+file](http://srackham.github.io/rimu/reference.html#vim-syntax-file)
+section in the [Rimu
+Reference](http://srackham.github.io/rimu/reference.html) for details.
 
 
 ## Extending the Vim syntax highlighter
@@ -586,7 +587,7 @@ lines that end with a single-quote.
   enabling macro expansion. For example:
 ..
 ``
-.+macros
+.-macros
 ```
 {example-42}
 ```
@@ -725,7 +726,7 @@ lacus!
 List termination can be forced by following the list by two or more blank
 lines. This comes in handy if you want to follow one list immediately by
 another or if you want to separate an Indented paragraph from a
-preceding list item.
+preceding list.
 
 
 ## Nested list item ambiguity

@@ -71,8 +71,8 @@ var Rimu = require('rimu');
 var html= Rimu.render('Hello *Rimu*!', {safeMode:1});
 ``
 
-HTML script tag example (compiled and minified JavaScript libraries
-can be found in the package `./rimu/bin` folder):
+HTML script tag example (the compiled and minified `rimu.min.js` library
+can be found in the Rimu npm package `./rimu/bin` folder):
 
 `` xml
 <script src="rimu.min.js"></script>
@@ -760,24 +760,36 @@ Definition syntax:
 
   |block-name| = '<open-tags>|<close-tags> block-options'
 
-- `block-name` is the Delimited Block name (`code`, `comment`,
-  `division`, `html`, `indented`, `quote-paragraph` or `paragraph`).
+- `block-name` is is one of the folowing [Delimited
+  Block](#delimited-blocks) names:
+..
+`code` ([Code Block](#code-block)), \
+`comment` ([Multi-line Comment](#comments)), \
+`division` ([Division Block](#division-block)), \
+`html` ([HTML Block](#html-elements)), \
+`indented` ([Indented Paragraph](#indented-paragraph)), \
+`quote` ([Quote Block](#quote-block)), \
+`quote-paragraph` ([Quote Paragraph](#quote-paragraph)), \
+`paragraph` ([Normal Paragraph](#normal-paragraph)).
+..
+
 - `open-tags` and `close-tags` define the HTML tags that envelope the
   output block. `<open-tags>|<close-tags>` is optional.
 - `block-options` is used to control the processing of Delimited block
-  elements.  `block-options` is optional and consists of one
-  or more of the following space separated options:
-
-  `+macros`:: Enable macro expansion.
-  `-macros`:: Disable macro expansion.
-  `+spans`:: Enable [Quote](#quotes) and [Replacement](#replacements) element processing.
-  `-spans`:: Disable [Quote](#quotes) and [Replacement](#replacements) element processing.
-  `+specials`:: Enable special character entities.
-  `-specials`:: Disable special character entities.
-  `+container`:: The block is a container for Rimu block elements.
-  `-container`:: Turn off the container option.
-  `+skip`:: Skip the block.
-  `-skip`:: Turn off the skip option.
+  elements.  `block-options` is optional and consists of one or more
+  of the following space separated options:
+..
+`+macros` (enable macro expansion), \
+`-macros` (disable macro expansion), \
+`+spans` (enable [Quote](#quotes) and [Replacement](#replacements) element processing), \
+`-spans` (disable [Quote](#quotes) and [Replacement](#replacements) element processing), \
+`+specials` (enable special character entities), \
+`-specials` (disable special character entities), \
+`+container` (the block is a container for Rimu block elements), \
+`-container` (turn off the container option), \
+`+skip` (skip the block), \
+`-skip` (turn off the skip option).
+..
 
 - Do not apply `macros`, `spans` `or specials` block options to
   Division blocks or Quote blocks (container blocks) or Lists.
@@ -1074,6 +1086,7 @@ _id_.
   and [Rimu Tips]({tips})).
 
 
+.#vim-syntax-file
 ## Vim syntax file
 The Rimu distribution includes a
 <https://github.com/srackham/rimu/blob/master/src/vim/syntax/rimu.vim|syntax
