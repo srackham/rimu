@@ -12,14 +12,18 @@ interface Definition {
   termCloseTag?: string   // Definition lists only.
 }
 
+// Block elements allowed in lists.
+enum ItemType {
+  ListItem,
+  DelimitedBlock,
+  IndentedParagraph,
+}
 // Information about a matched list item element.
 interface ItemState {
   match: RegExpExecArray
   def: Definition
   id: string
-  isListItem: boolean
-  isDelimited: boolean
-  isIndented: boolean
+  itemType: ItemType
 }
 
 let defs: Definition[] = [
@@ -113,7 +117,7 @@ function renderListItem(startItem: ItemState, reader: io.Reader, writer: io.Writ
       writer.write(def.itemCloseTag)
       return null
     }
-    else if (nextItem.isListItem) {
+    else if (nextItem.itemType === ItemType.ListItem) {
       if (ids.indexOf(nextItem.id) !== -1) {
         // Item belongs to current list or an ancestor list.
         writer.write(def.itemCloseTag)
@@ -126,7 +130,7 @@ function renderListItem(startItem: ItemState, reader: io.Reader, writer: io.Writ
         return nextItem
       }
     }
-    else if (nextItem.isDelimited || nextItem.isIndented) {
+    else if (nextItem.itemType === ItemType.DelimitedBlock || nextItem.itemType === ItemType.IndentedParagraph) {
       // Delimited blocks and Indented blocks attach to list items.
       let savedIds = ids
       ids = []
@@ -196,7 +200,7 @@ function matchItem(reader: io.Reader,
       item.match = match
       item.def = def
       item.id = match[match.length - 2]
-      item.isListItem = true
+      item.itemType = ItemType.ListItem
       return item
     }
   }
@@ -206,7 +210,7 @@ function matchItem(reader: io.Reader,
     for (let name of ['quote', 'code', 'division']) {
       def = delimitedBlocks.getDefinition(name)
       if (def.openMatch.test(line)) {
-        item.isDelimited = true
+        item.itemType = ItemType.DelimitedBlock
         return item
       }
     }
@@ -215,7 +219,7 @@ function matchItem(reader: io.Reader,
   if (options.indented) {
     let def = delimitedBlocks.getDefinition('indented')
     if (def.openMatch.test(line)) {
-      item.isIndented = true
+      item.itemType = ItemType.IndentedParagraph
       return item
     }
   }
