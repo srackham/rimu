@@ -35,15 +35,15 @@
   "devDependencies": {
     "faucet": "0.0.1",
     "jake": "^8.0.12",
-    "jshint": "^2.9.1-rc2",
+    "jshint": "^2.9.1",
     "jsonlint": "^1.6.2",
     "nu-html-checker": "^0.1.0",
-    "shelljs": "^0.5.3",
-    "tape": "^4.4.0",
-    "ts-loader": "^0.7.2",
-    "tslint": "^3.2.1",
-    "typescript": "^1.7.5",
-    "uglify-js": "^2.6.1",
-    "webpack": "^1.12.9"
+    "shelljs": "^0.6.0",
+    "tape": "^4.5.1",
+    "ts-loader": "^0.8.1",
+    "tslint": "^3.6.0",
+    "typescript": "^1.8.9",
+    "uglify-js": "^2.6.2",
+    "webpack": "^1.12.14"
   }
 }
