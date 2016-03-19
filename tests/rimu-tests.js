@@ -438,6 +438,22 @@ test('blocks', function(t) {
     '- List 1\n\n\n* List 2',
     '<ul><li>List 1\n</li></ul><ul><li>List 2\n</li></ul>',
     'list terminated by two blank lines');
+  test_document(
+    '- Item 1\n.myclass\n""\nA\nparagraph\n""',
+    '<ul><li>Item 1\n<blockquote class="myclass"><p>A\nparagraph</p></blockquote></li></ul>',
+    'list item with attached Block Attributes and Quote block');
+  test_document(
+    '- Item 1\n\n.myclass\n""\nA\nparagraph\n""',
+    '<ul><li>Item 1\n</li></ul><blockquote class="myclass"><p>A\nparagraph</p></blockquote>',
+    'list item followed by  unattached Block Attributes and Quote block');
+  test_document(
+    '- Item 1\n.myclass\n\n  A\n  paragraph\n\n- Item 2.',
+    '<ul><li>Item 1\n<pre class="myclass"><code>A\nparagraph</code></pre>\n</li><li>Item 2.\n</li></ul>',
+    'list item with attached Block Attributes and Indented paragraph');
+  test_document(
+    '- Item 1\n.myclass\n.[style="color:green"]\nLabel:: Term.\n- Item 2.',
+    '<ul><li>Item 1\n<dl class="myclass" style="color:green"><dt>Label</dt><dd> Term.\n</dd></dl></li><li>Item 2.\n</li></ul>',
+    'nested list with multiple Block Attributes');
 
   // Mixed blocks.
   test_document(

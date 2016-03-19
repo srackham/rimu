@@ -1,6 +1,7 @@
 import * as utils from './utils'
 import * as io from './io'
 import * as delimitedBlocks from './delimitedblocks'
+import * as lineBlocks from './lineblocks'
 
 interface Definition {
   match: RegExp
@@ -12,18 +13,20 @@ interface Definition {
   termCloseTag?: string   // Definition lists only.
 }
 
-// Block elements allowed in lists.
-enum ItemType {
-  ListItem,
-  DelimitedBlock,
-  IndentedParagraph,
+// Block elements that can be attached to list items (bit flags).
+/* tslint:disable no-bitwise */
+enum Attachment {
+  List = 1,
+  FencedBlock = 2,
+  IndentedParagraph = 4,
+  BlockAttributes = 8,
 }
 // Information about a matched list item element.
 interface ItemState {
   match: RegExpExecArray
   def: Definition
   id: string
-  itemType: ItemType
+  attachment: Attachment
 }
 
 let defs: Definition[] = [
@@ -117,7 +120,7 @@ function renderListItem(startItem: ItemState, reader: io.Reader, writer: io.Writ
       writer.write(def.itemCloseTag)
       return null
     }
-    else if (nextItem.itemType === ItemType.ListItem) {
+    else if (nextItem.attachment === Attachment.List) {
       if (ids.indexOf(nextItem.id) !== -1) {
         // Item belongs to current list or an ancestor list.
         writer.write(def.itemCloseTag)
@@ -130,8 +133,13 @@ function renderListItem(startItem: ItemState, reader: io.Reader, writer: io.Writ
         return nextItem
       }
     }
-    else if (nextItem.itemType === ItemType.DelimitedBlock || nextItem.itemType === ItemType.IndentedParagraph) {
-      // Delimited blocks and Indented blocks attach to list items.
+    else if (nextItem.attachment === Attachment.BlockAttributes) {
+      // Block Attributes.
+      lineBlocks.render(reader, writer)
+      nextItem = readToNext(reader, writer)
+    }
+    else {
+      // Fenced block or Indented paragraph.
       let savedIds = ids
       ids = []
       delimitedBlocks.render(reader, writer)
@@ -168,12 +176,11 @@ function readToNext(reader: io.Reader, writer: io.Writer): ItemState {
       // Can be followed by new list item or attached indented paragraph.
       reader.skipBlankLines()
       if (reader.eof()) return null
-      return matchItem(reader, {indented: true})
+      return matchItem(reader, Attachment.IndentedParagraph)
     }
-    next = matchItem(reader, {delimited: true})
+    next = matchItem(reader, Attachment.BlockAttributes | Attachment.FencedBlock)
     if (next) {
-      // Encountered new list item or attached quote, code or division
-      // delimited block.
+      // Encountered new list item or attached Fenced or BlockAttributes block.
       return next
     }
     writer.write(reader.cursor())
@@ -183,10 +190,10 @@ function readToNext(reader: io.Reader, writer: io.Writer): ItemState {
 }
 
 // Check if the line at the reader cursor matches a list related element.
-// If it does return list item information else return null.
-// 'options' can be included to also match delimited blocks or indented paragraphs.
+// If it does then return list item information else return null.
+// 'attachments' specifies allowed match elements (in addition to list items).
 function matchItem(reader: io.Reader,
-                   options: {delimited?: boolean; indented?: boolean; } = {}): ItemState {
+                   attachments: Attachment = Attachment.List): ItemState {
   // Check if the line matches a List definition.
   let line = reader.cursor()
   let item = {} as ItemState    // ItemState factory.
@@ -200,26 +207,36 @@ function matchItem(reader: io.Reader,
       item.match = match
       item.def = def
       item.id = match[match.length - 2]
-      item.itemType = ItemType.ListItem
+      item.attachment = Attachment.List
       return item
     }
   }
-  // Check if the line matches a Delimited Block definition.
-  if (options.delimited) {
+  // Check if the line matches a Block Attributes element.
+  if (attachments & Attachment.BlockAttributes) {
+    let def: lineBlocks.Definition
+    def = lineBlocks.getDefinition('attributes')
+    let match = def.match.exec(line)
+    if (match) {
+      item.attachment = Attachment.BlockAttributes
+      return item
+    }
+  }
+  // Check if the line matches a Fenced block.
+  if (attachments & Attachment.FencedBlock) {
     let def: delimitedBlocks.Definition
     for (let name of ['quote', 'code', 'division']) {
       def = delimitedBlocks.getDefinition(name)
       if (def.openMatch.test(line)) {
-        item.itemType = ItemType.DelimitedBlock
+        item.attachment = Attachment.FencedBlock
         return item
       }
     }
   }
-  // Check if the line matches an Indented Paragraph definition.
-  if (options.indented) {
+  // Check if the line matches an Indented paragraph.
+  if (attachments & Attachment.IndentedParagraph) {
     let def = delimitedBlocks.getDefinition('indented')
     if (def.openMatch.test(line)) {
-      item.itemType = ItemType.IndentedParagraph
+      item.attachment = Attachment.IndentedParagraph
       return item
     }
   }

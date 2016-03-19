@@ -686,6 +686,41 @@ immediately follows a list item without any intervening blank lines
 then it will be rendered with the list item.
 
 
+## Block Attributes within lists
+One or more _Block Attributes_ elements can immediately follow a list
+item (without any intervening blank lines).  The attributes will be
+injected into the next block element. This allows attributes to be
+injected into attached Fenced blocks and Indented paragraphs and into
+nested lists.
+
+{list-item-block-attributes-example} = '- List item with green sidebar
+  styled Division block.
+.sidebar
+.[style="color:green"]
+..
+Urna aliquam pid, pulvinar augue ut
+aenean enim cum lectus sed, duis odio
+lectus, augue non egestas amet? Magna
+lectus?
+..
+
+- List item with nested numbered
+  [labeled list](#example-list).
+.dl-numbered #example-list
+  One:: Item one.
+  Two:: Item two.
+  Three:: Item three.
+
+- List item with attached bold Indented
+  paragraph.
+.[style="font-weight:bold"]
+
+  Duis in tincidunt rhoncus nascetur
+  lacus!'
+
+{generate-rendered-example-1|list-item-block-attributes-example}
+
+
 ## Section numbering
 If you define the `--section-numbers` macro the  _rimuc_ tool
 `--styled` option will emit CSS to automatically number _h2_ sections
