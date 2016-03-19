@@ -479,11 +479,6 @@ Definition for second term.'
 - If a [Fenced Block](#fenced-blocks) immediately follows a list item
   without any intervening blank lines then it is attached to the list
   item.
-- One or more [Block Attributes elements](#block-attributes) can
-  immediately follow a list item (without any intervening blank
-  lines).  The attributes will be injected into the next block
-  element. This allows attributes to be injected into attached Fenced
-  blocks and Indented paragraphs and into nested lists.
 - Lists are terminated by two or more blank lines or when the
   following element is not an Indented Paragraph or a Fenced Block.
 - There are no explicit numbering or bullet styles -- this is best
@@ -523,7 +518,7 @@ non magnis facilisi scelerisque luctus. Quis praesent pulvinar.
 
 ## Quotes
 Text can be formatted by enclosing it in one or two quote characters.
-The built-in quote characters are:
+The built-in quotes are:
 
 .light-background
 ``
