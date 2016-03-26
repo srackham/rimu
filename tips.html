@@ -451,9 +451,10 @@ output document:</p>
 <h2>The Rimu markup looks correct but the generated HTML is wrong</h2>
 <p>Using an editor with Rimu syntax highlighting support (see previous
 topic) makes it much easier to spot syntax errors.  Rimu includes a
-Vim editor syntax highlighter, see the <em>Tools</em> section of the <a href="http://srackham.github.io/rimu/rimuplayground.html">Rimu
-Playground</a> for
-details.</p>
+Vim editor syntax highlighter, see the <a href="http://srackham.github.io/rimu/reference.html#vim-syntax-file">Vim syntax
+file</a>
+section in the <a href="http://srackham.github.io/rimu/reference.html">Rimu
+Reference</a> for details.</p>
 <h2>Extending the Vim syntax highlighter</h2>
 <p>If you've added custom replacements and quotes you can highlight them
 in Vim by creating a custom <code>~/.vim/after/syntax/rimu.vim</code> syntax
@@ -815,7 +816,7 @@ Rimu source</td>
 <pre id="tables-example-source" class="example-source no-highlight"><code>&lt;table class="table table-bordered"&gt;
   &lt;tbody&gt;
     &lt;tr&gt;
-&lt;td style="width: 50%;"&gt;
+&lt;td style="width: 50%; padding: 6px;"&gt;
 
 .text-info
 **Lorem ipsum dolor**. Sit amet venenatis. Erat nulla arcu. Lorem luctus
@@ -833,7 +834,7 @@ Lobortis lacus vestibulum sem.
   sed.  Scelerisque feugiat massa alias.
 
 &lt;/td&gt;
-&lt;td style="width: 50%;"&gt;
+&lt;td style="width: 50%; padding: 6px;"&gt;
 
 - Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu
 - lorem dolor fusce nec.
@@ -865,7 +866,7 @@ Lobortis lacus vestibulum sem.
 <table class="table table-bordered">
   <tbody>
     <tr>
-<td style="width: 50%;">
+<td style="width: 50%; padding: 6px;">
 <p class="text-info"><strong>Lorem ipsum dolor</strong>. Sit amet venenatis. Erat nulla arcu. Lorem luctus
 sem. Mauris vitae ipsum. Donec dui ac ridiculus quisque proin.
 Lobortis lacus vestibulum sem.</p>
@@ -878,7 +879,7 @@ Lobortis lacus vestibulum sem.</p>
 tempor enim ornare. Mi nam id. Ornare mauris tempor. Pede mauris
 sed.  Scelerisque feugiat massa alias.</code></pre>
 </td>
-<td style="width: 50%;">
+<td style="width: 50%; padding: 6px;">
 <ul><li>Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu
 </li><li>lorem dolor fusce nec.
 <ul><li>Sit pretium quisque in wisi lobortis.
@@ -965,7 +966,7 @@ lines that end with a single-quote.</p>
   macro expansion).
 </li><li>The contents of a macro can be rendered verbatim in a code block by
   enabling macro expansion. For example:
-<div><pre class="no-highlight"><code>.+macros
+<div><pre class="no-highlight"><code>.-macros
 ```
 {example-42}
 ```</code></pre>
@@ -1072,8 +1073,8 @@ Second term::
 </dd></dl></div>
 </td></tr></tbody></table>
 <h2>Include arbitrary elements in list items</h2>
-<p>A <em>Division Block</em> can be used to group and append arbitrary block
-elements to a list item.</p>
+<p>An attached <em>Division Block</em> can be used to group and append arbitrary
+block elements to a list item.</p>
 <h4>Examples</h4>
 <table class="example table table-bordered">
 <thead><tr class="example-header">
@@ -1102,7 +1103,88 @@ Include a paragraph in the list item.
 </td></tr></tbody></table>
 <p>This works because if a <a href="reference.html#fenced-blocks">Fenced Block</a>
 immediately follows a list item without any intervening blank lines
-then it will be rendered with the list item.</p>
+it will be rendered with the list item.</p>
+<h2>Block Attributes within lists</h2>
+<p>To apply <em>Block Attributes</em> elements to a nested list or an attached
+element, envelope the Block Attributes and the attached element in a
+<em>Division Block</em> (this is a specific application of the <a href="#include-arbitrary-elements-in-list-items">previous
+tip</a>).</p>
+<p>Note the use of a <a href="#nested-fenced-blocks">nested Division block</a> in
+the first list item in the example below.</p>
+<h4>Examples</h4>
+<table class="example table table-bordered">
+<thead><tr class="example-header">
+<th>
+<span class="icon-edit no-print" title="Edit example" style="cursor:pointer;" onclick="editExample('list-item-block-attributes-example')"></span>
+Rimu source</th>
+<th>Rendered HTML</th>
+</tr></thead><tbody><tr>
+<td style="width:50%;">
+<pre id="list-item-block-attributes-example-source" class="example-source no-highlight"><code>- List item with green sidebar
+  styled Division block.
+..
+.sidebar [style="color:green"]
+...
+Urna aliquam pid, pulvinar augue ut
+aenean enim cum lectus sed.
+
+Duis odio lectus, augue non egestas
+amet? Magna lectus?
+...
+..
+
+- List item with verse styled
+  paragraph.
+..
+.verse
+Urna aliquam pid,
+pulvinar augue ut,
+aenean enim cum.
+..
+
+- List item with nested numbered
+  [labeled list](#example-list).
+..
+.dl-numbered #example-list
+One:: Item one.
+Two:: Item two.
+Three:: Item three.
+..
+
+- List item with bold Indented
+  paragraph.
+..
+.[style="font-weight:bold"]
+  Duis in tincidunt rhoncus nascetur
+  lacus!
+..</code></pre>
+<textarea id="list-item-block-attributes-example-edit" class="example-edit" onkeyup="updateExample('list-item-block-attributes-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="list-item-block-attributes-example-rendered" class="example-rendered">
+<ul><li>List item with green sidebar
+  styled Division block.
+<div><div class="sidebar" style="color:green"><p>Urna aliquam pid, pulvinar augue ut
+aenean enim cum lectus sed.</p>
+<p>Duis odio lectus, augue non egestas
+amet? Magna lectus?</p></div></div>
+</li><li>List item with verse styled
+  paragraph.
+<div><p class="verse">Urna aliquam pid,
+pulvinar augue ut,
+aenean enim cum.</p></div>
+</li><li>List item with nested numbered
+  <a href="#example-list">labeled list</a>.
+<div><dl class="dl-numbered" id="example-list"><dt>One</dt><dd> Item one.
+</dd><dt>Two</dt><dd> Item two.
+</dd><dt>Three</dt><dd> Item three.
+</dd></dl></div>
+</li><li>List item with bold Indented
+  paragraph.
+<div><pre style="font-weight:bold" class="no-highlight"><code>Duis in tincidunt rhoncus nascetur
+lacus!</code></pre></div>
+</li></ul></div>
+</td></tr></tbody></table>
 <h2>Section numbering</h2>
 <p>If you define the <code>--section-numbers</code> macro the  <em>rimuc</em> tool
 <code>--styled</code> option will emit CSS to automatically number <em>h2</em> sections
@@ -1161,7 +1243,7 @@ lacus!</p></blockquote>
 <p>List termination can be forced by following the list by two or more blank
 lines. This comes in handy if you want to follow one list immediately by
 another or if you want to separate an Indented paragraph from a
-preceding list item.</p>
+preceding list.</p>
 <h2>Nested list item ambiguity</h2>
 <p>To render an indented list item as an Indented paragraph change it
 to a fenced code block.</p>

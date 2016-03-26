@@ -275,8 +275,8 @@ Use the <code>reset</code> option to set the default state.</p>
 <a href="https://npmjs.org/package/rimu">npm</a>):</p>
 <pre class="javascript no-highlight"><code>var Rimu = require('rimu');
 var html= Rimu.render('Hello *Rimu*!', {safeMode:1});</code></pre>
-<p>HTML script tag example (compiled and minified JavaScript libraries
-can be found in the package <code>./rimu/bin</code> folder):</p>
+<p>HTML script tag example (the compiled and minified <code>rimu.min.js</code> library
+can be found in the Rimu npm package <code>./rimu/bin</code> folder):</p>
 <pre class="xml no-highlight"><code>&lt;script src="rimu.min.js"&gt;&lt;/script&gt;
 &lt;script&gt;
   console.log(Rimu.render('Hello *Rimu*!', {reset:true, safeMode:2}));
@@ -784,8 +784,8 @@ Definition for second term.
   preceding list item by a single blank line then it is rendered with
   the list item.
 </li><li>If a <a href="#fenced-blocks">Fenced Block</a> immediately follows a list item
-  without any intervening blank lines then it is rendered with the
-  list item.
+  without any intervening blank lines then it is attached to the list
+  item.
 </li><li>Lists are terminated by two or more blank lines or when the
   following element is not an Indented Paragraph or a Fenced Block.
 </li><li>There are no explicit numbering or bullet styles &mdash; this is best
@@ -859,7 +859,7 @@ non magnis facilisi scelerisque luctus. Quis praesent pulvinar.</p></div>
 </td></tr></table>
 <h2>Quotes</h2>
 <p>Text can be formatted by enclosing it in one or two quote characters.
-The built-in quote characters are:</p>
+The built-in quotes are:</p>
 <pre class="light-background no-highlight"><code>Rimu            Rendered HTML             Font style
 ___________________________________________________________
 _emphasis_      &lt;em&gt;emphasis&lt;/em&gt;         Italic
@@ -1136,24 +1136,32 @@ is set.</p>
 <em>Delimited Block definitions</em>.</p>
 <p>Definition syntax:</p>
 <pre class="no-highlight"><code>|block-name| = '&lt;open-tags&gt;|&lt;close-tags&gt; block-options'</code></pre>
-<ul><li><code>block-name</code> is the Delimited Block name (<code>code</code>, <code>comment</code>,
-  <code>division</code>, <code>html</code>, <code>indented</code>, <code>quote-paragraph</code> or <code>paragraph</code>).
+<ul><li><code>block-name</code> is is one of the folowing <a href="#delimited-blocks">Delimited
+  Block</a> names:
+<div><p><code>code</code> (<a href="#code-block">Code Block</a>),<br>
+<code>comment</code> (<a href="#comments">Multi-line Comment</a>),<br>
+<code>division</code> (<a href="#division-block">Division Block</a>),<br>
+<code>html</code> (<a href="#html-elements">HTML Block</a>),<br>
+<code>indented</code> (<a href="#indented-paragraph">Indented Paragraph</a>),<br>
+<code>quote</code> (<a href="#quote-block">Quote Block</a>),<br>
+<code>quote-paragraph</code> (<a href="#quote-paragraph">Quote Paragraph</a>),<br>
+<code>paragraph</code> (<a href="#normal-paragraph">Normal Paragraph</a>).</p></div>
 </li><li><code>open-tags</code> and <code>close-tags</code> define the HTML tags that envelope the
   output block. <code>&lt;open-tags&gt;|&lt;close-tags&gt;</code> is optional.
 </li><li><code>block-options</code> is used to control the processing of Delimited block
-  elements.  <code>block-options</code> is optional and consists of one
-  or more of the following space separated options:
-<dl><dt><code>+macros</code></dt><dd> Enable macro expansion.
-</dd><dt><code>-macros</code></dt><dd> Disable macro expansion.
-</dd><dt><code>+spans</code></dt><dd> Enable <a href="#quotes">Quote</a> and <a href="#replacements">Replacement</a> element processing.
-</dd><dt><code>-spans</code></dt><dd> Disable <a href="#quotes">Quote</a> and <a href="#replacements">Replacement</a> element processing.
-</dd><dt><code>+specials</code></dt><dd> Enable special character entities.
-</dd><dt><code>-specials</code></dt><dd> Disable special character entities.
-</dd><dt><code>+container</code></dt><dd> The block is a container for Rimu block elements.
-</dd><dt><code>-container</code></dt><dd> Turn off the container option.
-</dd><dt><code>+skip</code></dt><dd> Skip the block.
-</dd><dt><code>-skip</code></dt><dd> Turn off the skip option.
-</dd></dl></li><li>Do not apply <code>macros</code>, <code>spans</code> <code>or specials</code> block options to
+  elements.  <code>block-options</code> is optional and consists of one or more
+  of the following space separated options:
+<div><p><code>+macros</code> (enable macro expansion),<br>
+<code>-macros</code> (disable macro expansion),<br>
+<code>+spans</code> (enable <a href="#quotes">Quote</a> and <a href="#replacements">Replacement</a> element processing),<br>
+<code>-spans</code> (disable <a href="#quotes">Quote</a> and <a href="#replacements">Replacement</a> element processing),<br>
+<code>+specials</code> (enable special character entities),<br>
+<code>-specials</code> (disable special character entities),<br>
+<code>+container</code> (the block is a container for Rimu block elements),<br>
+<code>-container</code> (turn off the container option),<br>
+<code>+skip</code> (skip the block),<br>
+<code>-skip</code> (turn off the skip option).</p></div>
+</li><li>Do not apply <code>macros</code>, <code>spans</code> <code>or specials</code> block options to
   Division blocks or Quote blocks (container blocks) or Lists.
 </li><li>A Delimited Block definition must start at the left margin and must
   not extend beyond the end of the line.
@@ -1419,7 +1427,7 @@ explicit anchor e.g. using a <a href="#block-attributes">Block Attribute</a>
 </li><li>In addition to Bootstrap CSS style classes there are styles for
   verses, sidebars and section numbering (see <code>rimuc --help</code> command
   and <a href="tips.html">Rimu Tips</a>).
-</li></ul><h2>Vim syntax file</h2>
+</li></ul><h2 id="vim-syntax-file">Vim syntax file</h2>
 <p>The Rimu distribution includes a
 <a href="https://github.com/srackham/rimu/blob/master/src/vim/syntax/rimu.vim">syntax
 highlighter</a> for the Vim editor. Copy <code>rimu.vim</code> to your
