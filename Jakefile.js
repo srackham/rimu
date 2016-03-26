@@ -175,7 +175,7 @@ task('version', {async: true}, function() {
     if (!version.match(/^\d+\.\d+\.\d+$/)) {
       fail('Invalid version number: ' + version + '\n')
     }
-    shelljs.sed('-i', /(\n\s*"version"\s*:\s*)"\d+\.\d+\.\d+"/, `$1"${version}"`, 'package.json')
+    shelljs.sed('-i', /(\s*"version"\s*:\s*)"\d+\.\d+\.\d+"/, `$1"${version}"`, 'package.json')
     pkg.version = version
     exec('git commit -m "Bump version number." package.json', complete)
   }
