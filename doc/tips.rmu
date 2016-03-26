@@ -107,6 +107,7 @@ if x == 1:
     print "x is 1."
 ``'
 
+// Don't allow editing because syntax highlighting occurs at page load time.
 {generate-rendered-example-1|highlightjs-example|no-edit}
 
 Set the `no-highlight` class to disable syntax highlighting for a code
@@ -692,9 +693,8 @@ element, envelope the Block Attributes and the attached element in a
 _Division Block_ (this is a specific application of the [previous
 tip](#include-arbitrary-elements-in-list-items)).
 
-Note the necessity for a [nested Division
-block](#nested-fenced-blocks) in the first list item in the example
-below.
+Note the use of a [nested Division block](#nested-fenced-blocks) in
+the first list item in the example below.
 
 {list-item-block-attributes-example} = '- List item with green sidebar
   styled Division block.

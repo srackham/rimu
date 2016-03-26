@@ -25,7 +25,7 @@ Plus:
 - Single lightweight JavaScript file (less than 20KB minified) that
   can be dropped onto a Web page or used as a Node module.
 - No dependencies.
-- Simple one-function API.
+- One-function API.
 - Features include raw HTML (a la Markdown), HTML attribute injection
   and parametrized macros.
 - Element syntax and behavior can be modified and extended.
