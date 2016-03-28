@@ -13,12 +13,10 @@ First convert Rimu markup to HTML using the `rimuc` tool and then
 convert the HTML to PDF.  Here are a few options for converting HTML
 to PDF:
 
-. Open the HTML document in [LibreOffice](https://www.libreoffice.org/)
-  Writer and export as PDF, this does a good job especially if you use
-  the `rimuc` `--styled` option.
 . Google's Chrome web browser has an option to print HTML to a PDF
   file, other browsers have PDF add-ons that perform the same
-  function.
+  function, this does a good job especially if you use the `rimuc`
+  `--styled` option.
 . Use an HTML to PDF conversion program such as
   [HTMLDOC](http://www.htmldoc.org/).
 
@@ -795,3 +793,42 @@ to a fenced code block.
 ``'
 
 {generate-rendered-example-1|list-ambiguity-example}
+
+
+## Controlling page breaks in printed output
+You can control printer page breaks by using Rimu _Attribute Blocks_
+to inject CSS
+[page-break-inside](https://developer.mozilla.org/en/docs/Web/CSS/page-break-inside),
+[page-break-before](https://developer.mozilla.org/en/docs/Web/CSS/page-break-before)
+and
+[page-break-after](https://developer.mozilla.org/en/docs/Web/CSS/page-break-after)
+CSS properties into HTML output elements.
+
+Examples:
+
+```
+.sidebar [style="page-break-inside:avoid"]
+..
+Page breaks are avoided inside
+this sidebar.
+..
+
+.[style="page-break-before:always"]
+### A header that starts on a new page
+```
+
+The _rimuc_ tool `--styled` option includes `page-break` and
+`no-page-break` CSS classes that apply `page-break-before:always` and
+`page-break-inside:avoid` properties respectively.  Here is the
+previous example using the page break classes:
+
+```
+.sidebar no-page-break
+..
+Page breaks are avoided inside
+this sidebar.
+..
+
+.page-break
+### A header that starts on a new page
+```

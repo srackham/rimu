@@ -1021,6 +1021,8 @@ STYLING MACROS AND CLASSES
   verse            Verse format (paragraphs, division blocks).
   sidebar          Sidebar format (paragraphs, division blocks).
   no-print         Do not print.
+  page-break       Force page break before the element.
+  no-page-break    Avoid page break inside the element.
   dl-numbered      Number labeled list items.
   dl-horizontal    Format labeled lists horizontally.
   dl-counter       Prepend dl item counter to element content.

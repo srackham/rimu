@@ -143,6 +143,14 @@
   .dl-numbered > dt:before {
     content: counter(dl-counter) ". ";
   }
+{--!} Force page break before the element.
+  .page-break {
+    page-break-before: always;
+  }
+{--!} Avoid page breaks inside the element.
+  .no-page-break {
+    page-break-inside: avoid;
+  }
 </style>
 
 {--section-numbers=}.+skip
