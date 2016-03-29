@@ -12,6 +12,7 @@ export interface Definition {
   closeMatch?: RegExp  // $1 (if defined) is appended to block content.
   openTag: string
   closeTag: string
+  verify?: (match: RegExpMatchArray) => boolean   // Additional match verification checks.
   delimiterFilter?: (match: string[]) => string   // Process opening delimiter. Return any delimiter content.
   contentfilter?: (text: string, match?: string[], expansionOptions?: utils.ExpansionOptions) => string
   expansionOptions: utils.ExpansionOptions
@@ -87,6 +88,10 @@ const DEFAULT_DEFS: Definition[] = [
     expansionOptions: {
       macros: false,
       specials: true
+    },
+    verify: function (match: RegExpMatchArray): boolean {
+      // The deprecated '-' delimiter does not support appended class names.
+      return !(match[1][0] === '-' && utils.trim(match[2]) !== '')
     },
     delimiterFilter: classInjectionFilter
   },
@@ -187,6 +192,9 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
       if (match[0][0] === '\\' && def.name !== 'paragraph') {
         // Drop backslash escape and continue.
         reader.cursor(reader.cursor().slice(1))
+        continue
+      }
+      if (def.verify && !def.verify(match)) {
         continue
       }
       // Process opening delimiter.

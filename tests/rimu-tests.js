@@ -310,7 +310,11 @@ test('blocks', function(t) {
   test_document(
     '--\nA <code> block\n Line _two_\n--',
     '<pre><code>A &lt;code&gt; block\n Line _two_</code></pre>',
-    'code block');
+    'code block (deprecated syntax)');
+  test_document(
+    '-- Anonymous\nLine one\n--',
+    '<p>-- Anonymous\nLine one\n--</p>',
+    'class names are not valid in deprecated code block syntax');
   test_document(
     '``\nA <code> block\n Line _two_\n``',
     '<pre><code>A &lt;code&gt; block\n Line _two_</code></pre>',
