@@ -180,7 +180,7 @@ Invocations](#macro-invocations), [Quotes](#quotes) and
 ### Taxonomy
 Rimu markup elements are categorized as follows:
 
-.light-background [style="white-space: pre; padding-left: 2em;"]
+.light-background "white-space: pre; padding-left: 2em;"
 ..
 [Block elements](#documents)
         [Delimited Blocks](#delimited-blocks)
@@ -713,7 +713,7 @@ elements.
 
 Syntax:
 
-  .class-names #id [html-attributes] block-options
+  .class-names #id "css-properties" [html-attributes] block-options
 
 - The leading period character must start at the left margin and the
   attributes must not extend beyond the end of the line.
@@ -721,7 +721,11 @@ Syntax:
 - `class-names` is one or more HTML _class_ attribute names (separated
   by spaces).
 - `id` is a unique HTML _id_ attribute value.
-- `html-attributes` is one or more HTML attribute name/value pairs.
+- `css-properties` is one or more CSS property name/value pairs: it
+  injects a `style="css-properties"` attribute into the target
+  opening tag.
+- `html-attributes` is one or more HTML attribute name/value pairs:
+  they are injected into the target opening tag.
 - HTML attributes can be applied any block element that renders HTML.
 - The `[html-attributes]` section is ignored if the API _safeMode_
   option is not zero (see the _API_ topic).
@@ -733,13 +737,13 @@ Syntax:
   until they are consumed by the first succeeding Delimited Block
   element.
 
-{block-attributes-example} = '.error [style="color:red"]
+{block-attributes-example} = '.error "color:red"
 Lorum ipsum.
 
-.info #ref2 [style="color:green"]
+.#ref2 "color:green" [title="Reference two"]
 Ac curabitur elementum.
 
-\{quote-style} = '.[style="padding-left: 10px; border-left: 4px solid silver;"]'\
+\{quote-style} = '."padding-left: 10px; border-left: 4px solid silver;"'\
 
 \{quote-style}
 ""
@@ -914,7 +918,7 @@ Invocation syntax:
 
 .-macros
 {macros-example} = '{sidebar} = '#### $1
-.[style="padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"]'\
+."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'\
 {info} = '<span class="label label-info">$1</span>'\
 {heads-up} = '{info|Heads up!}'\
 {note} = '{info|Note} <mark>$1</mark>'\

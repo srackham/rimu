@@ -56,7 +56,7 @@ syn match rimuReplacementRegExp /^\/.\+\/[igm]*[\t =]\@=/ contained containedin=
 syn match rimuDelimitedBlockDefinition /^|[0-9A-Za-z-]\+|*\s*=\s*'\_.\{-}'\n/
 syn match rimuDelimitedBlockDefinitionName /^|[0-9A-Za-z-]\+|[\t =]\@=/ contained containedin=rimuDelimitedBlockDefinition
 
-syn match rimuBlockAttributes /^\.[a-zA-Z#\[+\-].*$/
+syn match rimuBlockAttributes /^\.[a-zA-Z#"\[+\-].*$/
 syn match rimuComment "^\\\@<!//.*$" contains=rimuTodo
 syn region rimuComment start=/^\/\*$/ end=/^\*\/$/ contains=rimuTodo keepend
 

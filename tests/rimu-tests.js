@@ -664,7 +664,7 @@ test('blocks', function(t) {
     '<p class="bar" style="margin:0;">foobar</p>',
     'macro expansion in Block Attributes');
   test_document(
-    '.#x1\n.foo\n.bar\n.[style="color:red;"]\n.[data-duration="5"]\n.-macros\n.-spans\n_foobar_ {undefined}\n\n_foobar_',
+    '.#x1\n.foo\n.bar\n."color:red;"\n.[data-duration="5"]\n.-macros\n.-spans\n_foobar_ {undefined}\n\n_foobar_',
     '<p class="foo bar" id="x1" style="color:red;" data-duration="5">_foobar_ {undefined}</p>\n<p><em>foobar</em></p>',
     'accumulated Block Attributes');
   test_document(
@@ -712,7 +712,7 @@ test('blocks', function(t) {
     '<p class="error">Error message</p>\n<p>Normal paragraph</p>',
     'html class');
   test_document(
-    '.large error   #x1 [style="color: red;"]\nError message',
+    '.large error   #x1 "color: red;"\nError message',
     '<p class="large error" id="x1" style="color: red;">Error message</p>',
     'html class, id and attributes');
   test_document(

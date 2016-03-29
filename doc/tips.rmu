@@ -27,7 +27,7 @@ markup vocabulary.
 
 .-macros
 {macros-example} = '{sidebar} = '#### $1
-.[style="padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"]'\
+."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'\
 {info} = '<span class="label label-info">$1</span>'\
 {heads-up} = '{info|Heads up!}'\
 {note} = '{info|Note} <mark>$1</mark>'\
@@ -43,9 +43,9 @@ experimentation.
 
 {generate-rendered-example-2|macros-example}
 
-- The `{sidebar}` macro shows how you can inject CSS styles into a
-  _Division Block_, but a better way of styling block elements is to
-  use <#scoped-css|scoped CSS>.
+- The `\{sidebar}` macro shows how you can inject CSS styles into a
+  _Division Block_ (you could also use use <#scoped-css|scoped CSS> to
+  style the output).
 - Note how macro definitions can span multiple lines and can contain
   any valid Rimu markup (including HTML and blank lines).
 - [This document](https://github.com/srackham/rimu/blob/master/doc/tips.rmu)
@@ -697,7 +697,7 @@ the first list item in the example below.
 {list-item-block-attributes-example} = '- List item with green sidebar
   styled Division block.
 ..
-.sidebar [style="color:green"]
+.sidebar "color:green"
 ...
 Urna aliquam pid, pulvinar augue ut
 aenean enim cum lectus sed.
@@ -728,7 +728,7 @@ Three:: Item three.
 - List item with bold Indented
   paragraph.
 ..
-.[style="font-weight:bold"]
+."font-weight:bold"
   Duis in tincidunt rhoncus nascetur
   lacus!
 ..'
@@ -802,23 +802,23 @@ to inject CSS
 [page-break-before](https://developer.mozilla.org/en/docs/Web/CSS/page-break-before)
 and
 [page-break-after](https://developer.mozilla.org/en/docs/Web/CSS/page-break-after)
-CSS properties into HTML output elements.
+properties into HTML output elements.
 
 Examples:
 
 ```
-.sidebar [style="page-break-inside:avoid"]
+.sidebar "page-break-inside:avoid"
 ..
 Page breaks are avoided inside
 this sidebar.
 ..
 
-.[style="page-break-before:always"]
+."page-break-before:always"
 ### A header that starts on a new page
 ```
 
 The _rimuc_ tool `--styled` option includes `page-break` and
-`no-page-break` CSS classes that apply `page-break-before:always` and
+`no-page-break` CSS classes which apply `page-break-before:always` and
 `page-break-inside:avoid` properties respectively.  Here is the
 previous example using the _rimuc_ page break classes:
 
@@ -835,10 +835,10 @@ this sidebar.
 
 ## Controlling text alignment
 You can control block element text alignment by injecting the CSS
-`text-align` CSS property using the Rimu _Attribute Blocks_
-element. For example:
+`text-align` property using the Rimu _Attribute Blocks_ element. For
+example:
 
-{text-alignment-example-1} = '.[style="text-align:center"]
+{text-alignment-example-1} = '."text-align:center"
 Enim odio ultrices'
 
 {generate-rendered-example-1|text-alignment-example-1}

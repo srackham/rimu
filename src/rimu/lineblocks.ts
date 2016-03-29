@@ -138,13 +138,13 @@ let defs: Definition[] = [
   // Syntax: .class-names #id [html-attributes] block-options
   {
     name: 'attributes',
-    match: /^\\?\.[a-zA-Z#\[+-].*$/,  // A loose match because Block Attributes can contain macro references.
+    match: /^\\?\.[a-zA-Z#"\[+-].*$/,  // A loose match because Block Attributes can contain macro references.
     verify: function (match: RegExpExecArray): boolean {
       // Parse Block Attributes.
-      // class names = $1, id = $2, html-attributes = $3, block-options = $4
+      // class names = $1, id = $2, css-properties = $3, html-attributes = $4, block-options = $5
       let text = match[0]
       text = utils.replaceInline(text, {macros: true})
-      match = /^\\?\.((?:\s*[a-zA-Z][\w\-]*)+)*(?:\s*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text)
+      match = /^\\?\.((?:\s*[a-zA-Z][\w\-]*)+)*(?:\s*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(".+?")?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text)
       if (!match) {
         return false
       }
@@ -155,11 +155,14 @@ let defs: Definition[] = [
       if (match[2]) { // HTML element id.
         htmlAttributes += ' id="' + utils.trim(match[2]).slice(1) + '"'
       }
-      if (match[3] && !options.isSafe()) { // HTML attributes.
-        htmlAttributes += ' ' + utils.trim(match[3].slice(1, match[3].length - 1))
+      if (match[3]) { // CSS properties.
+        htmlAttributes += ' style=' + match[3]
+      }
+      if (match[4] && !options.isSafe()) { // HTML attributes.
+        htmlAttributes += ' ' + utils.trim(match[4].slice(1, match[4].length - 1))
       }
       htmlAttributes = utils.trim(htmlAttributes)
-      delimitedBlocks.setBlockOptions(blockOptions, match[4])
+      delimitedBlocks.setBlockOptions(blockOptions, match[5])
       return true
     },
   },
