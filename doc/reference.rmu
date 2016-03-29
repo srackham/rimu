@@ -26,7 +26,7 @@ Plus:
 Install Rimu as a Node.js module (includes the `rimu` library and the
 `rimuc` command-line tool):
 
-        sudo npm install -g rimu
+  sudo npm install -g rimu
 
 
 ## Resources
@@ -644,7 +644,7 @@ url                 <a href="url">url</a>       Note 1
 ______________________________________________________
 ``
 
-Note:
+Notes:
 
 1. Only HTTP and HTTPS raw URLs are auto-encoded.
 2. The `[caption](url)` syntax is Markdown compatible.
@@ -671,14 +671,12 @@ Syntax:
 .light-background
 ``
 Rimu                Rendered HTML
-______________________________________________
+_______________________________________________________
 <image:url|alt>     <img href="url" alt="alt">
 <image:url>         <img href="url" alt="url">
-![alt](url)         <img href="url" alt="alt">
-______________________________________________
+![alt](url)         <img href="url" alt="alt">   Note 1
+_______________________________________________________
 ``
-
-The `![alt](url)` syntax is Markdown compatible.
 
 An image can be rendered as a block element:
 
@@ -688,6 +686,11 @@ Or an image can be <image:http://www.w3.org/Icons/w3c_home.png> an
 inline element.'
 
 {generate-rendered-example-1|images-example}
+
+Notes:
+
+1. The `![alt](url)` syntax is Markdown compatible. To maintain
+   Markdown compatibility it is always rendered as an inline element.
 
 
 ## Character entities
@@ -1020,6 +1023,9 @@ STYLING MACROS AND CLASSES
   ______________________________________________________________
   verse            Verse format (paragraphs, division blocks).
   sidebar          Sidebar format (paragraphs, division blocks).
+  align-left       Text alignment left.
+  align-center     Text alignment center.
+  align-right      Text alignment right.
   no-print         Do not print.
   page-break       Force page break before the element.
   no-page-break    Avoid page break inside the element.

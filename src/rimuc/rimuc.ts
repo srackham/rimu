@@ -86,6 +86,9 @@ STYLING MACROS AND CLASSES
   ______________________________________________________________
   verse            Verse format (paragraphs, division blocks).
   sidebar          Sidebar format (paragraphs, division blocks).
+  align-left       Text alignment left.
+  align-center     Text alignment center.
+  align-right      Text alignment right.
   no-print         Do not print.
   page-break       Force page break before the element.
   no-page-break    Avoid page break inside the element.

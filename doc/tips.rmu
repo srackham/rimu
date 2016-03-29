@@ -795,7 +795,7 @@ to a fenced code block.
 {generate-rendered-example-1|list-ambiguity-example}
 
 
-## Controlling page breaks in printed output
+## Controlling page breaks
 You can control printer page breaks by using Rimu _Attribute Blocks_
 to inject CSS
 [page-break-inside](https://developer.mozilla.org/en/docs/Web/CSS/page-break-inside),
@@ -820,7 +820,7 @@ this sidebar.
 The _rimuc_ tool `--styled` option includes `page-break` and
 `no-page-break` CSS classes that apply `page-break-before:always` and
 `page-break-inside:avoid` properties respectively.  Here is the
-previous example using the page break classes:
+previous example using the _rimuc_ page break classes:
 
 ```
 .sidebar no-page-break
@@ -832,3 +832,23 @@ this sidebar.
 .page-break
 ### A header that starts on a new page
 ```
+
+## Controlling text alignment
+You can control block element text alignment by injecting the CSS
+`text-align` CSS property using the Rimu _Attribute Blocks_
+element. For example:
+
+{text-alignment-example-1} = '.[style="text-align:center"]
+Enim odio ultrices'
+
+{generate-rendered-example-1|text-alignment-example-1}
+
+The _rimuc_ tool `--styled` option includes `align-left`,
+`align-center` and `align-right` CSS classes.  Here is the previous
+example using the `align-center` text alignment class:
+
+{text-alignment-example-2} = '.align-center
+Enim odio ultrices'
+
+{generate-rendered-example-1|text-alignment-example-2}
+

@@ -151,6 +151,16 @@
   .no-page-break {
     page-break-inside: avoid;
   }
+{--!} Text block alignment classes.
+  .align-left {
+    text-align: left;
+  }
+  .align-center {
+    text-align: center;
+  }
+  .align-right {
+    text-align: right;
+  }
 </style>
 
 {--section-numbers=}.+skip
