@@ -88,20 +88,24 @@ properties:
 
 .dl-horizontal
 `safeMode`::
-This option has a number value that controls how Rimu
-renders embedded HTML and whether or not Rimu definition and option elements
-are processed:
+This option has a number value that controls how Rimu renders embedded
+HTML and whether or not Rimu definition and option elements are
+processed:
 ..
 .light-background
   0 => Render HTML (default behavior).
-  1 => Delete HTML.
+  1 => Ignore HTML.
   2 => Replace HTML with the 'htmlReplacement' option string.
   3 => Render HTML as text.
+  5 => Ignore HTML and Block Attributes elements.
 
 - If `safeMode` is non-zero the following Rimu elements are ignored:
-  * Delimited Block, Macro, Quote and Replacement definitions.
-  * API Option elements.
+  * Delimited Block, Macro, Quote and Replacement definitions.  API
+  * Option elements.
   * HTML attributes in Block Attribute elements.
+  * In addition, setting `safeMode` to 5 ensures HTML element IDs
+    cannot be created and that CSS classes or properties cannot be
+    used explicitly.
 - Once a non-zero `safeMode` has been set then it can only be reset by
   a `render()` API call with a `safeMode:0` or a `reset:true` option.
 ..

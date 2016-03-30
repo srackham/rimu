@@ -19,7 +19,17 @@ const DEFAULT_DEFS: Definition[] = [
   // Anchor: <<#id>>
   {
     match: /\\?<<#([a-zA-Z][\w\-]*)>>/g,
-    replacement: '<span id="$1"></span>'
+    replacement: '<span id="$1"></span>',
+    filter: function (match: RegExpExecArray): string {
+      if (options.safeMode === 5) {
+        // Do not render anchor if safeMode is 5.
+        return ''
+      }
+      else {
+        // Default (non-filter) replacement processing.
+        return utils.replaceMatch(match, this.replacement)
+      }
+    }
   },
 
   // Image: <image:src|alt>

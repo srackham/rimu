@@ -133,6 +133,16 @@ let defs: Definition[] = [
   {
     match: /^\\?<<#([a-zA-Z][\w\-]*)>>$/,
     replacement: '<div id="$1"></div>',
+    filter: function (match: RegExpExecArray, reader?: io.Reader): string {
+      if (options.safeMode === 5) {
+        // Do not render anchor if safeMode is 5.
+        return ''
+      }
+      else {
+        // Default (non-filter) replacement processing.
+        return utils.replaceMatch(match, this.replacement, {macros: true})
+      }
+    }
   },
   // Block Attributes.
   // Syntax: .class-names #id [html-attributes] block-options
@@ -148,21 +158,23 @@ let defs: Definition[] = [
       if (!match) {
         return false
       }
-      if (match[1]) { // HTML element class names.
-        htmlClasses += ' ' + utils.trim(match[1])
-        htmlClasses = utils.trim(htmlClasses)
+      if (options.safeMode !== 5) {
+        if (match[1]) { // HTML element class names.
+          htmlClasses += ' ' + utils.trim(match[1])
+          htmlClasses = utils.trim(htmlClasses)
+        }
+        if (match[2]) { // HTML element id.
+          htmlAttributes += ' id="' + utils.trim(match[2]).slice(1) + '"'
+        }
+        if (match[3]) { // CSS properties.
+          htmlAttributes += ' style=' + match[3]
+        }
+        if (match[4] && !options.isSafe()) { // HTML attributes.
+          htmlAttributes += ' ' + utils.trim(match[4].slice(1, match[4].length - 1))
+        }
+        htmlAttributes = utils.trim(htmlAttributes)
+        delimitedBlocks.setBlockOptions(blockOptions, match[5])
       }
-      if (match[2]) { // HTML element id.
-        htmlAttributes += ' id="' + utils.trim(match[2]).slice(1) + '"'
-      }
-      if (match[3]) { // CSS properties.
-        htmlAttributes += ' style=' + match[3]
-      }
-      if (match[4] && !options.isSafe()) { // HTML attributes.
-        htmlAttributes += ' ' + utils.trim(match[4].slice(1, match[4].length - 1))
-      }
-      htmlAttributes = utils.trim(htmlAttributes)
-      delimitedBlocks.setBlockOptions(blockOptions, match[5])
       return true
     },
   },

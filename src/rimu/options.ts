@@ -38,7 +38,7 @@ export function isSafe(): boolean {
 
 function setSafeMode(value: number|string): void {
   let n = Number(value)
-  if (!isNaN(n) && n >= 0 && n <= 3) {
+  if (!isNaN(n) && n >= 0 && n <= 5) {
     safeMode = n
   }
 }

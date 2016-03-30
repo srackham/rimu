@@ -728,6 +728,25 @@ test('blocks', function(t) {
     '<p class="large error" id="x1">Error message</p>',
     'html attributes skipped by safeMode=1', {safeMode: 1});
   test_document(
+    '.error #x1 "color:red" [title="Error message"] +skip\nError message',
+    '<p>Error message</p>',
+    'all block attributes skipped by safeMode=5', {safeMode: 5});
+  test_document(
+    // DEPRECATED as of 3.4.0: <<anchor>> syntax.
+    '<<#x1>>',
+    '',
+    'deprecated <<anchor>> block anchor skipped by safeMode=5', {safeMode: 5});
+  test_document(
+    // DEPRECATED as of 3.4.0: <<anchor>> syntax.
+    '<<#x1>>',
+    '<div id="x1"></div>',
+    'deprecated <<anchor>> block anchor');
+  test_document(
+    // DEPRECATED as of 3.4.0: <<anchor>> syntax.
+    'Inline <<#x1>>',
+    '<p>Inline </p>',
+    'deprecated <<anchor>> inline anchor skipped by safeMode=5', {safeMode: 5});
+  test_document(
     '.#preface\n== Preface',
     '<h2 id="preface">Preface</h2>',
     'header attributes');
