@@ -234,19 +234,19 @@ files.forEach(function (infile): void {
       if (msg.length > 120) {
         msg = msg.slice(0, 117) + '...'
       }
-      console.log(msg)
+      console.error(msg)
       errors += 1
     }
   }
   html += Rimu.render(source, options) + '\n'
 })
-if (errors) {
-  process.exit(1)
-}
 html = html.trim()
 if (outfile) {
   fs.writeFileSync(outfile, html)
 }
 else {
   process.stdout.write(html)
+}
+if (errors) {
+  process.exit(1)
 }
