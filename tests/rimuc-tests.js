@@ -37,8 +37,8 @@ test('rimuc', function(t) {
   rimuc_equal(t, '<br>', '<p>&lt;br&gt;</p>', '--safe-mode 3',
     'rimuc --safe-mode 3');
 
-  rimuc_equal(t, '<br>', '<p>X</p>', '--safe-mode 2 --htmlReplacement X',
-    'rimuc --htmlReplacement');
+  rimuc_equal(t, '<br>', '<p>X</p>', '--safe-mode 2 --html-replacement X',
+    'rimuc --html-replacement');
 
   rimuc_exec('', '--help', function(actual) {
     t.ok(actual.indexOf('\nNAME\n  rimuc') === 0, 'rimuc --help')

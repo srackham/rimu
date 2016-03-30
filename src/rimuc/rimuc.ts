@@ -20,7 +20,7 @@ DESCRIPTION
   with an .html extension are passed directly to the output.
 
   If a file named .rimurc exists in the user's home directory
-  then its contents is processed (with safeMode 0) after
+  then its contents is processed (with --safe-mode 0) after
   --prepend sources but before any other inputs.
   This behavior can be disabled with the --no-rimurc option.
 
@@ -36,7 +36,7 @@ OPTIONS
 
   -p, --prepend SOURCE
     Process the SOURCE text before other inputs.
-    Rendered with safeMode 0.
+    Rendered with --safe-mode 0.
 
   --no-rimurc
     Do not process .rimurc from the user's home directory.
@@ -47,15 +47,17 @@ OPTIONS
     is not used then the output is written to a same-named file with
     an .html extension.
 
-  --safeMode NUMBER
-    Specifies how to process inline and block HTML elements.
-    --safeMode 0 renders raw HTML (default).
-    --safeMode 1 drops raw HTML.
-    --safeMode 2 replaces raw HTML with htmlReplacement option text.
-    --safeMode 3 renders raw HTML as text.
+  --safe-mode NUMBER
+    Specifies how to process HTML elements.
+    Non-zero safe mode ignores all Rimu definition elements.
+    --safe-mode 0 render HTML (default).
+    --safe-mode 1 ignore HTML.
+    --safe-mode 2 replace HTML with --html-replacement option value.
+    --safe-mode 3 render HTML as text.
+    --safe-mode 5 ignore HTML and Block Attribute elements.
 
-  --htmlReplacement
-    A string that replaces embedded HTML when safeMode is set to 2.
+  --html-replacement
+    A string that replaces embedded HTML when --safe-mode is set to 2.
     Defaults to '<mark>replaced HTML</mark>'.
 
   --title TITLE, --highlightjs, --mathjax, --toc, --section-numbers
@@ -147,14 +149,15 @@ outer:
         case '--no-rimurc':
           no_rimurc = true
           break
-        case '--safeMode':
-        case '--safe-mode': // Deprecated in Rimu 5.0.0.
+        case '--safe-mode':
+        case '--safeMode':  // Deprecated in Rimu 7.1.0.
           safeMode = parseInt(process.argv.shift() || '99', 10)
-          if (safeMode < 0 || safeMode > 3) {
-            die('illegal --safeMode option value')
+          if (safeMode < 0 || safeMode > 5) {
+            die('illegal --safe-mode option value')
           }
           break
-        case '--htmlReplacement':
+        case '--html-replacement':
+        case '--htmlReplacement': // Deprecated in Rimu 7.1.0.
           htmlReplacement = process.argv.shift()
           break
         case '--styled':
