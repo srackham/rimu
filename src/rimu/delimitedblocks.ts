@@ -14,7 +14,7 @@ export interface Definition {
   closeTag: string
   verify?: (match: RegExpMatchArray) => boolean   // Additional match verification checks.
   delimiterFilter?: (match: string[]) => string   // Process opening delimiter. Return any delimiter content.
-  contentfilter?: (text: string, match?: string[], expansionOptions?: utils.ExpansionOptions) => string
+  contentFilter?: (text: string, match?: string[], expansionOptions?: utils.ExpansionOptions) => string
   expansionOptions: utils.ExpansionOptions
 }
 
@@ -33,7 +33,7 @@ const DEFAULT_DEFS: Definition[] = [
       macros: true
     },
     delimiterFilter: delimiterTextFilter,
-    contentfilter: function (text, match, expansionOptions): string {
+    contentFilter: function (text, match, expansionOptions): string {
       // Process macro definition.
       let name = match[0].match(/^\{([\w\-]+\??)\}/)[1]  // Get the macro name from opening delimiter.
       text = text.replace(/' *\\\n/g, '\'\n')            // Unescape line-continuations.
@@ -110,7 +110,7 @@ const DEFAULT_DEFS: Definition[] = [
       macros: true
     },
     delimiterFilter: delimiterTextFilter,
-    contentfilter: options.safeModeFilter
+    contentFilter: options.safeModeFilter
   },
   // Indented paragraph.
   {
@@ -124,7 +124,7 @@ const DEFAULT_DEFS: Definition[] = [
       specials: true
     },
     delimiterFilter: delimiterTextFilter,
-    contentfilter: function (text: string): string {
+    contentFilter: function (text: string): string {
       // Strip indent from start of each line.
       let first_indent = text.search(/\S/)
       let buffer = text.split('\n')
@@ -150,7 +150,7 @@ const DEFAULT_DEFS: Definition[] = [
       specials: true       // Fall-back if spans is disabled.
     },
     delimiterFilter: delimiterTextFilter,
-    contentfilter: function (text: string): string {
+    contentFilter: function (text: string): string {
       // Strip leading > from start of each line and unescape escaped leading >.
       let buffer = text.split('\n')
       for (let i in buffer) {
@@ -226,8 +226,8 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
       // Translate block.
       if (!expansionOptions.skip) {
         let text = lines.join('\n')
-        if (def.contentfilter) {
-          text = def.contentfilter(text, match, expansionOptions)
+        if (def.contentFilter) {
+          text = def.contentFilter(text, match, expansionOptions)
         }
         writer.write(utils.injectHtmlAttributes(def.openTag))
         if (expansionOptions.container) {
