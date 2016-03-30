@@ -17,7 +17,7 @@ function rimuc_equal(t, source, expected, options, message) {
 }
 
 test('rimuc', function(t) {
-  t.plan(14);
+  t.plan(15);
 
   rimuc_equal(t, '*Hello World!*', '<p><em>Hello World!</em></p>', '',
     'rimuc basic test');
@@ -36,6 +36,9 @@ test('rimuc', function(t) {
 
   rimuc_equal(t, '<br>', '<p>&lt;br&gt;</p>', '--safe-mode 3',
     'rimuc --safe-mode 3');
+
+  rimuc_equal(t, '."color:red"\nHello World!', '<p>Hello World!</p>', '--safe-mode 5',
+    'rimuc --safe-mode 5');
 
   rimuc_equal(t, '<br>', '<p>X</p>', '--safe-mode 2 --html-replacement X',
     'rimuc --html-replacement');
