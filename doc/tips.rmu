@@ -26,13 +26,15 @@ Macros provide a simple, consistent mechanism for extending the Rimu
 markup vocabulary.
 
 .-macros
-{macros-example} = '{sidebar} = '#### $1
-."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'\
+{macros-example} = '// Define some macros.
 {info} = '<span class="label label-info">$1</span>'\
 {heads-up} = '{info|Heads up!}'\
 {note} = '{info|Note} <mark>$1</mark>'\
 {playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'\
+{sidebar} = '#### $1
+."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'\
 
+// Use the macros.
 {sidebar|Fun with Macros}
 ..
 {heads-up} See the {playground} for documentation and hands-on
@@ -362,7 +364,7 @@ separate API call, for example:
 
 ``` javascript
 Rimu.render(trusted_rimu_definitions, {safeMode: 0});
-var html = Rimu.render(untrusted_rimu_markup, {safeMode: 1});
+var html = Rimu.render(untrusted_rimu_markup, {safeMode: 5});
 ```
 
 
@@ -539,7 +541,7 @@ syntax was a deliberate design decision:
   accommodate all but the simplest of tables. This makes for a complex
   and noisy syntax -- precisely what we're trying to avoid.
 - Coming up with a syntax that is both recognizably tabular and easily
-  written is difficult -- imagine trying to write the example above in
+  written is difficult -- imagine trying to write the above example in
   a way that maintains the side-by-side cell layout.
 - At first blush tables come across as a hugely useful feature, but
   most documentation makes surprising little use of tables.

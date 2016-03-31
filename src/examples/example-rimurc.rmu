@@ -39,7 +39,7 @@
 /*
   Quotes
 */
-// Underline (overrides built-in strong quote).
+// Double-underline (overrides built-in strong quote).
 __ = '<u>|</u>'
 // Left and right double-quote characters.
 " = '&ldquo;|&rdquo;'

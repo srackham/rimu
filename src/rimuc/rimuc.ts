@@ -48,16 +48,17 @@ OPTIONS
     an .html extension.
 
   --safe-mode NUMBER
-    Specifies how to process HTML elements.
-    Non-zero safe mode ignores all Rimu definition elements.
-    --safe-mode 0 render HTML (default).
-    --safe-mode 1 ignore HTML.
-    --safe-mode 2 replace HTML with --html-replacement option value.
-    --safe-mode 3 render HTML as text.
-    --safe-mode 5 ignore HTML and Block Attribute elements.
+    Non-zero safe modes ignore: Definition elements; API option elements;
+    HTML attributes in Block Attributes elements.
+    Also specifies how to process HTML elements:
+    --safe-mode 0 renders HTML (default).
+    --safe-mode 1 ignores HTML.
+    --safe-mode 2 replaces HTML with --html-replacement option value.
+    --safe-mode 3 renders HTML as text.
+    --safe-mode 5 ignores HTML and Block Attribute elements.
 
-  --html-replacement
-    A string that replaces embedded HTML when --safe-mode is set to 2.
+  --html-replacement TEXT
+    Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
     Defaults to '<mark>replaced HTML</mark>'.
 
   --title TITLE, --highlightjs, --mathjax, --toc, --section-numbers
