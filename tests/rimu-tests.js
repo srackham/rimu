@@ -206,10 +206,12 @@ test('spans', function(t) {
 
 test('blocks', function(t) {
 
-  // The render API is reset by default unless `supporessReset` is true.
+  // The render API is reset by default unless `suppressReset` is true.
   function test_document(source, expected, message, options, suppressReset) {
     options = options || {};
-    options.callback = catchLint;
+    if (options.callback === undefined) {
+      options.callback = catchLint;
+    }
     if (!suppressReset) options.reset = true;
     t.equal(Rimu.render(source, options), expected, message);
   }
@@ -521,6 +523,14 @@ test('blocks', function(t) {
     '.htmlReplacement=\'Foo\'\n<hr>\n\n.safeMode=\'2\'\n<hr>\n\n.safeMode=\'0\'\n<hr>',
     '<hr>\nFoo\nFoo',
     'safeMode once set cannot be unset by an API Option');
+  test_document(
+    '{x}=\'1\'\n{x}',
+    '<p>{x}</p>',
+    'single-line macro definition skipped in safe mode', {safeMode: 1, callback: null});
+  test_document(
+    '{x}=\'1\n2\'\n{x}',
+    '<p>{x}</p>',
+    'multi-line macro definition skipped in safe mode', {safeMode: 1, callback: null});
 
   // The {blockref} is passed through and gets picked up as a paragraph.
   test_document(

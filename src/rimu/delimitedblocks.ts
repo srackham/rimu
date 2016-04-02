@@ -35,6 +35,9 @@ const DEFAULT_DEFS: Definition[] = [
     delimiterFilter: delimiterTextFilter,
     contentFilter: function (text, match, expansionOptions): string {
       // Process macro definition.
+      if (options.isSafe()) {
+        return ''   // Skip if a safe mode is set.
+      }
       let name = match[0].match(/^\{([\w\-]+\??)\}/)[1]  // Get the macro name from opening delimiter.
       text = text.replace(/' *\\\n/g, '\'\n')            // Unescape line-continuations.
       text = text.replace(/(' *[\\]+)\\\n/g, '$1\n')     // Unescape escaped line-continuations.
