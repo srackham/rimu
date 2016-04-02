@@ -119,6 +119,21 @@
   .dl-numbered > dt:before {
     content: counter(dl-counter) ". ";
   }
+  .page-break {
+    page-break-before: always;
+  }
+  .no-page-break {
+    page-break-inside: avoid;
+  }
+  .align-left {
+    text-align: left;
+  }
+  .align-center {
+    text-align: center;
+  }
+  .align-right {
+    text-align: right;
+  }
 </style>
 <style>
   /* TOC styles */
@@ -285,17 +300,21 @@ can be found in the Rimu npm package <code>./rimu/bin</code> folder):</p>
 <p>The <code>options</code> argument is an object with zero or more of the following
 properties:</p>
 <dl class="dl-horizontal"><dt><code>safeMode</code></dt><dd>
-This option has a number value that controls how Rimu
-renders embedded HTML and whether or not Rimu definition and option elements
-are processed:
+This option has a number value that controls how Rimu renders embedded
+HTML and whether or not Rimu definition and option elements are
+processed:
 <div><pre class="light-background no-highlight"><code>0 =&gt; Render HTML (default behavior).
-1 =&gt; Delete HTML.
+1 =&gt; Ignore HTML.
 2 =&gt; Replace HTML with the 'htmlReplacement' option string.
-3 =&gt; Render HTML as text.</code></pre>
+3 =&gt; Render HTML as text.
+5 =&gt; Ignore HTML and Block Attributes elements.</code></pre>
 <ul><li>If <code>safeMode</code> is non-zero the following Rimu elements are ignored:
-<ul><li>Delimited Block, Macro, Quote and Replacement definitions.
-</li><li>API Option elements.
-</li><li>HTML attributes in Block Attribute elements.
+<ul><li><em>Delimited Block</em>, <em>Macro</em>, <em>Quote</em> and <em>Replacement</em> definitions.
+</li><li><em>API Option</em> elements.
+</li><li>HTML attributes in <em>Block Attribute</em> elements.
+</li><li>In addition, setting <code>safeMode</code> to 5 ensures HTML element IDs
+    cannot be created and that CSS classes or properties cannot be
+    used explicitly.
 </li></ul></li><li>Once a non-zero <code>safeMode</code> has been set then it can only be reset by
   a <code>render()</code> API call with a <code>safeMode:0</code> or a <code>reset:true</code> option.
 </li></ul></div>
@@ -970,7 +989,7 @@ url                 &lt;a href="url"&gt;url&lt;/a&gt;       Note 1
 &lt;email&gt;             &lt;a href="mailto:email"&gt;email&lt;/a&gt;
 &lt;email|caption&gt;     &lt;a href="mailto:email"&gt;caption&lt;/a&gt;
 ______________________________________________________</code></pre>
-<p>Note:</p>
+<p>Notes:</p>
 <ol><li>Only HTTP and HTTPS raw URLs are auto-encoded.
 </li><li>The <code>[caption](url)</code> syntax is Markdown compatible.
 </li></ol><h4>Examples</h4>
@@ -1015,12 +1034,11 @@ Rimu source</th>
 <h2>Images</h2>
 <p>Syntax:</p>
 <pre class="light-background no-highlight"><code>Rimu                Rendered HTML
-______________________________________________
+_______________________________________________________
 &lt;image:url|alt&gt;     &lt;img href="url" alt="alt"&gt;
 &lt;image:url&gt;         &lt;img href="url" alt="url"&gt;
-![alt](url)         &lt;img href="url" alt="alt"&gt;
-______________________________________________</code></pre>
-<p>The <code>![alt](url)</code> syntax is Markdown compatible.</p>
+![alt](url)         &lt;img href="url" alt="alt"&gt;   Note 1
+_______________________________________________________</code></pre>
 <p>An image can be rendered as a block element:</p>
 <h4>Examples</h4>
 <table class="example table table-bordered">
@@ -1044,7 +1062,10 @@ inline element.</code></pre>
 inline element.</p>
 </div>
 </td></tr></tbody></table>
-<h2>Character entities</h2>
+<p>Notes:</p>
+<ol><li>The <code>![alt](url)</code> syntax is Markdown compatible. To maintain
+   Markdown compatibility it is always rendered as an inline element.
+</li></ol><h2>Character entities</h2>
 <p>HTML character entities can be included in Rimu source.</p>
 <h4>Examples</h4>
 <table class="example table table-bordered">
@@ -1072,24 +1093,26 @@ can also include <a href="#delimited-block-definition">block-options</a> to
 control the processing of <a href="#delimited-blocks">Delimited Block</a>
 elements.</p>
 <p>Syntax:</p>
-<pre class="no-highlight"><code>.class-names #id [html-attributes] block-options</code></pre>
+<pre class="no-highlight"><code>.class-names #id "css-properties" [html-attributes] block-options</code></pre>
 <ul><li>The leading period character must start at the left margin and the
   attributes must not extend beyond the end of the line.
 </li><li>All items are optional.
 </li><li><code>class-names</code> is one or more HTML <em>class</em> attribute names (separated
   by spaces).
 </li><li><code>id</code> is a unique HTML <em>id</em> attribute value.
-</li><li><code>html-attributes</code> is one or more HTML attribute name/value pairs.
-</li><li>HTML attributes can be applied any block element that renders HTML.
+</li><li><code>css-properties</code> is one or more CSS property name/value pairs: it
+  injects a <code>style="css-properties"</code> attribute into the target
+  opening tag.
+</li><li><code>html-attributes</code> is one or more HTML attribute name/value pairs:
+  they are injected into the target opening tag.
 </li><li>The <code>[html-attributes]</code> section is ignored if the API <em>safeMode</em>
   option is not zero (see the <em>API</em> topic).
 </li><li><code>block-options</code> is used to control the processing of the succeeding
   block element contents.
 </li><li>The <code>-specials</code> block option is ignored if the <a href="#api-options">API safeMode
   option</a>  is not zero.
-</li><li>Successive Block Attributes elements accumulate attribute items
-  until they are consumed by the first succeeding Delimited Block
-  element.
+</li><li>Successive Block Attributes elements accumulate until they are
+  consumed by the first succeeding Delimited Block element.
 </li></ul><h4>Examples</h4>
 <table class="example table table-bordered">
 <tbody>
@@ -1098,13 +1121,13 @@ elements.</p>
 <span class="icon-edit no-print" title="Edit example" style="cursor:pointer;" onclick="editExample('block-attributes-example')"></span>
 Rimu source</td>
 <td>
-<pre id="block-attributes-example-source" class="example-source no-highlight"><code>.error [style="color:red"]
+<pre id="block-attributes-example-source" class="example-source no-highlight"><code>.error "color:red"
 Lorum ipsum.
 
-.info #ref2 [style="color:green"]
+.#ref2 "color:green" [title="Reference two"]
 Ac curabitur elementum.
 
-{quote-style} = '.[style="padding-left: 10px; border-left: 4px solid silver;"]'
+{quote-style} = '."padding-left: 10px; border-left: 4px solid silver;"'
 
 {quote-style}
 ""
@@ -1123,7 +1146,7 @@ is set.</code></pre>
 <td>
 <div id="block-attributes-example-rendered" class="example-rendered">
 <p class="error" style="color:red">Lorum ipsum.</p>
-<p class="info" id="ref2" style="color:green">Ac curabitur elementum.</p>
+<p id="ref2" style="color:green" title="Reference two">Ac curabitur elementum.</p>
 <blockquote style="padding-left: 10px; border-left: 4px solid silver;"><p>Lorem ipsum dolor sit amet sapien. Nascetur et mattis maecenas morbi
 porttitor. Vitae vestibulum voluptate. Quam elit id. In eu wisi.
 Imperdiet pellentesque minim. Metus mauris tortor. Torquent leo vel.</p></blockquote>
@@ -1265,13 +1288,15 @@ name.</p>
 <span class="icon-edit no-print" title="Edit example" style="cursor:pointer;" onclick="editExample('macros-example')"></span>
 Rimu source</td>
 <td>
-<pre id="macros-example-source" class="example-source no-highlight"><code>{sidebar} = '#### $1
-.[style="padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"]'
+<pre id="macros-example-source" class="example-source no-highlight"><code>// Define some macros.
 {info} = '&lt;span class="label label-info"&gt;$1&lt;/span&gt;'
 {heads-up} = '{info|Heads up!}'
 {note} = '{info|Note} &lt;mark&gt;$1&lt;/mark&gt;'
 {playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'
+{sidebar} = '#### $1
+."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'
 
+// Use the macros.
 {sidebar|Fun with Macros}
 ..
 {heads-up} See the {playground} for documentation and hands-on
@@ -1312,7 +1337,7 @@ DESCRIPTION
   with an .html extension are passed directly to the output.
 
   If a file named .rimurc exists in the user's home directory
-  then its contents is processed (with safeMode 0) after
+  then its contents is processed (with --safe-mode 0) after
   --prepend sources but before any other inputs.
   This behavior can be disabled with the --no-rimurc option.
 
@@ -1328,7 +1353,7 @@ OPTIONS
 
   -p, --prepend SOURCE
     Process the SOURCE text before other inputs.
-    Rendered with safeMode 0.
+    Rendered with --safe-mode 0.
 
   --no-rimurc
     Do not process .rimurc from the user's home directory.
@@ -1339,16 +1364,19 @@ OPTIONS
     is not used then the output is written to a same-named file with
     an .html extension.
 
-  --safeMode NUMBER
-    Specifies how to process inline and block HTML elements.
-    --safeMode 0 renders raw HTML (default).
-    --safeMode 1 drops raw HTML.
-    --safeMode 2 replaces raw HTML with htmlReplacement option text.
-    --safeMode 3 renders raw HTML as text.
+  --safe-mode NUMBER
+    Non-zero safe modes ignore: Definition elements; API option elements;
+    HTML attributes in Block Attributes elements.
+    Also specifies how to process HTML elements:
+    --safe-mode 0 renders HTML (default).
+    --safe-mode 1 ignores HTML.
+    --safe-mode 2 replaces HTML with --html-replacement option value.
+    --safe-mode 3 renders HTML as text.
+    --safe-mode 5 ignores HTML and Block Attribute elements.
 
-  --htmlReplacement
-    A string that replaces embedded HTML when safeMode is set to 2.
-    Defaults to `&lt;mark&gt;replaced HTML&lt;/mark&gt;`.
+  --html-replacement TEXT
+    Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
+    Defaults to '&lt;mark&gt;replaced HTML&lt;/mark&gt;'.
 
   --title TITLE, --highlightjs, --mathjax, --toc, --section-numbers
     Shortcuts for prepended styling macro definitions:
@@ -1378,7 +1406,12 @@ STYLING MACROS AND CLASSES
   ______________________________________________________________
   verse            Verse format (paragraphs, division blocks).
   sidebar          Sidebar format (paragraphs, division blocks).
+  align-left       Text alignment left.
+  align-center     Text alignment center.
+  align-right      Text alignment right.
   no-print         Do not print.
+  page-break       Force page break before the element.
+  no-page-break    Avoid page break inside the element.
   dl-numbered      Number labeled list items.
   dl-horizontal    Format labeled lists horizontally.
   dl-counter       Prepend dl item counter to element content.
@@ -1396,8 +1429,8 @@ STYLING MACROS AND CLASSES
 </li><li>Compile multiple source files to single output file:
 <pre class="no-highlight"><code>rimuc -o book.html frontmatter.rmu chapter*.rmu backmatter.rmu</code></pre>
 </li></ol><h3><code>--styled</code> option</h3>
-<p>The <code>--styled</code> option prepends a header file and appends footer file to
-the other source files. The header and footer ensures:</p>
+<p>The <code>--styled</code> option prepends a header file and appends a footer file
+to the list of source files. The header and footer files ensure:</p>
 <ul><li>The output document is a valid HTML5 document.
 </li><li>The output document includes
   <a href="http://getbootstrap.com/2.3.2/">Bootstrap</a> for styling.
@@ -1422,11 +1455,11 @@ the other source files. The header and footer ensures:</p>
 </li></ol><p><b>NOTE</b>: Synthesised slugs are generated dynamically when the page is
 rendered and are not visible from other documents &mdash; if you want to
 link the location from another document you will need to create an
-explicit anchor e.g. using a <a href="#block-attributes">Block Attribute</a>
-<em>id</em>.</p></div>
-</li><li>In addition to Bootstrap CSS style classes there are styles for
-  verses, sidebars and section numbering (see <code>rimuc --help</code> command
-  and <a href="tips.html">Rimu Tips</a>).
+explicit anchor using a <a href="#block-attributes">Block Attribute</a> <em>id</em>.</p></div>
+</li><li>In addition to Bootstrap CSS style classes the header includes
+  styles for verses, sidebars, text alignment, page break control and
+  section numbering (see <code>rimuc --help</code> command and <a href="tips.html">Rimu
+  Tips</a>).
 </li></ul><h2 id="vim-syntax-file">Vim syntax file</h2>
 <p>The Rimu distribution includes a
 <a href="https://github.com/srackham/rimu/blob/master/src/vim/syntax/rimu.vim">syntax

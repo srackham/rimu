@@ -119,6 +119,21 @@
   .dl-numbered > dt:before {
     content: counter(dl-counter) ". ";
   }
+  .page-break {
+    page-break-before: always;
+  }
+  .no-page-break {
+    page-break-inside: avoid;
+  }
+  .align-left {
+    text-align: left;
+  }
+  .align-center {
+    text-align: center;
+  }
+  .align-right {
+    text-align: right;
+  }
 </style>
 <style>
   /* TOC styles */
@@ -240,12 +255,10 @@ only processed if <code>safeMode</code> is non-zero.</p>
 <p>First convert Rimu markup to HTML using the <code>rimuc</code> tool and then
 convert the HTML to PDF.  Here are a few options for converting HTML
 to PDF:</p>
-<ol><li>Open the HTML document in <a href="https://www.libreoffice.org/">LibreOffice</a>
-  Writer and export as PDF, this does a good job especially if you use
-  the <code>rimuc</code> <code>--styled</code> option.
-</li><li>Google's Chrome web browser has an option to print HTML to a PDF
+<ol><li>Google's Chrome web browser has an option to print HTML to a PDF
   file, other browsers have PDF add-ons that perform the same
-  function.
+  function, this does a good job especially if you use the <code>rimuc</code>
+  <code>--styled</code> option.
 </li><li>Use an HTML to PDF conversion program such as
   <a href="http://www.htmldoc.org/">HTMLDOC</a>.
 </li></ol><h2>Extend Rimu with Macros</h2>
@@ -259,13 +272,15 @@ markup vocabulary.</p>
 <span class="icon-edit no-print" title="Edit example" style="cursor:pointer;" onclick="editExample('macros-example')"></span>
 Rimu source</td>
 <td>
-<pre id="macros-example-source" class="example-source no-highlight"><code>{sidebar} = '#### $1
-.[style="padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"]'
+<pre id="macros-example-source" class="example-source no-highlight"><code>// Define some macros.
 {info} = '&lt;span class="label label-info"&gt;$1&lt;/span&gt;'
 {heads-up} = '{info|Heads up!}'
 {note} = '{info|Note} &lt;mark&gt;$1&lt;/mark&gt;'
 {playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'
+{sidebar} = '#### $1
+."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'
 
+// Use the macros.
 {sidebar|Fun with Macros}
 ..
 {heads-up} See the {playground} for documentation and hands-on
@@ -285,10 +300,9 @@ experimentation.</p>
 <p><span class="label label-info">Note</span> <mark>This document is not yet finished.</mark></p></div>
 </div>
 </td></tr></table>
-<ul><li>The <code>#### $1
-.[style="padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"]</code> macro shows how you can inject CSS styles into a
-  <em>Division Block</em>, but a better way of styling block elements is to
-  use <a href="#scoped-css">scoped CSS</a>.
+<ul><li>The <code>{sidebar}</code> macro shows how you can inject CSS styles into a
+  <em>Division Block</em> (you could also use use <a href="#scoped-css">scoped CSS</a> to
+  style the output).
 </li><li>Note how macro definitions can span multiple lines and can contain
   any valid Rimu markup (including HTML and blank lines).
 </li><li><a href="https://github.com/srackham/rimu/blob/master/doc/tips.rmu">This document</a>
@@ -696,7 +710,7 @@ Safe Mode. To apply Macro, Replacement or Quote definitions to Rimu
 markup that is processed in Safe Mode you need to load the definitions with a
 separate API call, for example:</p>
 <pre class="javascript no-highlight"><code>Rimu.render(trusted_rimu_definitions, {safeMode: 0});
-var html = Rimu.render(untrusted_rimu_markup, {safeMode: 1});</code></pre>
+var html = Rimu.render(untrusted_rimu_markup, {safeMode: 5});</code></pre>
 <h2>Mathematical formulae using MathJax</h2>
 <p>You can include math formulas written in LaTeX or MathML using
 <a href="http://www.mathjax.org/">MathJax</a>. The <code>rimuc</code> command <code>--styled</code>
@@ -907,7 +921,7 @@ syntax was a deliberate design decision:</p>
   accommodate all but the simplest of tables. This makes for a complex
   and noisy syntax &mdash; precisely what we're trying to avoid.
 </li><li>Coming up with a syntax that is both recognizably tabular and easily
-  written is difficult &mdash; imagine trying to write the example above in
+  written is difficult &mdash; imagine trying to write the above example in
   a way that maintains the side-by-side cell layout.
 </li><li>At first blush tables come across as a hugely useful feature, but
   most documentation makes surprising little use of tables.
@@ -1123,7 +1137,7 @@ Rimu source</th>
 <pre id="list-item-block-attributes-example-source" class="example-source no-highlight"><code>- List item with green sidebar
   styled Division block.
 ..
-.sidebar [style="color:green"]
+.sidebar "color:green"
 ...
 Urna aliquam pid, pulvinar augue ut
 aenean enim cum lectus sed.
@@ -1154,7 +1168,7 @@ Three:: Item three.
 - List item with bold Indented
   paragraph.
 ..
-.[style="font-weight:bold"]
+."font-weight:bold"
   Duis in tincidunt rhoncus nascetur
   lacus!
 ..</code></pre>
@@ -1273,6 +1287,78 @@ Rimu source</th>
 </li></ul></li><li>List item.
 <pre class="no-highlight"><code>* Rendered as code block.</code></pre>
 </li></ul></div>
+</td></tr></tbody></table>
+<h2>Controlling page breaks</h2>
+<p>You can control printer page breaks by using Rimu <em>Attribute Blocks</em>
+to inject CSS
+<a href="https://developer.mozilla.org/en/docs/Web/CSS/page-break-inside">page-break-inside</a>,
+<a href="https://developer.mozilla.org/en/docs/Web/CSS/page-break-before">page-break-before</a>
+and
+<a href="https://developer.mozilla.org/en/docs/Web/CSS/page-break-after">page-break-after</a>
+properties into HTML output elements.</p>
+<p>Examples:</p>
+<pre class="no-highlight"><code>.sidebar "page-break-inside:avoid"
+..
+Page breaks are avoided inside
+this sidebar.
+..
+
+."page-break-before:always"
+### A header that starts on a new page</code></pre>
+<p>The <em>rimuc</em> tool <code>--styled</code> option includes <code>page-break</code> and
+<code>no-page-break</code> CSS classes which apply <code>page-break-before:always</code> and
+<code>page-break-inside:avoid</code> properties respectively.  Here is the
+previous example using the <em>rimuc</em> page break classes:</p>
+<pre class="no-highlight"><code>.sidebar no-page-break
+..
+Page breaks are avoided inside
+this sidebar.
+..
+
+.page-break
+### A header that starts on a new page</code></pre>
+<h2>Controlling text alignment</h2>
+<p>You can control block element text alignment by injecting the CSS
+<code>text-align</code> property using the Rimu <em>Attribute Blocks</em> element. For
+example:</p>
+<h4>Examples</h4>
+<table class="example table table-bordered">
+<thead><tr class="example-header">
+<th>
+<span class="icon-edit no-print" title="Edit example" style="cursor:pointer;" onclick="editExample('text-alignment-example-1')"></span>
+Rimu source</th>
+<th>Rendered HTML</th>
+</tr></thead><tbody><tr>
+<td style="width:50%;">
+<pre id="text-alignment-example-1-source" class="example-source no-highlight"><code>."text-align:center"
+Enim odio ultrices</code></pre>
+<textarea id="text-alignment-example-1-edit" class="example-edit" onkeyup="updateExample('text-alignment-example-1')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="text-alignment-example-1-rendered" class="example-rendered">
+<p style="text-align:center">Enim odio ultrices</p>
+</div>
+</td></tr></tbody></table>
+<p>The <em>rimuc</em> tool <code>--styled</code> option includes <code>align-left</code>,
+<code>align-center</code> and <code>align-right</code> CSS classes.  Here is the previous
+example using the <code>align-center</code> text alignment class:</p>
+<h4>Examples</h4>
+<table class="example table table-bordered">
+<thead><tr class="example-header">
+<th>
+<span class="icon-edit no-print" title="Edit example" style="cursor:pointer;" onclick="editExample('text-alignment-example-2')"></span>
+Rimu source</th>
+<th>Rendered HTML</th>
+</tr></thead><tbody><tr>
+<td style="width:50%;">
+<pre id="text-alignment-example-2-source" class="example-source no-highlight"><code>.align-center
+Enim odio ultrices</code></pre>
+<textarea id="text-alignment-example-2-edit" class="example-edit" onkeyup="updateExample('text-alignment-example-2')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="text-alignment-example-2-rendered" class="example-rendered">
+<p class="align-center">Enim odio ultrices</p>
+</div>
 </td></tr></tbody></table>
 
 </div>

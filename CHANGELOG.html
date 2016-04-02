@@ -119,6 +119,21 @@
   .dl-numbered > dt:before {
     content: counter(dl-counter) ". ";
   }
+  .page-break {
+    page-break-before: always;
+  }
+  .no-page-break {
+    page-break-inside: avoid;
+  }
+  .align-left {
+    text-align: left;
+  }
+  .align-center {
+    text-align: center;
+  }
+  .align-right {
+    text-align: right;
+  }
 </style>
 <style>
   /* TOC styles */
@@ -188,7 +203,24 @@
 <h1>Rimu Markup CHANGELOG</h1>
 <p>See the <a href="https://github.com/srackham/rimu/commits/">Git commit log</a>
 for more detailed information.</p>
-<h2>Version 7.0.3 (2016-03-27)</h2>
+<h2>Version 7.1.0 (2016-04-02)</h2>
+<ul><li>Added <code>"css-properties"</code> syntax to <em>Block Attributes</em> element (a
+  shortcut for the commonly used <em>Block Attributes</em> <code>[style="..."]</code> idiom).
+</li><li>Added  CSS text alignment classes <code>align-left</code>, <code>align-center</code>,
+  <code>align-right</code> to the <em>rimuc</em> <code>--styled</code> option.
+</li><li>Added <code>page-break</code> and <code>no-page-break</code> CSS classes to the <em>rimuc</em>
+  <code>--styled</code> option to allow printer page breaks to be specified.
+</li><li>A new, stricter, <em>Safe Mode 5</em> which skips <em>Block Attributes</em> elements
+  altogether, this disables:
+<ol><li>Disables direct CSS control (via CSS classes or CSS properties).
+</li><li>Disables HTML element ID creation (so you cannot override existing IDs).
+</li></ol></li><li><em>rimuc</em> command outputs error messages to <code>stderr</code> (not <code>stdout</code>).
+</li><li><em>rimuc</em> command outputs rendered HTML even if there are errors (previously
+  if an error occurred no HTML would be outputted which was surprising).
+</li><li><em>rimuc</em> <code>--safeMode</code> and <code>--htmlReplacement</code> options have been
+  deprecated and are superceded by standard lower case hyphenated
+  option names <code>--safe-mode</code> and <code>--html-replacement</code>.
+</li></ul><h2>Version 7.0.3 (2016-03-27)</h2>
 <ul><li>Documentation updates.
 </li></ul><h2>Version 7.0.2 (2016-01-10)</h2>
 <ul><li>Documentation updates.
