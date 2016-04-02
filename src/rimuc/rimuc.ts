@@ -216,7 +216,7 @@ let options: Rimu.Options = {}
 if (htmlReplacement !== null) {
   options.htmlReplacement = htmlReplacement
 }
-files.forEach(function (infile): void {
+for (let infile of files) {
   if (!fs.existsSync(infile)) {
     die('source file does not exist: ' + infile)
   }
@@ -228,7 +228,7 @@ files.forEach(function (infile): void {
   let ext = infile.split('.').pop()
   if (ext === 'html') {
     html += source
-    return
+    break
   }
   // rimurc processed with default safeMode.
   options.safeMode = infile === rimurc ? 0 : safeMode
@@ -243,7 +243,7 @@ files.forEach(function (infile): void {
     }
   }
   html += Rimu.render(source, options) + '\n'
-})
+}
 html = html.trim()
 if (outfile) {
   fs.writeFileSync(outfile, html)
