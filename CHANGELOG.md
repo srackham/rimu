@@ -3,6 +3,27 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
+## Version 7.1.0 (2016-04-02)
+- Added `"css-properties"` syntax to _Block Attributes_ element (a
+  shortcut for the commonly used _Block Attributes_ `[style="..."]` idiom).
+- Added  CSS text alignment classes `align-left`, `align-center`,
+  `align-right` to the _rimuc_ `--styled` option.
+- Added `page-break` and `no-page-break` CSS classes to the _rimuc_
+  `--styled` option to allow printer page breaks to be specified.
+- A new, stricter, _Safe Mode 5_ which skips _Block Attributes_ elements
+  altogether, this disables:
+
+    1. Disables direct CSS control (via CSS classes or CSS properties).
+    2. Disables HTML element ID creation (so you cannot override existing IDs).
+
+- _rimuc_ command outputs error messages to `stderr` (not `stdout`).
+- _rimuc_ command outputs rendered HTML even if there are errors (previously
+  if an error occurred no HTML would be outputted which was surprising).
+- _rimuc_ `--safeMode` and `--htmlReplacement` options have been
+  deprecated and are superceded by standard lower case hyphenated
+  option names `--safe-mode` and `--html-replacement`.
+
+
 ## Version 7.0.3 (2016-03-27)
 - Documentation updates.
 
