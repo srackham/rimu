@@ -513,8 +513,10 @@ test('blocks', function(t) {
   test_document('<hr>', '<hr>', 'safeMode=0', {safeMode: 0});
   test_document('Lorum\nIpsum<br>', '<p>Lorum\nIpsum<br></p>', 'safeMode default');
   test_document('Lorum ipsum<br>', '<p>Lorum ipsum</p>', 'safeMode=1', {safeMode: 1});
-  test_document('<hr>', '', 'safeMode=1', {safeMode: 1});
-  test_document('<hr>', 'XXX', 'htmlReplacement option', {safeMode: 2, htmlReplacement: 'XXX'});
+  test_document('<hr>', '', 'HTML safeMode=1', {safeMode: 1});
+  test_document('<hr>', '', 'HTML safeMode=1+4 is same as safeMode=1', {safeMode: 1+4});
+  test_document('<hr>', 'XXX', 'htmlReplacement option safeMode=2', {safeMode: 2, htmlReplacement: 'XXX'});
+  test_document('<hr>', 'XXX', 'htmlReplacement option safeMode=2+8 same as safeMode=2', {safeMode: 2+8, htmlReplacement: 'XXX'});
   test_document(
     '.htmlReplacement = \'Foo\'\n.safeMode=\'2\'\n<span>Bar</span>',
     '<p>FooBarFoo</p>',
