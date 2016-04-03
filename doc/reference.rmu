@@ -89,23 +89,32 @@ properties:
 .dl-horizontal
 `safeMode`::
 This option has a number value that controls how Rimu renders embedded
-HTML and whether or not Rimu definition and option elements are
-processed:
+HTML and which Rimu definition and option elements will be processed:
 ..
 .light-background
   0 => Render HTML (default behavior).
   1 => Ignore HTML.
   2 => Replace HTML with the 'htmlReplacement' option string.
   3 => Render HTML as text.
-  5 => Ignore HTML and Block Attributes elements.
+  Add 4 to safeMode to ignore Block Attribute elements.
+  Add 8 to safeMode to allow Macro Definitions.
 
+- If `safeMode` is zero all Rimu elements will be processed.
 - If `safeMode` is non-zero the following Rimu elements are ignored:
-  * _Delimited Block_, _Macro_, _Quote_ and _Replacement_ definitions.
+  * Rimu definition elements (_Delimited Block_, _Macro_, _Quote_
+    and _Replacement_ definitions).
   * _API Option_ elements.
   * HTML attributes in _Block Attribute_ elements.
-  * In addition, setting `safeMode` to 5 ensures HTML element IDs
-    cannot be created and that CSS classes or properties cannot be
-    used explicitly.
+- Add 4 to `safeMode` to ignore _Block Attribute_ elements completely,
+  this ensures HTML element IDs cannot be created and that CSS classes
+  or properties cannot be used explicitly.
+- Add 8 to `safeMode` to allow Macro Definitions -- allowing Macro
+  Definitions is not intrinsically unsafe because their safety or
+  otherwise is solely determined by the safety of their constituent
+  elements.
+- For example, a `safeMode` value of 13 (1+4+8) skips HTML elements,
+  allows macro definitions but skips all other Rimu definition
+  elements along with API option elements.
 - Once a non-zero `safeMode` has been set then it can only be reset by
   a `render()` API call with a `safeMode:0` or a `reset:true` option.
 ..
@@ -1000,7 +1009,8 @@ OPTIONS
     --safe-mode 1 ignores HTML.
     --safe-mode 2 replaces HTML with --html-replacement option value.
     --safe-mode 3 renders HTML as text.
-    --safe-mode 5 ignores HTML and Block Attribute elements.
+    Add 4 to --safe-mode to ignore Block Attribute elements.
+    Add 8 to --safe-mode to allow Macro Definitions.
 
   --html-replacement TEXT
     Embedded HTML is replaced by TEXT when --safe-mode is set to 2.

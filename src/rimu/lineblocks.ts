@@ -91,7 +91,7 @@ let defs: Definition[] = [
   {
     match: macros.MACRO_DEF,
     filter: function (match: RegExpExecArray): string {
-      if (options.isSafe()) {
+      if (options.skipMacroDefs()) {
         return ''   // Skip if a safe mode is set.
       }
       let name = match[1]
@@ -134,8 +134,7 @@ let defs: Definition[] = [
     match: /^\\?<<#([a-zA-Z][\w\-]*)>>$/,
     replacement: '<div id="$1"></div>',
     filter: function (match: RegExpExecArray, reader?: io.Reader): string {
-      if (options.safeMode === 5) {
-        // Do not render anchor if safeMode is 5.
+      if (options.skipBlockAttributes()) {
         return ''
       }
       else {
@@ -158,7 +157,7 @@ let defs: Definition[] = [
       if (!match) {
         return false
       }
-      if (options.safeMode !== 5) {
+      if (!options.skipBlockAttributes()) {
         if (match[1]) { // HTML element class names.
           htmlClasses += ' ' + utils.trim(match[1])
           htmlClasses = utils.trim(htmlClasses)

@@ -55,7 +55,8 @@ OPTIONS
     --safe-mode 1 ignores HTML.
     --safe-mode 2 replaces HTML with --html-replacement option value.
     --safe-mode 3 renders HTML as text.
-    --safe-mode 5 ignores HTML and Block Attribute elements.
+    Add 4 to --safe-mode to ignore Block Attribute elements.
+    Add 8 to --safe-mode to allow Macro Definitions.
 
   --html-replacement TEXT
     Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
@@ -153,7 +154,7 @@ outer:
         case '--safe-mode':
         case '--safeMode':  // Deprecated in Rimu 7.1.0.
           safeMode = parseInt(process.argv.shift() || '99', 10)
-          if (safeMode < 0 || safeMode > 5) {
+          if (safeMode < 0 || safeMode > 15) {
             die('illegal --safe-mode option value')
           }
           break

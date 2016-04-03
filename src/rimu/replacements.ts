@@ -21,14 +21,11 @@ const DEFAULT_DEFS: Definition[] = [
     match: /\\?<<#([a-zA-Z][\w\-]*)>>/g,
     replacement: '<span id="$1"></span>',
     filter: function (match: RegExpExecArray): string {
-      if (options.safeMode === 5) {
-        // Do not render anchor if safeMode is 5.
+      if (options.skipBlockAttributes()) {
         return ''
       }
-      else {
-        // Default (non-filter) replacement processing.
-        return utils.replaceMatch(match, this.replacement)
-      }
+      // Default (non-filter) replacement processing.
+      return utils.replaceMatch(match, this.replacement)
     }
   },
 

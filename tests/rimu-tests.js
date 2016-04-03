@@ -531,6 +531,14 @@ test('blocks', function(t) {
     '{x}=\'1\n2\'\n{x}',
     '<p>{x}</p>',
     'multi-line macro definition skipped in safe mode', {safeMode: 1, callback: null});
+  test_document(
+    '{x}=\'1\'\n{x}',
+    '<p>1</p>',
+    'single-line macro definition allowed if safeMode bit 0x8 is set', {safeMode: 9});
+  test_document(
+    '{x}=\'1\n2\'\n{x}',
+    '<p>1\n2</p>',
+    'multi-line macro definition allowed if safeMode bit 0x8 is set', {safeMode: 8});
 
   // The {blockref} is passed through and gets picked up as a paragraph.
   test_document(
@@ -755,7 +763,7 @@ test('blocks', function(t) {
     // DEPRECATED as of 3.4.0: <<anchor>> syntax.
     'Inline <<#x1>>',
     '<p>Inline </p>',
-    'deprecated <<anchor>> inline anchor skipped by safeMode=5', {safeMode: 5});
+    'deprecated <<anchor>> inline anchor skipped by safeMode=7', {safeMode: 7});
   test_document(
     '.#preface\n== Preface',
     '<h2 id="preface">Preface</h2>',

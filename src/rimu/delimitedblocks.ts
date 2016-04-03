@@ -35,7 +35,7 @@ const DEFAULT_DEFS: Definition[] = [
     delimiterFilter: delimiterTextFilter,
     contentFilter: function (text, match, expansionOptions): string {
       // Process macro definition.
-      if (options.isSafe()) {
+      if (options.skipMacroDefs()) {
         return ''   // Skip if a safe mode is set.
       }
       let name = match[0].match(/^\{([\w\-]+\??)\}/)[1]  // Get the macro name from opening delimiter.

@@ -36,9 +36,23 @@ export function isSafe(): boolean {
   return safeMode !== 0
 }
 
+// Return true if Macro Definitions are ignored.
+export function skipMacroDefs(): boolean {
+  /* tslint:disable:no-bitwise */
+  return safeMode !== 0 && !(safeMode & 0x8)
+  /* tslint:enable:no-bitwise */
+}
+
+// Return true if Block Attribute elements are ignored.
+export function skipBlockAttributes(): boolean {
+  /* tslint:disable:no-bitwise */
+  return safeMode !== 0 && (safeMode & 0x4)
+  /* tslint:enable:no-bitwise */
+}
+
 function setSafeMode(value: number|string): void {
   let n = Number(value)
-  if (!isNaN(n) && n >= 0 && n <= 5) {
+  if (!isNaN(n)) {
     safeMode = n
   }
 }
