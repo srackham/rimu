@@ -46,7 +46,7 @@ export function skipMacroDefs(): boolean {
 // Return true if Block Attribute elements are ignored.
 export function skipBlockAttributes(): boolean {
   /* tslint:disable:no-bitwise */
-  return safeMode !== 0 && (safeMode & 0x4)
+  return safeMode !== 0 && !!(safeMode & 0x4)
   /* tslint:enable:no-bitwise */
 }
 
