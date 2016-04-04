@@ -76,7 +76,7 @@ const DEFAULT_DEFS: Definition[] = [
     match: /\\?(<[!\/]?[a-zA-Z\-]+(:?\s+[^<>&]+)?>)/g,
     replacement: '',
     filter: function (match: RegExpExecArray): string {
-      return options.safeModeFilter(match[1])
+      return options.htmlSafeModeFilter(match[1])
     }
   },
 

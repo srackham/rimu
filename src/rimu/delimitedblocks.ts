@@ -113,7 +113,7 @@ const DEFAULT_DEFS: Definition[] = [
       macros: true
     },
     delimiterFilter: delimiterTextFilter,
-    contentFilter: options.safeModeFilter
+    contentFilter: options.htmlSafeModeFilter
   },
   // Indented paragraph.
   {
@@ -265,7 +265,7 @@ export function setBlockOptions(blockOptions: utils.ExpansionOptions, optionsStr
   if (optionsString) {
     let opts = optionsString.trim().split(/\s+/)
     for (let opt of opts) {
-      if (options.isSafe() && opt === '-specials') {
+      if (options.isSafeModeNz() && opt === '-specials') {
         options.errorCallback('-specials block option not valid in safeMode')
         continue
       }

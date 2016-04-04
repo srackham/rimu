@@ -46,7 +46,7 @@ let defs: Definition[] = [
   {
     match: /^\\?\|([\w\-]+)\|\s*=\s*'(.*)'$/,
     filter: function (match: RegExpExecArray): string {
-      if (options.isSafe()) {
+      if (options.isSafeModeNz()) {
         return ''   // Skip if a safe mode is set.
       }
       delimitedBlocks.setDefinition(match[1], match[2])
@@ -58,7 +58,7 @@ let defs: Definition[] = [
   {
     match: /^(\S{1,2})\s*=\s*'([^\|]*)(\|{1,2})(.*)'$/,
     filter: function (match: RegExpExecArray): string {
-      if (options.isSafe()) {
+      if (options.isSafeModeNz()) {
         return ''   // Skip if a safe mode is set.
       }
       quotes.setDefinition({
@@ -75,7 +75,7 @@ let defs: Definition[] = [
   {
     match: /^\\?\/(.+)\/([igm]*)\s*=\s*'(.*)'$/,
     filter: function (match: RegExpExecArray): string {
-      if (options.isSafe()) {
+      if (options.isSafeModeNz()) {
         return ''   // Skip if a safe mode is set.
       }
       let pattern = match[1]
@@ -168,7 +168,7 @@ let defs: Definition[] = [
         if (match[3]) { // CSS properties.
           htmlAttributes += ' style=' + match[3]
         }
-        if (match[4] && !options.isSafe()) { // HTML attributes.
+        if (match[4] && !options.isSafeModeNz()) { // HTML attributes.
           htmlAttributes += ' ' + utils.trim(match[4].slice(1, match[4].length - 1))
         }
         htmlAttributes = utils.trim(htmlAttributes)
@@ -185,7 +185,7 @@ let defs: Definition[] = [
       if (!/^(safeMode|htmlReplacement|reset)$/.test(match[1])) {
         options.errorCallback('illegal API option: ' + match[1] + ': ' + match[0])
       }
-      else if (!options.isSafe()) {
+      else if (!options.isSafeModeNz()) {
         let value = utils.replaceInline(match[2], {macros: true})
         options.setOption(match[1], value)
       }

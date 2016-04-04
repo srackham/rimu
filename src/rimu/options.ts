@@ -20,8 +20,8 @@ interface CallbackMessage {
 type CallbackFunction = (message: CallbackMessage) => void
 
 // Global option values.
-export let safeMode: number
-export let htmlReplacement: string
+let safeMode: number
+let htmlReplacement: string
 let callback: CallbackFunction
 
 // Reset options to default values.
@@ -31,8 +31,8 @@ export function setDefaults(): void {
   callback = undefined
 }
 
-// Return true if set to a safe mode.
-export function isSafe(): boolean {
+// Return true if safeMode is non-zero.
+export function isSafeModeNz(): boolean {
   return safeMode !== 0
 }
 
@@ -82,7 +82,7 @@ export function setOption(name: string, value: any): void {
 }
 
 // Filter HTML based on current safeMode.
-export function safeModeFilter(html: string): string {
+export function htmlSafeModeFilter(html: string): string {
   /* tslint:disable:no-bitwise */
   switch (safeMode & 0x3) {
   /* tslint:enable:no-bitwise */
