@@ -94,11 +94,11 @@ function exec(commands, callback) {
 desc(`Run tests.`)
 task('default', ['test'])
 
-desc(`build, lint and test rimu and tools, build gh-pages, validate HTML.`)
-task('build', ['test', 'lint', 'build-gh-pages', 'validate-html'])
+desc(`build, lint and test rimu and tools, build gh-pages, validate HTML. Use vers=x.y.z argument to set a new version number.`)
+task('build', ['test', 'lint', 'version', 'build-gh-pages'])
 
 desc(`Update version number, tag and push to Github and npm. Use vers=x.y.z argument to set a new version number. Finally, rebuild and publish docs website.`)
-task('release', ['build', 'version', 'tag', 'publish', 'release-gh-pages'])
+task('release', ['build', 'tag', 'publish', 'release-gh-pages'])
 
 desc(`Lint TypeScript, Javascript and JSON files.`)
 task('lint', {async: true}, function() {
