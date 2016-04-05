@@ -1,6 +1,5 @@
 # Rimu Tips
 
-
 ## HTML is valid Rimu
 You are free to mix any valid HTML into a Rimu document &mdash; no
 special syntax or relearning  is required (in this sense Rimu can be
@@ -9,13 +8,13 @@ only processed if `safeMode` is non-zero.
 
 
 ## Converting Rimu to PDF
-First convert Rimu markup to HTML using the `rimuc` tool and then
+First convert Rimu markup to HTML using the {rimuc} tool and then
 convert the HTML to PDF.  Here are a few options for converting HTML
 to PDF:
 
 . Google's Chrome web browser has an option to print HTML to a PDF
   file, other browsers have PDF add-ons that perform the same
-  function, this does a good job especially if you use the `rimuc`
+  function, this does a good job especially if you use the {rimuc}
   `--styled` option.
 . Use an HTML to PDF conversion program such as
   [HTMLDOC](http://www.htmldoc.org/).
@@ -76,30 +75,28 @@ automatically synthesises `id` attributes for top level `#`, `##` and
 
 
 .#syntax-highlighting
-## Code syntax highlighting
-The _rimuc_ tool `--styled` option can be used to enable code syntax
-highlighting in Rimu Code blocks and Indented paragraphs using the
+## Source code syntax highlighting
+The {rimuc} command can highlight code in Rimu _Code Blocks_ and
+_Indented Paragraphs_ using the
 [Highlight.js](https://github.com/isagalaev/highlight.js) syntax
-highlighter. integration is achieved using macros and is not baked in to Rimu
-so you are free to use other syntax highlighters.
+highlighter.  To include _Highlight.js_ support use the {rimuc}
+command `--highlightjs` option with the `--styled` option.
 
-The _rimuc_ tool `--styled` option includes _Highlight.js_ if you set
-the `\{--highlightjs}` macro to a non-blank value.  _Highlight.js_
-automatically detects the language in Code Blocks and Indented
-Paragraphs.
+Set the language you want to highlight by injecting the language CSS
+class name into the code block.  Here are two examples, the first uses
+Github Flavored Markdown style syntax, the second uses Rimu's _Block
+Attributes_ element:
 
-You can set the language explicitly by injecting the
-language CSS class name into the code block. Here are two examples:
-the first uses GFM style syntax, the second uses Rimu's Block Attributes
-element.
-
-{highlightjs-example} = '\{--highlightjs} = 'yes'\
+{highlightjs-example} = 'Some JavaScript code:
 
 ``` javascript
 if (message) {
   console.error('Error: ' + message);
 }
 ```
+
+Some Python code:
+
 .python
 ``
 x = 1
@@ -110,10 +107,15 @@ if x == 1:
 // Don't allow editing because syntax highlighting occurs at page load time.
 {generate-rendered-example-1|highlightjs-example|no-edit}
 
+Syntax highlighting is implemented using [conditional
+inclusion macros](#conditional-inclusion) and is not baked into Rimu,
+so you are free to roll your own document headers and footers to use
+other syntax highlighters.
+
 Set the `no-highlight` class to disable syntax highlighting for a code
 block.  Adding the `no-highlight` class to all code blocks using
-_Delimited Block Definitions_ turns off highlighting
-unless the language class is explicitly set. The [example .rimurc
+_Delimited Block Definitions_ turns off highlighting unless the
+language class is explicitly set. The [example .rimurc
 file]({example-rimurc}) does this with these custom definitions:
 
   |code| = '<pre class="no-highlight"><code>|</code></pre>'
@@ -177,12 +179,12 @@ include backtick characters in code quotes use double-backtick quotes.
 
 ## Passing macro values into Rimu documents
 You can do this by prepending text containing macro definitions to
-Rimu source before rendering the source. The _rimuc_ command has a
+Rimu source before rendering the source. The {rimuc} command has a
 `--prepend` option that can be used to do this.
 
 Alternatively you could also put macro definitions in a
 separate file and specify it as the first Rimu source file in the
-_rimuc_ command.
+{rimuc} command.
 
 The following example sets the HTML _title_ in the `kotlin-notes.html`
 output document:
@@ -299,7 +301,7 @@ to include CSS in the body of a Rimu document which is very handy for
 tweaking the default CSS and for styling Rimu block elements.
 
 - The _verse_ and _sidebar_ CSS styles shown below are automatically
-  included when you use the _rimuc_ tool `--styled` option.
+  included when you use the {rimuc} tool `--styled` option.
 - HTML5 stipulates that scoped _style_ element must be the first child
   element -- in practice  most browsers don't care where it occurs.
 
@@ -359,8 +361,8 @@ Scelerisque feugiat massa alias.
 ## Using Macro, Replacement and Quote definitions in Safe Mode
 _Macro_, _Replacement_ and _Quote_ definitions are not processed in
 Safe Mode. To apply Macro, Replacement or Quote definitions to Rimu
-markup that is processed in Safe Mode you need to load the definitions with a
-separate API call, for example:
+markup that is processed in Safe Mode you need to load the definitions
+with a separate API call, for example:
 
 ``` javascript
 Rimu.render(trusted_rimu_definitions, {safeMode: 0});
@@ -368,16 +370,13 @@ var html = Rimu.render(untrusted_rimu_markup, {safeMode: 5});
 ```
 
 
-## Mathematical formulae using MathJax
-You can include math formulas written in LaTeX or MathML using
-[MathJax](http://www.mathjax.org/). The `rimuc` command `--styled`
-option will include MathJax support if the `\{--mathjax}` macro is
-defined.
+## Mathematical formulae
+The {rimuc} command supports [MathJax](http://www.mathjax.org/) LaTeX
+and MathML mathematical formulas.  To include _MathJax_ support use
+the {rimuc} command `--mathjax` option with the `--styled` option.
 
 .-macros
-{mathjax-example} = '{--mathjax} = 'yes'\
-
-.-macros
+{mathjax-example} = '.-macros
 A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\)
 
 A LaTeX block formula:
@@ -405,8 +404,8 @@ See the [latest MathJax
 documentation](http://docs.mathjax.org/en/latest/) to learn how to use
 MathJax.
 
-As with [code syntax highlighting](#syntax-highlighting), this
-behaviour is achieved using macros and is not baked in to Rimu.
+MathJax support is implemented using [conditional inclusion
+macros](#conditional-inclusion) and is not baked into Rimu.
 
 
 .#conditional-inclusion
@@ -480,7 +479,7 @@ for tables).
 You can use Rimu markup in table cells, just remember that HTML blocks
 must start at the left margin and end with a blank line.
 
-The `rimuc` `--styled` option includes
+The {rimuc} `--styled` option includes
 [Bootstrap](http://getbootstrap.com/) so you can use
 [Bootstrap tables classes](http://getbootstrap.com/css/#tables) to
 create nicely formatted tables.
@@ -623,7 +622,7 @@ Generates:
 
 
 ## List item counters
-In addition to the _verse_ and _sidebar_ CSS styles the  _rimuc_ tool
+In addition to the _verse_ and _sidebar_ CSS styles the  {rimuc} tool
 `--styled` option also includes CSS classes for counting list items
 and for numbering labeled list items.
 
@@ -656,7 +655,7 @@ ordered list items.'
 
 
 ## Horizontal labeled lists
-Use the _rimuc_ tool `--styled` option along with the `dl-horizontal`
+Use the {rimuc} tool `--styled` option along with the `dl-horizontal`
 CSS class to format labeled lists horizontally.
 
 {horizontal-list-example} = '.dl-horizontal
@@ -739,11 +738,12 @@ Three:: Item three.
 
 
 ## Section numbering
-If you define the `--section-numbers` macro the  _rimuc_ tool
+If you define the `--section-numbers` macro the  {rimuc} tool
 `--styled` option will emit CSS to automatically number _h2_ sections
 and _h3_ sub-sections. You need to define the `--section-numbers`
-macro, either on the command-line using the `rimuc` `--section-numbers` option, or
-globally in your `.rimurc` file. For example:
+macro, either on the command-line using the {rimuc} command
+`--section-numbers` option, or globally in your `.rimurc` file. For
+example:
 
   rimuc --styled --section-numbers mydoc.rmu
 
@@ -819,10 +819,10 @@ this sidebar.
 ### A header that starts on a new page
 ```
 
-The _rimuc_ tool `--styled` option includes `page-break` and
+The {rimuc} tool `--styled` option includes `page-break` and
 `no-page-break` CSS classes which apply `page-break-before:always` and
 `page-break-inside:avoid` properties respectively.  Here is the
-previous example using the _rimuc_ page break classes:
+previous example using the {rimuc} page break classes:
 
 ```
 .sidebar no-page-break
@@ -836,16 +836,17 @@ this sidebar.
 ```
 
 ## Controlling text alignment
-You can control block element text alignment by injecting the CSS
-`text-align` property using the Rimu _Attribute Blocks_ element. For
-example:
+You can control the horizontal alignment of flowed inline elements
+(e.g. text, inline images) by injecting the CSS `text-align` property
+into the container block element using the Rimu _Attribute Blocks_
+element. For example:
 
 {text-alignment-example-1} = '."text-align:center"
 Enim odio ultrices'
 
 {generate-rendered-example-1|text-alignment-example-1}
 
-The _rimuc_ tool `--styled` option includes `align-left`,
+The {rimuc} tool `--styled` option includes `align-left`,
 `align-center` and `align-right` CSS classes.  Here is the previous
 example using the `align-center` text alignment class:
 

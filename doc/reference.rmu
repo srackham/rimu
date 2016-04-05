@@ -1,7 +1,5 @@
 # Rimu Reference
 
-{--highlightjs} = 'true'
-
 Rimu is a readable-text to HTML markup language inspired by AsciiDoc
 and Markdown.
 
@@ -66,7 +64,8 @@ Use the `reset` option to set the default state.
 Node.js example (Rimu has been previously installed from
 [npm]({npm})):
 
-`` javascript
+.javascript
+``
 var Rimu = require('rimu');
 var html= Rimu.render('Hello *Rimu*!', {safeMode:1});
 ``
@@ -74,7 +73,8 @@ var html= Rimu.render('Hello *Rimu*!', {safeMode:1});
 HTML script tag example (the compiled and minified `rimu.min.js` library
 can be found in the Rimu npm package `./rimu/bin` folder):
 
-`` xml
+.xml
+``
 <script src="rimu.min.js"></script>
 <script>
   console.log(Rimu.render('Hello *Rimu*!', {reset:true, safeMode:2}));
@@ -108,7 +108,7 @@ HTML and which Rimu definition and option elements will be processed:
 - Add 4 to `safeMode` to ignore _Block Attribute_ elements completely,
   this ensures HTML element IDs cannot be created and that CSS classes
   or properties cannot be used explicitly.
-- Add 8 to `safeMode` to allow Macro Definitions -- allowing Macro
+- Add 8 to `safeMode` to allow Macro Definitions. Allowing Macro
   Definitions is not intrinsically unsafe because their safety or
   otherwise is solely determined by the safety of their constituent
   elements.
@@ -441,9 +441,9 @@ behave the same as [Normal paragraphs](#normal-paragraph).
 
 
 ## Lists
-Each list item includes an identifier that groups items into lists.
-There are three types of list: _Bullet_, _Numbered_ and _Labeled_,
-each with its own unique set of list IDs.
+Each list item includes an identifier (ID) that groups items into
+lists.  There are three types of list: _Bullet_, _Numbered_ and
+_Labeled_, each with its own unique set of list IDs.
 
 .light-background
 ``
@@ -614,9 +614,9 @@ Definition syntax:
   corresponding regular expression match groups. `$0` and `$$0` are
   replaced by the entire match.
 
-  * Special characters are escaped in the `$1`, `$2`...
+  * Special characters are escaped in `$1`, `$2`...
   * [Quotes](#quotes) are expanded and special characters escaped in
-    the `$$1`, `$$2`...
+    `$$1`, `$$2`...
 
 - Replacements are only expanded in inline contexts.
 - Replacements are not expanded inside [Code quotes](#quotes), [Code
@@ -691,19 +691,24 @@ _______________________________________________________
 _______________________________________________________
 ``
 
-An image can be rendered as a block element:
+Notes:
 
-{images-example} = '<image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
+1. The `![alt](url)` syntax is Markdown compatible. To maintain
+   Markdown compatibility it is always processed as an inline element.
+
+{images-example} = 'An image can be rendered as a block element:
+
+<image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
+
+Centered using [rimuc](#rimuc-command) `--styled` option CSS class:
+
+.align-center
+![W3C logo](http://www.w3.org/Icons/w3c_home.png)
 
 Or an image can be <image:http://www.w3.org/Icons/w3c_home.png> an
 inline element.'
 
 {generate-rendered-example-1|images-example}
-
-Notes:
-
-1. The `![alt](url)` syntax is Markdown compatible. To maintain
-   Markdown compatibility it is always rendered as an inline element.
 
 
 ## Character entities
@@ -1084,6 +1089,10 @@ to the list of source files. The header and footer files ensure:
 - The output document is a valid HTML5 document.
 - The output document includes
   [Bootstrap](http://getbootstrap.com/2.3.2/) for styling.
+- In addition to Bootstrap CSS style classes the header includes
+  styles for verses, sidebars, text alignment, page break control and
+  section numbering (see `rimuc --help` command and [Rimu
+  Tips]({tips})).
 - If the `--highlightjs` macro is defined
   [Highlightjs](https://highlightjs.org/) is included.
 - If the `--mathjax` macro is defined
@@ -1109,10 +1118,6 @@ rendered and are not visible from other documents -- if you want to
 link the location from another document you will need to create an
 explicit anchor using a [Block Attribute](#block-attributes) _id_.
 ..
-- In addition to Bootstrap CSS style classes the header includes
-  styles for verses, sidebars, text alignment, page break control and
-  section numbering (see `rimuc --help` command and [Rimu
-  Tips]({tips})).
 
 
 .#vim-syntax-file
