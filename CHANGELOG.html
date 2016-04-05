@@ -203,7 +203,14 @@
 <h1>Rimu Markup CHANGELOG</h1>
 <p>See the <a href="https://github.com/srackham/rimu/commits/">Git commit log</a>
 for more detailed information.</p>
-<h2>Version 7.1.0 (2016-04-02)</h2>
+<h2>Version 7.2.0 (2016-04-06)</h2>
+<ul><li>Added <code>safeMode</code> bit-mask 8 (add 8 to <code>safeMode</code>) to unconditionally
+  enable Macro Definitions. Allowing Macro Definitions is not
+  intrinsically unsafe because their safety or otherwise is solely
+  determined by the safety of their constituent elements.
+</li><li><code>safeMode</code> 5 generalized by incorporating it into a bit-mask (4).
+</li><li>Bug fixes.
+</li></ul><h2>Version 7.1.0 (2016-04-02)</h2>
 <ul><li>Added <code>"css-properties"</code> syntax to <em>Block Attributes</em> element (a
   shortcut for the commonly used <em>Block Attributes</em> <code>[style="..."]</code> idiom).
 </li><li>Added  CSS text alignment classes <code>align-left</code>, <code>align-center</code>,

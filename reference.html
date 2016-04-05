@@ -301,21 +301,30 @@ can be found in the Rimu npm package <code>./rimu/bin</code> folder):</p>
 properties:</p>
 <dl class="dl-horizontal"><dt><code>safeMode</code></dt><dd>
 This option has a number value that controls how Rimu renders embedded
-HTML and whether or not Rimu definition and option elements are
-processed:
+HTML and which Rimu definition and option elements will be processed:
 <div><pre class="light-background no-highlight"><code>0 =&gt; Render HTML (default behavior).
 1 =&gt; Ignore HTML.
 2 =&gt; Replace HTML with the 'htmlReplacement' option string.
 3 =&gt; Render HTML as text.
-5 =&gt; Ignore HTML and Block Attributes elements.</code></pre>
-<ul><li>If <code>safeMode</code> is non-zero the following Rimu elements are ignored:
-<ul><li><em>Delimited Block</em>, <em>Macro</em>, <em>Quote</em> and <em>Replacement</em> definitions.
+Add 4 to safeMode to ignore Block Attribute elements.
+Add 8 to safeMode to allow Macro Definitions.</code></pre>
+<ul><li>If <code>safeMode</code> is zero all Rimu elements will be processed.
+</li><li>If <code>safeMode</code> is non-zero the following Rimu elements are ignored:
+<ul><li>Rimu definition elements (<em>Delimited Block</em>, <em>Macro</em>, <em>Quote</em>
+    and <em>Replacement</em> definitions).
 </li><li><em>API Option</em> elements.
 </li><li>HTML attributes in <em>Block Attribute</em> elements.
-</li><li>In addition, setting <code>safeMode</code> to 5 ensures HTML element IDs
-    cannot be created and that CSS classes or properties cannot be
-    used explicitly.
-</li></ul></li><li>Once a non-zero <code>safeMode</code> has been set then it can only be reset by
+</li></ul></li><li>Add 4 to <code>safeMode</code> to ignore <em>Block Attribute</em> elements completely,
+  this ensures HTML element IDs cannot be created and that CSS classes
+  or properties cannot be used explicitly.
+</li><li>Add 8 to <code>safeMode</code> to allow Macro Definitions. Allowing Macro
+  Definitions is not intrinsically unsafe because their safety or
+  otherwise is solely determined by the safety of their constituent
+  elements.
+</li><li>For example, a <code>safeMode</code> value of 13 (1+4+8) skips HTML elements,
+  allows macro definitions but skips all other Rimu definition
+  elements along with API option elements.
+</li><li>Once a non-zero <code>safeMode</code> has been set then it can only be reset by
   a <code>render()</code> API call with a <code>safeMode:0</code> or a <code>reset:true</code> option.
 </li></ul></div>
 </dd><dt><code>htmlReplacement</code></dt><dd>
@@ -731,9 +740,9 @@ Rimu source</th>
 </div>
 </td></tr></tbody></table>
 <h2>Lists</h2>
-<p>Each list item includes an identifier that groups items into lists.
-There are three types of list: <em>Bullet</em>, <em>Numbered</em> and <em>Labeled</em>,
-each with its own unique set of list IDs.</p>
+<p>Each list item includes an identifier (ID) that groups items into
+lists.  There are three types of list: <em>Bullet</em>, <em>Numbered</em> and
+<em>Labeled</em>, each with its own unique set of list IDs.</p>
 <pre class="light-background no-highlight"><code>List item ID                  List type
 ___________________________________________
 -, +, *, **, ***, ****        Bullet list
@@ -959,9 +968,9 @@ images</a>, <a href="#html-elements">inline HTML tags</a>.</p>
 </li><li><code>$1</code>, <code>$2</code>&hellip;, <code>$$1</code>, <code>$$2</code>&hellip; in <code>replacement</code> are replaced by the
   corresponding regular expression match groups. <code>$0</code> and <code>$$0</code> are
   replaced by the entire match.
-<ul><li>Special characters are escaped in the <code>$1</code>, <code>$2</code>&hellip;
+<ul><li>Special characters are escaped in <code>$1</code>, <code>$2</code>&hellip;
 </li><li><a href="#quotes">Quotes</a> are expanded and special characters escaped in
-    the <code>$$1</code>, <code>$$2</code>&hellip;
+    <code>$$1</code>, <code>$$2</code>&hellip;
 </li></ul></li><li>Replacements are only expanded in inline contexts.
 </li><li>Replacements are not expanded inside <a href="#quotes">Code quotes</a>, <a href="#code-block">Code
   blocks</a> or <a href="#indented-paragraph">Indented paragraphs</a>.
@@ -1039,8 +1048,10 @@ _______________________________________________________
 &lt;image:url&gt;         &lt;img href="url" alt="url"&gt;
 ![alt](url)         &lt;img href="url" alt="alt"&gt;   Note 1
 _______________________________________________________</code></pre>
-<p>An image can be rendered as a block element:</p>
-<h4>Examples</h4>
+<p>Notes:</p>
+<ol><li>The <code>![alt](url)</code> syntax is Markdown compatible. To maintain
+   Markdown compatibility it is always processed as an inline element.
+</li></ol><h4>Examples</h4>
 <table class="example table table-bordered">
 <thead><tr class="example-header">
 <th>
@@ -1049,7 +1060,14 @@ Rimu source</th>
 <th>Rendered HTML</th>
 </tr></thead><tbody><tr>
 <td style="width:50%;">
-<pre id="images-example-source" class="example-source no-highlight"><code>&lt;image:http://www.w3.org/Icons/w3c_home.png|W3C logo&gt;
+<pre id="images-example-source" class="example-source no-highlight"><code>An image can be rendered as a block element:
+
+&lt;image:http://www.w3.org/Icons/w3c_home.png|W3C logo&gt;
+
+Centered using [rimuc](#rimuc-command) `--styled` option CSS class:
+
+.align-center
+![W3C logo](http://www.w3.org/Icons/w3c_home.png)
 
 Or an image can be &lt;image:http://www.w3.org/Icons/w3c_home.png&gt; an
 inline element.</code></pre>
@@ -1057,15 +1075,15 @@ inline element.</code></pre>
 </td>
 <td style="width:50%;">
 <div id="images-example-rendered" class="example-rendered">
+<p>An image can be rendered as a block element:</p>
 <img src="http://www.w3.org/Icons/w3c_home.png" alt="W3C logo">
+<p>Centered using <a href="#rimuc-command">rimuc</a> <code>--styled</code> option CSS class:</p>
+<p class="align-center"><img src="http://www.w3.org/Icons/w3c_home.png" alt="W3C logo"></p>
 <p>Or an image can be <img src="http://www.w3.org/Icons/w3c_home.png" alt="http://www.w3.org/Icons/w3c_home.png"> an
 inline element.</p>
 </div>
 </td></tr></tbody></table>
-<p>Notes:</p>
-<ol><li>The <code>![alt](url)</code> syntax is Markdown compatible. To maintain
-   Markdown compatibility it is always rendered as an inline element.
-</li></ol><h2>Character entities</h2>
+<h2>Character entities</h2>
 <p>HTML character entities can be included in Rimu source.</p>
 <h4>Examples</h4>
 <table class="example table table-bordered">
@@ -1372,7 +1390,8 @@ OPTIONS
     --safe-mode 1 ignores HTML.
     --safe-mode 2 replaces HTML with --html-replacement option value.
     --safe-mode 3 renders HTML as text.
-    --safe-mode 5 ignores HTML and Block Attribute elements.
+    Add 4 to --safe-mode to ignore Block Attribute elements.
+    Add 8 to --safe-mode to allow Macro Definitions.
 
   --html-replacement TEXT
     Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
@@ -1434,6 +1453,10 @@ to the list of source files. The header and footer files ensure:</p>
 <ul><li>The output document is a valid HTML5 document.
 </li><li>The output document includes
   <a href="http://getbootstrap.com/2.3.2/">Bootstrap</a> for styling.
+</li><li>In addition to Bootstrap CSS style classes the header includes
+  styles for verses, sidebars, text alignment, page break control and
+  section numbering (see <code>rimuc --help</code> command and <a href="tips.html">Rimu
+  Tips</a>).
 </li><li>If the <code>--highlightjs</code> macro is defined
   <a href="https://highlightjs.org/">Highlightjs</a> is included.
 </li><li>If the <code>--mathjax</code> macro is defined
@@ -1456,10 +1479,6 @@ to the list of source files. The header and footer files ensure:</p>
 rendered and are not visible from other documents &mdash; if you want to
 link the location from another document you will need to create an
 explicit anchor using a <a href="#block-attributes">Block Attribute</a> <em>id</em>.</p></div>
-</li><li>In addition to Bootstrap CSS style classes the header includes
-  styles for verses, sidebars, text alignment, page break control and
-  section numbering (see <code>rimuc --help</code> command and <a href="tips.html">Rimu
-  Tips</a>).
 </li></ul><h2 id="vim-syntax-file">Vim syntax file</h2>
 <p>The Rimu distribution includes a
 <a href="https://github.com/srackham/rimu/blob/master/src/vim/syntax/rimu.vim">syntax

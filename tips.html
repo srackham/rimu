@@ -252,12 +252,12 @@ special syntax or relearning  is required (in this sense Rimu can be
 thought of as an HTML superset). Just remember that included HTML is
 only processed if <code>safeMode</code> is non-zero.</p>
 <h2>Converting Rimu to PDF</h2>
-<p>First convert Rimu markup to HTML using the <code>rimuc</code> tool and then
+<p>First convert Rimu markup to HTML using the <a href="reference.html#rimuc-command">rimuc</a> tool and then
 convert the HTML to PDF.  Here are a few options for converting HTML
 to PDF:</p>
 <ol><li>Google's Chrome web browser has an option to print HTML to a PDF
   file, other browsers have PDF add-ons that perform the same
-  function, this does a good job especially if you use the <code>rimuc</code>
+  function, this does a good job especially if you use the <a href="reference.html#rimuc-command">rimuc</a>
   <code>--styled</code> option.
 </li><li>Use an HTML to PDF conversion program such as
   <a href="http://www.htmldoc.org/">HTMLDOC</a>.
@@ -341,20 +341,16 @@ the above paragraph.</p>
 <p><b>NOTE</b>: The <a href="reference.html#rimuc-command">rimuc</a> <code>--styled</code> option
 automatically synthesises <code>id</code> attributes for top level <code>#</code>, <code>##</code> and
 <code>###</code> header elements that do not already have an <code>id</code>.</p>
-<h2 id="syntax-highlighting">Code syntax highlighting</h2>
-<p>The <em>rimuc</em> tool <code>--styled</code> option can be used to enable code syntax
-highlighting in Rimu Code blocks and Indented paragraphs using the
+<h2 id="syntax-highlighting">Source code syntax highlighting</h2>
+<p>The <a href="reference.html#rimuc-command">rimuc</a> command can highlight code in Rimu <em>Code Blocks</em> and
+<em>Indented Paragraphs</em> using the
 <a href="https://github.com/isagalaev/highlight.js">Highlight.js</a> syntax
-highlighter. integration is achieved using macros and is not baked in to Rimu
-so you are free to use other syntax highlighters.</p>
-<p>The <em>rimuc</em> tool <code>--styled</code> option includes <em>Highlight.js</em> if you set
-the <code>{--highlightjs}</code> macro to a non-blank value.  <em>Highlight.js</em>
-automatically detects the language in Code Blocks and Indented
-Paragraphs.</p>
-<p>You can set the language explicitly by injecting the
-language CSS class name into the code block. Here are two examples:
-the first uses GFM style syntax, the second uses Rimu's Block Attributes
-element.</p>
+highlighter.  To include <em>Highlight.js</em> support use the <a href="reference.html#rimuc-command">rimuc</a>
+command <code>--highlightjs</code> option with the <code>--styled</code> option.</p>
+<p>Set the language you want to highlight by injecting the language CSS
+class name into the code block.  Here are two examples, the first uses
+Github Flavored Markdown style syntax, the second uses Rimu's <em>Block
+Attributes</em> element:</p>
 <h4>Examples</h4>
 <table class="example table table-bordered">
 <thead><tr class="example-header">
@@ -363,13 +359,16 @@ Rimu source</th>
 <th>Rendered HTML</th>
 </tr></thead><tbody><tr>
 <td style="width:50%;">
-<pre id="highlightjs-example-source" class="example-source no-highlight"><code>{--highlightjs} = 'yes'
+<pre id="highlightjs-example-source" class="example-source no-highlight"><code>Some JavaScript code:
 
 ``` javascript
 if (message) {
   console.error('Error: ' + message);
 }
 ```
+
+Some Python code:
+
 .python
 ``
 x = 1
@@ -380,18 +379,24 @@ if x == 1:
 </td>
 <td style="width:50%;">
 <div id="highlightjs-example-rendered" class="example-rendered">
+<p>Some JavaScript code:</p>
 <pre class="javascript no-highlight"><code>if (message) {
   console.error('Error: ' + message);
 }</code></pre>
+<p>Some Python code:</p>
 <pre class="python no-highlight"><code>x = 1
 if x == 1:
     print "x is 1."</code></pre>
 </div>
 </td></tr></tbody></table>
+<p>Syntax highlighting is implemented using <a href="#conditional-inclusion">conditional
+inclusion macros</a> and is not baked into Rimu,
+so you are free to roll your own document headers and footers to use
+other syntax highlighters.</p>
 <p>Set the <code>no-highlight</code> class to disable syntax highlighting for a code
 block.  Adding the <code>no-highlight</code> class to all code blocks using
-<em>Delimited Block Definitions</em> turns off highlighting
-unless the language class is explicitly set. The <a href="https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.rmu">example .rimurc
+<em>Delimited Block Definitions</em> turns off highlighting unless the
+language class is explicitly set. The <a href="https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.rmu">example .rimurc
 file</a> does this with these custom definitions:</p>
 <pre class="no-highlight"><code>|code| = '&lt;pre class="no-highlight"&gt;&lt;code&gt;|&lt;/code&gt;&lt;/pre&gt;'
 |indented| = '&lt;pre class="no-highlight"&gt;&lt;code&gt;|&lt;/code&gt;&lt;/pre&gt;'</code></pre>
@@ -454,11 +459,11 @@ Rimu source</th>
 include backtick characters in code quotes use double-backtick quotes.</p>
 <h2>Passing macro values into Rimu documents</h2>
 <p>You can do this by prepending text containing macro definitions to
-Rimu source before rendering the source. The <em>rimuc</em> command has a
+Rimu source before rendering the source. The <a href="reference.html#rimuc-command">rimuc</a> command has a
 <code>--prepend</code> option that can be used to do this.</p>
 <p>Alternatively you could also put macro definitions in a
 separate file and specify it as the first Rimu source file in the
-<em>rimuc</em> command.</p>
+<a href="reference.html#rimuc-command">rimuc</a> command.</p>
 <p>The following example sets the HTML <em>title</em> in the <code>kotlin-notes.html</code>
 output document:</p>
 <pre class="no-highlight"><code>rimuc --styled --prepend "{--title}='Kotlin Notes'" kotlin-notes.rmu</code></pre>
@@ -602,7 +607,7 @@ allows you to define CSS outside the document header.  This allows you
 to include CSS in the body of a Rimu document which is very handy for
 tweaking the default CSS and for styling Rimu block elements.</p>
 <ul><li>The <em>verse</em> and <em>sidebar</em> CSS styles shown below are automatically
-  included when you use the <em>rimuc</em> tool <code>--styled</code> option.
+  included when you use the <a href="reference.html#rimuc-command">rimuc</a> tool <code>--styled</code> option.
 </li><li>HTML5 stipulates that scoped <em>style</em> element must be the first child
   element &mdash; in practice  most browsers don't care where it occurs.
 </li></ul><h4>Examples</h4>
@@ -707,15 +712,14 @@ Scelerisque feugiat massa alias.</p></div>
 <h2>Using Macro, Replacement and Quote definitions in Safe Mode</h2>
 <p><em>Macro</em>, <em>Replacement</em> and <em>Quote</em> definitions are not processed in
 Safe Mode. To apply Macro, Replacement or Quote definitions to Rimu
-markup that is processed in Safe Mode you need to load the definitions with a
-separate API call, for example:</p>
+markup that is processed in Safe Mode you need to load the definitions
+with a separate API call, for example:</p>
 <pre class="javascript no-highlight"><code>Rimu.render(trusted_rimu_definitions, {safeMode: 0});
 var html = Rimu.render(untrusted_rimu_markup, {safeMode: 5});</code></pre>
-<h2>Mathematical formulae using MathJax</h2>
-<p>You can include math formulas written in LaTeX or MathML using
-<a href="http://www.mathjax.org/">MathJax</a>. The <code>rimuc</code> command <code>--styled</code>
-option will include MathJax support if the <code>{--mathjax}</code> macro is
-defined.</p>
+<h2>Mathematical formulae</h2>
+<p>The <a href="reference.html#rimuc-command">rimuc</a> command supports <a href="http://www.mathjax.org/">MathJax</a> LaTeX
+and MathML mathematical formulas.  To include <em>MathJax</em> support use
+the <a href="reference.html#rimuc-command">rimuc</a> command <code>--mathjax</code> option with the <code>--styled</code> option.</p>
 <h4>Examples</h4>
 <table class="example table table-bordered">
 <tbody>
@@ -723,9 +727,7 @@ defined.</p>
 <td class="example-header" style="width:10%;">
 Rimu source</td>
 <td>
-<pre id="mathjax-example-source" class="example-source no-highlight"><code>{--mathjax} = 'yes'
-
-.-macros
+<pre id="mathjax-example-source" class="example-source no-highlight"><code>.-macros
 A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\)
 
 A LaTeX block formula:
@@ -767,8 +769,8 @@ A MathML block formula:
 <p>See the <a href="http://docs.mathjax.org/en/latest/">latest MathJax
 documentation</a> to learn how to use
 MathJax.</p>
-<p>As with <a href="#syntax-highlighting">code syntax highlighting</a>, this
-behaviour is achieved using macros and is not baked in to Rimu.</p>
+<p>MathJax support is implemented using <a href="#conditional-inclusion">conditional inclusion
+macros</a> and is not baked into Rimu.</p>
 <h2 id="conditional-inclusion">Conditional Inclusion</h2>
 <p>Macro invocations can be used to conditionally include source text.</p>
 <dl><dt>Single-line blocks</dt><dd>
@@ -815,7 +817,7 @@ can be spread over multiple lines.</p></div></li></ol></div>
 for tables).</p>
 <p>You can use Rimu markup in table cells, just remember that HTML blocks
 must start at the left margin and end with a blank line.</p>
-<p>The <code>rimuc</code> <code>--styled</code> option includes
+<p>The <a href="reference.html#rimuc-command">rimuc</a> <code>--styled</code> option includes
 <a href="http://getbootstrap.com/">Bootstrap</a> so you can use
 <a href="http://getbootstrap.com/css/#tables">Bootstrap tables classes</a> to
 create nicely formatted tables.</p>
@@ -1002,7 +1004,7 @@ lines that end with a single-quote.</p>
 <pre class="no-highlight"><code>&lt;p&gt;foo foo&lt;/p&gt;
 &lt;p&gt;foo bar&lt;/p&gt;</code></pre></div>
 </li></ul><h2>List item counters</h2>
-<p>In addition to the <em>verse</em> and <em>sidebar</em> CSS styles the  <em>rimuc</em> tool
+<p>In addition to the <em>verse</em> and <em>sidebar</em> CSS styles the  <a href="reference.html#rimuc-command">rimuc</a> tool
 <code>--styled</code> option also includes CSS classes for counting list items
 and for numbering labeled list items.</p>
 <h4>Examples</h4>
@@ -1060,7 +1062,7 @@ ordered list items.</code></pre>
 </div>
 </td></tr></tbody></table>
 <h2>Horizontal labeled lists</h2>
-<p>Use the <em>rimuc</em> tool <code>--styled</code> option along with the <code>dl-horizontal</code>
+<p>Use the <a href="reference.html#rimuc-command">rimuc</a> tool <code>--styled</code> option along with the <code>dl-horizontal</code>
 CSS class to format labeled lists horizontally.</p>
 <h4>Examples</h4>
 <table class="example table table-bordered">
@@ -1200,11 +1202,12 @@ lacus!</code></pre></div>
 </li></ul></div>
 </td></tr></tbody></table>
 <h2>Section numbering</h2>
-<p>If you define the <code>--section-numbers</code> macro the  <em>rimuc</em> tool
+<p>If you define the <code>--section-numbers</code> macro the  <a href="reference.html#rimuc-command">rimuc</a> tool
 <code>--styled</code> option will emit CSS to automatically number <em>h2</em> sections
 and <em>h3</em> sub-sections. You need to define the <code>--section-numbers</code>
-macro, either on the command-line using the <code>rimuc</code> <code>--section-numbers</code> option, or
-globally in your <code>.rimurc</code> file. For example:</p>
+macro, either on the command-line using the <a href="reference.html#rimuc-command">rimuc</a> command
+<code>--section-numbers</code> option, or globally in your <code>.rimurc</code> file. For
+example:</p>
 <pre class="no-highlight"><code>rimuc --styled --section-numbers mydoc.rmu</code></pre>
 <h2>Nested Fenced Blocks</h2>
 <p><a href="reference.html#fenced-blocks">Fenced blocks</a> of the same type can be
@@ -1305,10 +1308,10 @@ this sidebar.
 
 ."page-break-before:always"
 ### A header that starts on a new page</code></pre>
-<p>The <em>rimuc</em> tool <code>--styled</code> option includes <code>page-break</code> and
+<p>The <a href="reference.html#rimuc-command">rimuc</a> tool <code>--styled</code> option includes <code>page-break</code> and
 <code>no-page-break</code> CSS classes which apply <code>page-break-before:always</code> and
 <code>page-break-inside:avoid</code> properties respectively.  Here is the
-previous example using the <em>rimuc</em> page break classes:</p>
+previous example using the <a href="reference.html#rimuc-command">rimuc</a> page break classes:</p>
 <pre class="no-highlight"><code>.sidebar no-page-break
 ..
 Page breaks are avoided inside
@@ -1318,9 +1321,10 @@ this sidebar.
 .page-break
 ### A header that starts on a new page</code></pre>
 <h2>Controlling text alignment</h2>
-<p>You can control block element text alignment by injecting the CSS
-<code>text-align</code> property using the Rimu <em>Attribute Blocks</em> element. For
-example:</p>
+<p>You can control the horizontal alignment of flowed inline elements
+(e.g. text, inline images) by injecting the CSS <code>text-align</code> property
+into the container block element using the Rimu <em>Attribute Blocks</em>
+element. For example:</p>
 <h4>Examples</h4>
 <table class="example table table-bordered">
 <thead><tr class="example-header">
@@ -1339,7 +1343,7 @@ Enim odio ultrices</code></pre>
 <p style="text-align:center">Enim odio ultrices</p>
 </div>
 </td></tr></tbody></table>
-<p>The <em>rimuc</em> tool <code>--styled</code> option includes <code>align-left</code>,
+<p>The <a href="reference.html#rimuc-command">rimuc</a> tool <code>--styled</code> option includes <code>align-left</code>,
 <code>align-center</code> and <code>align-right</code> CSS classes.  Here is the previous
 example using the <code>align-center</code> text alignment class:</p>
 <h4>Examples</h4>
