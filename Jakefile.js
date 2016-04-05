@@ -125,7 +125,7 @@ file(RIMU_LIB, RIMU_SRC, {async: true}, function() {
 desc(`Compile and bundle Rimu to minified JavaScript library.`)
 task('build-rimu-min', [RIMU_LIB_MIN])
 
-file(RIMU_LIB_MIN, RIMU_SRC, {async: true}, function() {
+file(RIMU_LIB_MIN, RIMU_SRC.concat('./package.json'), {async: true}, function() {
   exec('webpack --optimize-minimize --output-filename ' + RIMU_LIB_MIN, function() {
     // Prepend package name and version comment to minified library file.
     `/* ${pkg.name} ${pkg.version} (${pkg.repository.url}) */\n${shelljs.cat(RIMU_LIB_MIN)}`
