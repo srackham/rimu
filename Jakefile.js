@@ -30,11 +30,11 @@ let DOCS = [
   },
   {
     src: 'doc/reference.rmu', dst: 'doc/reference.html', title: 'Rimu Reference',
-    rimucOptions: '--toc --prepend "{generate-examples}=\'yes\'"'
+    rimucOptions: '--toc --highlightjs --prepend "{generate-examples}=\'yes\'"'
   },
   {
     src: 'doc/tips.rmu', dst: 'doc/tips.html', title: 'Rimu Tips',
-    rimucOptions: '--toc --prepend "{generate-examples}=\'yes\'"'
+    rimucOptions: '--toc --highlightjs --mathjax --prepend "{generate-examples}=\'yes\'"'
   },
   {
     src: 'doc/rimuplayground.rmu', dst: 'doc/rimuplayground.html', title: 'Rimu Playground',
@@ -103,8 +103,7 @@ task('release', ['build', 'tag', 'publish', 'release-gh-pages'])
 desc(`Lint TypeScript, Javascript and JSON files.`)
 task('lint', {async: true}, function() {
   let commands = []
-    .concat(RIMU_SRC.concat([RIMUC_TS, RIMU_TSD])
-      .map(file => 'tslint ' + file))
+    .concat(RIMU_SRC.concat([RIMUC_TS, RIMU_TSD]).map(file => 'tslint ' + file))
     .concat(TESTS.map(file => 'jshint ' + file))
     .concat(['jsonlint --quiet package.json'])
   exec(commands, complete)
