@@ -3,6 +3,15 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
+## Version 7.2.0 (2016-04-06)
+- Added `safeMode` bit-mask 8 (add 8 to `safeMode`) to unconditionally
+  enable Macro Definitions. Allowing Macro Definitions is not
+  intrinsically unsafe because their safety or otherwise is solely
+  determined by the safety of their constituent elements.
+- `safeMode` 5 generalized by incorporating it into a bit-mask (4).
+- Bug fixes.
+
+
 ## Version 7.1.0 (2016-04-02)
 - Added `"css-properties"` syntax to _Block Attributes_ element (a
   shortcut for the commonly used _Block Attributes_ `[style="..."]` idiom).
@@ -11,7 +20,7 @@ for more detailed information.
 - Added `page-break` and `no-page-break` CSS classes to the _rimuc_
   `--styled` option to allow printer page breaks to be specified.
 - A new, stricter, _Safe Mode 5_ which skips _Block Attributes_ elements
-  altogether, this disables:
+  altogether which:
 
     1. Disables direct CSS control (via CSS classes or CSS properties).
     2. Disables HTML element ID creation (so you cannot override existing IDs).
