@@ -166,7 +166,7 @@ const DEFAULT_DEFS: Definition[] = [
   // Paragraph (lowest priority, cannot be escaped).
   {
     name: 'paragraph',
-    openMatch: /^(.*)$/,  // $1 is first line of block.
+    openMatch: /(.*)/,    // $1 is first line of block.
     closeMatch: /^$/,     // Blank line or EOF.
     openTag: '<p>',
     closeTag: '</p>',

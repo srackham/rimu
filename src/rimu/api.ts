@@ -16,7 +16,8 @@ export function render(source: string): string {
     if (lineBlocks.render(reader, writer)) continue
     if (lists.render(reader, writer)) continue
     if (delimitedBlocks.render(reader, writer)) continue
-    throw 'no matching delimited block found'
+    // This code should never be executed (normal paragraphs should match anything).
+    throw 'unexpected error: no matching delimited block found'
   }
   return writer.toString()
 }
