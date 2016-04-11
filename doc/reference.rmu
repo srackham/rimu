@@ -851,7 +851,7 @@ Rimu provides elements for defining and invoking macros and includes
 features like macro parametrization, conditional processing and
 meta-programming.
 
-### Macro Definitions
+### Macro definitions
 A macro definition assigns one or more lines of Rimu markup to a macro
 name.
 
@@ -882,7 +882,7 @@ Definition syntax:
   option.
 
 
-### Macro Invocations
+### Macro invocations
 Invocation syntax:
 
 .light-background
@@ -928,18 +928,9 @@ Invocation syntax:
 - Macro invocations can contain `}` characters but they must be
   escaped with a backslash character (otherwise they will be mistaken
   for the macro's closing brace).
-- Inline macro invocations are expanded before other inline elements
-  are processed.
 - Macro definitions are not processed if the [safeMode API
   option](#api-options) is non-zero and bit 3 of [safeMode API
   option](#api-options) is not set.
-- If the first line of a block element is prefixed with a Macro
-  Invocation then macro invocations in the first line are expanded
-  prior to all other processing.  [Macro
-  Definitions](#macro-definitions)  are the exception to this rule and
-  cannot be prefixed with a macro invocation.  This behaviour can be
-  used to conditionally include [Line Block](#line-blocks) elements by
-  prefixing them with _Inclusion_ or _Exclusion_ macros.
 
 .-macros
 {macros-example} = '// Define some macros.
@@ -960,6 +951,24 @@ experimentation.
 ..'
 
 {generate-rendered-example-2|macros-example}
+
+### Macro expansion
+- Macro invocations are expanded before other elements are processed.
+
+- Macro invocations are processed as [Inline
+  elements](#inline-elements) with one exception: If a block element
+  begins with a Macro Invocation that is wholly contained on the first
+  line then macro invocations in the first line are expanded prior to
+  all other processing, this behaviour enables the following
+  use-cases:
+
+  . [Conditional inclusion]({tips}#conditional-inclusion) of [Line
+    Block](#line-blocks) elements by prefixing them with _Inclusion_ or
+    _Exclusion_ macros.
+
+  . Macros can be used to generate Rimu Block elements. For example, the
+    `sidebar` macro in the examples above generates a _Header_ block
+    element followed by a _Attributes Block_ block element.
 
 ### Reserved macros
 Macros with names starting with two hyphen characters are _Reserved_
