@@ -349,8 +349,14 @@ double-quote.
 {quote-block-example} = '""
 Nunc mauris tempor.
 Scelerisque feugiat massa alias.
+
+.cite
+Anonymous
 ""'
 {generate-rendered-example-1|quote-block-example}
+
+This example uses the [rimuc](#rimuc-command) command `--styled`
+option's CSS _cite_ class to style the Anonymous attribution.
 
 ### Division Block
 A _Division Block_ is a container for other block elements, the
@@ -1052,6 +1058,7 @@ STYLING MACROS AND CLASSES
   ______________________________________________________________
   verse            Verse format (paragraphs, division blocks).
   sidebar          Sidebar format (paragraphs, division blocks).
+  cite             Quote and verse attribution.
   align-left       Text alignment left.
   align-center     Text alignment center.
   align-right      Text alignment right.

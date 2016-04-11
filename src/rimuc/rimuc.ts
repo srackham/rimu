@@ -90,6 +90,7 @@ STYLING MACROS AND CLASSES
   ______________________________________________________________
   verse            Verse format (paragraphs, division blocks).
   sidebar          Sidebar format (paragraphs, division blocks).
+  cite             Quote and verse attribution.
   align-left       Text alignment left.
   align-center     Text alignment center.
   align-right      Text alignment right.

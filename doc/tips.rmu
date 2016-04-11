@@ -858,3 +858,35 @@ Enim odio ultrices'
 
 {generate-rendered-example-1|text-alignment-example-2}
 
+
+## Citing quotes and verses
+The {rimuc} command `--styled` option includes the CSS _cite_ class
+for attributing quotes and verses. For example:
+
+{citation-example} = 'Quotation:
+
+""
+Enim ultricies odio rhoncus ultrices,
+porttitor augue a amet, pulvinar
+adipiscing in dictumst in, enim integer
+vel mauris placerat in phasellus magna.
+Nisi! Amet.
+
+.cite
+Anonymous
+""
+
+Verse:
+
+.verse
+..
+Urna aliquam pid
+Aenean enim cum sed
+Augue non egestas amet?
+
+.cite
+A.N. Mouse
+..'
+
+{generate-rendered-example-1|citation-example}
+
