@@ -95,6 +95,6 @@ To build Rimu and the Rimu documentation from source:
 
 ## Browser compatibility
 
-The generated HTML is compatible with all browsers. The Rimu
+The generated HTML is compatible with all modern browsers. The Rimu
 JavaScript library works with the latest versions of IE, Firefox and
 Chrome, seems OK on Android and iOS. Does not run on IE8.

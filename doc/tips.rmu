@@ -1,10 +1,13 @@
 # Rimu Tips
 
+TIP: Click the _Edit icon_ {icon|edit} in the examples below to enable
+live example editing of the Rimu source.
+
 ## HTML is valid Rimu
 You are free to mix any valid HTML into a Rimu document &mdash; no
 special syntax or relearning  is required (in this sense Rimu can be
 thought of as an HTML superset). Just remember that included HTML is
-only processed if `safeMode` is non-zero.
+only processed if `safeMode` is zero.
 
 
 ## Converting Rimu to PDF
@@ -107,11 +110,6 @@ if x == 1:
 // Don't allow editing because syntax highlighting occurs at page load time.
 {generate-rendered-example-1|highlightjs-example|no-edit}
 
-Syntax highlighting is implemented using [conditional
-inclusion macros](#conditional-inclusion) and is not baked into Rimu,
-so you are free to roll your own document headers and footers to use
-other syntax highlighters.
-
 Set the `no-highlight` class to disable syntax highlighting for a code
 block.  Adding the `no-highlight` class to all code blocks using
 _Delimited Block Definitions_ turns off highlighting unless the
@@ -190,6 +188,14 @@ The following example sets the HTML _title_ in the `kotlin-notes.html`
 output document:
 
   rimuc --styled --prepend "{--title}='Kotlin Notes'" kotlin-notes.rmu
+
+{rimuc} has a `--title` shortcut comand-line option for this common
+use-case:
+
+  rimuc --styled --title "Kotlin Notes" kotlin-notes.rmu
+
+Other {rimuc} macro definition shortcut options include
+`--highlightjs`, `--mathjax`, `--toc`, `--section-numbers`.
 
 
 ## The Rimu markup looks correct but the generated HTML is wrong
@@ -403,9 +409,6 @@ NOTE: Macro expansion has been disabled in LaTeX formulas to stop
 See the [latest MathJax
 documentation](http://docs.mathjax.org/en/latest/) to learn how to use
 MathJax.
-
-MathJax support is implemented using [conditional inclusion
-macros](#conditional-inclusion) and is not baked into Rimu.
 
 
 .#conditional-inclusion

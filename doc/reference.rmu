@@ -16,7 +16,7 @@ Plus:
   compatible]({tips}#markdown-compatible).
 - Rimu is fast (same speed as _marked 0.3.2_ compiling Rimu
   `README.md`).
-- The generated HTML is compatible with all modeern browsers.
+- The generated HTML is compatible with all modern browsers.
 
 
 ## Installing Rimu
@@ -32,6 +32,8 @@ Install Rimu as a Node.js module (includes the `rimu` library and the
 
 - Experiment with Rimu in the [Rimu Playground]({playground}) or open
   the `rimuplayground.html` file locally in your browser.
+- Edit the examples (click the _Edit icon_ {icon|edit} in the examples
+  below to enable live example editing of the Rimu source).
 - Read [Rimu Tips]({tips}).
 
 ### Example applications
@@ -582,8 +584,8 @@ Definition syntax:
   verbatim (like the built-in _code quote_).
 - A Quote definition must start at the left margin and must not
   extend beyond the end of the line.
-- Quote definitions are not processed if the _Safe Mode_ is
-  non-zero.
+- Quote definitions are not processed if the [SafeMode API
+  option](#api-options) is non-zero.
 
 The following quote definition envelopes quoted text with an HTML
 superscript tag:
@@ -627,8 +629,8 @@ Definition syntax:
 - A replacement definition must start at the left margin and must not
   extend beyond the end of the line.
 - The `replacement` text can invoke previously defined macros.
-- Replacement definitions are not processed if the [Safe
-  Mode](#api-options) is non-zero.
+- Replacement definitions are not processed if the [SafeMode API
+  option](#api-options) is non-zero.
 
 Example replacement definitions:
 
@@ -744,14 +746,16 @@ Syntax:
   opening tag.
 - `html-attributes` is one or more HTML attribute name/value pairs:
   they are injected into the target opening tag.
-- The `[html-attributes]` section is ignored if the API _safeMode_
-  option is not zero (see the _API_ topic).
-- `block-options` is used to control the processing of the succeeding
-  block element contents.
-- The `-specials` block option is ignored if the [API safeMode
-  option](#api-options)  is not zero.
 - Successive Block Attributes elements accumulate until they are
   consumed by the first succeeding Delimited Block element.
+- The `[html-attributes]` section is ignored if the [safeMode API
+  option](#api-options) is not zero.
+- The `-specials` block option is ignored if the [safeMode API
+  option](#api-options)  is not zero.
+- The entire Block Attributes element is ignored if bit 2 of the
+  [safeMode API option](#api-options) is set.
+- `block-options` is used to control the processing of the succeeding
+  block element contents.
 
 {block-attributes-example} = '.error "color:red"
 Lorum ipsum.
@@ -818,8 +822,8 @@ Definition syntax:
   Division blocks or Quote blocks (container blocks) or Lists.
 - A Delimited Block definition must start at the left margin and must
   not extend beyond the end of the line.
-- Delimited Block definitions are not processed if the _Safe Mode_ is
-  non-zero.
+- Delimited Block definitions are not processed if the [safeMode API
+  option](#api-options) is non-zero.
 
 The following example generates Code blocks with a `no-highlight`
 class attribute:
@@ -920,17 +924,16 @@ Invocation syntax:
   for the macro's closing brace).
 - Inline macro invocations are expanded before other inline elements
   are processed.
-- Macro definitions are not processed if the _Safe Mode_ is non-zero.
+- Macro definitions are not processed if the [safeMode API
+  option](#api-options) is non-zero and bit 3 of [safeMode API
+  option](#api-options) is not set.
 - If the first line of a block element is prefixed with a Macro
   Invocation then macro invocations in the first line are expanded
   prior to all other processing.  [Macro
   Definitions](#macro-definitions)  are the exception to this rule and
-  cannot be prefixed with a macro invocation.  This behaviour has a
-  number of use cases:
-  . It allows macro invocations to be used to inject Rimu Markup into
-    the source stream.
-  . It can be used to conditionally include [Line Block](#line-blocks)
-    elements by prefixing them with _Inclusion_ or _Exclusion_ macros.
+  cannot be prefixed with a macro invocation.  This behaviour can be
+  used to conditionally include [Line Block](#line-blocks) elements by
+  prefixing them with _Inclusion_ or _Exclusion_ macros.
 
 .-macros
 {macros-example} = '// Define some macros.
@@ -1084,26 +1087,25 @@ Example usage:
 
 ### `--styled` option
 The `--styled` option prepends a header file and appends a footer file
-to the list of source files. The header and footer files ensure:
+to the list of source files. The Rimu markup in the header and footer
+files performs the following functions:
 
-- The output document is a valid HTML5 document.
-- The output document includes
-  [Bootstrap](http://getbootstrap.com/2.3.2/) for styling.
-- In addition to Bootstrap CSS style classes the header includes
-  styles for verses, sidebars, text alignment, page break control and
-  section numbering (see `rimuc --help` command and [Rimu
-  Tips]({tips})).
+- Ensures the output document is a valid HTML5 document.
+- Includes [Bootstrap](http://getbootstrap.com/2.3.2/) for styling.
+- Includes additional styles for verses, sidebars, text alignment,
+  page break control and section numbering (see `rimuc --help` command
+  and [Rimu Tips]({tips})).
 - If the `--highlightjs` macro is defined
   [Highlightjs](https://highlightjs.org/) is included.
 - If the `--mathjax` macro is defined
   [MathJax](https://www.mathjax.org/) is included.
-- If the `--toc` macro is defined a Table of Contents is generated
-  from top level `h1`, `h2` and `h3` HTML header elements.
-- A slug is synthesized and assigned to the `id` attribute of top
-  level `h1`, `h2` and `h3` HTML header elements that do not already
-  have an `id`.  For example a header with the title `The End!` is
-  assigned an `id` attribute value
-  `the-end`. Slug ids are generated from the header title as follows:
+- If the `--toc` macro is defined JavaScript code is included which
+  generates a Table of Contents from top level `h1`, `h2` and `h3`
+  HTML header elements at load-time.
+- Includes a JavaScript slug generator which synthesizes slugs at
+  load-time and assigns them to the `id` attributes of top level `h1`,
+  `h2` and `h3` HTML header elements that do not already have an `id`.
+  Slug ids are generated from the header title as follows:
 ..
   . Convert the title to lowercase.
   . Replace spaces with a dash.
@@ -1113,11 +1115,19 @@ to the list of source files. The header and footer files ensure:
     successively postfixed with `-2`, `-3`... until a unique id is
     found.
 
+For example a header with the title `The End!` is assigned an `id`
+attribute value `the-end`.
+
 NOTE: Synthesised slugs are generated dynamically when the page is
 rendered and are not visible from other documents -- if you want to
 link the location from another document you will need to create an
 explicit anchor using a [Block Attribute](#block-attributes) _id_.
 ..
+
+All the features enabled by the `--styled` option are implemented by
+Rimu source code in the header and footer files -- they are not
+hard-wired into Rimu -- and serve to illustrate of the power and
+flexibility of the Rimu markup language.
 
 
 .#vim-syntax-file
