@@ -3,6 +3,11 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
+## Version 7.2.1 (2016-04-12)
+- Documentation updates.
+- Bug fixes.
+
+
 ## Version 7.2.0 (2016-04-06)
 - Added `safeMode` bit-mask 8 (add 8 to `safeMode`) to unconditionally
   enable Macro Definitions. Allowing Macro Definitions is not
