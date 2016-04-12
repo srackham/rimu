@@ -34,8 +34,27 @@
   }
   p, pre, ul, ol, dl, blockquote p {
     font-size: inherit;
+    font-weight: normal;
+    line-height: 1.45;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
+  }
+  blockquote {
+    border: none;
+    border-left: 5px solid #eeeeee;
+    font-family: Georgia, serif;
+    font-style: italic;
+    width: 80%;
+    margin: 1.5em 0;
+    color: #383838;
+  }
+  .cite {
+    font-style: italic;
+    color:#777;
+    padding:5px 0;
+  }
+  .cite::before {
+    content: "\2014 \2009";
   }
   pre {
     padding: 6px;
@@ -73,7 +92,7 @@
     margin: 1.5em 20px;
   }
   div.verse p, p.verse {
-    font-family: serif;
+    font-family: Georgia, serif;
     white-space:pre;
     margin-top: 0.75em;
     margin-bottom: 0.75em;
@@ -246,11 +265,13 @@ function updateExample(name) {
 </ul>
 
 <h1>Rimu Tips</h1>
+<p><b>TIP</b>: Click the <em>Edit icon</em> <span class="icon-edit"></span> in the examples below to enable
+live example editing of the Rimu source.</p>
 <h2>HTML is valid Rimu</h2>
 <p>You are free to mix any valid HTML into a Rimu document &mdash; no
 special syntax or relearning  is required (in this sense Rimu can be
 thought of as an HTML superset). Just remember that included HTML is
-only processed if <code>safeMode</code> is non-zero.</p>
+only processed if <code>safeMode</code> is zero.</p>
 <h2>Converting Rimu to PDF</h2>
 <p>First convert Rimu markup to HTML using the <a href="reference.html#rimuc-command">rimuc</a> tool and then
 convert the HTML to PDF.  Here are a few options for converting HTML
@@ -389,10 +410,6 @@ if x == 1:
     print "x is 1."</code></pre>
 </div>
 </td></tr></tbody></table>
-<p>Syntax highlighting is implemented using <a href="#conditional-inclusion">conditional
-inclusion macros</a> and is not baked into Rimu,
-so you are free to roll your own document headers and footers to use
-other syntax highlighters.</p>
 <p>Set the <code>no-highlight</code> class to disable syntax highlighting for a code
 block.  Adding the <code>no-highlight</code> class to all code blocks using
 <em>Delimited Block Definitions</em> turns off highlighting unless the
@@ -467,6 +484,11 @@ separate file and specify it as the first Rimu source file in the
 <p>The following example sets the HTML <em>title</em> in the <code>kotlin-notes.html</code>
 output document:</p>
 <pre class="no-highlight"><code>rimuc --styled --prepend "{--title}='Kotlin Notes'" kotlin-notes.rmu</code></pre>
+<p><a href="reference.html#rimuc-command">rimuc</a> has a <code>--title</code> shortcut comand-line option for this common
+use-case:</p>
+<pre class="no-highlight"><code>rimuc --styled --title "Kotlin Notes" kotlin-notes.rmu</code></pre>
+<p>Other <a href="reference.html#rimuc-command">rimuc</a> macro definition shortcut options include
+<code>--highlightjs</code>, <code>--mathjax</code>, <code>--toc</code>, <code>--section-numbers</code>.</p>
 <h2>The Rimu markup looks correct but the generated HTML is wrong</h2>
 <p>Using an editor with Rimu syntax highlighting support (see previous
 topic) makes it much easier to spot syntax errors.  Rimu includes a
@@ -769,8 +791,6 @@ A MathML block formula:
 <p>See the <a href="http://docs.mathjax.org/en/latest/">latest MathJax
 documentation</a> to learn how to use
 MathJax.</p>
-<p>MathJax support is implemented using <a href="#conditional-inclusion">conditional inclusion
-macros</a> and is not baked into Rimu.</p>
 <h2 id="conditional-inclusion">Conditional Inclusion</h2>
 <p>Macro invocations can be used to conditionally include source text.</p>
 <dl><dt>Single-line blocks</dt><dd>
@@ -1362,6 +1382,60 @@ Enim odio ultrices</code></pre>
 <td style="width:50%;">
 <div id="text-alignment-example-2-rendered" class="example-rendered">
 <p class="align-center">Enim odio ultrices</p>
+</div>
+</td></tr></tbody></table>
+<h2>Citing quotes and verses</h2>
+<p>The <a href="reference.html#rimuc-command">rimuc</a> command <code>--styled</code> option includes the CSS <em>cite</em> class
+for attributing quotes and verses. For example:</p>
+<h4>Examples</h4>
+<table class="example table table-bordered">
+<thead><tr class="example-header">
+<th>
+<span class="icon-edit no-print" title="Edit example" style="cursor:pointer;" onclick="editExample('citation-example')"></span>
+Rimu source</th>
+<th>Rendered HTML</th>
+</tr></thead><tbody><tr>
+<td style="width:50%;">
+<pre id="citation-example-source" class="example-source no-highlight"><code>Quotation:
+
+""
+Enim ultricies odio rhoncus ultrices,
+porttitor augue a amet, pulvinar
+adipiscing in dictumst in, enim integer
+vel mauris placerat in phasellus magna.
+Nisi! Amet.
+
+.cite
+Anonymous
+""
+
+Verse:
+
+.verse
+..
+Urna aliquam pid
+Aenean enim cum sed
+Augue non egestas amet?
+
+.cite
+A. N. Mouse
+..</code></pre>
+<textarea id="citation-example-edit" class="example-edit" onkeyup="updateExample('citation-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="citation-example-rendered" class="example-rendered">
+<p>Quotation:</p>
+<blockquote><p>Enim ultricies odio rhoncus ultrices,
+porttitor augue a amet, pulvinar
+adipiscing in dictumst in, enim integer
+vel mauris placerat in phasellus magna.
+Nisi! Amet.</p>
+<p class="cite">Anonymous</p></blockquote>
+<p>Verse:</p>
+<div class="verse"><p>Urna aliquam pid
+Aenean enim cum sed
+Augue non egestas amet?</p>
+<p class="cite">A. N. Mouse</p></div>
 </div>
 </td></tr></tbody></table>
 

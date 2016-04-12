@@ -34,8 +34,27 @@
   }
   p, pre, ul, ol, dl, blockquote p {
     font-size: inherit;
+    font-weight: normal;
+    line-height: 1.45;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
+  }
+  blockquote {
+    border: none;
+    border-left: 5px solid #eeeeee;
+    font-family: Georgia, serif;
+    font-style: italic;
+    width: 80%;
+    margin: 1.5em 0;
+    color: #383838;
+  }
+  .cite {
+    font-style: italic;
+    color:#777;
+    padding:5px 0;
+  }
+  .cite::before {
+    content: "\2014 \2009";
   }
   pre {
     padding: 6px;
@@ -73,7 +92,7 @@
     margin: 1.5em 20px;
   }
   div.verse p, p.verse {
-    font-family: serif;
+    font-family: Georgia, serif;
     white-space:pre;
     margin-top: 0.75em;
     margin-bottom: 0.75em;
@@ -258,7 +277,7 @@ into the Rimu markup syntax):</p>
   compatible</a>.
 </li><li>Rimu is fast (same speed as <em>marked 0.3.2</em> compiling Rimu
   <code>README.md</code>).
-</li><li>The generated HTML is compatible with all modeern browsers.
+</li><li>The generated HTML is compatible with all modern browsers.
 </li></ul><h2>Installing Rimu</h2>
 <p>Install Rimu as a Node.js module (includes the <code>rimu</code> library and the
 <code>rimuc</code> command-line tool):</p>
@@ -267,6 +286,8 @@ into the Rimu markup syntax):</p>
 <h3>Learning</h3>
 <ul><li>Experiment with Rimu in the <a href="rimuplayground.html">Rimu Playground</a> or open
   the <code>rimuplayground.html</code> file locally in your browser.
+</li><li>Edit the examples (click the <em>Edit icon</em> <span class="icon-edit"></span> in the examples
+  below to enable live example editing of the Rimu source).
 </li><li>Read <a href="tips.html">Rimu Tips</a>.
 </li></ul><h3>Example applications</h3>
 <p>See the <a href="#api">API documentation</a>.</p>
@@ -570,15 +591,21 @@ Rimu source</th>
 <pre id="quote-block-example-source" class="example-source no-highlight"><code>""
 Nunc mauris tempor.
 Scelerisque feugiat massa alias.
+
+.cite
+Anonymous
 ""</code></pre>
 <textarea id="quote-block-example-edit" class="example-edit" onkeyup="updateExample('quote-block-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="quote-block-example-rendered" class="example-rendered">
 <blockquote><p>Nunc mauris tempor.
-Scelerisque feugiat massa alias.</p></blockquote>
+Scelerisque feugiat massa alias.</p>
+<p class="cite">Anonymous</p></blockquote>
 </div>
 </td></tr></tbody></table>
+<p>This example uses the <a href="#rimuc-command">rimuc</a> command <code>--styled</code>
+option's CSS <em>cite</em> class to style the Anonymous attribution.</p>
 <h3>Division Block</h3>
 <p>A <em>Division Block</em> is a container for other block elements, the
 contained elements are enclosed by an HTML <code>&lt;div&gt;</code> element.  The
@@ -945,8 +972,8 @@ definitions</em>.</p>
   verbatim (like the built-in <em>code quote</em>).
 </li><li>A Quote definition must start at the left margin and must not
   extend beyond the end of the line.
-</li><li>Quote definitions are not processed if the <em>Safe Mode</em> is
-  non-zero.
+</li><li>Quote definitions are not processed if the <a href="#api-options">SafeMode API
+  option</a> is non-zero.
 </li></ul><p>The following quote definition envelopes quoted text with an HTML
 superscript tag:</p>
 <pre class="no-highlight"><code>^ = '&lt;sup&gt;|&lt;/sup&gt;'</code></pre>
@@ -980,8 +1007,8 @@ images</a>, <a href="#html-elements">inline HTML tags</a>.</p>
 </li><li>A replacement definition must start at the left margin and must not
   extend beyond the end of the line.
 </li><li>The <code>replacement</code> text can invoke previously defined macros.
-</li><li>Replacement definitions are not processed if the <a href="#api-options">Safe
-  Mode</a> is non-zero.
+</li><li>Replacement definitions are not processed if the <a href="#api-options">SafeMode API
+  option</a> is non-zero.
 </li></ul><p>Example replacement definitions:</p>
 <pre class="no-highlight"><code>/\.{3}/ = '&amp;hellip;'
 /\bTODO\b/ = '&lt;b style="color: red; background-color: yellow;"&gt;TODO&lt;/b&gt;'</code></pre>
@@ -1123,14 +1150,16 @@ elements.</p>
   opening tag.
 </li><li><code>html-attributes</code> is one or more HTML attribute name/value pairs:
   they are injected into the target opening tag.
-</li><li>The <code>[html-attributes]</code> section is ignored if the API <em>safeMode</em>
-  option is not zero (see the <em>API</em> topic).
-</li><li><code>block-options</code> is used to control the processing of the succeeding
-  block element contents.
-</li><li>The <code>-specials</code> block option is ignored if the <a href="#api-options">API safeMode
-  option</a>  is not zero.
 </li><li>Successive Block Attributes elements accumulate until they are
   consumed by the first succeeding Delimited Block element.
+</li><li>The `<a href="#api-options">html-attributes]` section is ignored if the [safeMode API
+  option</a> is not zero.
+</li><li>The <code>-specials</code> block option is ignored if the <a href="#api-options">safeMode API
+  option</a>  is not zero.
+</li><li>The entire Block Attributes element is ignored if bit 2 of the
+  <a href="#api-options">safeMode API option</a> is set.
+</li><li><code>block-options</code> is used to control the processing of the succeeding
+  block element contents.
 </li></ul><h4>Examples</h4>
 <table class="example table table-bordered">
 <tbody>
@@ -1206,8 +1235,8 @@ is set.</p>
   Division blocks or Quote blocks (container blocks) or Lists.
 </li><li>A Delimited Block definition must start at the left margin and must
   not extend beyond the end of the line.
-</li><li>Delimited Block definitions are not processed if the <em>Safe Mode</em> is
-  non-zero.
+</li><li>Delimited Block definitions are not processed if the <a href="#api-options">safeMode API
+  option</a> is non-zero.
 </li></ul><p>The following example generates Code blocks with a <code>no-highlight</code>
 class attribute:</p>
 <pre class="no-highlight"><code>|code| = '&lt;pre&gt;&lt;code class="no-highlight"&gt;|&lt;/code&gt;&lt;/pre&gt;'</code></pre>
@@ -1221,7 +1250,7 @@ promote clarity and eliminate repetition.</p>
 <p>Rimu provides elements for defining and invoking macros and includes
 features like macro parametrization, conditional processing and
 meta-programming.</p>
-<h3>Macro Definitions</h3>
+<h3>Macro definitions</h3>
 <p>A macro definition assigns one or more lines of Rimu markup to a macro
 name.</p>
 <p>Definition syntax:</p>
@@ -1244,7 +1273,7 @@ name.</p>
 </li><li>Macro expansion can be disabled in multi-line macro definitions
   using a preceding <a href="#block-attributes">Block Attributes</a> <code>-macros</code>
   option.
-</li></ul><h3>Macro Invocations</h3>
+</li></ul><h3>Macro invocations</h3>
 <p>Invocation syntax:</p>
 <pre class="light-background no-highlight"><code>{macro-name}                      Simple macro invocation
 {macro-name|[param1|param2...]}   Parametrized macro invocation
@@ -1285,20 +1314,10 @@ name.</p>
 </li><li>Macro invocations can contain <code>}</code> characters but they must be
   escaped with a backslash character (otherwise they will be mistaken
   for the macro's closing brace).
-</li><li>Inline macro invocations are expanded before other inline elements
-  are processed.
-</li><li>Macro definitions are not processed if the <em>Safe Mode</em> is non-zero.
-</li><li>If the first line of a block element is prefixed with a Macro
-  Invocation then macro invocations in the first line are expanded
-  prior to all other processing.  <a href="#macro-definitions">Macro
-  Definitions</a>  are the exception to this rule and
-  cannot be prefixed with a macro invocation.  This behaviour has a
-  number of use cases:
-<ol><li>It allows macro invocations to be used to inject Rimu Markup into
-    the source stream.
-</li><li>It can be used to conditionally include <a href="#line-blocks">Line Block</a>
-    elements by prefixing them with <em>Inclusion</em> or <em>Exclusion</em> macros.
-</li></ol></li></ul><h4>Examples</h4>
+</li><li>Macro definitions are not processed if the <a href="#api-options">safeMode API
+  option</a> is non-zero and bit 3 of <a href="#api-options">safeMode API
+  option</a> is not set.
+</li></ul><h4>Examples</h4>
 <table class="example table table-bordered">
 <tbody>
 <tr>
@@ -1334,7 +1353,21 @@ experimentation.</p>
 <p><span class="label label-info">Note</span> <mark>This document is not yet finished.</mark></p></div>
 </div>
 </td></tr></table>
-<h3>Reserved macros</h3>
+<h3>Macro expansion</h3>
+<ul><li>Macro invocations are expanded before other elements are processed.
+</li><li>Macro invocations are processed as <a href="#inline-elements">Inline
+  elements</a> with one exception: If a block element
+  begins with a Macro Invocation that is wholly contained on the first
+  line then macro invocations in the first line are expanded prior to
+  all other processing, this behaviour enables the following
+  use-cases:
+<ol><li><a href="tips.html#conditional-inclusion">Conditional inclusion</a> of <a href="#line-blocks">Line
+    Block</a> elements by prefixing them with <em>Inclusion</em> or
+    <em>Exclusion</em> macros.
+</li><li>Macros can be used to generate Rimu Block elements. For example, the
+    <code>sidebar</code> macro in the examples above generates a <em>Header</em> block
+    element followed by a <em>Attributes Block</em> block element.
+</li></ol></li></ul><h3>Reserved macros</h3>
 <p>Macros with names starting with two hyphen characters are <em>Reserved</em>
 macros, a number of reserved macros are defined by the <a href="#rimuc-command">rimuc
 command</a>.</p>
@@ -1425,6 +1458,7 @@ STYLING MACROS AND CLASSES
   ______________________________________________________________
   verse            Verse format (paragraphs, division blocks).
   sidebar          Sidebar format (paragraphs, division blocks).
+  cite             Quote and verse attribution.
   align-left       Text alignment left.
   align-center     Text alignment center.
   align-right      Text alignment right.
@@ -1449,25 +1483,24 @@ STYLING MACROS AND CLASSES
 <pre class="no-highlight"><code>rimuc -o book.html frontmatter.rmu chapter*.rmu backmatter.rmu</code></pre>
 </li></ol><h3><code>--styled</code> option</h3>
 <p>The <code>--styled</code> option prepends a header file and appends a footer file
-to the list of source files. The header and footer files ensure:</p>
-<ul><li>The output document is a valid HTML5 document.
-</li><li>The output document includes
-  <a href="http://getbootstrap.com/2.3.2/">Bootstrap</a> for styling.
-</li><li>In addition to Bootstrap CSS style classes the header includes
-  styles for verses, sidebars, text alignment, page break control and
-  section numbering (see <code>rimuc --help</code> command and <a href="tips.html">Rimu
-  Tips</a>).
+to the list of source files. The Rimu markup in the header and footer
+files performs the following functions:</p>
+<ul><li>Ensures the output document is a valid HTML5 document.
+</li><li>Includes <a href="http://getbootstrap.com/2.3.2/">Bootstrap</a> for styling.
+</li><li>Includes additional styles for verses, sidebars, text alignment,
+  page break control and section numbering (see <code>rimuc --help</code> command
+  and <a href="tips.html">Rimu Tips</a>).
 </li><li>If the <code>--highlightjs</code> macro is defined
   <a href="https://highlightjs.org/">Highlightjs</a> is included.
 </li><li>If the <code>--mathjax</code> macro is defined
   <a href="https://www.mathjax.org/">MathJax</a> is included.
-</li><li>If the <code>--toc</code> macro is defined a Table of Contents is generated
-  from top level <code>h1</code>, <code>h2</code> and <code>h3</code> HTML header elements.
-</li><li>A slug is synthesized and assigned to the <code>id</code> attribute of top
-  level <code>h1</code>, <code>h2</code> and <code>h3</code> HTML header elements that do not already
-  have an <code>id</code>.  For example a header with the title <code>The End!</code> is
-  assigned an <code>id</code> attribute value
-  <code>the-end</code>. Slug ids are generated from the header title as follows:
+</li><li>If the <code>--toc</code> macro is defined JavaScript code is included which
+  generates a Table of Contents from top level <code>h1</code>, <code>h2</code> and <code>h3</code>
+  HTML header elements at load-time.
+</li><li>Includes a JavaScript slug generator which synthesizes slugs at
+  load-time and assigns them to the <code>id</code> attributes of top level <code>h1</code>,
+  <code>h2</code> and <code>h3</code> HTML header elements that do not already have an <code>id</code>.
+  Slug ids are generated from the header title as follows:
 <div><ol><li>Convert the title to lowercase.
 </li><li>Replace spaces with a dash.
 </li><li>Remove characters that are not alphanumeric, dashes or
@@ -1475,11 +1508,17 @@ to the list of source files. The header and footer files ensure:</p>
 </li><li>If an existing element has a matching id then the slug is
     successively postfixed with <code>-2</code>, <code>-3</code>&hellip; until a unique id is
     found.
-</li></ol><p><b>NOTE</b>: Synthesised slugs are generated dynamically when the page is
+</li></ol><p>For example a header with the title <code>The End!</code> is assigned an <code>id</code>
+attribute value <code>the-end</code>.</p>
+<p><b>NOTE</b>: Synthesised slugs are generated dynamically when the page is
 rendered and are not visible from other documents &mdash; if you want to
 link the location from another document you will need to create an
 explicit anchor using a <a href="#block-attributes">Block Attribute</a> <em>id</em>.</p></div>
-</li></ul><h2 id="vim-syntax-file">Vim syntax file</h2>
+</li></ul><p>All the features enabled by the <code>--styled</code> option are implemented by
+Rimu source code in the header and footer files &mdash; they are not
+hard-wired into Rimu &mdash; and serve to illustrate of the power and
+flexibility of the Rimu markup language.</p>
+<h2 id="vim-syntax-file">Vim syntax file</h2>
 <p>The Rimu distribution includes a
 <a href="https://github.com/srackham/rimu/blob/master/src/vim/syntax/rimu.vim">syntax
 highlighter</a> for the Vim editor. Copy <code>rimu.vim</code> to your

@@ -34,8 +34,27 @@
   }
   p, pre, ul, ol, dl, blockquote p {
     font-size: inherit;
+    font-weight: normal;
+    line-height: 1.45;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
+  }
+  blockquote {
+    border: none;
+    border-left: 5px solid #eeeeee;
+    font-family: Georgia, serif;
+    font-style: italic;
+    width: 80%;
+    margin: 1.5em 0;
+    color: #383838;
+  }
+  .cite {
+    font-style: italic;
+    color:#777;
+    padding:5px 0;
+  }
+  .cite::before {
+    content: "\2014 \2009";
   }
   pre {
     padding: 6px;
@@ -73,7 +92,7 @@
     margin: 1.5em 20px;
   }
   div.verse p, p.verse {
-    font-family: serif;
+    font-family: Georgia, serif;
     white-space:pre;
     margin-top: 0.75em;
     margin-bottom: 0.75em;
@@ -203,7 +222,10 @@
 <h1>Rimu Markup CHANGELOG</h1>
 <p>See the <a href="https://github.com/srackham/rimu/commits/">Git commit log</a>
 for more detailed information.</p>
-<h2>Version 7.2.0 (2016-04-06)</h2>
+<h2>Version 7.2.1 (2016-04-12)</h2>
+<ul><li>Documentation updates.
+</li><li>Bug fixes.
+</li></ul><h2>Version 7.2.0 (2016-04-06)</h2>
 <ul><li>Added <code>safeMode</code> bit-mask 8 (add 8 to <code>safeMode</code>) to unconditionally
   enable Macro Definitions. Allowing Macro Definitions is not
   intrinsically unsafe because their safety or otherwise is solely
