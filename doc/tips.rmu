@@ -304,7 +304,8 @@ You can include custom CSS styles in the body of a Rimu document using
 a [scoped]((http://www.w3schools.com/tags/att_style_scoped.asp) HTML
 `style` element. Here are three use-cases:
 
-. Change existing styling, for example change the color of all headers:
+. Change existing styling. The following example changes the color of
+  all headers to red:
 ``
 <style scoped>
   h1, h2, h3, h4, h5, h6 {
@@ -326,7 +327,7 @@ a [scoped]((http://www.w3schools.com/tags/att_style_scoped.asp) HTML
 Green is the color of envy.
 ``
 
-. Create new [themes](#themes) or tweak existing themes.
+. Create new [themes](#themes) and tweak existing themes.
 
 IMPORTANT: The `style` element must not contain any blank lines because
 Rimu HTML block elements are terminated with a blank line
@@ -343,8 +344,8 @@ A _theme_ is the overall typographical style of the rendered HTML
 document.  You can tailor the theme using [custom CSS style
 elements](#scoped-css).
 
-The {rimuc} command supports named themes via the `--theme` option,
-all it does is set the `--theme` macro value which is then used to
+The {rimuc} command supports named themes with the `--theme` option,
+all this does is set the `--theme` macro value which is then used to
 [conditionally include](#conditional-inclusion) HTML `style` elements.
 
 The following example styles the output using the built-in _graystone_
@@ -365,8 +366,8 @@ elements.  Here is an example theme named _redheads_:
 </style>
 ``
 
-The HTML `style` element is included when the `--theme` macro is set
-to `redheads`, for example:
+The HTML `style` element will be included when the `--theme` macro is
+set to `redheads`, for example:
 
   rimuc --styled --theme redheads document.rmu
 
