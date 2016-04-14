@@ -299,41 +299,89 @@ TODO 10 examples +-2'
 
 
 .#scoped-css
-## Use scoped CSS to generate custom styled elements
-HTML5's [scoped CSS
-attribute](http://www.w3schools.com/tags/att_style_scoped.asp)
-allows you to define CSS outside the document header.  This allows you
-to include CSS in the body of a Rimu document which is very handy for
-tweaking the default CSS and for styling Rimu block elements.
+## Custom styling
+You can include custom CSS styles in the body of a Rimu document using
+a [scoped]((http://www.w3schools.com/tags/att_style_scoped.asp) HTML
+`style` element. Here are three use-cases:
 
-- The _verse_ and _sidebar_ CSS styles shown below are automatically
-  included when you use the {rimuc} tool `--styled` option.
-- HTML5 stipulates that scoped _style_ element must be the first child
-  element -- in practice  most browsers don't care where it occurs.
-
-{scoped-css-example} = '<style scoped>
-.verse {
-  margin: 1.5em 20px;
-}
-div.verse p, p.verse {
-  font-family: serif;
-  white-space:pre;
-}
-.sidebar {
-  border: 1px solid silver;
-  border-radius:4px;
-  background: #ffffee;
-  padding: 10px;
-  margin: 1.5em 20px;
-}
-div.sidebar *:first-child {
-  margin-top: 0.2em;
-}
+. Change existing styling, for example change the color of all headers:
+``
+<style scoped>
+  h1, h2, h3, h4, h5, h6 {
+    color: red;
+  }
 </style>
+``
+
+. Add a new block style. The following example puts a green border
+  around blocks with the `green-border` class:
+``
+<style scoped>
+  .green-border {
+    border: 5px solid green;
+  }
+</style>
+
+.green-border
+Green is the color of envy.
+``
+
+. Create new [themes](#themes) or tweak existing themes.
+
+IMPORTANT: The `style` element must not contain any blank lines because
+Rimu HTML block elements are terminated with a blank line
+
+Normally you would want the style to apply to your entire document so
+put the `style` elements at the top level i.e. not nested inside other
+block elements.  HTML5 stipulates that scoped _style_ element must be
+the first child element -- but in practice  most browsers don't care
+where it occurs.
+
+
+## Themes
+A _theme_ is the overall typographical style of the rendered HTML
+document.  You can tailor the theme using [custom CSS style
+elements](#scoped-css).
+
+The {rimuc} command supports named themes via the `--theme` option,
+all it does is set the `--theme` macro value which is then used to
+[conditionally include](#conditional-inclusion) HTML `style` elements.
+
+The following example styles the output using the built-in _graystone_
+theme:
+
+  rimuc --styled --theme graystone document.rmu
+
+You can create your own themes or tweak existing themes by
+[conditionally including](#conditional-inclusion) HTML `style`
+elements.  Here is an example theme named _redheads_:
+
+``
+{--theme!redheads}.+skip
+<style scoped>
+  h1, h2, h3, h4, h5, h6 {
+    color: red;
+  }
+</style>
+``
+
+The HTML `style` element is included when the `--theme` macro is set
+to `redheads`, for example:
+
+  rimuc --styled --theme redheads document.rmu
+
+
+## Verse and sidebar styles
+The {rimuc} command `--styled` option includes _verse_ and _sidebar_
+CSS styles for poetry and highlighted passages of text.
+
+{verse-and-sidebar-example} = 'Verse styled paragraph:
 
 .verse
 Neque a massa.
 Porttitor consectetuer commodo.
+
+Verse styled Division Block:
 
 .verse
 ..
@@ -346,9 +394,13 @@ Pede mauris sed.
 Scelerisque feugiat massa alias.
 ..
 
+Sidebar styled paragraph:
+
 .sidebar
 Neque a massa.
 Porttitor consectetuer commodo.
+
+Sidebar styled Division Block:
 
 .sidebar
 ..
@@ -361,7 +413,7 @@ Pede mauris sed.
 Scelerisque feugiat massa alias.
 ..'
 
-{generate-rendered-example-1|scoped-css-example}
+{generate-rendered-example-1|verse-and-sidebar-example}
 
 
 ## Using Macro, Replacement and Quote definitions in Safe Mode

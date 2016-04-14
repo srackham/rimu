@@ -1056,7 +1056,7 @@ STYLING MACROS AND CLASSES
   Macro name         Description
   ______________________________________________________________
   --theme            Set styling theme (1).
-                     Theme names: graystone.
+                     Theme names: default, graystone.
   --title            HTML document title (1).
   --highlightjs      Set to non-blank value to enable syntax
                      highlighting with Highlight.js.
@@ -1115,6 +1115,8 @@ files performs the following functions:
 - Includes additional styles for verses, sidebars, text alignment,
   page break control and section numbering (see `rimuc --help` command
   and [Rimu Tips]({tips})).
+- Supports named [themes]({tips}#themes). There are two built-in
+  themes: `default` (the default theme) and `graystone`.
 - If the `--highlightjs` macro is defined
   [Highlightjs](https://highlightjs.org/) is included.
 - If the `--mathjax` macro is defined
