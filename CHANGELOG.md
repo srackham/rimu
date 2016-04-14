@@ -3,6 +3,14 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
+## Version 7.3.0 (2016-04-15)
+- The `rimuc` command now supports [named themes]({tips}#themes) with
+  the new `--theme` option.  The following example styles the output
+  using the built-in _graystone_ theme:
+
+  rimuc --styled --theme graystone document.rmu
+
+
 ## Version 7.2.1 (2016-04-12)
 - Documentation updates.
 - Bug fixes.
