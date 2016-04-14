@@ -968,7 +968,7 @@ experimentation.
 
   . Macros can be used to generate Rimu Block elements. For example, the
     `sidebar` macro in the examples above generates a _Header_ block
-    element followed by a _Attributes Block_ block element.
+    element followed by a _Block Attributes_ block element.
 
 ### Reserved macros
 Macros with names starting with two hyphen characters are _Reserved_
@@ -1039,8 +1039,10 @@ OPTIONS
     Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
     Defaults to '<mark>replaced HTML</mark>'.
 
-  --title TITLE, --highlightjs, --mathjax, --toc, --section-numbers
+  --theme THEME, --title TITLE, --highlightjs,
+  --mathjax, --toc, --section-numbers
     Shortcuts for prepended styling macro definitions:
+    --prepend "{--theme}='THEME'"
     --prepend "{--title}='TITLE'"
     --prepend "{--highlightjs}='true'"
     --prepend "{--mathjax}='true'"
@@ -1053,6 +1055,8 @@ STYLING MACROS AND CLASSES
 
   Macro name         Description
   ______________________________________________________________
+  --theme            Set styling theme (1).
+                     Theme names: graystone.
   --title            HTML document title (1).
   --highlightjs      Set to non-blank value to enable syntax
                      highlighting with Highlight.js.

@@ -25,6 +25,7 @@
 }
 .example-header {
   color: #527bbd;
+{--theme=graystone}  color: #888;
   font-weight: bold;
   padding: 0.5em !important;
 }

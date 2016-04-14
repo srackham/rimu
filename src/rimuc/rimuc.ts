@@ -62,8 +62,10 @@ OPTIONS
     Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
     Defaults to '<mark>replaced HTML</mark>'.
 
-  --title TITLE, --highlightjs, --mathjax, --toc, --section-numbers
+  --theme THEME, --title TITLE, --highlightjs,
+  --mathjax, --toc, --section-numbers
     Shortcuts for prepended styling macro definitions:
+    --prepend "{--theme}='THEME'"
     --prepend "{--title}='TITLE'"
     --prepend "{--highlightjs}='true'"
     --prepend "{--mathjax}='true'"
@@ -76,6 +78,8 @@ STYLING MACROS AND CLASSES
 
   Macro name         Description
   ______________________________________________________________
+  --theme            Set styling theme (1).
+                     Theme names: default, graystone.
   --title            HTML document title (1).
   --highlightjs      Set to non-blank value to enable syntax
                      highlighting with Highlight.js.
@@ -171,9 +175,10 @@ outer:
         case '--highlightjs':
         case '--mathjax':
         case '--section-numbers':
+        case '--theme':
         case '--title':
         case '--toc':
-          let macroValue = arg === '--title' ? process.argv.shift() : 'true'
+          let macroValue = ['--title', '--theme'].indexOf(arg) > -1 ? process.argv.shift() : 'true'
           source += '{' + arg + '}=\'' + macroValue + '\'\n'
           break
         default:
