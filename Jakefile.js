@@ -159,7 +159,7 @@ task('html-docs', ['build-rimu-min'], {async: true}, function() {
 
 desc(`Validate HTML documents.`)
 task('validate-html', {async: true}, function() {
-  let commands = HTML.map(file => 'nu-html-checker --formatter json ' + file)
+  let commands = HTML.map(file => 'nu-html-checker --formatter stylish ' + file)
   exec(commands, complete)
 })
 
