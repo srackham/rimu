@@ -11,8 +11,11 @@
   body {
     margin: 1em;
     max-width: 50em;
+    font-family: Arial, Helvetica, sans-serif;
   }
-  h1, h2, h3, h4, h5, h6 { color: #527bbd; }
+  h1, h2, h3, h4, h5, h6 {
+    color: #527bbd;
+  }
   h1 { font-size: 2.2em; }
   h2 { font-size: 1.5em; }
   h3 { font-size: 1.2em; }
@@ -28,13 +31,14 @@
     margin-top: 1.5em;
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   }
-  a, a:hover { color: #527bbd; }
+  a, a:hover {
+    color: #527bbd;
+  }
   li, dd {
     margin-bottom: 0.25em;
   }
-  p, pre, ul, ol, dl, blockquote p {
+  p, pre, li, dt, dd, blockquote p {
     font-size: inherit;
-    font-weight: normal;
     line-height: 1.45;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
@@ -1366,7 +1370,7 @@ experimentation.</p>
     <em>Exclusion</em> macros.
 </li><li>Macros can be used to generate Rimu Block elements. For example, the
     <code>sidebar</code> macro in the examples above generates a <em>Header</em> block
-    element followed by a <em>Attributes Block</em> block element.
+    element followed by a <em>Block Attributes</em> block element.
 </li></ol></li></ul><h3>Reserved macros</h3>
 <p>Macros with names starting with two hyphen characters are <em>Reserved</em>
 macros, a number of reserved macros are defined by the <a href="#rimuc-command">rimuc
@@ -1430,8 +1434,10 @@ OPTIONS
     Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
     Defaults to '&lt;mark&gt;replaced HTML&lt;/mark&gt;'.
 
-  --title TITLE, --highlightjs, --mathjax, --toc, --section-numbers
+  --theme THEME, --title TITLE, --highlightjs,
+  --mathjax, --toc, --section-numbers
     Shortcuts for prepended styling macro definitions:
+    --prepend "{--theme}='THEME'"
     --prepend "{--title}='TITLE'"
     --prepend "{--highlightjs}='true'"
     --prepend "{--mathjax}='true'"
@@ -1444,6 +1450,8 @@ STYLING MACROS AND CLASSES
 
   Macro name         Description
   ______________________________________________________________
+  --theme            Set styling theme (1).
+                     Theme names: default, graystone.
   --title            HTML document title (1).
   --highlightjs      Set to non-blank value to enable syntax
                      highlighting with Highlight.js.
@@ -1490,6 +1498,8 @@ files performs the following functions:</p>
 </li><li>Includes additional styles for verses, sidebars, text alignment,
   page break control and section numbering (see <code>rimuc --help</code> command
   and <a href="tips.html">Rimu Tips</a>).
+</li><li>Supports named <a href="tips.html#themes">themes</a>. There are two built-in
+  themes: <code>default</code> (the default theme) and <code>graystone</code>.
 </li><li>If the <code>--highlightjs</code> macro is defined
   <a href="https://highlightjs.org/">Highlightjs</a> is included.
 </li><li>If the <code>--mathjax</code> macro is defined

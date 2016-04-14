@@ -11,8 +11,11 @@
   body {
     margin: 1em;
     max-width: 50em;
+    font-family: Arial, Helvetica, sans-serif;
   }
-  h1, h2, h3, h4, h5, h6 { color: #527bbd; }
+  h1, h2, h3, h4, h5, h6 {
+    color: #527bbd;
+  }
   h1 { font-size: 2.2em; }
   h2 { font-size: 1.5em; }
   h3 { font-size: 1.2em; }
@@ -28,13 +31,14 @@
     margin-top: 1.5em;
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   }
-  a, a:hover { color: #527bbd; }
+  a, a:hover {
+    color: #527bbd;
+  }
   li, dd {
     margin-bottom: 0.25em;
   }
-  p, pre, ul, ol, dl, blockquote p {
+  p, pre, li, dt, dd, blockquote p {
     font-size: inherit;
-    font-weight: normal;
     line-height: 1.45;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
@@ -622,48 +626,76 @@ and trash <span class="icon-trash"></span> icons.</p>
 <p><b style="color: red; background-color: yellow;">TODO</b> 10 examples &plusmn;2</p>
 </div>
 </td></tr></tbody></table>
-<h2 id="scoped-css">Use scoped CSS to generate custom styled elements</h2>
-<p>HTML5's <a href="http://www.w3schools.com/tags/att_style_scoped.asp">scoped CSS
-attribute</a>
-allows you to define CSS outside the document header.  This allows you
-to include CSS in the body of a Rimu document which is very handy for
-tweaking the default CSS and for styling Rimu block elements.</p>
-<ul><li>The <em>verse</em> and <em>sidebar</em> CSS styles shown below are automatically
-  included when you use the <a href="reference.html#rimuc-command">rimuc</a> tool <code>--styled</code> option.
-</li><li>HTML5 stipulates that scoped <em>style</em> element must be the first child
-  element &mdash; in practice  most browsers don't care where it occurs.
-</li></ul><h4>Examples</h4>
+<h2 id="scoped-css">Custom styling</h2>
+<p>You can include custom CSS styles in the body of a Rimu document using
+a <a href="(http://www.w3schools.com/tags/att_style_scoped.asp">scoped</a> HTML
+<code>style</code> element. Here are three use-cases:</p>
+<ol><li>Change existing styling. The following example changes the color of
+  all headers to red:
+<pre class="no-highlight"><code>&lt;style scoped&gt;
+  h1, h2, h3, h4, h5, h6 {
+    color: red;
+  }
+&lt;/style&gt;</code></pre>
+</li><li>Add a new block style. The following example puts a green border
+  around blocks with the <code>green-border</code> class:
+<pre class="no-highlight"><code>&lt;style scoped&gt;
+  .green-border {
+    border: 5px solid green;
+  }
+&lt;/style&gt;
+
+.green-border
+Green is the color of envy.</code></pre>
+</li><li>Create new <a href="#themes">themes</a> and tweak existing themes.
+</li></ol><p><b>IMPORTANT</b>: The <code>style</code> element must not contain any blank lines because
+Rimu HTML block elements are terminated with a blank line</p>
+<p>Normally you would want the style to apply to your entire document so
+put the <code>style</code> elements at the top level i.e. not nested inside other
+block elements.  HTML5 stipulates that scoped <em>style</em> element must be
+the first child element &mdash; but in practice  most browsers don't care
+where it occurs.</p>
+<h2>Themes</h2>
+<p>A <em>theme</em> is the overall typographical style of the rendered HTML
+document.  You can tailor the theme using <a href="#scoped-css">custom CSS style
+elements</a>.</p>
+<p>The <a href="reference.html#rimuc-command">rimuc</a> command supports named themes with the <code>--theme</code> option,
+all this does is set the <code>--theme</code> macro value which is then used to
+<a href="#conditional-inclusion">conditionally include</a> HTML <code>style</code> elements.</p>
+<p>The following example styles the output using the built-in <em>graystone</em>
+theme:</p>
+<pre class="no-highlight"><code>rimuc --styled --theme graystone document.rmu</code></pre>
+<p>You can create your own themes or tweak existing themes by
+<a href="#conditional-inclusion">conditionally including</a> HTML <code>style</code>
+elements.  Here is an example theme named <em>redheads</em>:</p>
+<pre class="no-highlight"><code>{--theme!redheads}.+skip
+&lt;style scoped&gt;
+  h1, h2, h3, h4, h5, h6 {
+    color: red;
+  }
+&lt;/style&gt;</code></pre>
+<p>The HTML <code>style</code> element will be included when the <code>--theme</code> macro is
+set to <code>redheads</code>, for example:</p>
+<pre class="no-highlight"><code>rimuc --styled --theme redheads document.rmu</code></pre>
+<h2>Verse and sidebar styles</h2>
+<p>The <a href="reference.html#rimuc-command">rimuc</a> command <code>--styled</code> option includes <em>verse</em> and <em>sidebar</em>
+CSS styles for poetry and highlighted passages of text.</p>
+<h4>Examples</h4>
 <table class="example table table-bordered">
 <thead><tr class="example-header">
 <th>
-<span class="icon-edit no-print" title="Edit example" style="cursor:pointer;" onclick="editExample('scoped-css-example')"></span>
+<span class="icon-edit no-print" title="Edit example" style="cursor:pointer;" onclick="editExample('verse-and-sidebar-example')"></span>
 Rimu source</th>
 <th>Rendered HTML</th>
 </tr></thead><tbody><tr>
 <td style="width:50%;">
-<pre id="scoped-css-example-source" class="example-source no-highlight"><code>&lt;style scoped&gt;
-.verse {
-  margin: 1.5em 20px;
-}
-div.verse p, p.verse {
-  font-family: serif;
-  white-space:pre;
-}
-.sidebar {
-  border: 1px solid silver;
-  border-radius:4px;
-  background: #ffffee;
-  padding: 10px;
-  margin: 1.5em 20px;
-}
-div.sidebar *:first-child {
-  margin-top: 0.2em;
-}
-&lt;/style&gt;
+<pre id="verse-and-sidebar-example-source" class="example-source no-highlight"><code>Verse styled paragraph:
 
 .verse
 Neque a massa.
 Porttitor consectetuer commodo.
+
+Verse styled Division Block:
 
 .verse
 ..
@@ -676,9 +708,13 @@ Pede mauris sed.
 Scelerisque feugiat massa alias.
 ..
 
+Sidebar styled paragraph:
+
 .sidebar
 Neque a massa.
 Porttitor consectetuer commodo.
+
+Sidebar styled Division Block:
 
 .sidebar
 ..
@@ -690,39 +726,24 @@ Nunc mauris tempor.
 Pede mauris sed.
 Scelerisque feugiat massa alias.
 ..</code></pre>
-<textarea id="scoped-css-example-edit" class="example-edit" onkeyup="updateExample('scoped-css-example')"></textarea>
+<textarea id="verse-and-sidebar-example-edit" class="example-edit" onkeyup="updateExample('verse-and-sidebar-example')"></textarea>
 </td>
 <td style="width:50%;">
-<div id="scoped-css-example-rendered" class="example-rendered">
-<style scoped>
-.verse {
-  margin: 1.5em 20px;
-}
-div.verse p, p.verse {
-  font-family: serif;
-  white-space:pre;
-}
-.sidebar {
-  border: 1px solid silver;
-  border-radius:4px;
-  background: #ffffee;
-  padding: 10px;
-  margin: 1.5em 20px;
-}
-div.sidebar *:first-child {
-  margin-top: 0.2em;
-}
-</style>
+<div id="verse-and-sidebar-example-rendered" class="example-rendered">
+<p>Verse styled paragraph:</p>
 <p class="verse">Neque a massa.
 Porttitor consectetuer commodo.</p>
+<p>Verse styled Division Block:</p>
 <div class="verse"><h4>Lorum Ipsum</h4>
 <p>Neque a massa.
 Porttitor consectetuer commodo.</p>
 <p>Nunc mauris tempor.
 Pede mauris sed.
 Scelerisque feugiat massa alias.</p></div>
+<p>Sidebar styled paragraph:</p>
 <p class="sidebar">Neque a massa.
 Porttitor consectetuer commodo.</p>
+<p>Sidebar styled Division Block:</p>
 <div class="sidebar"><h4>Lorum Ipsum</h4>
 <p>Neque a massa.
 Porttitor consectetuer commodo.</p>
