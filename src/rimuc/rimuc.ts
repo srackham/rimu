@@ -64,7 +64,7 @@ OPTIONS
 
   --theme THEME, --title TITLE, --highlightjs,
   --mathjax, --toc, --section-numbers
-    Shortcuts for prepended styling macro definitions:
+    Shortcuts for the following prepended macro definitions:
     --prepend "{--theme}='THEME'"
     --prepend "{--title}='TITLE'"
     --prepend "{--highlightjs}='true'"
@@ -78,7 +78,7 @@ STYLING MACROS AND CLASSES
 
   Macro name         Description
   ______________________________________________________________
-  --theme            Set styling theme (1).
+  --theme            Set styling themes.
                      Theme names: default, graystone.
   --title            HTML document title (1).
   --highlightjs      Set to non-blank value to enable syntax

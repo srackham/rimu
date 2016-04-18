@@ -358,7 +358,7 @@ You can create your own themes or tweak existing themes by
 elements.  Here is an example theme named _redheads_:
 
 ``
-{--theme!redheads}.+skip
+{--theme!.*\bredheads\b.*}.+skip
 <style scoped>
   h1, h2, h3, h4, h5, h6 {
     color: red;
@@ -366,10 +366,17 @@ elements.  Here is an example theme named _redheads_:
 </style>
 ``
 
-The HTML `style` element will be included when the `--theme` macro is
-set to `redheads`, for example:
+The HTML `style` element will be included when the `--theme` macro
+value includes the word `redheads`, for example:
 
   rimuc --styled --theme redheads document.rmu
+
+You can combine themes by specifying more than one theme, for example:
+
+  rimuc --styled --theme "graystone redheads" document.rmu
+
+NOTE: If you specify multiple themes the styles will casacade in the
+order they are processed in the Rimu source documents.
 
 
 ## Verse and sidebar styles

@@ -246,7 +246,7 @@
   }
 </style>
 
-{--theme!graystone}.+skip
+{--theme!.*\bgraystone\b.*}.+skip
 <style>
   body {
     font-size: 13pt;
