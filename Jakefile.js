@@ -128,8 +128,8 @@ task('build-rimu-min', [RIMU_LIB_MIN])
 file(RIMU_LIB_MIN, RIMU_SRC.concat('./package.json'), {async: true}, function() {
   exec('webpack --optimize-minimize --output-filename ' + RIMU_LIB_MIN, function() {
     // Prepend package name and version comment to minified library file.
-    `/* ${pkg.name} ${pkg.version} (${pkg.repository.url}) */\n${shelljs.cat(RIMU_LIB_MIN)}`
-      .to(RIMU_LIB_MIN)
+    var header = `/* ${pkg.name} ${pkg.version} (${pkg.repository.url}) */`
+    shelljs.ShellString(`${header}\n${shelljs.cat(RIMU_LIB_MIN)}`).to(RIMU_LIB_MIN)
     complete()
   })
 })
@@ -138,7 +138,7 @@ desc(`Compile rimuc to JavaScript executable.`)
 task('build-rimuc', {async: true}, function() {
   shelljs.cp('-f', RIMU_TSD, 'src/rimuc/')  // Kludge: Because there is no way to redirect module references.
   exec(`tsc --project src/rimuc`, function() {
-    `#!/usr/bin/env node\n${shelljs.cat(RIMUC)}`.to(RIMUC) // Prepend Shebang line.
+    shelljs.ShellString(`#!/usr/bin/env node\n${shelljs.cat(RIMUC)}`).to(RIMUC) // Prepend Shebang line.
     shelljs.chmod('+x', RIMUC)
     complete()
   })
