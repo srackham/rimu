@@ -375,8 +375,8 @@ You can combine themes by specifying more than one theme, for example:
 
   rimuc --styled --theme "graystone redheads" document.rmu
 
-NOTE: If you specify multiple themes the styles will casacade in the
-order they are processed in the Rimu source documents.
+NOTE: If you specify multiple themes their CSS styles will casacade in
+the order they are processed in the Rimu source documents.
 
 
 ## Verse and sidebar styles
@@ -860,6 +860,30 @@ to a fenced code block.
 {generate-rendered-example-1|list-ambiguity-example}
 
 
+## Controlling line breaks
+There are three ways to inhibit text wrapping and preserve line
+breaks:
+
+. Terminate lines with a Rimu line break (a space followed by a
+  backslash character).
+. Terminate lines with an HTML break element (`<br>`).
+. Inject the `line-breaks` name into a Rimu block element and compile
+  with the `rimuc` command `--styled` option.
+
+{line-breaks-example} = '
+Urna aliquam pid \
+Aenean enim cum sed <br>
+Augue non egestas amet?
+
+.line-breaks
+Urna aliquam pid
+Aenean enim cum sed
+Augue non egestas amet?
+'
+
+{generate-rendered-example-1|line-breaks-example}
+
+
 ## Controlling page breaks
 You can control printer page breaks by using Rimu _Attribute Blocks_
 to inject CSS
@@ -950,3 +974,53 @@ A. N. Mouse
 
 {generate-rendered-example-1|citation-example}
 
+
+## An example letter
+Here's an example of a personal letter:
+
+.-macros
+{letter-example} = '
+."font-family: serif; font-size: 12pt;"
+.......................................
+
+."margin-left:75%"
+..
+24 Milky Way \
+Skyhome 1234 \
+
+17th June 2016
+..
+
+."margin-bottom:1.5em"
+Mr. A. N. Mouse \
+P.O. Box 42     \
+Riverbank 3120
+
+."margin-bottom:1.2em"
+Dear Andrew
+
+Mattis pellentesque in lundium lectus penatibus turpis enim enim in,
+mid velit. Eu lundium. Lundium! Porttitor! Porttitor purus lacus et
+odio nisi amet in magna penatibus odio amet?
+
+In urna rhoncus! Nec scelerisque enim in turpis pid, phasellus cras,
+rhoncus, egestas aliquet lundium! Lundium auctor vel natoque enim.
+
+."margin-top:2em"
+Yours sincerely \
+Joe Jetson
+.......................................
+'
+
+{generate-rendered-example-2|letter-example}
+
+- The font parameters are set by enclosing the entire contents in a
+  Division Block.
+- If you want to control the print margins put something like this at
+  the start of the document:
+``
+<style scoped>
+@page
+{ margin: 25mm 25mm 25mm 25mm; }
+</style>
+``
