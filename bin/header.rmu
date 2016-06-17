@@ -185,6 +185,10 @@
   .align-right {
     text-align: right;
   }
+{--!} Do not wrap line breaks.
+  .line-breaks {
+    white-space:pre;
+  }
 </style>
 
 {--section-numbers=}.+skip
