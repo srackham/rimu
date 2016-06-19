@@ -491,13 +491,13 @@ Delimited Blocks::
 To conditionally exclude Delimited Block elements enable the `+skip`
 option in a preceding _Attribute Block_ element. For example:
 
-  {foo!}.+skip
+  {foo=}.+skip
   **Lorem ipsum dolor**. Sit amet venenatis. Erat nulla arcu. Lorem
   luctus sem. Mauris vitaei ipsum.
 
-If macro `foo` value is non-blank the `.+skip` Attribute Block is
+If macro `foo` value is blank the `.+skip` Attribute Block is
 retained, this causes the following paragraph to be skipped. If `foo`
-is blank then the `.+skip` Attribute Block is dropped and the
+is non-blank then the `.+skip` Attribute Block is dropped and the
 succeeding paragraph will be processed.
 ..
 
@@ -824,10 +824,8 @@ lectus?
 
 """
 Enim ultricies odio rhoncus ultrices,
-porttitor augue a amet, pulvinar
 adipiscing in dictumst in, enim integer
 vel mauris placerat in phasellus magna.
-Nisi! Amet.
 """
 
 Duis in tincidunt rhoncus nascetur
@@ -867,8 +865,8 @@ breaks:
 . Terminate lines with a Rimu line break (a space followed by a
   backslash character).
 . Terminate lines with an HTML break element (`<br>`).
-. Inject the `line-breaks` name into a Rimu block element and compile
-  with the `rimuc` command `--styled` option.
+. Inject the `line-breaks` CSS class into a Rimu block element and
+  compile with the `rimuc` command `--styled` option.
 
 {line-breaks-example} = '
 Urna aliquam pid \
@@ -980,8 +978,8 @@ Here's an example of a personal letter:
 
 .-macros
 {letter-example} = '
-."font-family: serif; font-size: 12pt;"
-.......................................
+."font-family:serif; font-size:12pt;"
+.....................................
 
 ."margin-left:75%"
 ..
@@ -1009,7 +1007,7 @@ rhoncus, egestas aliquet lundium! Lundium auctor vel natoque enim.
 ."margin-top:2em"
 Yours sincerely \
 Joe Jetson
-.......................................
+.....................................
 '
 
 {generate-rendered-example-2|letter-example}

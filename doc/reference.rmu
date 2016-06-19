@@ -1076,6 +1076,7 @@ STYLING MACROS AND CLASSES
   align-center     Text alignment center.
   align-right      Text alignment right.
   no-print         Do not print.
+  line-breaks      Honor line breaks in source text.
   page-break       Force page break before the element.
   no-page-break    Avoid page break inside the element.
   dl-numbered      Number labeled list items.
