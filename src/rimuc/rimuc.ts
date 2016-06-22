@@ -63,13 +63,14 @@ OPTIONS
     Defaults to '<mark>replaced HTML</mark>'.
 
   --theme THEME, --title TITLE, --highlightjs,
-  --mathjax, --toc, --section-numbers
+  --mathjax, --toc, --dropdown-toc, --section-numbers
     Shortcuts for the following prepended macro definitions:
     --prepend "{--theme}='THEME'"
     --prepend "{--title}='TITLE'"
     --prepend "{--highlightjs}='true'"
     --prepend "{--mathjax}='true'"
     --prepend "{--toc}='true'"
+    --prepend "{--dropdown-toc}='true'"
     --prepend "{--section-numbers}='true'"
 
 STYLING MACROS AND CLASSES
@@ -85,7 +86,9 @@ STYLING MACROS AND CLASSES
                      highlighting with Highlight.js.
   --mathjax          Set to a non-blank value to enable MathJax.
   --toc              Set to a non-blank value to generate a
-                     table of contents (1).
+                     table of contents sidebar (1).
+  --dropdown-toc     Set to a non-blank value to generate a
+                     table of contents dropdown menu (1).
   --section-numbers  Apply h2 and h3 section numbering (1).
   ______________________________________________________________
   (1) Must be defined prior to header (--prepend or .rimurc).
@@ -179,6 +182,7 @@ outer:
         case '--theme':
         case '--title':
         case '--toc':
+        case '--dropdown-toc':
           let macroValue = ['--title', '--theme'].indexOf(arg) > -1 ? process.argv.shift() : 'true'
           source += '{' + arg + '}=\'' + macroValue + '\'\n'
           break

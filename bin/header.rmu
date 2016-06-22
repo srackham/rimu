@@ -11,6 +11,7 @@
 {--section-numbers?} = ''
 {--title?} = '&nbsp;'
 {--toc?} = ''
+{--dropdown-toc?} = ''
 {--theme?} = 'default'
 
 // "Blank" macro.
@@ -206,12 +207,11 @@
   }
 </style>
 
-{--toc=}.+skip
+// Common to --toc and --dropdown-toc.
+.+skip
+{--toc!}.-skip
+{--dropdown-toc!}.-skip
 <style>
-  /* TOC styles */
-  body {
-    padding-left: 21em;
-  }
   @media print {
     .no-print, .no-print * {
       display: none !important;
@@ -219,18 +219,6 @@
     body {
       padding-left: 1em;
     }
-  }
-  #toc {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 18em;
-    padding: 1em;
-    border-right: 1px solid #cccccc;
-    overflow-y: auto;
-    overflow-x: hidden;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
   }
   #toc .h1 {
     font-size: 110%;
@@ -247,6 +235,58 @@
   }
   #toc div:nth-child(even) {
     background-color: #f8f8f8;
+  }
+</style>
+
+{--toc=}.+skip
+<style>
+  body {
+    padding-left: 21em;
+  }
+  #toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 18em;
+    padding: 1em;
+    border-right: 1px solid #cccccc;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+  }
+</style>
+
+{--dropdown-toc=}.+skip
+<style>
+  .toc-visible {
+    display: block !important;
+  }
+  #toc-button {
+    position: fixed;
+    top: 22px;
+    left: 15px;
+    z-index: 1;
+    cursor: pointer;
+    color: silver;
+    font-size:3.2em;
+  }
+  #toc {
+    display: none;
+    position: fixed;
+    top: 55px;
+    left: 15px;
+    z-index: 1;
+    width: 30em;
+    height: 80%;
+    overflow-y: auto;
+    background-color: white;
+    padding-left: 5px;
+    padding-bottom: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+  }
+  #contents {
+    margin-left: 40px;
   }
 </style>
 
@@ -274,5 +314,12 @@
 
 </head>
 <body>
-{--toc!}<div id="toc" class="no-print"></div>
+
+{--toc=}.+skip
+<div id="toc" class="no-print"></div>
+
+{--dropdown-toc=}.+skip
+<div id="toc-button" onclick="toggleToc()" class="no-print">&#8801;</div>
+<div id="toc" class="no-print"></div>
+
 <div id="contents">

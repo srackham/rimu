@@ -20,6 +20,7 @@ window.onload = function() {
       heading.setAttribute('id', id);
     }
 {--toc!}    appendTocEntry(heading, id);
+{--dropdown-toc!}    appendTocEntry(heading, id);
   });
 }
 function slugify(text) {
@@ -35,7 +36,9 @@ function slugify(text) {
 }
 </script>
 
-{--toc=}.+skip
+.+skip
+{--toc!}.-skip
+{--dropdown-toc!}.-skip
 <script>
 function appendTocEntry(heading, id) {
   var toc = document.getElementById('toc');
@@ -46,6 +49,32 @@ function appendTocEntry(heading, id) {
   tocEntry.setAttribute('class', heading.tagName.toLowerCase());
   tocEntry.appendChild(tocLink);
   toc.appendChild(tocEntry);
+}
+</script>
+
+{--dropdown-toc=}.+skip
+<script>
+function toggleToc() {
+    document.getElementById("toc").classList.toggle('toc-visible');
+}
+window.onclick = function(event) {
+  if (!Element.prototype.matches) {
+    // matches() polyfill for old browsers.
+    var p = Element.prototype;
+    if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
+      p.matches = p.webkitMatchesSelector;
+    if (p.msMatchesSelector) // IE9/10/11 & Edge
+      p.matches = p.msMatchesSelector;
+    if (p.mozMatchesSelector) // FF<34
+      p.matches = p.mozMatchesSelector;
+  }
+  if (!event.target.matches('#toc-button, #toc, #toc > div')) {
+    // Clicked on element outside dropdown.
+    var toc = document.getElementById('toc');
+    if (toc.classList.contains('toc-visible')) {
+      toc.classList.remove('toc-visible');
+    }
+  }
 }
 </script>
 
