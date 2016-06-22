@@ -22,7 +22,7 @@ let RIMUC_TS = 'src/rimuc/rimuc.ts'
 let DOCS = [
   {
     src: 'README.md', dst: 'doc/index.html', title: 'Rimu Markup',
-    rimucOptions: '--toc'
+    rimucOptions: '--dropdown-toc'
   },
   {
     src: 'CHANGELOG.md', dst: 'doc/CHANGELOG.html', title: 'Rimu Change Log',
@@ -38,7 +38,7 @@ let DOCS = [
   },
   {
     src: 'doc/rimuplayground.rmu', dst: 'doc/rimuplayground.html', title: 'Rimu Playground',
-    rimucOptions: '--toc --prepend "{generate-examples}=\'yes\'"'
+    rimucOptions: '--dropdown-toc --prepend "{generate-examples}=\'yes\'"'
   }
 ]
 let HTML = DOCS.map(doc => doc.dst)
