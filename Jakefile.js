@@ -22,7 +22,7 @@ let RIMUC_TS = 'src/rimuc/rimuc.ts'
 let DOCS = [
   {
     src: 'README.md', dst: 'doc/index.html', title: 'Rimu Markup',
-    rimucOptions: '--dropdown-toc'
+    rimucOptions: '--toc'
   },
   {
     src: 'CHANGELOG.md', dst: 'doc/CHANGELOG.html', title: 'Rimu Change Log',
@@ -148,7 +148,7 @@ desc(`Generate HTML documentation`)
 task('html-docs', ['build-rimu-min'], {async: true}, function() {
   let commands = DOCS.map(doc =>
     'node ' + RIMUC +
-    ' --styled --lint --no-rimurc --theme default' +
+    ' --styled --lint --no-rimurc --theme default --custom-toc' +
     ' --output "' + doc.dst + '"' +
     ' --title "' + doc.title + '"' +
     ' ' + doc.rimucOptions + ' ' +

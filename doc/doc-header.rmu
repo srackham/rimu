@@ -5,17 +5,6 @@
 // By default examples generation is disabled.
 {generate-examples?} = ''
 
-// Header menu styles.
-<style scoped>
-.breadcrumb {
-  font-weight: bold;
-  background-color: white;
-  margin: 0;
-  margin-top: 5px;
-  padding: 0;
-}
-</style>
-
 // Examples styles.
 {generate-examples=}.+skip
 <style scoped>
@@ -152,14 +141,14 @@ Rimu source</td>
 {npm} = 'https://npmjs.org/package/rimu'
 {example-rimurc} = 'https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.rmu'
 
-
-// Header menu.
-<ul class="breadcrumb pull-right no-print">
-  <li><a href="index.html">Home</a> <span class="divider">|</span></li>
-  <li><a href="rimuplayground.html">Playground</a> <span class="divider">|</span></li>
-  <li><a href="reference.html">Reference</a> <span class="divider">|</span></li>
-  <li><a href="tips.html">Tips</a> <span class="divider">|</span></li>
-  <li><a href="http://github.com/srackham/rimu">Github</a> <span class="divider">|</span></li>
-  <li><a href="https://npmjs.org/package/rimu">npm</a></li>
-</ul>
-
+{--dropdown-toc!}<div id="toc-button" onclick="toggleToc()" class="no-print">&#8801;</div>
+<div id="toc" class="no-print">
+  <div style="border-bottom: 2px solid #ddd">
+    <div class="h1"><a href="index.html">Home</a></div>
+    <div class="h1"><a href="rimuplayground.html">Playground</a></div>
+    <div class="h1"><a href="reference.html">Reference</a></div>
+    <div class="h1"><a href="tips.html">Tips</a></div>
+    <div class="h1"><a href="http://github.com/srackham/rimu" target="_blank">Github</a></div>
+    <div class="h1"><a href="https://npmjs.org/package/rimu" target="_blank">npm</a></div>
+  </div>
+</div>
