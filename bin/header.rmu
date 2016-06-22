@@ -12,6 +12,7 @@
 {--title?} = '&nbsp;'
 {--toc?} = ''
 {--dropdown-toc?} = ''
+{--custom-toc?} = ''
 {--theme?} = 'default'
 
 // "Blank" macro.
@@ -207,37 +208,6 @@
   }
 </style>
 
-// Common to --toc and --dropdown-toc.
-.+skip
-{--toc!}.-skip
-{--dropdown-toc!}.-skip
-<style>
-  @media print {
-    .no-print, .no-print * {
-      display: none !important;
-    }
-    body {
-      padding-left: 1em;
-    }
-  }
-  #toc .h1 {
-    font-size: 110%;
-    font-weight: bold;
-    margin-top: 0.5em;
-    margin-bottom: 0.4em;
-  }
-  #toc .h2 {
-    margin-top: 0.4em;
-  }
-  #toc .h3 {
-    margin-left: 1.5em;
-    font-size: 90%;
-  }
-  #toc div:nth-child(even) {
-    background-color: #f8f8f8;
-  }
-</style>
-
 {--toc=}.+skip
 <style>
   body {
@@ -249,7 +219,6 @@
     left: 0;
     bottom: 0;
     width: 18em;
-    padding: 1em;
     border-right: 1px solid #cccccc;
     overflow-y: auto;
     overflow-x: hidden;
@@ -276,17 +245,50 @@
     position: fixed;
     top: 55px;
     left: 15px;
+    right: 10%;
     z-index: 1;
-    width: 30em;
-    height: 80%;
+    max-width: 30em;
+    max-height: 80%;
     overflow-y: auto;
     background-color: white;
-    padding-left: 5px;
-    padding-bottom: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
   }
   #contents {
     margin-left: 40px;
+  }
+</style>
+
+// Common to --toc and --dropdown-toc.
+.+skip
+{--toc!}.-skip
+{--dropdown-toc!}.-skip
+<style>
+  @media print {
+    .no-print, .no-print * {
+      display: none !important;
+    }
+    body {
+      padding-left: 1em;
+    }
+  }
+  #toc {
+    padding-left: 1em;
+  }
+  #toc .h1 {
+    font-size: 110%;
+    font-weight: bold;
+    margin-top: 0.5em;
+    margin-bottom: 0.4em;
+  }
+  #toc .h2 {
+    margin-top: 0.4em;
+  }
+  #toc .h3 {
+    margin-left: 1.5em;
+    font-size: 90%;
+  }
+  #toc div:nth-child(even) {
+    background-color: #f8f8f8;
   }
 </style>
 
@@ -316,9 +318,11 @@
 <body>
 
 {--toc=}.+skip
+{--custom-toc!}.+skip
 <div id="toc" class="no-print"></div>
 
 {--dropdown-toc=}.+skip
+{--custom-toc!}.+skip
 <div id="toc-button" onclick="toggleToc()" class="no-print">&#8801;</div>
 <div id="toc" class="no-print"></div>
 

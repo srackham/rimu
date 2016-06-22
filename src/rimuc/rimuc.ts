@@ -62,8 +62,8 @@ OPTIONS
     Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
     Defaults to '<mark>replaced HTML</mark>'.
 
-  --theme THEME, --title TITLE, --highlightjs,
-  --mathjax, --toc, --dropdown-toc, --section-numbers
+  --theme THEME, --title TITLE, --highlightjs, --mathjax,
+  --toc, --dropdown-toc, --custom-toc, --section-numbers
     Shortcuts for the following prepended macro definitions:
     --prepend "{--theme}='THEME'"
     --prepend "{--title}='TITLE'"
@@ -71,6 +71,7 @@ OPTIONS
     --prepend "{--mathjax}='true'"
     --prepend "{--toc}='true'"
     --prepend "{--dropdown-toc}='true'"
+    --prepend "{--custom-toc}='true'"
     --prepend "{--section-numbers}='true'"
 
 STYLING MACROS AND CLASSES
@@ -89,6 +90,7 @@ STYLING MACROS AND CLASSES
                      table of contents sidebar (1).
   --dropdown-toc     Set to a non-blank value to generate a
                      table of contents dropdown menu (1).
+  --custom-toc       User supplied table of contents (1).
   --section-numbers  Apply h2 and h3 section numbering (1).
   ______________________________________________________________
   (1) Must be defined prior to header (--prepend or .rimurc).
@@ -183,6 +185,7 @@ outer:
         case '--title':
         case '--toc':
         case '--dropdown-toc':
+        case '--custom-toc':
           let macroValue = ['--title', '--theme'].indexOf(arg) > -1 ? process.argv.shift() : 'true'
           source += '{' + arg + '}=\'' + macroValue + '\'\n'
           break
