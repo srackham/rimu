@@ -74,8 +74,8 @@ window.onclick = function(event) {
     if (p.mozMatchesSelector) // FF<34
       p.matches = p.mozMatchesSelector;
   }
-  if (!event.target.matches('#toc-button, #toc, #toc > div')) {
-    // Clicked on element outside dropdown.
+  if (!event.target.matches('#toc-button, #toc, #toc :not(a)')) {
+    // Hide TOC if clicked outside TOC or on TOC link.
     var toc = document.getElementById('toc');
     if (toc.classList.contains('toc-visible')) {
       toc.classList.remove('toc-visible');
