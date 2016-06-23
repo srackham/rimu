@@ -143,12 +143,12 @@ Rimu source</td>
 
 {--dropdown-toc!}<div id="toc-button" onclick="toggleToc()" class="no-print">&#8801;</div>
 <div id="toc" class="no-print">
-  <div style="border-bottom: 2px solid #ddd">
-    <div class="h1"><a href="index.html">Home</a></div>
-    <div class="h1"><a href="rimuplayground.html">Playground</a></div>
-    <div class="h1"><a href="reference.html">Reference</a></div>
-    <div class="h1"><a href="tips.html">Tips</a></div>
-    <div class="h1"><a href="http://github.com/srackham/rimu" target="_blank">Github</a></div>
-    <div class="h1"><a href="https://npmjs.org/package/rimu" target="_blank">npm</a></div>
-  </div>
+  <h2 style="font-size:1.2em; margin-top:1.0em">Links</h2>
+  <div class="h2"><a href="index.html">Home</a></div>
+  <div class="h2"><a href="rimuplayground.html">Playground</a></div>
+  <div class="h2"><a href="reference.html">Reference</a></div>
+  <div class="h2"><a href="tips.html">Tips</a></div>
+  <div class="h2"><a href="http://github.com/srackham/rimu" target="_blank">Github</a></div>
+  <div class="h2"><a href="https://npmjs.org/package/rimu" target="_blank">npm</a></div>
+  <h2 style="font-size:1.2em; margin-top:1.0em">Table of Contents</h2>
 </div>
