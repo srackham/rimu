@@ -44,8 +44,11 @@ function slugify(text) {
 {--dropdown-toc!}.-skip
 <script>
 function appendTocEntry(heading, id) {
-  var toc = document.getElementById('toc');
-  if (toc.classList.contains('no-auto-toc')) {
+  if (heading.classList.contains('no-auto-toc')) {
+    return;
+  }
+  var container = document.getElementById('auto-toc');
+  if (container === null) {
     return;
   }
   var tocLink = document.createElement('a');
@@ -54,7 +57,7 @@ function appendTocEntry(heading, id) {
   var tocEntry = document.createElement('div');
   tocEntry.setAttribute('class', heading.tagName.toLowerCase());
   tocEntry.appendChild(tocLink);
-  toc.appendChild(tocEntry);
+  container.appendChild(tocEntry);
 }
 </script>
 
