@@ -202,11 +202,11 @@
   /* Section numbers. */
   body,h1 { counter-reset: h2-counter; }
   h2      { counter-reset: h3-counter; }
-  h2:before { 
+  #contents > h2:before {
     content: counter(h2-counter) ". ";
     counter-increment: h2-counter;
   }
-  h3:before {
+  #contents > h3:before {
     content: counter(h2-counter) "." counter(h3-counter) ". ";
     counter-increment: h3-counter;
   }
