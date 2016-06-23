@@ -22,19 +22,19 @@ let RIMUC_TS = 'src/rimuc/rimuc.ts'
 let DOCS = [
   {
     src: 'README.md', dst: 'doc/index.html', title: 'Rimu Markup',
-    rimucOptions: '--toc'
+    rimucOptions: '--sidebar-toc'
   },
   {
     src: 'CHANGELOG.md', dst: 'doc/CHANGELOG.html', title: 'Rimu Change Log',
-    rimucOptions: '--toc'
+    rimucOptions: '--sidebar-toc'
   },
   {
     src: 'doc/reference.rmu', dst: 'doc/reference.html', title: 'Rimu Reference',
-    rimucOptions: '--toc --highlightjs --prepend "{generate-examples}=\'yes\'"'
+    rimucOptions: '--sidebar-toc --highlightjs --prepend "{generate-examples}=\'yes\'"'
   },
   {
     src: 'doc/tips.rmu', dst: 'doc/tips.html', title: 'Rimu Tips',
-    rimucOptions: '--toc --highlightjs --mathjax --prepend "{generate-examples}=\'yes\'"'
+    rimucOptions: '--sidebar-toc --highlightjs --mathjax --prepend "{generate-examples}=\'yes\'"'
   },
   {
     src: 'doc/rimuplayground.rmu', dst: 'doc/rimuplayground.html', title: 'Rimu Playground',

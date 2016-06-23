@@ -22,7 +22,7 @@ window.onload = function() {
     if (index === 0 && heading.tagName === 'H1') {
       id = ''; // Go to top of page.
     }
-{--toc!}    appendTocEntry(heading, id);
+{--sidebar-toc!}    appendTocEntry(heading, id);
 {--dropdown-toc!}    appendTocEntry(heading, id);
   });
 }
@@ -40,7 +40,7 @@ function slugify(text) {
 </script>
 
 .+skip
-{--toc!}.-skip
+{--sidebar-toc!}.-skip
 {--dropdown-toc!}.-skip
 <script>
 function appendTocEntry(heading, id) {

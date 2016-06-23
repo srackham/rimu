@@ -63,13 +63,13 @@ OPTIONS
     Defaults to '<mark>replaced HTML</mark>'.
 
   --theme THEME, --title TITLE, --highlightjs, --mathjax,
-  --toc, --dropdown-toc, --custom-toc, --section-numbers
+  --sidebar-toc, --dropdown-toc, --custom-toc, --section-numbers
     Shortcuts for the following prepended macro definitions:
     --prepend "{--theme}='THEME'"
     --prepend "{--title}='TITLE'"
     --prepend "{--highlightjs}='true'"
     --prepend "{--mathjax}='true'"
-    --prepend "{--toc}='true'"
+    --prepend "{--sidebar-toc}='true'"
     --prepend "{--dropdown-toc}='true'"
     --prepend "{--custom-toc}='true'"
     --prepend "{--section-numbers}='true'"
@@ -86,11 +86,12 @@ STYLING MACROS AND CLASSES
   --highlightjs      Set to non-blank value to enable syntax
                      highlighting with Highlight.js.
   --mathjax          Set to a non-blank value to enable MathJax.
-  --toc              Set to a non-blank value to generate a
+  --sidebar-toc      Set to a non-blank value to generate a
                      table of contents sidebar (1).
   --dropdown-toc     Set to a non-blank value to generate a
                      table of contents dropdown menu (1).
-  --custom-toc       User supplied table of contents (1).
+  --custom-toc       Set to a non-blank value if a custom table
+                     of contents is used (1).
   --section-numbers  Apply h2 and h3 section numbering (1).
   ______________________________________________________________
   (1) Must be defined prior to header (--prepend or .rimurc).
@@ -183,7 +184,8 @@ outer:
         case '--section-numbers':
         case '--theme':
         case '--title':
-        case '--toc':
+        case '--toc': // DEPRECATED
+        case '--sidebar-toc':
         case '--dropdown-toc':
         case '--custom-toc':
           let macroValue = ['--title', '--theme'].indexOf(arg) > -1 ? process.argv.shift() : 'true'

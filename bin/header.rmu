@@ -10,10 +10,14 @@
 {--mathjax?} = ''
 {--section-numbers?} = ''
 {--title?} = '&nbsp;'
-{--toc?} = ''
-{--dropdown-toc?} = ''
 {--custom-toc?} = ''
 {--theme?} = 'default'
+{--sidebar-toc?} = ''
+{--dropdown-toc?} = ''
+
+// DEPRECATED --toc: If --toc is non-blank make --sidebar-toc non-blank.
+{--toc?} = ''
+{--sidebar-toc} = '{--toc}{--sidebar-toc}'
 
 // "Blank" macro.
 {--} = ''
@@ -208,7 +212,7 @@
   }
 </style>
 
-{--toc=}.+skip
+{--sidebar-toc=}.+skip
 <style>
   body {
     padding-left: 21em;
@@ -258,9 +262,9 @@
   }
 </style>
 
-// Common to --toc and --dropdown-toc.
+// Common to --sidebar-toc and --dropdown-toc.
 .+skip
-{--toc!}.-skip
+{--sidebar-toc!}.-skip
 {--dropdown-toc!}.-skip
 <style>
   @media print {
@@ -317,7 +321,7 @@
 </head>
 <body>
 
-{--toc=}.+skip
+{--sidebar-toc=}.+skip
 {--custom-toc!}.+skip
 <div id="toc" class="no-print"></div>
 
