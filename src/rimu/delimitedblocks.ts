@@ -232,7 +232,7 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
         if (def.contentFilter) {
           text = def.contentFilter(text, match, expansionOptions)
         }
-        writer.write(utils.injectHtmlAttributes(def.openTag))
+        let opentag = utils.injectHtmlAttributes(def.openTag)
         if (expansionOptions.container) {
           delete lineBlocks.blockOptions.container  // Consume before recursion.
           text = api.render(text)
@@ -240,11 +240,17 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
         else {
           text = utils.replaceInline(text, expansionOptions)
         }
-        writer.write(text)
-        writer.write(def.closeTag)
-        if ((def.openTag || text || def.closeTag) && !reader.eof()) {
-          // Add a trailing '\n' if we've written a non-blank line and there are more source lines left.
-          writer.write('\n')
+        if (def.name === 'division' && opentag === '<div>' && /^\s*$/.test(text)) {
+          // Drop empty divs that have no attributes.
+        }
+        else {
+          writer.write(opentag)
+          writer.write(text)
+          writer.write(def.closeTag)
+          if ((def.openTag || text || def.closeTag) && !reader.eof()) {
+            // Add a trailing '\n' if we've written a non-blank line and there are more source lines left.
+            writer.write('\n')
+          }
         }
       }
       // Reset consumed Block Attributes expansion options.

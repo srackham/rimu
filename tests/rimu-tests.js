@@ -365,6 +365,18 @@ test('blocks', function(t) {
     '..one two \nTo be...\n..',
     '<div class="one two"><p>To be...</p></div>',
     'Division block with class injection');
+  test_document(
+    '..\n\n..',
+    '',
+    'do not render empty Division block');
+  test_document(
+    '..\n{macro}=\'42\'\n..',
+    '',
+    'non-rendering elements in Division block');
+  test_document(
+    '.foo\n..\n\n..',
+    '<div class="foo"></div>',
+    'render empty Division block has attributes');
 
   // Lists.
   test_document(
