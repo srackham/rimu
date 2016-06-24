@@ -22,7 +22,7 @@ Plus:
 ## Installing Rimu
 
 Install Rimu as a Node.js module (includes the `rimu` library and the
-`rimuc` command-line tool):
+{rimuc} command-line tool):
 
   sudo npm install -g rimu
 
@@ -91,7 +91,7 @@ properties:
 .dl-horizontal
 `safeMode`::
 This option has a number value that controls how Rimu renders embedded
-HTML and which Rimu definition and option elements will be processed:
+HTML and how Rimu definition and option elements will be processed:
 ..
 .light-background
   0 => Render HTML (default behavior).
@@ -153,6 +153,7 @@ Block](#line-blocks) element with the following syntax:
 
 - `option-name` is `safeMode`, `htmlReplacement` or `reset`.
 - The `option-value` is a valid option value.
+- Macro invocations in `option-value` are expanded.
 - An API Option element must start at the left margin and must not
   extend beyond the end of the line.
 - The option is applied to Rimu markup that follows the option element.
@@ -592,6 +593,8 @@ Definition syntax:
   extend beyond the end of the line.
 - Quote definitions are not processed if the [SafeMode API
   option](#api-options) is non-zero.
+- Macro invocations are expanded inside the `open-tags` and
+  `close-tags`.
 
 The following quote definition envelopes quoted text with an HTML
 superscript tag:
@@ -762,6 +765,7 @@ Syntax:
   [safeMode API option](#api-options) is set.
 - `block-options` is used to control the processing of the succeeding
   block element contents.
+- Macro invocations in _Block Attributes_ are expanded.
 
 {block-attributes-example} = '.error "color:red"
 Lorum ipsum.
@@ -830,6 +834,7 @@ Definition syntax:
   not extend beyond the end of the line.
 - Delimited Block definitions are not processed if the [safeMode API
   option](#api-options) is non-zero.
+- Macro invocations in the definition are expanded.
 
 The following example generates Code blocks with a `no-highlight`
 class attribute:
@@ -875,8 +880,8 @@ Definition syntax:
 - A macro definition must start at the left margin.
 - Macro definition lines ending with a single-quote character can be
   continued to the next line by appending a backslash character.
-- Macros are expanded in macro definitions at the point they are defined not
-  where they are invoked.
+- Macro definition values can contain macro invocations. These are
+  expanded when the definition is processed (not when it is invoked).
 - Macro expansion can be disabled in multi-line macro definitions
   using a preceding [Block Attributes](#block-attributes) `-macros`
   option.
@@ -937,14 +942,14 @@ Invocation syntax:
 {info} = '<span class="label label-info">$1</span>'\
 {heads-up} = '{info|Heads up!}'\
 {note} = '{info|Note} <mark>$1</mark>'\
-{playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'\
+{rimu-playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'\
 {sidebar} = '#### $1
 ."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'\
 
 // Use the macros.
 {sidebar|Fun with Macros}
 ..
-{heads-up} See the {playground} for documentation and hands-on
+{heads-up} See the {rimu-playground} for documentation and hands-on
 experimentation.
 
 {note|This document is not yet finished.}
@@ -978,12 +983,12 @@ command](#rimuc-command).
 
 .#rimuc-command
 ## `rimuc` command
-_rimuc_ is a Node.js command-line tool that converts Rimu source to
-HTML. Run `rimuc --help` to view the `rimuc` manpage:
+_rimuc_ is a Node.js command-line tool that converts Rimu source (or
+[Rimu compatible Markdown]({tips}#markdown-compatible)) to HTML. Run
+`rimuc --help` to view the `rimuc` manpage:
 
 .light-background
 ``
-
 NAME
   rimuc - convert Rimu source to HTML
 
@@ -1039,15 +1044,16 @@ OPTIONS
     Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
     Defaults to '<mark>replaced HTML</mark>'.
 
-  --theme THEME, --title TITLE, --highlightjs,
-  --mathjax, --toc, --dropdown-toc, --section-numbers
+  --theme THEME, --title TITLE, --highlightjs, --mathjax,
+  --sidebar-toc, --dropdown-toc, --custom-toc, --section-numbers
     Shortcuts for the following prepended macro definitions:
     --prepend "{--theme}='THEME'"
     --prepend "{--title}='TITLE'"
     --prepend "{--highlightjs}='true'"
     --prepend "{--mathjax}='true'"
-    --prepend "{--toc}='true'"
+    --prepend "{--sidebar-toc}='true'"
     --prepend "{--dropdown-toc}='true'"
+    --prepend "{--custom-toc}='true'"
     --prepend "{--section-numbers}='true'"
 
 STYLING MACROS AND CLASSES
@@ -1062,10 +1068,12 @@ STYLING MACROS AND CLASSES
   --highlightjs      Set to non-blank value to enable syntax
                      highlighting with Highlight.js.
   --mathjax          Set to a non-blank value to enable MathJax.
-  --toc              Set to a non-blank value to generate a
+  --sidebar-toc      Set to a non-blank value to generate a
                      table of contents sidebar (1).
   --dropdown-toc     Set to a non-blank value to generate a
                      table of contents dropdown menu (1).
+  --custom-toc       Set to a non-blank value if a custom table
+                     of contents is used (1).
   --section-numbers  Apply h2 and h3 section numbering (1).
   ______________________________________________________________
   (1) Must be defined prior to header (--prepend or .rimurc).
@@ -1096,10 +1104,11 @@ Example usage:
 
   echo 'Hello *Rimu*!' | rimuc
 
-2. Generate a styled HTML Web page including table of contents
-   and code syntax highlighting styling macro shortcut options:
+2. Generate a styled HTML Web page including a sidebar table of
+   contents and code syntax highlighting styling macro shortcut
+   options:
 
-  rimuc --styled --toc --highlightjs README.md
+  rimuc --styled --sidebar-toc --highlightjs README.md
 
 3. Prefix a custom macro definition:
 
@@ -1121,39 +1130,97 @@ files performs the following functions:
   and [Rimu Tips]({tips})).
 - Supports named [themes]({tips}#themes). There are two built-in
   themes: `default` (the default theme) and `graystone`.
-- If the `--highlightjs` macro is defined
+- If the `--highlightjs` macro is non-blank
   [Highlightjs](https://highlightjs.org/) is included.
-- If the `--mathjax` macro is defined
+- If the `--mathjax` macro is non-blank
   [MathJax](https://www.mathjax.org/) is included.
-- If the `--toc` macro is defined JavaScript code is included which
-  generates a Table of Contents from top level `h1`, `h2` and `h3`
-  HTML header elements at load-time.
-- Includes a JavaScript slug generator which synthesizes slugs at
-  load-time and assigns them to the `id` attributes of top level `h1`,
-  `h2` and `h3` HTML header elements that do not already have an `id`.
-  Slug ids are generated from the header title as follows:
-..
-  . Convert the title to lowercase.
-  . Replace spaces with a dash.
-  . Remove characters that are not alphanumeric, dashes or
-    underscores. If no characters remain the slug is set to `x`.
-  . If an existing element has a matching id then the slug is
-    successively postfixed with `-2`, `-3`... until a unique id is
-    found.
+- Includes a JavaScript slug generator to synthesize header `id`
+  attributes.
+- Supports [table of contents generation](#toc-generation).
 
-For example a header with the title `The End!` is assigned an `id`
-attribute value `the-end`.
+All features enabled by the `--styled` option are implemented with
+Rimu source code in the header and footer files -- they are not
+hard-wired into Rimu -- and serve to illustrate the power and
+flexibility of the Rimu markup language.
+
+### Slug generation
+The `--styled` option includes a JavaScript slug generator to
+synthesize header identifier slugs at load-time for top level `h1`,
+`h2` and `h3` HTML header elements that do not already have an
+explicit `id` attribute.  Slugs are generated from header titles as
+follows:
+
+. Convert the title to lowercase.
+. Replace spaces with a dash.
+. Remove characters that are not alphanumeric, dashes or
+  underscores. If no characters remain the slug is set to `x`.
+. If an existing element has a matching id then the slug is
+  successively postfixed with `-2`, `-3`... until a unique id is
+  found.
+
+For example a header with the title `The End!` will be assigned an
+`id` attribute value `the-end`.
 
 NOTE: Synthesised slugs are generated dynamically when the page is
 rendered and are not visible from other documents -- if you want to
 link the location from another document you will need to create an
-explicit anchor using a [Block Attribute](#block-attributes) _id_.
-..
+explicit anchor using a [Block Attribute](#block-attributes) _id_. For
+example:
 
-All the features enabled by the `--styled` option are implemented by
-Rimu source code in the header and footer files -- they are not
-hard-wired into Rimu -- and serve to illustrate of the power and
-flexibility of the Rimu markup language.
+  .#section1
+  ## This section header has attribute `id="section1"`
+
+.#toc-generation
+### Table of contents generation
+In conjunction with the {rimuc} `--styled` option, the `--sidebar-toc`
+and `--dropdown-toc` options will generate sidebar-styled and
+dropdown-styled table of contents (TOC) respectively. The
+`--custom-toc` option allows the user to include a custom TOC.
+
+If the `--sidebar-toc` macro or the `--dropdown-toc` macro is
+non-blank then JavaScript and HTML is included in the output to
+generate (at load time) a TOC from the top level `h1`, `h2` and `h3`
+HTML header elements.  This page was compiled using the
+`--sidebar-toc` option, the [Rimu Playground]({playground}) page has
+been compiled using the `--dropdown-toc` option.
+
+Use the `no-auto-toc` CSS class attribute to exclude a section header
+from the TOC, for example:
+
+  .no-auto-toc
+  ## This header does not appear in the TOC
+
+### Custom Table of contents
+The `--custom-toc` option can be used in conjunction with the
+`--sidebar-toc` and `--dropdown-toc` options. The `--custom-toc`
+option inhibits the generation of an HTML TOC container.  It is up to
+the user to include a custom HTML TOC (Rimu documentation has a custom
+TOC).
+
+Here is the default sidebar TOC container. Use it as a template to
+build a custom sidebar TOC:
+
+``
+<div id="toc" class="no-print">
+  <div id="auto-toc"></div>
+</div>
+``
+
+Here is the default dropdown TOC container (including "hamburger" TOC
+button). Use it as a template to build a custom dropdown TOC:
+
+``
+<div id="toc-button" onclick="toggleToc()" class="no-print">&#8801;</div>
+<div id="toc" class="no-print">
+  <div id="auto-toc"></div>
+</div>
+``
+
+- Include your TOC entries (or any custom elements) anywhere inside
+  the `id="toc"` div element.
+- The auto-generated TOC is injected into the `<div
+  id="auto-toc"></div>` element -- omit this `div` to inhibit all
+  auto-generated TOC entries.
 
 
 .#vim-syntax-file

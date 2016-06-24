@@ -226,7 +226,7 @@
     border-right: 1px solid #cccccc;
     overflow-y: auto;
     overflow-x: hidden;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.35);
   }
 </style>
 

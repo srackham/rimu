@@ -184,8 +184,8 @@ Alternatively you could also put macro definitions in a
 separate file and specify it as the first Rimu source file in the
 {rimuc} command.
 
-The following example sets the HTML _title_ in the `kotlin-notes.html`
-output document:
+The following example sets the {rimuc} `--title` macro value, this
+sets the HTML _title_ in the `kotlin-notes.html` output document:
 
   rimuc --styled --prepend "{--title}='Kotlin Notes'" kotlin-notes.rmu
 
@@ -194,8 +194,8 @@ use-case:
 
   rimuc --styled --title "Kotlin Notes" kotlin-notes.rmu
 
-Other {rimuc} macro definition shortcut options include
-`--highlightjs`, `--mathjax`, `--toc`, `--section-numbers`.
+Other macro shortcut options can be found in the {rimuc}
+documentation.
 
 
 ## The Rimu markup looks correct but the generated HTML is wrong
@@ -801,14 +801,13 @@ Three:: Item three.
 
 
 ## Section numbering
-If you define the `--section-numbers` macro the  {rimuc} tool
-`--styled` option will emit CSS to automatically number _h2_ sections
-and _h3_ sub-sections. You need to define the `--section-numbers`
-macro, either on the command-line using the {rimuc} command
-`--section-numbers` option, or globally in your `.rimurc` file. For
-example:
+Use the {rimuc} `--section-numbers` option with the `--styled` option
+to number top level _h2_ and _h3_ sub-sections. For example:
 
   rimuc --styled --section-numbers mydoc.rmu
+
+The  {rimuc} `--section-numbers` option is a shortcut for
+`{--section-numbers} = 'yes'`.
 
 
 ## Nested Fenced Blocks
