@@ -49,6 +49,7 @@ let defs: Definition[] = [
       if (options.isSafeModeNz()) {
         return ''   // Skip if a safe mode is set.
       }
+      match[2] = utils.replaceInline(match[2], {macros: true})
       delimitedBlocks.setDefinition(match[1], match[2])
       return ''
     }

@@ -922,9 +922,9 @@ test('blocks', function(t) {
 
   // Delimited Block definitions.
   test_document(
-    '|paragraph| = \'<p class="normal">|</p>\'\nfoobar\n\n.test1 test2\nfoobar',
+    '{ipsum}=\'normal\'\n|paragraph| = \'<p class="{ipsum}">|</p>\'\nfoobar\n\n.test1 test2\nfoobar',
     '<p class="normal">foobar</p>\n<p class="test1 test2 normal">foobar</p>',
-    'update HTML tags and test class injection');
+    'update HTML tags, test class injection and macro expansion');
   test_document(
     "{ipsum}=\'\'\n|paragraph| = '<p>|</p>'\n_Lorum_ & {ipsum}.\n\n|paragraph| = '-macros'\n\n_Lorum_ & {ipsum}.\n\n|paragraph| = '<p class=\"normal\">|</p> -spans +macros'\n\n_Lorum_ & {ipsum}.",
     '<p><em>Lorum</em> &amp; .</p>\n<p><em>Lorum</em> &amp; {ipsum}.</p>\n<p class="normal">_Lorum_ &amp; .</p>',
