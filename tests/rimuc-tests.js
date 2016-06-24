@@ -17,7 +17,7 @@ function rimuc_equal(t, source, expected, options, message) {
 }
 
 test('rimuc', function(t) {
-  t.plan(15);
+  t.plan(18);
 
   rimuc_equal(t, '*Hello World!*', '<p><em>Hello World!</em></p>', '',
     'rimuc basic test');
@@ -64,7 +64,19 @@ test('rimuc', function(t) {
   });
 
   rimuc_exec('', '--styled --toc', function(actual) {
-    t.ok(actual.indexOf('<div id="toc" class="no-print"></div>') > 0, 'rimuc --toc')
+    t.ok(actual.indexOf('<div id="toc"') > 0, 'rimuc --toc (DEPRECATED)')
+  });
+
+  rimuc_exec('', '--styled --sidebar-toc', function(actual) {
+    t.ok(actual.indexOf('<div id="toc"') > 0, 'rimuc --sidebar-toc')
+  });
+
+  rimuc_exec('', '--styled --dropdown-toc', function(actual) {
+    t.ok(actual.indexOf('<div id="toc-button"') > 0, 'rimuc --dropdown-toc')
+  });
+
+  rimuc_exec('', '--styled --sidebar-toc --custom-toc', function(actual) {
+    t.ok(actual.indexOf('<div id="toc"') === -1, 'rimuc --sidebar-toc --custom-toc')
   });
 
   rimuc_exec('', '--styled --section-numbers', function(actual) {
