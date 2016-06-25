@@ -244,8 +244,8 @@ for (let infile of files) {
   }
   let ext = infile.split('.').pop()
   if (ext === 'html') {
-    html += source
-    break
+    html += source + '\n'
+    continue
   }
   // rimurc processed with default safeMode.
   options.safeMode = infile === rimurc ? 0 : safeMode
