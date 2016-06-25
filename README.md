@@ -15,7 +15,7 @@ into the Rimu markup syntax):
 
 Plus:
 
-- A large subset of Rimu syntax is [Markdown
+- A subset of Rimu syntax is [Markdown
   compatible](http://srackham.github.io/rimu/tips.html#markdown-compatible).
 - Rimu is fast (same speed as _marked 0.3.2_ compiling Rimu `README.md`).
 

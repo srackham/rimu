@@ -156,11 +156,12 @@ The Rimu _README_ uses this subset for compatibility with _GitHub_ and
 _npmjs.org_ README formats.
 
 
+.#rimuc-html
 ## Processing HTML and Markdown with the `rimuc` command
 {rimuc} passes the contents of input files with a `.html` extension
 directly to the output.  This allows you to generate styled HTML5
-documents from raw HTML files (HTML with no `<html>`, `<head>`, or
-`<body>` tags) or from non Rimu compatible Markdown files, using the
+documents from raw HTML files (HTML with no `<html>`, `<head>` or
+`<body>` tags), or from non Rimu compatible Markdown files, using the
 {rimuc} `--styled` option. Examples:
 
 Raw HTML file:: Convert `mydoc.html` to styled HTML5 document with

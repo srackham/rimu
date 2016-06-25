@@ -3,6 +3,12 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
+## Version 8.0.1 (2016-06-26)
+- **FIXED**: `rimuc`: If a `.html` input file was encountered then
+  all succeeding input files were ignored.
+- Documentation updates.
+
+
 ## Version 8.0.0 (2016-06-25)
 - Renamed `rimuc` `--toc` option to `--sidebar-toc`. The `--toc`
   option has been retained for backward compatibility.
