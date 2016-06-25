@@ -299,6 +299,214 @@ into the Rimu markup syntax):</p>
 </li><li>A <a href="https://github.com/srackham/rimu-chrome-extension.git">Chrome browser
   extension</a>
   for rendering Rimu Markup files directly in the browser.
+</li></ul><h2 id="rimuc-command"><code>rimuc</code> command</h2>
+<p><em>rimuc</em> is a Node.js command-line tool that converts Rimu source (or
+<a href="tips.html#markdown-compatible">Rimu compatible Markdown</a>) to HTML.</p>
+<p>The <code>--styled</code> option outputs an HTML5 conformant document containing
+the generated HTML, themed styling, an optional table of contents and
+optional code syntax highlighting.</p>
+<p>Run <code>rimuc --help</code> to view the <code>rimuc</code> manpage:</p>
+<pre class="light-background no-highlight"><code>NAME
+  rimuc - convert Rimu source to HTML
+
+SYNOPSIS
+  rimuc [OPTIONS...] [FILES...]
+
+DESCRIPTION
+  Reads Rimu source markup from stdin, converts them to HTML
+  then writes the HTML to stdout. If FILES are specified
+  the Rimu source is read from FILES. The contents of files
+  with an .html extension are passed directly to the output.
+
+  If a file named .rimurc exists in the user's home directory
+  then its contents is processed (with --safe-mode 0) after
+  --prepend sources but before any other inputs.
+  This behavior can be disabled with the --no-rimurc option.
+
+OPTIONS
+  -h, --help
+    Display help message.
+
+  -l, --lint
+    Check the Rimu source for inconsistencies and errors.
+
+  -o, --output OUTFILE
+    Write output to file OUTFILE instead of stdout.
+
+  -p, --prepend SOURCE
+    Process the SOURCE text before other inputs.
+    Rendered with --safe-mode 0.
+
+  --no-rimurc
+    Do not process .rimurc from the user's home directory.
+
+  -s, --styled
+    Include HTML header and footer and Bootstrap CSS styling in
+    output. If only one source file is specified and the --output option
+    is not used then the output is written to a same-named file with
+    an .html extension.
+
+  --safe-mode NUMBER
+    Non-zero safe modes ignore: Definition elements; API option elements;
+    HTML attributes in Block Attributes elements.
+    Also specifies how to process HTML elements:
+    --safe-mode 0 renders HTML (default).
+    --safe-mode 1 ignores HTML.
+    --safe-mode 2 replaces HTML with --html-replacement option value.
+    --safe-mode 3 renders HTML as text.
+    Add 4 to --safe-mode to ignore Block Attribute elements.
+    Add 8 to --safe-mode to allow Macro Definitions.
+
+  --html-replacement TEXT
+    Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
+    Defaults to '&lt;mark&gt;replaced HTML&lt;/mark&gt;'.
+
+  --theme THEME, --title TITLE, --highlightjs, --mathjax,
+  --sidebar-toc, --dropdown-toc, --custom-toc, --section-numbers
+    Shortcuts for the following prepended macro definitions:
+    --prepend "{--theme}='THEME'"
+    --prepend "{--title}='TITLE'"
+    --prepend "{--highlightjs}='true'"
+    --prepend "{--mathjax}='true'"
+    --prepend "{--sidebar-toc}='true'"
+    --prepend "{--dropdown-toc}='true'"
+    --prepend "{--custom-toc}='true'"
+    --prepend "{--section-numbers}='true'"
+
+STYLING MACROS AND CLASSES
+  The following macros and CSS classes are available when the
+  --styled option is used:
+
+  Macro name         Description
+  ______________________________________________________________
+  --theme            Set styling themes.
+                     Theme names: default, graystone.
+  --title            HTML document title (1).
+  --highlightjs      Set to non-blank value to enable syntax
+                     highlighting with Highlight.js.
+  --mathjax          Set to a non-blank value to enable MathJax.
+  --sidebar-toc      Set to a non-blank value to generate a
+                     table of contents sidebar (1).
+  --dropdown-toc     Set to a non-blank value to generate a
+                     table of contents dropdown menu (1).
+  --custom-toc       Set to a non-blank value if a custom table
+                     of contents is used (1).
+  --section-numbers  Apply h2 and h3 section numbering (1).
+  ______________________________________________________________
+  (1) Must be defined prior to header (--prepend or .rimurc).
+
+  CSS class        Description
+  ______________________________________________________________
+  verse            Verse format (paragraphs, division blocks).
+  sidebar          Sidebar format (paragraphs, division blocks).
+  cite             Quote and verse attribution.
+  align-left       Text alignment left.
+  align-center     Text alignment center.
+  align-right      Text alignment right.
+  no-print         Do not print.
+  line-breaks      Honor line breaks in source text.
+  page-break       Force page break before the element.
+  no-page-break    Avoid page break inside the element.
+  dl-numbered      Number labeled list items.
+  dl-horizontal    Format labeled lists horizontally.
+  dl-counter       Prepend dl item counter to element content.
+  ol-counter       Prepend ol item counter to element content.
+  ul-counter       Prepend ul item counter to element content.
+  ______________________________________________________________</code></pre>
+<p>Example usage:</p>
+<ol><li>Use <em>rimuc</em> as a filter:
+<pre class="no-highlight"><code>echo 'Hello *Rimu*!' | rimuc</code></pre>
+</li><li>Generate a styled HTML Web page including a sidebar table of
+   contents and code syntax highlighting styling macro shortcut
+   options:
+<pre class="no-highlight"><code>rimuc --styled --sidebar-toc --highlightjs reference.rmu</code></pre>
+</li><li>Prefix a custom macro definition:
+<pre class="no-highlight"><code>rimuc --prepend "{annotations}='yes'" showcase.rmu</code></pre>
+</li><li>Compile multiple source files to single output file:
+<pre class="no-highlight"><code>rimuc -o book.html frontmatter.rmu chapter*.rmu backmatter.rmu</code></pre>
+</li></ol><h3><code>--styled</code> option</h3>
+<p>The <code>--styled</code> option prepends a header file and appends a footer file
+to the list of source files. The Rimu markup in the header and footer
+files performs the following functions:</p>
+<ul><li>Outputs an HTML5 document.
+</li><li>Supports <a href="#toc-generation">table of contents generation</a>.
+</li><li>Supports named <a href="tips.html#themes">themes</a>. There are two built-in
+  themes: <code>default</code> (the default theme) and <code>graystone</code>.
+</li><li>Includes <a href="http://getbootstrap.com/2.3.2/">Bootstrap</a> for styling.
+</li><li>Includes additional styles for verses, sidebars, text alignment,
+  page break control and section numbering (see <code>rimuc --help</code> command
+  and <a href="tips.html">Rimu Tips</a>).
+</li><li>If the <code>--highlightjs</code> macro is non-blank
+  <a href="https://highlightjs.org/">Highlightjs</a> is included.
+</li><li>If the <code>--mathjax</code> macro is non-blank
+  <a href="https://www.mathjax.org/">MathJax</a> is included.
+</li><li>Includes a JavaScript slug generator to synthesize header <code>id</code>
+  attributes.
+</li><li>Can be used to <a href="tips.html#rimuc-html">convert raw HTML and arbitrary Markdown
+  files</a>.
+</li></ul><p>All features enabled by the <code>--styled</code> option are implemented with
+Rimu source code in the header and footer files &mdash; they are not
+hard-wired into Rimu &mdash; and serve to illustrate the power and
+flexibility of the Rimu markup language.</p>
+<h3>Slug generation</h3>
+<p>The <code>--styled</code> option includes a JavaScript slug generator to
+synthesize header identifier slugs at load-time for top level <code>h1</code>,
+<code>h2</code> and <code>h3</code> HTML header elements that do not already have an
+explicit <code>id</code> attribute.  Slugs are generated from header titles as
+follows:</p>
+<ol><li>Convert the title to lowercase.
+</li><li>Replace spaces with a dash.
+</li><li>Remove characters that are not alphanumeric, dashes or
+  underscores. If no characters remain the slug is set to <code>x</code>.
+</li><li>If an existing element has a matching id then the slug is
+  successively postfixed with <code>-2</code>, <code>-3</code>&hellip; until a unique id is
+  found.
+</li></ol><p>For example a header with the title <code>The End!</code> will be assigned an
+<code>id</code> attribute value <code>the-end</code>.</p>
+<p><b>NOTE</b>: Synthesised slugs are generated dynamically when the page is
+rendered and are not visible from other documents &mdash; if you want to
+link the location from another document you will need to create an
+explicit anchor using a <a href="#block-attributes">Block Attribute</a> <em>id</em>. For
+example:</p>
+<pre class="no-highlight"><code>.#section1
+## This section header has attribute `id="section1"`</code></pre>
+<h3 id="toc-generation">Table of contents generation</h3>
+<p>In conjunction with the <a href="reference.html#rimuc-command">rimuc</a> <code>--styled</code> option, the <code>--sidebar-toc</code>
+and <code>--dropdown-toc</code> options will generate sidebar-styled and
+dropdown-styled table of contents (TOC) respectively. The
+<code>--custom-toc</code> option allows the user to include a custom TOC.</p>
+<p>If the <code>--sidebar-toc</code> macro or the <code>--dropdown-toc</code> macro is
+non-blank then JavaScript and HTML is included in the output to
+generate (at load time) a TOC from the top level <code>h1</code>, <code>h2</code> and <code>h3</code>
+HTML header elements.  This page was compiled using the
+<code>--sidebar-toc</code> option, the <a href="rimuplayground.html">Rimu Playground</a> page has
+been compiled using the <code>--dropdown-toc</code> option.</p>
+<p>Use the <code>no-auto-toc</code> CSS class attribute to exclude a section header
+from the TOC, for example:</p>
+<pre class="no-highlight"><code>.no-auto-toc
+## This header does not appear in the TOC</code></pre>
+<h3>Custom Table of contents</h3>
+<p>The <code>--custom-toc</code> option can be used in conjunction with the
+<code>--sidebar-toc</code> and <code>--dropdown-toc</code> options. The <code>--custom-toc</code>
+option inhibits the generation of an HTML TOC container.  It is up to
+the user to include a custom HTML TOC (Rimu documentation has a custom
+TOC).</p>
+<p>Here is the default sidebar TOC container. Use it as a template to
+build a custom sidebar TOC:</p>
+<pre class="no-highlight"><code>&lt;div id="toc" class="no-print"&gt;
+  &lt;div id="auto-toc"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<p>Here is the default dropdown TOC container (including &ldquo;hamburger&rdquo; TOC
+button). Use it as a template to build a custom dropdown TOC:</p>
+<pre class="no-highlight"><code>&lt;div id="toc-button" onclick="toggleToc()" class="no-print"&gt;&amp;#8801;&lt;/div&gt;
+&lt;div id="toc" class="no-print"&gt;
+  &lt;div id="auto-toc"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<ul><li>Include your TOC entries (or any custom elements) anywhere inside
+  the <code>id="toc"</code> div element.
+</li><li>The auto-generated TOC is injected into the <code>&lt;div
+  id="auto-toc"&gt;&lt;/div&gt;</code> element &mdash; omit this <code>div</code> to inhibit all
+  auto-generated TOC entries.
 </li></ul><h2 id="api">API</h2>
 <p>Rimu has just one API to convert Rimu markup to HTML:</p>
 <pre class="no-highlight"><code>render(source [, options])</code></pre>
@@ -643,6 +851,7 @@ Scelerisque feugiat massa alias.</p></div>
 <ul><li>The opening tag of an HTML block element must start at the left
   margin.
 </li><li>An HTML block element is terminated with a blank line.
+</li><li>Macro invocations in HTML elements are expanded.
 </li><li>HTML tags can be escaped with a backslash character prefix.
 </li><li>HTML elements can be excluded from the output using the API
   <a href="#api-options">safeMode option</a>.
@@ -1380,210 +1589,7 @@ experimentation.</p>
 <p>Macros with names starting with two hyphen characters are <em>Reserved</em>
 macros, a number of reserved macros are defined by the <a href="#rimuc-command">rimuc
 command</a>.</p>
-<h2 id="rimuc-command"><code>rimuc</code> command</h2>
-<p><em>rimuc</em> is a Node.js command-line tool that converts Rimu source (or
-<a href="tips.html#markdown-compatible">Rimu compatible Markdown</a>) to HTML. Run
-<code>rimuc --help</code> to view the <code>rimuc</code> manpage:</p>
-<pre class="light-background no-highlight"><code>NAME
-  rimuc - convert Rimu source to HTML
-
-SYNOPSIS
-  rimuc [OPTIONS...] [FILES...]
-
-DESCRIPTION
-  Reads Rimu source markup from stdin, converts them to HTML
-  then writes the HTML to stdout. If FILES are specified
-  the Rimu source is read from FILES. The contents of files
-  with an .html extension are passed directly to the output.
-
-  If a file named .rimurc exists in the user's home directory
-  then its contents is processed (with --safe-mode 0) after
-  --prepend sources but before any other inputs.
-  This behavior can be disabled with the --no-rimurc option.
-
-OPTIONS
-  -h, --help
-    Display help message.
-
-  -l, --lint
-    Check the Rimu source for inconsistencies and errors.
-
-  -o, --output OUTFILE
-    Write output to file OUTFILE instead of stdout.
-
-  -p, --prepend SOURCE
-    Process the SOURCE text before other inputs.
-    Rendered with --safe-mode 0.
-
-  --no-rimurc
-    Do not process .rimurc from the user's home directory.
-
-  -s, --styled
-    Include HTML header and footer and Bootstrap CSS styling in
-    output. If only one source file is specified and the --output option
-    is not used then the output is written to a same-named file with
-    an .html extension.
-
-  --safe-mode NUMBER
-    Non-zero safe modes ignore: Definition elements; API option elements;
-    HTML attributes in Block Attributes elements.
-    Also specifies how to process HTML elements:
-    --safe-mode 0 renders HTML (default).
-    --safe-mode 1 ignores HTML.
-    --safe-mode 2 replaces HTML with --html-replacement option value.
-    --safe-mode 3 renders HTML as text.
-    Add 4 to --safe-mode to ignore Block Attribute elements.
-    Add 8 to --safe-mode to allow Macro Definitions.
-
-  --html-replacement TEXT
-    Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
-    Defaults to '&lt;mark&gt;replaced HTML&lt;/mark&gt;'.
-
-  --theme THEME, --title TITLE, --highlightjs, --mathjax,
-  --sidebar-toc, --dropdown-toc, --custom-toc, --section-numbers
-    Shortcuts for the following prepended macro definitions:
-    --prepend "{--theme}='THEME'"
-    --prepend "{--title}='TITLE'"
-    --prepend "{--highlightjs}='true'"
-    --prepend "{--mathjax}='true'"
-    --prepend "{--sidebar-toc}='true'"
-    --prepend "{--dropdown-toc}='true'"
-    --prepend "{--custom-toc}='true'"
-    --prepend "{--section-numbers}='true'"
-
-STYLING MACROS AND CLASSES
-  The following macros and CSS classes are available when the
-  --styled option is used:
-
-  Macro name         Description
-  ______________________________________________________________
-  --theme            Set styling themes.
-                     Theme names: default, graystone.
-  --title            HTML document title (1).
-  --highlightjs      Set to non-blank value to enable syntax
-                     highlighting with Highlight.js.
-  --mathjax          Set to a non-blank value to enable MathJax.
-  --sidebar-toc      Set to a non-blank value to generate a
-                     table of contents sidebar (1).
-  --dropdown-toc     Set to a non-blank value to generate a
-                     table of contents dropdown menu (1).
-  --custom-toc       Set to a non-blank value if a custom table
-                     of contents is used (1).
-  --section-numbers  Apply h2 and h3 section numbering (1).
-  ______________________________________________________________
-  (1) Must be defined prior to header (--prepend or .rimurc).
-
-  CSS class        Description
-  ______________________________________________________________
-  verse            Verse format (paragraphs, division blocks).
-  sidebar          Sidebar format (paragraphs, division blocks).
-  cite             Quote and verse attribution.
-  align-left       Text alignment left.
-  align-center     Text alignment center.
-  align-right      Text alignment right.
-  no-print         Do not print.
-  line-breaks      Honor line breaks in source text.
-  page-break       Force page break before the element.
-  no-page-break    Avoid page break inside the element.
-  dl-numbered      Number labeled list items.
-  dl-horizontal    Format labeled lists horizontally.
-  dl-counter       Prepend dl item counter to element content.
-  ol-counter       Prepend ol item counter to element content.
-  ul-counter       Prepend ul item counter to element content.
-  ______________________________________________________________</code></pre>
-<p>Example usage:</p>
-<ol><li>Use <em>rimuc</em> as a filter:
-<pre class="no-highlight"><code>echo 'Hello *Rimu*!' | rimuc</code></pre>
-</li><li>Generate a styled HTML Web page including a sidebar table of
-   contents and code syntax highlighting styling macro shortcut
-   options:
-<pre class="no-highlight"><code>rimuc --styled --sidebar-toc --highlightjs README.md</code></pre>
-</li><li>Prefix a custom macro definition:
-<pre class="no-highlight"><code>rimuc --prepend "{annotations}='yes'" showcase.rmu</code></pre>
-</li><li>Compile multiple source files to single output file:
-<pre class="no-highlight"><code>rimuc -o book.html frontmatter.rmu chapter*.rmu backmatter.rmu</code></pre>
-</li></ol><h3><code>--styled</code> option</h3>
-<p>The <code>--styled</code> option prepends a header file and appends a footer file
-to the list of source files. The Rimu markup in the header and footer
-files performs the following functions:</p>
-<ul><li>Ensures the output document is a valid HTML5 document.
-</li><li>Includes <a href="http://getbootstrap.com/2.3.2/">Bootstrap</a> for styling.
-</li><li>Includes additional styles for verses, sidebars, text alignment,
-  page break control and section numbering (see <code>rimuc --help</code> command
-  and <a href="tips.html">Rimu Tips</a>).
-</li><li>Supports named <a href="tips.html#themes">themes</a>. There are two built-in
-  themes: <code>default</code> (the default theme) and <code>graystone</code>.
-</li><li>If the <code>--highlightjs</code> macro is non-blank
-  <a href="https://highlightjs.org/">Highlightjs</a> is included.
-</li><li>If the <code>--mathjax</code> macro is non-blank
-  <a href="https://www.mathjax.org/">MathJax</a> is included.
-</li><li>Includes a JavaScript slug generator to synthesize header <code>id</code>
-  attributes.
-</li><li>Supports <a href="#toc-generation">table of contents generation</a>.
-</li></ul><p>All features enabled by the <code>--styled</code> option are implemented with
-Rimu source code in the header and footer files &mdash; they are not
-hard-wired into Rimu &mdash; and serve to illustrate the power and
-flexibility of the Rimu markup language.</p>
-<h3>Slug generation</h3>
-<p>The <code>--styled</code> option includes a JavaScript slug generator to
-synthesize header identifier slugs at load-time for top level <code>h1</code>,
-<code>h2</code> and <code>h3</code> HTML header elements that do not already have an
-explicit <code>id</code> attribute.  Slugs are generated from header titles as
-follows:</p>
-<ol><li>Convert the title to lowercase.
-</li><li>Replace spaces with a dash.
-</li><li>Remove characters that are not alphanumeric, dashes or
-  underscores. If no characters remain the slug is set to <code>x</code>.
-</li><li>If an existing element has a matching id then the slug is
-  successively postfixed with <code>-2</code>, <code>-3</code>&hellip; until a unique id is
-  found.
-</li></ol><p>For example a header with the title <code>The End!</code> will be assigned an
-<code>id</code> attribute value <code>the-end</code>.</p>
-<p><b>NOTE</b>: Synthesised slugs are generated dynamically when the page is
-rendered and are not visible from other documents &mdash; if you want to
-link the location from another document you will need to create an
-explicit anchor using a <a href="#block-attributes">Block Attribute</a> <em>id</em>. For
-example:</p>
-<pre class="no-highlight"><code>.#section1
-## This section header has attribute `id="section1"`</code></pre>
-<h3 id="toc-generation">Table of contents generation</h3>
-<p>In conjunction with the <a href="reference.html#rimuc-command">rimuc</a> <code>--styled</code> option, the <code>--sidebar-toc</code>
-and <code>--dropdown-toc</code> options will generate sidebar-styled and
-dropdown-styled table of contents (TOC) respectively. The
-<code>--custom-toc</code> option allows the user to include a custom TOC.</p>
-<p>If the <code>--sidebar-toc</code> macro or the <code>--dropdown-toc</code> macro is
-non-blank then JavaScript and HTML is included in the output to
-generate (at load time) a TOC from the top level <code>h1</code>, <code>h2</code> and <code>h3</code>
-HTML header elements.  This page was compiled using the
-<code>--sidebar-toc</code> option, the <a href="rimuplayground.html">Rimu Playground</a> page has
-been compiled using the <code>--dropdown-toc</code> option.</p>
-<p>Use the <code>no-auto-toc</code> CSS class attribute to exclude a section header
-from the TOC, for example:</p>
-<pre class="no-highlight"><code>.no-auto-toc
-## This header does not appear in the TOC</code></pre>
-<h3>Custom Table of contents</h3>
-<p>The <code>--custom-toc</code> option can be used in conjunction with the
-<code>--sidebar-toc</code> and <code>--dropdown-toc</code> options. The <code>--custom-toc</code>
-option inhibits the generation of an HTML TOC container.  It is up to
-the user to include a custom HTML TOC (Rimu documentation has a custom
-TOC).</p>
-<p>Here is the default sidebar TOC container. Use it as a template to
-build a custom sidebar TOC:</p>
-<pre class="no-highlight"><code>&lt;div id="toc" class="no-print"&gt;
-  &lt;div id="auto-toc"&gt;&lt;/div&gt;
-&lt;/div&gt;</code></pre>
-<p>Here is the default dropdown TOC container (including &ldquo;hamburger&rdquo; TOC
-button). Use it as a template to build a custom dropdown TOC:</p>
-<pre class="no-highlight"><code>&lt;div id="toc-button" onclick="toggleToc()" class="no-print"&gt;&amp;#8801;&lt;/div&gt;
-&lt;div id="toc" class="no-print"&gt;
-  &lt;div id="auto-toc"&gt;&lt;/div&gt;
-&lt;/div&gt;</code></pre>
-<ul><li>Include your TOC entries (or any custom elements) anywhere inside
-  the <code>id="toc"</code> div element.
-</li><li>The auto-generated TOC is injected into the <code>&lt;div
-  id="auto-toc"&gt;&lt;/div&gt;</code> element &mdash; omit this <code>div</code> to inhibit all
-  auto-generated TOC entries.
-</li></ul><h2 id="vim-syntax-file">Vim syntax file</h2>
+<h2 id="vim-syntax-file">Vim syntax file</h2>
 <p>The Rimu distribution includes a
 <a href="https://github.com/srackham/rimu/blob/master/src/vim/syntax/rimu.vim">syntax
 highlighter</a> for the Vim editor. Copy <code>rimu.vim</code> to your
