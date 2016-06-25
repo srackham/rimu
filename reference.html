@@ -157,12 +157,27 @@
   .align-right {
     text-align: right;
   }
+  .line-breaks {
+    white-space:pre;
+  }
 </style>
 <style>
-  /* TOC styles */
   body {
     padding-left: 21em;
   }
+  #toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 18em;
+    border-right: 1px solid #cccccc;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.35);
+  }
+</style>
+<style>
   @media print {
     .no-print, .no-print * {
       display: none !important;
@@ -172,16 +187,7 @@
     }
   }
   #toc {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 18em;
-    padding: 1em;
-    border-right: 1px solid #cccccc;
-    overflow-y: auto;
-    overflow-x: hidden;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+    padding-left: 1em;
   }
   #toc .h1 {
     font-size: 110%;
@@ -202,18 +208,8 @@
 </style>
 </head>
 <body>
-<div id="toc" class="no-print"></div>
 <div id="contents">
 
-<style scoped>
-.breadcrumb {
-  font-weight: bold;
-  background-color: white;
-  margin: 0;
-  margin-top: 5px;
-  padding: 0;
-}
-</style>
 <style scoped>
 .example td {
   margin: 0;
@@ -259,15 +255,17 @@ function updateExample(name) {
   edit.style.height = edit.parentNode.offsetHeight + 'px';
 }
 </script>
-<ul class="breadcrumb pull-right no-print">
-  <li><a href="index.html">Home</a> <span class="divider">|</span></li>
-  <li><a href="rimuplayground.html">Playground</a> <span class="divider">|</span></li>
-  <li><a href="reference.html">Reference</a> <span class="divider">|</span></li>
-  <li><a href="tips.html">Tips</a> <span class="divider">|</span></li>
-  <li><a href="http://github.com/srackham/rimu">Github</a> <span class="divider">|</span></li>
-  <li><a href="https://npmjs.org/package/rimu">npm</a></li>
-</ul>
-
+<div id="toc" class="no-print">
+  <h2 style="font-size:1.2em; margin-top:1.0em">Links</h2>
+  <div class="h2"><a href="index.html">Rimu Home</a></div>
+  <div class="h2"><a href="rimuplayground.html">Rimu Playground</a></div>
+  <div class="h2"><a href="reference.html">Rimu Reference</a></div>
+  <div class="h2"><a href="tips.html">Rimu Tips</a></div>
+  <div class="h2"><a href="http://github.com/srackham/rimu" target="_blank">Github</a></div>
+  <div class="h2"><a href="https://npmjs.org/package/rimu" target="_blank">npm</a></div>
+  <h2 style="font-size:1.2em; margin-top:1.0em">Table of Contents</h2>
+  <div id="auto-toc"></div>
+</div>
 <h1>Rimu Reference</h1>
 <p>Rimu is a readable-text to HTML markup language inspired by AsciiDoc
 and Markdown.</p>
@@ -284,7 +282,7 @@ into the Rimu markup syntax):</p>
 </li><li>The generated HTML is compatible with all modern browsers.
 </li></ul><h2>Installing Rimu</h2>
 <p>Install Rimu as a Node.js module (includes the <code>rimu</code> library and the
-<code>rimuc</code> command-line tool):</p>
+<a href="reference.html#rimuc-command">rimuc</a> command-line tool):</p>
 <pre class="no-highlight"><code>sudo npm install -g rimu</code></pre>
 <h2>Resources</h2>
 <h3>Learning</h3>
@@ -326,7 +324,7 @@ can be found in the Rimu npm package <code>./rimu/bin</code> folder):</p>
 properties:</p>
 <dl class="dl-horizontal"><dt><code>safeMode</code></dt><dd>
 This option has a number value that controls how Rimu renders embedded
-HTML and which Rimu definition and option elements will be processed:
+HTML and how Rimu definition and option elements will be processed:
 <div><pre class="light-background no-highlight"><code>0 =&gt; Render HTML (default behavior).
 1 =&gt; Ignore HTML.
 2 =&gt; Replace HTML with the 'htmlReplacement' option string.
@@ -377,6 +375,7 @@ Block</a> element with the following syntax:</p>
 <pre class="no-highlight"><code>.option-name = 'option-value'</code></pre>
 <ul><li><code>option-name</code> is <code>safeMode</code>, <code>htmlReplacement</code> or <code>reset</code>.
 </li><li>The <code>option-value</code> is a valid option value.
+</li><li>Macro invocations in <code>option-value</code> are expanded.
 </li><li>An API Option element must start at the left margin and must not
   extend beyond the end of the line.
 </li><li>The option is applied to Rimu markup that follows the option element.
@@ -637,6 +636,8 @@ Scelerisque feugiat massa alias.
 Scelerisque feugiat massa alias.</p></div>
 </div>
 </td></tr></tbody></table>
+<p>If the rendered contents of the <em>Division Block</em> is empty and the
+<code>&lt;div&gt;</code> element has no attributes then it is not emitted.</p>
 <h2>HTML elements</h2>
 <p>Block and inline HTML elements can be mixed with Rimu markup.</p>
 <ul><li>The opening tag of an HTML block element must start at the left
@@ -978,6 +979,8 @@ definitions</em>.</p>
   extend beyond the end of the line.
 </li><li>Quote definitions are not processed if the <a href="#api-options">SafeMode API
   option</a> is non-zero.
+</li><li>Macro invocations are expanded inside the <code>open-tags</code> and
+  <code>close-tags</code>.
 </li></ul><p>The following quote definition envelopes quoted text with an HTML
 superscript tag:</p>
 <pre class="no-highlight"><code>^ = '&lt;sup&gt;|&lt;/sup&gt;'</code></pre>
@@ -1164,6 +1167,7 @@ elements.</p>
   <a href="#api-options">safeMode API option</a> is set.
 </li><li><code>block-options</code> is used to control the processing of the succeeding
   block element contents.
+</li><li>Macro invocations in <em>Block Attributes</em> are expanded.
 </li></ul><h4>Examples</h4>
 <table class="example table table-bordered">
 <tbody>
@@ -1241,6 +1245,7 @@ is set.</p>
   not extend beyond the end of the line.
 </li><li>Delimited Block definitions are not processed if the <a href="#api-options">safeMode API
   option</a> is non-zero.
+</li><li>Macro invocations in the definition are expanded.
 </li></ul><p>The following example generates Code blocks with a <code>no-highlight</code>
 class attribute:</p>
 <pre class="no-highlight"><code>|code| = '&lt;pre&gt;&lt;code class="no-highlight"&gt;|&lt;/code&gt;&lt;/pre&gt;'</code></pre>
@@ -1272,8 +1277,8 @@ name.</p>
 </li><li>A macro definition must start at the left margin.
 </li><li>Macro definition lines ending with a single-quote character can be
   continued to the next line by appending a backslash character.
-</li><li>Macros are expanded in macro definitions at the point they are defined not
-  where they are invoked.
+</li><li>Macro definition values can contain macro invocations. These are
+  expanded when the definition is processed (not when it is invoked).
 </li><li>Macro expansion can be disabled in multi-line macro definitions
   using a preceding <a href="#block-attributes">Block Attributes</a> <code>-macros</code>
   option.
@@ -1333,14 +1338,14 @@ Rimu source</td>
 {info} = '&lt;span class="label label-info"&gt;$1&lt;/span&gt;'
 {heads-up} = '{info|Heads up!}'
 {note} = '{info|Note} &lt;mark&gt;$1&lt;/mark&gt;'
-{playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'
+{rimu-playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'
 {sidebar} = '#### $1
 ."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'
 
 // Use the macros.
 {sidebar|Fun with Macros}
 ..
-{heads-up} See the {playground} for documentation and hands-on
+{heads-up} See the {rimu-playground} for documentation and hands-on
 experimentation.
 
 {note|This document is not yet finished.}
@@ -1376,10 +1381,10 @@ experimentation.</p>
 macros, a number of reserved macros are defined by the <a href="#rimuc-command">rimuc
 command</a>.</p>
 <h2 id="rimuc-command"><code>rimuc</code> command</h2>
-<p><em>rimuc</em> is a Node.js command-line tool that converts Rimu source to
-HTML. Run <code>rimuc --help</code> to view the <code>rimuc</code> manpage:</p>
-<pre class="light-background no-highlight"><code>
-NAME
+<p><em>rimuc</em> is a Node.js command-line tool that converts Rimu source (or
+<a href="tips.html#markdown-compatible">Rimu compatible Markdown</a>) to HTML. Run
+<code>rimuc --help</code> to view the <code>rimuc</code> manpage:</p>
+<pre class="light-background no-highlight"><code>NAME
   rimuc - convert Rimu source to HTML
 
 SYNOPSIS
@@ -1434,14 +1439,16 @@ OPTIONS
     Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
     Defaults to '&lt;mark&gt;replaced HTML&lt;/mark&gt;'.
 
-  --theme THEME, --title TITLE, --highlightjs,
-  --mathjax, --toc, --section-numbers
-    Shortcuts for prepended styling macro definitions:
+  --theme THEME, --title TITLE, --highlightjs, --mathjax,
+  --sidebar-toc, --dropdown-toc, --custom-toc, --section-numbers
+    Shortcuts for the following prepended macro definitions:
     --prepend "{--theme}='THEME'"
     --prepend "{--title}='TITLE'"
     --prepend "{--highlightjs}='true'"
     --prepend "{--mathjax}='true'"
-    --prepend "{--toc}='true'"
+    --prepend "{--sidebar-toc}='true'"
+    --prepend "{--dropdown-toc}='true'"
+    --prepend "{--custom-toc}='true'"
     --prepend "{--section-numbers}='true'"
 
 STYLING MACROS AND CLASSES
@@ -1450,14 +1457,18 @@ STYLING MACROS AND CLASSES
 
   Macro name         Description
   ______________________________________________________________
-  --theme            Set styling theme (1).
+  --theme            Set styling themes.
                      Theme names: default, graystone.
   --title            HTML document title (1).
   --highlightjs      Set to non-blank value to enable syntax
                      highlighting with Highlight.js.
   --mathjax          Set to a non-blank value to enable MathJax.
-  --toc              Set to a non-blank value to generate a
-                     table of contents (1).
+  --sidebar-toc      Set to a non-blank value to generate a
+                     table of contents sidebar (1).
+  --dropdown-toc     Set to a non-blank value to generate a
+                     table of contents dropdown menu (1).
+  --custom-toc       Set to a non-blank value if a custom table
+                     of contents is used (1).
   --section-numbers  Apply h2 and h3 section numbering (1).
   ______________________________________________________________
   (1) Must be defined prior to header (--prepend or .rimurc).
@@ -1471,6 +1482,7 @@ STYLING MACROS AND CLASSES
   align-center     Text alignment center.
   align-right      Text alignment right.
   no-print         Do not print.
+  line-breaks      Honor line breaks in source text.
   page-break       Force page break before the element.
   no-page-break    Avoid page break inside the element.
   dl-numbered      Number labeled list items.
@@ -1482,9 +1494,10 @@ STYLING MACROS AND CLASSES
 <p>Example usage:</p>
 <ol><li>Use <em>rimuc</em> as a filter:
 <pre class="no-highlight"><code>echo 'Hello *Rimu*!' | rimuc</code></pre>
-</li><li>Generate a styled HTML Web page including table of contents
-   and code syntax highlighting styling macro shortcut options:
-<pre class="no-highlight"><code>rimuc --styled --toc --highlightjs README.md</code></pre>
+</li><li>Generate a styled HTML Web page including a sidebar table of
+   contents and code syntax highlighting styling macro shortcut
+   options:
+<pre class="no-highlight"><code>rimuc --styled --sidebar-toc --highlightjs README.md</code></pre>
 </li><li>Prefix a custom macro definition:
 <pre class="no-highlight"><code>rimuc --prepend "{annotations}='yes'" showcase.rmu</code></pre>
 </li><li>Compile multiple source files to single output file:
@@ -1500,35 +1513,77 @@ files performs the following functions:</p>
   and <a href="tips.html">Rimu Tips</a>).
 </li><li>Supports named <a href="tips.html#themes">themes</a>. There are two built-in
   themes: <code>default</code> (the default theme) and <code>graystone</code>.
-</li><li>If the <code>--highlightjs</code> macro is defined
+</li><li>If the <code>--highlightjs</code> macro is non-blank
   <a href="https://highlightjs.org/">Highlightjs</a> is included.
-</li><li>If the <code>--mathjax</code> macro is defined
+</li><li>If the <code>--mathjax</code> macro is non-blank
   <a href="https://www.mathjax.org/">MathJax</a> is included.
-</li><li>If the <code>--toc</code> macro is defined JavaScript code is included which
-  generates a Table of Contents from top level <code>h1</code>, <code>h2</code> and <code>h3</code>
-  HTML header elements at load-time.
-</li><li>Includes a JavaScript slug generator which synthesizes slugs at
-  load-time and assigns them to the <code>id</code> attributes of top level <code>h1</code>,
-  <code>h2</code> and <code>h3</code> HTML header elements that do not already have an <code>id</code>.
-  Slug ids are generated from the header title as follows:
-<div><ol><li>Convert the title to lowercase.
+</li><li>Includes a JavaScript slug generator to synthesize header <code>id</code>
+  attributes.
+</li><li>Supports <a href="#toc-generation">table of contents generation</a>.
+</li></ul><p>All features enabled by the <code>--styled</code> option are implemented with
+Rimu source code in the header and footer files &mdash; they are not
+hard-wired into Rimu &mdash; and serve to illustrate the power and
+flexibility of the Rimu markup language.</p>
+<h3>Slug generation</h3>
+<p>The <code>--styled</code> option includes a JavaScript slug generator to
+synthesize header identifier slugs at load-time for top level <code>h1</code>,
+<code>h2</code> and <code>h3</code> HTML header elements that do not already have an
+explicit <code>id</code> attribute.  Slugs are generated from header titles as
+follows:</p>
+<ol><li>Convert the title to lowercase.
 </li><li>Replace spaces with a dash.
 </li><li>Remove characters that are not alphanumeric, dashes or
-    underscores. If no characters remain the slug is set to <code>x</code>.
+  underscores. If no characters remain the slug is set to <code>x</code>.
 </li><li>If an existing element has a matching id then the slug is
-    successively postfixed with <code>-2</code>, <code>-3</code>&hellip; until a unique id is
-    found.
-</li></ol><p>For example a header with the title <code>The End!</code> is assigned an <code>id</code>
-attribute value <code>the-end</code>.</p>
+  successively postfixed with <code>-2</code>, <code>-3</code>&hellip; until a unique id is
+  found.
+</li></ol><p>For example a header with the title <code>The End!</code> will be assigned an
+<code>id</code> attribute value <code>the-end</code>.</p>
 <p><b>NOTE</b>: Synthesised slugs are generated dynamically when the page is
 rendered and are not visible from other documents &mdash; if you want to
 link the location from another document you will need to create an
-explicit anchor using a <a href="#block-attributes">Block Attribute</a> <em>id</em>.</p></div>
-</li></ul><p>All the features enabled by the <code>--styled</code> option are implemented by
-Rimu source code in the header and footer files &mdash; they are not
-hard-wired into Rimu &mdash; and serve to illustrate of the power and
-flexibility of the Rimu markup language.</p>
-<h2 id="vim-syntax-file">Vim syntax file</h2>
+explicit anchor using a <a href="#block-attributes">Block Attribute</a> <em>id</em>. For
+example:</p>
+<pre class="no-highlight"><code>.#section1
+## This section header has attribute `id="section1"`</code></pre>
+<h3 id="toc-generation">Table of contents generation</h3>
+<p>In conjunction with the <a href="reference.html#rimuc-command">rimuc</a> <code>--styled</code> option, the <code>--sidebar-toc</code>
+and <code>--dropdown-toc</code> options will generate sidebar-styled and
+dropdown-styled table of contents (TOC) respectively. The
+<code>--custom-toc</code> option allows the user to include a custom TOC.</p>
+<p>If the <code>--sidebar-toc</code> macro or the <code>--dropdown-toc</code> macro is
+non-blank then JavaScript and HTML is included in the output to
+generate (at load time) a TOC from the top level <code>h1</code>, <code>h2</code> and <code>h3</code>
+HTML header elements.  This page was compiled using the
+<code>--sidebar-toc</code> option, the <a href="rimuplayground.html">Rimu Playground</a> page has
+been compiled using the <code>--dropdown-toc</code> option.</p>
+<p>Use the <code>no-auto-toc</code> CSS class attribute to exclude a section header
+from the TOC, for example:</p>
+<pre class="no-highlight"><code>.no-auto-toc
+## This header does not appear in the TOC</code></pre>
+<h3>Custom Table of contents</h3>
+<p>The <code>--custom-toc</code> option can be used in conjunction with the
+<code>--sidebar-toc</code> and <code>--dropdown-toc</code> options. The <code>--custom-toc</code>
+option inhibits the generation of an HTML TOC container.  It is up to
+the user to include a custom HTML TOC (Rimu documentation has a custom
+TOC).</p>
+<p>Here is the default sidebar TOC container. Use it as a template to
+build a custom sidebar TOC:</p>
+<pre class="no-highlight"><code>&lt;div id="toc" class="no-print"&gt;
+  &lt;div id="auto-toc"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<p>Here is the default dropdown TOC container (including &ldquo;hamburger&rdquo; TOC
+button). Use it as a template to build a custom dropdown TOC:</p>
+<pre class="no-highlight"><code>&lt;div id="toc-button" onclick="toggleToc()" class="no-print"&gt;&amp;#8801;&lt;/div&gt;
+&lt;div id="toc" class="no-print"&gt;
+  &lt;div id="auto-toc"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<ul><li>Include your TOC entries (or any custom elements) anywhere inside
+  the <code>id="toc"</code> div element.
+</li><li>The auto-generated TOC is injected into the <code>&lt;div
+  id="auto-toc"&gt;&lt;/div&gt;</code> element &mdash; omit this <code>div</code> to inhibit all
+  auto-generated TOC entries.
+</li></ul><h2 id="vim-syntax-file">Vim syntax file</h2>
 <p>The Rimu distribution includes a
 <a href="https://github.com/srackham/rimu/blob/master/src/vim/syntax/rimu.vim">syntax
 highlighter</a> for the Vim editor. Copy <code>rimu.vim</code> to your
@@ -1548,12 +1603,15 @@ to your taste delete them from the end of the file.</p>
 <script>
 window.onload = function() {
   var headings = [].slice.call(document.body.querySelectorAll('#contents > h1, #contents > h2, #contents > h3'));
-  headings.forEach(function(heading) {
+  headings.forEach(function(heading, index) {
     var title = heading.textContent;
     var id = heading.getAttribute('id');
     if (!id) {
       id = slugify(title);
       heading.setAttribute('id', id);
+    }
+    if (index === 0 && heading.tagName === 'H1') {
+      id = ''; // Go to top of page.
     }
     appendTocEntry(heading, id);
   });
@@ -1572,14 +1630,20 @@ function slugify(text) {
 </script>
 <script>
 function appendTocEntry(heading, id) {
-  var toc = document.getElementById('toc');
+  if (heading.classList.contains('no-auto-toc')) {
+    return;
+  }
+  var container = document.getElementById('auto-toc');
+  if (container === null) {
+    return;
+  }
   var tocLink = document.createElement('a');
   tocLink.setAttribute('href', '#' + id);
   tocLink.textContent = heading.textContent;
   var tocEntry = document.createElement('div');
   tocEntry.setAttribute('class', heading.tagName.toLowerCase());
   tocEntry.appendChild(tocLink);
-  toc.appendChild(tocEntry);
+  container.appendChild(tocEntry);
 }
 </script>
 </body>

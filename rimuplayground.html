@@ -157,12 +157,41 @@
   .align-right {
     text-align: right;
   }
+  .line-breaks {
+    white-space:pre;
+  }
 </style>
 <style>
-  /* TOC styles */
-  body {
-    padding-left: 21em;
+  .toc-visible {
+    display: block !important;
   }
+  #toc-button {
+    position: fixed;
+    top: 22px;
+    left: 15px;
+    z-index: 1;
+    cursor: pointer;
+    color: silver;
+    font-size:3.2em;
+  }
+  #toc {
+    display: none;
+    position: fixed;
+    top: 55px;
+    left: 15px;
+    right: 10%;
+    z-index: 1;
+    max-width: 30em;
+    max-height: 80%;
+    overflow-y: auto;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+  }
+  #contents {
+    margin-left: 40px;
+  }
+</style>
+<style>
   @media print {
     .no-print, .no-print * {
       display: none !important;
@@ -172,16 +201,7 @@
     }
   }
   #toc {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 18em;
-    padding: 1em;
-    border-right: 1px solid #cccccc;
-    overflow-y: auto;
-    overflow-x: hidden;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+    padding-left: 1em;
   }
   #toc .h1 {
     font-size: 110%;
@@ -202,18 +222,8 @@
 </style>
 </head>
 <body>
-<div id="toc" class="no-print"></div>
 <div id="contents">
 
-<style scoped>
-.breadcrumb {
-  font-weight: bold;
-  background-color: white;
-  margin: 0;
-  margin-top: 5px;
-  padding: 0;
-}
-</style>
 <style scoped>
 .example td {
   margin: 0;
@@ -259,15 +269,18 @@ function updateExample(name) {
   edit.style.height = edit.parentNode.offsetHeight + 'px';
 }
 </script>
-<ul class="breadcrumb pull-right no-print">
-  <li><a href="index.html">Home</a> <span class="divider">|</span></li>
-  <li><a href="rimuplayground.html">Playground</a> <span class="divider">|</span></li>
-  <li><a href="reference.html">Reference</a> <span class="divider">|</span></li>
-  <li><a href="tips.html">Tips</a> <span class="divider">|</span></li>
-  <li><a href="http://github.com/srackham/rimu">Github</a> <span class="divider">|</span></li>
-  <li><a href="https://npmjs.org/package/rimu">npm</a></li>
-</ul>
-
+<div id="toc-button" onclick="toggleToc()" class="no-print">&#8801;</div>
+<div id="toc" class="no-print">
+  <h2 style="font-size:1.2em; margin-top:1.0em">Links</h2>
+  <div class="h2"><a href="index.html">Rimu Home</a></div>
+  <div class="h2"><a href="rimuplayground.html">Rimu Playground</a></div>
+  <div class="h2"><a href="reference.html">Rimu Reference</a></div>
+  <div class="h2"><a href="tips.html">Rimu Tips</a></div>
+  <div class="h2"><a href="http://github.com/srackham/rimu" target="_blank">Github</a></div>
+  <div class="h2"><a href="https://npmjs.org/package/rimu" target="_blank">npm</a></div>
+  <h2 style="font-size:1.2em; margin-top:1.0em">Table of Contents</h2>
+  <div id="auto-toc"></div>
+</div>
 <h1>Rimu Playground</h1>
 <h2>Rimu markup</h2>
 <p>Edit these examples or add your own:</p>
@@ -328,12 +341,15 @@ convert();
 <script>
 window.onload = function() {
   var headings = [].slice.call(document.body.querySelectorAll('#contents > h1, #contents > h2, #contents > h3'));
-  headings.forEach(function(heading) {
+  headings.forEach(function(heading, index) {
     var title = heading.textContent;
     var id = heading.getAttribute('id');
     if (!id) {
       id = slugify(title);
       heading.setAttribute('id', id);
+    }
+    if (index === 0 && heading.tagName === 'H1') {
+      id = ''; // Go to top of page.
     }
     appendTocEntry(heading, id);
   });
@@ -352,14 +368,44 @@ function slugify(text) {
 </script>
 <script>
 function appendTocEntry(heading, id) {
-  var toc = document.getElementById('toc');
+  if (heading.classList.contains('no-auto-toc')) {
+    return;
+  }
+  var container = document.getElementById('auto-toc');
+  if (container === null) {
+    return;
+  }
   var tocLink = document.createElement('a');
   tocLink.setAttribute('href', '#' + id);
   tocLink.textContent = heading.textContent;
   var tocEntry = document.createElement('div');
   tocEntry.setAttribute('class', heading.tagName.toLowerCase());
   tocEntry.appendChild(tocLink);
-  toc.appendChild(tocEntry);
+  container.appendChild(tocEntry);
+}
+</script>
+<script>
+function toggleToc() {
+    document.getElementById("toc").classList.toggle('toc-visible');
+}
+window.onclick = function(event) {
+  if (!Element.prototype.matches) {
+    // matches() polyfill for old browsers.
+    var p = Element.prototype;
+    if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
+      p.matches = p.webkitMatchesSelector;
+    if (p.msMatchesSelector) // IE9/10/11 & Edge
+      p.matches = p.msMatchesSelector;
+    if (p.mozMatchesSelector) // FF<34
+      p.matches = p.mozMatchesSelector;
+  }
+  if (!event.target.matches('#toc-button, #toc, #toc :not(a)')) {
+    // Hide TOC if clicked outside TOC or on TOC link.
+    var toc = document.getElementById('toc');
+    if (toc.classList.contains('toc-visible')) {
+      toc.classList.remove('toc-visible');
+    }
+  }
 }
 </script>
 </body>
