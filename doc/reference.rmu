@@ -373,6 +373,9 @@ Scelerisque feugiat massa alias.
 ..'
 {generate-rendered-example-1|division-block-example}
 
+If the rendered contents of the _Division Block_ is empty and the
+`<div>` element has no attributes then it is not emitted.
+
 
 ## HTML elements
 Block and inline HTML elements can be mixed with Rimu markup.

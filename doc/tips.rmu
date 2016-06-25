@@ -474,65 +474,41 @@ MathJax.
 .#conditional-inclusion
 ## Conditional Inclusion
 Macro invocations can be used to conditionally include source text.
+Examples:
 
-Single-line blocks::
+``
+// Include script if `underscore` value is non-blank.
+{foo!}<script src="foo-min.js"></script>
+
+// Include paragraph if `foo` is blank.
+{foo=}.+skip
+Macro `foo`
+must be blank.
+
+// Conditional execution of Rimu definitions.
+// The block never generates output because empty divs are not emitted.
+// Assign `x` and `y` macro values if `foo` and `bar` are non-blank.
+{foo=}.+skip
+{bar=}.+skip
 ..
-Single-line block elements (e.g. Headers, Block Attributes, element
-definitions) can be conditionally excluded by prefixing an _Inclusion_
-or an _Exclusion_ macro invocation.  For example:
-
-  {underscore!}<script src="underscore-min.js"></script>
-
-The line is retained only if the value of `underscore` is not blank.
-..
-
-Delimited Blocks::
-..
-To conditionally exclude Delimited Block elements enable the `+skip`
-option in a preceding _Attribute Block_ element. For example:
-
-  {foo=}.+skip
-  **Lorem ipsum dolor**. Sit amet venenatis. Erat nulla arcu. Lorem
-  luctus sem. Mauris vitaei ipsum.
-
-If macro `foo` value is blank the `.+skip` Attribute Block is
-retained, this causes the following paragraph to be skipped. If `foo`
-is non-blank then the `.+skip` Attribute Block is dropped and the
-succeeding paragraph will be processed.
+{x} = '42'
+{y} = '24'
 ..
 
-Inline content::
-..
-If an element supports macro expansion (e.g. Normal paragraphs, HTML
-Blocks, Quote Blocks, Division blocks), then block content can be
-conditionally included:
+// Inline examples.
+This line is included {foo=} if foo value is blank.
+This line is included {foo!} if foo value is not blank.
+This line is included {foo=one} if foo value is 'one'.
+This line is included {foo=two} if foo value is 'two'.
+This line is included {foo!\d+} if foo value is not a number.
 
-. Use _Inclusion_ and _Exclusion_ macro invocations to exclude lines
-of text, for example:
-
-  This {foo=} Line is included if macro foo value is blank.
-  This {foo!} Line is included if macro foo value is not blank.
-  This {foo=one} Line is included if macro foo value is 'one'.
-  This {foo=two} Line is included if macro foo value is 'two'.
-  This {foo=\d+} Line is included if macro foo value is a number.
-
-. Use _Parametrized_  macro invocations to exclude arbitrary portions
-  of inline text, for example:
-...
-```
+// Use parametrized macros to exclude arbitrary inline text.
 {foo} = ''
-Mauris vitae ipsumi lacus vestibulum sem. {foo|This text
-is excluded}
+Mauris vitae {foo|This text is excluded}
 
 {foo} = '$1'
-Mauris vitae ipsumi lacus vestibulum sem. {foo|This text
-is included.}
-```
-The macro parameter text is excluded if value of the `foo` macro is
-blank -- set it to `$1` and the text will be included.  Parameter text
-can be spread over multiple lines.
-...
-..
+Mauris vitae {foo|This text is included}
+``
 
 
 ## Tables
