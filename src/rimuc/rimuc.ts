@@ -67,6 +67,7 @@ OPTIONS
     Shortcuts for the following prepended macro definitions:
     --prepend "{--theme}='THEME'"
     --prepend "{--title}='TITLE'"
+    --prepend "{--bootstrap2}='true'"
     --prepend "{--highlightjs}='true'"
     --prepend "{--mathjax}='true'"
     --prepend "{--sidebar-toc}='true'"
@@ -79,28 +80,31 @@ STYLING MACROS AND CLASSES
   --styled option is used:
 
   Macro name         Description
-  ______________________________________________________________
+  _______________________________________________________________
   --theme            Set styling themes.
                      Theme names: default, graystone.
-  --title            HTML document title (1).
+  --title            HTML document title .
+  --bootstrap2       Set to non-blank value to include Bootstrap2.
   --highlightjs      Set to non-blank value to enable syntax
                      highlighting with Highlight.js.
   --mathjax          Set to a non-blank value to enable MathJax.
   --sidebar-toc      Set to a non-blank value to generate a
-                     table of contents sidebar (1).
+                     table of contents sidebar.
   --dropdown-toc     Set to a non-blank value to generate a
-                     table of contents dropdown menu (1).
+                     table of contents dropdown menu.
   --custom-toc       Set to a non-blank value if a custom table
-                     of contents is used (1).
-  --section-numbers  Apply h2 and h3 section numbering (1).
-  ______________________________________________________________
-  (1) Must be defined prior to header (--prepend or .rimurc).
+                     of contents is used.
+  --section-numbers  Apply h2 and h3 section numbering.
+  _______________________________________________________________
+  These macros must be defined prior to processing (using rimuc
+  options or in .rimurc).
 
   CSS class        Description
   ______________________________________________________________
   verse            Verse format (paragraphs, division blocks).
   sidebar          Sidebar format (paragraphs, division blocks).
   cite             Quote and verse attribution.
+  bordered         Add borders to table.
   align-left       Text alignment left.
   align-center     Text alignment center.
   align-right      Text alignment right.
@@ -108,6 +112,9 @@ STYLING MACROS AND CLASSES
   line-breaks      Honor line breaks in source text.
   page-break       Force page break before the element.
   no-page-break    Avoid page break inside the element.
+  bold             Bold labelled list terms (default).
+  italic           Italic labelled list terms.
+  normal           Non-bold labelled list terms.
   dl-numbered      Number labeled list items.
   dl-horizontal    Format labeled lists horizontally.
   dl-counter       Prepend dl item counter to element content.
@@ -179,6 +186,7 @@ outer:
           styled = true
           break
         // Styling macro definitions shortcut options.
+        case '--bootstrap2':
         case '--highlightjs':
         case '--mathjax':
         case '--section-numbers':

@@ -32,7 +32,7 @@ Install Rimu as a Node.js module (includes the `rimu` library and the
 
 - Experiment with Rimu in the [Rimu Playground]({playground}) or open
   the `rimuplayground.html` file locally in your browser.
-- Edit the examples (click the _Edit icon_ {icon|edit} in the examples
+- Edit the examples (click the _Edit icon_ {edit-icon} in the examples
   below to enable live example editing of the Rimu source).
 - Read [Rimu Tips]({tips}).
 
@@ -121,6 +121,7 @@ OPTIONS
     Shortcuts for the following prepended macro definitions:
     --prepend "{--theme}='THEME'"
     --prepend "{--title}='TITLE'"
+    --prepend "{--bootstrap2}='true'"
     --prepend "{--highlightjs}='true'"
     --prepend "{--mathjax}='true'"
     --prepend "{--sidebar-toc}='true'"
@@ -133,28 +134,31 @@ STYLING MACROS AND CLASSES
   --styled option is used:
 
   Macro name         Description
-  ______________________________________________________________
+  _______________________________________________________________
   --theme            Set styling themes.
                      Theme names: default, graystone.
-  --title            HTML document title (1).
+  --title            HTML document title .
+  --bootstrap2       Set to non-blank value to include Bootstrap2.
   --highlightjs      Set to non-blank value to enable syntax
                      highlighting with Highlight.js.
   --mathjax          Set to a non-blank value to enable MathJax.
   --sidebar-toc      Set to a non-blank value to generate a
-                     table of contents sidebar (1).
+                     table of contents sidebar.
   --dropdown-toc     Set to a non-blank value to generate a
-                     table of contents dropdown menu (1).
+                     table of contents dropdown menu.
   --custom-toc       Set to a non-blank value if a custom table
-                     of contents is used (1).
-  --section-numbers  Apply h2 and h3 section numbering (1).
-  ______________________________________________________________
-  (1) Must be defined prior to header (--prepend or .rimurc).
+                     of contents is used.
+  --section-numbers  Apply h2 and h3 section numbering.
+  _______________________________________________________________
+  These macros must be defined prior to processing (using rimuc
+  options or in .rimurc).
 
   CSS class        Description
   ______________________________________________________________
   verse            Verse format (paragraphs, division blocks).
   sidebar          Sidebar format (paragraphs, division blocks).
   cite             Quote and verse attribution.
+  bordered         Add borders to table.
   align-left       Text alignment left.
   align-center     Text alignment center.
   align-right      Text alignment right.
@@ -162,6 +166,9 @@ STYLING MACROS AND CLASSES
   line-breaks      Honor line breaks in source text.
   page-break       Force page break before the element.
   no-page-break    Avoid page break inside the element.
+  bold             Bold labelled list terms (default).
+  italic           Italic labelled list terms.
+  normal           Non-bold labelled list terms.
   dl-numbered      Number labeled list items.
   dl-horizontal    Format labeled lists horizontally.
   dl-counter       Prepend dl item counter to element content.
@@ -639,7 +646,7 @@ Block and inline HTML elements can be mixed with Rimu markup.
 
 {html-example} = 'An inline <span style="color:red;">HTML span</span>.
 
-<table class="table table-bordered">
+<table class="bordered">
   <tr>
     <td>Montes adipiscing sodales.</td>
     <td>Magna placerat posuere.</td>
@@ -771,11 +778,11 @@ Definition for second term.'
 - Viverra pede turpis.
   Esse et dui:: Nonummy modi.
   Wisi ad diam:: Sapien porttitor.
-    Condimentum::: Lacus maecenas neque dolor habitant tellus eu vitae sed
+    Condimentum::: Lacus maecenas neque dolor habitant tellus.
 - Augue et dui malesuada purus.
 
-  Purus aliquam mauris a aliquam orci. Massa sit sit. Quis eget
-  penatibus. Maecenas at tellus. Sapien quam mauris. Sapien arcu nisl.
+  Purus aliquam mauris a aliquam orci. Massa sit sit.
+  penatibus. Maecenas at tellus. Sapien quam mauris.
   Non a pede in.
 
 - Facilisi vestibulum montes quam eget donec.
@@ -1192,7 +1199,11 @@ Invocation syntax:
 
 .-macros
 {macros-example} = '// Define some macros.
-{info} = '<span class="label label-info">$1</span>'\
+{info} = '<span style="color:white;
+                       background-color:#006699;
+                       padding:2px 4px;
+                       border-radius:3px;
+                       font-weight:bold;">$1</span>'\
 {heads-up} = '{info|Heads up!}'\
 {note} = '{info|Note} <mark>$1</mark>'\
 {rimu-playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'\

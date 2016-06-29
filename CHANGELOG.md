@@ -3,6 +3,13 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
+## Version 9.0.0 (2016-07-??)
+- The `rimuc` `--styled` option no longer needs Boostrap2 for
+  styling. You can optionally include Bootstrap2 using the new
+  `--boostrap2` option -- specify is option if you rely on.  Boostrap2
+  specific features.
+
+
 ## Version 8.0.1 (2016-06-26)
 - **FIXED**: `rimuc`: If a `.html` input file was encountered then
   all succeeding input files were ignored.

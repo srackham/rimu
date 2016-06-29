@@ -5,17 +5,39 @@
 // By default examples generation is disabled.
 {generate-examples?} = ''
 
+<style scoped>
+.edit-source {
+  font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+  line-height: normal;
+  font-size: inherit;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
+  border: 0;
+  padding: 0.6em;
+  width: 100%;
+  background-color: #ffe;
+  box-shadow:0 0 10px #9ecaed;
+  box-sizing: border-box;
+}
+</style>
+
 // Examples styles.
 {generate-examples=}.+skip
 <style scoped>
+.edit-icon {
+  font-size: 16px;
+  text-decoration: underline;
+  color: gray;
+}
 .example td {
   margin: 0;
   padding: 0;
 }
 .example-header {
+  font-weight: bold;
   color: #527bbd;
 {--theme=.*\bgraystone\b.*}  color: #888;
-  font-weight: bold;
   padding: 0.5em !important;
 }
 .example-source, .example-rendered {
@@ -23,14 +45,6 @@
   background-color: inherit;
   margin: 0;
   padding: 0.6em;
-}
-.example-edit {
-  margin: 0;
-  border: 0;
-  width: 100%;
-  background-color: #ffe;
-  box-sizing: border-box;
-  display: none;
 }
 </style>
 
@@ -61,7 +75,9 @@ function updateExample(name) {
 {example-title} = '#### Examples'
 
 // Clickable icon button to edit the example.
-{example-edit-icon} = '<span class="icon-edit no-print" title="Edit example" style="cursor:pointer;" onclick="editExample('$1')"></span>'
+
+{edit-icon} = '<span class="edit-icon">&#x270e;</span>'
+{example-edit-icon} = '<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('$1')">&#x270e;</span>'
 
 // Macro to generate Rimu markup and rendered example (stacked horizontally).
 // $1 = name of example content macro.
@@ -69,20 +85,21 @@ function updateExample(name) {
 {generate-examples=}.+skip
 .-macros
 {generate-rendered-example-1} = '{example-title}
-<table class="example table table-bordered">
-<thead><tr class="example-header">
-<th>
+<table class="example bordered">
+<tr>
+<td class="example-header">
 {--=$2}{example-edit-icon|$1}
-Rimu source</th>
-<th>Rendered HTML</th>
-</tr></thead><tbody><tr>
+Rimu source</td>
+<td class="example-header">Rendered HTML</td>
+</tr>
+<tr>
 <td style="width:50%;">
 
 .example-source #$1-source +macros
 ```
 {$1}
 ```
-<textarea id="$1-edit" class="example-edit" onkeyup="updateExample('$1')"></textarea>
+<textarea id="$1-edit" class="edit-source" style="display:none" onkeyup="updateExample('$1')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="$1-rendered" class="example-rendered">
@@ -100,7 +117,7 @@ Rimu source</th>
 {generate-examples=}.+skip
 .-macros
 {generate-rendered-example-2} = '{example-title}
-<table class="example table table-bordered">
+<table class="example bordered">
 <tbody>
 <tr>
 <td class="example-header" style="width:10%;">
@@ -112,7 +129,7 @@ Rimu source</td>
 ```
 {$1}
 ```
-<textarea id="$1-edit" class="example-edit" onkeyup="updateExample('$1')"></textarea>
+<textarea id="$1-edit" class="edit-source" style="display:none" onkeyup="updateExample('$1')"></textarea>
 </td>
 </tr>
 <tr><td class="example-header" style="width:10%;">Rendered HTML</td>

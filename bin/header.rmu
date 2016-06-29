@@ -1,11 +1,11 @@
 /*
   Used by rimuc.js --styled option.
-  Styled using Bootstrap.
-  Syntax highlighting with Highlight.js
-  Bootstrap and Highlight.js sourced from CDNs.
 */
 
-// Set macro default values.
+/*
+  Set macro default values.
+*/
+{--bootstrap2?} = ''
 {--highlightjs?} = ''
 {--mathjax?} = ''
 {--section-numbers?} = ''
@@ -14,11 +14,9 @@
 {--theme?} = 'default'
 {--sidebar-toc?} = ''
 {--dropdown-toc?} = ''
-
 // DEPRECATED --toc: If --toc is non-blank make --sidebar-toc non-blank.
 {--toc?} = ''
 {--sidebar-toc} = '{--toc}{--sidebar-toc}'
-
 // "Blank" macro.
 {--} = ''
 
@@ -29,20 +27,90 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta charset="UTF-8">
   <title>{--title}</title>
-  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
-  <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
+{--bootstrap2!}  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
+{--highlightjs!}  <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
+
+{--bootstrap2!}.+skip
+// Bootstrap polyfills.
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-size: 14px;
+    line-height: 20px;
+    color: #333333;
+    background-color: #ffffff;
+  }
+  a {
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  blockquote {
+    padding: 0 0 0 15px;
+  }
+  ul, ol {
+    padding: 0;
+    margin: 0 0 10px 25px;
+  }
+  code, pre {
+    font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-break: break-all;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  input[type=text], textarea {
+    padding: 4px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+  }
+  input[type=text]:focus, textarea:focus {
+    outline: none;
+    box-shadow:0 0 10px #9ecaed;
+  }
+  .dl-horizontal:before, .dl-horizontal:after {
+    display: table;
+    content: "";
+    line-height: 0;
+  }
+  .dl-horizontal:after {
+    clear:both;
+  }
+  .dl-horizontal > dt {
+    float: left;
+    clear: left;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+    margin-top: 1.0em;
+    width: 25%;
+  }
+  .dl-horizontal > dd {
+    margin-left: 25%;
+    padding-left: 1.0em;
+  }
+</style>
 
 <style>
-  /* Bootstrap tweaks. */
   body {
     margin: 1em;
     max-width: 50em;
     font-family: Arial, Helvetica, sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
+    margin: 10px 0;
     color: #527bbd;
   }
-  h1 { font-size: 2.2em; }
+  h1 { font-size: 2.2em; line-height: 40px;}
   h2 { font-size: 1.5em; }
   h3 { font-size: 1.2em; }
   h4 { font-size: 1.1em; }
@@ -57,17 +125,45 @@
     margin-top: 1.5em;
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  td, th {
+    text-align: left;
+    vertical-align: top;
+  }
+  .bordered td, .bordered th {
+    border: 1px solid #dddddd;
+  }
+  th {
+    padding: 8px;
+  }
   a, a:hover {
     color: #527bbd;
-  }
-  li, dd {
-    margin-bottom: 0.25em;
   }
   p, pre, li, dt, dd, blockquote p {
     font-size: inherit;
     line-height: 1.45;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
+  }
+  dt {
+    margin-bottom: 0;
+    font-weight: bold;
+  }
+  .bold > dt {
+    font-weight: bold;
+  }
+  .italic > dt {
+    font-style: italic;
+  }
+  .normal > dt {
+    font-weight: normal;
+  }
+  dd {
+    margin-left: 1.0em;
+    margin-top: 0;
   }
   blockquote {
     border: none;
@@ -89,6 +185,7 @@
   pre {
     padding: 6px;
     line-height: normal;
+    white-space: pre-wrap;
   }
   .light-background {
     background-color: #f8f8f8;
@@ -101,10 +198,7 @@
   *:not(pre) > code {
     border: none;
     background-color: #f8f8f8;
-  }
-  .dl-horizontal > dt {
-    text-align: left;
-    margin-top: 1.0em;
+    white-space: nowrap;
   }
   .dl-horizontal > dd {
     margin-top: 1.0em;
@@ -117,20 +211,20 @@
   pre span {
     opacity: 1 !important;
   }
-  /* Rimu styles. */
+  /* Rimu classes. */
 {--!} Apply verse class to Normal Paragraphs and Division blocks.
   .verse {
     margin: 1.5em 20px;
   }
   div.verse p, p.verse {
     font-family: Georgia, serif;
-    white-space:pre;
+    white-space: pre;
     margin-top: 0.75em;
     margin-bottom: 0.75em;
   }
 {--!} Apply sidebar class to Normal Paragraphs and Division blocks.
   .sidebar {
-    border: 1px solid silver;
+    border: 1px solid #dddddd;
     border-radius:4px;
     background: #ffffee;
     padding: 10px;
@@ -138,6 +232,28 @@
   }
   div.sidebar *:first-child {
     margin-top: 0.2em;
+  }
+{--!} Force page break before the element.
+  .page-break {
+    page-break-before: always;
+  }
+{--!} Avoid page breaks inside the element.
+  .no-page-break {
+    page-break-inside: avoid;
+  }
+{--!} Text block alignment classes.
+  .align-left {
+    text-align: left;
+  }
+  .align-center {
+    text-align: center;
+  }
+  .align-right {
+    text-align: right;
+  }
+{--!} Do not wrap line breaks.
+  .line-breaks {
+    white-space:pre;
   }
   /* List item counters and definition list numbering. */
 {--!} List item counters.
@@ -172,28 +288,6 @@
 {--!} Number labeled list items.
   .dl-numbered > dt:before {
     content: counter(dl-counter) ". ";
-  }
-{--!} Force page break before the element.
-  .page-break {
-    page-break-before: always;
-  }
-{--!} Avoid page breaks inside the element.
-  .no-page-break {
-    page-break-inside: avoid;
-  }
-{--!} Text block alignment classes.
-  .align-left {
-    text-align: left;
-  }
-  .align-center {
-    text-align: center;
-  }
-  .align-right {
-    text-align: right;
-  }
-{--!} Do not wrap line breaks.
-  .line-breaks {
-    white-space:pre;
   }
 </style>
 

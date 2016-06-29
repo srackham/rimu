@@ -1,6 +1,6 @@
 # Rimu Tips
 
-TIP: Click the _Edit icon_ {icon|edit} in the examples below to enable
+TIP: Click the _Edit icon_ {edit-icon} in the examples below to enable
 live example editing of the Rimu source.
 
 ## HTML is valid Rimu
@@ -29,7 +29,11 @@ markup vocabulary.
 
 .-macros
 {macros-example} = '// Define some macros.
-{info} = '<span class="label label-info">$1</span>'\
+{info} = '<span style="color:white;
+                       background-color:#006699;
+                       padding:2px 4px;
+                       border-radius:3px;
+                       font-weight:bold;">$1</span>'\
 {heads-up} = '{info|Heads up!}'\
 {note} = '{info|Note} <mark>$1</mark>'\
 {playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'\
@@ -310,9 +314,6 @@ or special configuration file syntax were necessary.
 
 {rimurc-examples} = 'Turn <- left then right ->
 
-Pencil \{icon|pencil} file \{icon|file}
-and trash \{icon|trash} icons.
-
 Copyright (C) 2015 -- trademarked(TM).
 
 "Left and right double-quotes".
@@ -552,7 +553,7 @@ The {rimuc} `--styled` option includes
 create nicely formatted tables.
 
 .-macros
-{tables-example} = '<table class="table table-bordered">
+{tables-example} = '<table class="bordered">
   <tbody>
     <tr>
 <td style="width: 50%; padding: 6px;">
@@ -719,19 +720,6 @@ unordered list items.
 ordered list items.'
 
 {generate-rendered-example-1|list-item-counters-example}
-
-
-## Horizontal labeled lists
-Use the {rimuc} tool `--styled` option along with the `dl-horizontal`
-CSS class to format labeled lists horizontally.
-
-{horizontal-list-example} = '.dl-horizontal
-First term::
-    Definition one.
-Second term::
-    Definition for second term.'
-
-{generate-rendered-example-1|horizontal-list-example}
 
 
 ## Include arbitrary elements in list items

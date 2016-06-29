@@ -32,7 +32,8 @@
 {sup} = '<sup>$1</sup>'
 {sub} = '<sub>$1</sub>'
 
-// Bootstrap icons e.g. {icon|trash}.
+// DEPRECATED
+// Bootstrap2 icons e.g. {icon|trash}.
 // See http://getbootstrap.com/components/#glyphicons
 {icon} = '<span class="icon-$1"></span>'
 

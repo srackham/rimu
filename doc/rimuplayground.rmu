@@ -30,14 +30,8 @@ Term 2:: Definition 2.
 Edit these examples or add your own:
 
 <div>
-  <textarea id="playground-source"
-      style="
-        background-color: #ffe;
-        border: 2px solid #eee;
-        width: 100%;
-        min-height: 16em;
-        box-sizing: border-box;"
-      onkeyup="convert()">{examples}</textarea>
+  <textarea id="playground-source" class="edit-source"
+      style="min-height: 16em;" onkeyup="convert()">{examples}</textarea>
 </div>
 
 ## HTML preview
