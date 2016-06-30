@@ -25,7 +25,7 @@ let DOCS = [
     rimucOptions: '--sidebar-toc'
   },
   {
-    src: 'CHANGELOG.md', dst: 'doc/CHANGELOG.html', title: 'Rimu Change Log',
+    src: 'doc/changelog.rmu', dst: 'doc/changelog.html', title: 'Rimu Change Log',
     rimucOptions: '--sidebar-toc'
   },
   {

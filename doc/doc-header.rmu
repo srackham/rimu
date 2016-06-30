@@ -146,7 +146,7 @@ Rimu source</td>
 // Documentation Web pages.
 {homepage} = 'index.html'
 {playground} = 'rimuplayground.html'
-{changelog} = 'CHANGELOG.html'
+{changelog} = 'changelog.html'
 {reference} = 'reference.html'
 {tips} = 'tips.html'
 

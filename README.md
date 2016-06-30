@@ -42,7 +42,7 @@ Read the documentation and experiment with Rimu in the [Rimu
 Playground](http://srackham.github.io/rimu/rimuplayground.html) or open the
 `rimuplayground.html` file locally in your browser.
 
-See the Rimu [CHANGELOG](http://srackham.github.io/rimu/CHANGELOG.html) for
+See the Rimu [Change Log](http://srackham.github.io/rimu/changelog.html) for
 the latest changes.
 
 
