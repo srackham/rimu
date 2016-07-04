@@ -81,6 +81,7 @@ STYLING MACROS AND CLASSES
 
   Macro name         Description
   _______________________________________________________________
+  --                 Blank macro (empty string).                 
   --theme            Set styling themes.
                      Theme names: default, graystone.
   --title            HTML document title .
