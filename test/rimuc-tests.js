@@ -1,23 +1,26 @@
 var test = require('tape');
 var exec = require('child_process').exec;
 
+// source: Rimu source.
+// options: rimuc command options.
+// callback(output, error): output=stdout+stderr, error=exit code
 function rimuc_exec(source, options, callback) {
   source = source.replace(/\n/g, '\\n');
   source = source.replace(/"/g, '\\x22');
   var command = '`which echo` -e "' + source + '" | ./bin/rimuc.js --no-rimurc ' + (options || '');
   exec(command, function(error, stdout, stderr) {
-    callback(stdout);
+    callback(stdout + stderr, error);
   })
 }
 
 function rimuc_equal(t, source, expected, options, message) {
-  rimuc_exec(source, options, function(actual) {
-    t.equal(actual, expected, message)
+  rimuc_exec(source, options, function(output) {
+    t.equal(output, expected, message)
   });
 }
 
 test('rimuc', function(t) {
-  t.plan(18);
+  t.plan(19);
 
   rimuc_equal(t, '*Hello World!*', '<p><em>Hello World!</em></p>', '',
     'rimuc basic test');
@@ -43,44 +46,48 @@ test('rimuc', function(t) {
   rimuc_equal(t, '<br>', '<p>X</p>', '--safe-mode 2 --html-replacement X',
     'rimuc --html-replacement');
 
-  rimuc_exec('', '--help', function(actual) {
-    t.ok(actual.indexOf('\nNAME\n  rimuc') === 0, 'rimuc --help')
+  rimuc_exec('', '--help', function(output) {
+    t.ok(output.indexOf('\nNAME\n  rimuc') === 0, 'rimuc --help')
   });
 
-  rimuc_exec('', '--styled', function(actual) {
-    t.ok(actual.startsWith('<!DOCTYPE HTML>'), 'rimuc --styled')
+  rimuc_exec('', '--styled', function(output) {
+    t.ok(output.startsWith('<!DOCTYPE HTML>'), 'rimuc --styled')
   });
 
-  rimuc_exec('', '--styled --title X', function(actual) {
-    t.ok(actual.indexOf('<title>X</title>') > 0, 'rimuc --title')
+  rimuc_exec('', '--styled --title X', function(output) {
+    t.ok(output.indexOf('<title>X</title>') > 0, 'rimuc --title')
   });
 
-  rimuc_exec('', '--styled --highlightjs', function(actual) {
-    t.ok(actual.indexOf('<script>hljs.initHighlightingOnLoad();</script>') > 0, 'rimuc --highlightjs')
+  rimuc_exec('', '--styled --highlightjs', function(output) {
+    t.ok(output.indexOf('<script>hljs.initHighlightingOnLoad();</script>') > 0, 'rimuc --highlightjs')
   });
 
-  rimuc_exec('', '--styled --mathjax', function(actual) {
-    t.ok(actual.indexOf('<script src="http://cdn.mathjax.org') > 0, 'rimuc --mathjax')
+  rimuc_exec('', '--styled --mathjax', function(output) {
+    t.ok(output.indexOf('<script src="http://cdn.mathjax.org') > 0, 'rimuc --mathjax')
   });
 
-  rimuc_exec('', '--styled --toc', function(actual) {
-    t.ok(actual.indexOf('<div id="toc"') > 0, 'rimuc --toc (DEPRECATED)')
+  rimuc_exec('', '--styled --toc', function(output) {
+    t.ok(output.indexOf('<div id="toc"') > 0, 'rimuc --toc (DEPRECATED)')
   });
 
-  rimuc_exec('', '--styled --sidebar-toc', function(actual) {
-    t.ok(actual.indexOf('<div id="toc"') > 0, 'rimuc --sidebar-toc')
+  rimuc_exec('', '--styled --sidebar-toc', function(output) {
+    t.ok(output.indexOf('<div id="toc"') > 0, 'rimuc --sidebar-toc')
   });
 
-  rimuc_exec('', '--styled --dropdown-toc', function(actual) {
-    t.ok(actual.indexOf('<div id="toc-button"') > 0, 'rimuc --dropdown-toc')
+  rimuc_exec('', '--styled --dropdown-toc', function(output) {
+    t.ok(output.indexOf('<div id="toc-button"') > 0, 'rimuc --dropdown-toc')
   });
 
-  rimuc_exec('', '--styled --sidebar-toc --custom-toc', function(actual) {
-    t.ok(actual.indexOf('<div id="toc"') === -1, 'rimuc --sidebar-toc --custom-toc')
+  rimuc_exec('', '--styled --sidebar-toc --custom-toc', function(output) {
+    t.ok(output.indexOf('<div id="toc"') === -1, 'rimuc --sidebar-toc --custom-toc')
   });
 
-  rimuc_exec('', '--styled --section-numbers', function(actual) {
-    t.ok(actual.indexOf('body,h1 { counter-reset: h2-counter; }') > 0, 'rimuc --section-numbers')
+  rimuc_exec('', '--styled --section-numbers', function(output) {
+    t.ok(output.indexOf('body,h1 { counter-reset: h2-counter; }') > 0, 'rimuc --section-numbers')
+  });
+
+  rimuc_exec('{x}', '--lint', function(output, error) {
+    t.ok(output.indexOf('undefined macro') > 0 && error.code === 1, 'rimuc --lint')
   });
 
 });
