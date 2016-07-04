@@ -73,7 +73,7 @@
   }
   input[type=text]:focus, textarea:focus {
     outline: none;
-    box-shadow:0 0 10px #9ecaed;
+    box-shadow: 0 0 10px #9ecaed;
   }
   .dl-horizontal:before, .dl-horizontal:after {
     display: table;
@@ -81,7 +81,7 @@
     line-height: 0;
   }
   .dl-horizontal:after {
-    clear:both;
+    clear: both;
   }
   .dl-horizontal > dt {
     float: left;
@@ -176,8 +176,8 @@
   }
   .cite {
     font-style: italic;
-    color:#777;
-    padding:5px 0;
+    color: #777;
+    padding: 5px 0;
   }
   .cite::before {
     content: "\2014 \2009";
@@ -225,7 +225,7 @@
 {--!} Apply sidebar class to Normal Paragraphs and Division blocks.
   .sidebar {
     border: 1px solid #dddddd;
-    border-radius:4px;
+    border-radius: 4px;
     background: #ffffee;
     padding: 10px;
     margin: 1.5em 20px;
@@ -253,7 +253,7 @@
   }
 {--!} Do not wrap line breaks.
   .line-breaks {
-    white-space:pre;
+    white-space: pre;
   }
   /* List item counters and definition list numbering. */
 {--!} List item counters.
@@ -336,7 +336,7 @@
     z-index: 1;
     cursor: pointer;
     color: silver;
-    font-size:3.2em;
+    font-size: 3.2em;
   }
   #toc {
     display: none;

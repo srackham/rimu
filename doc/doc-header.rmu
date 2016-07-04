@@ -17,7 +17,7 @@
   padding: 0.6em;
   width: 100%;
   background-color: #ffe;
-  box-shadow:0 0 10px #9ecaed;
+  box-shadow: 0 0 10px #9ecaed;
   box-sizing: border-box;
 }
 </style>
