@@ -264,7 +264,9 @@ for (let infile of files) {
         msg = msg.slice(0, 117) + '...'
       }
       console.error(msg)
-      errors += 1
+      if (message.type === 'error') {
+        errors += 1
+      }
     }
   }
   html += Rimu.render(source, options) + '\n'
