@@ -514,14 +514,19 @@ Examples:
 Macro `foo`
 must be blank.
 
-// Conditional execution of Rimu definitions.
-// The block never generates output because empty divs are not emitted.
-// Assign `x` and `y` macro values if `foo` and `bar` are non-blank.
+// Conditional inclusion of arbitrary blocks of Rimu source.
+// Assign `x` and `y` macro values and include some CSS if `foo`
+// and `bar` are non-blank.
+// Works because Division Block does not emit div tags if they
+// have no HTML attributes.
 {foo=}.+skip
 {bar=}.+skip
 ..
 {x} = '42'
 {y} = '24'
+<style>
+  * { margin: 0; padding: 0; }
+</style>
 ..
 
 // Inline examples.

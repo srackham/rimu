@@ -630,8 +630,8 @@ Scelerisque feugiat massa alias.
 ..'
 {generate-rendered-example-1|division-block-example}
 
-If the rendered contents of the _Division Block_ is empty and the
-`<div>` element has no attributes then it is not emitted.
+If the _Division Block_ has no HTML attributes then the `<div>` and
+`</div>` tags are not emitted.
 
 
 ## HTML elements
