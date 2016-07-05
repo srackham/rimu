@@ -287,7 +287,7 @@ test('blocks', function(t) {
     'redefine macro');
   test_document(
     '..\nTo be...\n\nor not to be!\n..',
-    '<div><p>To be...</p>\n<p>or not to be!</p></div>',
+    '<p>To be...</p>\n<p>or not to be!</p>',
     'division block');
   test_document(
     '""\nTo be...\n\nor not to be!\n""',
@@ -346,8 +346,8 @@ test('blocks', function(t) {
     '<p><a href="mailto:joe@foo.com">Joe &amp; Jim</a></p>',
     'do not mistake url for HTML block');
   test_document(
-    '..\nTo be...\n\n...\nTo be...\n\nor not to be!\n...\n\nor not to be!\n..',
-    '<div><p>To be...</p>\n<div><p>To be...</p>\n<p>or not to be!</p></div>\n<p>or not to be!</p></div>',
+    '.noclass\n..\nTo be...\n\n...\nTo be...\n\nor not to be!\n...\n\nor not to be!\n..',
+    '<div class="noclass"><p>To be...</p>\n<p>To be...</p>\n<p>or not to be!</p>\n<p>or not to be!</p></div>',
     'nested Division blocks');
   test_document(
     '``\nTo be...\n\n```\nTo be...\n\nor not to be!\n```\n\nor not to be!\n``',
@@ -366,8 +366,8 @@ test('blocks', function(t) {
     '<div class="one two"><p>To be...</p></div>',
     'Division block with class injection');
   test_document(
-    '..\n\n..',
-    '',
+    '..\n\n..\n..\nfoobar\n..',
+    '<p>foobar</p>',
     'do not render empty Division block');
   test_document(
     '..\n{macro}=\'42\'\n..',
@@ -416,7 +416,7 @@ test('blocks', function(t) {
     'Mixed nested lists');
   test_document(
     '- Item 1\n..\nA\nparagraph\n..\n- Item 2\n\n  Indented',
-    '<ul><li>Item 1\n<div><p>A\nparagraph</p></div>\n</li><li>Item 2\n<pre><code>Indented</code></pre></li></ul>',
+    '<ul><li>Item 1\n<p>A\nparagraph</p>\n</li><li>Item 2\n<pre><code>Indented</code></pre></li></ul>',
     'list item with attached division block and indented paragraph');
   test_document(
     '- Item 1\n""\nA\nparagraph\n""',
@@ -438,8 +438,8 @@ test('blocks', function(t) {
     'c::\n' +
     'd',
     '<dl><dt>a</dt><dd>\n' +
-    '<div><ul><li>b\n' +
-    '</li></ul></div>\n' +
+    '<ul><li>b\n' +
+    '</li></ul>\n' +
     '</dd><dt>c</dt><dd>\n' +
     'd\n' +
     '</dd></dl>',
@@ -792,7 +792,7 @@ test('blocks', function(t) {
     'list html attributes');
   test_document(
     '.class1\n- Item\n..\n.class2\n...\nDivision\n...\n..\nParagraph',
-    '<ul class="class1"><li>Item\n<div><div class="class2"><p>Division</p></div></div>\n</li></ul><p>Paragraph</p>',
+    '<ul class="class1"><li>Item\n<div class="class2"><p>Division</p></div>\n</li></ul><p>Paragraph</p>',
     'list item with Division block containing Division block with html attributes');
   test_document(
     '{info}= \'.info #ref2 [style="color:green"]\'\n{info}\ngreeny\n\nnormal\n\n{2paragraphs} =\'paragraph 1\n\nparagraph2\'\n{2paragraphs}',
@@ -829,7 +829,7 @@ test('blocks', function(t) {
     'multiple block options');
   test_document(
     '.-container\n..\nfoo\n..',
-    '<div>foo</div>',
+    'foo',
     '-container expansion option');
   test_document(
     '.+container\n``\nFoo\n``',
@@ -941,6 +941,11 @@ test('blocks', function(t) {
     "{ipsum}=\'\'\n|paragraph| = '<p>|</p>'\n_Lorum_ & {ipsum}.\n\n|paragraph| = '-macros'\n\n_Lorum_ & {ipsum}.\n\n|paragraph| = '<p class=\"normal\">|</p> -spans +macros'\n\n_Lorum_ & {ipsum}.",
     '<p><em>Lorum</em> &amp; .</p>\n<p><em>Lorum</em> &amp; {ipsum}.</p>\n<p class="normal">_Lorum_ &amp; .</p>',
     'paragraph expansion options');
+  test_document(
+    '|division| = \'<div class="noclass">|</div>\'\n..\nfoobar\n..',
+    '<div class="noclass"><p>foobar</p></div>',
+    'division block with attribute'
+  );
 
   t.end();
 });
