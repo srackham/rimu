@@ -3,11 +3,20 @@
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
+
 ## Version 9.0.0 (2016-07-??)
-- The `rimuc` `--styled` option no longer needs Boostrap2 for
-  styling. You can optionally include Bootstrap2 using the new
-  `--boostrap2` option -- specify is option if you rely on.  Boostrap2
-  specific features.
+- **BREAKING CHANGE**: If a _Division Block_ has no HTML
+  attributes the `<div>` and `</div>` tags are not emitted.
+  Use this work-around if you want backward compatibility:
+```
+// Redefine Division block so it always has at least one
+// attribute so that the div tags are always emitted.
+|division| = '<div class="myclass">|</div>'
+```
+- The `rimuc` `--styled` option no longer needs Boostrap for
+  styling. You can optionally include Bootstrap 2 using the new
+  `--boostrap2` option -- specify `bootstrap2` if you rely on
+  Boostrap specific features.
 
 
 ## Version 8.0.1 (2016-06-26)
