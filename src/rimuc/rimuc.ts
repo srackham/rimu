@@ -33,6 +33,7 @@ OPTIONS
 
   -o, --output OUTFILE
     Write output to file OUTFILE instead of stdout.
+    If OUTFILE is a hyphen write to stdout.
 
   -p, --prepend SOURCE
     Process the SOURCE text before other inputs.
@@ -273,11 +274,11 @@ for (let infile of files) {
   html += Rimu.render(source, options) + '\n'
 }
 html = html.trim()
-if (outfile) {
-  fs.writeFileSync(outfile, html)
+if (!outfile || outfile === '-') {
+  process.stdout.write(html)
 }
 else {
-  process.stdout.write(html)
+  fs.writeFileSync(outfile, html)
 }
 if (errors) {
   process.exit(1)
