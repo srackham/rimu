@@ -87,6 +87,7 @@ OPTIONS
 
   -o, --output OUTFILE
     Write output to file OUTFILE instead of stdout.
+    If OUTFILE is a hyphen '-' write to stdout.
 
   -p, --prepend SOURCE
     Process the SOURCE text before other inputs.
@@ -96,10 +97,10 @@ OPTIONS
     Do not process .rimurc from the user's home directory.
 
   -s, --styled
-    Include HTML header and footer and Bootstrap CSS styling in
-    output. If only one source file is specified and the --output option
-    is not used then the output is written to a same-named file with
-    an .html extension.
+    Include an HTML header and footer for styling the HTML output
+    document. If only one source file is specified and the --output
+    option is not specified then the output is written to a
+    same-named file with an .html extension.
 
   --safe-mode NUMBER
     Non-zero safe modes ignore: Definition elements; API option elements;
@@ -207,7 +208,6 @@ files performs the following functions:
 - Supports [table of contents generation](#toc-generation).
 - Supports named [themes]({tips}#themes). There are two built-in
   themes: `default` (the default theme) and `graystone`.
-- Includes [Bootstrap](http://getbootstrap.com/2.3.2/) for styling.
 - Includes additional styles for verses, sidebars, text alignment,
   page break control and section numbering (see `rimuc --help` command
   and [Rimu Tips]({tips})).
@@ -617,12 +617,13 @@ This example uses the [rimuc](#rimuc-command) command `--styled`
 option's CSS _cite_ class to style the Anonymous attribution.
 
 ### Division Block
-A _Division Block_ is a container for other block elements, the
-contained elements are enclosed by an HTML `<div>` element.  The
-Division Block delimiter character is a period.
+A _Division Block_ is a container for block elements.
 
-A _Division Block_ can be used to group block elements and is useful
-for appending arbitrary block elements to list items.
+- The Division Block delimiter character is a period.
+- If the _Division Block_ has [HTML attributes](#block-attributes)
+  then the output is enclosed in an HTML `div` element.
+- If the _Division Block_ has no HTML attributes then the HTML `div`
+  tags are omitted.
 
 {division-block-example} = '..
 Nunc mauris tempor.
@@ -630,8 +631,9 @@ Scelerisque feugiat massa alias.
 ..'
 {generate-rendered-example-1|division-block-example}
 
-If the _Division Block_ has no HTML attributes then the `<div>` and
-`</div>` tags are not emitted.
+_Division Blocks_ are useful for appending arbitrary block elements to
+[list items](#lists). They can also be used to [conditionally
+include]({tips}#conditional-inclusion) Rimu source text.
 
 
 ## HTML elements

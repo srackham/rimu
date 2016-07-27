@@ -33,7 +33,7 @@ OPTIONS
 
   -o, --output OUTFILE
     Write output to file OUTFILE instead of stdout.
-    If OUTFILE is a hyphen write to stdout.
+    If OUTFILE is a hyphen '-' write to stdout.
 
   -p, --prepend SOURCE
     Process the SOURCE text before other inputs.
@@ -43,10 +43,10 @@ OPTIONS
     Do not process .rimurc from the user's home directory.
 
   -s, --styled
-    Include HTML header and footer and Bootstrap CSS styling in
-    output. If only one source file is specified and the --output option
-    is not used then the output is written to a same-named file with
-    an .html extension.
+    Include an HTML header and footer for styling the HTML output
+    document. If only one source file is specified and the --output
+    option is not specified then the output is written to a
+    same-named file with an .html extension.
 
   --safe-mode NUMBER
     Non-zero safe modes ignore: Definition elements; API option elements;

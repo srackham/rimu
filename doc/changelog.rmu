@@ -11,7 +11,7 @@ for more detailed information.
 ```
 // Redefine Division block so it always has at least one
 // attribute so that the div tags are always emitted.
-|division| = '<div class="myclass">|</div>'
+|division| = '<div class="dummy">|</div>'
 ```
 - The `rimuc` `--styled` option no longer needs Boostrap for
   styling. You can optionally include Bootstrap 2 using the new

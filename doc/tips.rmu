@@ -502,8 +502,8 @@ MathJax.
 
 .#conditional-inclusion
 ## Conditional Inclusion
-Macro invocations can be used to conditionally include source text.
-Examples:
+Macro invocations can be used to conditionally include Rimu source
+text:
 
 ``
 // Include script if `underscore` value is non-blank.
@@ -517,7 +517,7 @@ must be blank.
 // Conditional inclusion of arbitrary blocks of Rimu source.
 // Assign `x` and `y` macro values and include some CSS if `foo`
 // and `bar` are non-blank.
-// Works because Division Block does not emit div tags if they
+// Works because a Division Block does not emit div tags if they
 // have no HTML attributes.
 {foo=}.+skip
 {bar=}.+skip
@@ -552,10 +552,7 @@ for tables).
 You can use Rimu markup in table cells, just remember that HTML blocks
 must start at the left margin and end with a blank line.
 
-The {rimuc} `--styled` option includes
-[Bootstrap](http://getbootstrap.com/) so you can use
-[Bootstrap tables classes](http://getbootstrap.com/css/#tables) to
-create nicely formatted tables.
+The {rimuc} `--styled` option includes styling for bordered tables.
 
 .-macros
 {tables-example} = '<table class="bordered">
