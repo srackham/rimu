@@ -294,9 +294,17 @@ test('blocks', function(t) {
     '<blockquote><p>To be...</p>\n<p>or not to be!</p></blockquote>',
     'quote block');
   test_document(
+    '<em>HTML</em>',
+    '<p><em>HTML</em></p>',
+    'inline HTML tag is not a block');
+  test_document(
     '<p>Raw <em>HTML</em>\nis *passed* through</p>',
     '<p>Raw <em>HTML</em>\nis *passed* through</p>',
     'html block');
+  test_document(
+    '\\<p>escaped\\</p>',
+    '<p>&lt;p&gt;escaped&lt;/p&gt;</p>',
+    'escaped html block');
   test_document(
     '<!-- An HTML comment -->',
     '<!-- An HTML comment -->',
