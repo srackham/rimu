@@ -12,15 +12,12 @@
 <script>
 window.onload = function() {
   var headings = [].slice.call(document.body.querySelectorAll('#contents > h1, #contents > h2, #contents > h3'));
-  headings.forEach(function(heading, index) {
+  headings.forEach(function(heading) {
     var title = heading.textContent;
     var id = heading.getAttribute('id');
     if (!id) {
       id = slugify(title);
       heading.setAttribute('id', id);
-    }
-    if (index === 0 && heading.tagName === 'H1') {
-      id = ''; // Go to top of page.
     }
 {--sidebar-toc!}    appendTocEntry(heading, id);
 {--dropdown-toc!}    appendTocEntry(heading, id);
