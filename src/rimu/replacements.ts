@@ -72,8 +72,9 @@ const DEFAULT_DEFS: Definition[] = [
   },
 
   // HTML tags.
+  // Match HTML comment or HTML tag.
   {
-    match: /\\?(<[!\/]?[a-zA-Z\-]+(:?\s+[^<>&]+)?>)/g,
+    match: /\\?(<!--(?:[^<>&]*)?-->|<\/?[a-z][a-z0-9]*(?:\s+[^<>&]+)?>)/ig,
     replacement: '',
     filter: function (match: RegExpExecArray): string {
       return options.htmlSafeModeFilter(match[1])
