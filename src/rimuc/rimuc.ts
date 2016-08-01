@@ -76,6 +76,11 @@ OPTIONS
     --prepend "{--custom-toc}='true'"
     --prepend "{--section-numbers}='true'"
 
+  --styled-name NAME
+    Specify the --styled option header and footer files:
+    'default': Use default styles (default NAME).
+    'v8':      Use Rimu version 8 styling.
+
 STYLING MACROS AND CLASSES
   The following macros and CSS classes are available when the
   --styled option is used:
@@ -135,6 +140,7 @@ function die(message: string): void {
 let safeMode = 0
 let htmlReplacement: string = null
 let styled = false
+let styled_name = 'default'
 let no_rimurc = false
 let lint = false
 
@@ -201,11 +207,20 @@ outer:
           let macroValue = ['--title', '--theme'].indexOf(arg) > -1 ? process.argv.shift() : 'true'
           source += '{' + arg + '}=\'' + macroValue + '\'\n'
           break
+        case '--styled-name':
+          styled_name = process.argv.shift()
+          if (!styled_name) {
+            die('missing --styled-name')
+          }
+          if (styled_name !== 'v8') {
+            die('illegal --styled-name: ' + styled_name)
+          }
+          break
         default:
           if (arg[0] === '-') {
             die('illegal option: ' + arg)
           }
-          process.argv.unshift(arg); // List of source files.
+          process.argv.unshift(arg); // argv contains source file names.
           break outer
       }
     }
@@ -222,8 +237,8 @@ else if (styled && !outfile && files.length === 1) {
 
 if (styled) {
   // Envelope source files with header and footer.
-  files.unshift(path.resolve(__dirname, 'header.rmu'))
-  files.push(path.resolve(__dirname, 'footer.rmu'))
+  files.unshift(path.resolve(__dirname, `${styled_name}-header.rmu`))
+  files.push(path.resolve(__dirname, `${styled_name}-footer.rmu`))
 }
 
 // Prepend $HOME/.rimurc file if it exists.

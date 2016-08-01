@@ -1,0 +1,91 @@
+/*
+  Used by rimuc.js --styled option.
+*/
+
+// Close contents div.
+</div>
+
+{--highlightjs!}<script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>
+
+{--mathjax!}<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script>
+window.onload = function() {
+  var headings = [].slice.call(document.body.querySelectorAll('#contents > h1, #contents > h2, #contents > h3'));
+  headings.forEach(function(heading, index) {
+    var title = heading.textContent;
+    var id = heading.getAttribute('id');
+    if (!id) {
+      id = slugify(title);
+      heading.setAttribute('id', id);
+    }
+    if (index === 0 && heading.tagName === 'H1') {
+      id = ''; // Go to top of page.
+    }
+{--sidebar-toc!}    appendTocEntry(heading, id);
+{--dropdown-toc!}    appendTocEntry(heading, id);
+  });
+}
+function slugify(text) {
+  var slug = text.replace(/\s+/g, '-') // Replace spaces with dashes.
+      .replace(/[^\w-]/g, '')          // Retain alphanumeric, '-' and '_' characters.
+      .toLowerCase()
+  if (!slug) slug = 'x';
+  if (document.getElementById(slug)) { // Another element already has that id.
+    var i = 2, prefix = slug;
+    while (document.getElementById(slug = prefix + '-' + i++)) {}
+  }
+  return slug;
+}
+</script>
+
+.+skip
+{--sidebar-toc!}.-skip
+{--dropdown-toc!}.-skip
+<script>
+function appendTocEntry(heading, id) {
+  if (heading.classList.contains('no-auto-toc')) {
+    return;
+  }
+  var container = document.getElementById('auto-toc');
+  if (container === null) {
+    return;
+  }
+  var tocLink = document.createElement('a');
+  tocLink.setAttribute('href', '#' + id);
+  tocLink.textContent = heading.textContent;
+  var tocEntry = document.createElement('div');
+  tocEntry.setAttribute('class', heading.tagName.toLowerCase());
+  tocEntry.appendChild(tocLink);
+  container.appendChild(tocEntry);
+}
+</script>
+
+{--dropdown-toc=}.+skip
+<script>
+function toggleToc() {
+    document.getElementById("toc").classList.toggle('toc-visible');
+}
+window.onclick = function(event) {
+  if (!Element.prototype.matches) {
+    // matches() polyfill for old browsers.
+    var p = Element.prototype;
+    if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
+      p.matches = p.webkitMatchesSelector;
+    if (p.msMatchesSelector) // IE9/10/11 & Edge
+      p.matches = p.msMatchesSelector;
+    if (p.mozMatchesSelector) // FF<34
+      p.matches = p.mozMatchesSelector;
+  }
+  if (!event.target.matches('#toc-button, #toc, #toc :not(a)')) {
+    // Hide TOC if clicked outside TOC or on TOC link.
+    var toc = document.getElementById('toc');
+    if (toc.classList.contains('toc-visible')) {
+      toc.classList.remove('toc-visible');
+    }
+  }
+}
+</script>
+
+</body>
+</html>
