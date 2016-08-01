@@ -101,16 +101,27 @@ const DEFAULT_DEFS: Definition[] = [
   // HTML block.
   {
     name: 'html',
-    // Must start with  an <! or a block-level element start or end tag.
+    // Block starts with HTML comment, DOCTYPE directive or block-level HTML start or end tag.
     // $1 is first line of block.
-    /* tslint:disable:max-line-length */
-    openMatch: /^(<!.*|(?:<\/?(?:html|head|body|iframe|script|style|address|article|aside|audio|blockquote|canvas|dd|div|dl|fieldset|figcaption|figure|figcaption|footer|form|h1|h2|h3|h4|h5|h6|header|hgroup|hr|img|math|nav|noscript|ol|output|p|pre|section|table|textarea|tfoot|td|th|tr|ul|video)(?:[ >].*)?))$/i,
-    /* tslint:enable:max-line-length */
+    // $2 is the alphanumeric tag name.
+    openMatch: /^(<!--.*|<!DOCTYPE(?:\s.*)?|<\/?([a-z][a-z0-9]*)(?:[\s>].*)?)$/i,
     closeMatch: /^$/, // Blank line or EOF.
     openTag: '',
     closeTag: '',
     expansionOptions: {
       macros: true
+    },
+    verify: function (match: RegExpMatchArray): boolean {
+      // Return false if the HTML tag is an inline (non-block) tag.
+      /* tslint:disable:max-line-length */
+      let inlinetags = /^(a|abbr|acronym|address|b|bdi|bdo|big|blockquote|br|cite|code|del|dfn|em|i|ins|kbd|mark|q|s|samp|small|span|strike|strong|sub|sup|time|tt|u|var|wbr)$/i
+      /* tslint:enable:max-line-length */
+      if (match[2]) { // Matched alphanumeric tag name.
+        return !inlinetags.test(match[2])
+      }
+      else {
+        return true   // Matched HTML comment or doctype tag.
+      }
     },
     delimiterFilter: delimiterTextFilter,
     contentFilter: options.htmlSafeModeFilter
