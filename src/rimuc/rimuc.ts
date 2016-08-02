@@ -77,9 +77,9 @@ OPTIONS
 
   --styled-name NAME
     Specify the --styled option header and footer files:
-    'default': Use default styles (default NAME).
-    'flex':    Use flexbox styling (experimental).
-    'v8':      Use Rimu version 8 styling.
+    'legacy': Compatible with older browsers (default).
+    'flex':   Flexbox styling (experimental).
+    'v8':     Rimu version 8 styling.
 
 STYLING MACROS AND CLASSES
   The following macros and CSS classes are available when the
@@ -139,7 +139,7 @@ function die(message: string): void {
 let safeMode = 0
 let htmlReplacement: string = null
 let styled = false
-let styled_name = 'default'
+let styled_name = 'legacy'
 let no_rimurc = false
 let lint = false
 
@@ -210,7 +210,7 @@ outer:
           if (!styled_name) {
             die('missing --styled-name')
           }
-          if (['default', 'flex', 'v8'].indexOf(styled_name) === -1) {
+          if (['legacy', 'flex', 'v8'].indexOf(styled_name) === -1) {
             die('illegal --styled-name: ' + styled_name)
           }
           break
