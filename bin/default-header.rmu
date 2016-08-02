@@ -5,7 +5,6 @@
 /*
   Set macro default values.
 */
-{--} = ''
 {--highlightjs?} = ''
 {--mathjax?} = ''
 {--section-numbers?} = ''
@@ -21,15 +20,17 @@
 {--} = ''
 
 <!DOCTYPE HTML>
-<html lang="en">
+<html>
 <head>
-{--!} Force IE into Standards mode.
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta charset="UTF-8">
-  <title>{--title}</title>
-{--highlightjs!}  <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
+<meta charset="UTF-8">
+<title>{--title}</title>
+{--highlightjs!}<link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
 
-// Bootstrap polyfills.
+
+/*
+  Layout independent styles
+  -------------------------
+*/
 <style>
   * {
     margin: 0;
@@ -40,66 +41,6 @@
     line-height: 20px;
     color: #333333;
     background-color: #ffffff;
-  }
-  a {
-    text-decoration: none;
-  }
-  a:hover {
-    text-decoration: underline;
-  }
-  blockquote {
-    padding: 0 0 0 15px;
-  }
-  ul, ol {
-    padding: 0;
-    margin: 0 0 10px 25px;
-  }
-  code, pre {
-    font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
-  }
-  pre {
-    white-space: pre-wrap;
-    word-break: break-all;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  input[type=text], textarea {
-    padding: 4px;
-    border: 1px solid #dddddd;
-    border-radius: 4px;
-  }
-  input[type=text]:focus, textarea:focus {
-    outline: none;
-    box-shadow: 0 0 10px #9ecaed;
-  }
-  .dl-horizontal:before, .dl-horizontal:after {
-    display: table;
-    content: "";
-    line-height: 0;
-  }
-  .dl-horizontal:after {
-    clear: both;
-  }
-  .dl-horizontal > dt {
-    float: left;
-    clear: left;
-    text-align: right;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-align: left;
-    margin-top: 1.0em;
-    width: 25%;
-  }
-  .dl-horizontal > dd {
-    margin-left: 25%;
-    padding-left: 1.0em;
-  }
-</style>
-
-<style>
-  body {
     margin: 1em;
     max-width: 50em;
     font-family: Arial, Helvetica, sans-serif;
@@ -140,11 +81,21 @@
   a, a:hover {
     color: #527bbd;
   }
+  a {
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
   p, pre, li, dt, dd, blockquote p {
     font-size: inherit;
     line-height: 1.45;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
+  }
+  ul, ol {
+    padding: 0;
+    margin: 0 0 10px 25px;
   }
   dt {
     margin-bottom: 0;
@@ -164,6 +115,7 @@
     margin-top: 0;
   }
   blockquote {
+    padding: 0 0 0 15px;
     border: none;
     border-left: 5px solid #eeeeee;
     font-family: Georgia, serif;
@@ -179,6 +131,16 @@
   }
   .cite::before {
     content: "\2014 \2009";
+  }
+  code, pre {
+    font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-break: break-all;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
   }
   pre {
     padding: 6px;
@@ -208,6 +170,15 @@
   }
   pre span {
     opacity: 1 !important;
+  }
+  input[type=text], textarea {
+    padding: 4px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+  }
+  input[type=text]:focus, textarea:focus {
+    outline: none;
+    box-shadow: 0 0 10px #9ecaed;
   }
   /* Rimu classes. */
 {--!} Apply verse class to Normal Paragraphs and Division blocks.
@@ -253,7 +224,30 @@
   .line-breaks {
     white-space: pre;
   }
-  /* List item counters and definition list numbering. */
+{--!} Horizontal labeled list.
+  .dl-horizontal:before, .dl-horizontal:after {
+    display: table;
+    content: "";
+    line-height: 0;
+  }
+  .dl-horizontal:after {
+    clear: both;
+  }
+  .dl-horizontal > dt {
+    float: left;
+    clear: left;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+    margin-top: 1.0em;
+    width: 25%;
+  }
+  .dl-horizontal > dd {
+    margin-left: 25%;
+    padding-left: 1.0em;
+  }
 {--!} List item counters.
   dl {
     counter-reset: dl-counter;
@@ -287,6 +281,12 @@
   .dl-numbered > dt:before {
     content: counter(dl-counter) ". ";
   }
+{--!} Print styles.
+  @media print {
+    .no-print, .no-print * {
+      display: none !important;
+    }
+  }
 </style>
 
 {--section-numbers=}.+skip
@@ -304,6 +304,67 @@
   }
 </style>
 
+// Graystone theme.
+{--theme!.*\bgraystone\b.*}.+skip
+<style>
+  body {
+    font-size: 13pt;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    color: #888;
+  }
+  h1, h2 {
+    text-transform: uppercase;
+  }
+  a, a:hover {
+    color: #888;
+    text-decoration: underline;
+  }
+  @media print {
+    a {
+      text-decoration: none;
+    }
+  }
+</style>
+
+// Common to --sidebar-toc and --dropdown-toc.
+.+skip
+{--sidebar-toc!}.-skip
+{--dropdown-toc!}.-skip
+<style>
+  #toc {
+    padding-left: 1em;
+  }
+  #toc .h1 {
+    font-size: 110%;
+    font-weight: bold;
+    margin-top: 0.5em;
+    margin-bottom: 0.4em;
+  }
+  #toc .h2 {
+    margin-top: 0.4em;
+  }
+  #toc .h3 {
+    margin-left: 1.5em;
+    font-size: 90%;
+  }
+  #toc div:nth-child(even) {
+    background-color: #f8f8f8;
+  }
+</style>
+
+
+/*
+  Responsive Web design tweaks
+  ----------------------------
+*/
+// TODO
+
+
+/*
+  Layout styles
+  -------------
+*/
 {--sidebar-toc=}.+skip
 <style>
   body {
@@ -319,6 +380,11 @@
     overflow-y: auto;
     overflow-x: hidden;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.35);
+  }
+  @media print {
+    body {
+      padding-left: 1em;
+    }
   }
 </style>
 
@@ -352,60 +418,9 @@
   #contents {
     margin-left: 40px;
   }
-</style>
-
-// Common to --sidebar-toc and --dropdown-toc.
-.+skip
-{--sidebar-toc!}.-skip
-{--dropdown-toc!}.-skip
-<style>
   @media print {
-    .no-print, .no-print * {
-      display: none !important;
-    }
-    body {
-      padding-left: 1em;
-    }
-  }
-  #toc {
-    padding-left: 1em;
-  }
-  #toc .h1 {
-    font-size: 110%;
-    font-weight: bold;
-    margin-top: 0.5em;
-    margin-bottom: 0.4em;
-  }
-  #toc .h2 {
-    margin-top: 0.4em;
-  }
-  #toc .h3 {
-    margin-left: 1.5em;
-    font-size: 90%;
-  }
-  #toc div:nth-child(even) {
-    background-color: #f8f8f8;
-  }
-</style>
-
-{--theme!.*\bgraystone\b.*}.+skip
-<style>
-  body {
-    font-size: 13pt;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    color: #888;
-  }
-  h1, h2 {
-    text-transform: uppercase;
-  }
-  a, a:hover {
-    color: #888;
-    text-decoration: underline;
-  }
-  @media print {
-    a {
-      text-decoration: none;
+    #contents {
+      margin-left: 0px;
     }
   }
 </style>
