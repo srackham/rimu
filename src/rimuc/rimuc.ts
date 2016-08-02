@@ -79,6 +79,7 @@ OPTIONS
   --styled-name NAME
     Specify the --styled option header and footer files:
     'default': Use default styles (default NAME).
+    'flex':    Use flexbox styling (experimental).
     'v8':      Use Rimu version 8 styling.
 
 STYLING MACROS AND CLASSES
@@ -212,7 +213,7 @@ outer:
           if (!styled_name) {
             die('missing --styled-name')
           }
-          if (styled_name !== 'v8') {
+          if (['default', 'flex', 'v8'].indexOf(styled_name) === -1) {
             die('illegal --styled-name: ' + styled_name)
           }
           break
