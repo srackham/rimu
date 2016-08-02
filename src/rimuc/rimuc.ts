@@ -68,7 +68,6 @@ OPTIONS
     Shortcuts for the following prepended macro definitions:
     --prepend "{--theme}='THEME'"
     --prepend "{--title}='TITLE'"
-    --prepend "{--bootstrap2}='true'"
     --prepend "{--highlightjs}='true'"
     --prepend "{--mathjax}='true'"
     --prepend "{--sidebar-toc}='true'"
@@ -92,7 +91,6 @@ STYLING MACROS AND CLASSES
   --theme            Set styling themes.
                      Theme names: default, graystone.
   --title            HTML document title .
-  --bootstrap2       Set to non-blank value to include Bootstrap2.
   --highlightjs      Set to non-blank value to enable syntax
                      highlighting with Highlight.js.
   --mathjax          Set to a non-blank value to enable MathJax.
@@ -195,7 +193,6 @@ outer:
           styled = true
           break
         // Styling macro definitions shortcut options.
-        case '--bootstrap2':
         case '--highlightjs':
         case '--mathjax':
         case '--section-numbers':

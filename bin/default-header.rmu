@@ -5,7 +5,7 @@
 /*
   Set macro default values.
 */
-{--bootstrap2?} = ''
+{--} = ''
 {--highlightjs?} = ''
 {--mathjax?} = ''
 {--section-numbers?} = ''
@@ -27,10 +27,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta charset="UTF-8">
   <title>{--title}</title>
-{--bootstrap2!}  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
 {--highlightjs!}  <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
 
-{--bootstrap2!}.+skip
 // Bootstrap polyfills.
 <style>
   * {
