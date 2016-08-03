@@ -281,7 +281,7 @@
   .dl-numbered > dt:before {
     content: counter(dl-counter) ". ";
   }
-{--!} Print styles.
+{--!} Print classes.
   @media print {
     .no-print, .no-print * {
       display: none !important;
@@ -355,13 +355,6 @@
 
 
 /*
-  Responsive Web design tweaks
-  ----------------------------
-*/
-// TODO
-
-
-/*
   Layout styles
   -------------
 */
@@ -423,6 +416,44 @@
       margin-left: 0px;
     }
   }
+</style>
+
+
+/*
+  Responsive Web design tweaks
+  ----------------------------
+*/
+<meta name="viewport" content="width=device-width">
+<style>
+{--!} Small screens.
+@media screen and (max-width: 700px) {
+  body {
+    font-size: 20px;
+    margin: 5px;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    color: red;
+  }
+  {
+    img: max-width: 100%;
+  }
+{--!}  Sidebar TOC hidden as it does not work on small screens.
+{--sidebar-toc!}  body {
+{--sidebar-toc!}    padding-left: 0;
+{--sidebar-toc!}  }
+{--sidebar-toc!}  #toc {
+{--sidebar-toc!}    display: none !important;
+{--sidebar-toc!}  }
+{--!}  Reposition TOC and TOC button.
+{--dropdown-toc!}  #toc {
+{--dropdown-toc!}    top: 60px;
+{--dropdown-toc!}    left: 5px;
+{--dropdown-toc!}  }
+{--dropdown-toc!}  #toc-button {
+{--dropdown-toc!}    top: 20px;
+{--dropdown-toc!}    left: 5px;
+{--dropdown-toc!}  }
+}
 </style>
 
 </head>
