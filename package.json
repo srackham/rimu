@@ -38,10 +38,10 @@
     "jshint": "^2.9.2",
     "jsonlint": "^1.6.2",
     "nu-html-checker": "^0.1.0",
-    "shelljs": "^0.7.2",
+    "shelljs": "^0.7.3",
     "tape": "^4.6.0",
     "ts-loader": "^0.8.2",
-    "tslint": "^3.13.0",
+    "tslint": "^3.14.0",
     "typescript": "^1.8.10",
     "uglify-js": "^2.7.0",
     "webpack": "^1.13.1"
