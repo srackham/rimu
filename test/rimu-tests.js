@@ -483,6 +483,10 @@ test('blocks', function(t) {
     '<hr>\n<br>\n<p>&lt;BR&gt;&lt;HR&gt;</p>\n<p>&ZeroWidthSpace;&lt;div&gt;</p>',
     'html blocks and spans');
   test_document(
+    '<img src="test.jpg" alt="Test">',
+    '<p><img src="test.jpg" alt="Test"></p>',
+    '<img> tag is inline tag (Markdown behaviour)');
+  test_document(
     '<chapter1.html>',
     '<p><a href="chapter1.html">chapter1.html</a></p>',
     'relative file name url');
