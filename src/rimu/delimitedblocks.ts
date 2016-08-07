@@ -4,6 +4,7 @@ import * as options from './options'
 import * as io from './io'
 import * as macros from './macros'
 import * as lineBlocks from './lineblocks'
+import {MATCH_INLINE_TAG} from './replacements'
 
 // Multi-line block element definition.
 export interface Definition {
@@ -113,11 +114,8 @@ const DEFAULT_DEFS: Definition[] = [
     },
     verify: function (match: RegExpMatchArray): boolean {
       // Return false if the HTML tag is an inline (non-block) tag.
-      /* tslint:disable:max-line-length */
-      let inlinetags = /^(a|abbr|acronym|address|b|bdi|bdo|big|blockquote|br|cite|code|del|dfn|em|i|ins|kbd|mark|q|s|samp|small|span|strike|strong|sub|sup|time|tt|u|var|wbr)$/i
-      /* tslint:enable:max-line-length */
       if (match[2]) { // Matched alphanumeric tag name.
-        return !inlinetags.test(match[2])
+        return !MATCH_INLINE_TAG.test(match[2])
       }
       else {
         return true   // Matched HTML comment or doctype tag.

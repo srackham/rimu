@@ -479,8 +479,8 @@ test('blocks', function(t) {
     '<p># I am not a header</p>',
     'escaped header');
   test_document(
-    '<hr>\n<br>\n\n\\<br><HR>\n\n&ZeroWidthSpace;\\<div>',
-    '<hr>\n<br>\n<p>&lt;br&gt;<HR></p>\n<p>&ZeroWidthSpace;&lt;div&gt;</p>',
+    '<hr>\n<br>\n\n\\<BR><HR>\n\n&ZeroWidthSpace;\\<div>',
+    '<hr>\n<br>\n<p>&lt;BR&gt;&lt;HR&gt;</p>\n<p>&ZeroWidthSpace;&lt;div&gt;</p>',
     'html blocks and spans');
   test_document(
     '<chapter1.html>',
