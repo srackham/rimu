@@ -52,7 +52,7 @@ experimentation.
 {generate-rendered-example-2|macros-example}
 
 - The `\{sidebar}` macro shows how you can inject CSS styles into a
-  _Division Block_ (you could also use use <#scoped-css|scoped CSS> to
+  _Division Block_ (you could also use use <#scoped-css|CSS> to
   style the output).
 - Note how macro definitions can span multiple lines and can contain
   any valid Rimu markup (including HTML and blank lines).
@@ -329,14 +329,39 @@ TODO 10 examples +-2'
 
 .#scoped-css
 ## Custom styling
+.sidebar
+..
+#### Scoped styling removed from HTML5 spec 12-May-2016
+The `scoped` attribute was [removed from the HTML5 spec in May
+2016](https://github.com/whatwg/html/commit/c2a3b2a2e3db49c14b486a5e99acf7d10cfe8443)
+"due to lack of implementer interest".  Consequently the examples
+below are, strictly speaking, illegal.  This is because the `style`
+element can now only reside inside the `head` element.  In practice
+however, all popular browsers allow `style` elements outside the
+`head` element (the styles from these elements are applied globally
+and the `scoped` attribute is ignored).
+
+The examples below generate `style` elements located outside the
+`head` element and although they work perfectly they do not pass
+HTML5 validator checks. Prior to Rimu version 9 these examples
+used the `style` element `scoped` attribute.
+
+See also:
+
+- [What is the current state of the “scoped” attribute for the style
+  element in
+  HTML5?](http://stackoverflow.com/questions/28633038/what-is-the-current-state-of-the-scoped-attribute-for-the-style-element-in-htm).
+- [MDN
+  <style>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style).
+..
+
 You can include custom CSS styles in the body of a Rimu document using
-a [scoped]((http://www.w3schools.com/tags/att_style_scoped.asp) HTML
-`style` element. Here are three use-cases:
+an HTML `style` element. Here are three use-cases:
 
 . Change existing styling. The following example changes the color of
   all headers to red:
 ``
-<style scoped>
+<style>
   h1, h2, h3, h4, h5, h6 {
     color: red;
   }
@@ -346,7 +371,7 @@ a [scoped]((http://www.w3schools.com/tags/att_style_scoped.asp) HTML
 . Add a new block style. The following example puts a green border
   around blocks with the `green-border` class:
 ``
-<style scoped>
+<style>
   .green-border {
     border: 5px solid green;
   }
@@ -360,12 +385,6 @@ Green is the color of envy.
 
 IMPORTANT: The `style` element must not contain any blank lines because
 Rimu HTML block elements are terminated with a blank line
-
-Normally you would want the style to apply to your entire document so
-put the `style` elements at the top level i.e. not nested inside other
-block elements.  HTML5 stipulates that scoped _style_ element must be
-the first child element -- but in practice  most browsers don't care
-where it occurs.
 
 
 ## Themes
@@ -388,7 +407,7 @@ elements.  Here is an example theme named _redheads_:
 
 ``
 {--theme!.*\bredheads\b.*}.+skip
-<style scoped>
+<style>
   h1, h2, h3, h4, h5, h6 {
     color: red;
   }
@@ -1010,7 +1029,7 @@ Joe Jetson
 - If you want to control the print margins put something like this at
   the start of the document:
 ``
-<style scoped>
+<style>
 @page
 { margin: 25mm 25mm 25mm 25mm; }
 </style>

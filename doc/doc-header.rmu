@@ -5,7 +5,7 @@
 // By default examples generation is disabled.
 {generate-examples?} = ''
 
-<style scoped>
+<style>
 .edit-source {
   font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
   line-height: normal;
@@ -24,7 +24,7 @@
 
 // Examples styles.
 {generate-examples=}.+skip
-<style scoped>
+<style>
 .edit-icon {
   font-size: 16px;
   text-decoration: underline;
