@@ -73,7 +73,7 @@
   }
   h2 {
     margin-top: 1.5em;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid {border-color};
   }
   table {
     border-collapse: collapse;
@@ -147,16 +147,13 @@
     font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
   }
   pre {
-    white-space: pre-wrap;
-    word-break: break-all;
-    background-color: #f5f5f5;
-    border: 1px solid {border-color};
-    border-radius: 4px;
-  }
-  pre {
-    padding: 6px;
     line-height: normal;
     white-space: pre-wrap;
+    word-break: break-all;
+    background-color: {gray-background};
+    border: 1px solid {border-color};
+    border-radius: 4px;
+    padding: 6px;
   }
   .light-background {
     background-color: {gray-background};
@@ -462,8 +459,8 @@
     font-size: 20px;
     margin: 5px;
   }
-  {
-    img: max-width: 100%;
+  img {
+    max-width: 100%;
   }
 }
 </style>
