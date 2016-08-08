@@ -19,6 +19,11 @@
 // "Blank" macro.
 {--} = ''
 
+/*
+  CSS variables.
+*/
+{small-screen} = 'screen and (max-width: 700px)'
+
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -163,7 +168,7 @@
   .dl-horizontal > dd {
     margin-top: 1.0em;
   }
-  /* highlight.js tweaks. */
+  {--!} highlight.js tweaks.
   pre > code {
     background-color: inherit;
     padding: 0;
@@ -180,8 +185,8 @@
     outline: none;
     box-shadow: 0 0 10px #9ecaed;
   }
-  /* Rimu classes. */
-{--!} Apply verse class to Normal Paragraphs and Division blocks.
+  {--!} Rimu classes.
+  {--!} Apply verse class to Normal Paragraphs and Division blocks.
   .verse {
     margin: 1.5em 20px;
   }
@@ -191,7 +196,7 @@
     margin-top: 0.75em;
     margin-bottom: 0.75em;
   }
-{--!} Apply sidebar class to Normal Paragraphs and Division blocks.
+  {--!} Apply sidebar class to Normal Paragraphs and Division blocks.
   .sidebar {
     border: 1px solid #dddddd;
     border-radius: 4px;
@@ -202,15 +207,15 @@
   div.sidebar *:first-child {
     margin-top: 0.2em;
   }
-{--!} Force page break before the element.
+  {--!} Force page break before the element.
   .page-break {
     page-break-before: always;
   }
-{--!} Avoid page breaks inside the element.
+  {--!} Avoid page breaks inside the element.
   .no-page-break {
     page-break-inside: avoid;
   }
-{--!} Text block alignment classes.
+  {--!} Text block alignment classes.
   .align-left {
     text-align: left;
   }
@@ -220,11 +225,11 @@
   .align-right {
     text-align: right;
   }
-{--!} Do not wrap line breaks.
+  {--!} Do not wrap line breaks.
   .line-breaks {
     white-space: pre;
   }
-{--!} Horizontal labeled list.
+  {--!} Horizontal labeled list.
   .dl-horizontal:before, .dl-horizontal:after {
     display: table;
     content: "";
@@ -248,7 +253,7 @@
     margin-left: 25%;
     padding-left: 1.0em;
   }
-{--!} List item counters.
+  {--!} List item counters.
   dl {
     counter-reset: dl-counter;
   }
@@ -267,7 +272,7 @@
   ul > li {
     counter-increment: ul-counter;
   }
-{--!} Prefix list counter to counter class element content.
+  {--!} Prefix list counter to counter class element content.
   .dl-counter:before {
     content: counter(dl-counter) " ";
   }
@@ -277,11 +282,11 @@
   .ul-counter:before {
     content: counter(ul-counter) " ";
   }
-{--!} Number labeled list items.
+  {--!} Number labeled list items.
   .dl-numbered > dt:before {
     content: counter(dl-counter) ". ";
   }
-{--!} Print classes.
+  {--!} Print classes.
   @media print {
     .no-print, .no-print * {
       display: none !important;
@@ -379,6 +384,15 @@
       padding-left: 1em;
     }
   }
+  @media {small-screen} {
+    {--!}  Sidebar TOC hidden as it does not work on small screens.
+    body {
+      padding-left: 0;
+    }
+    #toc {
+      display: none !important;
+    }
+  }
 </style>
 
 {--dropdown-toc=}.+skip
@@ -416,6 +430,17 @@
       margin-left: 0px;
     }
   }
+  @media {small-screen} {
+    {--!}  Reposition TOC and TOC button.
+    #toc {
+      top: 60px;
+      left: 5px;
+    }
+    #toc-button {
+      top: 20px;
+      left: 5px;
+    }
+  }
 </style>
 
 
@@ -425,8 +450,7 @@
 */
 <meta name="viewport" content="width=device-width">
 <style>
-{--!} Small screens.
-@media screen and (max-width: 700px) {
+@media {small-screen} {
   body {
     font-size: 20px;
     margin: 5px;
@@ -437,22 +461,6 @@
   {
     img: max-width: 100%;
   }
-{--!}  Sidebar TOC hidden as it does not work on small screens.
-{--sidebar-toc!}  body {
-{--sidebar-toc!}    padding-left: 0;
-{--sidebar-toc!}  }
-{--sidebar-toc!}  #toc {
-{--sidebar-toc!}    display: none !important;
-{--sidebar-toc!}  }
-{--!}  Reposition TOC and TOC button.
-{--dropdown-toc!}  #toc {
-{--dropdown-toc!}    top: 60px;
-{--dropdown-toc!}    left: 5px;
-{--dropdown-toc!}  }
-{--dropdown-toc!}  #toc-button {
-{--dropdown-toc!}    top: 20px;
-{--dropdown-toc!}    left: 5px;
-{--dropdown-toc!}  }
 }
 </style>
 
