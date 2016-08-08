@@ -23,6 +23,11 @@
   CSS variables.
 */
 {small-screen} = 'screen and (max-width: 700px)'
+
+{primary-font} = 'Arial, Helvetica, sans-serif'
+{secondary-font} = 'Georgia, serif'
+{code-font} = 'Monaco,Menlo,Consolas,"Courier New",monospace'
+
 {text-color} = '#333333'
 {border-color} = '#dddddd'
 {primary-color} = '#527bbd'
@@ -30,6 +35,10 @@
 {gray-background} = '#f8f8f8'
 {butter-background} = '#ffffee'
 
+
+/*
+  HTML header
+*/
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -54,7 +63,7 @@
     background-color: {primary-background};
     margin: 1em;
     max-width: 50em;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: {primary-font};
   }
   h1, h2, h3, h4, h5, h6 {
     margin: 10px 0;
@@ -129,7 +138,7 @@
     padding: 0 0 0 15px;
     border: none;
     border-left: 5px solid #eeeeee;
-    font-family: Georgia, serif;
+    font-family: {secondary-font};
     font-style: italic;
     width: 80%;
     margin: 1.5em 0;
@@ -144,7 +153,7 @@
     content: "\2014 \2009";
   }
   code, pre {
-    font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+    font-family: {code-font};
   }
   pre {
     line-height: normal;
@@ -194,7 +203,7 @@
     margin: 1.5em 20px;
   }
   div.verse p, p.verse {
-    font-family: Georgia, serif;
+    font-family: {secondary-font};
     white-space: pre;
     margin-top: 0.75em;
     margin-bottom: 0.75em;
