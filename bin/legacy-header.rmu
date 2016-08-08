@@ -23,6 +23,12 @@
   CSS variables.
 */
 {small-screen} = 'screen and (max-width: 700px)'
+{text-color} = '#333333'
+{border-color} = '#dddddd'
+{primary-color} = '#527bbd'
+{primary-background} = 'white'
+{gray-background} = '#f8f8f8'
+{butter-background} = '#ffffee'
 
 <!DOCTYPE HTML>
 <html>
@@ -44,15 +50,15 @@
   body {
     font-size: 14px;
     line-height: 20px;
-    color: #333333;
-    background-color: #ffffff;
+    color: {text-color};
+    background-color: {primary-background};
     margin: 1em;
     max-width: 50em;
     font-family: Arial, Helvetica, sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
     margin: 10px 0;
-    color: #527bbd;
+    color: {primary-color};
   }
   h1 { font-size: 2.2em; line-height: 40px;}
   h2 { font-size: 1.5em; }
@@ -78,13 +84,13 @@
     vertical-align: top;
   }
   .bordered td, .bordered th {
-    border: 1px solid #dddddd;
+    border: 1px solid {border-color};
   }
   th {
     padding: 8px;
   }
   a, a:hover {
-    color: #527bbd;
+    color: {primary-color};
   }
   a {
     text-decoration: none;
@@ -144,7 +150,7 @@
     white-space: pre-wrap;
     word-break: break-all;
     background-color: #f5f5f5;
-    border: 1px solid #ddd;
+    border: 1px solid {border-color};
     border-radius: 4px;
   }
   pre {
@@ -153,7 +159,7 @@
     white-space: pre-wrap;
   }
   .light-background {
-    background-color: #f8f8f8;
+    background-color: {gray-background};
     border: none;
   }
   code {
@@ -162,7 +168,7 @@
   }
   *:not(pre) > code {
     border: none;
-    background-color: #f8f8f8;
+    background-color: {gray-background};
     white-space: nowrap;
   }
   .dl-horizontal > dd {
@@ -178,7 +184,7 @@
   }
   input[type=text], textarea {
     padding: 4px;
-    border: 1px solid #dddddd;
+    border: 1px solid {border-color};
     border-radius: 4px;
   }
   input[type=text]:focus, textarea:focus {
@@ -198,9 +204,9 @@
   }
   {--!} Apply sidebar class to Normal Paragraphs and Division blocks.
   .sidebar {
-    border: 1px solid #dddddd;
+    border: 1px solid {border-color};
     border-radius: 4px;
-    background: #ffffee;
+    background: {butter-background};
     padding: 10px;
     margin: 1.5em 0px;
   }
@@ -310,19 +316,20 @@
 </style>
 
 // Graystone theme.
+{graystone-color} = '#888'
 {--theme!.*\bgraystone\b.*}.+skip
 <style>
   body {
     font-size: 13pt;
   }
   h1, h2, h3, h4, h5, h6 {
-    color: #888;
+    color: {graystone-color};
   }
   h1, h2 {
     text-transform: uppercase;
   }
   a, a:hover {
-    color: #888;
+    color: {graystone-color};
     text-decoration: underline;
   }
   @media print {
@@ -354,7 +361,7 @@
     font-size: 90%;
   }
   #toc div:nth-child(even) {
-    background-color: #f8f8f8;
+    background-color: {gray-background};
   }
 </style>
 
@@ -419,7 +426,7 @@
     max-width: 30em;
     max-height: 80%;
     overflow-y: auto;
-    background-color: white;
+    background-color: {primary-background};
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
   }
   #contents {
@@ -454,9 +461,6 @@
   body {
     font-size: 20px;
     margin: 5px;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    color: red;
   }
   {
     img: max-width: 100%;
