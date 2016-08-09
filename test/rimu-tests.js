@@ -958,6 +958,11 @@ test('blocks', function(t) {
     '<div class="noclass"><p>foobar</p></div>',
     'division block with attribute'
   );
+  test_document(
+    '.-macros -spans -specials -container\n..\n\n<script> \n\n& _{macro}_<br>\n\n\n..',
+    '\n<script> \n\n& _{macro}_<br>\n\n',
+    'division block pass-through'
+  );
 
   t.end();
 });
