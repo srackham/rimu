@@ -26,7 +26,7 @@
 
 {primary-font} = 'Arial, Helvetica, sans-serif'
 {secondary-font} = 'Georgia, serif'
-{code-font} = 'Monaco,Menlo,Consolas,"Courier New",monospace'
+{code-font} = 'Monaco, Menlo, Consolas, "Courier New", monospace'
 
 {text-color} = '#333333'
 {border-color} = '#dddddd'
@@ -311,11 +311,11 @@
   /* Section numbers. */
   body,h1 { counter-reset: h2-counter; }
   h2      { counter-reset: h3-counter; }
-  #contents > h2:before {
+  #article > h2:before {
     content: counter(h2-counter) ". ";
     counter-increment: h2-counter;
   }
-  #contents > h3:before {
+  #article > h3:before {
     content: counter(h2-counter) "." counter(h3-counter) ". ";
     counter-increment: h3-counter;
   }
@@ -435,11 +435,11 @@
     background-color: {primary-background};
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
   }
-  #contents {
+  #article {
     margin-left: 40px;
   }
   @media print {
-    #contents {
+    #article {
       margin-left: 0px;
     }
   }
@@ -491,4 +491,4 @@
   <div id="auto-toc"></div>
 </div>
 
-<div id="contents">
+<div id="article">
