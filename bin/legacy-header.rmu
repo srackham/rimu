@@ -61,8 +61,6 @@
     line-height: 20px;
     color: {text-color};
     background-color: {primary-background};
-    margin: 1em;
-    max-width: 50em;
     font-family: {primary-font};
   }
   h1, h2, h3, h4, h5, h6 {
@@ -379,7 +377,9 @@
 {--sidebar-toc=}.+skip
 <style>
   body {
+    margin: 1em;
     padding-left: 21em;
+    max-width: 50em;
   }
   #toc {
     position: fixed;

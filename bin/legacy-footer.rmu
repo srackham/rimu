@@ -2,7 +2,7 @@
   Used by rimuc.js --styled option.
 */
 
-// Close contents div.
+// Close article div.
 </div>
 
 {--highlightjs!}<script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>
