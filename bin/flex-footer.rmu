@@ -2,7 +2,8 @@
   Used by rimuc.js --styled option.
 */
 
-</article>
+// Close article div.
+</div>
 
 {--highlightjs!}<script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>
 
@@ -10,7 +11,7 @@
 
 <script>
 window.onload = function() {
-  var headings = [].slice.call(document.body.querySelectorAll('article > h1, article > h2, article > h3'));
+  var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
   headings.forEach(function(heading) {
     var title = heading.textContent;
     var id = heading.getAttribute('id');
