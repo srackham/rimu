@@ -159,7 +159,6 @@ Rimu source</td>
 {example-rimurc} = 'https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.rmu'
 
 // Custom table of contents.
-{--dropdown-toc!}<div id="toc-button" onclick="toggleToc()" class="no-print">&#8801;</div>
 <div id="toc" class="no-print">
   <h2 style="font-size:1.2em; margin-top:1.0em">Links</h2>
   <div class="h2"><a href="index.html">Rimu Home</a></div>

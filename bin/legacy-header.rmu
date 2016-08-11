@@ -477,12 +477,11 @@
 </head>
 <body>
 
-// Include dropdown TOC button unless a custom TOC is specified.
+// Include dropdown TOC button.
 {--dropdown-toc=}.+skip
-{--custom-toc!}.+skip
 <div id="toc-button" onclick="toggleToc()" class="no-print">&#8801;</div>
 
-// Include for sidebar and dropdown TOC unless a custom TOC is specified.
+// Include TOC unless a custom TOC is specified.
 .+skip
 {--sidebar-toc!}.-skip
 {--dropdown-toc!}.-skip
