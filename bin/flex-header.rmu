@@ -398,7 +398,6 @@
   #nav {
     flex: 0 1 auto;
     order: 1;
-    padding-top: 15px;
     background: #527bbd;
   }
   #toc {
@@ -416,6 +415,7 @@
     cursor: pointer;
     color: white;
     font-size: 48px;
+    display: inline-block;
   }
   #article {
     flex: 0 1 auto;
@@ -439,6 +439,8 @@
   #nav {
     height: 100%;
     width: 30px;
+  }
+  #toc-button {
     padding-top: 15px;
   }
   @media print {
@@ -453,8 +455,10 @@
     flex-direction: column;
   }
   #nav {
-    height:30px;
+    height:40px;
     width: 100%;
+  }
+  #toc-button {
     padding-top: 10px;
   }
   @media print {
