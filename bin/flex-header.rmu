@@ -390,8 +390,6 @@
   }
   body {
     display: flex;
-/*    flex-direction: row; */
-    flex-direction: column;
   }
   #nav, #article, #toc {
     padding-left: 5px;
@@ -401,23 +399,30 @@
     flex: 0 1 auto;
     order: 1;
     padding-top: 15px;
-    height: 100%;
-    width: 30px;
     background: #527bbd;
-    height:30px;
-    width: 100%;
     padding-top: 10px;
   }
   #toc {
+    display: none;
     flex: 0 1 auto;
     order: 2;
     overflow-y: scroll;
     height: 100%;
+    width: 100%;
+  }
+  .display-block {
+    display: block !important;
+  }
+  #toc-button {
+    cursor: pointer;
+    color: white;
+    font-size: 48px;
   }
   #article {
     flex: 0 9999 auto;  /* 9999 so TOC will shrink article to zero */
     order: 3;
     overflow-y: scroll;
+    width: 100%;
   }
   #article > * {
     max-width: 700px;
@@ -426,6 +431,13 @@
 
 {--sidebar-toc=}.+skip
 <style>
+  body {
+    flex-direction: row;
+  }
+  #nav {
+    height: 100%;
+    width: 30px;
+  }
   @media print {
   }
   @media {large-screen} {
@@ -434,16 +446,12 @@
 
 {--dropdown-toc=}.+skip
 <style>
-  .toc-visible {
-    display: flex !important;
+  body {
+    flex-direction: column;
   }
-  #toc {
-    display: none;
-  }
-  #toc-button {
-    cursor: pointer;
-    color: white;
-    font-size: 48px;
+  #nav {
+    height:30px;
+    width: 100%;
   }
   @media print {
   }
@@ -465,15 +473,16 @@
 </head>
 <body>
 
-// Include dropdown TOC button unless a custom TOC is specified.
-{--dropdown-toc=}.+skip
-{--custom-toc!}.+skip
+// Include TOC menu bar if a TOC is specified.
+.+skip
+{--sidebar-toc!}.-skip
+{--dropdown-toc!}.-skip
 <div id="nav" class="no-print">
 <span id="toc-button" onclick="toggleToc()" class="no-print">&#8801;</span>
 {--!}CLOSE BUTTON <span id="toc-button" onclick="toggleToc()" class="no-print">&#10060;</span>
 </div>
 
-// Include for sidebar and dropdown TOC unless a custom TOC is specified.
+// Include TOC unless a custom TOC is specified.
 .+skip
 {--sidebar-toc!}.-skip
 {--dropdown-toc!}.-skip

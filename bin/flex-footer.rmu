@@ -56,12 +56,9 @@ function appendTocEntry(heading, id) {
   tocEntry.appendChild(tocLink);
   container.appendChild(tocEntry);
 }
-</script>
-
-{--dropdown-toc=}.+skip
-<script>
 function toggleToc() {
-    document.getElementById("toc").classList.toggle('toc-visible');
+    document.getElementById("toc").classList.toggle('display-block');
+    // document.getElementById("article").classList.toggle('display-block');
 }
 window.onclick = function(event) {
   if (!Element.prototype.matches) {
@@ -77,9 +74,13 @@ window.onclick = function(event) {
   if (!event.target.matches('#toc-button, #toc, #toc :not(a)')) {
     // Hide TOC if clicked outside TOC or on TOC link.
     var toc = document.getElementById('toc');
-    if (toc.classList.contains('toc-visible')) {
-      toc.classList.remove('toc-visible');
+    if (toc.classList.contains('display-block')) {
+      toc.classList.remove('display-block');
     }
+    // var toc = document.getElementById('article');
+    // if (!toc.classList.contains('display-block')) {
+    //   toc.classList.add('display-block');
+    // }
   }
 }
 </script>
