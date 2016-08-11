@@ -400,7 +400,6 @@
     order: 1;
     padding-top: 15px;
     background: #527bbd;
-    padding-top: 10px;
   }
   #toc {
     display: none;
@@ -410,7 +409,7 @@
     height: 100%;
     width: 100%;
   }
-  .display-block {
+  #toc.show-toc {
     display: block !important;
   }
   #toc-button {
@@ -419,13 +418,16 @@
     font-size: 48px;
   }
   #article {
-    flex: 0 9999 auto;  /* 9999 so TOC will shrink article to zero */
+    flex: 0 1 auto;
     order: 3;
     overflow-y: scroll;
     width: 100%;
   }
   #article > * {
     max-width: 700px;
+  }
+  #article.show-toc {
+    display: none !important;
   }
 </style>
 
@@ -437,6 +439,7 @@
   #nav {
     height: 100%;
     width: 30px;
+    padding-top: 15px;
   }
   @media print {
   }
@@ -452,6 +455,7 @@
   #nav {
     height:30px;
     width: 100%;
+    padding-top: 10px;
   }
   @media print {
   }
