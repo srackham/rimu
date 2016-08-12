@@ -495,7 +495,7 @@
 {--sidebar-toc!}.-skip
 {--dropdown-toc!}.-skip
 <div id="nav" class="no-print">
-  <span id="toc-button" onclick="toggleToc()">
+  <span id="toc-button">
     <span id="menu-icon">&#8801;</span>
     <span id="close-icon">&times;</span>
   </span>
