@@ -302,10 +302,13 @@
   .dl-numbered > dt:before {
     content: counter(dl-counter) ". ";
   }
-  {--!} Print classes.
+  {--!} Printing.
   @media print {
     .no-print, .no-print * {
       display: none !important;
+    }
+    body {
+      font-size: 16px;
     }
   }
 </style>
@@ -428,8 +431,6 @@
       overflow-y: visible;
     }
   }
-  @media {large-screen} {
-  }
 </style>
 
 {--sidebar-toc=}.+skip
@@ -444,10 +445,6 @@
   #toc-button {
     padding-top: 15px;
   }
-  @media print {
-  }
-  @media {large-screen} {
-  }
 </style>
 
 {--dropdown-toc=}.+skip
@@ -461,10 +458,6 @@
   }
   #toc-button {
     padding-top: 10px;
-  }
-  @media print {
-  }
-  @media {large-screen} {
   }
 </style>
 
