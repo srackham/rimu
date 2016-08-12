@@ -57,6 +57,16 @@ function appendTocEntry(heading, id) {
   container.appendChild(tocEntry);
 }
 window.onclick = function(event) {
+  if (!Element.prototype.matches) {
+    // matches() polyfill for old browsers.
+    var p = Element.prototype;
+    if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
+      p.matches = p.webkitMatchesSelector;
+    if (p.msMatchesSelector) // IE9/10/11 & Edge
+      p.matches = p.msMatchesSelector;
+    if (p.mozMatchesSelector) // FF<34
+      p.matches = p.mozMatchesSelector;
+  }
   if (event.target.matches('#toc-button *, #toc a')) {
     // Toggle TOC if TOC button or TOC link is clicked.
     document.getElementsByTagName("body")[0].classList.toggle('show-toc');
