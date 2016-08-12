@@ -325,30 +325,6 @@
   }
 </style>
 
-// Graystone theme.
-{graystone-color} = '#888'
-{--theme!.*\bgraystone\b.*}.+skip
-<style>
-  body {
-    font-size: 13pt;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    color: {graystone-color};
-  }
-  h1, h2 {
-    text-transform: uppercase;
-  }
-  a, a:hover {
-    color: {graystone-color};
-    text-decoration: underline;
-  }
-  @media print {
-    a {
-      text-decoration: none;
-    }
-  }
-</style>
-
 // Common to --sidebar-toc and --dropdown-toc.
 {--has-toc=}.+skip
 <style>
@@ -406,7 +382,7 @@
   #nav {
     flex: auto;
     order: 1;
-    background: #527bbd;
+    background: {primary-color};
   }
   #toc {
     display: none;
@@ -500,6 +476,30 @@
     }
     img {
       max-width: none;
+    }
+  }
+</style>
+
+// Graystone theme.
+{graystone-color} = '#888'
+{--theme!.*\bgraystone\b.*}.+skip
+<style>
+  h1, h2, h3, h4, h5, h6 {
+    color: {graystone-color};
+  }
+  h1, h2 {
+    text-transform: uppercase;
+  }
+  a, a:hover {
+    color: {graystone-color};
+    text-decoration: underline;
+  }
+  #nav {
+    background: {graystone-color};
+  }
+  @media print {
+    a {
+      text-decoration: none;
     }
   }
 </style>
