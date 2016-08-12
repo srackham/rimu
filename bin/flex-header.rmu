@@ -158,6 +158,7 @@
   }
   code, pre {
     font-family: {code-font};
+    font-size: 18px;
   }
   pre {
     line-height: normal;
@@ -306,9 +307,6 @@
   @media print {
     .no-print, .no-print * {
       display: none !important;
-    }
-    body {
-      font-size: 16px;
     }
   }
 </style>
@@ -461,11 +459,14 @@
   }
 </style>
 
-// Format (non-layout) related RWD styles.
+// Format (non-layout) related styles.
 <style>
-  @media {large-screen} {
+  @media print, {large-screen} {
     body {
       font-size: 16px;
+    }
+    code, pre {
+      font-size: 14px;
     }
     img {
       max-width: none;
