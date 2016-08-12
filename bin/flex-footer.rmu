@@ -11,7 +11,8 @@
 
 <script>
 window.onload = function() {
-  document.getElementsByTagName('body')[0].appendChild(document.getElementById('toc')); // Ensure custom TOC is child of body.
+{--sidebar-toc!}  document.getElementsByTagName('body')[0].appendChild(document.getElementById('toc')); // Ensure custom TOC is child of body.
+{--dropdown-toc!}  document.getElementsByTagName('body')[0].appendChild(document.getElementById('toc')); // Ensure custom TOC is child of body.
   var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
   headings.forEach(function(heading) {
     var title = heading.textContent;

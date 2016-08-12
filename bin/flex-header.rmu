@@ -9,10 +9,10 @@
 {--mathjax?} = ''
 {--section-numbers?} = ''
 {--title?} = '&nbsp;'
-{--custom-toc?} = ''
 {--theme?} = 'default'
-{--sidebar-toc?} = ''
 {--dropdown-toc?} = ''
+{--sidebar-toc?} = ''
+{--custom-toc?} = ''
 // DEPRECATED --toc: If --toc is non-blank make --sidebar-toc non-blank.
 {--toc?} = ''
 {--sidebar-toc} = '{--toc}{--sidebar-toc}'
@@ -381,7 +381,21 @@
   Layout styles
   -------------
 */
+<style>
+  #nav, #article, #toc {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  #article > * {
+    max-width: 700px;
+  }
+</style>
+
+// TOC specific styles.
 // Flexbox layout inspired by http://codepen.io/VinSpee/pen/zxBJVO
+.+skip
+{--sidebar-toc!}.-skip
+{--dropdown-toc!}.-skip
 <style>
   html, body {
     height: 100%;
@@ -390,10 +404,6 @@
   }
   body {
     display: flex;
-  }
-  #nav, #article, #toc {
-    padding-left: 5px;
-    padding-right: 5px;
   }
   #nav {
     flex: auto;
@@ -419,9 +429,6 @@
     order: 3;
     overflow-y: scroll;
     width: 100%;
-  }
-  #article > * {
-    max-width: 700px;
   }
   #close-icon {
     display: none;
@@ -487,6 +494,7 @@
   }
 </style>
 
+// Format (non-layout) related RWD styles.
 <style>
   @media {large-screen} {
     body {
