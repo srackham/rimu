@@ -374,12 +374,17 @@
   Layout styles
   -------------
 */
-{--sidebar-toc=}.+skip
 <style>
   body {
     margin: 1em;
-    padding-left: 21em;
     max-width: 50em;
+  }
+</style>
+
+{--sidebar-toc=}.+skip
+<style>
+  body {
+    padding-left: 21em;
   }
   #toc {
     position: fixed;
