@@ -57,24 +57,12 @@ function appendTocEntry(heading, id) {
   container.appendChild(tocEntry);
 }
 function toggleToc() {
-    document.getElementById("toc").classList.toggle('show-toc');
-    document.getElementById("article").classList.toggle('show-toc');
+  document.getElementsByTagName("body")[0].classList.toggle('show-toc');
 }
 window.onclick = function(event) {
-  if (!Element.prototype.matches) {
-    // matches() polyfill for old browsers.
-    var p = Element.prototype;
-    if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
-      p.matches = p.webkitMatchesSelector;
-    if (p.msMatchesSelector) // IE9/10/11 & Edge
-      p.matches = p.msMatchesSelector;
-    if (p.mozMatchesSelector) // FF<34
-      p.matches = p.mozMatchesSelector;
-  }
-  if (!event.target.matches('#toc-button, #toc, #toc :not(a)')) {
-    // Remove show-toc class if clicked outside TOC or on TOC link.
-    document.getElementById('toc').classList.remove('show-toc');
-    document.getElementById('article').classList.remove('show-toc');
+  if (event.target.matches('#toc a')) {
+    // Remove show-toc class if clicked on TOC link.
+    document.getElementsByTagName("body")[0].classList.remove('show-toc');
   }
 }
 </script>

@@ -1,5 +1,5 @@
 /*
-  Used by rimuc.js --styled option.
+  Used by rimuc.js --styled --named-style 'flex' options.
 */
 
 /*
@@ -396,20 +396,17 @@
     padding-right: 5px;
   }
   #nav {
-    flex: 0 1 auto;
+    flex: auto;
     order: 1;
     background: #527bbd;
   }
   #toc {
     display: none;
-    flex: 0 1 auto;
+    flex: auto;
     order: 2;
     overflow-y: scroll;
     height: 100%;
     width: 100%;
-  }
-  #toc.show-toc {
-    display: block !important;
   }
   #toc-button {
     cursor: pointer;
@@ -418,7 +415,7 @@
     display: inline-block;
   }
   #article {
-    flex: 0 1 auto;
+    flex: auto;
     order: 3;
     overflow-y: scroll;
     width: 100%;
@@ -426,8 +423,20 @@
   #article > * {
     max-width: 700px;
   }
-  #article.show-toc {
+  #close-icon {
+    display: none;
+  }
+  .show-toc #toc {
+    display: block !important;
+  }
+  .show-toc #article {
     display: none !important;
+  }
+  .show-toc #menu-icon {
+    display: none !important;
+  }
+  .show-toc #close-icon {
+    display: inline !important;
   }
 </style>
 
@@ -486,8 +495,10 @@
 {--sidebar-toc!}.-skip
 {--dropdown-toc!}.-skip
 <div id="nav" class="no-print">
-<span id="toc-button" onclick="toggleToc()" class="no-print">&#8801;</span>
-{--!}CLOSE BUTTON <span id="toc-button" onclick="toggleToc()" class="no-print">&#10060;</span>
+  <span id="toc-button" onclick="toggleToc()">
+    <span id="menu-icon">&#8801;</span>
+    <span id="close-icon">&times;</span>
+  </span>
 </div>
 
 // Include TOC unless a custom TOC is specified.
