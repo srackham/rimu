@@ -384,8 +384,8 @@
 // Flexbox layout inspired by http://codepen.io/VinSpee/pen/zxBJVO
 <style>
   html, body {
-    height:100%;
-    min-height:100%;
+    height: 100%;
+    min-height: 100%;
     overflow: hidden;
   }
   body {
@@ -437,6 +437,17 @@
   }
   .show-toc #close-icon {
     display: inline !important;
+  }
+  @media print {
+    html, body {
+      height: auto;
+      min-height: 0;
+    }
+    #article, #toc {
+      overflow-y: visible;
+    }
+  }
+  @media {large-screen} {
   }
 </style>
 
@@ -506,7 +517,7 @@
 {--sidebar-toc!}.-skip
 {--dropdown-toc!}.-skip
 {--custom-toc!}.+skip
-<div id="toc" class="no-print">
+<div id="toc">
   <div id="auto-toc"></div>
 </div>
 
