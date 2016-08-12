@@ -11,8 +11,7 @@
 
 <script>
 window.onload = function() {
-{--sidebar-toc!}  document.getElementsByTagName('body')[0].appendChild(document.getElementById('toc')); // Ensure custom TOC is child of body.
-{--dropdown-toc!}  document.getElementsByTagName('body')[0].appendChild(document.getElementById('toc')); // Ensure custom TOC is child of body.
+{--has-toc!}  document.getElementsByTagName('body')[0].appendChild(document.getElementById('toc')); // Ensure custom TOC is child of body.
   var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
   headings.forEach(function(heading) {
     var title = heading.textContent;
@@ -21,8 +20,7 @@ window.onload = function() {
       id = slugify(title);
       heading.setAttribute('id', id);
     }
-{--sidebar-toc!}    appendTocEntry(heading, id);
-{--dropdown-toc!}    appendTocEntry(heading, id);
+{--has-toc!}    appendTocEntry(heading, id);
   });
 }
 function slugify(text) {
@@ -38,9 +36,7 @@ function slugify(text) {
 }
 </script>
 
-.+skip
-{--sidebar-toc!}.-skip
-{--dropdown-toc!}.-skip
+{--has-toc=}.+skip
 <script>
 function appendTocEntry(heading, id) {
   if (heading.classList.contains('no-auto-toc')) {

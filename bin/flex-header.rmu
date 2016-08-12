@@ -13,6 +13,8 @@
 {--dropdown-toc?} = ''
 {--sidebar-toc?} = ''
 {--custom-toc?} = ''
+// Non-blank if a TOC was specified.
+{--has-toc} = '{--dropdown-toc}{--sidebar-toc}'
 // DEPRECATED --toc: If --toc is non-blank make --sidebar-toc non-blank.
 {--toc?} = ''
 {--sidebar-toc} = '{--toc}{--sidebar-toc}'
@@ -348,9 +350,7 @@
 </style>
 
 // Common to --sidebar-toc and --dropdown-toc.
-.+skip
-{--sidebar-toc!}.-skip
-{--dropdown-toc!}.-skip
+{--has-toc=}.+skip
 <style>
   #toc {
     padding-left: 1em;
@@ -393,9 +393,7 @@
 
 // TOC specific styles.
 // Flexbox layout inspired by http://codepen.io/VinSpee/pen/zxBJVO
-.+skip
-{--sidebar-toc!}.-skip
-{--dropdown-toc!}.-skip
+{--has-toc=}.+skip
 <style>
   html, body {
     height: 100%;
@@ -510,9 +508,7 @@
 <body>
 
 // Include TOC menu bar if a TOC is specified.
-.+skip
-{--sidebar-toc!}.-skip
-{--dropdown-toc!}.-skip
+{--has-toc=}.+skip
 <div id="nav" class="no-print">
   <span id="toc-button">
     <span id="menu-icon">&#8801;</span>
@@ -522,8 +518,7 @@
 
 // Include TOC unless a custom TOC is specified.
 .+skip
-{--sidebar-toc!}.-skip
-{--dropdown-toc!}.-skip
+{--has-toc!}.-skip
 {--custom-toc!}.+skip
 <div id="toc">
   <div id="auto-toc"></div>
