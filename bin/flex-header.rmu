@@ -124,16 +124,7 @@
   }
   dt {
     margin-bottom: 0;
-    font-weight: bold;
-  }
-  .bold > dt {
-    font-weight: bold;
-  }
-  .italic > dt {
     font-style: italic;
-  }
-  .normal > dt {
-    font-weight: normal;
   }
   dd {
     margin-left: 1.0em;
@@ -144,13 +135,11 @@
     border: none;
     border-left: 5px solid #eeeeee;
     font-family: {secondary-font};
-    font-style: italic;
     width: 80%;
     margin: 1.5em 0;
     color: #383838;
   }
   .cite {
-    font-style: italic;
     color: #777;
     padding: 5px 0;
   }
