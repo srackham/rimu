@@ -26,9 +26,9 @@
 */
 {large-screen} = 'screen and (min-width: 700px)'
 
-{primary-font} = 'Arimo, Arial, Helvetica, sans-serif'
-{secondary-font} = 'Tinos, Georgia, serif'
-{code-font} = 'Cousine, Consolas, "Andale Mono", Monaco, monospace'
+{sans-font} = 'Arimo, Arial, Helvetica, sans-serif'
+{serif-font} = 'Tinos, Georgia, serif'
+{mono-font} = 'Cousine, Consolas, "Andale Mono", Monaco, monospace'
 
 {text-color} = '#333333'
 {border-color} = '#dddddd'
@@ -66,7 +66,7 @@
     line-height: 20px;
     color: {text-color};
     background-color: {primary-background};
-    font-family: {primary-font};
+    font-family: {sans-font};
   }
   h1, h2, h3, h4, h5, h6 {
     margin: 10px 0;
@@ -134,7 +134,7 @@
     padding: 0 0 0 15px;
     border: none;
     border-left: 5px solid #eeeeee;
-    font-family: {secondary-font};
+    font-family: {serif-font};
     width: 80%;
     margin: 1.5em 0;
     color: #383838;
@@ -147,13 +147,13 @@
     content: "\2014 \2009";
   }
   code {
-    font-family: {code-font};
+    font-family: {mono-font};
     {--!} Monspace fonts are relatively oversized.
     font-size: 90%;
     background-color: {gray-background};
   }
   pre {
-    font-family: {code-font};
+    font-family: {mono-font};
     line-height: normal;
     white-space: pre-wrap;
     word-break: break-all;
@@ -196,7 +196,7 @@
     margin: 1.5em 20px;
   }
   div.verse p, p.verse {
-    font-family: {secondary-font};
+    font-family: {serif-font};
     white-space: pre;
     margin-top: 0.75em;
     margin-bottom: 0.75em;
