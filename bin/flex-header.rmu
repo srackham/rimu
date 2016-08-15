@@ -29,6 +29,7 @@
 {sans-font} = 'Arimo, Arial, Helvetica, sans-serif'
 {serif-font} = 'Tinos, Georgia, serif'
 {mono-font} = 'Cousine, Consolas, "Andale Mono", Monaco, monospace'
+{mono-size} = '90%'
 
 {text-color} = '#333333'
 {border-color} = '#dddddd'
@@ -149,7 +150,7 @@
   code {
     font-family: {mono-font};
     {--!} Monspace fonts are relatively oversized.
-    font-size: 90%;
+    font-size: {mono-size};
     background-color: {gray-background};
   }
   pre {
@@ -180,15 +181,6 @@
   pre span {
     {--!} highlight.js tweak.
     opacity: 1 !important;
-  }
-  input[type=text], textarea {
-    padding: 4px;
-    border: 1px solid {border-color};
-    border-radius: 4px;
-  }
-  input[type=text]:focus, textarea:focus {
-    outline: none;
-    box-shadow: 0 0 10px #9ecaed;
   }
   {--!} Rimu classes.
   {--!} Apply verse class to Normal Paragraphs and Division blocks.

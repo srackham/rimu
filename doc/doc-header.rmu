@@ -7,13 +7,14 @@
 
 <style>
 .edit-source {
-  font-family: {code-font};
+  font-family: {mono-font};
+  font-size: {mono-size};
   line-height: normal;
-  font-size: inherit;
   white-space: pre-wrap;
   word-break: break-all;
   margin: 0;
-  border: 0;
+  border: none;
+  outline: none;
   padding: 0.5em;
   width: 100%;
   background-color: {butter-background};
