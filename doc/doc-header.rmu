@@ -7,14 +7,14 @@
 
 <style>
 .edit-source {
-  font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+  font-family: {code-font};
   line-height: normal;
   font-size: inherit;
   white-space: pre-wrap;
   word-break: break-all;
   margin: 0;
   border: 0;
-  padding: 0.6em;
+  padding: 0.5em;
   width: 100%;
   background-color: {butter-background};
   box-shadow: 0 0 10px #9ecaed;
@@ -44,7 +44,10 @@
   border: none;
   background-color: inherit;
   margin: 0;
-  padding: 0.6em;
+  padding: 0.5em;
+}
+.example-source > code {
+  padding: 0;
 }
 </style>
 

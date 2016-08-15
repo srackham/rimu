@@ -1,5 +1,5 @@
 /*
-  Used by rimuc.js --styled --named-style 'flex' options.
+  Used by rimuc.js --styled option.
 */
 
 /*
@@ -28,7 +28,7 @@
 
 {primary-font} = 'Arial, Helvetica, sans-serif'
 {secondary-font} = 'Georgia, serif'
-{code-font} = 'Monaco, Menlo, Consolas, "Courier New", monospace'
+{code-font} = 'Consolas, "Andale Mono", Monaco, monospace'
 
 {text-color} = '#333333'
 {border-color} = '#dddddd'
@@ -76,9 +76,6 @@
   h4 { font-size: 1.1em; }
   h5 { font-size: 1.0em; }
   h6 { font-size: 0.9em; }
-  h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
-    font-size: inherit !important;
-  }
   h2, h3, h4, h5, h6 {
     line-height: normal;
     margin-top: 1.0em;
@@ -115,7 +112,6 @@
     text-decoration: underline;
   }
   p, pre, li, dt, dd, blockquote p {
-    font-size: inherit;
     line-height: 1.45;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
@@ -159,11 +155,13 @@
   .cite::before {
     content: "\2014 \2009";
   }
-  code, pre {
+  code {
     font-family: {code-font};
-    font-size: 18px;
+    font-size: 90%;
+    background-color: {gray-background};
   }
   pre {
+    font-family: {code-font};
     line-height: normal;
     white-space: pre-wrap;
     word-break: break-all;
@@ -176,24 +174,19 @@
     background-color: {gray-background};
     border: none;
   }
-  code {
-    color: inherit;
-    font-size: inherit;
-  }
   *:not(pre) > code {
-    border: none;
-    background-color: {gray-background};
     white-space: nowrap;
   }
   .dl-horizontal > dd {
     margin-top: 1.0em;
   }
-  {--!} highlight.js tweaks.
   pre > code {
     background-color: inherit;
+    {--!} highlight.js tweak.
     padding: 0;
   }
   pre span {
+    {--!} highlight.js tweak.
     opacity: 1 !important;
   }
   input[type=text], textarea {
@@ -367,7 +360,7 @@
     padding-right: 5px;
   }
   #article > * {
-    max-width: 700px;
+    max-width: 725px;
   }
 </style>
 
@@ -400,6 +393,7 @@
     cursor: pointer;
     color: white;
     font-size: 48px;
+    font-family: Arial;
     display: inline-block;
   }
   #article {
@@ -467,9 +461,6 @@
   @media print, {large-screen} {
     body {
       font-size: 16px;
-    }
-    code, pre {
-      font-size: 14px;
     }
     img {
       max-width: none;
