@@ -38,6 +38,16 @@ function slugify(text) {
 
 {--has-toc=}.+skip
 <script>
+// matches() polyfill for old browsers.
+if (!Element.prototype.matches) {
+  var p = Element.prototype;
+  if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
+    p.matches = p.webkitMatchesSelector;
+  if (p.msMatchesSelector) // IE9/10/11 & Edge
+    p.matches = p.msMatchesSelector;
+  if (p.mozMatchesSelector) // FF<34
+    p.matches = p.mozMatchesSelector;
+}
 function appendTocEntry(heading, id) {
   if (heading.classList.contains('no-auto-toc')) {
     return;
@@ -54,17 +64,7 @@ function appendTocEntry(heading, id) {
   tocEntry.appendChild(tocLink);
   container.appendChild(tocEntry);
 }
-window.onclick = function(event) {
-  if (!Element.prototype.matches) {
-    // matches() polyfill for old browsers.
-    var p = Element.prototype;
-    if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
-      p.matches = p.webkitMatchesSelector;
-    if (p.msMatchesSelector) // IE9/10/11 & Edge
-      p.matches = p.msMatchesSelector;
-    if (p.mozMatchesSelector) // FF<34
-      p.matches = p.mozMatchesSelector;
-  }
+document.onclick = function(event) {
   if (event.target.matches('#toc-button *, #toc a')) {
     // Toggle TOC if TOC button or TOC link is clicked.
     document.getElementsByTagName("body")[0].classList.toggle('show-toc');
