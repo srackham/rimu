@@ -26,9 +26,9 @@
 */
 {large-screen} = 'screen and (min-width: 700px)'
 
-{primary-font} = 'Arial, Helvetica, sans-serif'
-{secondary-font} = 'Georgia, serif'
-{code-font} = 'Consolas, "Andale Mono", Monaco, monospace'
+{primary-font} = 'Arimo, Arial, Helvetica, sans-serif'
+{secondary-font} = 'Tinos, Georgia, serif'
+{code-font} = 'Cousine, Consolas, "Andale Mono", Monaco, monospace'
 
 {text-color} = '#333333'
 {border-color} = '#dddddd'
@@ -48,6 +48,8 @@
 <meta name="viewport" content="width=device-width">
 <title>{--title}</title>
 {--highlightjs!}<link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
+{--!} Primary fonts are Google Croscore fonts (https://en.wikipedia.org/wiki/Croscore_fonts).
+<link href="https://fonts.googleapis.com/css?family=Arimo%7CCousine%7CTinos" rel="stylesheet">
 
 
 /*
@@ -157,6 +159,7 @@
   }
   code {
     font-family: {code-font};
+    {--!} Monspace fonts are relatively oversized.
     font-size: 90%;
     background-color: {gray-background};
   }
