@@ -118,9 +118,6 @@ STYLING MACROS AND CLASSES
   line-breaks      Honor line breaks in source text.
   page-break       Force page break before the element.
   no-page-break    Avoid page break inside the element.
-  bold             Bold labelled list terms (default).
-  italic           Italic labelled list terms.
-  normal           Non-bold labelled list terms.
   dl-numbered      Number labeled list items.
   dl-horizontal    Format labeled lists horizontally.
   dl-counter       Prepend dl item counter to element content.
