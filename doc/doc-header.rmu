@@ -27,7 +27,6 @@
 {generate-examples=}.+skip
 <style>
 .edit-icon {
-  font-size: 16px;
   text-decoration: underline;
   color: gray;
 }
