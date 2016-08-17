@@ -133,8 +133,8 @@ function die(message: string): void {
   process.exit(1)
 }
 
-let safeMode = 0
-let htmlReplacement: string = null
+let safe_mode = 0
+let html_replacement: string = null
 let styled = false
 let styled_name = 'legacy'
 let no_rimurc = false
@@ -176,14 +176,14 @@ outer:
           break
         case '--safe-mode':
         case '--safeMode':  // Deprecated in Rimu 7.1.0.
-          safeMode = parseInt(process.argv.shift() || '99', 10)
-          if (safeMode < 0 || safeMode > 15) {
+          safe_mode = parseInt(process.argv.shift() || '99', 10)
+          if (safe_mode < 0 || safe_mode > 15) {
             die('illegal --safe-mode option value')
           }
           break
         case '--html-replacement':
         case '--htmlReplacement': // Deprecated in Rimu 7.1.0.
-          htmlReplacement = process.argv.shift()
+          html_replacement = process.argv.shift()
           break
         case '--styled':
         case '-s':
@@ -199,8 +199,8 @@ outer:
         case '--sidebar-toc':
         case '--dropdown-toc':
         case '--custom-toc':
-          let macroValue = ['--title', '--theme'].indexOf(arg) > -1 ? process.argv.shift() : 'true'
-          source += '{' + arg + '}=\'' + macroValue + '\'\n'
+          let macro_value = ['--title', '--theme'].indexOf(arg) > -1 ? process.argv.shift() : 'true'
+          source += '{' + arg + '}=\'' + macro_value + '\'\n'
           break
         case '--styled-name':
           styled_name = process.argv.shift()
@@ -237,8 +237,8 @@ if (styled) {
 }
 
 // Prepend $HOME/.rimurc file if it exists.
-let homeDir = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']
-let rimurc =  path.resolve(homeDir, '.rimurc')
+let home_dir = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']
+let rimurc =  path.resolve(home_dir, '.rimurc')
 if (!no_rimurc && fs.existsSync(rimurc)) {
   files.unshift(rimurc)
 }
@@ -250,8 +250,8 @@ if (source !== '') {
   html += Rimu.render(source) + '\n'; // --prepend options source.
 }
 let options: Rimu.Options = {}
-if (htmlReplacement !== null) {
-  options.htmlReplacement = htmlReplacement
+if (html_replacement !== null) {
+  options.htmlReplacement = html_replacement
 }
 for (let infile of files) {
   if (!fs.existsSync(infile)) {
@@ -268,7 +268,7 @@ for (let infile of files) {
     continue
   }
   // rimurc processed with default safeMode.
-  options.safeMode = infile === rimurc ? 0 : safeMode
+  options.safeMode = infile === rimurc ? 0 : safe_mode
   if (lint) {
     options.callback = function(message): void {
       let msg = message.type + ': ' + infile + ': ' + message.text
