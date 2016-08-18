@@ -67,16 +67,15 @@ if (!Element.prototype.matches) {
   if (p.mozMatchesSelector) // FF<34
     p.matches = p.mozMatchesSelector;
 }
-function toggleToc() {
-    document.getElementById("toc").classList.toggle('toc-visible');
-}
 window.onclick = function(event) {
-  if (!event.target.matches('#toc-button, #toc, #toc :not(a)')) {
-    // Hide TOC if clicked outside TOC or on TOC link.
-    var toc = document.getElementById('toc');
-    if (toc.classList.contains('toc-visible')) {
-      toc.classList.remove('toc-visible');
-    }
+  var body = document.getElementsByTagName('body')[0];
+  if (event.target.matches('#toc-button, #toc a')) {
+    // Toggle TOC if TOC button or TOC link is clicked.
+    body.classList.toggle('show-toc');
+  }
+  else if (!event.target.matches('#toc, #toc *')) {
+    // Hide TOC if clicked outside TOC.
+    body.classList.remove('show-toc');
   }
 }
 </script>

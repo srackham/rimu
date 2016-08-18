@@ -381,7 +381,7 @@
 
 {--dropdown-toc=}.+skip
 <style>
-  .toc-visible {
+  .show-toc #toc {
     display: block !important;
   }
   #toc-button {
@@ -469,7 +469,7 @@
 
 // Include dropdown TOC button.
 {--dropdown-toc=}.+skip
-<div id="toc-button" onclick="toggleToc()" class="no-print">&#8801;</div>
+<div id="toc-button" class="no-print">&#8801;</div>
 
 // Include TOC unless a custom TOC is specified.
 .+skip
