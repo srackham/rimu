@@ -19,8 +19,7 @@ window.onload = function() {
       id = slugify(title);
       heading.setAttribute('id', id);
     }
-{--sidebar-toc!}    appendTocEntry(heading, id);
-{--dropdown-toc!}    appendTocEntry(heading, id);
+{--has-toc!}    appendTocEntry(heading, id);
   });
 }
 function slugify(text) {
@@ -36,9 +35,7 @@ function slugify(text) {
 }
 </script>
 
-.+skip
-{--sidebar-toc!}.-skip
-{--dropdown-toc!}.-skip
+{--has-toc=}.+skip
 <script>
 function appendTocEntry(heading, id) {
   if (heading.classList.contains('no-auto-toc')) {
@@ -60,20 +57,20 @@ function appendTocEntry(heading, id) {
 
 {--dropdown-toc=}.+skip
 <script>
+// matches() polyfill for old browsers.
+if (!Element.prototype.matches) {
+  var p = Element.prototype;
+  if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
+    p.matches = p.webkitMatchesSelector;
+  if (p.msMatchesSelector) // IE9/10/11 & Edge
+    p.matches = p.msMatchesSelector;
+  if (p.mozMatchesSelector) // FF<34
+    p.matches = p.mozMatchesSelector;
+}
 function toggleToc() {
     document.getElementById("toc").classList.toggle('toc-visible');
 }
 window.onclick = function(event) {
-  if (!Element.prototype.matches) {
-    // matches() polyfill for old browsers.
-    var p = Element.prototype;
-    if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
-      p.matches = p.webkitMatchesSelector;
-    if (p.msMatchesSelector) // IE9/10/11 & Edge
-      p.matches = p.msMatchesSelector;
-    if (p.mozMatchesSelector) // FF<34
-      p.matches = p.mozMatchesSelector;
-  }
   if (!event.target.matches('#toc-button, #toc, #toc :not(a)')) {
     // Hide TOC if clicked outside TOC or on TOC link.
     var toc = document.getElementById('toc');
