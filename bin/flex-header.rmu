@@ -46,6 +46,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+{--!} Make old IE versions use the latest rendering engine.
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width">
 <title>{--title}</title>
 {--highlightjs!}<link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
