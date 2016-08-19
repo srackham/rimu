@@ -20,7 +20,7 @@ function rimuc_equal(t, source, expected, options, message) {
 }
 
 test('rimuc', function(t) {
-  t.plan(19);
+  t.plan(22);
 
   rimuc_equal(t, '*Hello World!*', '<p><em>Hello World!</em></p>', '',
     'rimuc basic test');
@@ -88,6 +88,18 @@ test('rimuc', function(t) {
 
   rimuc_exec('{x}', '--lint', function(output, error) {
     t.ok(output.indexOf('undefined macro') > 0 && error.code === 1, 'rimuc --lint')
+  });
+
+  rimuc_exec('_Hello World!_', '--styled --styled-name "classic"', function(output) {
+    t.ok(output.indexOf('<p><em>Hello World!</em></p') > 0, 'classic named style')
+  });
+
+  rimuc_exec('_Hello World!_', '--styled --styled-name "flex"', function(output) {
+    t.ok(output.indexOf('<p><em>Hello World!</em></p') > 0, 'flex named style')
+  });
+
+  rimuc_exec('_Hello World!_', '--styled --styled-name "v8"', function(output) {
+    t.ok(output.indexOf('<p><em>Hello World!</em></p') > 0, 'v8 named style')
   });
 
 });
