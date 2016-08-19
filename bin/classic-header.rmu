@@ -5,6 +5,7 @@
 /*
   Set macro default values.
 */
+{--} = ''
 {--highlightjs?} = ''
 {--mathjax?} = ''
 {--section-numbers?} = ''
@@ -13,13 +14,11 @@
 {--dropdown-toc?} = ''
 {--sidebar-toc?} = ''
 {--custom-toc?} = ''
-// Non-blank if a TOC was specified.
-{--has-toc} = '{--dropdown-toc}{--sidebar-toc}'
 // DEPRECATED --toc: If --toc is non-blank make --sidebar-toc non-blank.
 {--toc?} = ''
 {--sidebar-toc} = '{--toc}{--sidebar-toc}'
-// "Blank" macro.
-{--} = ''
+// Non-blank if a TOC was specified.
+{--has-toc} = '{--dropdown-toc}{--sidebar-toc}'
 
 /*
   CSS variables.
@@ -470,8 +469,7 @@
 
 // Include TOC unless a custom TOC is specified.
 .+skip
-{--sidebar-toc!}.-skip
-{--dropdown-toc!}.-skip
+{--has-toc!}.-skip
 {--custom-toc!}.+skip
 <div id="toc" class="no-print">
   <div id="auto-toc"></div>
