@@ -931,6 +931,10 @@ test('blocks', function(t) {
     'Testing...',
     '<p>Testing&hellip;</p>',
     'existing replacements work in safe mode', {safeMode: 1});
+  test_document_no_reset(
+    '[\\...](#link) [...](#link) [`...`](#link)',
+    '<p><a href="#link">...</a> <a href="#link">&hellip;</a> <a href="#link"><code>...</code></a></p>',
+    'custom replacment is processed after built-in replacements (has lower precedence)');
   test_document(
     '/\\\\?\\.{3}/i=\'!!!\'\nTesting...',
     '<p>Testing!!!</p>',
