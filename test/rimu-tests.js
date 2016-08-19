@@ -109,17 +109,17 @@ test('spans', function(t) {
     '<a href="http://example.com"></a>',
     'url with empty caption');
   test_span(
-    '<http://an example.com|foo>',
     '<a href="http://an example.com">foo</a>',
-    'url with spaces');
+    '<a href="http://an example.com">foo</a>',
+    'HTML url with spaces');
   test_span(
     '[*foo* &mdash; bar](http://_foobar_) <http://_foobar_|*foo* &mdash; bar> <joe@example.com|**Joe &mdash; Bloggs**>',
     '<a href="http://_foobar_"><em>foo</em> &mdash; bar</a> <a href="http://_foobar_"><em>foo</em> &mdash; bar</a> <a href="mailto:joe@example.com"><strong>Joe &mdash; Bloggs</strong></a>',
     'quotes expanded in url and mail address captions');
   test_span(
-    '[with spaces](http://url with spaces.com)',
-    '<a href="http://url with spaces.com">with spaces</a>',
-    'Markdown style url with spaces');
+    '[with spaces](http://url%20with%20spaces.com)',
+    '<a href="http://url%20with%20spaces.com">with spaces</a>',
+    'Markdown style url with encoded spaces');
   test_span(
     '\\http://example.com \\<http://example.com> \\[example url](http://example.com)',
     'http://example.com &lt;http://example.com&gt; [example url](http://example.com)',

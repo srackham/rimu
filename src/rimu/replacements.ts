@@ -71,7 +71,7 @@ const DEFAULT_DEFS: Definition[] = [
   // Link: [caption](url)
   // caption = $1, url = $2
   {
-    match: /\\?\[([\s\S]*?)\]\s*\((.+?)\)/g,
+    match: /\\?\[([\s\S]*?)\]\s*\((\S+?)\)/g,
     replacement: '<a href="$2">$$1</a>'
   },
 
@@ -94,14 +94,14 @@ const DEFAULT_DEFS: Definition[] = [
   // Link: <url>
   // url = $1
   {
-    match: /\\?<([^|]+?)>/g,
+    match: /\\?<([^|\s]+?)>/g,
     replacement: '<a href="$1">$1</a>'
   },
 
   // Link: <url|caption>
   // url = $1, caption = $2
   {
-    match: /\\?<(.+?)\|([\s\S]*?)>/g,
+    match: /\\?<(\S+?)\|([\s\S]*?)>/g,
     replacement: '<a href="$1">$$2</a>'
   },
 
