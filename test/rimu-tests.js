@@ -121,6 +121,10 @@ test('spans', function(t) {
     '<a href="http://url%20with%20spaces.com">with spaces</a>',
     'Markdown style url with encoded spaces');
   test_span(
+    '[with underscores](_example_), <_example_|with underscores>',
+    '<a href="_example_">with underscores</a>, <a href="_example_">with underscores</a>',
+    'URLs url with underscores');
+  test_span(
     '\\http://example.com \\<http://example.com> \\[example url](http://example.com)',
     'http://example.com &lt;http://example.com&gt; [example url](http://example.com)',
     'escaped http urls');
