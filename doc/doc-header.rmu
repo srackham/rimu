@@ -5,6 +5,8 @@
 // By default examples generation is disabled.
 {generate-examples?} = ''
 
+// Examples styles.
+{generate-examples=}.+skip
 <style>
 .edit-source {
   font-family: {mono-font};
@@ -21,11 +23,6 @@
   box-shadow: 0 0 10px #9ecaed;
   box-sizing: border-box;
 }
-</style>
-
-// Examples styles.
-{generate-examples=}.+skip
-<style>
 .edit-icon {
   text-decoration: underline;
   color: gray;
@@ -164,12 +161,12 @@ Rimu source</td>
 // Custom table of contents.
 <div id="toc" class="no-print">
   <h2 style="font-size:1.2em; margin-top:1.0em">Links</h2>
-  <div class="h2"><a href="index.html">Rimu Home</a></div>
-  <div class="h2"><a href="rimuplayground.html">Rimu Playground</a></div>
-  <div class="h2"><a href="reference.html">Rimu Reference</a></div>
-  <div class="h2"><a href="tips.html">Rimu Tips</a></div>
-  <div class="h2"><a href="http://github.com/srackham/rimu">Github</a></div>
-  <div class="h2"><a href="https://npmjs.org/package/rimu">npm</a></div>
+  <div class="h2"><a href="{homepage}">Rimu Home</a></div>
+  <div class="h2"><a href="{playground}">Rimu Playground</a></div>
+  <div class="h2"><a href="{reference}">Rimu Reference</a></div>
+  <div class="h2"><a href="{tips}">Rimu Tips</a></div>
+  <div class="h2"><a href="{github}">Github</a></div>
+  <div class="h2"><a href="{npm}">npm</a></div>
   <h2 style="font-size:1.2em; margin-top:1.0em">Table of Contents</h2>
   <div id="auto-toc"></div>
 </div>
