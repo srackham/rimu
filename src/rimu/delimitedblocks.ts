@@ -4,7 +4,10 @@ import * as options from './options'
 import * as io from './io'
 import * as macros from './macros'
 import * as lineBlocks from './lineblocks'
-import {MATCH_INLINE_TAG} from './replacements'
+
+/* tslint:disable:max-line-length */
+const MATCH_INLINE_TAG = /^(a|abbr|acronym|address|b|bdi|bdo|big|blockquote|br|cite|code|del|dfn|em|i|img|ins|kbd|mark|q|s|samp|small|span|strike|strong|sub|sup|time|tt|u|var|wbr)$/i
+/* tslint:enable:max-line-length */
 
 // Multi-line block element definition.
 export interface Definition {
@@ -113,7 +116,7 @@ const DEFAULT_DEFS: Definition[] = [
       macros: true
     },
     verify: function (match: RegExpMatchArray): boolean {
-      // Return false if the HTML tag is an inline (non-block) tag.
+      // Return false if the HTML tag is an inline (non-block) HTML tag.
       if (match[2]) { // Matched alphanumeric tag name.
         return !MATCH_INLINE_TAG.test(match[2])
       }

@@ -1,10 +1,6 @@
 import * as options from './options'
 import * as utils from './utils'
 
-/* tslint:disable:max-line-length */
-export const MATCH_INLINE_TAG = /^(a|abbr|acronym|address|b|bdi|bdo|big|blockquote|br|cite|code|del|dfn|em|i|img|ins|kbd|mark|q|s|samp|small|span|strike|strong|sub|sup|time|tt|u|var|wbr)$/i
-/* tslint:enable:max-line-length */
-
 export interface Definition {
   match: RegExp
   replacement: string
@@ -82,12 +78,7 @@ const DEFAULT_DEFS: Definition[] = [
     match: /\\?(<!--(?:[^<>&]*)?-->|<\/?([a-z][a-z0-9]*)(?:\s+[^<>&]+)?>)/ig,
     replacement: '',
     filter: function (match: RegExpExecArray): string {
-      if (match[2] && !MATCH_INLINE_TAG.test(match[2])) { // Matched non-inline tag name.
-        return utils.replaceSpecialChars(match[1])        // Escape block tag.
-      }
-      else {
-        return options.htmlSafeModeFilter(match[1]) // Matched HTML comment or inline tag.
-      }
+      return options.htmlSafeModeFilter(match[1]) // Matched HTML comment or inline tag.
     }
   },
 
