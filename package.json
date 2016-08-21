@@ -35,7 +35,7 @@
   "devDependencies": {
     "faucet": "0.0.1",
     "jake": "^8.0.12",
-    "jshint": "^2.9.2",
+    "jshint": "^2.9.3",
     "jsonlint": "^1.6.2",
     "nu-html-checker": "^0.1.0",
     "shelljs": "^0.7.3",
@@ -44,6 +44,6 @@
     "tslint": "^3.14.0",
     "typescript": "^1.8.10",
     "uglify-js": "^2.7.3",
-    "webpack": "^1.13.1"
+    "webpack": "^1.13.2"
   }
 }
