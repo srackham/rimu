@@ -437,7 +437,7 @@ test('blocks', function(t) {
   test_document(
     '- Item 1\n--\nA\nparagraph\n--',
     '<ul><li>Item 1\n<pre><code>A\nparagraph</code></pre></li></ul>',
-    'list item with attached code block');
+    'list item with attached deprecated code block');
   test_document(
     '- Item 1\n```\nA\nparagraph\n```',
     '<ul><li>Item 1\n<pre><code>A\nparagraph</code></pre></li></ul>',
@@ -468,6 +468,18 @@ test('blocks', function(t) {
     '- List 1\n\n\n* List 2',
     '<ul><li>List 1\n</li></ul><ul><li>List 2\n</li></ul>',
     'list terminated by two blank lines');
+  test_document(
+    '- Item 1\n/*\nComment\n*/\n- Item 2',
+    '<ul><li>Item 1\n</li><li>Item 2\n</li></ul>',
+    'list item with attached multi-line comment');
+  test_document(
+    '- Item 1\n> Quote\n\n- Item 2',
+    '<ul><li>Item 1\n<blockquote><p> Quote</p></blockquote>\n</li><li>Item 2\n</li></ul>',
+    'list item with attached quote paragraph');
+  test_document(
+    '- Item 1\n<pre>Code</pre>\n\n- Item 2',
+    '<ul><li>Item 1\n<pre>Code</pre>\n</li><li>Item 2\n</li></ul>',
+    'list item with attached HTML block element');
 
   // Mixed blocks.
   test_document(
