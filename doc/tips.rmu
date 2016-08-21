@@ -352,7 +352,9 @@ See also:
   element in
   HTML5?](http://stackoverflow.com/questions/28633038/what-is-the-current-state-of-the-scoped-attribute-for-the-style-element-in-htm).
 - [MDN
-  <style>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style).
+  \<style>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style).
+- [Using \<style> tags in the \<body> with other
+  HTML](http://stackoverflow.com/a/16844668/1136455).
 ..
 
 You can include custom CSS styles in the body of a Rimu document using
@@ -511,8 +513,9 @@ A MathML block formula:
 
 {generate-rendered-example-2|mathjax-example|no-edit}
 
-NOTE: Macro expansion has been disabled in LaTeX formulas to stop
-`\{i=0}` and `\{2}` from being mistaken for Rimu macro invocations.
+- Macro expansion has been disabled in LaTeX formulas to stop `\{i=0}`
+  and `\{2}` in the LaTeX formualae from being mistaken for Rimu macro
+  invocations.
 
 See the [latest MathJax
 documentation](http://docs.mathjax.org/en/latest/) to learn how to use
@@ -525,7 +528,7 @@ Macro invocations can be used to conditionally include Rimu source
 text:
 
 ``
-// Include script if `underscore` value is non-blank.
+// Include script if `foo` value is non-blank.
 {foo!}<script src="foo-min.js"></script>
 
 // Include paragraph if `foo` is blank.
@@ -1046,5 +1049,64 @@ recompile, for example:
 Then use the Chrome
 [LivePage](https://chrome.google.com/webstore/detail/livepage/pilnojpmdoofaelbinaeodfpjheijkbh)
 extension to auto-refresh the file after it is recompiled.
+
+
+## General purpose macro processor
+You can use Rimu as a general purpose macro text processor. This is
+achieved by enveloping the text to be processed in a _Division Block_.
+For example:
+
+``
+// Macro definitions.
+{sans-font} = 'Arial, Helvetica, sans-serif'
+{primary-color} = '#527bbd'
+{primary-background} = 'white'
+{text-color} = '#333333'
+
+// Only expand macros in Division Block.
+.-spans -specials -container
+..
+body {
+  font-family: {sans-font};
+  font-size: 14px;
+  line-height: 20px;
+  color: {text-color};
+  background-color: {primary-background};
+  margin: 1em;
+  max-width: 50em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 10px 0;
+  color: {primary-color};
+}
+..
+``
+
+- Use `rimuc` to expand the macros, for example:
+
+  rimuc --output main.css main.rmu
+
+- This technique can be combined with _conditional macro expansion_ and all the other
+  Rimu _macro features_.
+
+
+## Passing arbitrary text to the output
+To pass arbitrary blocks of text directly to the output disable all
+processing options. For example:
+
+```
+// Disable all processing inside Division Block.
+.-macros -spans -specials -container
+..
+function toggleToc() {
+    document.getElementById("toc").classList.toggle('toc-visible');
+}
+
+window.onclick = toggleToc
+..
+```
+
+To enable only macro expansion drop the `-macros` option.
 
 

@@ -2,9 +2,11 @@
 
 // NOTE: HTML special characters are escaped.
 {examples} = '
-Some **bold text**, some _emphasized text_, some `monospaced text` and some ~~deleted text~~.
+Some **bold text**, some _emphasized text_, some `monospaced text` and
+some ~~deleted text~~.
 
-A [link to the Rimu website](http://rimumarkup.org/), an auto-encoded link: http://rimumarkup.org/.
+A [link to the Rimu website](http://rimumarkup.org/), an auto-encoded
+link: http://rimumarkup.org/.
 
   Indented paragraph.
 
@@ -56,7 +58,7 @@ function convert() {
   var htmlEscaped = escapeSpecialChars(htmlRaw);
   var htmlElement = document.getElementById('playground-html');
   var previewElement = document.getElementById('playground-preview');
-  htmlElement.innerHTML = htmlEscaped;
+  htmlElement.innerHTML = '<code>' + htmlEscaped + '</code>';
   previewElement.innerHTML = htmlRaw;
 }
 convert();

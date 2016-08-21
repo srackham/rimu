@@ -122,7 +122,6 @@ OPTIONS
     Shortcuts for the following prepended macro definitions:
     --prepend "{--theme}='THEME'"
     --prepend "{--title}='TITLE'"
-    --prepend "{--bootstrap2}='true'"
     --prepend "{--highlightjs}='true'"
     --prepend "{--mathjax}='true'"
     --prepend "{--sidebar-toc}='true'"
@@ -130,17 +129,22 @@ OPTIONS
     --prepend "{--custom-toc}='true'"
     --prepend "{--section-numbers}='true'"
 
+  --styled-name NAME
+    Specify the --styled option header and footer files:
+    'classic': Legacy styling (default).
+    'flex':    Flexbox "mobile first" styling (experimental).
+    'v8':      Rimu version 8 styling.
+
 STYLING MACROS AND CLASSES
   The following macros and CSS classes are available when the
   --styled option is used:
 
   Macro name         Description
   _______________________________________________________________
-  --                 Blank macro (empty string).                 
+  --                 Blank macro (empty string).
   --theme            Set styling themes.
                      Theme names: default, graystone.
   --title            HTML document title .
-  --bootstrap2       Set to non-blank value to include Bootstrap2.
   --highlightjs      Set to non-blank value to enable syntax
                      highlighting with Highlight.js.
   --mathjax          Set to a non-blank value to enable MathJax.
@@ -168,9 +172,6 @@ STYLING MACROS AND CLASSES
   line-breaks      Honor line breaks in source text.
   page-break       Force page break before the element.
   no-page-break    Avoid page break inside the element.
-  bold             Bold labelled list terms (default).
-  italic           Italic labelled list terms.
-  normal           Non-bold labelled list terms.
   dl-numbered      Number labeled list items.
   dl-horizontal    Format labeled lists horizontally.
   dl-counter       Prepend dl item counter to element content.
@@ -200,9 +201,13 @@ Example usage:
   rimuc -o book.html frontmatter.rmu chapter*.rmu backmatter.rmu
 
 ### `--styled` option
-The `--styled` option prepends a header file and appends a footer file
-to the list of source files. The Rimu markup in the header and footer
-files performs the following functions:
+The `--styled` option works by prepending a header file and appending
+a footer file to the list of source files. The actual header and
+footer files is determined by the [`--styled-name`](#styled-names)
+option.
+
+The Rimu markup in the header and footer files performs the following
+functions:
 
 - Outputs an HTML5 document.
 - Supports [table of contents generation](#toc-generation).
@@ -224,6 +229,28 @@ All features enabled by the `--styled` option are implemented with
 Rimu source code in the header and footer files -- they are not
 hard-wired into Rimu -- and serve to illustrate the power and
 flexibility of the Rimu markup language.
+
+.#styled-names
+### Styled names
+The `--styled-name` option is used to choose between the following
+header and footer files:
+
+classic:: Legacy (default) styling.
+
+flex:: Flexbox "mobile first" styling (experimental). Examples:
+
+  - [Flex layout with _sidebar_ table of contents](flex-example.html)
+    compiled with:
+
+    rimuc --styled --styled-name flex --sidebar-toc README.md
+
+  - [Flex layout with _dropdown_ table of contents and _graystone_
+    theme](flex-graystone-example.html) compiled with:
+
+    rimuc --styled --styled-name flex --dropdown-toc --theme graystone README.md
+
+v8:: Rimu version 8 styling.
+
 
 ### Slug generation
 The `--styled` option includes a JavaScript slug generator to
@@ -257,7 +284,8 @@ example:
 In conjunction with the {rimuc} `--styled` option, the `--sidebar-toc`
 and `--dropdown-toc` options will generate sidebar-styled and
 dropdown-styled table of contents (TOC) respectively. The
-`--custom-toc` option allows the user to include a custom TOC.
+`--custom-toc` option allows the user to include a [custom
+TOC](#custom-table-of-contents).
 
 If the `--sidebar-toc` macro or the `--dropdown-toc` macro is
 non-blank then JavaScript and HTML is included in the output to
@@ -279,30 +307,18 @@ option inhibits the generation of an HTML TOC container.  It is up to
 the user to include a custom HTML TOC (Rimu documentation has a custom
 TOC).
 
-Here is the default sidebar TOC container. Use it as a template to
-build a custom sidebar TOC:
+Here is the default TOC container, use it as a template to build your
+own custom TOC:
 
 ``
-<div id="toc" class="no-print">
+<div id="toc">
   <div id="auto-toc"></div>
 </div>
 ``
 
-Here is the default dropdown TOC container (including "hamburger" TOC
-button). Use it as a template to build a custom dropdown TOC:
-
-``
-<div id="toc-button" onclick="toggleToc()" class="no-print">&#8801;</div>
-<div id="toc" class="no-print">
-  <div id="auto-toc"></div>
-</div>
-``
-
-- Include your TOC entries (or any custom elements) anywhere inside
-  the `id="toc"` div element.
-- The auto-generated TOC is injected into the `<div
-  id="auto-toc"></div>` element -- omit this `div` to inhibit all
-  auto-generated TOC entries.
+- Include custom elements inside the `id="toc"` div element.
+- The auto-generated TOC is injected into the `<div id="auto-toc"></div>`
+  element -- omit this `div` to exclude auto-generated TOC entries.
 
 
 .#api
@@ -625,7 +641,8 @@ A _Division Block_ is a container for block elements.
 - If the _Division Block_ has no HTML attributes then the HTML `div`
   tags are omitted.
 
-{division-block-example} = '..
+{division-block-example} = '."font-style:italic"
+..
 Nunc mauris tempor.
 Scelerisque feugiat massa alias.
 ..'
@@ -639,15 +656,17 @@ include]({tips}#conditional-inclusion) Rimu source text.
 ## HTML elements
 Block and inline HTML elements can be mixed with Rimu markup.
 
-- The opening tag of an HTML block element must start at the left
-  margin.
-- An HTML block element is terminated with a blank line.
 - Macro invocations in HTML elements are expanded.
-- HTML tags can be escaped with a backslash character prefix.
+- HTML tags can be e,wscaped with a backslash character prefix.
 - HTML elements can be excluded from the output using the API
   [safeMode option](#api-options).
 
-{html-example} = 'An inline <span style="color:red;">HTML span</span>.
+### Block HTML elements
+- The opening tag of an HTML block element must start at the left
+  margin.
+- An HTML block element is terminated with a blank line.
+
+{html-block-element-example} = 'An HTML table block element:
 
 <table class="bordered">
   <tr>
@@ -659,7 +678,14 @@ Block and inline HTML elements can be mixed with Rimu markup.
     <td>Wisi ullamcorper eget.</td>
   </tr>
 </table>'
-{generate-rendered-example-2|html-example}
+{generate-rendered-example-2|html-block-element-example}
+
+### Inline HTML elements
+- Any well formed HTML tag is allowed in an inline context.
+
+{html-inline-element-example} = 'An inline <span style="color:red;">HTML span</span>.'
+
+{generate-rendered-example-2|html-inline-element-example}
 
 
 ## Paragraphs
@@ -758,14 +784,24 @@ Definition for second term.'
   successor list is nested.
 - List items can be escaped with a backslash at the beginning of the
   line.
-- If an [Indented Paragraph](#indented-paragraph) is separated from a
-  preceding list item by a single blank line then it is rendered with
-  the list item.
-- If a [Fenced Block](#fenced-blocks) immediately follows a list item
-  without any intervening blank lines then it is attached to the list
-  item.
-- Lists are terminated by two or more blank lines or when the
-  following element is not an Indented Paragraph or a Fenced Block.
+- _Indented_ and _Quote paragraphs_, _Fenced blocks_, _HTML blocks_
+  and _Multi-line comments_ can be implicitly attached to list items:
+
+  * If an [Indented Paragraph](#indented-paragraph) is separated from
+    a preceding list item by a single blank line then it is _attached_
+    to the list item.
+  * If a [Quote Paragraph](#quote-paragraph), [Fenced
+    Block](#fenced-blocks), [HTML Block](#block-html-elements) or
+    [Multi-line comment](#comments) immediately follows a list item
+    without any intervening blank lines then it is _attached_ to the
+    list item.
+
+- Lists are terminated:
+
+  * When the following element is not a list item or an _attached_
+    block.
+  * By two or more blank lines.
+
 - There are no explicit numbering or bullet styles -- this is best
   left to CSS which can apply a consistent set of list styles.
 
@@ -903,6 +939,10 @@ Definition syntax:
 - The `replacement` text can invoke previously defined macros.
 - Replacement definitions are not processed if the [SafeMode API
   option](#api-options) is non-zero.
+- If the replacement definition _pattern_ matches that of an existing
+  defintion it will replace the existing definition, otherwise it is
+  appended to the end of the replacement definitions list
+  (where it assumes the lowest precedence).
 
 Example replacement definitions:
 
@@ -1063,14 +1103,15 @@ Definition syntax:
 - `block-name` is is one of the folowing [Delimited
   Block](#delimited-blocks) names:
 ..
-`code` ([Code Block](#code-block)), \
-`comment` ([Multi-line Comment](#comments)), \
-`division` ([Division Block](#division-block)), \
-`html` ([HTML Block](#html-elements)), \
-`indented` ([Indented Paragraph](#indented-paragraph)), \
-`quote` ([Quote Block](#quote-block)), \
-`quote-paragraph` ([Quote Paragraph](#quote-paragraph)), \
-`paragraph` ([Normal Paragraph](#normal-paragraph)).
+[`code`](#code-block), \
+[`comment`](#comments), \
+[`division`](#division-block), \
+[`html`](#html-elements), \
+[`indented`](#indented-paragraph), \
+[`quote`](#quote-block), \
+[`quote-paragraph`](#quote-paragraph), \
+[`paragraph`](#normal-paragraph).
+
 ..
 
 - `open-tags` and `close-tags` define the HTML tags that envelope the

@@ -4,19 +4,44 @@ See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
 
-## Version 9.0.0 (2016-07-??)
-- **BREAKING CHANGE**: If a _Division Block_ has no HTML
-  attributes the `<div>` and `</div>` tags are not emitted.
-  Use this work-around if you want backward compatibility:
-```
-// Redefine Division block so it always has at least one
-// attribute so that the div tags are always emitted.
-|division| = '<div class="dummy">|</div>'
-```
-- The `rimuc` `--styled` option no longer needs Boostrap for
-  styling. You can optionally include Bootstrap 2 using the new
-  `--boostrap2` option -- specify `bootstrap2` if you rely on
-  Boostrap specific features.
+## Version 9.0.0 (2016-08-21)
+- Added [`--styled-name`]({reference}#styled-names) option to `rimuc`
+  along with built-in _classic_, _flex_ and _v8_ named styles. _flex_
+  is an experimental mobile-first HTML5 + CSS3 layout based on CSS3
+  flexboxes. _flex_ is currently tagged experimental because it is not
+  fully functional in some older browsers (specifically Internet
+  Explorer 11 and older).
+
+- **BREAKING CHANGE**: If a [Division
+  Block]({reference}#division-block) has no HTML attributes the
+  `<div>` and `</div>` tags are not emitted.  Use this work-around if
+  you want backward compatibility:
+
+      // Redefine Division block so it always has at least one
+      // attribute to ensure the div tags are always emitted.
+      |division| = '<div class="dummy">|</div>'
+
+- **BREAKING CHANGE**: The rimuc `--styled` option no longer uses
+  Bootstrap for styling. If your existing documents rely on Bootstrap
+  specific features you should specify the Rimu version 8 styling
+  using the rimuc `--styled-name v8` option.
+
+- **BREAKING CHANGE**: Space characters inside URLs are no longer
+  tolerated as per [RFC 3986](http://tools.ietf.org/html/rfc3986/).
+  This change impacts `<url>`, `<url|caption>`  and `[caption](url)`
+  syntaxes. Instead of spaces use the `%20` space character encoding.
+/*
+  This reverses commit 5bc39ce (Rimu 4.0 May 2015), not sure why that
+  was allowed (other than it's Markdown compatible).
+*/
+
+- If a _Quote paragraph_, _HTML block_ or _Multi-line Comment_ element
+  immediately follows a [list item]({reference}#lists) without any
+  intervening blank lines then it will be attached to the list item.
+
+- Rimu documentation examples no longer use the `<style>` element
+  `scoped` attribute as it has been [dropped from the HTML5
+  specification]({tips}#scoped-css).
 
 
 ## Version 8.0.1 (2016-06-26)
