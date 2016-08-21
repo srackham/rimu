@@ -1,22 +1,28 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html>
 <head>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta charset="UTF-8">
-  <title>Rimu Change Log</title>
-  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
-  <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width">
+<title>Rimu Change Log</title>
+<link href="https://fonts.googleapis.com/css?family=Arimo%7CCousine%7CTinos" rel="stylesheet">
 <style>
-  /* Bootstrap tweaks. */
+  * {
+    margin: 0;
+    padding: 0;
+  }
   body {
-    margin: 1em;
-    max-width: 50em;
-    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 20px;
+    color: #333333;
+    background-color: white;
+    font-family: Arimo, Arial, Helvetica, sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
+    margin: 10px 0;
     color: #527bbd;
   }
-  h1 { font-size: 2.2em; }
+  h1 { font-size: 2.2em; line-height: 40px;}
   h2 { font-size: 1.5em; }
   h3 { font-size: 1.2em; }
   h4 { font-size: 1.1em; }
@@ -29,61 +35,92 @@
   }
   h2 {
     margin-top: 1.5em;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid #dddddd;
+  }
+  img {
+    max-width: 100%;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  td, th {
+    text-align: left;
+    vertical-align: top;
+  }
+  .bordered td, .bordered th {
+    border: 1px solid #dddddd;
+  }
+  th {
+    padding: 8px;
   }
   a, a:hover {
     color: #527bbd;
   }
-  li, dd {
-    margin-bottom: 0.25em;
+  a {
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
   }
   p, pre, li, dt, dd, blockquote p {
-    font-size: inherit;
     line-height: 1.45;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
   }
+  ul, ol {
+    padding: 0;
+    margin: 0 0 10px 25px;
+  }
+  dt {
+    margin-bottom: 0;
+    font-style: italic;
+  }
+  dd {
+    margin-left: 1.0em;
+    margin-top: 0;
+  }
   blockquote {
+    padding: 0 0 0 15px;
     border: none;
     border-left: 5px solid #eeeeee;
-    font-family: Georgia, serif;
-    font-style: italic;
+    font-family: Tinos, Georgia, serif;
     width: 80%;
     margin: 1.5em 0;
     color: #383838;
   }
   .cite {
-    font-style: italic;
-    color:#777;
-    padding:5px 0;
+    color: #777;
+    padding: 5px 0;
   }
   .cite::before {
     content: "\2014 \2009";
   }
+  code {
+    font-family: Cousine, Consolas, "Andale Mono", Monaco, monospace;
+    font-size: 90%;
+    background-color: #f8f8f8;
+  }
   pre {
-    padding: 6px;
+    font-family: Cousine, Consolas, "Andale Mono", Monaco, monospace;
     line-height: normal;
+    white-space: pre-wrap;
+    word-break: break-all;
+    background-color: #f8f8f8;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    padding: 6px;
   }
   .light-background {
     background-color: #f8f8f8;
     border: none;
   }
-  code {
-    color: inherit;
-    font-size: inherit;
-  }
   *:not(pre) > code {
-    border: none;
-    background-color: #f8f8f8;
-  }
-  .dl-horizontal > dt {
-    text-align: left;
-    margin-top: 1.0em;
+    white-space: nowrap;
   }
   .dl-horizontal > dd {
     margin-top: 1.0em;
   }
-  /* highlight.js tweaks. */
   pre > code {
     background-color: inherit;
     padding: 0;
@@ -91,27 +128,66 @@
   pre span {
     opacity: 1 !important;
   }
-  /* Rimu styles. */
   .verse {
     margin: 1.5em 20px;
   }
   div.verse p, p.verse {
-    font-family: Georgia, serif;
-    white-space:pre;
+    font-family: Tinos, Georgia, serif;
+    white-space: pre;
     margin-top: 0.75em;
     margin-bottom: 0.75em;
   }
   .sidebar {
-    border: 1px solid silver;
-    border-radius:4px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
     background: #ffffee;
     padding: 10px;
-    margin: 1.5em 20px;
+    margin: 1.5em 0px;
   }
   div.sidebar *:first-child {
     margin-top: 0.2em;
   }
-  /* List item counters and definition list numbering. */
+  .page-break {
+    page-break-before: always;
+  }
+  .no-page-break {
+    page-break-inside: avoid;
+  }
+  .align-left {
+    text-align: left;
+  }
+  .align-center {
+    text-align: center;
+  }
+  .align-right {
+    text-align: right;
+  }
+  .line-breaks {
+    white-space: pre;
+  }
+  .dl-horizontal:before, .dl-horizontal:after {
+    display: table;
+    content: "";
+    line-height: 0;
+  }
+  .dl-horizontal:after {
+    clear: both;
+  }
+  .dl-horizontal > dt {
+    float: left;
+    clear: left;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+    margin-top: 1.0em;
+    width: 25%;
+  }
+  .dl-horizontal > dd {
+    margin-left: 25%;
+    padding-left: 1.0em;
+  }
   dl {
     counter-reset: dl-counter;
   }
@@ -142,50 +218,13 @@
   .dl-numbered > dt:before {
     content: counter(dl-counter) ". ";
   }
-  .page-break {
-    page-break-before: always;
-  }
-  .no-page-break {
-    page-break-inside: avoid;
-  }
-  .align-left {
-    text-align: left;
-  }
-  .align-center {
-    text-align: center;
-  }
-  .align-right {
-    text-align: right;
-  }
-  .line-breaks {
-    white-space:pre;
-  }
-</style>
-<style>
-  body {
-    padding-left: 21em;
-  }
-  #toc {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 18em;
-    border-right: 1px solid #cccccc;
-    overflow-y: auto;
-    overflow-x: hidden;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.35);
-  }
-</style>
-<style>
   @media print {
     .no-print, .no-print * {
       display: none !important;
     }
-    body {
-      padding-left: 1em;
-    }
   }
+</style>
+<style>
   #toc {
     padding-left: 1em;
   }
@@ -205,10 +244,56 @@
   #toc div:nth-child(even) {
     background-color: #f8f8f8;
   }
+  #auto-toc {
+    width: 100%;
+  }
+</style>
+<style>
+  body {
+    margin: 1em;
+    max-width: 50em;
+  }
+</style>
+<style>
+  body {
+    padding-left: 21em;
+  }
+  #toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 18em;
+    border-right: 1px solid #cccccc;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.35);
+  }
+  @media print {
+    body {
+      padding-left: 1em;
+    }
+  }
+  @media screen and (max-width: 700px) {
+    body {
+      padding-left: 0;
+    }
+    #toc {
+      display: none !important;
+    }
+  }
+</style>
+<style>
+  @media screen and (max-width: 700px) {
+    body {
+      font-size: 20px;
+      margin: 5px;
+    }
+  }
 </style>
 </head>
 <body>
-<div id="contents">
+<div id="article">
 
 <div id="toc" class="no-print">
   <h2 style="font-size:1.2em; margin-top:1.0em">Links</h2>
@@ -216,15 +301,43 @@
   <div class="h2"><a href="rimuplayground.html">Rimu Playground</a></div>
   <div class="h2"><a href="reference.html">Rimu Reference</a></div>
   <div class="h2"><a href="tips.html">Rimu Tips</a></div>
-  <div class="h2"><a href="http://github.com/srackham/rimu" target="_blank">Github</a></div>
-  <div class="h2"><a href="https://npmjs.org/package/rimu" target="_blank">npm</a></div>
+  <div class="h2"><a href="https://github.com/srackham/rimu">Github</a></div>
+  <div class="h2"><a href="https://npmjs.org/package/rimu">npm</a></div>
   <h2 style="font-size:1.2em; margin-top:1.0em">Table of Contents</h2>
   <div id="auto-toc"></div>
 </div>
-<h1>Rimu Markup CHANGELOG</h1>
+<h1>Rimu Markup Change Log</h1>
 <p>See the <a href="https://github.com/srackham/rimu/commits/">Git commit log</a>
 for more detailed information.</p>
-<h2>Version 8.0.1 (2016-06-26)</h2>
+<h2>Version 9.0.0 (2016-08-21)</h2>
+<ul><li>Added <a href="reference.html#styled-names"><code>--styled-name</code></a> option to <code>rimuc</code>
+  along with built-in <em>classic</em>, <em>flex</em> and <em>v8</em> named styles. <em>flex</em>
+  is an experimental mobile-first HTML5 + CSS3 layout based on CSS3
+  flexboxes. <em>flex</em> is currently tagged experimental because it is not
+  fully functional in some older browsers (specifically Internet
+  Explorer 11 and older).
+</li><li><strong>BREAKING CHANGE</strong>: If a <a href="reference.html#division-block">Division
+  Block</a> has no HTML attributes the
+  <code>&lt;div&gt;</code> and <code>&lt;/div&gt;</code> tags are not emitted.  Use this work-around if
+  you want backward compatibility:
+<pre class="no-highlight"><code>// Redefine Division block so it always has at least one
+// attribute to ensure the div tags are always emitted.
+|division| = '&lt;div class="dummy"&gt;|&lt;/div&gt;'</code></pre>
+</li><li><strong>BREAKING CHANGE</strong>: The rimuc <code>--styled</code> option no longer uses
+  Bootstrap for styling. If your existing documents rely on Bootstrap
+  specific features you should specify the Rimu version 8 styling
+  using the rimuc <code>--styled-name v8</code> option.
+</li><li><strong>BREAKING CHANGE</strong>: Space characters inside URLs are no longer
+  tolerated as per <a href="http://tools.ietf.org/html/rfc3986/">RFC 3986</a>.
+  This change impacts <code>&lt;url&gt;</code>, <code>&lt;url|caption&gt;</code>  and <code>[caption](url)</code>
+  syntaxes. Instead of spaces use the <code>%20</code> space character encoding.
+</li><li>If a <em>Quote paragraph</em>, <em>HTML block</em> or <em>Multi-line Comment</em> element
+  immediately follows a <a href="reference.html#lists">list item</a> without any
+  intervening blank lines then it will be attached to the list item.
+</li><li>Rimu documentation examples no longer use the <code>&lt;style&gt;</code> element
+  <code>scoped</code> attribute as it has been <a href="tips.html#scoped-css">dropped from the HTML5
+  specification</a>.
+</li></ul><h2>Version 8.0.1 (2016-06-26)</h2>
 <ul><li><strong>FIXED</strong>: <code>rimuc</code>: If a <code>.html</code> input file was encountered then
   all succeeding input files were ignored.
 </li><li>Documentation updates.
@@ -490,16 +603,13 @@ compatibility. It also includes some breaking changes.</p>
 </div>
 <script>
 window.onload = function() {
-  var headings = [].slice.call(document.body.querySelectorAll('#contents > h1, #contents > h2, #contents > h3'));
-  headings.forEach(function(heading, index) {
+  var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
+  headings.forEach(function(heading) {
     var title = heading.textContent;
     var id = heading.getAttribute('id');
     if (!id) {
       id = slugify(title);
       heading.setAttribute('id', id);
-    }
-    if (index === 0 && heading.tagName === 'H1') {
-      id = ''; // Go to top of page.
     }
     appendTocEntry(heading, id);
   });

@@ -1,22 +1,28 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html>
 <head>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta charset="UTF-8">
-  <title>Rimu Playground</title>
-  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
-  <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width">
+<title>Rimu Playground</title>
+<link href="https://fonts.googleapis.com/css?family=Arimo%7CCousine%7CTinos" rel="stylesheet">
 <style>
-  /* Bootstrap tweaks. */
+  * {
+    margin: 0;
+    padding: 0;
+  }
   body {
-    margin: 1em;
-    max-width: 50em;
-    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 20px;
+    color: #333333;
+    background-color: white;
+    font-family: Arimo, Arial, Helvetica, sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
+    margin: 10px 0;
     color: #527bbd;
   }
-  h1 { font-size: 2.2em; }
+  h1 { font-size: 2.2em; line-height: 40px;}
   h2 { font-size: 1.5em; }
   h3 { font-size: 1.2em; }
   h4 { font-size: 1.1em; }
@@ -29,61 +35,92 @@
   }
   h2 {
     margin-top: 1.5em;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid #dddddd;
+  }
+  img {
+    max-width: 100%;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  td, th {
+    text-align: left;
+    vertical-align: top;
+  }
+  .bordered td, .bordered th {
+    border: 1px solid #dddddd;
+  }
+  th {
+    padding: 8px;
   }
   a, a:hover {
     color: #527bbd;
   }
-  li, dd {
-    margin-bottom: 0.25em;
+  a {
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
   }
   p, pre, li, dt, dd, blockquote p {
-    font-size: inherit;
     line-height: 1.45;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
   }
+  ul, ol {
+    padding: 0;
+    margin: 0 0 10px 25px;
+  }
+  dt {
+    margin-bottom: 0;
+    font-style: italic;
+  }
+  dd {
+    margin-left: 1.0em;
+    margin-top: 0;
+  }
   blockquote {
+    padding: 0 0 0 15px;
     border: none;
     border-left: 5px solid #eeeeee;
-    font-family: Georgia, serif;
-    font-style: italic;
+    font-family: Tinos, Georgia, serif;
     width: 80%;
     margin: 1.5em 0;
     color: #383838;
   }
   .cite {
-    font-style: italic;
-    color:#777;
-    padding:5px 0;
+    color: #777;
+    padding: 5px 0;
   }
   .cite::before {
     content: "\2014 \2009";
   }
+  code {
+    font-family: Cousine, Consolas, "Andale Mono", Monaco, monospace;
+    font-size: 90%;
+    background-color: #f8f8f8;
+  }
   pre {
-    padding: 6px;
+    font-family: Cousine, Consolas, "Andale Mono", Monaco, monospace;
     line-height: normal;
+    white-space: pre-wrap;
+    word-break: break-all;
+    background-color: #f8f8f8;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    padding: 6px;
   }
   .light-background {
     background-color: #f8f8f8;
     border: none;
   }
-  code {
-    color: inherit;
-    font-size: inherit;
-  }
   *:not(pre) > code {
-    border: none;
-    background-color: #f8f8f8;
-  }
-  .dl-horizontal > dt {
-    text-align: left;
-    margin-top: 1.0em;
+    white-space: nowrap;
   }
   .dl-horizontal > dd {
     margin-top: 1.0em;
   }
-  /* highlight.js tweaks. */
   pre > code {
     background-color: inherit;
     padding: 0;
@@ -91,27 +128,66 @@
   pre span {
     opacity: 1 !important;
   }
-  /* Rimu styles. */
   .verse {
     margin: 1.5em 20px;
   }
   div.verse p, p.verse {
-    font-family: Georgia, serif;
-    white-space:pre;
+    font-family: Tinos, Georgia, serif;
+    white-space: pre;
     margin-top: 0.75em;
     margin-bottom: 0.75em;
   }
   .sidebar {
-    border: 1px solid silver;
-    border-radius:4px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
     background: #ffffee;
     padding: 10px;
-    margin: 1.5em 20px;
+    margin: 1.5em 0px;
   }
   div.sidebar *:first-child {
     margin-top: 0.2em;
   }
-  /* List item counters and definition list numbering. */
+  .page-break {
+    page-break-before: always;
+  }
+  .no-page-break {
+    page-break-inside: avoid;
+  }
+  .align-left {
+    text-align: left;
+  }
+  .align-center {
+    text-align: center;
+  }
+  .align-right {
+    text-align: right;
+  }
+  .line-breaks {
+    white-space: pre;
+  }
+  .dl-horizontal:before, .dl-horizontal:after {
+    display: table;
+    content: "";
+    line-height: 0;
+  }
+  .dl-horizontal:after {
+    clear: both;
+  }
+  .dl-horizontal > dt {
+    float: left;
+    clear: left;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+    margin-top: 1.0em;
+    width: 25%;
+  }
+  .dl-horizontal > dd {
+    margin-left: 25%;
+    padding-left: 1.0em;
+  }
   dl {
     counter-reset: dl-counter;
   }
@@ -142,64 +218,13 @@
   .dl-numbered > dt:before {
     content: counter(dl-counter) ". ";
   }
-  .page-break {
-    page-break-before: always;
-  }
-  .no-page-break {
-    page-break-inside: avoid;
-  }
-  .align-left {
-    text-align: left;
-  }
-  .align-center {
-    text-align: center;
-  }
-  .align-right {
-    text-align: right;
-  }
-  .line-breaks {
-    white-space:pre;
-  }
-</style>
-<style>
-  .toc-visible {
-    display: block !important;
-  }
-  #toc-button {
-    position: fixed;
-    top: 22px;
-    left: 15px;
-    z-index: 1;
-    cursor: pointer;
-    color: silver;
-    font-size:3.2em;
-  }
-  #toc {
-    display: none;
-    position: fixed;
-    top: 55px;
-    left: 15px;
-    right: 10%;
-    z-index: 1;
-    max-width: 30em;
-    max-height: 80%;
-    overflow-y: auto;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
-  }
-  #contents {
-    margin-left: 40px;
-  }
-</style>
-<style>
   @media print {
     .no-print, .no-print * {
       display: none !important;
     }
-    body {
-      padding-left: 1em;
-    }
   }
+</style>
+<style>
   #toc {
     padding-left: 1em;
   }
@@ -219,34 +244,111 @@
   #toc div:nth-child(even) {
     background-color: #f8f8f8;
   }
+  #auto-toc {
+    width: 100%;
+  }
+</style>
+<style>
+  body {
+    margin: 1em;
+    max-width: 50em;
+  }
+</style>
+<style>
+  .show-toc #toc {
+    display: block !important;
+  }
+  #toc-button {
+    position: fixed;
+    top: 22px;
+    left: 15px;
+    z-index: 1;
+    cursor: pointer;
+    color: silver;
+    font-size: 3.2em;
+  }
+  #toc {
+    display: none;
+    position: fixed;
+    top: 55px;
+    left: 15px;
+    right: 10%;
+    z-index: 1;
+    max-width: 30em;
+    max-height: 80%;
+    overflow-y: auto;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+  }
+  #article {
+    margin-left: 40px;
+  }
+  @media print {
+    #article {
+      margin-left: 0px;
+    }
+  }
+  @media screen and (max-width: 700px) {
+    #toc {
+      top: 60px;
+      left: 5px;
+    }
+    #toc-button {
+      top: 20px;
+      left: 5px;
+    }
+  }
+</style>
+<style>
+  @media screen and (max-width: 700px) {
+    body {
+      font-size: 20px;
+      margin: 5px;
+    }
+  }
 </style>
 </head>
 <body>
-<div id="contents">
+<div id="toc-button" class="no-print">&#8801;</div>
+<div id="article">
 
-<style scoped>
+<style>
+.edit-source {
+  font-family: Cousine, Consolas, "Andale Mono", Monaco, monospace;
+  font-size: 90%;
+  line-height: normal;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
+  border: none;
+  outline: none;
+  padding: 0.5em;
+  width: 100%;
+  background-color: #ffffee;
+  box-shadow: 0 0 10px #9ecaed;
+  box-sizing: border-box;
+}
+.edit-icon {
+  text-decoration: underline;
+  color: gray;
+}
 .example td {
   margin: 0;
   padding: 0;
 }
 .example-header {
-  color: #527bbd;
   font-weight: bold;
+  color: #527bbd;
   padding: 0.5em !important;
 }
 .example-source, .example-rendered {
   border: none;
   background-color: inherit;
   margin: 0;
-  padding: 0.6em;
+  padding: 0.5em;
 }
-.example-edit {
-  margin: 0;
-  border: 0;
-  width: 100%;
-  background-color: #ffe;
-  box-sizing: border-box;
-  display: none;
+.example-source > code {
+  padding: 0;
 }
 </style>
 <script src="rimu.min.js"></script>
@@ -269,15 +371,14 @@ function updateExample(name) {
   edit.style.height = edit.parentNode.offsetHeight + 'px';
 }
 </script>
-<div id="toc-button" onclick="toggleToc()" class="no-print">&#8801;</div>
 <div id="toc" class="no-print">
   <h2 style="font-size:1.2em; margin-top:1.0em">Links</h2>
   <div class="h2"><a href="index.html">Rimu Home</a></div>
   <div class="h2"><a href="rimuplayground.html">Rimu Playground</a></div>
   <div class="h2"><a href="reference.html">Rimu Reference</a></div>
   <div class="h2"><a href="tips.html">Rimu Tips</a></div>
-  <div class="h2"><a href="http://github.com/srackham/rimu" target="_blank">Github</a></div>
-  <div class="h2"><a href="https://npmjs.org/package/rimu" target="_blank">npm</a></div>
+  <div class="h2"><a href="https://github.com/srackham/rimu">Github</a></div>
+  <div class="h2"><a href="https://npmjs.org/package/rimu">npm</a></div>
   <h2 style="font-size:1.2em; margin-top:1.0em">Table of Contents</h2>
   <div id="auto-toc"></div>
 </div>
@@ -285,16 +386,12 @@ function updateExample(name) {
 <h2>Rimu markup</h2>
 <p>Edit these examples or add your own:</p>
 <div>
-  <textarea id="playground-source"
-      style="
-        background-color: #ffe;
-        border: 2px solid #eee;
-        width: 100%;
-        min-height: 16em;
-        box-sizing: border-box;"
-      onkeyup="convert()">Some **bold text**, some _emphasized text_, some `monospaced text` and some ~~deleted text~~.
+  <textarea id="playground-source" class="edit-source"
+      style="min-height: 16em;" onkeyup="convert()">Some **bold text**, some _emphasized text_, some `monospaced text` and
+some ~~deleted text~~.
 
-A [link to the Rimu website](http://rimumarkup.org/), an auto-encoded link: http://rimumarkup.org/.
+A [link to the Rimu website](http://rimumarkup.org/), an auto-encoded
+link: http://rimumarkup.org/.
 
   Indented paragraph.
 
@@ -332,7 +429,7 @@ function convert() {
   var htmlEscaped = escapeSpecialChars(htmlRaw);
   var htmlElement = document.getElementById('playground-html');
   var previewElement = document.getElementById('playground-preview');
-  htmlElement.innerHTML = htmlEscaped;
+  htmlElement.innerHTML = '<code>' + htmlEscaped + '</code>';
   previewElement.innerHTML = htmlRaw;
 }
 convert();
@@ -340,16 +437,13 @@ convert();
 </div>
 <script>
 window.onload = function() {
-  var headings = [].slice.call(document.body.querySelectorAll('#contents > h1, #contents > h2, #contents > h3'));
-  headings.forEach(function(heading, index) {
+  var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
+  headings.forEach(function(heading) {
     var title = heading.textContent;
     var id = heading.getAttribute('id');
     if (!id) {
       id = slugify(title);
       heading.setAttribute('id', id);
-    }
-    if (index === 0 && heading.tagName === 'H1') {
-      id = ''; // Go to top of page.
     }
     appendTocEntry(heading, id);
   });
@@ -385,26 +479,25 @@ function appendTocEntry(heading, id) {
 }
 </script>
 <script>
-function toggleToc() {
-    document.getElementById("toc").classList.toggle('toc-visible');
+// matches() polyfill for old browsers.
+if (!Element.prototype.matches) {
+  var p = Element.prototype;
+  if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
+    p.matches = p.webkitMatchesSelector;
+  if (p.msMatchesSelector) // IE9/10/11 & Edge
+    p.matches = p.msMatchesSelector;
+  if (p.mozMatchesSelector) // FF<34
+    p.matches = p.mozMatchesSelector;
 }
 window.onclick = function(event) {
-  if (!Element.prototype.matches) {
-    // matches() polyfill for old browsers.
-    var p = Element.prototype;
-    if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
-      p.matches = p.webkitMatchesSelector;
-    if (p.msMatchesSelector) // IE9/10/11 & Edge
-      p.matches = p.msMatchesSelector;
-    if (p.mozMatchesSelector) // FF<34
-      p.matches = p.mozMatchesSelector;
+  var body = document.getElementsByTagName('body')[0];
+  if (event.target.matches('#toc-button, #toc a')) {
+    // Toggle TOC if TOC button or TOC link is clicked.
+    body.classList.toggle('show-toc');
   }
-  if (!event.target.matches('#toc-button, #toc, #toc :not(a)')) {
-    // Hide TOC if clicked outside TOC or on TOC link.
-    var toc = document.getElementById('toc');
-    if (toc.classList.contains('toc-visible')) {
-      toc.classList.remove('toc-visible');
-    }
+  else if (!event.target.matches('#toc, #toc *')) {
+    // Hide TOC if clicked outside TOC.
+    body.classList.remove('show-toc');
   }
 }
 </script>

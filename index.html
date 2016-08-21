@@ -1,22 +1,28 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html>
 <head>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta charset="UTF-8">
-  <title>Rimu Markup</title>
-  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
-  <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width">
+<title>Rimu Markup</title>
+<link href="https://fonts.googleapis.com/css?family=Arimo%7CCousine%7CTinos" rel="stylesheet">
 <style>
-  /* Bootstrap tweaks. */
+  * {
+    margin: 0;
+    padding: 0;
+  }
   body {
-    margin: 1em;
-    max-width: 50em;
-    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 20px;
+    color: #333333;
+    background-color: white;
+    font-family: Arimo, Arial, Helvetica, sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
+    margin: 10px 0;
     color: #527bbd;
   }
-  h1 { font-size: 2.2em; }
+  h1 { font-size: 2.2em; line-height: 40px;}
   h2 { font-size: 1.5em; }
   h3 { font-size: 1.2em; }
   h4 { font-size: 1.1em; }
@@ -29,61 +35,92 @@
   }
   h2 {
     margin-top: 1.5em;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid #dddddd;
+  }
+  img {
+    max-width: 100%;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  td, th {
+    text-align: left;
+    vertical-align: top;
+  }
+  .bordered td, .bordered th {
+    border: 1px solid #dddddd;
+  }
+  th {
+    padding: 8px;
   }
   a, a:hover {
     color: #527bbd;
   }
-  li, dd {
-    margin-bottom: 0.25em;
+  a {
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
   }
   p, pre, li, dt, dd, blockquote p {
-    font-size: inherit;
     line-height: 1.45;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
   }
+  ul, ol {
+    padding: 0;
+    margin: 0 0 10px 25px;
+  }
+  dt {
+    margin-bottom: 0;
+    font-style: italic;
+  }
+  dd {
+    margin-left: 1.0em;
+    margin-top: 0;
+  }
   blockquote {
+    padding: 0 0 0 15px;
     border: none;
     border-left: 5px solid #eeeeee;
-    font-family: Georgia, serif;
-    font-style: italic;
+    font-family: Tinos, Georgia, serif;
     width: 80%;
     margin: 1.5em 0;
     color: #383838;
   }
   .cite {
-    font-style: italic;
-    color:#777;
-    padding:5px 0;
+    color: #777;
+    padding: 5px 0;
   }
   .cite::before {
     content: "\2014 \2009";
   }
+  code {
+    font-family: Cousine, Consolas, "Andale Mono", Monaco, monospace;
+    font-size: 90%;
+    background-color: #f8f8f8;
+  }
   pre {
-    padding: 6px;
+    font-family: Cousine, Consolas, "Andale Mono", Monaco, monospace;
     line-height: normal;
+    white-space: pre-wrap;
+    word-break: break-all;
+    background-color: #f8f8f8;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    padding: 6px;
   }
   .light-background {
     background-color: #f8f8f8;
     border: none;
   }
-  code {
-    color: inherit;
-    font-size: inherit;
-  }
   *:not(pre) > code {
-    border: none;
-    background-color: #f8f8f8;
-  }
-  .dl-horizontal > dt {
-    text-align: left;
-    margin-top: 1.0em;
+    white-space: nowrap;
   }
   .dl-horizontal > dd {
     margin-top: 1.0em;
   }
-  /* highlight.js tweaks. */
   pre > code {
     background-color: inherit;
     padding: 0;
@@ -91,27 +128,66 @@
   pre span {
     opacity: 1 !important;
   }
-  /* Rimu styles. */
   .verse {
     margin: 1.5em 20px;
   }
   div.verse p, p.verse {
-    font-family: Georgia, serif;
-    white-space:pre;
+    font-family: Tinos, Georgia, serif;
+    white-space: pre;
     margin-top: 0.75em;
     margin-bottom: 0.75em;
   }
   .sidebar {
-    border: 1px solid silver;
-    border-radius:4px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
     background: #ffffee;
     padding: 10px;
-    margin: 1.5em 20px;
+    margin: 1.5em 0px;
   }
   div.sidebar *:first-child {
     margin-top: 0.2em;
   }
-  /* List item counters and definition list numbering. */
+  .page-break {
+    page-break-before: always;
+  }
+  .no-page-break {
+    page-break-inside: avoid;
+  }
+  .align-left {
+    text-align: left;
+  }
+  .align-center {
+    text-align: center;
+  }
+  .align-right {
+    text-align: right;
+  }
+  .line-breaks {
+    white-space: pre;
+  }
+  .dl-horizontal:before, .dl-horizontal:after {
+    display: table;
+    content: "";
+    line-height: 0;
+  }
+  .dl-horizontal:after {
+    clear: both;
+  }
+  .dl-horizontal > dt {
+    float: left;
+    clear: left;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+    margin-top: 1.0em;
+    width: 25%;
+  }
+  .dl-horizontal > dd {
+    margin-left: 25%;
+    padding-left: 1.0em;
+  }
   dl {
     counter-reset: dl-counter;
   }
@@ -142,50 +218,13 @@
   .dl-numbered > dt:before {
     content: counter(dl-counter) ". ";
   }
-  .page-break {
-    page-break-before: always;
-  }
-  .no-page-break {
-    page-break-inside: avoid;
-  }
-  .align-left {
-    text-align: left;
-  }
-  .align-center {
-    text-align: center;
-  }
-  .align-right {
-    text-align: right;
-  }
-  .line-breaks {
-    white-space:pre;
-  }
-</style>
-<style>
-  body {
-    padding-left: 21em;
-  }
-  #toc {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 18em;
-    border-right: 1px solid #cccccc;
-    overflow-y: auto;
-    overflow-x: hidden;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.35);
-  }
-</style>
-<style>
   @media print {
     .no-print, .no-print * {
       display: none !important;
     }
-    body {
-      padding-left: 1em;
-    }
   }
+</style>
+<style>
   #toc {
     padding-left: 1em;
   }
@@ -205,10 +244,56 @@
   #toc div:nth-child(even) {
     background-color: #f8f8f8;
   }
+  #auto-toc {
+    width: 100%;
+  }
+</style>
+<style>
+  body {
+    margin: 1em;
+    max-width: 50em;
+  }
+</style>
+<style>
+  body {
+    padding-left: 21em;
+  }
+  #toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 18em;
+    border-right: 1px solid #cccccc;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.35);
+  }
+  @media print {
+    body {
+      padding-left: 1em;
+    }
+  }
+  @media screen and (max-width: 700px) {
+    body {
+      padding-left: 0;
+    }
+    #toc {
+      display: none !important;
+    }
+  }
+</style>
+<style>
+  @media screen and (max-width: 700px) {
+    body {
+      font-size: 20px;
+      margin: 5px;
+    }
+  }
 </style>
 </head>
 <body>
-<div id="contents">
+<div id="article">
 
 <div id="toc" class="no-print">
   <h2 style="font-size:1.2em; margin-top:1.0em">Links</h2>
@@ -216,8 +301,8 @@
   <div class="h2"><a href="rimuplayground.html">Rimu Playground</a></div>
   <div class="h2"><a href="reference.html">Rimu Reference</a></div>
   <div class="h2"><a href="tips.html">Rimu Tips</a></div>
-  <div class="h2"><a href="http://github.com/srackham/rimu" target="_blank">Github</a></div>
-  <div class="h2"><a href="https://npmjs.org/package/rimu" target="_blank">npm</a></div>
+  <div class="h2"><a href="https://github.com/srackham/rimu">Github</a></div>
+  <div class="h2"><a href="https://npmjs.org/package/rimu">npm</a></div>
   <h2 style="font-size:1.2em; margin-top:1.0em">Table of Contents</h2>
   <div id="auto-toc"></div>
 </div>
@@ -251,7 +336,7 @@ into the Rimu markup syntax):</p>
 <p>Read the documentation and experiment with Rimu in the <a href="http://srackham.github.io/rimu/rimuplayground.html">Rimu
 Playground</a> or open the
 <code>rimuplayground.html</code> file locally in your browser.</p>
-<p>See the Rimu <a href="http://srackham.github.io/rimu/CHANGELOG.html">CHANGELOG</a> for
+<p>See the Rimu <a href="http://srackham.github.io/rimu/changelog.html">Change Log</a> for
 the latest changes.</p>
 <h2>Installing Rimu</h2>
 <p>Install Rimu as a Node.js module (includes the <code>rimu</code> library and the
@@ -289,16 +374,13 @@ Chrome, seems OK on Android and iOS. Does not run on IE8.</p>
 </div>
 <script>
 window.onload = function() {
-  var headings = [].slice.call(document.body.querySelectorAll('#contents > h1, #contents > h2, #contents > h3'));
-  headings.forEach(function(heading, index) {
+  var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
+  headings.forEach(function(heading) {
     var title = heading.textContent;
     var id = heading.getAttribute('id');
     if (!id) {
       id = slugify(title);
       heading.setAttribute('id', id);
-    }
-    if (index === 0 && heading.tagName === 'H1') {
-      id = ''; // Go to top of page.
     }
     appendTocEntry(heading, id);
   });
