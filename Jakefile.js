@@ -39,6 +39,14 @@ let DOCS = [
   {
     src: 'doc/rimuplayground.rmu', dst: 'doc/rimuplayground.html', title: 'Rimu Playground',
     rimucOptions: '--dropdown-toc --prepend "{generate-examples}=\'yes\'"'
+  },
+  {
+    src: 'README.md', dst: 'doc/flex-example.html', title: 'Rimu Markup',
+    rimucOptions: '--sidebar-toc --styled-name flex'
+  },
+  {
+    src: 'README.md', dst: 'doc/flex-graystone-example.html', title: 'Rimu Markup',
+    rimucOptions: '--dropdown-toc --styled-name flex --theme graystone'
   }
 ]
 let HTML = DOCS.map(doc => doc.dst)
@@ -149,6 +157,7 @@ task('html-docs', ['build-rimu-min'], {async: true}, function() {
   let commands = DOCS.map(doc =>
     'node ' + RIMUC +
     ' --styled --lint --no-rimurc --theme default --custom-toc' +
+    ' --styled-name "classic"' +
     ' --output "' + doc.dst + '"' +
     ' --title "' + doc.title + '"' +
     ' ' + doc.rimucOptions + ' ' +
