@@ -77,8 +77,8 @@ OPTIONS
 
   --styled-name NAME
     Specify the --styled option header and footer files:
-    'classic': Compatible with older browsers (default).
-    'flex':    Flexbox styling (experimental).
+    'classic': Legacy styling (default).
+    'flex':    Flexbox "mobile first" styling (experimental).
     'v8':      Rimu version 8 styling.
 
 STYLING MACROS AND CLASSES
