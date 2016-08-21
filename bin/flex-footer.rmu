@@ -67,7 +67,7 @@ function appendTocEntry(heading, id) {
 document.onclick = function(event) {
   if (event.target.matches('#toc-button *, #toc a')) {
     // Toggle TOC if TOC button or TOC link is clicked.
-    document.getElementsByTagName("body")[0].classList.toggle('show-toc');
+    document.getElementsByTagName('body')[0].classList.toggle('show-toc');
   }
 }
 </script>
