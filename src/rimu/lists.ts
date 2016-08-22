@@ -143,9 +143,9 @@ function renderListItem(startItem: ItemState, reader: io.Reader, writer: io.Writ
   // Should never arrive here.
 }
 
-// Translate the list item in the reader to the writer until the next element
-// is encountered. Return 'next' containing the next element's match and
-// identity information or null if there are no more list elements.
+// Write the list item text from the reader to the writer. Return
+// 'next' containing the next element's match and identity or null if
+// there are no more list releated elements.
 function readToNext(reader: io.Reader, writer: io.Writer): ItemState {
   // The reader should be at the line following the first line of the list
   // item (or EOF).
@@ -159,9 +159,8 @@ function readToNext(reader: io.Reader, writer: io.Writer): ItemState {
         // A second blank line terminates the list.
         return null
       }
-      // Can be followed by new list item or attached indented paragraph.
-      reader.skipBlankLines()
       if (reader.eof()) return null
+      // A single blank line separates list item from ensuing text.
       return matchItem(reader, ['indented'])
     }
     next = matchItem(reader, ['comment', 'code', 'division', 'html', 'quote', 'quote-paragraph'])
@@ -169,6 +168,7 @@ function readToNext(reader: io.Reader, writer: io.Writer): ItemState {
       // Encountered list item or attached Delimited Block.
       return next
     }
+    // Current line is list item text so write it to the output and move to the next input line.
     writer.write(reader.cursor())
     writer.write('\n')
     reader.next()
@@ -184,6 +184,7 @@ function matchItem(reader: io.Reader, attachments: string[] = []): ItemState {
   // Check if the line matches a List definition.
   let line = reader.cursor()
   let item = {} as ItemState    // ItemState factory.
+  // Check if the line matches a list item.
   for (let def of defs) {
     let match = def.match.exec(line)
     if (match) {
@@ -197,7 +198,7 @@ function matchItem(reader: io.Reader, attachments: string[] = []): ItemState {
       return item
     }
   }
-  // Check if the line matches an allowed Delimited block.
+  // Check if the line matches an allowed attached Delimited block.
   let def: delimitedBlocks.Definition
   for (let name of attachments) {
     def = delimitedBlocks.getDefinition(name)
