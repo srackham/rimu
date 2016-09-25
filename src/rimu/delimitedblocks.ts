@@ -237,7 +237,7 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
         skip: false
       }
       utils.merge(expansionOptions, def.expansionOptions)
-      utils.merge(expansionOptions, lineBlocks.blockOptions)
+      utils.merge(expansionOptions, lineBlocks.blockAttributes.blockOptions)
       // Translate block.
       if (!expansionOptions.skip) {
         let text = lines.join('\n')
@@ -247,7 +247,7 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
         let opentag = utils.injectHtmlAttributes(def.openTag)
         let closetag = def.closeTag
         if (expansionOptions.container) {
-          delete lineBlocks.blockOptions.container  // Consume before recursion.
+          delete lineBlocks.blockAttributes.blockOptions.container  // Consume before recursion.
           text = api.render(text)
         }
         else {
@@ -267,7 +267,7 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
         }
       }
       // Reset consumed Block Attributes expansion options.
-      lineBlocks.blockOptions = {}
+      lineBlocks.blockAttributes.blockOptions = {}
       return true
     }
   }
@@ -327,7 +327,7 @@ function classInjectionFilter(match: string[]): string {
   if (match[2]) {
     let p1: string
     if ((p1 = utils.trim(match[2]))) {
-      lineBlocks.htmlClasses = p1
+      lineBlocks.blockAttributes.htmlClasses = p1
     }
   }
   this.closeMatch = RegExp('^' + utils.escapeRegExp(match[1]) + '$')

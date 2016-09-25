@@ -98,27 +98,27 @@ export function injectHtmlAttributes(tag: string): string {
   if (!tag) {
     return tag
   }
-  if (lineBlocks.htmlClasses) {
+  if (lineBlocks.blockAttributes.htmlClasses) {
     if (/class="\S.*"/.test(tag)) {
       // Inject class names into existing class attribute.
-      tag = tag.replace(/class="(\S.*?)"/, 'class="' + lineBlocks.htmlClasses + ' $1"')
+      tag = tag.replace(/class="(\S.*?)"/, 'class="' + lineBlocks.blockAttributes.htmlClasses + ' $1"')
     }
     else {
       // Prepend new class attribute to HTML attributes.
-      lineBlocks.htmlAttributes = trim('class="' + lineBlocks.htmlClasses + '" ' + lineBlocks.htmlAttributes)
+      lineBlocks.blockAttributes.htmlAttributes = trim('class="' + lineBlocks.blockAttributes.htmlClasses + '" ' + lineBlocks.blockAttributes.htmlAttributes)
     }
   }
-  if (lineBlocks.htmlAttributes) {
+  if (lineBlocks.blockAttributes.htmlAttributes) {
     let match = tag.match(/^<([a-zA-Z]+|h[1-6])(?=[ >])/)
     if (match) {
       let before = tag.slice(0, match[0].length)
       let after = tag.slice(match[0].length)
-      tag = before + ' ' + lineBlocks.htmlAttributes + after
+      tag = before + ' ' + lineBlocks.blockAttributes.htmlAttributes + after
     }
   }
   // Consume the attributes.
-  lineBlocks.htmlClasses = ''
-  lineBlocks.htmlAttributes = ''
+  lineBlocks.blockAttributes.htmlClasses = ''
+  lineBlocks.blockAttributes.htmlAttributes = ''
   return tag
 }
 

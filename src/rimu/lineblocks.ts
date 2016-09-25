@@ -6,6 +6,19 @@ import * as quotes from './quotes'
 import * as replacements from './replacements'
 import * as macros from './macros'
 
+// Globals set by Block Attributes elements.
+export interface BlockAttributes {
+  htmlClasses: string
+  htmlAttributes: string
+  blockOptions: utils.ExpansionOptions
+}
+export let blockAttributes: BlockAttributes
+
+// Reset state to defaults.
+export function reset(): void {
+  blockAttributes = {htmlClasses: '', htmlAttributes: '', blockOptions: {}}
+}
+
 export interface Definition {
   name?: string   // Optional unique identifier.
   filter?: (match: RegExpExecArray, reader?: io.Reader) => string
@@ -160,20 +173,20 @@ let defs: Definition[] = [
       }
       if (!options.skipBlockAttributes()) {
         if (match[1]) { // HTML element class names.
-          htmlClasses += ' ' + utils.trim(match[1])
-          htmlClasses = utils.trim(htmlClasses)
+          blockAttributes.htmlClasses += ' ' + utils.trim(match[1])
+          blockAttributes.htmlClasses = utils.trim(blockAttributes.htmlClasses)
         }
         if (match[2]) { // HTML element id.
-          htmlAttributes += ' id="' + utils.trim(match[2]).slice(1) + '"'
+          blockAttributes.htmlAttributes += ' id="' + utils.trim(match[2]).slice(1) + '"'
         }
         if (match[3]) { // CSS properties.
-          htmlAttributes += ' style=' + match[3]
+          blockAttributes.htmlAttributes += ' style=' + match[3]
         }
         if (match[4] && !options.isSafeModeNz()) { // HTML attributes.
-          htmlAttributes += ' ' + utils.trim(match[4].slice(1, match[4].length - 1))
+          blockAttributes.htmlAttributes += ' ' + utils.trim(match[4].slice(1, match[4].length - 1))
         }
-        htmlAttributes = utils.trim(htmlAttributes)
-        delimitedBlocks.setBlockOptions(blockOptions, match[5])
+        blockAttributes.htmlAttributes = utils.trim(blockAttributes.htmlAttributes)
+        delimitedBlocks.setBlockOptions(blockAttributes.blockOptions, match[5])
       }
       return true
     },
@@ -194,11 +207,6 @@ let defs: Definition[] = [
     }
   },
 ]
-
-// Globals set by Block Attributes filter.
-export let htmlClasses: string = ''
-export let htmlAttributes: string = ''
-export let blockOptions: utils.ExpansionOptions = {}
 
 // If the next element in the reader is a valid line block render it
 // and return true, else return false.

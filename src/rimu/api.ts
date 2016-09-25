@@ -26,6 +26,7 @@ export function render(source: string): string {
 export function reset(): void {
   options.setDefaults()
   delimitedBlocks.reset()
+  lineBlocks.reset()
   macros.reset()
   quotes.reset()
   replacements.reset()
