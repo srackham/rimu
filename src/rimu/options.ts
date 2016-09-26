@@ -1,5 +1,5 @@
-import * as utils from './utils'
-import * as api from './api'
+import * as Api from './api'
+import * as Utils from './utils'
 
 /**
  * An object with zero or more optional properties to control Rimu Markup
@@ -63,7 +63,7 @@ function setHtmlReplacement(value: string): void {
 
 function setReset(value: boolean|string): void {
   if (value === true || value === 'true') {
-    api.reset()
+    Api.reset()
   }
 }
 
@@ -93,7 +93,7 @@ export function htmlSafeModeFilter(html: string): string {
     case 2:   // Replace HTML with 'htmlReplacement' option string.
       return htmlReplacement
     case 3:   // Render HTML as text.
-      return utils.replaceSpecialChars(html)
+      return Utils.replaceSpecialChars(html)
   }
 }
 

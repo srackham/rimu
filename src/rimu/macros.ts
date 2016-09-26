@@ -1,4 +1,4 @@
-import * as options from './options'
+import * as Options from './options'
 
 // Matches macro invocation. $1 = name, $2 = params.
 // DEPRECATED: Matches existential macro invocations.
@@ -64,13 +64,13 @@ export function render(text: string, inline = true): string {
     let name = submatches[0]
     let params = submatches[1] || ''
     if (params[0] === '?') { // DEPRECATED: Existential macro invocation.
-      if (inline) options.errorCallback('existential macro invocations are deprecated: ' + match)
+      if (inline) Options.errorCallback('existential macro invocations are deprecated: ' + match)
       return match
     }
     let value = getValue(name)  // Macro value is null if macro is undefined.
     if (value === null) {
       if (inline) {
-        options.errorCallback('undefined macro: ' + match + ': ' + text)
+        Options.errorCallback('undefined macro: ' + match + ': ' + text)
       }
       return match
     }

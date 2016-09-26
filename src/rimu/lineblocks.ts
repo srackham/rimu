@@ -1,15 +1,15 @@
 import {BlockAttributes} from './utils'
-import * as utils from './utils'
-import * as options from './options'
-import * as io from './io'
-import * as delimitedBlocks from './delimitedblocks'
-import * as quotes from './quotes'
-import * as replacements from './replacements'
-import * as macros from './macros'
+import * as DelimitedBlocks from './delimitedblocks'
+import * as Io from './io'
+import * as Macros from './macros'
+import * as Options from './options'
+import * as Quotes from './quotes'
+import * as Replacements from './replacements'
+import * as Utils from './utils'
 
 export interface Definition {
   name?: string   // Optional unique identifier.
-  filter?: (match: RegExpExecArray, reader?: io.Reader) => string
+  filter?: (match: RegExpExecArray, reader?: Io.Reader) => string
   verify?: (match: RegExpExecArray) => boolean   // Additional match verification checks.
   match: RegExp
   replacement?: string
@@ -21,22 +21,22 @@ let defs: Definition[] = [
   // Expand lines prefixed with a macro invocation prior to all other processing.
   // macro name = $1, macro value = $2
   {
-    match: macros.MACRO_LINE,
+    match: Macros.MACRO_LINE,
     verify: function (match: RegExpExecArray): boolean {
       // Do not process macro definitions.
-      if (macros.MACRO_DEF_OPEN.test(match[0])) {
+      if (Macros.MACRO_DEF_OPEN.test(match[0])) {
         return false
       }
       // Stop if the macro value is the same as the invocation (to stop infinite recursion).
-      let value = macros.render(match[0], false)
+      let value = Macros.render(match[0], false)
       if (value === match[0]) {
         return false
       }
       return true
     },
-    filter: function (match: RegExpExecArray, reader?: io.Reader): string {
+    filter: function (match: RegExpExecArray, reader?: Io.Reader): string {
       // Insert the macro value into the reader just ahead of the cursor.
-      let value = macros.render(match[0], false)
+      let value = Macros.render(match[0], false)
       let spliceArgs = ([reader.pos + 1, 0]).concat(value.split('\n') as any[])
       Array.prototype.splice.apply(reader.lines, spliceArgs)
       return ''
@@ -47,11 +47,11 @@ let defs: Definition[] = [
   {
     match: /^\\?\|([\w\-]+)\|\s*=\s*'(.*)'$/,
     filter: function (match: RegExpExecArray): string {
-      if (options.isSafeModeNz()) {
+      if (Options.isSafeModeNz()) {
         return ''   // Skip if a safe mode is set.
       }
-      match[2] = utils.replaceInline(match[2], {macros: true})
-      delimitedBlocks.setDefinition(match[1], match[2])
+      match[2] = Utils.replaceInline(match[2], {macros: true})
+      DelimitedBlocks.setDefinition(match[1], match[2])
       return ''
     }
   },
@@ -60,13 +60,13 @@ let defs: Definition[] = [
   {
     match: /^(\S{1,2})\s*=\s*'([^\|]*)(\|{1,2})(.*)'$/,
     filter: function (match: RegExpExecArray): string {
-      if (options.isSafeModeNz()) {
+      if (Options.isSafeModeNz()) {
         return ''   // Skip if a safe mode is set.
       }
-      quotes.setDefinition({
+      Quotes.setDefinition({
         quote: match[1],
-        openTag: utils.replaceInline(match[2], {macros: true}),
-        closeTag: utils.replaceInline(match[4], {macros: true}),
+        openTag: Utils.replaceInline(match[2], {macros: true}),
+        closeTag: Utils.replaceInline(match[4], {macros: true}),
         spans: match[3] === '|'
       })
       return ''
@@ -77,29 +77,29 @@ let defs: Definition[] = [
   {
     match: /^\\?\/(.+)\/([igm]*)\s*=\s*'(.*)'$/,
     filter: function (match: RegExpExecArray): string {
-      if (options.isSafeModeNz()) {
+      if (Options.isSafeModeNz()) {
         return ''   // Skip if a safe mode is set.
       }
       let pattern = match[1]
       let flags = match[2]
       let replacement = match[3]
-      replacement = utils.replaceInline(replacement, {macros: true})
-      replacements.setDefinition(pattern, flags, replacement)
+      replacement = Utils.replaceInline(replacement, {macros: true})
+      Replacements.setDefinition(pattern, flags, replacement)
       return ''
     }
   },
   // Macro definition.
   // name = $1, value = $2
   {
-    match: macros.MACRO_DEF,
+    match: Macros.MACRO_DEF,
     filter: function (match: RegExpExecArray): string {
-      if (options.skipMacroDefs()) {
+      if (Options.skipMacroDefs()) {
         return ''   // Skip if a safe mode is set.
       }
       let name = match[1]
       let value = match[2]
-      value = utils.replaceInline(value, {macros: true})
-      macros.setValue(name, value)
+      value = Utils.replaceInline(value, {macros: true})
+      Macros.setValue(name, value)
       return ''
     }
   },
@@ -110,7 +110,7 @@ let defs: Definition[] = [
     replacement: '<h$1>$$2</h$1>',
     filter: function (match: RegExpExecArray): string {
       match[1] = match[1].length.toString()  // Replace $1 with header number.
-      return utils.replaceMatch(match, this.replacement, {macros: true})
+      return Utils.replaceMatch(match, this.replacement, {macros: true})
     }
   },
   // Comment line.
@@ -135,13 +135,13 @@ let defs: Definition[] = [
   {
     match: /^\\?<<#([a-zA-Z][\w\-]*)>>$/,
     replacement: '<div id="$1"></div>',
-    filter: function (match: RegExpExecArray, reader?: io.Reader): string {
-      if (options.skipBlockAttributes()) {
+    filter: function (match: RegExpExecArray, reader?: Io.Reader): string {
+      if (Options.skipBlockAttributes()) {
         return ''
       }
       else {
         // Default (non-filter) replacement processing.
-        return utils.replaceMatch(match, this.replacement, {macros: true})
+        return Utils.replaceMatch(match, this.replacement, {macros: true})
       }
     }
   },
@@ -154,27 +154,27 @@ let defs: Definition[] = [
       // Parse Block Attributes.
       // class names = $1, id = $2, css-properties = $3, html-attributes = $4, block-options = $5
       let text = match[0]
-      text = utils.replaceInline(text, {macros: true})
+      text = Utils.replaceInline(text, {macros: true})
       match = /^\\?\.((?:\s*[a-zA-Z][\w\-]*)+)*(?:\s*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(".+?")?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text)
       if (!match) {
         return false
       }
-      if (!options.skipBlockAttributes()) {
+      if (!Options.skipBlockAttributes()) {
         if (match[1]) { // HTML element class names.
-          BlockAttributes.classes += ' ' + utils.trim(match[1])
-          BlockAttributes.classes = utils.trim(BlockAttributes.classes)
+          BlockAttributes.classes += ' ' + Utils.trim(match[1])
+          BlockAttributes.classes = Utils.trim(BlockAttributes.classes)
         }
         if (match[2]) { // HTML element id.
-          BlockAttributes.attributes += ' id="' + utils.trim(match[2]).slice(1) + '"'
+          BlockAttributes.attributes += ' id="' + Utils.trim(match[2]).slice(1) + '"'
         }
         if (match[3]) { // CSS properties.
           BlockAttributes.attributes += ' style=' + match[3]
         }
-        if (match[4] && !options.isSafeModeNz()) { // HTML attributes.
-          BlockAttributes.attributes += ' ' + utils.trim(match[4].slice(1, match[4].length - 1))
+        if (match[4] && !Options.isSafeModeNz()) { // HTML attributes.
+          BlockAttributes.attributes += ' ' + Utils.trim(match[4].slice(1, match[4].length - 1))
         }
-        BlockAttributes.attributes = utils.trim(BlockAttributes.attributes)
-        delimitedBlocks.setBlockOptions(BlockAttributes.options, match[5])
+        BlockAttributes.attributes = Utils.trim(BlockAttributes.attributes)
+        DelimitedBlocks.setBlockOptions(BlockAttributes.options, match[5])
       }
       return true
     },
@@ -185,11 +185,11 @@ let defs: Definition[] = [
     match: /^\\?\.(\w+)\s*=\s*'(.*)'$/,
     filter: function (match: RegExpExecArray): string {
       if (!/^(safeMode|htmlReplacement|reset)$/.test(match[1])) {
-        options.errorCallback('illegal API option: ' + match[1] + ': ' + match[0])
+        Options.errorCallback('illegal API option: ' + match[1] + ': ' + match[0])
       }
-      else if (!options.isSafeModeNz()) {
-        let value = utils.replaceInline(match[2], {macros: true})
-        options.setOption(match[1], value)
+      else if (!Options.isSafeModeNz()) {
+        let value = Utils.replaceInline(match[2], {macros: true})
+        Options.setOption(match[1], value)
       }
       return ''
     }
@@ -198,7 +198,7 @@ let defs: Definition[] = [
 
 // If the next element in the reader is a valid line block render it
 // and return true, else return false.
-export function render(reader: io.Reader, writer: io.Writer): boolean {
+export function render(reader: Io.Reader, writer: Io.Writer): boolean {
   if (reader.eof()) throw 'premature eof'
   for (let def of defs) {
     let match = def.match.exec(reader.cursor())
@@ -213,13 +213,13 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
       }
       let text: string
       if (!def.filter) {
-        text = def.replacement ? utils.replaceMatch(match, def.replacement, {macros: true}) : ''
+        text = def.replacement ? Utils.replaceMatch(match, def.replacement, {macros: true}) : ''
       }
       else {
         text = def.filter(match, reader)
       }
       if (text) {
-        text = utils.injectHtmlAttributes(text)
+        text = Utils.injectHtmlAttributes(text)
         writer.write(text)
         reader.next()
         if (!reader.eof()) {

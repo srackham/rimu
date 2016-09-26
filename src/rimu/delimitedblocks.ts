@@ -1,10 +1,9 @@
+import * as Api from './api'
 import {BlockAttributes} from './utils'
-import * as api from './api'
-import * as utils from './utils'
+import * as Utils from './utils'
 import * as options from './options'
-import * as io from './io'
-import * as macros from './macros'
-import * as lineBlocks from './lineblocks'
+import * as Io from './io'
+import * as Macros from './macros'
 
 /* tslint:disable:max-line-length */
 const MATCH_INLINE_TAG = /^(a|abbr|acronym|address|b|bdi|bdo|big|blockquote|br|cite|code|del|dfn|em|i|img|ins|kbd|mark|q|s|samp|small|span|strike|strong|sub|sup|time|tt|u|var|wbr)$/i
@@ -19,8 +18,8 @@ export interface Definition {
   closeTag: string
   verify?: (match: RegExpMatchArray) => boolean   // Additional match verification checks.
   delimiterFilter?: (match: string[]) => string   // Process opening delimiter. Return any delimiter content.
-  contentFilter?: (text: string, match?: string[], expansionOptions?: utils.ExpansionOptions) => string
-  expansionOptions: utils.ExpansionOptions
+  contentFilter?: (text: string, match?: string[], expansionOptions?: Utils.ExpansionOptions) => string
+  expansionOptions: Utils.ExpansionOptions
 }
 
 export let defs: Definition[]  // Mutable definitions initialized by DEFAULT_DEFS.
@@ -30,8 +29,8 @@ const DEFAULT_DEFS: Definition[] = [
 
   // Macro definition block.
   {
-    openMatch: macros.MACRO_DEF_OPEN,    // $1 is first line of macro.
-    closeMatch: macros.MACRO_DEF_CLOSE,  // $1 is last line of macro.
+    openMatch: Macros.MACRO_DEF_OPEN,    // $1 is first line of macro.
+    closeMatch: Macros.MACRO_DEF_CLOSE,  // $1 is last line of macro.
     openTag: '',
     closeTag: '',
     expansionOptions: {
@@ -46,8 +45,8 @@ const DEFAULT_DEFS: Definition[] = [
       let name = match[0].match(/^\{([\w\-]+\??)\}/)[1]  // Get the macro name from opening delimiter.
       text = text.replace(/' *\\\n/g, '\'\n')            // Unescape line-continuations.
       text = text.replace(/(' *[\\]+)\\\n/g, '$1\n')     // Unescape escaped line-continuations.
-      text = utils.replaceInline(text, expansionOptions) // Expand macro invocations.
-      macros.setValue(name, text)
+      text = Utils.replaceInline(text, expansionOptions) // Expand macro invocations.
+      Macros.setValue(name, text)
       return ''
     }
   },
@@ -99,7 +98,7 @@ const DEFAULT_DEFS: Definition[] = [
     },
     verify: function (match: RegExpMatchArray): boolean {
       // The deprecated '-' delimiter does not support appended class names.
-      return !(match[1][0] === '-' && utils.trim(match[2]) !== '')
+      return !(match[1][0] === '-' && Utils.trim(match[2]) !== '')
     },
     delimiterFilter: classInjectionFilter
   },
@@ -194,12 +193,12 @@ const DEFAULT_DEFS: Definition[] = [
 
 // Reset definitions to defaults.
 export function reset(): void {
-  defs = DEFAULT_DEFS.map(def => utils.copy(def))
+  defs = DEFAULT_DEFS.map(def => Utils.copy(def))
 }
 
 // If the next element in the reader is a valid delimited block render it
 // and return true, else return false.
-export function render(reader: io.Reader, writer: io.Writer): boolean {
+export function render(reader: Io.Reader, writer: Io.Writer): boolean {
   if (reader.eof()) throw 'premature eof'
   for (let def of defs) {
     let match = reader.cursor().match(def.openMatch)
@@ -230,29 +229,29 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
         lines = lines.concat(content)
       }
       // Calculate block expansion options.
-      let expansionOptions: utils.ExpansionOptions = {
+      let expansionOptions: Utils.ExpansionOptions = {
         macros: false,
         spans: false,
         specials: false,
         container: false,
         skip: false
       }
-      utils.merge(expansionOptions, def.expansionOptions)
-      utils.merge(expansionOptions, BlockAttributes.options)
+      Utils.merge(expansionOptions, def.expansionOptions)
+      Utils.merge(expansionOptions, BlockAttributes.options)
       // Translate block.
       if (!expansionOptions.skip) {
         let text = lines.join('\n')
         if (def.contentFilter) {
           text = def.contentFilter(text, match, expansionOptions)
         }
-        let opentag = utils.injectHtmlAttributes(def.openTag)
+        let opentag = Utils.injectHtmlAttributes(def.openTag)
         let closetag = def.closeTag
         if (expansionOptions.container) {
           delete BlockAttributes.options.container  // Consume before recursion.
-          text = api.render(text)
+          text = Api.render(text)
         }
         else {
-          text = utils.replaceInline(text, expansionOptions)
+          text = Utils.replaceInline(text, expansionOptions)
         }
         if (def.name === 'division' && opentag === '<div>') {
           // Drop div tags if the opening div has no attributes.
@@ -281,7 +280,7 @@ export function getDefinition(name: string): Definition {
 }
 
 // Parse block-options string into blockOptions.
-export function setBlockOptions(blockOptions: utils.ExpansionOptions, optionsString: string): void {
+export function setBlockOptions(blockOptions: Utils.ExpansionOptions, optionsString: string): void {
   if (optionsString) {
     let opts = optionsString.trim().split(/\s+/)
     for (let opt of opts) {
@@ -307,7 +306,7 @@ export function setDefinition(name: string, value: string): void {
     options.errorCallback('illegal delimited block name: ' + name + ': |' + name + '|=\'' + value + '\'')
     return
   }
-  let match = utils.trim(value).match(/^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/)
+  let match = Utils.trim(value).match(/^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/)
   if (match) {
     if (match[1]) {
       def.openTag = match[1]
@@ -327,11 +326,11 @@ function delimiterTextFilter(match: string[]): string {
 function classInjectionFilter(match: string[]): string {
   if (match[2]) {
     let p1: string
-    if ((p1 = utils.trim(match[2]))) {
+    if ((p1 = Utils.trim(match[2]))) {
       BlockAttributes.classes = p1
     }
   }
-  this.closeMatch = RegExp('^' + utils.escapeRegExp(match[1]) + '$')
+  this.closeMatch = RegExp('^' + Utils.escapeRegExp(match[1]) + '$')
   return ''
 }
 

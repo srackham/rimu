@@ -1,4 +1,4 @@
-import * as utils from './utils'
+import * as Utils from './utils'
 
 export interface Definition {
   quote: string     // Single quote character.
@@ -59,13 +59,13 @@ let unescapeRe: RegExp      // Searches for escaped quotes.
 
 // Reset definitions to defaults.
 export function reset(): void {
-  defs = DEFAULT_DEFS.map(def => utils.copy(def))
+  defs = DEFAULT_DEFS.map(def => Utils.copy(def))
   initializeRegExps()
 }
 
 // Synthesise re's to find and unescape quotes.
 export function initializeRegExps(): void {
-  let quotes = defs.map(def => utils.escapeRegExp(def.quote))
+  let quotes = defs.map(def => Utils.escapeRegExp(def.quote))
   // $1 is quote character(s), $2 is quoted text.
   // Quoted text cannot begin or end with whitespace.
   // Quoted can span multiple lines.

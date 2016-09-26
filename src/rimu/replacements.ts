@@ -1,5 +1,5 @@
-import * as options from './options'
-import * as utils from './utils'
+import * as Options from './options'
+import * as Utils from './utils'
 
 export interface Definition {
   match: RegExp
@@ -21,11 +21,11 @@ const DEFAULT_DEFS: Definition[] = [
     match: /\\?<<#([a-zA-Z][\w\-]*)>>/g,
     replacement: '<span id="$1"></span>',
     filter: function (match: RegExpExecArray): string {
-      if (options.skipBlockAttributes()) {
+      if (Options.skipBlockAttributes()) {
         return ''
       }
       // Default (non-filter) replacement processing.
-      return utils.replaceMatch(match, this.replacement)
+      return Utils.replaceMatch(match, this.replacement)
     }
   },
 
@@ -78,7 +78,7 @@ const DEFAULT_DEFS: Definition[] = [
     match: /\\?(<!--(?:[^<>&]*)?-->|<\/?([a-z][a-z0-9]*)(?:\s+[^<>&]+)?>)/ig,
     replacement: '',
     filter: function (match: RegExpExecArray): string {
-      return options.htmlSafeModeFilter(match[1]) // Matched HTML comment or inline tag.
+      return Options.htmlSafeModeFilter(match[1]) // Matched HTML comment or inline tag.
     }
   },
 
@@ -136,7 +136,7 @@ const DEFAULT_DEFS: Definition[] = [
 
 // Reset definitions to defaults.
 export function reset(): void {
-  defs = DEFAULT_DEFS.map(def => utils.copy(def))
+  defs = DEFAULT_DEFS.map(def => Utils.copy(def))
 }
 
 // Update existing or add new replacement definition.

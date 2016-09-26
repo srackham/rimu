@@ -1,8 +1,6 @@
-import {BlockAttributes} from './utils'
-import * as utils from './utils'
-import * as io from './io'
-import * as delimitedBlocks from './delimitedblocks'
-import * as lineBlocks from './lineblocks'
+import * as DelimitedBlocks from './delimitedblocks'
+import * as Io from './io'
+import * as Utils from './utils'
 
 interface Definition {
   match: RegExp
@@ -57,7 +55,7 @@ let defs: Definition[] = [
 
 let ids: string[]   // Stack of open list IDs.
 
-export function render(reader: io.Reader, writer: io.Writer): boolean {
+export function render(reader: Io.Reader, writer: Io.Writer): boolean {
   if (reader.eof()) throw 'premature eof'
   let startItem: ItemState
   if (!(startItem = matchItem(reader))) {
@@ -69,9 +67,9 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
   return true
 }
 
-function renderList(startItem: ItemState, reader: io.Reader, writer: io.Writer): ItemState {
+function renderList(startItem: ItemState, reader: Io.Reader, writer: Io.Writer): ItemState {
   ids.push(startItem.id)
-  writer.write(utils.injectHtmlAttributes(startItem.def.listOpenTag))
+  writer.write(Utils.injectHtmlAttributes(startItem.def.listOpenTag))
   let nextItem: ItemState
   while (true) {
     nextItem = renderListItem(startItem, reader, writer)
@@ -85,26 +83,26 @@ function renderList(startItem: ItemState, reader: io.Reader, writer: io.Writer):
   }
 }
 
-function renderListItem(startItem: ItemState, reader: io.Reader, writer: io.Writer): ItemState {
+function renderListItem(startItem: ItemState, reader: Io.Reader, writer: Io.Writer): ItemState {
   let def = startItem.def
   let match = startItem.match
   let text: string
   if (match.length === 4) { // 3 match groups => definition list.
     writer.write(def.termOpenTag)
-    text = utils.replaceInline(match[1], {macros: true, spans: true})
+    text = Utils.replaceInline(match[1], {macros: true, spans: true})
     writer.write(text)
     writer.write(def.termCloseTag)
   }
   writer.write(def.itemOpenTag)
   // Process of item text.
-  let lines = new io.Writer()
+  let lines = new Io.Writer()
   lines.write(match[match.length - 1])  // Item text from first line.
   lines.write('\n')
   reader.next()
   let nextItem: ItemState
   nextItem = readToNext(reader, lines)
   text = lines.toString()
-  text = utils.replaceInline(text, {macros: true, spans: true})
+  text = Utils.replaceInline(text, {macros: true, spans: true})
   writer.write(text)
   while (true) {
     if (!nextItem) {
@@ -130,7 +128,7 @@ function renderListItem(startItem: ItemState, reader: io.Reader, writer: io.Writ
       // Delimited block.
       let savedIds = ids
       ids = []
-      delimitedBlocks.render(reader, writer)
+      DelimitedBlocks.render(reader, writer)
       ids = savedIds
       reader.skipBlankLines()
       if (reader.eof()) {
@@ -148,7 +146,7 @@ function renderListItem(startItem: ItemState, reader: io.Reader, writer: io.Writ
 // Write the list item text from the reader to the writer. Return
 // 'next' containing the next element's match and identity or null if
 // there are no more list releated elements.
-function readToNext(reader: io.Reader, writer: io.Writer): ItemState {
+function readToNext(reader: Io.Reader, writer: Io.Writer): ItemState {
   // The reader should be at the line following the first line of the list
   // item (or EOF).
   let next: ItemState
@@ -182,7 +180,7 @@ function readToNext(reader: io.Reader, writer: io.Writer): ItemState {
 // If it matches a list item return ItemState.
 // If it matches an attahced Delimiter Block return {}.
 // If it does not match a list related element return null.
-function matchItem(reader: io.Reader, attachments: string[] = []): ItemState {
+function matchItem(reader: Io.Reader, attachments: string[] = []): ItemState {
   // Check if the line matches a List definition.
   let line = reader.cursor()
   let item = {} as ItemState    // ItemState factory.
@@ -201,9 +199,9 @@ function matchItem(reader: io.Reader, attachments: string[] = []): ItemState {
     }
   }
   // Check if the line matches an allowed attached Delimited block.
-  let def: delimitedBlocks.Definition
+  let def: DelimitedBlocks.Definition
   for (let name of attachments) {
-    def = delimitedBlocks.getDefinition(name)
+    def = DelimitedBlocks.getDefinition(name)
     if (def.openMatch.test(line)) {
       return item
     }

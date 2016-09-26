@@ -1,7 +1,7 @@
 import {BlockAttributes} from './utils'
+import * as DelimitedBlocks from './delimitedblocks'
 import * as Io from './io'
 import * as LineBlocks from './lineblocks'
-import * as DelimitedBlocks from './delimitedblocks'
 import * as Lists from './lists'
 import * as Macros from './macros'
 import * as Options from './options'

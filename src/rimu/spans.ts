@@ -12,9 +12,9 @@
  resultant HTML string.
  */
 
-import * as utils from './utils'
-import * as quotes from './quotes'
-import * as replacements from './replacements'
+import * as Quotes from './quotes'
+import * as Replacements from './replacements'
+import * as Utils from './utils'
 
 interface Fragment {
   text: string
@@ -47,7 +47,7 @@ function fragQuotes(fragments: Fragment[]): Fragment[] {
   // Strip backlash from escaped quotes in non-done fragments.
   result
     .filter(fragment => !fragment.done)
-    .forEach(fragment => fragment.text = quotes.unescape(fragment.text))
+    .forEach(fragment => fragment.text = Quotes.unescape(fragment.text))
   return result
 }
 
@@ -56,7 +56,7 @@ function fragQuote(fragment: Fragment): Fragment[] {
   if (fragment.done) {
     return [fragment]
   }
-  let quotesRe = quotes.quotesRe
+  let quotesRe = Quotes.quotesRe
   let match: RegExpExecArray
   quotesRe.lastIndex = 0
   while (true) {
@@ -76,7 +76,7 @@ function fragQuote(fragment: Fragment): Fragment[] {
   // Arrive here if we have a matched quote.
   // The quote splits the input fragment into 5 or more output fragments:
   // Text before the quote, left quote tag, quoted text, right quote tag and text after the quote.
-  let def = quotes.getDefinition(match[1])
+  let def = Quotes.getDefinition(match[1])
   // Check for same closing quote one character further to the right.
   while (fragment.text[quotesRe.lastIndex] === match[1][0]) {
     // Move to closing quote one character to right.
@@ -90,7 +90,7 @@ function fragQuote(fragment: Fragment): Fragment[] {
   result.push({text: def.openTag, done: true})
   if (!def.spans) {
     // Spans are disabled so render the quoted text verbatim.
-    quoted = utils.replaceSpecialChars(quoted)
+    quoted = Utils.replaceSpecialChars(quoted)
     quoted = quoted.replace(/\u0000/g, '\u0001')   // Substitute verbatim replacement placeholder.
     result.push({text: quoted, done: true})
   }
@@ -127,14 +127,14 @@ function preReplacements(text: string): string {
 function postReplacements(text: string): string {
   return text.replace(/\u0000|\u0001/g, function (match): string {
     let fragment = savedReplacements.shift()
-    return (match === '\u0000') ? fragment.text : utils.replaceSpecialChars(fragment.verbatim)
+    return (match === '\u0000') ? fragment.text : Utils.replaceSpecialChars(fragment.verbatim)
   })
 }
 
 // Fragment replacements in all fragments and return resulting fragments array.
 function fragReplacements(fragments: Fragment[]): Fragment[] {
   let result: Fragment[]
-  replacements.defs.forEach(def => {
+  Replacements.defs.forEach(def => {
     result = []
     fragments.forEach(fragment => {
       result.push.apply(result, fragReplacement(fragment, def))
@@ -146,7 +146,7 @@ function fragReplacements(fragments: Fragment[]): Fragment[] {
 
 // Fragment replacements in a single fragment for a single replacement definition.
 // Return resulting fragments array.
-function fragReplacement(fragment: Fragment, def: replacements.Definition): Fragment[] {
+function fragReplacement(fragment: Fragment, def: Replacements.Definition): Fragment[] {
   if (fragment.done) {
     return [fragment]
   }
@@ -169,11 +169,11 @@ function fragReplacement(fragment: Fragment, def: replacements.Definition): Frag
   let replacement: string
   if (match[0][0] === '\\') {
     // Remove leading backslash.
-    replacement = utils.replaceSpecialChars(match[0].slice(1))
+    replacement = Utils.replaceSpecialChars(match[0].slice(1))
   }
   else {
     if (!def.filter) {
-      replacement = utils.replaceMatch(match, def.replacement)
+      replacement = Utils.replaceMatch(match, def.replacement)
     }
     else {
       replacement = def.filter(match)
@@ -189,6 +189,6 @@ function fragSpecials(fragments: Fragment[]): void {
   // Replace special characters in all non-done fragments.
   fragments
     .filter(fragment => !fragment.done)
-    .forEach(fragment => fragment.text = utils.replaceSpecialChars(fragment.text))
+    .forEach(fragment => fragment.text = Utils.replaceSpecialChars(fragment.text))
 }
 

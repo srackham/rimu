@@ -1,6 +1,5 @@
-import * as macros from './macros'
-import * as spans from './spans'
-import * as lineBlocks from './lineblocks'
+import * as Macros from './macros'
+import * as Spans from './spans'
 
 export interface ExpansionOptions {
   [key: string]: boolean
@@ -79,12 +78,12 @@ export function merge(target: any, source: any): void {
 // Replace the inline elements specified in options in text and return the result.
 export function replaceInline(text: string, expansionOptions: ExpansionOptions): string {
   if (expansionOptions.macros) {
-    text = macros.render(text)
+    text = Macros.render(text)
     text = text === null ? '' : text
   }
   // Spans also expand special characters.
   if (expansionOptions.spans) {
-    text = spans.render(text)
+    text = Spans.render(text)
   }
   else if (expansionOptions.specials) {
     text = replaceSpecialChars(text)
@@ -97,7 +96,7 @@ export namespace BlockAttributes {
   export let classes: string     // Space separated HTML class names.
   export let attributes: string  // HTML element attributes (incorporates 'style' and 'id' attributes).
   export let options: ExpansionOptions
-  export function init() {
+  export function init(): void {
     classes = ''
     attributes = ''
     options = {}

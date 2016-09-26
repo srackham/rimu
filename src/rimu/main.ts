@@ -5,25 +5,25 @@
  formatted libraries.
  */
 
-import * as api from './api'
-import * as options from './options'
+import * as Api from './api'
+import * as Options from './options'
 
 /*
   The single public API which translates Rimu Markup to HTML:
 
     render(source [, options])
  */
-export function render(source: string, opts: options.RenderOptions = {}): string {
+export function render(source: string, opts: Options.RenderOptions = {}): string {
   if (typeof source !== 'string') {
     throw new TypeError('render(): source argument is not a string')
   }
   if (opts !== undefined && typeof opts !== 'object') {
     throw new TypeError('render(): options argument is not an object')
   }
-  options.updateOptions(opts)
-  return api.render(source)
+  Options.updateOptions(opts)
+  return Api.render(source)
 }
 
 // Load-time initialization.
-api.reset()
+Api.reset()
 
