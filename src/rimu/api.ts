@@ -1,21 +1,22 @@
-import * as io from './io'
-import * as lineBlocks from './lineblocks'
-import * as delimitedBlocks from './delimitedblocks'
-import * as lists from './lists'
-import * as macros from './macros'
-import * as options from './options'
-import * as quotes from './quotes'
-import * as replacements from './replacements'
+import {BlockAttributes} from './utils'
+import * as Io from './io'
+import * as LineBlocks from './lineblocks'
+import * as DelimitedBlocks from './delimitedblocks'
+import * as Lists from './lists'
+import * as Macros from './macros'
+import * as Options from './options'
+import * as Quotes from './quotes'
+import * as Replacements from './replacements'
 
 export function render(source: string): string {
-  let reader = new io.Reader(source)
-  let writer = new io.Writer()
+  let reader = new Io.Reader(source)
+  let writer = new Io.Writer()
   while (!reader.eof()) {
     reader.skipBlankLines()
     if (reader.eof()) break
-    if (lineBlocks.render(reader, writer)) continue
-    if (lists.render(reader, writer)) continue
-    if (delimitedBlocks.render(reader, writer)) continue
+    if (LineBlocks.render(reader, writer)) continue
+    if (Lists.render(reader, writer)) continue
+    if (DelimitedBlocks.render(reader, writer)) continue
     // This code should never be executed (normal paragraphs should match anything).
     throw 'unexpected error: no matching delimited block found'
   }
@@ -24,10 +25,10 @@ export function render(source: string): string {
 
 // Set API to default state.
 export function reset(): void {
-  options.setDefaults()
-  delimitedBlocks.reset()
-  lineBlocks.reset()
-  macros.reset()
-  quotes.reset()
-  replacements.reset()
+  BlockAttributes.init()
+  Options.setDefaults()
+  DelimitedBlocks.reset()
+  Macros.reset()
+  Quotes.reset()
+  Replacements.reset()
 }

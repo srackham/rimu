@@ -92,33 +92,44 @@ export function replaceInline(text: string, expansionOptions: ExpansionOptions):
   return text
 }
 
+// Global Block Attributes state (namespace "singleton", see http://stackoverflow.com/a/30174360).
+export namespace BlockAttributes {
+  export let classes: string     // Space separated HTML class names.
+  export let attributes: string  // HTML element attributes (incorporates 'style' and 'id' attributes).
+  export let options: ExpansionOptions
+  export function init() {
+    classes = ''
+    attributes = ''
+    options = {}
+  }
+}
+
 // Inject HTML attributes from attrs into the opening tag.
 // Consume HTML attributes unless the 'tag' argument is blank.
-export function injectHtmlAttributes(tag: string, attrs: lineBlocks.BlockAttributes): string {
+export function injectHtmlAttributes(tag: string): string {
   if (!tag) {
     return tag
   }
-  if (attrs.classes) {
+  if (BlockAttributes.classes) {
     if (/class="\S.*"/.test(tag)) {
       // Inject class names into existing class attribute.
-      tag = tag.replace(/class="(\S.*?)"/, 'class="' + attrs.classes + ' $1"')
+      tag = tag.replace(/class="(\S.*?)"/, 'class="' + BlockAttributes.classes + ' $1"')
     }
     else {
       // Prepend new class attribute to HTML attributes.
-      attrs.attributes = trim('class="' + attrs.classes + '" ' + attrs.attributes)
+      BlockAttributes.attributes = trim('class="' + BlockAttributes.classes + '" ' + BlockAttributes.attributes)
     }
   }
-  if (attrs.attributes) {
+  if (BlockAttributes.attributes) {
     let match = tag.match(/^<([a-zA-Z]+|h[1-6])(?=[ >])/)
     if (match) {
       let before = tag.slice(0, match[0].length)
       let after = tag.slice(match[0].length)
-      tag = before + ' ' + attrs.attributes + after
+      tag = before + ' ' + BlockAttributes.attributes + after
     }
   }
   // Consume the attributes.
-  attrs.classes = ''
-  attrs.attributes = ''
+  BlockAttributes.classes = ''
+  BlockAttributes.attributes = ''
   return tag
 }
-

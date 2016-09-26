@@ -1,3 +1,4 @@
+import {BlockAttributes} from './utils'
 import * as utils from './utils'
 import * as options from './options'
 import * as io from './io'
@@ -5,19 +6,6 @@ import * as delimitedBlocks from './delimitedblocks'
 import * as quotes from './quotes'
 import * as replacements from './replacements'
 import * as macros from './macros'
-
-// Globals set by Block Attributes elements.
-export interface BlockAttributes {
-  classes: string
-  attributes: string
-  options: utils.ExpansionOptions
-}
-export let blockAttributes: BlockAttributes
-
-// Reset state to defaults.
-export function reset(): void {
-  blockAttributes = {classes: '', attributes: '', options: {}}
-}
 
 export interface Definition {
   name?: string   // Optional unique identifier.
@@ -173,20 +161,20 @@ let defs: Definition[] = [
       }
       if (!options.skipBlockAttributes()) {
         if (match[1]) { // HTML element class names.
-          blockAttributes.classes += ' ' + utils.trim(match[1])
-          blockAttributes.classes = utils.trim(blockAttributes.classes)
+          BlockAttributes.classes += ' ' + utils.trim(match[1])
+          BlockAttributes.classes = utils.trim(BlockAttributes.classes)
         }
         if (match[2]) { // HTML element id.
-          blockAttributes.attributes += ' id="' + utils.trim(match[2]).slice(1) + '"'
+          BlockAttributes.attributes += ' id="' + utils.trim(match[2]).slice(1) + '"'
         }
         if (match[3]) { // CSS properties.
-          blockAttributes.attributes += ' style=' + match[3]
+          BlockAttributes.attributes += ' style=' + match[3]
         }
         if (match[4] && !options.isSafeModeNz()) { // HTML attributes.
-          blockAttributes.attributes += ' ' + utils.trim(match[4].slice(1, match[4].length - 1))
+          BlockAttributes.attributes += ' ' + utils.trim(match[4].slice(1, match[4].length - 1))
         }
-        blockAttributes.attributes = utils.trim(blockAttributes.attributes)
-        delimitedBlocks.setBlockOptions(blockAttributes.options, match[5])
+        BlockAttributes.attributes = utils.trim(BlockAttributes.attributes)
+        delimitedBlocks.setBlockOptions(BlockAttributes.options, match[5])
       }
       return true
     },
@@ -231,7 +219,7 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
         text = def.filter(match, reader)
       }
       if (text) {
-        text = utils.injectHtmlAttributes(text, blockAttributes)
+        text = utils.injectHtmlAttributes(text)
         writer.write(text)
         reader.next()
         if (!reader.eof()) {

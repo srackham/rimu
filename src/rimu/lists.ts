@@ -1,3 +1,4 @@
+import {BlockAttributes} from './utils'
 import * as utils from './utils'
 import * as io from './io'
 import * as delimitedBlocks from './delimitedblocks'
@@ -70,7 +71,7 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
 
 function renderList(startItem: ItemState, reader: io.Reader, writer: io.Writer): ItemState {
   ids.push(startItem.id)
-  writer.write(utils.injectHtmlAttributes(startItem.def.listOpenTag, lineBlocks.blockAttributes))
+  writer.write(utils.injectHtmlAttributes(startItem.def.listOpenTag))
   let nextItem: ItemState
   while (true) {
     nextItem = renderListItem(startItem, reader, writer)
