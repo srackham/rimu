@@ -24,11 +24,11 @@ export function render(source: string): string {
 }
 
 // Set API to default state.
-export function reset(): void {
+export function init(): void {
   BlockAttributes.init()
-  Options.setDefaults()
-  DelimitedBlocks.reset()
-  Macros.reset()
-  Quotes.reset()
-  Replacements.reset()
+  Options.init()
+  DelimitedBlocks.init()
+  Macros.init()
+  Quotes.init()
+  Replacements.init()
 }

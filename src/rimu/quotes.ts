@@ -58,7 +58,7 @@ export let quotesRe: RegExp // Searches for quoted text.
 let unescapeRe: RegExp      // Searches for escaped quotes.
 
 // Reset definitions to defaults.
-export function reset(): void {
+export function init(): void {
   defs = DEFAULT_DEFS.map(def => Utils.copy(def))
   initializeRegExps()
 }

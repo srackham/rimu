@@ -25,5 +25,5 @@ export function render(source: string, opts: Options.RenderOptions = {}): string
 }
 
 // Load-time initialization.
-Api.reset()
+Api.init()
 

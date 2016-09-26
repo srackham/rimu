@@ -25,7 +25,7 @@ let htmlReplacement: string
 let callback: CallbackFunction
 
 // Reset options to default values.
-export function setDefaults(): void {
+export function init(): void {
   safeMode = 0
   htmlReplacement = '<mark>replaced HTML</mark>'
   callback = undefined
@@ -63,7 +63,7 @@ function setHtmlReplacement(value: string): void {
 
 function setReset(value: boolean|string): void {
   if (value === true || value === 'true') {
-    Api.reset()
+    Api.init()
   }
 }
 
