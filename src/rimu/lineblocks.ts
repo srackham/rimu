@@ -8,15 +8,15 @@ import * as macros from './macros'
 
 // Globals set by Block Attributes elements.
 export interface BlockAttributes {
-  htmlClasses: string
-  htmlAttributes: string
-  blockOptions: utils.ExpansionOptions
+  classes: string
+  attributes: string
+  options: utils.ExpansionOptions
 }
 export let blockAttributes: BlockAttributes
 
 // Reset state to defaults.
 export function reset(): void {
-  blockAttributes = {htmlClasses: '', htmlAttributes: '', blockOptions: {}}
+  blockAttributes = {classes: '', attributes: '', options: {}}
 }
 
 export interface Definition {
@@ -173,20 +173,20 @@ let defs: Definition[] = [
       }
       if (!options.skipBlockAttributes()) {
         if (match[1]) { // HTML element class names.
-          blockAttributes.htmlClasses += ' ' + utils.trim(match[1])
-          blockAttributes.htmlClasses = utils.trim(blockAttributes.htmlClasses)
+          blockAttributes.classes += ' ' + utils.trim(match[1])
+          blockAttributes.classes = utils.trim(blockAttributes.classes)
         }
         if (match[2]) { // HTML element id.
-          blockAttributes.htmlAttributes += ' id="' + utils.trim(match[2]).slice(1) + '"'
+          blockAttributes.attributes += ' id="' + utils.trim(match[2]).slice(1) + '"'
         }
         if (match[3]) { // CSS properties.
-          blockAttributes.htmlAttributes += ' style=' + match[3]
+          blockAttributes.attributes += ' style=' + match[3]
         }
         if (match[4] && !options.isSafeModeNz()) { // HTML attributes.
-          blockAttributes.htmlAttributes += ' ' + utils.trim(match[4].slice(1, match[4].length - 1))
+          blockAttributes.attributes += ' ' + utils.trim(match[4].slice(1, match[4].length - 1))
         }
-        blockAttributes.htmlAttributes = utils.trim(blockAttributes.htmlAttributes)
-        delimitedBlocks.setBlockOptions(blockAttributes.blockOptions, match[5])
+        blockAttributes.attributes = utils.trim(blockAttributes.attributes)
+        delimitedBlocks.setBlockOptions(blockAttributes.options, match[5])
       }
       return true
     },
@@ -231,7 +231,7 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
         text = def.filter(match, reader)
       }
       if (text) {
-        text = utils.injectHtmlAttributes(text)
+        text = utils.injectHtmlAttributes(text, blockAttributes)
         writer.write(text)
         reader.next()
         if (!reader.eof()) {

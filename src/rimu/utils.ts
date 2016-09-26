@@ -92,33 +92,33 @@ export function replaceInline(text: string, expansionOptions: ExpansionOptions):
   return text
 }
 
-// Inject HTML attributes from LineBlocks.htmlAttributes into the opening tag.
-// Consume LineBlocks.htmlAttributes unless the 'tag' argument is blank.
-export function injectHtmlAttributes(tag: string): string {
+// Inject HTML attributes from attrs into the opening tag.
+// Consume HTML attributes unless the 'tag' argument is blank.
+export function injectHtmlAttributes(tag: string, attrs: lineBlocks.BlockAttributes): string {
   if (!tag) {
     return tag
   }
-  if (lineBlocks.blockAttributes.htmlClasses) {
+  if (attrs.classes) {
     if (/class="\S.*"/.test(tag)) {
       // Inject class names into existing class attribute.
-      tag = tag.replace(/class="(\S.*?)"/, 'class="' + lineBlocks.blockAttributes.htmlClasses + ' $1"')
+      tag = tag.replace(/class="(\S.*?)"/, 'class="' + attrs.classes + ' $1"')
     }
     else {
       // Prepend new class attribute to HTML attributes.
-      lineBlocks.blockAttributes.htmlAttributes = trim('class="' + lineBlocks.blockAttributes.htmlClasses + '" ' + lineBlocks.blockAttributes.htmlAttributes)
+      attrs.attributes = trim('class="' + attrs.classes + '" ' + attrs.attributes)
     }
   }
-  if (lineBlocks.blockAttributes.htmlAttributes) {
+  if (attrs.attributes) {
     let match = tag.match(/^<([a-zA-Z]+|h[1-6])(?=[ >])/)
     if (match) {
       let before = tag.slice(0, match[0].length)
       let after = tag.slice(match[0].length)
-      tag = before + ' ' + lineBlocks.blockAttributes.htmlAttributes + after
+      tag = before + ' ' + attrs.attributes + after
     }
   }
   // Consume the attributes.
-  lineBlocks.blockAttributes.htmlClasses = ''
-  lineBlocks.blockAttributes.htmlAttributes = ''
+  attrs.classes = ''
+  attrs.attributes = ''
   return tag
 }
 

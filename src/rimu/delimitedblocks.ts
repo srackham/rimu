@@ -237,17 +237,17 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
         skip: false
       }
       utils.merge(expansionOptions, def.expansionOptions)
-      utils.merge(expansionOptions, lineBlocks.blockAttributes.blockOptions)
+      utils.merge(expansionOptions, lineBlocks.blockAttributes.options)
       // Translate block.
       if (!expansionOptions.skip) {
         let text = lines.join('\n')
         if (def.contentFilter) {
           text = def.contentFilter(text, match, expansionOptions)
         }
-        let opentag = utils.injectHtmlAttributes(def.openTag)
+        let opentag = utils.injectHtmlAttributes(def.openTag, lineBlocks.blockAttributes)
         let closetag = def.closeTag
         if (expansionOptions.container) {
-          delete lineBlocks.blockAttributes.blockOptions.container  // Consume before recursion.
+          delete lineBlocks.blockAttributes.options.container  // Consume before recursion.
           text = api.render(text)
         }
         else {
@@ -267,7 +267,7 @@ export function render(reader: io.Reader, writer: io.Writer): boolean {
         }
       }
       // Reset consumed Block Attributes expansion options.
-      lineBlocks.blockAttributes.blockOptions = {}
+      lineBlocks.blockAttributes.options = {}
       return true
     }
   }
@@ -327,7 +327,7 @@ function classInjectionFilter(match: string[]): string {
   if (match[2]) {
     let p1: string
     if ((p1 = utils.trim(match[2]))) {
-      lineBlocks.blockAttributes.htmlClasses = p1
+      lineBlocks.blockAttributes.classes = p1
     }
   }
   this.closeMatch = RegExp('^' + utils.escapeRegExp(match[1]) + '$')
