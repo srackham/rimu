@@ -56,13 +56,14 @@ let HTML = DOCS.map(doc => doc.dst)
 
 /*
  Execute shell commands in parallel then run the `callback` when they have all finished.
- Abort if an error occurs.
+ Abort immediately an error occurs unless options.executeAll is true (in which case run all commands
+ commands and abort if one or more failed).
  Write command output to the inherited stdout (unless the Jake --quiet option is set).
  Print a status message when each command starts and finishes (unless the Jake --quiet option is set).
 
  NOTE: This function is similar to the built-in jake.exec function but is twice as fast.
  */
-function exec(commands, callback) {
+function exec(commands, callback, options={}) {
   if (typeof commands === 'string') {
     commands = [commands]
   }
@@ -71,19 +72,30 @@ function exec(commands, callback) {
     callback()
   }
   else {
+    let error_count = 0
     commands.forEach(command => {
-      jake.logger.log('Starting: ' + command)
+      jake.logger.log('STARTING: ' + command)
       child_process.exec(command, function(error, stdout, stderr) {
+        jake.logger.log((error === null ? 'FINISHED: ' : 'FAILED: ') + command)
         if (!jake.program.opts.quiet) {
-          process.stdout.write(stdout)
+          jake.logger.log(stdout)
         }
         if (error !== null) {
-          fail(error, error.code)
+          if (options.executeAll) {
+            error_count++
+          }
+          else {
+            fail(error, error.code)
+          }
         }
-        jake.logger.log('Finished: ' + command)
         remaining--
         if (remaining === 0) {
-          callback()
+          if (error_count > 0) {
+            fail(error_count + ' errors(s)')
+          }
+          else {
+            callback()
+          }
         }
       })
     })
@@ -166,10 +178,14 @@ task('html-docs', ['build-rimu-min'], {async: true}, function() {
   exec(commands, complete)
 })
 
+// NOTE: This task has no dependents assumes html-validator npm package is installed.
+// It's no longer part of the build process because some of the documentation files
+// have style elements in the document body which is not accepted by the HTML5 spec
+// even though all browsers accept them.
 desc(`Validate HTML documents.`)
 task('validate-html', {async: true}, function() {
-  let commands = HTML.map(file => 'nu-html-checker --formatter stylish ' + file)
-  exec(commands, complete)
+  let commands = HTML.map(file => 'html-validator --verbose --format=text --file=' + file)
+  exec(commands, complete, {executeAll: true})
 })
 
 desc(`Display or update the project version number. Use vers=x.y.z argument to set a new version number.`)
@@ -216,7 +232,7 @@ desc(`Rebuild and validate documentation then commit and publish to GitHub Pages
 task('release-gh-pages', ['build-gh-pages', 'commit-gh-pages', 'push-gh-pages'])
 
 desc(`Generate documentation and copy to local gh-pages repo`)
-task('build-gh-pages', ['build-rimu-min', 'html-docs', 'validate-html'], function() {
+task('build-gh-pages', ['build-rimu-min', 'html-docs'], function() {
   shelljs.cp('-f', HTML.concat(RIMU_LIB_MIN), GH_PAGES_DIR)
 })
 

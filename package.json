@@ -37,7 +37,6 @@
     "jake": "^8.0.12",
     "jshint": "^2.9.3",
     "jsonlint": "^1.6.2",
-    "nu-html-checker": "^0.1.0",
     "shelljs": "^0.7.4",
     "tape": "^4.6.0",
     "ts-loader": "^0.8.2",
