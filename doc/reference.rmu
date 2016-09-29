@@ -632,6 +632,7 @@ Anonymous
 This example uses the [rimuc](#rimuc-command) command `--styled`
 option's CSS _cite_ class to style the Anonymous attribution.
 
+.#division-block
 ### Division Block
 A _Division Block_ is a container for block elements.
 

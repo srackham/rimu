@@ -577,9 +577,7 @@ must start at the left margin and end with a blank line.
 The {rimuc} `--styled` option includes styling for bordered tables.
 
 .-macros
-{tables-example} = '<table class="bordered">
-  <tbody>
-    <tr>
+{tables-example} = '<table class="bordered"><tbody><tr>
 <td style="width: 50%; padding: 6px;">
 
 .text-info
@@ -618,9 +616,7 @@ Lobortis lacus vestibulum sem.
   included in the list item.
 
 </td>
-    </tr>
-  </tbody>
-</table>'
+</tr></tbody></table>'
 
 {generate-rendered-example-2|tables-example}
 
@@ -1107,6 +1103,7 @@ window.onclick = toggleToc
 ..
 ```
 
-To enable only macro expansion drop the `-macros` option.
+To enable only macro expansion drop the `-macros` option
+(c.f. [General purpose macro processor](#general purpose macro processor)).
 
 
