@@ -3,6 +3,10 @@
  */
 'use strict'
 
+if (parseInt(process.versions.node) < 6) {
+  fail('nodejs must be version 6 or greater')
+}
+
 let pkg = require('./package.json')
 let shelljs = require('shelljs')
 let child_process = require('child_process')
