@@ -9,6 +9,7 @@
 {--highlightjs?} = ''
 {--mathjax?} = ''
 {--section-numbers?} = ''
+{--lang?} = ''
 {--title?} = '&nbsp;'
 {--custom-toc?} = ''
 {--theme?} = 'default'
@@ -23,7 +24,7 @@
 {--} = ''
 
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="{--lang}">
 <head>
 {--!} Force IE into Standards mode.
   <meta http-equiv="X-UA-Compatible" content="IE=edge">

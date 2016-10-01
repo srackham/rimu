@@ -175,6 +175,7 @@ task('html-docs', ['build-rimu-min'], {async: true}, function() {
     ' --styled --lint --no-rimurc --theme default --custom-toc' +
     ' --styled-name "classic"' +
     ' --output "' + doc.dst + '"' +
+    ' --lang "en"' +
     ' --title "' + doc.title + '"' +
     ' ' + doc.rimucOptions + ' ' +
     ' ./src/examples/example-rimurc.rmu ./doc/doc-header.rmu ' + doc.src

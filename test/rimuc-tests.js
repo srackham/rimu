@@ -20,7 +20,7 @@ function rimuc_equal(t, source, expected, options, message) {
 }
 
 test('rimuc', function(t) {
-  t.plan(22);
+  t.plan(23);
 
   rimuc_equal(t, '*Hello World!*', '<p><em>Hello World!</em></p>', '',
     'rimuc basic test');
@@ -56,6 +56,10 @@ test('rimuc', function(t) {
 
   rimuc_exec('', '--styled --title X', function(output) {
     t.ok(output.indexOf('<title>X</title>') > 0, 'rimuc --title')
+  });
+
+  rimuc_exec('', '--styled --lang fr', function(output) {
+    t.ok(output.indexOf('<html lang="fr">') > 0, 'rimuc --lang')
   });
 
   rimuc_exec('', '--styled --highlightjs', function(output) {

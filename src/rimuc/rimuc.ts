@@ -63,10 +63,11 @@ OPTIONS
     Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
     Defaults to '<mark>replaced HTML</mark>'.
 
-  --theme THEME, --title TITLE, --highlightjs, --mathjax,
+  --theme THEME, --lang LANG, --title TITLE, --highlightjs, --mathjax,
   --sidebar-toc, --dropdown-toc, --custom-toc, --section-numbers
     Shortcuts for the following prepended macro definitions:
     --prepend "{--theme}='THEME'"
+    --prepend "{--lang}='LANG'"
     --prepend "{--title}='TITLE'"
     --prepend "{--highlightjs}='true'"
     --prepend "{--mathjax}='true'"
@@ -90,7 +91,8 @@ STYLING MACROS AND CLASSES
   --                 Blank macro (empty string).                 
   --theme            Set styling themes.
                      Theme names: default, graystone.
-  --title            HTML document title .
+  --lang             HTML document language attribute value.
+  --title            HTML document title.
   --highlightjs      Set to non-blank value to enable syntax
                      highlighting with Highlight.js.
   --mathjax          Set to a non-blank value to enable MathJax.
@@ -195,11 +197,12 @@ outer:
         case '--section-numbers':
         case '--theme':
         case '--title':
+        case '--lang':
         case '--toc': // DEPRECATED
         case '--sidebar-toc':
         case '--dropdown-toc':
         case '--custom-toc':
-          let macro_value = ['--title', '--theme'].indexOf(arg) > -1 ? process.argv.shift() : 'true'
+          let macro_value = ['--lang', '--title', '--theme'].indexOf(arg) > -1 ? process.argv.shift() : 'true'
           source += '{' + arg + '}=\'' + macro_value + '\'\n'
           break
         case '--styled-name':

@@ -9,6 +9,7 @@
 {--highlightjs?} = ''
 {--mathjax?} = ''
 {--section-numbers?} = ''
+{--lang?} = ''
 {--title?} = '&nbsp;'
 {--theme?} = 'default'
 {--dropdown-toc?} = ''
@@ -42,7 +43,7 @@
   HTML header
 */
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="{--lang}">
 <head>
 <meta charset="UTF-8">
 {--!} Make old IE versions use the latest rendering engine.
