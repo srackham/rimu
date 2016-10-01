@@ -4,6 +4,10 @@ See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
 
+## Version 9.0.1 (2016-10-02)
+- Migrated codebase to TypeScript 2.
+
+
 ## Version 9.0.0 (2016-08-21)
 - Added [`--styled-name`]({reference}#styled-names) option to `rimuc`
   along with built-in _classic_, _flex_ and _v8_ named styles. _flex_
