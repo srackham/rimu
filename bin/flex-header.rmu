@@ -42,7 +42,7 @@
   HTML header
 */
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 {--!} Make old IE versions use the latest rendering engine.
