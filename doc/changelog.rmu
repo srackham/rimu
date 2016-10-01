@@ -5,6 +5,9 @@ for more detailed information.
 
 
 ## Version 9.0.1 (2016-10-02)
+- Added the `--lang` option to `rimuc` command. This option sets the
+  HTML tag's `lang` attribute value and is used in conjunction with
+  the `--styled` option.
 - Migrated codebase to TypeScript 2.
 
 
