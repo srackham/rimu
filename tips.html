@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -1013,9 +1013,7 @@ must start at the left margin and end with a blank line.</p>
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('tables-example')">&#x270e;</span>
 Rimu source</td>
 <td>
-<pre id="tables-example-source" class="example-source no-highlight"><code>&lt;table class="bordered"&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
+<pre id="tables-example-source" class="example-source no-highlight"><code>&lt;table class="bordered"&gt;&lt;tbody&gt;&lt;tr&gt;
 &lt;td style="width: 50%; padding: 6px;"&gt;
 
 .text-info
@@ -1054,18 +1052,14 @@ Lobortis lacus vestibulum sem.
   included in the list item.
 
 &lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;</code></pre>
+&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</code></pre>
 <textarea id="tables-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('tables-example')"></textarea>
 </td>
 </tr>
 <tr><td class="example-header" style="width:10%;">Rendered HTML</td>
 <td>
 <div id="tables-example-rendered" class="example-rendered">
-<table class="bordered">
-  <tbody>
-    <tr>
+<table class="bordered"><tbody><tr>
 <td style="width: 50%; padding: 6px;">
 <p class="text-info"><strong>Lorem ipsum dolor</strong>. Sit amet venenatis. Erat nulla arcu. Lorem luctus
 sem. Mauris vitae ipsum. Donec dui ac ridiculus quisque proin.
@@ -1095,9 +1089,7 @@ by an indented paragraph the
 indented paragraph is
 included in the list item.</code></pre>
 </li></ul></td>
-    </tr>
-  </tbody>
-</table>
+</tr></tbody></table>
 </div>
 </td></tr></table>
 <p>The use of inline HTML for tables instead of a Rimu-specific table
@@ -1739,7 +1731,8 @@ function toggleToc() {
 
 window.onclick = toggleToc
 ..</code></pre>
-<p>To enable only macro expansion drop the <code>-macros</code> option.</p>
+<p>To enable only macro expansion drop the <code>-macros</code> option
+(c.f. [General purpose macro processor](#general purpose macro processor)).</p>
 
 </div>
 <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>

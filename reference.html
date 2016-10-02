@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -462,10 +462,11 @@ OPTIONS
     Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
     Defaults to '&lt;mark&gt;replaced HTML&lt;/mark&gt;'.
 
-  --theme THEME, --title TITLE, --highlightjs, --mathjax,
+  --theme THEME, --lang LANG, --title TITLE, --highlightjs, --mathjax,
   --sidebar-toc, --dropdown-toc, --custom-toc, --section-numbers
     Shortcuts for the following prepended macro definitions:
     --prepend "{--theme}='THEME'"
+    --prepend "{--lang}='LANG'"
     --prepend "{--title}='TITLE'"
     --prepend "{--highlightjs}='true'"
     --prepend "{--mathjax}='true'"
@@ -489,7 +490,8 @@ STYLING MACROS AND CLASSES
   --                 Blank macro (empty string).
   --theme            Set styling themes.
                      Theme names: default, graystone.
-  --title            HTML document title .
+  --lang             HTML document language attribute value.
+  --title            HTML document title.
   --highlightjs      Set to non-blank value to enable syntax
                      highlighting with Highlight.js.
   --mathjax          Set to a non-blank value to enable MathJax.
@@ -937,7 +939,7 @@ Scelerisque feugiat massa alias.</p>
 </td></tr></tbody></table>
 <p>This example uses the <a href="#rimuc-command">rimuc</a> command <code>--styled</code>
 option's CSS <em>cite</em> class to style the Anonymous attribution.</p>
-<h3>Division Block</h3>
+<h3 id="division-block">Division Block</h3>
 <p>A <em>Division Block</em> is a container for block elements.</p>
 <ul><li>The Division Block delimiter character is a period.
 </li><li>If the <em>Division Block</em> has <a href="#block-attributes">HTML attributes</a>
