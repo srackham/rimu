@@ -2,7 +2,8 @@
   "compilerOptions": {
     "outDir": "../../bin",
     "module": "commonjs",
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "strictNullChecks": true
   },
   "files": [
     "node.d.ts",

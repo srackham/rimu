@@ -136,7 +136,7 @@ function die(message: string): void {
 }
 
 let safe_mode = 0
-let html_replacement: string = null
+let html_replacement: string | undefined
 let styled = false
 let styled_name = 'classic'
 let no_rimurc = false
@@ -148,8 +148,8 @@ process.argv.shift(); // Skip rimuc script path.
 
 // Parse command-line options.
 let source = ''
-let outfile: string
-let arg: string
+let outfile: string | undefined
+let arg: string | undefined
 outer:
     while (!!(arg = process.argv.shift())) {
       switch (arg) {
@@ -206,7 +206,7 @@ outer:
           source += '{' + arg + '}=\'' + macro_value + '\'\n'
           break
         case '--styled-name':
-          styled_name = process.argv.shift()
+          styled_name = process.argv.shift() || ''
           if (!styled_name) {
             die('missing --styled-name')
           }
@@ -253,7 +253,7 @@ if (source !== '') {
   html += Rimu.render(source) + '\n'; // --prepend options source.
 }
 let options: Rimu.Options = {}
-if (html_replacement !== null) {
+if (html_replacement !== undefined) {
   options.htmlReplacement = html_replacement
 }
 for (let infile of files) {
