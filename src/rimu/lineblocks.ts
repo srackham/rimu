@@ -9,7 +9,7 @@ import * as Utils from './utils'
 
 export interface Definition {
   name?: string   // Optional unique identifier.
-  filter?: (match: RegExpExecArray, reader?: Io.Reader) => string
+  filter?: (match: RegExpExecArray, reader: Io.Reader) => string
   verify?: (match: RegExpExecArray) => boolean   // Additional match verification checks.
   match: RegExp
   replacement?: string
@@ -34,7 +34,7 @@ let defs: Definition[] = [
       }
       return true
     },
-    filter: function (match: RegExpExecArray, reader?: Io.Reader): string {
+    filter: function (match: RegExpExecArray, reader: Io.Reader): string {
       // Insert the macro value into the reader just ahead of the cursor.
       let value = Macros.render(match[0], false)
       let spliceArgs = ([reader.pos + 1, 0]).concat(value.split('\n') as any[])
@@ -155,26 +155,26 @@ let defs: Definition[] = [
       // class names = $1, id = $2, css-properties = $3, html-attributes = $4, block-options = $5
       let text = match[0]
       text = Utils.replaceInline(text, {macros: true})
-      match = /^\\?\.((?:\s*[a-zA-Z][\w\-]*)+)*(?:\s*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(".+?")?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text)
-      if (!match) {
+      let m = /^\\?\.((?:\s*[a-zA-Z][\w\-]*)+)*(?:\s*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(".+?")?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text)
+      if (!m) {
         return false
       }
       if (!Options.skipBlockAttributes()) {
-        if (match[1]) { // HTML element class names.
-          BlockAttributes.classes += ' ' + Utils.trim(match[1])
+        if (m[1]) { // HTML element class names.
+          BlockAttributes.classes += ' ' + Utils.trim(m[1])
           BlockAttributes.classes = Utils.trim(BlockAttributes.classes)
         }
-        if (match[2]) { // HTML element id.
-          BlockAttributes.attributes += ' id="' + Utils.trim(match[2]).slice(1) + '"'
+        if (m[2]) { // HTML element id.
+          BlockAttributes.attributes += ' id="' + Utils.trim(m[2]).slice(1) + '"'
         }
-        if (match[3]) { // CSS properties.
-          BlockAttributes.attributes += ' style=' + match[3]
+        if (m[3]) { // CSS properties.
+          BlockAttributes.attributes += ' style=' + m[3]
         }
-        if (match[4] && !Options.isSafeModeNz()) { // HTML attributes.
-          BlockAttributes.attributes += ' ' + Utils.trim(match[4].slice(1, match[4].length - 1))
+        if (m[4] && !Options.isSafeModeNz()) { // HTML attributes.
+          BlockAttributes.attributes += ' ' + Utils.trim(m[4].slice(1, m[4].length - 1))
         }
         BlockAttributes.attributes = Utils.trim(BlockAttributes.attributes)
-        DelimitedBlocks.setBlockOptions(BlockAttributes.options, match[5])
+        DelimitedBlocks.setBlockOptions(BlockAttributes.options, m[5])
       }
       return true
     },
@@ -201,11 +201,11 @@ let defs: Definition[] = [
 export function render(reader: Io.Reader, writer: Io.Writer): boolean {
   if (reader.eof()) throw 'premature eof'
   for (let def of defs) {
-    let match = def.match.exec(reader.cursor())
+    let match = def.match.exec(reader.cursor)
     if (match) {
       if (match[0][0] === '\\') {
         // Drop backslash escape and continue.
-        reader.cursor(reader.cursor().slice(1))
+        reader.cursor = reader.cursor.slice(1)
         continue
       }
       if (def.verify && !def.verify(match)) {

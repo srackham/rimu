@@ -57,7 +57,7 @@ function fragQuote(fragment: Fragment): Fragment[] {
     return [fragment]
   }
   let quotesRe = Quotes.quotesRe
-  let match: RegExpExecArray
+  let match: RegExpExecArray | null
   quotesRe.lastIndex = 0
   while (true) {
     match = quotesRe.exec(fragment.text)
@@ -126,8 +126,8 @@ function preReplacements(text: string): string {
 // Replace replacements placeholders with replacements text from savedReplacements[].
 function postReplacements(text: string): string {
   return text.replace(/\u0000|\u0001/g, function (match): string {
-    let fragment = savedReplacements.shift()
-    return (match === '\u0000') ? fragment.text : Utils.replaceSpecialChars(fragment.verbatim)
+    let fragment = savedReplacements.shift() as Fragment
+    return (match === '\u0000') ? fragment.text : Utils.replaceSpecialChars(fragment.verbatim as string)
   })
 }
 
@@ -141,7 +141,7 @@ function fragReplacements(fragments: Fragment[]): Fragment[] {
     })
     fragments = result
   })
-  return result
+  return fragments
 }
 
 // Fragment replacements in a single fragment for a single replacement definition.
@@ -151,7 +151,7 @@ function fragReplacement(fragment: Fragment, def: Replacements.Definition): Frag
     return [fragment]
   }
   let replacementRe = def.match
-  let match: RegExpExecArray
+  let match: RegExpExecArray | null
   replacementRe.lastIndex = 0
   match = replacementRe.exec(fragment.text)
   if (!match) {

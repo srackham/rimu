@@ -27,7 +27,7 @@ export function init(): void {
 }
 
 // Return named macro value or null if it doesn't exist.
-export function getValue(name: string): string {
+export function getValue(name: string): string | null {
   for (let def of defs) {
     if (def.name === name) {
       return def.value

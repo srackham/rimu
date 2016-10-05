@@ -10,25 +10,21 @@
       this.pos = 0
     }
 
-    // Getter/setter for current line, return null if EOF.
-    cursor(value: string = null): string {
-      if (this.eof()) return null
-      if (value !== null) {
-        this.lines[this.pos] = value
-      }
+    get cursor(): string {
       return this.lines[this.pos]
     }
+    set cursor(value: string) {
+      this.lines[this.pos] = value
+    }
 
+    // Return true if the cursor has advanced over all input lines.
     eof(): boolean {
       return this.pos >= this.lines.length
     }
 
-    // Read the next line, return null if EOF.
-    next(): string {
-      if (this.eof()) return null
-      this.pos++
-      if (this.eof()) return null
-      return this.lines[this.pos]
+    // Move cursor to next input line.
+    next(): void {
+      if (!this.eof()) this.pos++
     }
 
     // Read to the first line matching the re.
@@ -36,11 +32,11 @@
     // the $1 match group (if it exists).
     // Return null if an EOF is encountered.
     // Exit with the reader pointing to the line following the match.
-    readTo(find: RegExp): string[] {
+    readTo(find: RegExp): string[] | null {
       let result: string[] = []
-      let match: string[]
+      let match: string[] | null = null
       while (!this.eof()) {
-        match = this.cursor().match(find)
+        match = this.cursor.match(find)
         if (match) {
           if (match[1] !== undefined) {
             result.push(match[1])   // $1
@@ -48,11 +44,11 @@
           this.next()
           break
         }
-        result.push(this.cursor())
+        result.push(this.cursor)
         this.next()
       }
       // Blank line matches EOF.
-      if (match || find.toString() === '/^$/' && this.eof()) {
+      if (match || (find.toString() === '/^$/' && this.eof())) {
         return result
       }
       else {
@@ -61,7 +57,7 @@
     }
 
     skipBlankLines(): void {
-      while (this.cursor() === '') {
+      while (this.cursor === '') {
         this.next()
       }
     }
@@ -84,4 +80,3 @@
     }
 
   }
-

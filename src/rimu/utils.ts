@@ -2,7 +2,7 @@ import * as Macros from './macros'
 import * as Spans from './spans'
 
 export interface ExpansionOptions {
-  [key: string]: boolean
+  [key: string]: boolean | undefined
   // Processing priority (highest to lowest): container, skip, spans and specials.
   // If spans is true then both spans and specials are processed.
   // They are assumed false if they are not explicitly defined.

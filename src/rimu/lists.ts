@@ -57,7 +57,7 @@ let ids: string[]   // Stack of open list IDs.
 
 export function render(reader: Io.Reader, writer: Io.Writer): boolean {
   if (reader.eof()) throw 'premature eof'
-  let startItem: ItemState
+  let startItem: ItemState | null
   if (!(startItem = matchItem(reader))) {
     return false
   }
@@ -67,10 +67,10 @@ export function render(reader: Io.Reader, writer: Io.Writer): boolean {
   return true
 }
 
-function renderList(startItem: ItemState, reader: Io.Reader, writer: Io.Writer): ItemState {
+function renderList(startItem: ItemState, reader: Io.Reader, writer: Io.Writer): ItemState | null {
   ids.push(startItem.id)
   writer.write(Utils.injectHtmlAttributes(startItem.def.listOpenTag))
-  let nextItem: ItemState
+  let nextItem: ItemState | null
   while (true) {
     nextItem = renderListItem(startItem, reader, writer)
     if (!nextItem || nextItem.id !== startItem.id) {
@@ -83,15 +83,15 @@ function renderList(startItem: ItemState, reader: Io.Reader, writer: Io.Writer):
   }
 }
 
-function renderListItem(startItem: ItemState, reader: Io.Reader, writer: Io.Writer): ItemState {
+function renderListItem(startItem: ItemState, reader: Io.Reader, writer: Io.Writer): ItemState | null {
   let def = startItem.def
   let match = startItem.match
   let text: string
   if (match.length === 4) { // 3 match groups => definition list.
-    writer.write(def.termOpenTag)
+    writer.write(def.termOpenTag as string)
     text = Utils.replaceInline(match[1], {macros: true, spans: true})
     writer.write(text)
-    writer.write(def.termCloseTag)
+    writer.write(def.termCloseTag as string)
   }
   writer.write(def.itemOpenTag)
   // Process of item text.
@@ -99,7 +99,7 @@ function renderListItem(startItem: ItemState, reader: Io.Reader, writer: Io.Writ
   lines.write(match[match.length - 1])  // Item text from first line.
   lines.write('\n')
   reader.next()
-  let nextItem: ItemState
+  let nextItem: ItemState | null
   nextItem = readToNext(reader, lines)
   text = lines.toString()
   text = Utils.replaceInline(text, {macros: true, spans: true})
@@ -146,16 +146,16 @@ function renderListItem(startItem: ItemState, reader: Io.Reader, writer: Io.Writ
 // Write the list item text from the reader to the writer. Return
 // 'next' containing the next element's match and identity or null if
 // there are no more list releated elements.
-function readToNext(reader: Io.Reader, writer: Io.Writer): ItemState {
+function readToNext(reader: Io.Reader, writer: Io.Writer): ItemState | null {
   // The reader should be at the line following the first line of the list
   // item (or EOF).
-  let next: ItemState
+  let next: ItemState | null
   while (true) {
     if (reader.eof()) return null
-    if (reader.cursor() === '') {
+    if (reader.cursor === '') {
       // Encountered blank line.
       reader.next()
-      if (reader.cursor() === '') {
+      if (reader.cursor === '') {
         // A second blank line terminates the list.
         return null
       }
@@ -169,7 +169,7 @@ function readToNext(reader: Io.Reader, writer: Io.Writer): ItemState {
       return next
     }
     // Current line is list item text so write it to the output and move to the next input line.
-    writer.write(reader.cursor())
+    writer.write(reader.cursor)
     writer.write('\n')
     reader.next()
   }
@@ -178,18 +178,18 @@ function readToNext(reader: Io.Reader, writer: Io.Writer): ItemState {
 // Check if the line at the reader cursor matches a list related element.
 // 'attachments' specifies the names of allowed Delimited Block elements (in addition to list items).
 // If it matches a list item return ItemState.
-// If it matches an attahced Delimiter Block return {}.
+// If it matches an attached Delimiter Block return {}.
 // If it does not match a list related element return null.
-function matchItem(reader: Io.Reader, attachments: string[] = []): ItemState {
+function matchItem(reader: Io.Reader, attachments: string[] = []): ItemState | null {
   // Check if the line matches a List definition.
-  let line = reader.cursor()
+  let line = reader.cursor
   let item = {} as ItemState    // ItemState factory.
   // Check if the line matches a list item.
   for (let def of defs) {
     let match = def.match.exec(line)
     if (match) {
       if (match[0][0] === '\\') {
-        reader.cursor(reader.cursor().slice(1))   // Drop backslash.
+        reader.cursor = reader.cursor.slice(1)   // Drop backslash.
         return null
       }
       item.match = match
@@ -199,8 +199,8 @@ function matchItem(reader: Io.Reader, attachments: string[] = []): ItemState {
     }
   }
   // Check if the line matches an allowed attached Delimited block.
-  let def: DelimitedBlocks.Definition
   for (let name of attachments) {
+    let def: DelimitedBlocks.Definition
     def = DelimitedBlocks.getDefinition(name)
     if (def.openMatch.test(line)) {
       return item
@@ -208,4 +208,3 @@ function matchItem(reader: Io.Reader, attachments: string[] = []): ItemState {
   }
   return null
 }
-

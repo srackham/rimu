@@ -18,7 +18,7 @@ export interface Definition {
   closeTag: string
   verify?: (match: RegExpMatchArray) => boolean   // Additional match verification checks.
   delimiterFilter?: (match: string[]) => string   // Process opening delimiter. Return any delimiter content.
-  contentFilter?: (text: string, match?: string[], expansionOptions?: Utils.ExpansionOptions) => string
+  contentFilter?: (text: string, match: string[], expansionOptions: Utils.ExpansionOptions) => string
   expansionOptions: Utils.ExpansionOptions
 }
 
@@ -42,7 +42,7 @@ const DEFAULT_DEFS: Definition[] = [
       if (options.skipMacroDefs()) {
         return ''   // Skip if a safe mode is set.
       }
-      let name = match[0].match(/^\{([\w\-]+\??)\}/)[1]  // Get the macro name from opening delimiter.
+      let name = (match[0].match(/^\{([\w\-]+\??)\}/) as RegExpMatchArray)[1]  // Extract macro name from opening delimiter.
       text = text.replace(/' *\\\n/g, '\'\n')            // Unescape line-continuations.
       text = text.replace(/(' *[\\]+)\\\n/g, '$1\n')     // Unescape escaped line-continuations.
       text = Utils.replaceInline(text, expansionOptions) // Expand macro invocations.
@@ -201,12 +201,12 @@ export function init(): void {
 export function render(reader: Io.Reader, writer: Io.Writer): boolean {
   if (reader.eof()) throw 'premature eof'
   for (let def of defs) {
-    let match = reader.cursor().match(def.openMatch)
+    let match = reader.cursor.match(def.openMatch)
     if (match) {
       // Escape non-paragraphs.
       if (match[0][0] === '\\' && def.name !== 'paragraph') {
         // Drop backslash escape and continue.
-        reader.cursor(reader.cursor().slice(1))
+        reader.cursor = reader.cursor.slice(1)
         continue
       }
       if (def.verify && !def.verify(match)) {
@@ -221,7 +221,7 @@ export function render(reader: Io.Reader, writer: Io.Writer): boolean {
       }
       // Read content up to the closing delimiter.
       reader.next()
-      let content = reader.readTo(def.closeMatch)
+      let content = reader.readTo(def.closeMatch as RegExp)
       if (content === null) {
         options.errorCallback('unterminated delimited block: ' + match[0])
       }

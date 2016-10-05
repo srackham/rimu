@@ -22,7 +22,7 @@ type CallbackFunction = (message: CallbackMessage) => void
 // Global option values.
 let safeMode: number
 let htmlReplacement: string
-let callback: CallbackFunction
+let callback: CallbackFunction | undefined
 
 // Reset options to default values.
 export function init(): void {
@@ -50,18 +50,19 @@ export function skipBlockAttributes(): boolean {
   /* tslint:enable:no-bitwise */
 }
 
-function setSafeMode(value: number|string): void {
+function setSafeMode(value: number | string | undefined): void {
   let n = Number(value)
   if (!isNaN(n)) {
     safeMode = n
   }
 }
 
-function setHtmlReplacement(value: string): void {
+function setHtmlReplacement(value: string | undefined): void {
+  if (value === undefined) return
   htmlReplacement = value
 }
 
-function setReset(value: boolean|string): void {
+function setReset(value: boolean | string | undefined): void {
   if (value === true || value === 'true') {
     Api.init()
   }
@@ -94,6 +95,8 @@ export function htmlSafeModeFilter(html: string): string {
       return htmlReplacement
     case 3:   // Render HTML as text.
       return Utils.replaceSpecialChars(html)
+    default:
+      return ''
   }
 }
 
