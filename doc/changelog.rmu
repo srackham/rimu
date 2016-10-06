@@ -4,6 +4,10 @@ See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
 
+## Version 9.0.2 (2016-10-07)
+- Refactored codebase to compile with TypeScript `strictNullChecks` option.
+
+
 ## Version 9.0.1 (2016-10-02)
 - Added the `--lang` option to `rimuc` command. This option sets the
   HTML tag's `lang` attribute value and is used in conjunction with
