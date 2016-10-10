@@ -787,16 +787,18 @@ Definition for second term.'
   successor list is nested.
 - List items can be escaped with a backslash at the beginning of the
   line.
-- _Indented_ and _Quote paragraphs_, _Fenced blocks_, _HTML blocks_
-  and _Multi-line comments_ can be implicitly attached to list items:
+- _Indented paragraphs_, _Quote paragraphs_, _Fenced blocks_, _HTML
+  blocks_ and _Multi-line comments_ can be implicitly attached to list
+  items:
 
-  * If an [Indented Paragraph](#indented-paragraph) is separated from
-    a preceding list item by a single blank line then it is _attached_
+  * If an [Indented paragraph](#indented-paragraph) or [Quote
+    paragraph](#quote-paragraph) is separated from
+    a preceding list item by a single blank line then it is attached
     to the list item.
-  * If a [Quote Paragraph](#quote-paragraph), [Fenced
-    Block](#fenced-blocks), [HTML Block](#block-html-elements) or
+  * If a [Fenced
+    block](#fenced-blocks), [HTML block](#block-html-elements) or
     [Multi-line comment](#comments) immediately follows a list item
-    without any intervening blank lines then it is _attached_ to the
+    without any intervening blank lines then it is attached to the
     list item.
 
 - Lists are terminated:

@@ -473,7 +473,7 @@ test('blocks', function(t) {
     '<ul><li>Item 1\n</li><li>Item 2\n</li></ul>',
     'list item with attached multi-line comment');
   test_document(
-    '- Item 1\n> Quote\n\n- Item 2',
+    '- Item 1\n\n> Quote\n\n- Item 2',
     '<ul><li>Item 1\n<blockquote><p> Quote</p></blockquote>\n</li><li>Item 2\n</li></ul>',
     'list item with attached quote paragraph');
   test_document(

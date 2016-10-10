@@ -161,9 +161,9 @@ function readToNext(reader: Io.Reader, writer: Io.Writer): ItemState | null {
       }
       if (reader.eof()) return null
       // A single blank line separates list item from ensuing text.
-      return matchItem(reader, ['indented'])
+      return matchItem(reader, ['indented', 'quote-paragraph'])
     }
-    next = matchItem(reader, ['comment', 'code', 'division', 'html', 'quote', 'quote-paragraph'])
+    next = matchItem(reader, ['comment', 'code', 'division', 'html', 'quote'])
     if (next) {
       // Encountered list item or attached Delimited Block.
       return next
