@@ -14,12 +14,6 @@ import * as Options from './options'
     render(source [, options])
  */
 export function render(source: string, opts: Options.RenderOptions = {}): string {
-  if (typeof source !== 'string') {
-    throw new TypeError('render(): source argument is not a string')
-  }
-  if (opts !== undefined && typeof opts !== 'object') {
-    throw new TypeError('render(): options argument is not an object')
-  }
   Options.updateOptions(opts)
   return Api.render(source)
 }
