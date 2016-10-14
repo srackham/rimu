@@ -128,7 +128,6 @@ STYLING MACROS AND CLASSES
   ______________________________________________________________
 `
 
-
 // Helpers.
 function die(message: string): void {
   console.error(message)
