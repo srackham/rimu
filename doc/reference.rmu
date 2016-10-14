@@ -837,7 +837,9 @@ Arcu eget magna. Class vivamus morbi.
 Ac lacinia mi. Mi in enim. Dui sed ut. Egestas congue quam. Facilisis
 non magnis facilisi scelerisque luctus. Quis praesent pulvinar.
 ..
-- Integer quisque hendrerit. Arcu nunc lorem posuere.'
+- Integer quisque hendrerit. Arcu nunc lorem posuere.
+
+> Egestas congue quam.'
 
 {generate-rendered-example-2|lists-example}
 
