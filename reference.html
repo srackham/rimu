@@ -1201,15 +1201,17 @@ Definition for second term.
   successor list is nested.
 </li><li>List items can be escaped with a backslash at the beginning of the
   line.
-</li><li><em>Indented</em> and <em>Quote paragraphs</em>, <em>Fenced blocks</em>, <em>HTML blocks</em>
-  and <em>Multi-line comments</em> can be implicitly attached to list items:
-<ul><li>If an <a href="#indented-paragraph">Indented Paragraph</a> is separated from
-    a preceding list item by a single blank line then it is <em>attached</em>
+</li><li><em>Indented paragraphs</em>, <em>Quote paragraphs</em>, <em>Fenced blocks</em>, <em>HTML
+  blocks</em> and <em>Multi-line comments</em> can be implicitly attached to list
+  items:
+<ul><li>If an <a href="#indented-paragraph">Indented paragraph</a> or <a href="#quote-paragraph">Quote
+    paragraph</a> is separated from
+    a preceding list item by a single blank line then it is attached
     to the list item.
-</li><li>If a <a href="#quote-paragraph">Quote Paragraph</a>, <a href="#fenced-blocks">Fenced
-    Block</a>, <a href="#block-html-elements">HTML Block</a> or
+</li><li>If a <a href="#fenced-blocks">Fenced
+    block</a>, <a href="#block-html-elements">HTML block</a> or
     <a href="#comments">Multi-line comment</a> immediately follows a list item
-    without any intervening blank lines then it is <em>attached</em> to the
+    without any intervening blank lines then it is attached to the
     list item.
 </li></ul></li><li>Lists are terminated:
 <ul><li>When the following element is not a list item or an <em>attached</em>
@@ -1252,7 +1254,9 @@ Arcu eget magna. Class vivamus morbi.
 Ac lacinia mi. Mi in enim. Dui sed ut. Egestas congue quam. Facilisis
 non magnis facilisi scelerisque luctus. Quis praesent pulvinar.
 ..
-- Integer quisque hendrerit. Arcu nunc lorem posuere.</code></pre>
+- Integer quisque hendrerit. Arcu nunc lorem posuere.
+
+&gt; Egestas congue quam.</code></pre>
 <textarea id="lists-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('lists-example')"></textarea>
 </td>
 </tr>
@@ -1282,6 +1286,7 @@ Arcu eget magna. Class vivamus morbi.</p>
 <p>Ac lacinia mi. Mi in enim. Dui sed ut. Egestas congue quam. Facilisis
 non magnis facilisi scelerisque luctus. Quis praesent pulvinar.</p>
 </li><li>Integer quisque hendrerit. Arcu nunc lorem posuere.
+<blockquote><p> Egestas congue quam.</p></blockquote>
 </li></ul></div>
 </td></tr></table>
 <h2>Quotes</h2>
