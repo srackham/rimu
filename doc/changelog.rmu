@@ -4,7 +4,7 @@ See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
 
-## Version 9.0.3 (2016-10-??)
+## Version 9.0.3 (2016-10-26)
 - _Quote paragraphs_ are attached to list items in exactly the same way as
   _Indented paragraphs_ i.e. by being separated from the list item by a
   single blank line. Previously the Quote paragraph was attached if it
