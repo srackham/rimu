@@ -831,6 +831,10 @@ test('blocks', function(t) {
     '<p class="info" id="ref2" style="color:green">greeny</p>\n<p>normal</p>\n<p>paragraph 1</p>\n<p>paragraph2</p>',
     'html attributes assigned to macro');
   test_document(
+    '."color:red"\n<div>foobar</div>',
+    '<div style="color:red">foobar</div>',
+    'inject Block Attributes into Block HTML element');
+  test_document(
     '{v}=\'xxx\'\n.+macros\n {v}\n\n {v}',
     '<pre><code>xxx</code></pre>\n<pre><code>{v}</code></pre>',
     'enable macro expansion in Indented paragraph');

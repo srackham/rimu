@@ -244,8 +244,13 @@ export function render(reader: Io.Reader, writer: Io.Writer): boolean {
         if (def.contentFilter) {
           text = def.contentFilter(text, match, expansionOptions)
         }
-        let opentag = Utils.injectHtmlAttributes(def.openTag)
-        let closetag = def.closeTag
+        let opentag = def.openTag
+        if (def.name === 'html') {
+          text = Utils.injectHtmlAttributes(text)
+        }
+        else {
+          opentag = Utils.injectHtmlAttributes(opentag)
+        }
         if (expansionOptions.container) {
           delete BlockAttributes.options.container  // Consume before recursion.
           text = Api.render(text)
@@ -253,6 +258,7 @@ export function render(reader: Io.Reader, writer: Io.Writer): boolean {
         else {
           text = Utils.replaceInline(text, expansionOptions)
         }
+        let closetag = def.closeTag
         if (def.name === 'division' && opentag === '<div>') {
           // Drop div tags if the opening div has no attributes.
           opentag = ''
