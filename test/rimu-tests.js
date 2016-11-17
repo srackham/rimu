@@ -636,6 +636,10 @@ test('blocks', function(t) {
     '<p>one and  and \n and  and </p>',
     'undefined parametrized arguments replaced by an empty string');
   test_document(
+    "{v}='<div>$$1 and $2</div>'\n{v|**a** b|c _d_}",
+    '<div><strong>a</strong> b and c _d_</div>',
+    'double and single dollar parametrized macro arguments in HTML block element');
+  test_document(
     '{v?}=\'\'\n{v|one|two}',
     '',
     'blank macro invoked with arguments');

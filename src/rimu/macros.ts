@@ -1,4 +1,5 @@
 import * as Options from './options'
+import * as Spans from './spans'
 
 // Matches macro invocation. $1 = name, $2 = params.
 // DEPRECATED: Matches existential macro invocations.
@@ -79,12 +80,16 @@ export function render(text: string, inline = true): string {
       case '|': // Parametrized macro.
                 // Substitute macro parameters.
         let paramsList = params.slice(1).split('|')
-        value = (value || '').replace(/\\?\$\d+/g, function (match: string): string {
+        value = (value || '').replace(/\\?(\$\$?)(\d+)/g, function (match: string, p1: string, p2: string): string {
           if (match[0] === '\\') {  // Unescape escaped $ characters.
             return match.slice(1)
           }
-          let param = paramsList[Number(match.slice(1)) - 1]
-          return param === undefined ? '' : param   // Unassigned parameters are replaced with a blank string.
+          let param: string|undefined = paramsList[Number(p2) - 1]
+          param = param === undefined ? '' : param   // Unassigned parameters are replaced with a blank string.
+          if (p1 === '$$') {
+            param = Spans.render(param)
+          }
+          return param
         })
         return value
 

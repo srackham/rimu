@@ -70,7 +70,7 @@ syn match rimuApiOption /^\.\(safeMode\|htmlReplacement\|macroMode\|reset\)/ con
 syn match rimuQuoteDefinition /^\S\{1,2}\s*=\s*'\_.\{-}'\n/
 syn match rimuQuoteQuote /^\S\{1,2}/ contained containedin=rimuQuoteDefinition
 syn match rimuDefinitionValue /'\_.\{-}'\n/ contained containedin=rimuMacroDefinition,rimuReplacementDefinition,rimuQuoteDefinition,rimuDelimitedBlockDefinition,rimuApiElement
-syn match rimuDefinitionParam /\($\d\+\)\|\(|\{1,2}\)/ contained containedin=rimuDefinitionValue
+syn match rimuDefinitionParam /\($\{1,2}\d\+\)\|\(|\{1,2}\)/ contained containedin=rimuDefinitionValue
 
 hi def link rimuApiOption Special
 hi def link rimuBackslash Special
