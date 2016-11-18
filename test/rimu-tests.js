@@ -616,8 +616,8 @@ test('blocks', function(t) {
     '<p>a and b<em>c</em> d and e\nfg.</p>',
     'parametrized macros');
   test_document(
-    "{v}='This $1 and \\$2 and $3 and $42'\n{v}{v|} {v|1|2}",
-    '<p>This $1 and \\$2 and $3 and $42This  and $2 and  and  This 1 and $2 and  and </p>',
+    "{v}='This $1 and \\$2 and $3 and \\$$4 and $42'\n{v}{v|} {v|1|2}",
+    '<p>This $1 and \\$2 and $3 and \\$$4 and $42This  and $2 and  and $$4 and  This 1 and $2 and  and $$4 and </p>',
     'parametrized macros with escaped, blank and missing parameters');
   test_document(
     "{v1}='$1 $2'\n{v2}='{v1|1|2} $1 $2'\n{v2|3|4} {v1|5|6}",
