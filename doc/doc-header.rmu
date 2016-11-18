@@ -107,7 +107,7 @@ Rimu source</td>
 {$1}
 
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 
 '
 
@@ -118,7 +118,6 @@ Rimu source</td>
 .-macros
 {generate-rendered-example-2} = '{example-title}
 <table class="example bordered">
-<tbody>
 <tr>
 <td class="example-header" style="width:10%;">
 {--=$2}{example-edit-icon|$1}

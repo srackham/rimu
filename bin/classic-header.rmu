@@ -101,11 +101,10 @@
     text-align: left;
     vertical-align: top;
   }
-  .bordered td, .bordered th {
+  {--!} tbody necessary because: http://stackoverflow.com/questions/7490364/why-do-browsers-still-inject-tbody-in-html5
+  table.bordered > tbody > tr > th,
+  table.bordered > tbody > tr > td {
     border: 1px solid {border-color};
-  }
-  th {
-    padding: 8px;
   }
   a, a:hover {
     color: {primary-color};
