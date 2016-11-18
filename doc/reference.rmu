@@ -660,9 +660,16 @@ include]({tips}#conditional-inclusion) Rimu source text.
 Block and inline HTML elements can be mixed with Rimu markup.
 
 - Macro invocations in HTML elements are expanded.
-- HTML tags can be e,wscaped with a backslash character prefix.
+- HTML tags can be escaped with a backslash character prefix.
 - HTML elements can be excluded from the output using the API
   [safeMode option](#api-options).
+
+### Inline HTML elements
+- Any well formed HTML tag is allowed in an inline context.
+
+{html-inline-element-example} = 'An inline <span style="color:red;">HTML span</span>.'
+
+{generate-rendered-example-2|html-inline-element-example}
 
 ### Block HTML elements
 - The opening tag of an HTML block element must start at the left
@@ -681,14 +688,8 @@ Block and inline HTML elements can be mixed with Rimu markup.
     <td>Wisi ullamcorper eget.</td>
   </tr>
 </table>'
+
 {generate-rendered-example-2|html-block-element-example}
-
-### Inline HTML elements
-- Any well formed HTML tag is allowed in an inline context.
-
-{html-inline-element-example} = 'An inline <span style="color:red;">HTML span</span>.'
-
-{generate-rendered-example-2|html-inline-element-example}
 
 
 ## Paragraphs
@@ -927,13 +928,13 @@ Definition syntax:
   JavaScript's [RegExp
   literal](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/RegExp)
   syntax.
-- `$1`, `$2`..., `$$1`, `$$2`... in `replacement` are replaced by the
-  corresponding regular expression match groups. `$0` and `$$0` are
-  replaced by the entire match.
+- `$1`, `$2`... and `$$1`, `$$2`... in `replacement` are replaced by
+  the corresponding regular expression match groups. `$0` and `$$0`
+  are replaced by the entire match.
 
   * Special characters are escaped in `$1`, `$2`...
   * [Quotes](#quotes) are expanded and special characters escaped in
-    `$$1`, `$$2`...
+    `$$0`, `$$1`, `$$2`...
 
 - Replacements are only expanded in inline contexts.
 - Replacements are not expanded inside [Code quotes](#quotes), [Code
@@ -1067,8 +1068,8 @@ Syntax:
   they are injected into the target opening tag.
 - Successive Block Attributes elements accumulate until they are
   consumed by the first succeeding Delimited Block element.
-- The `[html-attributes]` section is ignored if the [safeMode API
-  option](#api-options) is not zero.
+- The `[html-attributes]` section is ignored if the
+  <#api-options|safeMode API option> is not zero.
 - The `-specials` block option is ignored if the [safeMode API
   option](#api-options)  is not zero.
 - The entire Block Attributes element is ignored if bit 2 of the
@@ -1180,22 +1181,24 @@ Definition syntax:
 ``
 
 - _Simple_ macro definitions are processed unconditionally;
-  _Existential_ macro definitions are only processed if the macro
-  has not been defined.
+  _Existential_ macro definitions are only processed if the macro has
+  not been defined.
 - A macro name consists of one or more alphanumeric, underscore or
   dash characters.
-- Macro definition values are enclosed by single-quote characters
-  and can extend over multiple lines.
-- Macro definitions can be escaped with a leading backslash character
+- Macro values are enclosed by single-quote characters and can extend
+  over multiple lines.
+- Macro values can be escaped with a leading backslash character
   prefix.
 - A macro definition must start at the left margin.
 - Macro definition lines ending with a single-quote character can be
   continued to the next line by appending a backslash character.
-- Macro definition values can contain macro invocations. These are
-  expanded when the definition is processed (not when it is invoked).
+- Macro values can contain macro invocations. These are expanded when
+  the definition is processed (not when it is invoked).
 - Macro expansion can be disabled in multi-line macro definitions
   using a preceding [Block Attributes](#block-attributes) `-macros`
   option.
+- `$1`, `$2`... and `$$1`, `$$2`... are parameter names, they are
+  replaced with parameter values in _Parametrized_ macro invocations.
 
 
 ### Macro invocations
@@ -1210,15 +1213,21 @@ Invocation syntax:
 ``
 
 - A _Simple_ macro invocation is replaced by the macro value.
-- _Parametrized_ macro invocations replace `$1`, `$2` ...  parameter
-  names in the macro definition value with the corresponding parameter
-  values.
+- `$1`, `$2`... and `$$1`, `$$2`... parameter names are replaced with
+  the corresponding parameter values (`param1`, `param2`...) in
+  _Parametrized_ macro invocations.
+
   * If a macro parameter value is not specified then the corresponding
     parameter name is replaced by a blank string.
-  * Parameter names in macro definition values can be escaped with a
-    backslash character prefix.
-  *  Macro invocation parameters can contain inline Rimu elements;
-     inline parameter values can span multiple lines.
+  * Parameter names in macro definitions can be escaped with a
+    backslash character prefix e.g. `\$1`.
+  * Macro parameter values can contain inline Rimu elements;
+    inline parameter values can span multiple lines.
+  * [Quotes](#quotes) and [Replacements](#replacements) are expanded
+    and special characters escaped inside double-dollar parameters
+    (`$$1`, `$$2`...). Double-dollar parameters are normally only
+    necessary inside [Block HTML elements](#block-html-elements).
+
 - The `\{macro-name=pattern}` _Inclusion_ invocation is replaced by a
   blank string if the macro value matches the `pattern` (where
   `pattern` is a JavaScript regular expression).  If the macro value

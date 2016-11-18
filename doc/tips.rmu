@@ -568,16 +568,18 @@ Mauris vitae {foo|This text is included}
 
 
 ## Tables
-Create tables using the HTML table syntax (Rimu has no special syntax
-for tables).
+Create tables using _Block HTML elements_ (Rimu has no dedicated
+syntax for tables [but you can use macros to simplify table
+creation](#use-macros-to-create-tables)).
 
-You can use Rimu markup in table cells, just remember that HTML blocks
-must start at the left margin and end with a blank line.
+NOTE: HTML blocks must start at the left margin and end with a blank
+line.
 
-The {rimuc} `--styled` option includes styling for bordered tables.
+The {rimuc} `--styled` option includes the `bordered` CSS class for
+styling bordered tables.
 
 .-macros
-{tables-example} = '<table class="bordered"><tbody><tr>
+{tables-example} = '<table class="bordered"><tr>
 <td style="width: 50%; padding: 6px;">
 
 .text-info
@@ -616,7 +618,7 @@ Lobortis lacus vestibulum sem.
   included in the list item.
 
 </td>
-</tr></tbody></table>'
+</tr></table>'
 
 {generate-rendered-example-2|tables-example}
 
@@ -632,6 +634,83 @@ syntax was a deliberate design decision:
   a way that maintains the side-by-side cell layout.
 - At first blush tables come across as a hugely useful feature, but
   most documentation makes surprising little use of tables.
+
+See also [Use macros to create tables](#use-macros-to-create-tables).
+
+
+.use-macros-to-create-tables
+## Use macros to create tables
+Creating tables with raw HTML is repetitive, time consuming and
+difficult to read.
+
+Parametrized macros can be used to generate row oriented tables:
+
+.-macros
+{table-macro-example} = '{person} = '<table><tr><td style="width:15em">$$1</td>
+<td style="width:5em">$$2</td>
+<td>$$3</td></tr></table>
+'\
+
+.bordered "color:#527bbd;"
+{person| **Name**    | **Age**| **Gender**}
+{person| Joe Bloggs  | 25     | Male}
+{person| _Jim Smith_ | 31     | Male}
+."color:red;"
+{person| Peg Legge   | **30** | Female}
+'
+
+{generate-rendered-example-2|table-macro-example}
+
+- _Block HTML elements_ must be terminated with a blank line.
+- Double-dollar macro parameters are necessary because text formatting
+  is not expanded and special characters are not escaped inside [Block
+  HTML elements]({reference}#block-html-elements).
+
+Macros can also be used to simplify columnar text layouts:
+
+.-macros
+{columnar-text-example} = '// Each macro generates an HTML block which together generate a single table.
+{column1} = '<table><tr><td style="width:33%;padding:0.5em;">
+'\
+{column2} = '</td><td style="width:33%;padding:0.5em;">
+'\
+{column3} = '</td><td style="width:33%;padding:0.5em;">
+'\
+{end}     = '</td></tr></table>
+'\
+
+{column1}
+#### Column One
+Rutrum imperdiet vitae vitae a suscipit semper potenti magna.
+
+Proin id justo vestibulum rutrum neque consequat in nam morbi orci at.
+
+  Feugiat habitant donec. Sem tincidunt arcu pellentesque suscipit
+  accumsan.
+
+{column2}
+#### Column Two
+Proin id Ante praesent scelerisque ligula vivamus in.
+
+Amet neque ut enim molestiae est. Dictumst magna orci magnis donec
+lectus lectus at sapien.
+
+> Vivamus et metus. In a ut. Enim in lorem.
+
+{column3}
+#### Column Three
+Quibusdam suspendisse volutpat.
+
+Pellentesque nunc lectus tellus cursus fusce.
+
+.sidebar
+Tincidunt proin lorem. Mi vel ut. Duis ipsum nam eget vitae ut
+consequat quisque duis mollis magna arcu.
+
+{end}
+'
+
+{generate-rendered-example-2|columnar-text-example}
 
 
 ## Macro meta-programming
