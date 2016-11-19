@@ -48,11 +48,9 @@
     text-align: left;
     vertical-align: top;
   }
-  .bordered td, .bordered th {
+  table.bordered > tbody > tr > th,
+  table.bordered > tbody > tr > td {
     border: 1px solid #dddddd;
-  }
-  th {
-    padding: 8px;
   }
   a, a:hover {
     color: #527bbd;
@@ -309,7 +307,20 @@
 <h1>Rimu Markup Change Log</h1>
 <p>See the <a href="https://github.com/srackham/rimu/commits/">Git commit log</a>
 for more detailed information.</p>
-<h2>Version 9.0.3 (2016-10-26)</h2>
+<h2>Version 9.1.0 (2016-11-19)</h2>
+<ul><li><a href="reference.html#block-attributes">Block Attributes</a> can now be injected into
+  <a href="reference.html#block-html-elements">Block HTML elements</a>.
+</li><li>Added double-dollar (<code>$$1, $$2...</code>) macro parameters which expand quotes and
+  replacements.  Double-dollar parameters are normally only necessary inside
+  <em>Block HTML elements</em>.  See example in <a href="tips.html#use-macros-to-create-tables">Use macros to create
+  tables</a>.
+</li><li>Default parameter values can be specified in <a href="reference.html#macro-invocations">parametrized
+  macros</a> by appending <code>:default-value$</code> to the
+  parameter name e.g. <code>$2:Ford$</code> will assign <code>Ford</code> to the <code>$2</code> parameter if it
+  is blank or not specified in the macro invocation.
+</li><li><strong>FIXED</strong>: <code>rimuc</code>: The <code>.bordered</code> CSS tables class (available with the
+  <code>--styled</code> option) no longer propagates to nested tables.
+</li></ul><h2>Version 9.0.3 (2016-10-26)</h2>
 <ul><li><em>Quote paragraphs</em> are attached to list items in exactly the same way as
   <em>Indented paragraphs</em> i.e. by being separated from the list item by a
   single blank line. Previously the Quote paragraph was attached if it

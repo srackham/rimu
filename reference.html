@@ -49,11 +49,9 @@
     text-align: left;
     vertical-align: top;
   }
-  .bordered td, .bordered th {
+  table.bordered > tbody > tr > th,
+  table.bordered > tbody > tr > td {
     border: 1px solid #dddddd;
-  }
-  th {
-    padding: 8px;
   }
   a, a:hover {
     color: #527bbd;
@@ -807,7 +805,6 @@ ends with a line containing only <code>*/</code>.</p>
   comments to appear in the rendered HTML, for example:
 </li></ul><h4>Examples</h4>
 <table class="example bordered">
-<tbody>
 <tr>
 <td class="example-header" style="width:10%;">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('comments-example')">&#x270e;</span>
@@ -864,7 +861,7 @@ Rimu source</td>
 <h5>h5 header</h5>
 <h6>h6 header</h6>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <h2 id="fenced-blocks">Fenced Blocks</h2>
 <p>Fenced blocks are <a href="#delimited-blocks">Delimited Blocks</a> bounded by
 opening and closing delimiter lines consisting of two or more
@@ -906,7 +903,7 @@ Scelerisque feugiat massa alias.
 <pre class="no-highlight"><code>Nunc mauris tempor.
 Scelerisque feugiat massa alias.</code></pre>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <h3>Quote Block</h3>
 <p>A <em>Quote Block</em> renders the enclosed block elements inside an HTML
 <code>&lt;blockquote&gt;</code> element.  The Quote Block delimiter character is a
@@ -936,7 +933,7 @@ Anonymous
 Scelerisque feugiat massa alias.</p>
 <p class="cite">Anonymous</p></blockquote>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <p>This example uses the <a href="#rimuc-command">rimuc</a> command <code>--styled</code>
 option's CSS <em>cite</em> class to style the Anonymous attribution.</p>
 <h3 id="division-block">Division Block</h3>
@@ -968,23 +965,41 @@ Scelerisque feugiat massa alias.
 <div style="font-style:italic"><p>Nunc mauris tempor.
 Scelerisque feugiat massa alias.</p></div>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <p><em>Division Blocks</em> are useful for appending arbitrary block elements to
 <a href="#lists">list items</a>. They can also be used to <a href="tips.html#conditional-inclusion">conditionally
 include</a> Rimu source text.</p>
 <h2>HTML elements</h2>
 <p>Block and inline HTML elements can be mixed with Rimu markup.</p>
 <ul><li>Macro invocations in HTML elements are expanded.
-</li><li>HTML tags can be e,wscaped with a backslash character prefix.
+</li><li>HTML tags can be escaped with a backslash character prefix.
 </li><li>HTML elements can be excluded from the output using the API
   <a href="#api-options">safeMode option</a>.
-</li></ul><h3>Block HTML elements</h3>
+</li></ul><h3>Inline HTML elements</h3>
+<ul><li>Any well formed HTML tag is allowed in an inline context.
+</li></ul><h4>Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header" style="width:10%;">
+<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('html-inline-element-example')">&#x270e;</span>
+Rimu source</td>
+<td>
+<pre id="html-inline-element-example-source" class="example-source no-highlight"><code>An inline &lt;span style="color:red;"&gt;HTML span&lt;/span&gt;.</code></pre>
+<textarea id="html-inline-element-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('html-inline-element-example')"></textarea>
+</td>
+</tr>
+<tr><td class="example-header" style="width:10%;">Rendered HTML</td>
+<td>
+<div id="html-inline-element-example-rendered" class="example-rendered">
+<p>An inline <span style="color:red;">HTML span</span>.</p>
+</div>
+</td></tr></table>
+<h3>Block HTML elements</h3>
 <ul><li>The opening tag of an HTML block element must start at the left
   margin.
 </li><li>An HTML block element is terminated with a blank line.
 </li></ul><h4>Examples</h4>
 <table class="example bordered">
-<tbody>
 <tr>
 <td class="example-header" style="width:10%;">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('html-block-element-example')">&#x270e;</span>
@@ -1019,26 +1034,6 @@ Rimu source</td>
     <td>Wisi ullamcorper eget.</td>
   </tr>
 </table>
-</div>
-</td></tr></table>
-<h3>Inline HTML elements</h3>
-<ul><li>Any well formed HTML tag is allowed in an inline context.
-</li></ul><h4>Examples</h4>
-<table class="example bordered">
-<tbody>
-<tr>
-<td class="example-header" style="width:10%;">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('html-inline-element-example')">&#x270e;</span>
-Rimu source</td>
-<td>
-<pre id="html-inline-element-example-source" class="example-source no-highlight"><code>An inline &lt;span style="color:red;"&gt;HTML span&lt;/span&gt;.</code></pre>
-<textarea id="html-inline-element-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('html-inline-element-example')"></textarea>
-</td>
-</tr>
-<tr><td class="example-header" style="width:10%;">Rendered HTML</td>
-<td>
-<div id="html-inline-element-example-rendered" class="example-rendered">
-<p>An inline <span style="color:red;">HTML span</span>.</p>
 </div>
 </td></tr></table>
 <h2>Paragraphs</h2>
@@ -1077,7 +1072,7 @@ Scelerisque feugiat massa alias.</code></pre>
 <p>Nunc mauris tempor.
 Scelerisque feugiat massa alias.</p>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <h3>Indented paragraph</h3>
 <p>Indented paragraphs begin with one or more space characters.  By
 default the all text in an <em>Indented Paragraph</em> is rendered verbatim.
@@ -1103,7 +1098,7 @@ Rimu source</td>
 <pre class="no-highlight"><code>Nunc mauris tempor.
 Scelerisque feugiat massa alias.</code></pre>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <h3>Quote paragraph</h3>
 <p>Quote paragraphs begin with a <code>&gt;</code> character and are rendered inside an
 HTML <code>&lt;blockquote&gt;</code> element. Leading <code>&gt;</code> characters are optional for
@@ -1129,7 +1124,7 @@ Rimu source</td>
 <blockquote><p> Nunc mauris tempor.
   Scelerisque feugiat massa alias.</p></blockquote>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <h2>Lists</h2>
 <p>Each list item includes an identifier (ID) that groups items into
 lists.  There are three types of list: <em>Bullet</em>, <em>Numbered</em> and
@@ -1163,7 +1158,7 @@ Rimu source</td>
 <ol><li>Nested numbered item.
 </li></ol></li><li>Second item of first list.
 </li></ul></div>
-</td></tr></tbody></table>
+</td></tr></table>
 
 </li><li><em>Labeled</em> list items begin with the <em>term</em> text followed
   immediately by the list ID, then one or more spaces or a line break,
@@ -1189,7 +1184,7 @@ Definition for second term.</code></pre>
 </dd><dt>Second term</dt><dd>
 Definition for second term.
 </dd></dl></div>
-</td></tr></tbody></table>
+</td></tr></table>
 
 </li><li>A list item can span multiple contiguous lines.
 </li><li>List items can be indented but this has no semantic significance
@@ -1221,7 +1216,6 @@ Definition for second term.
   left to CSS which can apply a consistent set of list styles.
 </li></ul><h4>Examples</h4>
 <table class="example bordered">
-<tbody>
 <tr>
 <td class="example-header" style="width:10%;">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('lists-example')">&#x270e;</span>
@@ -1337,7 +1331,7 @@ some <em>emphasized text</em>,
 some <code>monospaced text</code> and
 some <del>deleted text</del>.</p>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <h3>Quote Definition</h3>
 <p>You can modify existing quote behavior or add new quotes using <em>Quote
 definitions</em>.</p>
@@ -1372,12 +1366,12 @@ images</a>, <a href="#html-elements">inline HTML tags</a>.</p>
   JavaScript's <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/RegExp">RegExp
   literal</a>
   syntax.
-</li><li><code>$1</code>, <code>$2</code>&hellip;, <code>$$1</code>, <code>$$2</code>&hellip; in <code>replacement</code> are replaced by the
-  corresponding regular expression match groups. <code>$0</code> and <code>$$0</code> are
-  replaced by the entire match.
+</li><li><code>$1</code>, <code>$2</code>&hellip; and <code>$$1</code>, <code>$$2</code>&hellip; in <code>replacement</code> are replaced by
+  the corresponding regular expression match groups. <code>$0</code> and <code>$$0</code>
+  are replaced by the entire match.
 <ul><li>Special characters are escaped in <code>$1</code>, <code>$2</code>&hellip;
 </li><li><a href="#quotes">Quotes</a> are expanded and special characters escaped in
-    <code>$$1</code>, <code>$$2</code>&hellip;
+    <code>$$0</code>, <code>$$1</code>, <code>$$2</code>&hellip;
 </li></ul></li><li>Replacements are only expanded in inline contexts.
 </li><li>Replacements are not expanded inside <a href="#quotes">Code quotes</a>, <a href="#code-block">Code
   blocks</a> or <a href="#indented-paragraph">Indented paragraphs</a>.
@@ -1451,7 +1445,7 @@ Rimu source</td>
 </li><li><a href="mailto:joe@example.com">joe@example.com</a>
 </li><li><a href="mailto:joe@example.org">Joe Bloggs</a>
 </li></ol></div>
-</td></tr></tbody></table>
+</td></tr></table>
 <h2>Images</h2>
 <p>Syntax:</p>
 <pre class="light-background no-highlight"><code>Rimu                Rendered HTML
@@ -1495,7 +1489,7 @@ inline element.</code></pre>
 <p>Or an image can be <img src="http://www.w3.org/Icons/w3c_home.png" alt="http://www.w3.org/Icons/w3c_home.png"> an
 inline element.</p>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <h2>Character entities</h2>
 <p>HTML character entities can be included in Rimu source.</p>
 <h4>Examples</h4>
@@ -1515,7 +1509,7 @@ Rimu source</td>
 <div id="entities-example-rendered" class="example-rendered">
 <p>&copy; &reg; &alpha; &omega;</p>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <p>Character entities can be escaped with a backslash character prefix.</p>
 <h2>Block Attributes</h2>
 <p>The <em>Block Attributes</em> <a href="#line-blocks">Line Block</a> element injects HTML
@@ -1539,8 +1533,8 @@ elements.</p>
   they are injected into the target opening tag.
 </li><li>Successive Block Attributes elements accumulate until they are
   consumed by the first succeeding Delimited Block element.
-</li><li>The `<a href="#api-options">html-attributes]` section is ignored if the [safeMode API
-  option</a> is not zero.
+</li><li>The <code>[html-attributes]</code> section is ignored if the
+  <a href="#api-options">safeMode API option</a> is not zero.
 </li><li>The <code>-specials</code> block option is ignored if the <a href="#api-options">safeMode API
   option</a>  is not zero.
 </li><li>The entire Block Attributes element is ignored if bit 2 of the
@@ -1550,7 +1544,6 @@ elements.</p>
 </li><li>Macro invocations in <em>Block Attributes</em> are expanded.
 </li></ul><h4>Examples</h4>
 <table class="example bordered">
-<tbody>
 <tr>
 <td class="example-header" style="width:10%;">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('block-attributes-example')">&#x270e;</span>
@@ -1646,38 +1639,56 @@ name.</p>
 <pre class="light-background no-highlight"><code>{macro-name} = 'macro-value'      Simple macro definition
 {macro-name?} = 'macro-value'     Existential macro definition</code></pre>
 <ul><li><em>Simple</em> macro definitions are processed unconditionally;
-  <em>Existential</em> macro definitions are only processed if the macro
-  has not been defined.
+  <em>Existential</em> macro definitions are only processed if the macro has
+  not been defined.
 </li><li>A macro name consists of one or more alphanumeric, underscore or
   dash characters.
-</li><li>Macro definition values are enclosed by single-quote characters
-  and can extend over multiple lines.
-</li><li>Macro definitions can be escaped with a leading backslash character
+</li><li>Macro values are enclosed by single-quote characters and can extend
+  over multiple lines.
+</li><li>Macro values can be escaped with a leading backslash character
   prefix.
 </li><li>A macro definition must start at the left margin.
 </li><li>Macro definition lines ending with a single-quote character can be
   continued to the next line by appending a backslash character.
-</li><li>Macro definition values can contain macro invocations. These are
-  expanded when the definition is processed (not when it is invoked).
+</li><li>Macro values can contain macro invocations. These are expanded when
+  the definition is processed (not when it is invoked).
 </li><li>Macro expansion can be disabled in multi-line macro definitions
   using a preceding <a href="#block-attributes">Block Attributes</a> <code>-macros</code>
   option.
-</li></ul><h3>Macro invocations</h3>
+</li><li><code>$1</code>, <code>$2</code>&hellip; and <code>$$1</code>, <code>$$2</code>&hellip; are parameter names, they are
+  replaced with parameter values in <em>Parametrized</em> macro invocations.
+</li></ul><h3 id="macro-invocations">Macro invocations</h3>
 <p>Invocation syntax:</p>
 <pre class="light-background no-highlight"><code>{macro-name}                      Simple macro invocation
 {macro-name|[param1|param2...]}   Parametrized macro invocation
 {macro-name=pattern}              Inclusion macro invocation
 {macro-name!pattern}              Exclusion macro invocation</code></pre>
 <ul><li>A <em>Simple</em> macro invocation is replaced by the macro value.
-</li><li><em>Parametrized</em> macro invocations replace <code>$1</code>, <code>$2</code> &hellip;  parameter
-  names in the macro definition value with the corresponding parameter
-  values.
+</li><li><code>$1</code>, <code>$2</code>&hellip; and <code>$$1</code>, <code>$$2</code>&hellip; parameter names are replaced with
+  the corresponding parameter values (<code>param1</code>, <code>param2</code>&hellip;) in
+  <em>Parametrized</em> macro invocations.
 <ul><li>If a macro parameter value is not specified then the corresponding
     parameter name is replaced by a blank string.
-</li><li>Parameter names in macro definition values can be escaped with a
-    backslash character prefix.
-</li><li>Macro invocation parameters can contain inline Rimu elements;
-     inline parameter values can span multiple lines.
+</li><li>Parameter names in macro definitions can be escaped with a
+    backslash character prefix e.g. <code>\$1</code>.
+</li><li>Macro parameter values can contain inline Rimu elements;
+    inline parameter values can span multiple lines.
+</li><li><a href="#quotes">Quotes</a> and <a href="#replacements">Replacements</a> are expanded
+    and special characters escaped inside double-dollar parameters
+    (<code>$$1</code>, <code>$$2</code>&hellip;). Double-dollar parameters are normally only
+    necessary inside <a href="#block-html-elements">Block HTML elements</a>.
+</li><li>Default parameter values can be specified by appending
+    <code>:default-value$</code> to the parameter name e.g. <code>$2:Ford$</code> will
+    assign <code>Ford</code> to the <code>$2</code> parameter if it is blank or not specified
+    in the macro invocation.
+</li><li>Dollar characters can be included in default parameter values by
+    escaping them with a backslash character e.g. <code>$2:Ten dollars
+    (\$10)$</code>.
+</li><li>The default value can be escaped by prefixing the colon with a
+    backslash character e.g. <code>$2\:One dollar$</code>.
+</li><li>The <code>{macro-name|}</code> invocation syntax uses only default parameter
+    values. This is <strong>not the same</strong> as the <code>{macro-name}</code> simple
+    macro invocation which performs no parameter substitution.
 </li></ul></li><li>The <code>{macro-name=pattern}</code> <em>Inclusion</em> invocation is replaced by a
   blank string if the macro value matches the <code>pattern</code> (where
   <code>pattern</code> is a JavaScript regular expression).  If the macro value
@@ -1708,7 +1719,6 @@ name.</p>
   option</a> is not set.
 </li></ul><h4>Examples</h4>
 <table class="example bordered">
-<tbody>
 <tr>
 <td class="example-header" style="width:10%;">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('macros-example')">&#x270e;</span>

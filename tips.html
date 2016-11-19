@@ -49,11 +49,9 @@
     text-align: left;
     vertical-align: top;
   }
-  .bordered td, .bordered th {
+  table.bordered > tbody > tr > th,
+  table.bordered > tbody > tr > td {
     border: 1px solid #dddddd;
-  }
-  th {
-    padding: 8px;
   }
   a, a:hover {
     color: #527bbd;
@@ -389,7 +387,6 @@ to PDF:</p>
 markup vocabulary.</p>
 <h4>Examples</h4>
 <table class="example bordered">
-<tbody>
 <tr>
 <td class="example-header" style="width:10%;">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('macros-example')">&#x270e;</span>
@@ -473,7 +470,7 @@ So does [this link](#link-target).</code></pre>
 the above paragraph.</p>
 <p>So does <a href="#link-target">this link</a>.</p>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <p><b>NOTE</b>: The <a href="reference.html#rimuc-command">rimuc</a> <code>--styled</code> option
 automatically synthesises <code>id</code> attributes for top level <code>#</code>, <code>##</code> and
 <code>###</code> header elements that do not already have an <code>id</code>.</p>
@@ -487,7 +484,7 @@ command <code>--highlightjs</code> option with the <code>--styled</code> option.
 class name into the code block.  Here are two examples, the first uses
 Github Flavored Markdown style syntax, the second uses Rimu's <em>Block
 Attributes</em> element:</p>
-<h4>Examples</h4>
+<h4>no-edit</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -525,7 +522,7 @@ if x == 1:
 if x == 1:
     print "x is 1."</code></pre>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <p>Set the <code>no-highlight</code> class to disable syntax highlighting for a code
 block.  Adding the <code>no-highlight</code> class to all code blocks using
 <em>Delimited Block Definitions</em> turns off highlighting unless the
@@ -604,7 +601,7 @@ Rimu source</td>
 <p><code>backticks in `code quote`</code></p>
 <p># Escaped header.</p>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <p><b>NOTE</b>: The text inside <em>code</em> quotes is always rendered verbatim &mdash; to
 include backtick characters in code quotes use double-backtick quotes.</p>
 <h2>Passing macro values into Rimu documents</h2>
@@ -701,7 +698,7 @@ consectetuer commodo.
 Neque a massa. Porttitor
 consectetuer commodo.</code></pre>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <h2>Entering non-keyboard characters</h2>
 <p>Characters that are unavailable on your keyboard can be entered as 
 <a href="http://dev.w3.org/html5/html-author/charref">HTML character entities</a>
@@ -720,7 +717,7 @@ replacement definitions.</p>
 <p>It is important to note that these niceties have been defined in
 Rimu Markup &mdash; Rimu has been extended using Rimu. No plugins
 or special configuration file syntax were necessary.</p>
-<h4>Examples</h4>
+<h4>no-edit</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -751,7 +748,7 @@ TODO 10 examples +-2</code></pre>
 <p><b>IMPORTANT</b>: Admonition.</p>
 <p><b style="color: red; background-color: yellow;">TODO</b> 10 examples &plusmn;2</p>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <h2 id="scoped-css">Custom styling</h2>
 <div class="sidebar"><h4>Scoped styling removed from HTML5 spec 12-May-2016</h4>
 <p>The <code>scoped</code> attribute was <a href="https://github.com/whatwg/html/commit/c2a3b2a2e3db49c14b486a5e99acf7d10cfe8443">removed from the HTML5 spec in May
@@ -898,7 +895,7 @@ Porttitor consectetuer commodo.</p>
 Pede mauris sed.
 Scelerisque feugiat massa alias.</p></div>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <h2>Using Macro, Replacement and Quote definitions in Safe Mode</h2>
 <p><em>Macro</em>, <em>Replacement</em> and <em>Quote</em> definitions are not processed in
 Safe Mode. To apply Macro, Replacement or Quote definitions to Rimu
@@ -910,9 +907,8 @@ var html = Rimu.render(untrusted_rimu_markup, {safeMode: 5});</code></pre>
 <p>The <a href="reference.html#rimuc-command">rimuc</a> command supports <a href="http://www.mathjax.org/">MathJax</a> LaTeX
 and MathML mathematical formulas.  To include <em>MathJax</em> support use
 the <a href="reference.html#rimuc-command">rimuc</a> command <code>--mathjax</code> option with the <code>--styled</code> option.</p>
-<h4>Examples</h4>
+<h4>no-edit</h4>
 <table class="example bordered">
-<tbody>
 <tr>
 <td class="example-header" style="width:10%;">
 Rimu source</td>
@@ -1000,20 +996,21 @@ Mauris vitae {foo|This text is excluded}
 {foo} = '$1'
 Mauris vitae {foo|This text is included}</code></pre>
 <h2>Tables</h2>
-<p>Create tables using the HTML table syntax (Rimu has no special syntax
-for tables).</p>
-<p>You can use Rimu markup in table cells, just remember that HTML blocks
-must start at the left margin and end with a blank line.</p>
-<p>The <a href="reference.html#rimuc-command">rimuc</a> <code>--styled</code> option includes styling for bordered tables.</p>
+<p>Create tables using <em>Block HTML elements</em> (Rimu has no dedicated
+syntax for tables <a href="#use-macros-to-create-tables">but you can use macros to simplify table
+creation</a>).</p>
+<p><b>NOTE</b>: HTML blocks must start at the left margin and end with a blank
+line.</p>
+<p>The <a href="reference.html#rimuc-command">rimuc</a> <code>--styled</code> option includes the <code>bordered</code> CSS class for
+styling bordered tables.</p>
 <h4>Examples</h4>
 <table class="example bordered">
-<tbody>
 <tr>
 <td class="example-header" style="width:10%;">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('tables-example')">&#x270e;</span>
 Rimu source</td>
 <td>
-<pre id="tables-example-source" class="example-source no-highlight"><code>&lt;table class="bordered"&gt;&lt;tbody&gt;&lt;tr&gt;
+<pre id="tables-example-source" class="example-source no-highlight"><code>&lt;table class="bordered"&gt;&lt;tr&gt;
 &lt;td style="width: 50%; padding: 6px;"&gt;
 
 .text-info
@@ -1052,14 +1049,14 @@ Lobortis lacus vestibulum sem.
   included in the list item.
 
 &lt;/td&gt;
-&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</code></pre>
+&lt;/tr&gt;&lt;/table&gt;</code></pre>
 <textarea id="tables-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('tables-example')"></textarea>
 </td>
 </tr>
 <tr><td class="example-header" style="width:10%;">Rendered HTML</td>
 <td>
 <div id="tables-example-rendered" class="example-rendered">
-<table class="bordered"><tbody><tr>
+<table class="bordered"><tr>
 <td style="width: 50%; padding: 6px;">
 <p class="text-info"><strong>Lorem ipsum dolor</strong>. Sit amet venenatis. Erat nulla arcu. Lorem luctus
 sem. Mauris vitae ipsum. Donec dui ac ridiculus quisque proin.
@@ -1089,7 +1086,7 @@ by an indented paragraph the
 indented paragraph is
 included in the list item.</code></pre>
 </li></ul></td>
-</tr></tbody></table>
+</tr></table>
 </div>
 </td></tr></table>
 <p>The use of inline HTML for tables instead of a Rimu-specific table
@@ -1103,14 +1100,134 @@ syntax was a deliberate design decision:</p>
   a way that maintains the side-by-side cell layout.
 </li><li>At first blush tables come across as a hugely useful feature, but
   most documentation makes surprising little use of tables.
-</li></ul><h2>Macro meta-programming</h2>
+</li></ul><p>See also <a href="#use-macros-to-create-tables">Use macros to create tables</a>.</p>
+<h2 class="use-macros-to-create-tables">Use macros to create tables</h2>
+<p>Creating tables with raw HTML is repetitive, time consuming and
+difficult to read.</p>
+<p>Parametrized macros can be used to generate row oriented tables:</p>
+<h4>Row oriented tables</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header" style="width:10%;">
+Rimu source</td>
+<td>
+<pre id="table-macro-example-source" class="example-source no-highlight"><code>{person} = '&lt;table&gt;&lt;tr&gt;&lt;td style="width:15em"&gt;$$1&lt;/td&gt;
+&lt;td style="width:5em"&gt;$$2&lt;/td&gt;
+&lt;td&gt;$$3&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+'
+
+.bordered "color:#527bbd;"
+{person| **Name**    | **Age**| **Gender**}
+{person| Joe Bloggs  | 25     | Male}
+{person| _Jim Smith_ | 31     | Male}
+."color:red;"
+{person| Peg Legge   | **30** | Female}
+</code></pre>
+<textarea id="table-macro-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('table-macro-example')"></textarea>
+</td>
+</tr>
+<tr><td class="example-header" style="width:10%;">Rendered HTML</td>
+<td>
+<div id="table-macro-example-rendered" class="example-rendered">
+<table class="bordered" style="color:#527bbd;"><tr><td style="width:15em"> <strong>Name</strong>    </td>
+<td style="width:5em"> <strong>Age</strong></td>
+<td> <strong>Gender</strong></td></tr></table>
+<table><tr><td style="width:15em"> Joe Bloggs  </td>
+<td style="width:5em"> 25     </td>
+<td> Male</td></tr></table>
+<table><tr><td style="width:15em"> <em>Jim Smith</em> </td>
+<td style="width:5em"> 31     </td>
+<td> Male</td></tr></table>
+<table style="color:red;"><tr><td style="width:15em"> Peg Legge   </td>
+<td style="width:5em"> <strong>30</strong> </td>
+<td> Female</td></tr></table>
+</div>
+</td></tr></table>
+<ul><li><em>Block HTML elements</em> must be terminated with a blank line.
+</li><li>Double-dollar macro parameters are necessary because text formatting
+  is not expanded and special characters are not escaped inside <a href="reference.html#block-html-elements">Block
+  HTML elements</a>.
+</li></ul><p>Macros can also be used to simplify columnar text layouts:</p>
+<h4>Columnar text layouts</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header" style="width:10%;">
+Rimu source</td>
+<td>
+<pre id="columnar-text-example-source" class="example-source no-highlight"><code>// Each macro generates an HTML block which together generate a single table.
+{column1} = '&lt;table&gt;&lt;tr&gt;&lt;td style="width:33%;padding:0.5em;"&gt;
+'
+{column2} = '&lt;/td&gt;&lt;td style="width:33%;padding:0.5em;"&gt;
+'
+{column3} = '&lt;/td&gt;&lt;td style="width:33%;padding:0.5em;"&gt;
+'
+{end}     = '&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+'
+
+{column1}
+#### Column One
+Rutrum imperdiet vitae vitae a suscipit semper potenti magna.
+
+Proin id justo vestibulum rutrum neque consequat in nam morbi orci at.
+
+  Feugiat habitant donec. Sem tincidunt arcu pellentesque suscipit
+  accumsan.
+
+{column2}
+#### Column Two
+Proin id Ante praesent scelerisque ligula vivamus in.
+
+Amet neque ut enim molestiae est. Dictumst magna orci magnis donec
+lectus lectus at sapien.
+
+&gt; Vivamus et metus. In a ut. Enim in lorem.
+
+{column3}
+#### Column Three
+Quibusdam suspendisse volutpat.
+
+Pellentesque nunc lectus tellus cursus fusce.
+
+.sidebar
+Tincidunt proin lorem. Mi vel ut. Duis ipsum nam eget vitae ut
+consequat quisque duis mollis magna arcu.
+
+{end}
+</code></pre>
+<textarea id="columnar-text-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('columnar-text-example')"></textarea>
+</td>
+</tr>
+<tr><td class="example-header" style="width:10%;">Rendered HTML</td>
+<td>
+<div id="columnar-text-example-rendered" class="example-rendered">
+<table><tr><td style="width:33%;padding:0.5em;">
+<h4>Column One</h4>
+<p>Rutrum imperdiet vitae vitae a suscipit semper potenti magna.</p>
+<p>Proin id justo vestibulum rutrum neque consequat in nam morbi orci at.</p>
+<pre class="no-highlight"><code>Feugiat habitant donec. Sem tincidunt arcu pellentesque suscipit
+accumsan.</code></pre>
+</td><td style="width:33%;padding:0.5em;">
+<h4>Column Two</h4>
+<p>Proin id Ante praesent scelerisque ligula vivamus in.</p>
+<p>Amet neque ut enim molestiae est. Dictumst magna orci magnis donec
+lectus lectus at sapien.</p>
+<blockquote><p> Vivamus et metus. In a ut. Enim in lorem.</p></blockquote>
+</td><td style="width:33%;padding:0.5em;">
+<h4>Column Three</h4>
+<p>Quibusdam suspendisse volutpat.</p>
+<p>Pellentesque nunc lectus tellus cursus fusce.</p>
+<p class="sidebar">Tincidunt proin lorem. Mi vel ut. Duis ipsum nam eget vitae ut
+consequat quisque duis mollis magna arcu.</p>
+</td></tr></table>
+</div>
+</td></tr></table>
+<h2>Macro meta-programming</h2>
 <p>You can define macros which, when invoked, generate other macros. A
 good example of this is the generation of document section headers,
 links and table of contents entries from a section identifier and
 title.</p>
 <h4>Examples</h4>
 <table class="example bordered">
-<tbody>
 <tr>
 <td class="example-header" style="width:10%;">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('meta-macros-example')">&#x270e;</span>
@@ -1237,7 +1354,7 @@ ordered list items.</code></pre>
 </li><li>Item two.
 </li></ol><p class="ol-counter">ordered list items.</p>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <h2>Include arbitrary elements in list items</h2>
 <p>An attached <em>Division Block</em> can be used to group and append arbitrary
 block elements to a list item.</p>
@@ -1267,7 +1384,7 @@ Include a paragraph in the list item.
 <blockquote><p> And a Quoted paragraph.</p></blockquote>
 </li><li>Second list item.
 </li></ul></div>
-</td></tr></tbody></table>
+</td></tr></table>
 <p>This works because if a <a href="reference.html#fenced-blocks">Fenced Block</a>
 immediately follows a list item without any intervening blank lines
 it will be rendered with the list item.</p>
@@ -1352,7 +1469,7 @@ aenean enim cum.</p>
 <pre style="font-weight:bold" class="no-highlight"><code>Duis in tincidunt rhoncus nascetur
 lacus!</code></pre>
 </li></ul></div>
-</td></tr></tbody></table>
+</td></tr></table>
 <h2>Section numbering</h2>
 <p>Use the <a href="reference.html#rimuc-command">rimuc</a> <code>--section-numbers</code> option with the <code>--styled</code> option
 to number top level <em>h2</em> and <em>h3</em> sub-sections. For example:</p>
@@ -1402,7 +1519,7 @@ vel mauris placerat in phasellus magna.</p></blockquote>
 <p>Duis in tincidunt rhoncus nascetur
 lacus!</p></blockquote>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <h2>List termination</h2>
 <p>List termination can be forced by following the list by two or more blank
 lines. This comes in handy if you want to follow one list immediately by
@@ -1438,7 +1555,7 @@ Rimu source</td>
 </li></ul></li><li>List item.
 <pre class="no-highlight"><code>* Rendered as code block.</code></pre>
 </li></ul></div>
-</td></tr></tbody></table>
+</td></tr></table>
 <h2>Controlling line breaks</h2>
 <p>There are three ways to inhibit text wrapping and preserve line
 breaks:</p>
@@ -1477,7 +1594,7 @@ Augue non egestas amet?</p>
 Aenean enim cum sed
 Augue non egestas amet?</p>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <h2>Controlling page breaks</h2>
 <p>You can control printer page breaks by using Rimu <em>Attribute Blocks</em>
 to inject CSS
@@ -1530,7 +1647,7 @@ Enim odio ultrices</code></pre>
 <div id="text-alignment-example-1-rendered" class="example-rendered">
 <p style="text-align:center">Enim odio ultrices</p>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <p>The <a href="reference.html#rimuc-command">rimuc</a> tool <code>--styled</code> option includes <code>align-left</code>,
 <code>align-center</code> and <code>align-right</code> CSS classes.  Here is the previous
 example using the <code>align-center</code> text alignment class:</p>
@@ -1552,7 +1669,7 @@ Enim odio ultrices</code></pre>
 <div id="text-alignment-example-2-rendered" class="example-rendered">
 <p class="align-center">Enim odio ultrices</p>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <h2>Citing quotes and verses</h2>
 <p>The <a href="reference.html#rimuc-command">rimuc</a> command <code>--styled</code> option includes the CSS <em>cite</em> class
 for attributing quotes and verses. For example:</p>
@@ -1607,12 +1724,11 @@ Aenean enim cum sed
 Augue non egestas amet?</p>
 <p class="cite">A. N. Mouse</p></div>
 </div>
-</td></tr></tbody></table>
+</td></tr></table>
 <h2>An example letter</h2>
 <p>Here's an example of a personal letter:</p>
 <h4>Examples</h4>
 <table class="example bordered">
-<tbody>
 <tr>
 <td class="example-header" style="width:10%;">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('letter-example')">&#x270e;</span>
