@@ -628,6 +628,10 @@ test('blocks', function(t) {
     '<p>$10.00 total, $5.00 total.</p>',
     'parametrized macro: default parameter value with escaped $ characters');
   test_document(
+    "{v}='$1\\: $2'\n{v}, {v|}, {v|$5}.",
+    '<p>$1\\: $2, : $2, $5: $2.</p>',
+    'parametrized macro: escaped default value');
+  test_document(
     "{v1}='$1 $2'\n{v2}='{v1|1|2} $1 $2'\n{v2|3|4} {v1|5|6}",
     '<p>1 2 3 4 5 6</p>',
     'nested parametrized macros');
