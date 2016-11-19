@@ -85,7 +85,7 @@ function updateExample(name) {
 <table class="example bordered">
 <tr>
 <td class="example-header">
-{--=$2}{example-edit-icon|$1}
+{--=$3}{example-edit-icon|$1}
 Rimu source</td>
 <td class="example-header">Rendered HTML</td>
 </tr>
@@ -118,7 +118,7 @@ Rimu source</td>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
-{--=$2}{example-edit-icon|$1}
+{--=$3}{example-edit-icon|$1}
 Rimu source</td>
 <td>
 

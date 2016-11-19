@@ -112,7 +112,7 @@ if x == 1:
 ``'
 
 // Don't allow editing because syntax highlighting occurs at page load time.
-{generate-rendered-example-1|highlightjs-example|no-edit}
+{generate-rendered-example-1|highlightjs-example||no-edit}
 
 Set the `no-highlight` class to disable syntax highlighting for a code
 block.  Adding the `no-highlight` class to all code blocks using
@@ -324,7 +324,7 @@ IMPORTANT: Admonition.
 
 TODO 10 examples +-2'
 
-{generate-rendered-example-1|rimurc-examples|no-edit}
+{generate-rendered-example-1|rimurc-examples||no-edit}
 
 
 .#scoped-css
@@ -511,7 +511,7 @@ A MathML block formula:
   <mi>E</mi><mo>=</mo><mrow><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow>
 </math>'
 
-{generate-rendered-example-2|mathjax-example|no-edit}
+{generate-rendered-example-2|mathjax-example||no-edit}
 
 - Macro expansion has been disabled in LaTeX formulas to stop `\{i=0}`
   and `\{2}` in the LaTeX formualae from being mistaken for Rimu macro
