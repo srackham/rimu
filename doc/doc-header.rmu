@@ -71,20 +71,17 @@ function updateExample(name) {
 }
 </script>
 
-// Default examples title.
-{example-title} = '#### Examples'
-
 // Clickable icon button to edit the example.
-
 {edit-icon} = '<span class="edit-icon">&#x270e;</span>'
 {example-edit-icon} = '<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('$1')">&#x270e;</span>'
 
 // Macro to generate Rimu markup and rendered example (stacked horizontally).
 // $1 = name of example content macro.
-// $2 = optional, if non-blank then do not allow editing.
+// $2 = title of examples (optional).
+// $3 = if non-blank then do not allow editing (optional).
 {generate-examples=}.+skip
 .-macros
-{generate-rendered-example-1} = '{example-title}
+{generate-rendered-example-1} = '#### $2:Examples$
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -113,10 +110,11 @@ Rimu source</td>
 
 // Macro to generate Rimu markup and rendered example (stacked vertically).
 // $1 = name of example content macro.
-// $2 = optional, if non-blank then do not allow editing.
+// $2 = title of examples (optional).
+// $3 = if non-blank then do not allow editing (optional).
 {generate-examples=}.+skip
 .-macros
-{generate-rendered-example-2} = '{example-title}
+{generate-rendered-example-2} = '#### $2:Examples$
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">

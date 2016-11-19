@@ -659,7 +659,7 @@ Parametrized macros can be used to generate row oriented tables:
 {person| Peg Legge   | **30** | Female}
 '
 
-{generate-rendered-example-2|table-macro-example}
+{generate-rendered-example-2|table-macro-example|Row oriented tables}
 
 - _Block HTML elements_ must be terminated with a blank line.
 - Double-dollar macro parameters are necessary because text formatting
@@ -710,7 +710,7 @@ consequat quisque duis mollis magna arcu.
 {end}
 '
 
-{generate-rendered-example-2|columnar-text-example}
+{generate-rendered-example-2|columnar-text-example|Columnar text layouts}
 
 
 ## Macro meta-programming
