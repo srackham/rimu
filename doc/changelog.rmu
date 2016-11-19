@@ -4,6 +4,21 @@ See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
 
+## Version 9.1.0 (2016-11-19)
+- [Block Attributes]({reference}#block-attributes) can now be injected into
+  [Block HTML elements]({reference}#block-html-elements).
+- Added double-dollar (`$$1, $$2...`) macro parameters which expand quotes and
+  replacements.  Double-dollar parameters are normally only necessary inside
+  _Block HTML elements_.  See example in [Use macros to create
+  tables]({tips}#use-macros-to-create-tables).
+- Default parameter values can be specified in [parametrized
+  macros]({reference}#macro-invocations) by appending `:default-value$` to the
+  parameter name e.g. `$2:Ford$` will assign `Ford` to the `$2` parameter if it
+  is blank or not specified in the macro invocation.
+- **FIXED**: `rimuc`: The `.bordered` CSS tables class (available with the
+  `--styled` option) no longer propagates to nested tables.
+
+
 ## Version 9.0.3 (2016-10-26)
 - _Quote paragraphs_ are attached to list items in exactly the same way as
   _Indented paragraphs_ i.e. by being separated from the list item by a
