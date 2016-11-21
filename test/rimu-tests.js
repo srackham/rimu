@@ -632,6 +632,10 @@ test('blocks', function(t) {
     '<p>$1\\: $2, : $2, $5: $2.</p>',
     'parametrized macro: escaped default value');
   test_document(
+    "{v}='Zero, $1:\nThree\n\nFour$'\n{v|}, {v|One\nTwo}",
+    '<p>Zero, \nThree</p>\n<p>Four, Zero, One\nTwo</p>',
+    'parametrized macro: multi-line default value');
+  test_document(
     "{v1}='$1 $2'\n{v2}='{v1|1|2} $1 $2'\n{v2|3|4} {v1|5|6}",
     '<p>1 2 3 4 5 6</p>',
     'nested parametrized macros');
