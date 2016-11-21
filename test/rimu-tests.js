@@ -656,6 +656,10 @@ test('blocks', function(t) {
     '<div><strong>a</strong> b and c _d_</div>',
     'double and single dollar parametrized macro arguments in HTML block element');
   test_document(
+    "{v1}='one'\n{v2}='<div>$$1:{v1} two$</div>'\n{v2|}",
+    '<div>one two</div>',
+    'Macro expansion inside double-dollar default macro parameter value');
+  test_document(
     '{v?}=\'\'\n{v|one|two}',
     '',
     'blank macro invoked with arguments');
