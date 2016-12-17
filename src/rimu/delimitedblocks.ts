@@ -226,7 +226,7 @@ export function render(reader: Io.Reader, writer: Io.Writer): boolean {
         options.errorCallback('unterminated delimited block: ' + match[0])
       }
       if (content) {
-        lines = lines.concat(content)
+        lines = [...lines, ...content]
       }
       // Calculate block expansion options.
       let expansionOptions: Utils.ExpansionOptions = {
