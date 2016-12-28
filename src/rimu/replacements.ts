@@ -46,7 +46,7 @@ const DEFAULT_DEFS: Definition[] = [
   // Image: ![alt](url)
   // alt = $1, url = $2
   {
-    match: /\\?!\[([\s\S]*?)\]\s*\((\S+?)\)/g,
+    match: /\\?!\[([\s\S]*?)\]\((\S+?)\)/g,
     replacement: '<img src="$2" alt="$1">'
   },
 
@@ -67,7 +67,7 @@ const DEFAULT_DEFS: Definition[] = [
   // Link: [caption](url)
   // caption = $1, url = $2
   {
-    match: /\\?\[([\s\S]*?)\]\s*\((\S+?)\)/g,
+    match: /\\?\[([\s\S]*?)\]\((\S+?)\)/g,
     replacement: '<a href="$2">$$1</a>'
   },
 
