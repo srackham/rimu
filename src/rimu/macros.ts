@@ -3,7 +3,7 @@ import * as Spans from './spans'
 
 // Matches macro invocation. $1 = name, $2 = params.
 // DEPRECATED: Matches existential macro invocations.
-const MATCH_MACRO = /\{([\w\-]+)([!=|?](?:|[\s\S]*?[^\\]))?\}/
+const MATCH_MACRO = /\{([\w\-]+)([!=|?](?:|[^]*?[^\\]))?\}/
 // Matches all macro invocations. $1 = name, $2 = params.
 const MATCH_MACROS = RegExp('\\\\?' + MATCH_MACRO.source, 'g')
 // Matches a line starting with a macro invocation.
@@ -83,7 +83,7 @@ export function render(text: string, inline = true): string {
         // Matches macro definition formal parameters [$]$<param-number>[[\]:<default-param-value>$]
         // [$]$ = 1st match group; <param-number> (1, 2..) = 2nd match group;
         // :[\]<default-param-value>$ = 3rd match group; <default-param-value> = 4th match group.
-        const PARAM_RE = /\\?(\$\$?)(\d+)(\\?:(|[\s\S]*?[^\\])\$)?/g
+        const PARAM_RE = /\\?(\$\$?)(\d+)(\\?:(|[^]*?[^\\])\$)?/g
         value = (value || '').replace(PARAM_RE, function (match: string, p1: string, p2: string, p3: string|undefined, p4: string): string {
           if (match[0] === '\\') {  // Unescape escaped macro parameters.
             return match.slice(1)

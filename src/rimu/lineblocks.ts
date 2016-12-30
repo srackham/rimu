@@ -120,7 +120,7 @@ let defs: Definition[] = [
   // Block image: <image:src|alt>
   // src = $1, alt = $2
   {
-    match: /^\\?<image:([^\s\|]+)\|([\s\S]+?)>$/,
+    match: /^\\?<image:([^\s\|]+)\|([^]+?)>$/,
     replacement: '<img src="$1" alt="$2">',
   },
   // Block image: <image:src>

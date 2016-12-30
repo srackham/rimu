@@ -32,7 +32,7 @@ const DEFAULT_DEFS: Definition[] = [
   // Image: <image:src|alt>
   // src = $1, alt = $2
   {
-    match: /\\?<image:([^\s\|]+)\|([\s\S]*?)>/g,
+    match: /\\?<image:([^\s\|]+)\|([^]*?)>/g,
     replacement: '<img src="$1" alt="$2">'
   },
 
@@ -46,14 +46,14 @@ const DEFAULT_DEFS: Definition[] = [
   // Image: ![alt](url)
   // alt = $1, url = $2
   {
-    match: /\\?!\[([\s\S]*?)\]\((\S+?)\)/g,
+    match: /\\?!\[([^[]*?)\]\((\S+?)\)/g,
     replacement: '<img src="$2" alt="$1">'
   },
 
   // Email: <address|caption>
   // address = $1, caption = $2
   {
-    match: /\\?<(\S+@[\w\.\-]+)\|([\s\S]+?)>/g,
+    match: /\\?<(\S+@[\w\.\-]+)\|([^]+?)>/g,
     replacement: '<a href="mailto:$1">$$2</a>'
   },
 
@@ -67,8 +67,15 @@ const DEFAULT_DEFS: Definition[] = [
   // Link: [caption](url)
   // caption = $1, url = $2
   {
-    match: /\\?\[([\s\S]*?)\]\((\S+?)\)/g,
+    match: /\\?\[([^[]*?)\]\((\S+?)\)/g,
     replacement: '<a href="$2">$$1</a>'
+  },
+
+  // Link: <url|caption>
+  // url = $1, caption = $2
+  {
+    match: /\\?<(\S+?)\|([^]*?)>/g,
+    replacement: '<a href="$1">$$2</a>'
   },
 
   // HTML inline tags.
@@ -87,13 +94,6 @@ const DEFAULT_DEFS: Definition[] = [
   {
     match: /\\?<([^|\s]+?)>/g,
     replacement: '<a href="$1">$1</a>'
-  },
-
-  // Link: <url|caption>
-  // url = $1, caption = $2
-  {
-    match: /\\?<(\S+?)\|([\s\S]*?)>/g,
-    replacement: '<a href="$1">$$2</a>'
   },
 
   // Auto-encode (most) raw HTTP URLs as links.
