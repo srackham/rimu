@@ -1068,8 +1068,8 @@ Syntax:
   they are injected into the target opening tag.
 - Successive Block Attributes elements accumulate until they are
   consumed by the first succeeding Delimited Block element.
-- The `[html-attributes]` section is ignored if the
-  <#api-options|safeMode API option> is not zero.
+- The `[html-attributes]` section is ignored if the [safeMode API
+  option](#api-options) is not zero.
 - The `-specials` block option is ignored if the [safeMode API
   option](#api-options)  is not zero.
 - The entire Block Attributes element is ignored if bit 2 of the
@@ -1235,6 +1235,7 @@ Invocation syntax:
   * Dollar characters can be included in default parameter values by
     escaping them with a backslash character e.g. `$2:Ten dollars
     (\$10)$`.
+  * The default value can span multiple lines.
   * The default value can be escaped by prefixing the colon with a
     backslash character e.g. `$2\:One dollar$`.
   * The `\{macro-name|}` invocation syntax uses only default parameter

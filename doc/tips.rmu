@@ -932,9 +932,15 @@ another or if you want to separate an Indented paragraph from a
 preceding list.
 
 
-## Nested list item ambiguity
-To render an indented list item as an Indented paragraph change it
-to a fenced code block.
+## Syntax surprises
+Here are some situations that generate unexpected results.
+
+### Nested list item ambiguity
+For readability Rimu list items can be optionally indented.  If an
+Indented paragraph looks like a list item it will be rendered as a
+list item (because Lists take precedence over Indented paragraphs).
+To render an indented list item as an Indented paragraph change it to
+a fenced code block.
 
 {list-ambiguity-example} = '- List item.
 
@@ -946,6 +952,31 @@ to a fenced code block.
 ``'
 
 {generate-rendered-example-1|list-ambiguity-example}
+
+- Do not allow `[` in Markdown URL captions (use `&#x5b;` entity
+  instead.
+- Allow `<` in Rimu URL captions.
+- Use `[^]` to match all characters including newlines (instead of
+  `[\s\S]`).
+
+### URL captions
+- To include a `[` character in a Markdown URL or image captions, use
+  a `&#x5b;` entity instead of the `[` character.
+..
+The caption in the following example displays as `the [Main] section`
+(if the `[` character were used the caption would be `Main] section`):
+
+  [the &#x5b;Main] section](#main)
+..
+
+- To include a `>` character in a Rimu URL or image captions, use a
+  `&gt;` entity instead of the `>` character.
+..
+The caption in the following example displays as `<Header>`
+(if the `>` character were used the caption would be `<Header`):
+
+  <#header|<Header&gt;>
+..
 
 
 ## Controlling line breaks
