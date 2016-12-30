@@ -109,6 +109,10 @@ test('spans', function(t) {
     '<a href="http://example.com"></a>',
     'url with empty caption');
   test_span(
+    '<#header|<Header&gt;>',
+    '<a href="#header">&lt;Header&gt;</a>',
+    'url with < and > in caption');
+  test_span(
     '<a href="http://an example.com">foo</a>',
     '<a href="http://an example.com">foo</a>',
     'HTML url with spaces');
@@ -120,6 +124,14 @@ test('spans', function(t) {
     '[with spaces](http://url%20with%20spaces.com)',
     '<a href="http://url%20with%20spaces.com">with spaces</a>',
     'Markdown style url with encoded spaces');
+  test_span(
+    '[the &#x5b;Main] section](#main)',
+    '<a href="#main">the &#x5b;Main] section</a>',
+    'Markdown style url with [ in caption');
+  test_span(
+    '[the [Main] section](#main)',
+    '[the <a href="#main">Main] section</a>',
+    'Markdown style url does not allow [ in caption]');
   test_span(
     '[with underscores](_example_), <_example_|with underscores>',
     '<a href="_example_">with underscores</a>, <a href="_example_">with underscores</a>',
