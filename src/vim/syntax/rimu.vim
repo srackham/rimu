@@ -20,13 +20,13 @@ syn keyword rimuTodo TODO FIXME XXX ZZZ DEPRECATED
 
 syn match rimuParamSeparator /|/ contained containedin=rimuURLParams,rimuDefinitionParams
 syn match rimuParamSeparator /?/ contained containedin=rimuDefinitionParams
-syn match rimuBackslash /\\\@<!\\/ containedin=ALLBUT,rimuComment,rimuCodeBlock,rimuIndentedParagraph,rimuSpanCode
+syn match rimuBackslash /\\\@<!\\/ containedin=ALLBUT,rimuComment,rimuCodeBlock,rimuIndentedParagraph,rimuSpanQuoteCode
 syn match rimuSpanLineBreak / \\$/
 syn match rimuSpanEntity /\\\@<!&[#a-zA-Z]\w\{-1,};/
 syn match rimuSpanURL /\\\@<!<\S\+\(|\_.\{-}\)\?>/ contains=rimuURLParams
-syn match rimuURLParams /|\_[^>]*/ contained
-syn match rimuSpanURL /[\\]\@<!!\?\[\_.\{-}]\s*(\S\{-1,})/ contains=rimuURLText
-syn match rimuURLText /\[\@<=\_.\{-}]\@=/ contained containedin=rimuSpanURL
+syn match rimuURLParams /|\_[^>]*/ contained contains=rimuSpanQuote.*
+syn match rimuSpanURL /[\\]\@<!!\?\[\_.\{-}](\S\{-1,})/ contains=rimuURLText
+syn match rimuURLText /\[\@<=\_.\{-}]\@=/ contained containedin=rimuSpanURL contains=rimuSpanQuote.*
 syn match rimuSpanHTML /\\\@<!<[!\/]\?[a-zA-Z-]\+\(\_s\_.\{-}\|\)>/
 syn match rimuMacroInvocation /\\\@<!{[0-9A-Za-z_-]\+\([?!=|]\_.\{-}\)\?}/ contains=rimuDefinitionParams containedin=ALLBUT,rimuComment,rimuCodeBlock,rimuIndentedParagraph
 syn match rimuDefinitionParams /[?|]\_[^}]*/ contained contains=rimuSpan.*
@@ -34,13 +34,13 @@ syn match rimuDefinitionParams /[?|]\_[^}]*/ contained contains=rimuSpan.*
 syn match rimuSpanAnchor /<<#[a-zA-Z_-].*>>/
 syn match rimuSpanRawURL /[\\<]\@<!\(http\|https\):\/\/[^ \t"]*[^ \t",.;?)]/
 
-syn match rimuSpanEmphasized /\\\@<!\*[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\*/ contains=rimuSpanEntity
-syn match rimuSpanStrong /\\\@<!\*\*[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\*\*/ contains=rimuSpanEntity
-syn match rimuSpanEmphasized /\\\@<!_[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!_/ contains=rimuSpanEntity
-syn match rimuSpanStrong /\\\@<!__[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!__/ contains=rimuSpanEntity
-syn match rimuSpanCode /\\\@<!`[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[ \t\n]\@<!`/
-syn match rimuSpanCode /\\\@<!``[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[ \t\n]\@<!``/
-syn match rimuSpanDeleted /\\\@<!\~\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\~\~/ contains=rimuSpanEntity
+syn match rimuSpanQuoteEmphasized /\\\@<!\*[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\*/ contains=rimuSpanEntity
+syn match rimuSpanQuoteStrong /\\\@<!\*\*[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\*\*/ contains=rimuSpanEntity
+syn match rimuSpanQuoteEmphasized /\\\@<!_[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!_/ contains=rimuSpanEntity
+syn match rimuSpanQuoteStrong /\\\@<!__[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!__/ contains=rimuSpanEntity
+syn match rimuSpanQuoteCode /\\\@<!`[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[ \t\n]\@<!`/
+syn match rimuSpanQuoteCode /\\\@<!``[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[ \t\n]\@<!``/
+syn match rimuSpanQuoteDeleted /\\\@<!\~\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\~\~/ contains=rimuSpanEntity
 syn region rimuHeader matchgroup=rimuHeaderStartEnd start=/^\(=\|#\)\{1,6}\s\+/ end=/\(\s\+\(=\|#\)\{1,6}\)\?\_$/ contains=rimuSpan.* oneline keepend
 syn match rimuBlockDelimiter /^\("\{2,}\|\.\{2,}\)\([0-9a-zA-Z-]\|\s\)*$/
 syn region rimuCodeBlock start=/^-\{2,}$/ end=/^-\{2,}$/ keepend
@@ -70,7 +70,7 @@ syn match rimuApiOption /^\.\(safeMode\|htmlReplacement\|macroMode\|reset\)/ con
 syn match rimuQuoteDefinition /^\S\{1,2}\s*=\s*'\_.\{-}'\n/
 syn match rimuQuoteQuote /^\S\{1,2}/ contained containedin=rimuQuoteDefinition
 syn match rimuDefinitionValue /'\_.\{-}'\n/ contained containedin=rimuMacroDefinition,rimuReplacementDefinition,rimuQuoteDefinition,rimuDelimitedBlockDefinition,rimuApiElement
-syn match rimuDefinitionParam /\($\{1,2}\d\+\)\|\(|\{1,2}\)/ contained containedin=rimuDefinitionValue
+syn match rimuDefinitionParam /\(\\\@<!$\{1,2}\d\+\(\\\@<!:.\{-}\\\@<!\$\)\?\)\|\(|\)/ contained containedin=rimuDefinitionValue
 
 hi def link rimuApiOption Special
 hi def link rimuBackslash Special
@@ -89,15 +89,15 @@ hi def link rimuQuoteQuote Special
 hi def link rimuReplacementRegExp Special
 " DEPRECATED as of 3.4.0: rimuSpanAnchor.
 hi def link rimuSpanAnchor Title
-hi def link rimuSpanCode Identifier
-hi def link rimuSpanEmphasized Type
+hi def link rimuSpanQuoteCode Identifier
+hi def link rimuSpanQuoteEmphasized Type
 hi def link rimuSpanEntity Special
 hi def link rimuSpanHTML Title
 hi def link rimuSpanLineBreak Special
 hi def link rimuSpanQuote Label
 hi def link rimuSpanRawURL Title
-hi def link rimuSpanStrong Special
-hi def link rimuSpanDeleted Todo
+hi def link rimuSpanQuoteStrong Special
+hi def link rimuSpanQuoteDeleted Todo
 hi def link rimuSpanURL Title
 hi def link rimuTodo Todo
 hi def link rimuDefinitionValue Type
