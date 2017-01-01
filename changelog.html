@@ -299,6 +299,7 @@
   <div class="h2"><a href="rimuplayground.html">Rimu Playground</a></div>
   <div class="h2"><a href="reference.html">Rimu Reference</a></div>
   <div class="h2"><a href="tips.html">Rimu Tips</a></div>
+  <div class="h2"><a href="changelog.html">Change Log</a></div>
   <div class="h2"><a href="https://github.com/srackham/rimu">Github</a></div>
   <div class="h2"><a href="https://npmjs.org/package/rimu">npm</a></div>
   <h2 style="font-size:1.2em; margin-top:1.0em">Table of Contents</h2>
@@ -307,7 +308,15 @@
 <h1>Rimu Markup Change Log</h1>
 <p>See the <a href="https://github.com/srackham/rimu/commits/">Git commit log</a>
 for more detailed information.</p>
-<h2>Version 9.1.0 (2016-11-19)</h2>
+<h2>Version 9.1.1 (2017-01-01)</h2>
+<ul><li>Allow multi-line default macro parameter values.
+</li><li>Added <em>Change Log</em> to documentation sidebar <em>Links</em>.
+</li><li>URL captions syntax:
+<ul><li>Do not allow <code>[</code> character in Markdown style URL captions (<a href="tips.html#url-captions">use <code>&amp;#x5b;</code>
+    entity instead</a>).
+</li><li>Allow <code>&lt;</code> character in Rimu style URL captions.
+</li></ul></li><li><strong>FIXED</strong>: <em>Rimu Tips</em> documentation examples.
+</li></ul><h2>Version 9.1.0 (2016-11-19)</h2>
 <ul><li><a href="reference.html#block-attributes">Block Attributes</a> can now be injected into
   <a href="reference.html#block-html-elements">Block HTML elements</a>.
 </li><li>Added double-dollar (<code>$$1, $$2...</code>) macro parameters which expand quotes and

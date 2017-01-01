@@ -359,6 +359,7 @@ function updateExample(name) {
   <div class="h2"><a href="rimuplayground.html">Rimu Playground</a></div>
   <div class="h2"><a href="reference.html">Rimu Reference</a></div>
   <div class="h2"><a href="tips.html">Rimu Tips</a></div>
+  <div class="h2"><a href="changelog.html">Change Log</a></div>
   <div class="h2"><a href="https://github.com/srackham/rimu">Github</a></div>
   <div class="h2"><a href="https://npmjs.org/package/rimu">npm</a></div>
   <h2 style="font-size:1.2em; margin-top:1.0em">Table of Contents</h2>
@@ -1533,8 +1534,8 @@ elements.</p>
   they are injected into the target opening tag.
 </li><li>Successive Block Attributes elements accumulate until they are
   consumed by the first succeeding Delimited Block element.
-</li><li>The <code>[html-attributes]</code> section is ignored if the
-  <a href="#api-options">safeMode API option</a> is not zero.
+</li><li>The <code>[html-attributes]</code> section is ignored if the <a href="#api-options">safeMode API
+  option</a> is not zero.
 </li><li>The <code>-specials</code> block option is ignored if the <a href="#api-options">safeMode API
   option</a>  is not zero.
 </li><li>The entire Block Attributes element is ignored if bit 2 of the
@@ -1684,6 +1685,7 @@ name.</p>
 </li><li>Dollar characters can be included in default parameter values by
     escaping them with a backslash character e.g. <code>$2:Ten dollars
     (\$10)$</code>.
+</li><li>The default value can span multiple lines.
 </li><li>The default value can be escaped by prefixing the colon with a
     backslash character e.g. <code>$2\:One dollar$</code>.
 </li><li>The <code>{macro-name|}</code> invocation syntax uses only default parameter

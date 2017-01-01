@@ -359,6 +359,7 @@ function updateExample(name) {
   <div class="h2"><a href="rimuplayground.html">Rimu Playground</a></div>
   <div class="h2"><a href="reference.html">Rimu Reference</a></div>
   <div class="h2"><a href="tips.html">Rimu Tips</a></div>
+  <div class="h2"><a href="changelog.html">Change Log</a></div>
   <div class="h2"><a href="https://github.com/srackham/rimu">Github</a></div>
   <div class="h2"><a href="https://npmjs.org/package/rimu">npm</a></div>
   <h2 style="font-size:1.2em; margin-top:1.0em">Table of Contents</h2>
@@ -1527,9 +1528,14 @@ lacus!</p></blockquote>
 lines. This comes in handy if you want to follow one list immediately by
 another or if you want to separate an Indented paragraph from a
 preceding list.</p>
-<h2>Nested list item ambiguity</h2>
-<p>To render an indented list item as an Indented paragraph change it
-to a fenced code block.</p>
+<h2>Syntax surprises</h2>
+<p>Here are some situations that generate unexpected results.</p>
+<h3>Nested list item ambiguity</h3>
+<p>For readability Rimu list items can be optionally indented.  If an
+Indented paragraph looks like a list item it will be rendered as a
+list item (because Lists take precedence over Indented paragraphs).
+To render an indented list item as an Indented paragraph change it to
+a fenced code block.</p>
 <h4>Examples</h4>
 <table class="example bordered">
 <tr>
@@ -1558,7 +1564,18 @@ Rimu source</td>
 <pre class="no-highlight"><code>* Rendered as code block.</code></pre>
 </li></ul></div>
 </td></tr></table>
-<h2>Controlling line breaks</h2>
+<h3>URL captions</h3>
+<ul><li>To include a <code>[</code> character in a Markdown URL or image captions, use
+  a <code>&amp;#x5b;</code> entity instead of the <code>[</code> character.
+<p>The caption in the following example displays as <code>the [Main] section</code>
+(if the <code>[</code> character were used the caption would be <code>Main] section</code>):</p>
+<pre class="no-highlight"><code>[the &amp;#x5b;Main] section](#main)</code></pre>
+</li><li>To include a <code>&gt;</code> character in a Rimu URL or image captions, use a
+  <code>&amp;gt;</code> entity instead of the <code>&gt;</code> character.
+<p>The caption in the following example displays as <code>&lt;Header&gt;</code>
+(if the <code>&gt;</code> character were used the caption would be <code>&lt;Header</code>):</p>
+<pre class="no-highlight"><code>&lt;#header|&lt;Header&amp;gt;&gt;</code></pre>
+</li></ul><h2>Controlling line breaks</h2>
 <p>There are three ways to inhibit text wrapping and preserve line
 breaks:</p>
 <ol><li>Terminate lines with a Rimu line break (a space followed by a
