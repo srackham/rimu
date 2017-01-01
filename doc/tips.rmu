@@ -953,12 +953,6 @@ a fenced code block.
 
 {generate-rendered-example-1|list-ambiguity-example}
 
-- Do not allow `[` in Markdown URL captions (use `&#x5b;` entity
-  instead.
-- Allow `<` in Rimu URL captions.
-- Use `[^]` to match all characters including newlines (instead of
-  `[\s\S]`).
-
 ### URL captions
 - To include a `[` character in a Markdown URL or image captions, use
   a `&#x5b;` entity instead of the `[` character.
