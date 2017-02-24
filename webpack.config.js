@@ -8,10 +8,10 @@ module.exports = {
     devtoolModuleFilenameTemplate: "webpack:///.[resource-path]",
   },
   resolve: {
-    extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']
+    extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js']
   },
   module: {
-    loaders: [
+    rules: [
       { test: /\.css$/, loader: 'style!css' },
       { test: /\.tsx?$/, loader: 'ts-loader' }
     ]
