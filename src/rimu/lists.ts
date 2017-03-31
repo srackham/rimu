@@ -96,12 +96,11 @@ function renderListItem(startItem: ItemState, reader: Io.Reader, writer: Io.Writ
   writer.write(def.itemOpenTag)
   // Process of item text.
   let lines = new Io.Writer()
-  lines.write(match[match.length - 1])  // Item text from first line.
-  lines.write('\n')
+  lines.write(match[match.length - 1] + '\n') // Item text from first line.
   reader.next()
   let nextItem: ItemState | null
   nextItem = readToNext(reader, lines)
-  text = lines.toString()
+  text = lines.toString().trim()
   text = Utils.replaceInline(text, {macros: true, spans: true})
   writer.write(text)
   while (true) {

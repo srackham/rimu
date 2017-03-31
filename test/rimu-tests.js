@@ -405,23 +405,23 @@ test('blocks', function(t) {
   // Lists.
   test_document(
     'term::\ndef\nterm:: def',
-    '<dl><dt>term</dt><dd>\ndef\n</dd><dt>term</dt><dd> def\n</dd></dl>',
+    '<dl><dt>term</dt><dd>def</dd><dt>term</dt><dd>def</dd></dl>',
     'definition list');
   test_document(
     '- Item _1_\n - Item 2\n\\ - Escaped',
-    '<ul><li>Item <em>1</em>\n</li><li>Item 2\n - Escaped\n</li></ul>',
+    '<ul><li>Item <em>1</em></li><li>Item 2\n - Escaped</li></ul>',
     'unordered list with escaped list item');
   test_document(
     '- List 1\n* List 2',
-    '<ul><li>List 1\n<ul><li>List 2\n</li></ul></li></ul>',
+    '<ul><li>List 1<ul><li>List 2</li></ul></li></ul>',
     'nested unordered lists');
   test_document(
     '. Item 1\n. Item 2',
-    '<ol><li>Item 1\n</li><li>Item 2\n</li></ol>',
+    '<ol><li>Item 1</li><li>Item 2</li></ol>',
     'ordered list');
   test_document(
     '+ Item 1\n+ Item 2',
-    '<ul><li>Item 1\n</li><li>Item 2\n</li></ul>',
+    '<ul><li>Item 1</li><li>Item 2</li></ul>',
     'list using "+" list IDs');
 
   /*
@@ -436,23 +436,23 @@ test('blocks', function(t) {
    */
   test_document(
     '- List item1.\n  - List item2.\n  * List item3.\n  ** List item4.\nTerm:: List\n item5\n\n- List item6.',
-    '<ul><li>List item1.\n</li><li>List item2.\n<ul><li>List item3.\n<ul><li>List item4.\n<dl><dt>Term</dt><dd> List\n item5\n</dd></dl></li></ul></li></ul></li><li>List item6.\n</li></ul>',
+    '<ul><li>List item1.</li><li>List item2.<ul><li>List item3.<ul><li>List item4.<dl><dt>Term</dt><dd>List\n item5</dd></dl></li></ul></li></ul></li><li>List item6.</li></ul>',
     'Mixed nested lists');
   test_document(
     '- Item 1\n..\nA\nparagraph\n..\n- Item 2\n\n  Indented',
-    '<ul><li>Item 1\n<p>A\nparagraph</p>\n</li><li>Item 2\n<pre><code>Indented</code></pre></li></ul>',
+    '<ul><li>Item 1<p>A\nparagraph</p>\n</li><li>Item 2<pre><code>Indented</code></pre></li></ul>',
     'list item with attached division block and indented paragraph');
   test_document(
     '- Item 1\n""\nA\nparagraph\n""',
-    '<ul><li>Item 1\n<blockquote><p>A\nparagraph</p></blockquote></li></ul>',
+    '<ul><li>Item 1<blockquote><p>A\nparagraph</p></blockquote></li></ul>',
     'list item with attached quote block');
   test_document(
     '- Item 1\n--\nA\nparagraph\n--',
-    '<ul><li>Item 1\n<pre><code>A\nparagraph</code></pre></li></ul>',
+    '<ul><li>Item 1<pre><code>A\nparagraph</code></pre></li></ul>',
     'list item with attached deprecated code block');
   test_document(
     '- Item 1\n```\nA\nparagraph\n```',
-    '<ul><li>Item 1\n<pre><code>A\nparagraph</code></pre></li></ul>',
+    '<ul><li>Item 1<pre><code>A\nparagraph</code></pre></li></ul>',
     'list item with attached code block');
   test_document(
     'a::\n' +
@@ -461,36 +461,36 @@ test('blocks', function(t) {
     '..\n' +
     'c::\n' +
     'd',
-    '<dl><dt>a</dt><dd>\n' +
-    '<ul><li>b\n' +
+    '<dl><dt>a</dt><dd>' +
+    '<ul><li>b' +
     '</li></ul>\n' +
-    '</dd><dt>c</dt><dd>\n' +
-    'd\n' +
+    '</dd><dt>c</dt><dd>' +
+    'd' +
     '</dd></dl>',
     'nested list in attached division block');
   test_document(
     '- Item 1\n\n```\nA\nparagraph\n```',
-    '<ul><li>Item 1\n</li></ul><pre><code>A\nparagraph</code></pre>',
+    '<ul><li>Item 1</li></ul><pre><code>A\nparagraph</code></pre>',
     'list item with unattached code block');
   test_document(
     '- Item 1\n\n\n  An\n  indented paragraph',
-    '<ul><li>Item 1\n</li></ul><pre><code>An\nindented paragraph</code></pre>',
+    '<ul><li>Item 1</li></ul><pre><code>An\nindented paragraph</code></pre>',
     'list item with unattached indented paragraph (2 blank lines separation');
   test_document(
     '- List 1\n\n\n* List 2',
-    '<ul><li>List 1\n</li></ul><ul><li>List 2\n</li></ul>',
+    '<ul><li>List 1</li></ul><ul><li>List 2</li></ul>',
     'list terminated by two blank lines');
   test_document(
     '- Item 1\n/*\nComment\n*/\n- Item 2',
-    '<ul><li>Item 1\n</li><li>Item 2\n</li></ul>',
+    '<ul><li>Item 1</li><li>Item 2</li></ul>',
     'list item with attached multi-line comment');
   test_document(
     '- Item 1\n\n> Quote\n\n- Item 2',
-    '<ul><li>Item 1\n<blockquote><p> Quote</p></blockquote>\n</li><li>Item 2\n</li></ul>',
+    '<ul><li>Item 1<blockquote><p> Quote</p></blockquote>\n</li><li>Item 2</li></ul>',
     'list item with attached quote paragraph');
   test_document(
     '- Item 1\n<pre>Code</pre>\n\n- Item 2',
-    '<ul><li>Item 1\n<pre>Code</pre>\n</li><li>Item 2\n</li></ul>',
+    '<ul><li>Item 1<pre>Code</pre>\n</li><li>Item 2</li></ul>',
     'list item with attached HTML block element');
 
   // Mixed blocks.
@@ -551,8 +551,8 @@ test('blocks', function(t) {
     '<p id="x1">Nisl curabitur donec. Vel porttitor et. Et amet vitae. Quam\n' +
     'porttitor integer. Bibendum neque quis quisque ac commodo. Non et\n' +
     'cumque. Sit et a consequat.</p>\n' +
-    '<ul id="x2"><li>Viverra pede turpis.\n' +
-    '</li><li>Esse et dui nonummy modi.\n' +
+    '<ul id="x2"><li>Viverra pede turpis.' +
+    '</li><li>Esse et dui nonummy modi.' +
     '</li></ul>',
     'anchors and links');
 
@@ -617,7 +617,7 @@ test('blocks', function(t) {
     'block and inline macro expansion');
   test_document(
     "{v1}='1'\n{v2}='2'\n{v1} and {v2}\n\n- {v1}\n\n{v2}",
-    '<p>1 and 2</p>\n<ul><li>1\n</li></ul><p>2</p>',
+    '<p>1 and 2</p>\n<ul><li>1</li></ul><p>2</p>',
     'macro invocation in list');
   test_document(
     "{v1}='1\n2'\n{v2}='3\n4'\n{v1} and {v2}",
@@ -852,11 +852,11 @@ test('blocks', function(t) {
     'block image html attributes');
   test_document(
     '.dl-horizontal\nterm:: definition\nterm::: definition',
-    '<dl class="dl-horizontal"><dt>term</dt><dd> definition\n<dl><dt>term</dt><dd> definition\n</dd></dl></dd></dl>',
+    '<dl class="dl-horizontal"><dt>term</dt><dd>definition<dl><dt>term</dt><dd>definition</dd></dl></dd></dl>',
     'list html attributes');
   test_document(
     '.class1\n- Item\n..\n.class2\n...\nDivision\n...\n..\nParagraph',
-    '<ul class="class1"><li>Item\n<div class="class2"><p>Division</p></div>\n</li></ul><p>Paragraph</p>',
+    '<ul class="class1"><li>Item<div class="class2"><p>Division</p></div>\n</li></ul><p>Paragraph</p>',
     'list item with Division block containing Division block with html attributes');
   test_document(
     '{info}= \'.info #ref2 [style="color:green"]\'\n{info}\ngreeny\n\nnormal\n\n{2paragraphs} =\'paragraph 1\n\nparagraph2\'\n{2paragraphs}',
