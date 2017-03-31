@@ -350,7 +350,14 @@ See also:
 
 - [What is the current state of the “scoped” attribute for the style
   element in
-  HTML5?](http://stackoverflow.com/questions/28633038/what-is-the-current-state-of-the-scoped-attribute-for-the-style-element-in-htm).
+  HTML5?](http://stackoverflow.com/questions/28633038/what-is-the-current-state-of-the-scoped-attribute-for-the-style-element-in-htm)
+""
+The primary goal of HTML5 was to formally specify the behavior that
+browsers have had implemented basically "forever" regardless of
+previous HTML specs. You've always been able to use a `<style>` tag
+anywhere within an HTML document, so with HTML5 you will still be able
+to. This will not change.
+""
 - [MDN
   \<style>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style).
 - [Using \<style> tags in the \<body> with other
@@ -898,7 +905,7 @@ to number top level _h2_ and _h3_ sub-sections. For example:
   rimuc --styled --section-numbers mydoc.rmu
 
 The  {rimuc} `--section-numbers` option is a shortcut for
-`{--section-numbers} = 'yes'`.
+`\{--section-numbers} = 'yes'`.
 
 
 ## Nested Fenced Blocks
@@ -953,15 +960,20 @@ a fenced code block.
 
 {generate-rendered-example-1|list-ambiguity-example}
 
-### URL captions
+### URLs
 - To include a `[` character in a Markdown URL or image captions, use
-  a `&#x5b;` entity instead of the `[` character.
+  a `&#91;` entity instead of the `[` character.
 ..
 The caption in the following example displays as `the [Main] section`
 (if the `[` character were used the caption would be `Main] section`):
 
-  [the &#x5b;Main] section](#main)
+  [the &#91;Main] section](#main)
 ..
+
+- To include a `)` character in a Markdown URL , use
+  a `&#41;` entity instead of the `)` character. For example:
+
+  [wolves](#the_wolf_(lupus&#41;)
 
 - To include a `>` character in a Rimu URL or image captions, use a
   `&gt;` entity instead of the `>` character.
