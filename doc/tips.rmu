@@ -4,10 +4,10 @@ TIP: Click the _Edit icon_ {edit-icon} in the examples below to enable
 live example editing of the Rimu source.
 
 ## HTML is valid Rimu
-You are free to mix any valid HTML into a Rimu document &mdash; no
-special syntax or relearning  is required (in this sense Rimu can be
-thought of as an HTML superset). Just remember that included HTML is
-only processed if `safeMode` is zero.
+You are free to mix any valid HTML into a Rimu document -- no
+special syntax is required (in this sense Rimu can be thought of as an
+HTML superset). Just remember that included HTML is only processed if
+`safeMode` is zero.
 
 
 ## Converting Rimu to PDF
@@ -15,12 +15,12 @@ First convert Rimu markup to HTML using the {rimuc} tool and then
 convert the HTML to PDF.  Here are a few options for converting HTML
 to PDF:
 
+. Use Libre Office Writer or Microsoft Word to open the HTML document
+  then export it to a PDF file.
+. Use a command-line application such as
+  [wkhtmltopdf](https://wkhtmltopdf.org/) to convert HTML to PDF.
 . Google's Chrome web browser has an option to print HTML to a PDF
-  file, other browsers have PDF add-ons that perform the same
-  function, this does a good job especially if you use the {rimuc}
-  `--styled` option.
-. Use an HTML to PDF conversion program such as
-  [HTMLDOC](http://www.htmldoc.org/).
+  file.
 
 
 ## Extend Rimu with Macros
@@ -52,33 +52,33 @@ experimentation.
 {generate-rendered-example-2|macros-example}
 
 - The `\{sidebar}` macro shows how you can inject CSS styles into a
-  _Division Block_ (you could also use use <#scoped-css|CSS> to
-  style the output).
+  _Division Block_ (you can also use use <#scoped-css|HTML <style&gt;
+  elements> to style the output).
 - Note how macro definitions can span multiple lines and can contain
   any valid Rimu markup (including HTML and blank lines).
-- [This document](https://github.com/srackham/rimu/blob/master/doc/tips.rmu)
-  makes extensive use of Rimu macros.
 
 
 ## Intra-document Links
-To link to another place within a document: Create an ID for the
-element you want to link to (using the Rimu _Block Attribute_ element)
-then create a link to it using a fragment identifier URL.
+To link to another place within a document:
+
+. Create an ID for the element you want to link to using the Rimu
+  _Block Attribute_ element.
+. Link to it using a fragment identifier URL.
 
 {document-links-example} = '.#link-target
 This paragraph has ID `link-target`.
 
-<#link-target|This link> takes you to
+[This link](#link-target) takes you to
 the above paragraph.
 
-// Markdown compatible syntax.
-So does [this link](#link-target).'
+<#link-target|Same link> using alternative
+Rimu URL syntax.'
 
 {generate-rendered-example-1|document-links-example}
 
 NOTE: The [rimuc]({reference}#rimuc-command) `--styled` option
-automatically synthesises `id` attributes for top level `#`, `##` and
-`###` header elements that do not already have an `id`.
+automatically synthesises `id` attributes for those top level `#`,
+`##` and `###` header elements that do not already have an `id`.
 
 
 .#syntax-highlighting
@@ -131,10 +131,11 @@ The following subset of _Rimu_ elements is compatible with Markdown:
 Headers:: Headers using `#` character header prefixes.
 
 Code blocks::
-- Indented paragraphs (at least four spaces) render like Markdown code
-  blocks.
-- Rimu Fenced Code blocks with three or more backticks are compatible with
-  [GitHub Flavored Markdown](https://help.github.com/articles/github-flavored-markdown/)
+- Indented paragraphs indented with at least four spaces render like
+  Markdown code blocks.
+- Rimu Fenced Code blocks with three or more backticks are compatible
+  with [GitHub Flavored
+  Markdown](https://help.github.com/articles/github-flavored-markdown/)
   _Fenced Blocks_.
 
 Quote paragraphs:: Paragraphs starting with a `>` character are
@@ -148,7 +149,7 @@ Text formatting::
   underscore emphasis quotes (Github Flavored Markdown behaviour).
 
 Lists::
-- Bullet lists with `-`, `+`  and `*` prefixes.
+- Bullet lists with `-`, `+`  and `*` list item prefixes.
 - Numbered lists with explicit numbering.
 
 URLs and Email addresses:: `[caption](url)`, `<url>` and `<email>`
@@ -164,28 +165,26 @@ _npmjs.org_ README formats.
 ## Processing HTML and Markdown with the `rimuc` command
 {rimuc} passes the contents of input files with a `.html` extension
 directly to the output.  This allows you to generate styled HTML5
-documents from raw HTML files (HTML with no `<html>`, `<head>` or
+documents from raw HTML files (HTML files with no `<html>`, `<head>` or
 `<body>` tags), or from non Rimu compatible Markdown files, using the
 {rimuc} `--styled` option. Examples:
 
 Raw HTML file:: Convert `mydoc.html` to styled HTML5 document with
 table of contents:
-``
-rimuc --styled --dropdown-toc mydoc.html
-``
 
-Arbitrary Markdown file:: Convert `mydoc.md` to styled HTML5 document
-after first converting it to raw HTML with `markdown`:
-``
-markdown mydoc.md > mydoc.html
-rimuc --styled mydoc.html
-``
+  rimuc --styled --dropdown-toc mydoc.html
 
-Rimu compatible Markdown file:: Convert `mydoc.md` to styled HTML5
-document:
-``
-rimuc --styled mydoc.md
-``
+Rimu compatible Markdown file::
+Convert `mydoc.md` to styled HTML5 document:
+
+  rimuc --styled mydoc.md
+
+Markdown file containing non Rimu compatible elements::
+Convert `mydoc.md` to styled HTML5 document after first converting it
+to raw HTML with `markdown`:
+
+  markdown mydoc.md > mydoc.html
+  rimuc --styled mydoc.html
 
 
 ## Escaping Rimu syntax
@@ -241,58 +240,20 @@ Reference](http://srackham.github.io/rimu/reference.html) for details.
 
 ## Extending the Vim syntax highlighter
 If you've added custom replacements and quotes you can highlight them
-in Vim by creating a custom `~/.vim/after/syntax/rimu.vim` syntax
-file (Vim loads files from the `after` directory after loading normal
+in Vim by creating a custom `~/.vim/after/syntax/rimu.vim` syntax file
+(Vim loads files from the `after` directory after loading normal
 syntax files).  The distributed example
 [~/.vim/after/syntax/rimu.vim](https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.vim)
 syntax file highlights custom syntax definitions from the [example
 .rimurc file]({example-rimurc}).
 
 
-## Render contiguous Indented paragraphs with a single element
-When you have multiple Indented paragraphs separated by blank lines
-the usual expectation is that they will be contained in a single
-listing -- to achieve this separate the paragraphs with lines
-containing one or more space characters.
-
-{joined-paragraphs-example} = '#### Separator line is blank
-
-  Neque a massa. Porttitor
-  consectetuer commodo.
-
-  Neque a massa. Porttitor
-  consectetuer commodo.
-
-
-#### Separator line with spaces
-
-  Neque a massa. Porttitor
-  consectetuer commodo.
-  
-  Neque a massa. Porttitor
-  consectetuer commodo.
-
-
-#### Use a code block instead
-
-```
-Neque a massa. Porttitor
-consectetuer commodo.
-
-Neque a massa. Porttitor
-consectetuer commodo.
-```'
-
-{generate-rendered-example-1|joined-paragraphs-example}
-
-
 ## Entering non-keyboard characters
-Characters that are unavailable on your keyboard can be entered as 
+Characters that are unavailable on your keyboard can be entered as
 [HTML character entities](http://dev.w3.org/html5/html-author/charref)
-e.g. enter `&micro;` to display &micro;. The 
-[example .rimurc file](#example-rimurc)
-includes replacements for common use-cases such as em dash, ellipsis and
-quotation characters.
+e.g. enter `&micro;` to display &micro;. The [example .rimurc
+file](#example-rimurc) includes replacements for common use-cases such
+as em dash, ellipsis and quotation characters.
 
 
 .#defs-warning
@@ -328,42 +289,7 @@ TODO 10 examples +-2'
 
 
 .#scoped-css
-## Custom styling
-.sidebar
-..
-#### Scoped styling removed from HTML5 spec 12-May-2016
-The `scoped` attribute was [removed from the HTML5 spec in May
-2016](https://github.com/whatwg/html/commit/c2a3b2a2e3db49c14b486a5e99acf7d10cfe8443)
-"due to lack of implementer interest".  Consequently the examples
-below are, strictly speaking, illegal.  This is because the `style`
-element can now only reside inside the `head` element.  In practice
-however, all popular browsers allow `style` elements outside the
-`head` element (the styles from these elements are applied globally
-and the `scoped` attribute is ignored).
-
-The examples below generate `style` elements located outside the
-`head` element and although they work perfectly they do not pass
-HTML5 validator checks. Prior to Rimu version 9 these examples
-used the `style` element `scoped` attribute.
-
-See also:
-
-- [What is the current state of the “scoped” attribute for the style
-  element in
-  HTML5?](http://stackoverflow.com/questions/28633038/what-is-the-current-state-of-the-scoped-attribute-for-the-style-element-in-htm)
-""
-The primary goal of HTML5 was to formally specify the behavior that
-browsers have had implemented basically "forever" regardless of
-previous HTML specs. You've always been able to use a `<style>` tag
-anywhere within an HTML document, so with HTML5 you will still be able
-to. This will not change.
-""
-- [MDN
-  \<style>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style).
-- [Using \<style> tags in the \<body> with other
-  HTML](http://stackoverflow.com/a/16844668/1136455).
-..
-
+## Including CSS in Rimu documents
 You can include custom CSS styles in the body of a Rimu document using
 an HTML `style` element. Here are three use-cases:
 
@@ -394,6 +320,41 @@ Green is the color of envy.
 
 IMPORTANT: The `style` element must not contain any blank lines because
 Rimu HTML block elements are terminated with a blank line
+
+.sidebar
+..
+#### Scoped styling removed from HTML5 spec 12-May-2016
+The `scoped` attribute was [removed from the HTML5 spec in May
+2016](https://github.com/whatwg/html/commit/c2a3b2a2e3db49c14b486a5e99acf7d10cfe8443)
+"due to lack of implementer interest".  Consequently the examples
+above are, strictly speaking, illegal.  This is because the `style`
+element can now only reside inside the `head` element.  In practice
+however, all popular browsers allow `style` elements outside the
+`head` element (the styles from these elements are applied globally
+and the `scoped` attribute is ignored).
+
+The examples below generate `style` elements located outside the
+`head` element and although they work perfectly they do not pass
+HTML5 validator checks. Prior to Rimu version 9 these examples
+used the `style` element `scoped` attribute.
+
+See also:
+
+- [What is the current state of the “scoped” attribute for the style
+  element in
+  HTML5?](http://stackoverflow.com/questions/28633038/what-is-the-current-state-of-the-scoped-attribute-for-the-style-element-in-htm)
+""
+The primary goal of HTML5 was to formally specify the behavior that
+browsers have had implemented basically "forever" regardless of
+previous HTML specs. You've always been able to use a `<style>` tag
+anywhere within an HTML document, so with HTML5 you will still be able
+to. This will not change.
+""
+- [MDN
+  \<style>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style).
+- [Using \<style> tags in the \<body> with other
+  HTML](http://stackoverflow.com/a/16844668/1136455).
+..
 
 
 ## Themes
@@ -544,8 +505,8 @@ Macro `foo`
 must be blank.
 
 // Conditional inclusion of arbitrary blocks of Rimu source.
-// Assign `x` and `y` macro values and include some CSS if `foo`
-// and `bar` are non-blank.
+// Assign `x` and `y` macro values and include some CSS if
+// both `foo` and `bar` are non-blank.
 // Works because a Division Block does not emit div tags if they
 // have no HTML attributes.
 {foo=}.+skip
@@ -727,7 +688,7 @@ links and table of contents entries from a section identifier and
 title.
 
 .-macros
-{meta-macros-example} = '// toc macro generates section TOC entry, link macro, header macro.
+{meta-macros-example} = '// toc macro generates section TOC entry, link macro and header macro.
 // $1 = section ID, $2 = section title.
 {toc} = '{$1} = '<#$1|$2>' \\
 {$1-header} = '.#$1
@@ -757,8 +718,8 @@ lines that end with a single-quote.
 - Closing block delimiters must be explicit and cannot be sourced from
   a macro invocation (because Rimu elements are recognized before
   macro expansion).
-- The contents of a macro can be rendered verbatim in a code block by
-  enabling macro expansion. For example:
+- A macro invocation can be rendered verbatim in a code block by
+  disabling macro expansion. For example:
 ..
 ``
 .-macros
@@ -766,10 +727,8 @@ lines that end with a single-quote.
 {example-42}
 ```
 ``
-
-The contents of `\{example-42}` are not subject to further macro expansion.
 ..
-- Definition elements cannot be prefixed with an Inclusion/Exclusion
+- Macro definition elements cannot be prefixed with an Inclusion/Exclusion
   macro (see <#conditional-inclusion|Conditional Inclusion>).
 - Macro invocations in macro definition values are expanded when the
   macro is declared, not when it is invoked. You can defer evaluation
@@ -986,8 +945,7 @@ The caption in the following example displays as `<Header>`
 
 
 ## Controlling line breaks
-There are three ways to inhibit text wrapping and preserve line
-breaks:
+There are three ways to preserve line breaks:
 
 . Terminate lines with a Rimu line break (a space followed by a
   backslash character).
@@ -1220,6 +1178,6 @@ window.onclick = toggleToc
 ```
 
 To enable only macro expansion drop the `-macros` option
-(c.f. [General purpose macro processor](#general purpose macro processor)).
+(c.f. [General purpose macro processor](#general-purpose-macro-processor)).
 
 

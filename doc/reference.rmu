@@ -12,10 +12,8 @@ into the Rimu markup syntax):
 
 Plus:
 
-- A large subset of Rimu syntax is [Markdown
+- A subset of Rimu syntax is [Markdown
   compatible]({tips}#markdown-compatible).
-- Rimu is fast (same speed as _marked 0.3.2_ compiling Rimu
-  `README.md`).
 - The generated HTML is compatible with all modern browsers.
 
 
@@ -30,8 +28,7 @@ Install Rimu as a Node.js module (includes the `rimu` library and the
 ## Resources
 ### Learning
 
-- Experiment with Rimu in the [Rimu Playground]({playground}) or open
-  the `rimuplayground.html` file locally in your browser.
+- Experiment with Rimu in the [Rimu Playground]({playground}).
 - Edit the examples (click the _Edit icon_ {edit-icon} in the examples
   below to enable live example editing of the Rimu source).
 - Read [Rimu Tips]({tips}).
@@ -54,8 +51,8 @@ _rimuc_ is a Node.js command-line tool that converts Rimu source (or
 [Rimu compatible Markdown]({tips}#markdown-compatible)) to HTML.
 
 The `--styled` option outputs an HTML5 conformant document containing
-the generated HTML, themed styling, an optional table of contents and
-optional code syntax highlighting.
+the generated HTML, themed styling, an optional table of contents
+(TOC) and optional code syntax highlighting.
 
 Run `rimuc --help` to view the `rimuc` manpage:
 
@@ -132,7 +129,7 @@ OPTIONS
 
   --styled-name NAME
     Specify the --styled option header and footer files:
-    'classic': Legacy styling (default).
+    'classic': Default styling.
     'flex':    Flexbox "mobile first" styling (experimental).
     'v8':      Rimu version 8 styling.
 
@@ -208,16 +205,15 @@ a footer file to the list of source files. The actual header and
 footer files is determined by the [`--styled-name`](#styled-names)
 option.
 
-The Rimu markup in the header and footer files performs the following
-functions:
+The Rimu `--styled` option:
 
-- Outputs an HTML5 document.
+- Outputs a stand-alone HTML5 document.
 - Supports [table of contents generation](#toc-generation).
 - Supports named [themes]({tips}#themes). There are two built-in
   themes: `default` (the default theme) and `graystone`.
 - Includes additional styles for verses, sidebars, text alignment,
   page break control and section numbering (see `rimuc --help` command
-  and [Rimu Tips]({tips})).
+  and examples in [Rimu Tips]({tips})).
 - If the `--highlightjs` macro is non-blank
   [Highlightjs](https://highlightjs.org/) is included.
 - If the `--mathjax` macro is non-blank
@@ -237,7 +233,7 @@ flexibility of the Rimu markup language.
 The `--styled-name` option is used to choose between the following
 header and footer files:
 
-classic:: Legacy (default) styling.
+classic:: Default styling for desktop browser.
 
 flex:: Flexbox "mobile first" styling (experimental). Examples:
 
@@ -255,9 +251,9 @@ v8:: Rimu version 8 styling.
 
 
 ### Slug generation
-The `--styled` option includes a JavaScript slug generator to
-synthesize header identifier slugs at load-time for top level `h1`,
-`h2` and `h3` HTML header elements that do not already have an
+The `--styled` option includes a JavaScript slug generator which
+synthesizes header identifier slugs at load-time for those top level
+`h1`, `h2` and `h3` HTML header elements that do not already have an
 explicit `id` attribute.  Slugs are generated from header titles as
 follows:
 
@@ -305,12 +301,19 @@ from the TOC, for example:
 ### Custom Table of contents
 The `--custom-toc` option can be used in conjunction with the
 `--sidebar-toc` and `--dropdown-toc` options. The `--custom-toc`
-option inhibits the generation of an HTML TOC container.  It is up to
-the user to include a custom HTML TOC (Rimu documentation has a custom
-TOC).
+option inhibits the generation of an HTML TOC container and it is up
+to the user to include a custom HTML TOC container in the rendered
+HTML. This allows you to customise the location, style and content of
+the TOC:
 
-Here is the default TOC container, use it as a template to build your
-own custom TOC:
+- The TOC container must be a div element with `id="toc"`.
+- If the TOC container contains a div container with `id="auto-toc"`
+  then it will be injected (at run time) with the auto-generated TOC.
+- If you omit the `auto-toc` div the auto-generation of TOC entries
+  will be skipped.
+
+Here is the default TOC container that {rimuc} emits if `--custom-toc`
+is omitted:
 
 ``
 <div id="toc">
@@ -318,14 +321,10 @@ own custom TOC:
 </div>
 ``
 
-- Include custom elements inside the `id="toc"` div element.
-- The auto-generated TOC is injected into the `<div id="auto-toc"></div>`
-  element -- omit this `div` to exclude auto-generated TOC entries.
-
 
 .#api
 ## API
-Rimu has just one API to convert Rimu markup to HTML:
+Rimu has just one API for translating Rimu markup to HTML:
 
   render(source [, options])
 
@@ -335,7 +334,7 @@ The optional `options` argument controls rendering behaviour.
 
 The `render()` API is stateful: Macros and custom element definitions
 are retained across API calls along with API options.
-Use the `reset` option to set the default state.
+Use the `reset` option to restore the default state.
 
 ### Example usage
 Node.js example (Rimu has been previously installed from
@@ -348,7 +347,7 @@ var html= Rimu.render('Hello *Rimu*!', {safeMode:1});
 ``
 
 HTML script tag example (the compiled and minified `rimu.min.js` library
-can be found in the Rimu npm package `./rimu/bin` folder):
+can be found in the installed Rimu npm package `./rimu/bin` folder):
 
 .xml
 ``
@@ -360,8 +359,8 @@ can be found in the Rimu npm package `./rimu/bin` folder):
 
 
 ### API options
-The `options` argument is an object with zero or more of the following
-properties:
+The `options` argument is a JavaScript object with zero or more of the
+following properties:
 
 .dl-horizontal
 `safeMode`::
@@ -441,37 +440,36 @@ raw HTML is not passed to the output:
 
 
 ## Documents
-A Rimu document consists of a sequence of zero or more _Block_
-elements. Element types fall into three broad categories: [Delimited
-Blocks](#delimited-blocks), [Line Blocks](#line-blocks) and [Inline
-elements](#inline-elements).
+A Rimu document consists of a sequence of zero or more [Block
+elements](#block-elements).
+
+### Block elements
+Block elements consist of one or more lines of text and may contain
+[Inline elements](#inline-elements) and, in some cases, Block
+elements. Block elements are classified as either [Delimited
+Blocks](#delimited-blocks) or [Line Blocks](#line-blocks).
 
 ### Delimited Blocks
 A Delimited Block consists of an opening delimiter line followed by
 zero or more content lines and terminated with a closing delimiter
-line. Depending on the element type the delimiter lines may or may not
-contain textual content. [Paragraphs](#paragraphs) and [Fenced
-Blocks](#fenced-blocks) are Delimited Blocks. Delimited Block
-behaviour is [user customizable](#delimited-block-definition).
-
+line.  Delimited Block behaviour is [user
+customizable](#delimited-block-definition).
 
 ### Line Blocks
 A Line Block consists of a single line. [Headers](#headers), [Block
 Attributes](#block-attributes), [single-line comments](#comments) and
 _Element Definitions_ are all Line Block elements.
 
-
 ### Inline elements
-Inline elements are contained within the textual content of some block
+Inline elements are contained within the textual content of block
 elements. There are three types of Inline elements: [Macro
 Invocations](#macro-invocations), [Quotes](#quotes) and
 [Replacements](#replacements).
 
-
 ### Taxonomy
 Rimu markup elements are categorized as follows:
 
-.light-background "white-space: pre; padding-left: 2em;"
+.light-background line-breaks
 ..
 [Block elements](#documents)
         [Delimited Blocks](#delimited-blocks)
@@ -538,8 +536,9 @@ Inline elements are processed in the following order (first to last):
 . [Quotes](#quotes)
 
 Special character substitution takes place last.  Inline substitutions
-in multi-line block elements can be controlled using _block-options_
-in the [Block Attributes](#block-attributes) element.
+in [Delimited Block](#delimited-blocks) elements can be controlled
+using _block-options_ in the [Block Attributes](#block-attributes)
+element.
 
 
 ## Comments
@@ -570,8 +569,8 @@ A _Single-line comment_ is a line of text starting with `//`.
 
 ## Headers
 A _Header_ is a [Line Block](#line-blocks)  element containing a title
-which is prefixed by 1 to 6 `#` or `=` characters. A matching postfix
-is optional.
+which is prefixed by one to six `#` or `=` characters. A matching
+postfix is optional.
 
 - Header prefixes and postfixes must be separated from the title text
   by whitespace.
@@ -602,9 +601,8 @@ delimiter characters starting at the left margin.
   to using a _Block Attributes_ element).
 - Fenced Blocks can be escaped by prefixing the opening delimiter with
   a backslash character.
-- You can change the generated HTML with [Delimited Block
+- You can customize the generated HTML with [Delimited Block
   definitions](#delimited-block-definition).
-
 
 ### Code Block
 By default the all text in a _Code Block_ is rendered verbatim.  The
@@ -631,7 +629,7 @@ Anonymous
 ""'
 {generate-rendered-example-1|quote-block-example}
 
-This example uses the [rimuc](#rimuc-command) command `--styled`
+The above example uses the [rimuc](#rimuc-command) command `--styled`
 option's CSS _cite_ class to style the Anonymous attribution.
 
 .#division-block
@@ -641,7 +639,7 @@ A _Division Block_ is a container for block elements.
 - The Division Block delimiter character is a period.
 - If the _Division Block_ has [HTML attributes](#block-attributes)
   then the output is enclosed in an HTML `div` element.
-- If the _Division Block_ has no HTML attributes then the HTML `div`
+  If the _Division Block_ has no HTML attributes then the HTML `div`
   tags are omitted.
 
 {division-block-example} = '."font-style:italic"
@@ -723,8 +721,8 @@ Scelerisque feugiat massa alias.'
 Indented paragraphs begin with one or more space characters.  By
 default the all text in an _Indented Paragraph_ is rendered verbatim.
 This behavior can be changed using a preceding [Block
-Attributes](#block-attributes) element.  The generated HTML is
-enveloped  with `<pre><code>...</code></pre>` tags.
+Attributes](#block-attributes) element.  By default the generated HTML
+is enveloped  with `<pre><code>...</code></pre>` tags.
 
 {indented-paragraph-example} = '  Nunc mauris tempor.
   Scelerisque feugiat massa alias.'
@@ -804,8 +802,8 @@ Definition for second term.'
 
 - Lists are terminated:
 
-  * When the following element is not a list item or an _attached_
-    block.
+  * When the following element is not a list item or an _attached
+    block_.
   * By two or more blank lines.
 
 - There are no explicit numbering or bullet styles -- this is best
@@ -873,8 +871,8 @@ ___________________________________________________________
   backslash character. If the text contains multiple quotes of the
   same type then, to resolve ambiguity, additional quotes may have to
   be escaped.
-- The _Code_ quote renders quoted text verbatim with the exception of
-  [Macro Invocations](#macro-invocations).
+- The _Code_ quote renders quoted text verbatim with one exception:
+  [Macro Invocations](#macro-invocations) are expanded.
 
 {quote-example} = 'Some **bold text**,
 some _emphasized text_,
@@ -1046,10 +1044,10 @@ Character entities can be escaped with a backslash character prefix.
 ## Block Attributes
 The _Block Attributes_ [Line Block](#line-blocks) element injects HTML
 attributes into the opening tag of the next block element. You can
-specify class names, an element ID and any other HTML attributes.  It
-can also include [block-options](#delimited-block-definition) to
-control the processing of [Delimited Block](#delimited-blocks)
-elements.
+specify class names, an element ID, CSS styles and any other HTML
+attributes.  The Block Attributes element can also include
+[block-options](#delimited-block-definition) which control the
+processing of [Delimited Block](#delimited-blocks) elements.
 
 Syntax:
 
@@ -1075,7 +1073,7 @@ Syntax:
 - The entire Block Attributes element is ignored if bit 2 of the
   [safeMode API option](#api-options) is set.
 - `block-options` is used to control the processing of the succeeding
-  block element contents.
+  [Delimited Block element](#delimited-block) contents.
 - Macro invocations in _Block Attributes_ are expanded.
 
 {block-attributes-example} = '.error "color:red"
@@ -1140,13 +1138,13 @@ Definition syntax:
 `-skip` (turn off the skip option).
 ..
 
-- Do not apply `macros`, `spans` `or specials` block options to
-  Division blocks or Quote blocks (container blocks) or Lists.
 - A Delimited Block definition must start at the left margin and must
   not extend beyond the end of the line.
 - Delimited Block definitions are not processed if the [safeMode API
   option](#api-options) is non-zero.
 - Macro invocations in the definition are expanded.
+- `macros`, `spans` and `specials` block options are not applied to
+  Division blocks, Quote blocks or Lists.
 
 The following example generates Code blocks with a `no-highlight`
 class attribute:
@@ -1161,7 +1159,7 @@ _Replacement_ processing in Paragraphs:
 
 ## Macros
 Macros are a simple yet powerful mechanism for creating shortcuts for
-repeatedly used markup.  They are used to parametrize documents,
+repeatedly used markup.  They can be used to parametrize documents,
 promote clarity and eliminate repetition.
 
 Rimu provides elements for defining and invoking macros and includes
@@ -1315,7 +1313,7 @@ experimentation.
 
 ### Reserved macros
 Macros with names starting with two hyphen characters are _Reserved_
-macros, a number of reserved macros are defined by the [rimuc
+macros, a number of reserved macros are used by the [rimuc
 command](#rimuc-command).
 
 
@@ -1337,4 +1335,4 @@ to your taste delete them from the end of the file.
 ## Other
 - By convention Rimu markup text files have a `.rmu` file name
   extension but if your markup is confined to Rimu's Markdown
-  compatible subset then use `.md` to signal you intent.
+  compatible subset then use `.md` to signal your intent.

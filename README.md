@@ -4,35 +4,22 @@ Rimu is a readable-text to HTML markup language inspired by AsciiDoc
 and Markdown.
 
 
-## Scope
-
-At its core Rimu is a simple readable-text markup similar in scope to
-Markdown, but with two additional areas of functionality (both built
-into the Rimu markup syntax):
-
-- Markup generation can be customized and extended.
-- Rimu includes a simple, flexible macro language.
-
-Plus:
-
-- A subset of Rimu syntax is [Markdown
-  compatible](http://srackham.github.io/rimu/tips.html#markdown-compatible).
-- Rimu is fast (same speed as _marked 0.3.2_ compiling Rimu `README.md`).
-
-
 ## Features summary
 
-- Single lightweight JavaScript file (less than 20KB minified) that
-  can be dropped onto a Web page or used as a Node module.
+- Markup generation can be customized and extended.
+- Includes a simple, flexible macro language.
+- HTML attribute injection and parametrized macros.
+- Accepts raw HTML (a la Markdown).
+- A subset of the Rimu syntax is [Markdown
+  compatible](http://srackham.github.io/rimu/tips.html#markdown-compatible).
+- Single JavaScript file (less than 20KB minified) that can be dropped
+  onto a Web page or used as a Node module.
 - No dependencies.
 - One-function API.
-- Features include raw HTML (a la Markdown), HTML attribute injection
-  and parametrized macros.
-- Element syntax and behavior can be modified and extended.
 - Written in TypeScript.
 - Includes command-line compiler, JavaScript library, TypeScript
-  library declaration file, playground GUI,
-  Vim syntax highlighter and a unit test suite.
+  library declaration file, playground GUI, Vim syntax highlighter and
+  a unit test suite.
 - MIT license.
 
 
@@ -52,6 +39,14 @@ Install Rimu as a Node.js module (includes the `rimu` library and the
 `rimuc` command-line tool):
 
         sudo npm install -g rimu
+
+Run a simple test from the command prompt to check `rimuc` is working:
+
+        echo 'Hello *Rimu*!' | rimuc
+
+This should output:
+
+        <p>Hello <em>Rimu</em>!</p>
 
 
 ## Building Rimu
