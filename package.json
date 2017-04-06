@@ -42,7 +42,7 @@
     "ts-loader": "^2.0.3",
     "tslint": "^5.0.0",
     "typescript": "^2.2.2",
-    "uglify-js": "^2.8.18",
-    "webpack": "^2.3.2"
+    "uglify-js": "^2.8.21",
+    "webpack": "^2.3.3"
   }
 }
