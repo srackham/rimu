@@ -1,4 +1,9 @@
-# Rimu Playground
+/*
+  Rimu Playground
+*/
+
+// Show/Hide button.
+{showhide} = '<span onclick="showHide('$1')" title="Show/Hide" style="cursor: pointer;">&#9660;</span>'
 
 // NOTE: HTML special characters are escaped.
 {examples} = '
@@ -6,45 +11,53 @@ Some **bold text**, some _emphasized text_, some `monospaced text` and
 some ~~deleted text~~.
 
 A [link to the Rimu website](http://rimumarkup.org/), an auto-encoded
-link: http://rimumarkup.org/.
-
-  Indented paragraph.
+link http://rimumarkup.org/.
 
 &gt; Quote paragraph.
 
-```
+``
 Code block.
-```
-
-""
-Quote block.
-""
+``
 
 - A bullet list item.
 - A 2nd bullet list item.
   . Nested numbered list item.
-
-Definition list:: Definition 1.
-Term 2:: Definition 2.
 '
 
-## Rimu markup
+{box-shadow} = 'box-shadow: 0 0 10px #9ecaed;'
+
+
+# Rimu Playground
+
+###  {showhide|playground-source} Rimu markup
+.#playground-source
+..
 Edit these examples or add your own:
 
 <div>
-  <textarea id="playground-source" class="edit-source"
-      style="min-height: 16em;" onkeyup="convert()">{examples}</textarea>
+  <textarea id="playground-edit" class="edit-source"
+      style="min-height: 20em;" onkeyup="convert()">{examples}</textarea>
 </div>
 
-## HTML preview
-.#playground-preview
+Diagnostic messages:
+
+.#playground-diagnostics "{box-shadow}"
+``
+``
+..
+
+
+### {showhide|playground-preview} HTML preview
+.#playground-preview "border: 1px solid #dddddd; border-radius: 4px; padding: 4px; {box-shadow}"
 ..
 ..
 
-## HTML markup
-.#playground-html
+
+### {showhide|playground-html} HTML markup
+.#playground-html "{box-shadow}"
 ``
 ``
+
 
 <script>
 function escapeSpecialChars(s) {
@@ -52,13 +65,22 @@ function escapeSpecialChars(s) {
           .replace(/>/g, '&gt;')
           .replace(/</g, '&lt;');
 }
+function showHide(id) {
+  var el = document.getElementById(id);
+  el.style.display = el.style.display === 'none' ? '' : 'none';
+}
 function convert() {
-  var source = document.getElementById('playground-source').value;
-  var htmlRaw = Rimu.render(source);
-  var htmlEscaped = escapeSpecialChars(htmlRaw);
+  var source = document.getElementById('playground-edit').value;
   var htmlElement = document.getElementById('playground-html');
   var previewElement = document.getElementById('playground-preview');
-  htmlElement.innerHTML = '<code>' + htmlEscaped + '</code>';
+  var diagnosticsElement = document.getElementById('playground-diagnostics');
+  diagnosticsElement.innerHTML = ''
+  var htmlRaw = Rimu.render(source, {
+    callback: function(message) {
+      diagnosticsElement.innerHTML = '<code>' + escapeSpecialChars(message.type + ': ' + message.text) + '</code>';
+    }
+  })
+  htmlElement.innerHTML = '<code>' + escapeSpecialChars(htmlRaw) + '</code>';
   previewElement.innerHTML = htmlRaw;
 }
 convert();
