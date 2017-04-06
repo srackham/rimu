@@ -10,6 +10,7 @@
   * {
     margin: 0;
     padding: 0;
+    white-space: inherit;
   }
   body {
     font-size: 16px;
@@ -382,53 +383,55 @@ function updateExample(name) {
   <div id="auto-toc"></div>
 </div>
 <h1>Rimu Playground</h1>
-<h2>Rimu markup</h2>
-<p>Edit these examples or add your own:</p>
+<h3><span onclick="showHide('playground-source')" title="Show/Hide" style="cursor: pointer;">&#9660;</span> Rimu markup</h3>
+<div id="playground-source"><p>Edit these examples or add your own:</p>
 <div>
-  <textarea id="playground-source" class="edit-source"
-      style="min-height: 16em;" onkeyup="convert()">Some **bold text**, some _emphasized text_, some `monospaced text` and
+  <textarea id="playground-edit" class="edit-source"
+      style="min-height: 20em;" onkeyup="convert()">Some **bold text**, some _emphasized text_, some `monospaced text` and
 some ~~deleted text~~.
 
 A [link to the Rimu website](http://rimumarkup.org/), an auto-encoded
-link: http://rimumarkup.org/.
-
-  Indented paragraph.
+link http://rimumarkup.org/.
 
 &gt; Quote paragraph.
 
-```
+``
 Code block.
-```
-
-""
-Quote block.
-""
+``
 
 - A bullet list item.
 - A 2nd bullet list item.
   . Nested numbered list item.
-
-Definition list:: Definition 1.
-Term 2:: Definition 2.
 </textarea>
 </div>
-<h2>HTML preview</h2>
-<div id="playground-preview"></div>
-<h2>HTML markup</h2>
-<pre id="playground-html" class="no-highlight"><code></code></pre>
+<p>Diagnostic messages:</p>
+<pre id="playground-diagnostics" style="box-shadow: 0 0 10px #9ecaed;" class="no-highlight"><code></code></pre></div>
+<h3><span onclick="showHide('playground-preview')" title="Show/Hide" style="cursor: pointer;">&#9660;</span> HTML preview</h3>
+<div id="playground-preview" style="border: 1px solid #dddddd; border-radius: 4px; padding: 4px; box-shadow: 0 0 10px #9ecaed;"></div>
+<h3><span onclick="showHide('playground-html')" title="Show/Hide" style="cursor: pointer;">&#9660;</span> HTML markup</h3>
+<pre id="playground-html" style="box-shadow: 0 0 10px #9ecaed;" class="no-highlight"><code></code></pre>
 <script>
 function escapeSpecialChars(s) {
   return s.replace(/&/g, '&amp;')
           .replace(/>/g, '&gt;')
           .replace(/</g, '&lt;');
 }
+function showHide(id) {
+  var el = document.getElementById(id);
+  el.style.display = el.style.display === 'none' ? '' : 'none';
+}
 function convert() {
-  var source = document.getElementById('playground-source').value;
-  var htmlRaw = Rimu.render(source);
-  var htmlEscaped = escapeSpecialChars(htmlRaw);
+  var source = document.getElementById('playground-edit').value;
   var htmlElement = document.getElementById('playground-html');
   var previewElement = document.getElementById('playground-preview');
-  htmlElement.innerHTML = '<code>' + htmlEscaped + '</code>';
+  var diagnosticsElement = document.getElementById('playground-diagnostics');
+  diagnosticsElement.innerHTML = ''
+  var htmlRaw = Rimu.render(source, {
+    callback: function(message) {
+      diagnosticsElement.innerHTML = '<code>' + escapeSpecialChars(message.type + ': ' + message.text) + '</code>';
+    }
+  })
+  htmlElement.innerHTML = '<code>' + escapeSpecialChars(htmlRaw) + '</code>';
   previewElement.innerHTML = htmlRaw;
 }
 convert();

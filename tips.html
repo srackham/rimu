@@ -11,6 +11,7 @@
   * {
     margin: 0;
     padding: 0;
+    white-space: inherit;
   }
   body {
     font-size: 16px;
@@ -370,20 +371,17 @@ function updateExample(name) {
 live example editing of the Rimu source.</p>
 <h2>HTML is valid Rimu</h2>
 <p>You are free to mix any valid HTML into a Rimu document &mdash; no
-special syntax or relearning  is required (in this sense Rimu can be
-thought of as an HTML superset). Just remember that included HTML is
-only processed if <code>safeMode</code> is zero.</p>
+special syntax is required (in this sense Rimu can be thought of as an
+HTML superset). Just remember that included HTML is only processed if
+<code>safeMode</code> is zero.</p>
 <h2>Converting Rimu to PDF</h2>
 <p>First convert Rimu markup to HTML using the <a href="reference.html#rimuc-command">rimuc</a> tool and then
 convert the HTML to PDF.  Here are a few options for converting HTML
 to PDF:</p>
-<ol><li>Google's Chrome web browser has an option to print HTML to a PDF
-  file, other browsers have PDF add-ons that perform the same
-  function, this does a good job especially if you use the <a href="reference.html#rimuc-command">rimuc</a>
-  <code>--styled</code> option.
-</li><li>Use an HTML to PDF conversion program such as
-  <a href="http://www.htmldoc.org/">HTMLDOC</a>.
-</li></ol><h2>Extend Rimu with Macros</h2>
+<ol><li>Use Libre Office Writer or Microsoft Word to open the HTML document
+  then export it to a PDF file.</li><li>Use a command-line application such as
+  <a href="https://wkhtmltopdf.org/">wkhtmltopdf</a> to convert HTML to PDF.</li><li>Google's Chrome web browser has an option to print HTML to a PDF
+  file.</li></ol><h2>Extend Rimu with Macros</h2>
 <p>Macros provide a simple, consistent mechanism for extending the Rimu
 markup vocabulary.</p>
 <h4>Examples</h4>
@@ -434,17 +432,12 @@ experimentation.</p>
 </div>
 </td></tr></table>
 <ul><li>The <code>{sidebar}</code> macro shows how you can inject CSS styles into a
-  <em>Division Block</em> (you could also use use <a href="#scoped-css">CSS</a> to
-  style the output).
-</li><li>Note how macro definitions can span multiple lines and can contain
-  any valid Rimu markup (including HTML and blank lines).
-</li><li><a href="https://github.com/srackham/rimu/blob/master/doc/tips.rmu">This document</a>
-  makes extensive use of Rimu macros.
-</li></ul><h2>Intra-document Links</h2>
-<p>To link to another place within a document: Create an ID for the
-element you want to link to (using the Rimu <em>Block Attribute</em> element)
-then create a link to it using a fragment identifier URL.</p>
-<h4>Examples</h4>
+  <em>Division Block</em> (you can also use use <a href="#scoped-css">HTML &lt;style&gt;
+  elements</a> to style the output).</li><li>Note how macro definitions can span multiple lines and can contain
+  any valid Rimu markup (including HTML and blank lines).</li></ul><h2>Intra-document Links</h2>
+<p>To link to another place within a document:</p>
+<ol><li>Create an ID for the element you want to link to using the Rimu
+  <em>Block Attribute</em> element.</li><li>Link to it using a fragment identifier URL.</li></ol><h4>Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -457,11 +450,11 @@ Rimu source</td>
 <pre id="document-links-example-source" class="example-source no-highlight"><code>.#link-target
 This paragraph has ID `link-target`.
 
-&lt;#link-target|This link&gt; takes you to
+[This link](#link-target) takes you to
 the above paragraph.
 
-// Markdown compatible syntax.
-So does [this link](#link-target).</code></pre>
+&lt;#link-target|Same link&gt; using alternative
+Rimu URL syntax.</code></pre>
 <textarea id="document-links-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('document-links-example')"></textarea>
 </td>
 <td style="width:50%;">
@@ -469,12 +462,13 @@ So does [this link](#link-target).</code></pre>
 <p id="link-target">This paragraph has ID <code>link-target</code>.</p>
 <p><a href="#link-target">This link</a> takes you to
 the above paragraph.</p>
-<p>So does <a href="#link-target">this link</a>.</p>
+<p><a href="#link-target">Same link</a> using alternative
+Rimu URL syntax.</p>
 </div>
 </td></tr></table>
 <p><b>NOTE</b>: The <a href="reference.html#rimuc-command">rimuc</a> <code>--styled</code> option
-automatically synthesises <code>id</code> attributes for top level <code>#</code>, <code>##</code> and
-<code>###</code> header elements that do not already have an <code>id</code>.</p>
+automatically synthesises <code>id</code> attributes for those top level <code>#</code>,
+<code>##</code> and <code>###</code> header elements that do not already have an <code>id</code>.</p>
 <h2 id="syntax-highlighting">Source code syntax highlighting</h2>
 <p>The <a href="reference.html#rimuc-command">rimuc</a> command can highlight code in Rimu <em>Code Blocks</em> and
 <em>Indented Paragraphs</em> using the
@@ -533,45 +527,28 @@ file</a> does this with these custom definitions:</p>
 |indented| = '&lt;pre class="no-highlight"&gt;&lt;code&gt;|&lt;/code&gt;&lt;/pre&gt;'</code></pre>
 <h2 id="markdown-compatible">Syntax shared with Markdown</h2>
 <p>The following subset of <em>Rimu</em> elements is compatible with Markdown:</p>
-<dl><dt>Headers</dt><dd> Headers using <code>#</code> character header prefixes.
-</dd><dt>Code blocks</dt><dd>
-<ul><li>Indented paragraphs (at least four spaces) render like Markdown code
-  blocks.
-</li><li>Rimu Fenced Code blocks with three or more backticks are compatible with
-  <a href="https://help.github.com/articles/github-flavored-markdown/">GitHub Flavored Markdown</a>
-  <em>Fenced Blocks</em>.
-</li></ul></dd><dt>Quote paragraphs</dt><dd> Paragraphs starting with a <code>&gt;</code> character are
-rendered like Markdown Blockquotes.
-</dd><dt>Text formatting</dt><dd>
-<ul><li><code>_emphasis_</code>, <code>*emphasis*</code>, <code>__bold__</code>, <code>**bold**</code>,
-  <code>`code`</code> , <code>``code``</code> quoting.
-</li><li><code>~~strikethrough~~</code> quotes (GitHub Flavored Markdown behaviour).
-</li><li>Underscores within words rendered verbatim and are not treated as
-  underscore emphasis quotes (Github Flavored Markdown behaviour).
-</li></ul></dd><dt>Lists</dt><dd>
-<ul><li>Bullet lists with <code>-</code>, <code>+</code>  and <code>*</code> prefixes.
-</li><li>Numbered lists with explicit numbering.
-</li></ul></dd><dt>URLs and Email addresses</dt><dd> <code>[caption](url)</code>, <code>&lt;url&gt;</code> and <code>&lt;email&gt;</code>
-syntaxes plus Github Flavored Markdown <em>URL autolinking</em>.
-</dd><dt>Images</dt><dd> <code>![alt](url)</code> syntax.
-</dd></dl><p>The Rimu <em>README</em> uses this subset for compatibility with <em>GitHub</em> and
+<dl><dt>Headers</dt><dd>Headers using <code>#</code> character header prefixes.</dd><dt>Code blocks</dt><dd><ul><li>Indented paragraphs indented with at least four spaces render like
+  Markdown code blocks.</li><li>Rimu Fenced Code blocks with three or more backticks are compatible
+  with <a href="https://help.github.com/articles/github-flavored-markdown/">GitHub Flavored
+  Markdown</a>
+  <em>Fenced Blocks</em>.</li></ul></dd><dt>Quote paragraphs</dt><dd>Paragraphs starting with a <code>&gt;</code> character are
+rendered like Markdown Blockquotes.</dd><dt>Text formatting</dt><dd><ul><li><code>_emphasis_</code>, <code>*emphasis*</code>, <code>__bold__</code>, <code>**bold**</code>,
+  <code>`code`</code> , <code>``code``</code> quoting.</li><li><code>~~strikethrough~~</code> quotes (GitHub Flavored Markdown behaviour).</li><li>Underscores within words rendered verbatim and are not treated as
+  underscore emphasis quotes (Github Flavored Markdown behaviour).</li></ul></dd><dt>Lists</dt><dd><ul><li>Bullet lists with <code>-</code>, <code>+</code>  and <code>*</code> list item prefixes.</li><li>Numbered lists with explicit numbering.</li></ul></dd><dt>URLs and Email addresses</dt><dd><code>[caption](url)</code>, <code>&lt;url&gt;</code> and <code>&lt;email&gt;</code>
+syntaxes plus Github Flavored Markdown <em>URL autolinking</em>.</dd><dt>Images</dt><dd><code>![alt](url)</code> syntax.</dd></dl><p>The Rimu <em>README</em> uses this subset for compatibility with <em>GitHub</em> and
 <em>npmjs.org</em> README formats.</p>
 <h2 id="rimuc-html">Processing HTML and Markdown with the <code>rimuc</code> command</h2>
 <p><a href="reference.html#rimuc-command">rimuc</a> passes the contents of input files with a <code>.html</code> extension
 directly to the output.  This allows you to generate styled HTML5
-documents from raw HTML files (HTML with no <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code> or
+documents from raw HTML files (HTML files with no <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code> or
 <code>&lt;body&gt;</code> tags), or from non Rimu compatible Markdown files, using the
 <a href="reference.html#rimuc-command">rimuc</a> <code>--styled</code> option. Examples:</p>
-<dl><dt>Raw HTML file</dt><dd> Convert <code>mydoc.html</code> to styled HTML5 document with
-table of contents:
-<pre class="no-highlight"><code>rimuc --styled --dropdown-toc mydoc.html</code></pre>
-</dd><dt>Arbitrary Markdown file</dt><dd> Convert <code>mydoc.md</code> to styled HTML5 document
-after first converting it to raw HTML with <code>markdown</code>:
-<pre class="no-highlight"><code>markdown mydoc.md &gt; mydoc.html
+<dl><dt>Raw HTML file</dt><dd>Convert <code>mydoc.html</code> to styled HTML5 document with
+table of contents:<pre class="no-highlight"><code>rimuc --styled --dropdown-toc mydoc.html</code></pre>
+</dd><dt>Rimu compatible Markdown file</dt><dd>Convert <code>mydoc.md</code> to styled HTML5 document:<pre class="no-highlight"><code>rimuc --styled mydoc.md</code></pre>
+</dd><dt>Markdown file containing non Rimu compatible elements</dt><dd>Convert <code>mydoc.md</code> to styled HTML5 document after first converting it
+to raw HTML with <code>markdown</code>:<pre class="no-highlight"><code>markdown mydoc.md &gt; mydoc.html
 rimuc --styled mydoc.html</code></pre>
-</dd><dt>Rimu compatible Markdown file</dt><dd> Convert <code>mydoc.md</code> to styled HTML5
-document:
-<pre class="no-highlight"><code>rimuc --styled mydoc.md</code></pre>
 </dd></dl><h2>Escaping Rimu syntax</h2>
 <p>If you have text that you don't want interpreted as a Rimu
 element then you can render it literally (escape it) by prefixing the
@@ -629,84 +606,18 @@ section in the <a href="http://srackham.github.io/rimu/reference.html">Rimu
 Reference</a> for details.</p>
 <h2>Extending the Vim syntax highlighter</h2>
 <p>If you've added custom replacements and quotes you can highlight them
-in Vim by creating a custom <code>~/.vim/after/syntax/rimu.vim</code> syntax
-file (Vim loads files from the <code>after</code> directory after loading normal
+in Vim by creating a custom <code>~/.vim/after/syntax/rimu.vim</code> syntax file
+(Vim loads files from the <code>after</code> directory after loading normal
 syntax files).  The distributed example
 <a href="https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.vim">~/.vim/after/syntax/rimu.vim</a>
 syntax file highlights custom syntax definitions from the <a href="https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.rmu">example
 .rimurc file</a>.</p>
-<h2>Render contiguous Indented paragraphs with a single element</h2>
-<p>When you have multiple Indented paragraphs separated by blank lines
-the usual expectation is that they will be contained in a single
-listing &mdash; to achieve this separate the paragraphs with lines
-containing one or more space characters.</p>
-<h4>Examples</h4>
-<table class="example bordered">
-<tr>
-<td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('joined-paragraphs-example')">&#x270e;</span>
-Rimu source</td>
-<td class="example-header">Rendered HTML</td>
-</tr>
-<tr>
-<td style="width:50%;">
-<pre id="joined-paragraphs-example-source" class="example-source no-highlight"><code>#### Separator line is blank
-
-  Neque a massa. Porttitor
-  consectetuer commodo.
-
-  Neque a massa. Porttitor
-  consectetuer commodo.
-
-
-#### Separator line with spaces
-
-  Neque a massa. Porttitor
-  consectetuer commodo.
-  
-  Neque a massa. Porttitor
-  consectetuer commodo.
-
-
-#### Use a code block instead
-
-```
-Neque a massa. Porttitor
-consectetuer commodo.
-
-Neque a massa. Porttitor
-consectetuer commodo.
-```</code></pre>
-<textarea id="joined-paragraphs-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('joined-paragraphs-example')"></textarea>
-</td>
-<td style="width:50%;">
-<div id="joined-paragraphs-example-rendered" class="example-rendered">
-<h4>Separator line is blank</h4>
-<pre class="no-highlight"><code>Neque a massa. Porttitor
-consectetuer commodo.</code></pre>
-<pre class="no-highlight"><code>Neque a massa. Porttitor
-consectetuer commodo.</code></pre>
-<h4>Separator line with spaces</h4>
-<pre class="no-highlight"><code>Neque a massa. Porttitor
-consectetuer commodo.
- 
-Neque a massa. Porttitor
-consectetuer commodo.</code></pre>
-<h4>Use a code block instead</h4>
-<pre class="no-highlight"><code>Neque a massa. Porttitor
-consectetuer commodo.
-
-Neque a massa. Porttitor
-consectetuer commodo.</code></pre>
-</div>
-</td></tr></table>
 <h2>Entering non-keyboard characters</h2>
-<p>Characters that are unavailable on your keyboard can be entered as 
+<p>Characters that are unavailable on your keyboard can be entered as
 <a href="http://dev.w3.org/html5/html-author/charref">HTML character entities</a>
-e.g. enter <code>&amp;micro;</code> to display &micro;. The 
-<a href="#example-rimurc">example .rimurc file</a>
-includes replacements for common use-cases such as em dash, ellipsis and
-quotation characters.</p>
+e.g. enter <code>&amp;micro;</code> to display &micro;. The <a href="#example-rimurc">example .rimurc
+file</a> includes replacements for common use-cases such
+as em dash, ellipsis and quotation characters.</p>
 <h2 id="defs-warning">Use Replacement and Quote definitions sparingly</h2>
 <p>Adding new Replacement and Quote definitions changes the Rimu syntax
 which can produce unexpected results. It can also make your Rimu
@@ -750,12 +661,31 @@ TODO 10 examples +-2</code></pre>
 <p><b style="color: red; background-color: yellow;">TODO</b> 10 examples &plusmn;2</p>
 </div>
 </td></tr></table>
-<h2 id="scoped-css">Custom styling</h2>
+<h2 id="scoped-css">Including CSS in Rimu documents</h2>
+<p>You can include custom CSS styles in the body of a Rimu document using
+an HTML <code>style</code> element. Here are three use-cases:</p>
+<ol><li>Change existing styling. The following example changes the color of
+  all headers to red:<pre class="no-highlight"><code>&lt;style&gt;
+  h1, h2, h3, h4, h5, h6 {
+    color: red;
+  }
+&lt;/style&gt;</code></pre>
+</li><li>Add a new block style. The following example puts a green border
+  around blocks with the <code>green-border</code> class:<pre class="no-highlight"><code>&lt;style&gt;
+  .green-border {
+    border: 5px solid green;
+  }
+&lt;/style&gt;
+
+.green-border
+Green is the color of envy.</code></pre>
+</li><li>Create new <a href="#themes">themes</a> and tweak existing themes.</li></ol><p><b>IMPORTANT</b>: The <code>style</code> element must not contain any blank lines because
+Rimu HTML block elements are terminated with a blank line</p>
 <div class="sidebar"><h4>Scoped styling removed from HTML5 spec 12-May-2016</h4>
 <p>The <code>scoped</code> attribute was <a href="https://github.com/whatwg/html/commit/c2a3b2a2e3db49c14b486a5e99acf7d10cfe8443">removed from the HTML5 spec in May
 2016</a>
 &ldquo;due to lack of implementer interest&rdquo;.  Consequently the examples
-below are, strictly speaking, illegal.  This is because the <code>style</code>
+above are, strictly speaking, illegal.  This is because the <code>style</code>
 element can now only reside inside the <code>head</code> element.  In practice
 however, all popular browsers allow <code>style</code> elements outside the
 <code>head</code> element (the styles from these elements are applied globally
@@ -767,34 +697,14 @@ used the <code>style</code> element <code>scoped</code> attribute.</p>
 <p>See also:</p>
 <ul><li><a href="http://stackoverflow.com/questions/28633038/what-is-the-current-state-of-the-scoped-attribute-for-the-style-element-in-htm">What is the current state of the “scoped” attribute for the style
   element in
-  HTML5?</a>.
+  HTML5?</a><blockquote><p>The primary goal of HTML5 was to formally specify the behavior that
+browsers have had implemented basically &ldquo;forever&rdquo; regardless of
+previous HTML specs. You've always been able to use a <code>&lt;style&gt;</code> tag
+anywhere within an HTML document, so with HTML5 you will still be able
+to. This will not change.</p></blockquote>
 </li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style">MDN
-  &lt;style&gt;</a>.
-</li><li><a href="http://stackoverflow.com/a/16844668/1136455">Using &lt;style&gt; tags in the &lt;body&gt; with other
-  HTML</a>.
-</li></ul></div>
-<p>You can include custom CSS styles in the body of a Rimu document using
-an HTML <code>style</code> element. Here are three use-cases:</p>
-<ol><li>Change existing styling. The following example changes the color of
-  all headers to red:
-<pre class="no-highlight"><code>&lt;style&gt;
-  h1, h2, h3, h4, h5, h6 {
-    color: red;
-  }
-&lt;/style&gt;</code></pre>
-</li><li>Add a new block style. The following example puts a green border
-  around blocks with the <code>green-border</code> class:
-<pre class="no-highlight"><code>&lt;style&gt;
-  .green-border {
-    border: 5px solid green;
-  }
-&lt;/style&gt;
-
-.green-border
-Green is the color of envy.</code></pre>
-</li><li>Create new <a href="#themes">themes</a> and tweak existing themes.
-</li></ol><p><b>IMPORTANT</b>: The <code>style</code> element must not contain any blank lines because
-Rimu HTML block elements are terminated with a blank line</p>
+  &lt;style&gt;</a>.</li><li><a href="http://stackoverflow.com/a/16844668/1136455">Using &lt;style&gt; tags in the &lt;body&gt; with other
+  HTML</a>.</li></ul></div>
 <h2>Themes</h2>
 <p>A <em>theme</em> is the overall typographical style of the rendered HTML
 document.  You can tailor the theme using <a href="#scoped-css">custom CSS style
@@ -953,8 +863,7 @@ A MathML block formula:
 </td></tr></table>
 <ul><li>Macro expansion has been disabled in LaTeX formulas to stop <code>{i=0}</code>
   and <code>{2}</code> in the LaTeX formualae from being mistaken for Rimu macro
-  invocations.
-</li></ul><p>See the <a href="http://docs.mathjax.org/en/latest/">latest MathJax
+  invocations.</li></ul><p>See the <a href="http://docs.mathjax.org/en/latest/">latest MathJax
 documentation</a> to learn how to use
 MathJax.</p>
 <h2 id="conditional-inclusion">Conditional Inclusion</h2>
@@ -969,8 +878,8 @@ Macro `foo`
 must be blank.
 
 // Conditional inclusion of arbitrary blocks of Rimu source.
-// Assign `x` and `y` macro values and include some CSS if `foo`
-// and `bar` are non-blank.
+// Assign `x` and `y` macro values and include some CSS if
+// both `foo` and `bar` are non-blank.
 // Works because a Division Block does not emit div tags if they
 // have no HTML attributes.
 {foo=}.+skip
@@ -1072,17 +981,7 @@ tempor enim ornare. Mi nam id. Ornare mauris tempor. Pede mauris
 sed.  Scelerisque feugiat massa alias.</code></pre>
 </td>
 <td style="width: 50%; padding: 6px;">
-<ul><li>Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu
-</li><li>lorem dolor fusce nec.
-<ul><li>Sit pretium quisque in wisi lobortis.
-</li><li>Ac curabitur elementum.
-<ul><li>Platea ad diam arcu vitae fermentum.
-<ol><li>Eu lorem nulla.
-</li><li>In suspendisse at dapibus nostra est.
-<ol><li>Montes adipiscing sodales.
-</li></ol></li></ol></li><li>Pellentesque nibh sit.
-</li></ul></li></ul></li><li>Augue et dui malesuada purus.
-<pre class="no-highlight"><code>If a list item is followed
+<ul><li>Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu</li><li>lorem dolor fusce nec.<ul><li>Sit pretium quisque in wisi lobortis.</li><li>Ac curabitur elementum.<ul><li>Platea ad diam arcu vitae fermentum.<ol><li>Eu lorem nulla.</li><li>In suspendisse at dapibus nostra est.<ol><li>Montes adipiscing sodales.</li></ol></li></ol></li><li>Pellentesque nibh sit.</li></ul></li></ul></li><li>Augue et dui malesuada purus.<pre class="no-highlight"><code>If a list item is followed
 by an indented paragraph the
 indented paragraph is
 included in the list item.</code></pre>
@@ -1095,13 +994,10 @@ syntax was a deliberate design decision:</p>
 <ul><li>A large number of formatting options (e.g. for headers and footers;
   cell widths, heights, alignment and spans) are required to
   accommodate all but the simplest of tables. This makes for a complex
-  and noisy syntax &mdash; precisely what we're trying to avoid.
-</li><li>Coming up with a syntax that is both recognizably tabular and easily
+  and noisy syntax &mdash; precisely what we're trying to avoid.</li><li>Coming up with a syntax that is both recognizably tabular and easily
   written is difficult &mdash; imagine trying to write the above example in
-  a way that maintains the side-by-side cell layout.
-</li><li>At first blush tables come across as a hugely useful feature, but
-  most documentation makes surprising little use of tables.
-</li></ul><p>See also <a href="#use-macros-to-create-tables">Use macros to create tables</a>.</p>
+  a way that maintains the side-by-side cell layout.</li><li>At first blush tables come across as a hugely useful feature, but
+  most documentation makes surprising little use of tables.</li></ul><p>See also <a href="#use-macros-to-create-tables">Use macros to create tables</a>.</p>
 <h2 class="use-macros-to-create-tables">Use macros to create tables</h2>
 <p>Creating tables with raw HTML is repetitive, time consuming and
 difficult to read.</p>
@@ -1145,11 +1041,9 @@ Rimu source</td>
 <td> Female</td></tr></table>
 </div>
 </td></tr></table>
-<ul><li><em>Block HTML elements</em> must be terminated with a blank line.
-</li><li>Double-dollar macro parameters are necessary because text formatting
+<ul><li><em>Block HTML elements</em> must be terminated with a blank line.</li><li>Double-dollar macro parameters are necessary because text formatting
   is not expanded and special characters are not escaped inside <a href="reference.html#block-html-elements">Block
-  HTML elements</a>.
-</li></ul><p>Macros can also be used to simplify columnar text layouts:</p>
+  HTML elements</a>.</li></ul><p>Macros can also be used to simplify columnar text layouts:</p>
 <h4>Columnar text layouts</h4>
 <table class="example bordered">
 <tr>
@@ -1236,7 +1130,7 @@ title.</p>
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('meta-macros-example')">&#x270e;</span>
 Rimu source</td>
 <td>
-<pre id="meta-macros-example-source" class="example-source no-highlight"><code>// toc macro generates section TOC entry, link macro, header macro.
+<pre id="meta-macros-example-source" class="example-source no-highlight"><code>// toc macro generates section TOC entry, link macro and header macro.
 // $1 = section ID, $2 = section title.
 {toc} = '{$1} = '&lt;#$1|$2&gt;' \
 {$1-header} = '.#$1
@@ -1272,25 +1166,19 @@ Link to {section1}.</code></pre>
 lines that end with a single-quote.</p>
 <h2>Macro tips</h2>
 <ul><li>Use the <code>&amp;vert;</code> character entity to display a <code>|</code> character inside
-  a macro parameter value.
-</li><li>Closing block delimiters must be explicit and cannot be sourced from
+  a macro parameter value.</li><li>Closing block delimiters must be explicit and cannot be sourced from
   a macro invocation (because Rimu elements are recognized before
-  macro expansion).
-</li><li>The contents of a macro can be rendered verbatim in a code block by
-  enabling macro expansion. For example:
-<pre class="no-highlight"><code>.-macros
+  macro expansion).</li><li>A macro invocation can be rendered verbatim in a code block by
+  disabling macro expansion. For example:<pre class="no-highlight"><code>.-macros
 ```
 {example-42}
 ```</code></pre>
-<p>The contents of <code>{example-42}</code> are not subject to further macro expansion.</p>
-</li><li>Definition elements cannot be prefixed with an Inclusion/Exclusion
-  macro (see <a href="#conditional-inclusion">Conditional Inclusion</a>).
-</li><li>Macro invocations in macro definition values are expanded when the
+</li><li>Macro definition elements cannot be prefixed with an Inclusion/Exclusion
+  macro (see <a href="#conditional-inclusion">Conditional Inclusion</a>).</li><li>Macro invocations in macro definition values are expanded when the
   macro is declared, not when it is invoked. You can defer evaluation
   until the macro is invoked by escaping macro invocations or (in the
   case of multi-line definitions) by using the <code>-macros</code> <em>Block
-  Attributes</em> option. For example this Rimu markup:
-<pre class="no-highlight"><code>{m1} = 'foo'
+  Attributes</em> option. For example this Rimu markup:<pre class="no-highlight"><code>{m1} = 'foo'
 {m2} = '{m1} \{m1}'
 {m2}
 
@@ -1342,20 +1230,11 @@ ordered list items.</code></pre>
 <td style="width:50%;">
 <div id="list-item-counters-example-rendered" class="example-rendered">
 <h4>Numbered labeled list</h4>
-<dl class="dl-numbered"><dt>One</dt><dd> Item one.
-</dd><dt>Two</dt><dd> Item two.
-</dd><dt>Three</dt><dd> Item three.
-</dd></dl><p class="dl-counter">labeled list items.</p>
+<dl class="dl-numbered"><dt>One</dt><dd>Item one.</dd><dt>Two</dt><dd>Item two.</dd><dt>Three</dt><dd>Item three.</dd></dl><p class="dl-counter">labeled list items.</p>
 <h4>Counted unordered list</h4>
-<ul><li>Item one.
-</li><li>Item two.
-</li><li>Item three.
-</li><li>Item four.
-</li></ul><p class="ul-counter">unordered list items.</p>
+<ul><li>Item one.</li><li>Item two.</li><li>Item three.</li><li>Item four.</li></ul><p class="ul-counter">unordered list items.</p>
 <h4>Counted ordered list</h4>
-<ol><li>Item one.
-</li><li>Item two.
-</li></ol><p class="ol-counter">ordered list items.</p>
+<ol><li>Item one.</li><li>Item two.</li></ol><p class="ol-counter">ordered list items.</p>
 </div>
 </td></tr></table>
 <h2>Include arbitrary elements in list items</h2>
@@ -1382,11 +1261,9 @@ Include a paragraph in the list item.
 </td>
 <td style="width:50%;">
 <div id="composite-list-item-example-rendered" class="example-rendered">
-<ul><li>First list item.
-<p>Include a paragraph in the list item.</p>
+<ul><li>First list item.<p>Include a paragraph in the list item.</p>
 <blockquote><p> And a Quoted paragraph.</p></blockquote>
-</li><li>Second list item.
-</li></ul></div>
+</li><li>Second list item.</li></ul></div>
 </td></tr></table>
 <p>This works because if a <a href="reference.html#fenced-blocks">Fenced Block</a>
 immediately follows a list item without any intervening blank lines
@@ -1451,25 +1328,18 @@ Three:: Item three.
 <td style="width:50%;">
 <div id="list-item-block-attributes-example-rendered" class="example-rendered">
 <ul><li>List item with green sidebar
-  styled Division block.
-<div class="sidebar" style="color:green"><p>Urna aliquam pid, pulvinar augue ut
+  styled Division block.<div class="sidebar" style="color:green"><p>Urna aliquam pid, pulvinar augue ut
 aenean enim cum lectus sed.</p>
 <p>Duis odio lectus, augue non egestas
 amet? Magna lectus?</p></div>
 </li><li>List item with verse styled
-  paragraph.
-<p class="verse">Urna aliquam pid,
+  paragraph.<p class="verse">Urna aliquam pid,
 pulvinar augue ut,
 aenean enim cum.</p>
 </li><li>List item with nested numbered
-  <a href="#example-list">labeled list</a>.
-<dl class="dl-numbered" id="example-list"><dt>One</dt><dd> Item one.
-</dd><dt>Two</dt><dd> Item two.
-</dd><dt>Three</dt><dd> Item three.
-</dd></dl>
+  <a href="#example-list">labeled list</a>.<dl class="dl-numbered" id="example-list"><dt>One</dt><dd>Item one.</dd><dt>Two</dt><dd>Item two.</dd><dt>Three</dt><dd>Item three.</dd></dl>
 </li><li>List item with bold Indented
-  paragraph.
-<pre style="font-weight:bold" class="no-highlight"><code>Duis in tincidunt rhoncus nascetur
+  paragraph.<pre style="font-weight:bold" class="no-highlight"><code>Duis in tincidunt rhoncus nascetur
 lacus!</code></pre>
 </li></ul></div>
 </td></tr></table>
@@ -1478,7 +1348,7 @@ lacus!</code></pre>
 to number top level <em>h2</em> and <em>h3</em> sub-sections. For example:</p>
 <pre class="no-highlight"><code>rimuc --styled --section-numbers mydoc.rmu</code></pre>
 <p>The  <a href="reference.html#rimuc-command">rimuc</a> <code>--section-numbers</code> option is a shortcut for
-` = 'yes'`.</p>
+<code>{--section-numbers} = 'yes'</code>.</p>
 <h2>Nested Fenced Blocks</h2>
 <p><a href="reference.html#fenced-blocks">Fenced blocks</a> of the same type can be
 nested by using differing numbers of delimiter characters to
@@ -1558,32 +1428,25 @@ Rimu source</td>
 </td>
 <td style="width:50%;">
 <div id="list-ambiguity-example-rendered" class="example-rendered">
-<ul><li>List item.
-<ul><li>Rendered as nested list item.
-</li></ul></li><li>List item.
-<pre class="no-highlight"><code>* Rendered as code block.</code></pre>
+<ul><li>List item.<ul><li>Rendered as nested list item.</li></ul></li><li>List item.<pre class="no-highlight"><code>* Rendered as code block.</code></pre>
 </li></ul></div>
 </td></tr></table>
-<h3>URL captions</h3>
+<h3>URLs</h3>
 <ul><li>To include a <code>[</code> character in a Markdown URL or image captions, use
-  a <code>&amp;#x5b;</code> entity instead of the <code>[</code> character.
-<p>The caption in the following example displays as <code>the [Main] section</code>
+  a <code>&amp;#91;</code> entity instead of the <code>[</code> character.<p>The caption in the following example displays as <code>the [Main] section</code>
 (if the <code>[</code> character were used the caption would be <code>Main] section</code>):</p>
-<pre class="no-highlight"><code>[the &amp;#x5b;Main] section](#main)</code></pre>
+<pre class="no-highlight"><code>[the &amp;#91;Main] section](#main)</code></pre>
+</li><li>To include a <code>)</code> character in a Markdown URL , use
+  a <code>&amp;#41;</code> entity instead of the <code>)</code> character. For example:<pre class="no-highlight"><code>[wolves](#the_wolf_(lupus&amp;#41;)</code></pre>
 </li><li>To include a <code>&gt;</code> character in a Rimu URL or image captions, use a
-  <code>&amp;gt;</code> entity instead of the <code>&gt;</code> character.
-<p>The caption in the following example displays as <code>&lt;Header&gt;</code>
+  <code>&amp;gt;</code> entity instead of the <code>&gt;</code> character.<p>The caption in the following example displays as <code>&lt;Header&gt;</code>
 (if the <code>&gt;</code> character were used the caption would be <code>&lt;Header</code>):</p>
 <pre class="no-highlight"><code>&lt;#header|&lt;Header&amp;gt;&gt;</code></pre>
 </li></ul><h2>Controlling line breaks</h2>
-<p>There are three ways to inhibit text wrapping and preserve line
-breaks:</p>
+<p>There are three ways to preserve line breaks:</p>
 <ol><li>Terminate lines with a Rimu line break (a space followed by a
-  backslash character).
-</li><li>Terminate lines with an HTML break element (<code>&lt;br&gt;</code>).
-</li><li>Inject the <code>line-breaks</code> CSS class into a Rimu block element and
-  compile with the <code>rimuc</code> command <code>--styled</code> option.
-</li></ol><h4>Examples</h4>
+  backslash character).</li><li>Terminate lines with an HTML break element (<code>&lt;br&gt;</code>).</li><li>Inject the <code>line-breaks</code> CSS class into a Rimu block element and
+  compile with the <code>rimuc</code> command <code>--styled</code> option.</li></ol><h4>Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1807,10 +1670,8 @@ Joe Jetson</p></div>
 </div>
 </td></tr></table>
 <ul><li>The font parameters are set by enclosing the entire contents in a
-  Division Block.
-</li><li>If you want to control the print margins put something like this at
-  the start of the document:
-<pre class="no-highlight"><code>&lt;style&gt;
+  Division Block.</li><li>If you want to control the print margins put something like this at
+  the start of the document:<pre class="no-highlight"><code>&lt;style&gt;
 @page
 { margin: 25mm 25mm 25mm 25mm; }
 &lt;/style&gt;</code></pre>
@@ -1850,11 +1711,9 @@ h1, h2, h3, h4, h5, h6 {
   color: {primary-color};
 }
 ..</code></pre>
-<ul><li>Use <code>rimuc</code> to expand the macros, for example:
-<pre class="no-highlight"><code>rimuc --output main.css main.rmu</code></pre>
+<ul><li>Use <code>rimuc</code> to expand the macros, for example:<pre class="no-highlight"><code>rimuc --output main.css main.rmu</code></pre>
 </li><li>This technique can be combined with <em>conditional macro expansion</em> and all the other
-  Rimu <em>macro features</em>.
-</li></ul><h2>Passing arbitrary text to the output</h2>
+  Rimu <em>macro features</em>.</li></ul><h2>Passing arbitrary text to the output</h2>
 <p>To pass arbitrary blocks of text directly to the output disable all
 processing options. For example:</p>
 <pre class="no-highlight"><code>// Disable all processing inside Division Block.
@@ -1867,7 +1726,7 @@ function toggleToc() {
 window.onclick = toggleToc
 ..</code></pre>
 <p>To enable only macro expansion drop the <code>-macros</code> option
-(c.f. [General purpose macro processor](#general purpose macro processor)).</p>
+(c.f. <a href="#general-purpose-macro-processor">General purpose macro processor</a>).</p>
 
 </div>
 <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>
