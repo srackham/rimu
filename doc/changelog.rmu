@@ -4,6 +4,12 @@ See the [Git commit log](https://github.com/srackham/rimu/commits/)
 for more detailed information.
 
 
+## Version 9.1.2 (2017-04-07)
+- Rimu Playground: Show diagnostic messages.
+- Rimu Playground: Added section show/hide buttons.
+- Documentation polishing and errata.
+
+
 ## Version 9.1.1 (2017-01-01)
 - Allow multi-line default macro parameter values.
 - Added _Change Log_ to documentation sidebar _Links_.
