@@ -232,15 +232,17 @@ else if (styled && !outfile && files.length === 1) {
   outfile = files[0].substr(0, files[0].lastIndexOf('.')) + '.html'
 }
 
+const RESOURCE_TAG = 'resource:' // Tag for trusted files.
+
 if (styled) {
   // Envelope source files with header and footer.
-  files.unshift(path.resolve(__dirname, `${styled_name}-header.rmu`))
-  files.push(path.resolve(__dirname, `${styled_name}-footer.rmu`))
+  files.unshift(RESOURCE_TAG + path.resolve(__dirname, `${styled_name}-header.rmu`))
+  files.push(RESOURCE_TAG + path.resolve(__dirname, `${styled_name}-footer.rmu`))
 }
 
 // Prepend $HOME/.rimurc file if it exists.
 let home_dir = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']
-let rimurc =  path.resolve(home_dir, '.rimurc')
+let rimurc =  RESOURCE_TAG + path.resolve(home_dir, '.rimurc')
 if (!no_rimurc && fs.existsSync(rimurc)) {
   files.unshift(rimurc)
 }
@@ -256,6 +258,13 @@ if (html_replacement !== undefined) {
   options.htmlReplacement = html_replacement
 }
 for (let infile of files) {
+  if (infile.substr(0, RESOURCE_TAG.length) === RESOURCE_TAG) {
+    // Headers, footers and .rimurc are trusted.
+    infile = infile.substr(RESOURCE_TAG.length)  // Strip prefix.
+    options.safeMode = 0
+  } else {
+    options.safeMode = safe_mode
+  }
   if (!fs.existsSync(infile)) {
     die('source file does not exist: ' + infile)
   }
@@ -269,8 +278,6 @@ for (let infile of files) {
     html += source + '\n'
     continue
   }
-  // rimurc processed with default safeMode.
-  options.safeMode = infile === rimurc ? 0 : safe_mode
   if (lint) {
     options.callback = function(message): void {
       let msg = message.type + ': ' + infile + ': ' + message.text
