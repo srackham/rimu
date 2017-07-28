@@ -14,6 +14,7 @@ export class Reader {
     return this.lines[this.pos]
   }
   set cursor(value: string) {
+    console.assert(!this.eof())
     this.lines[this.pos] = value
   }
 
@@ -57,7 +58,7 @@ export class Reader {
   }
 
   skipBlankLines(): void {
-    while (this.cursor === '') {
+    while (!this.eof() && this.cursor === '') {
       this.next()
     }
   }

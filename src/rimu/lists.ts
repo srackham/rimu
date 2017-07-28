@@ -154,6 +154,7 @@ function readToNext(reader: Io.Reader, writer: Io.Writer): ItemState | null {
     if (reader.cursor === '') {
       // Encountered blank line.
       reader.next()
+      if (reader.eof()) return null
       if (reader.cursor === '') {
         // A second blank line terminates the list.
         return null
