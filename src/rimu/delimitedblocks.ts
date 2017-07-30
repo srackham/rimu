@@ -194,6 +194,8 @@ const DEFAULT_DEFS: Definition[] = [
 // Reset definitions to defaults.
 export function init(): void {
   defs = DEFAULT_DEFS.map(def => Utils.copy(def))
+  // Copy definition object fields.
+  defs.forEach((def, i) => def.expansionOptions = Utils.copy(DEFAULT_DEFS[i].expansionOptions))
 }
 
 // If the next element in the reader is a valid delimited block render it
