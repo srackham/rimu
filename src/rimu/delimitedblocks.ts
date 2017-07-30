@@ -145,7 +145,7 @@ const DEFAULT_DEFS: Definition[] = [
       let buffer = text.split('\n')
       for (let i in buffer) {
         // Strip first line indent width or up to first non-space character.
-        let indent = buffer[i].search(/\S/)
+        let indent = buffer[i].search(/\S|$/)
         if (indent > first_indent) indent = first_indent
         buffer[i] = buffer[i].slice(indent)
       }

@@ -11,6 +11,7 @@ export class Reader {
   }
 
   get cursor(): string {
+    console.assert(!this.eof())
     return this.lines[this.pos]
   }
   set cursor(value: string) {
