@@ -2103,6 +2103,15 @@
         }
     },
     {
+        "description": "reset reenables paragraph spans expansions disabled in previous test",
+        "input": "**Hello**",
+        "expectedOutput": "<p><strong>Hello</strong></p>",
+        "expectedCallback": "",
+        "options": {
+            "reset": true
+        }
+    },
+    {
         "description": "division block with attribute",
         "input": "|division| = '<div class=\"noclass\">|</div>'\n..\nfoobar\n..",
         "expectedOutput": "<div class=\"noclass\"><p>foobar</p></div>",
