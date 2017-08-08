@@ -21,6 +21,8 @@ and Markdown.
   library declaration file, playground GUI, Vim syntax highlighter and
   a unit test suite.
 - MIT license.
+- There is also a [Kotlin port of
+  Rimu](https://github.com/srackham/rimu-kt/) for the JVM platform.
 
 
 ## Learn more
