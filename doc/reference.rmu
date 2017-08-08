@@ -1166,6 +1166,30 @@ Rimu provides elements for defining and invoking macros and includes
 features like macro parametrization, conditional processing and
 meta-programming.
 
+.-macros
+{macros-example} = '// Define some macros.
+{info} = '<span style="color:white;
+                       background-color:#006699;
+                       padding:2px 4px;
+                       border-radius:3px;
+                       font-weight:bold;">$1</span>'\
+{heads-up} = '{info|Heads up!}'\
+{note} = '{info|Note} <mark>$1</mark>'\
+{rimu-playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'\
+{sidebar} = '#### $1
+."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'\
+
+// Use the macros.
+{sidebar|Fun with Macros}
+..
+{heads-up} See the {rimu-playground} for documentation and hands-on
+experimentation.
+
+{note|This document is not yet finished.}
+..'
+
+{generate-rendered-example-2|macros-example}
+
 ### Macro definitions
 A macro definition assigns one or more lines of Rimu markup to a macro
 name.
@@ -1268,30 +1292,6 @@ Invocation syntax:
 - Macro definitions are not processed if the [safeMode API
   option](#api-options) is non-zero and bit 3 of [safeMode API
   option](#api-options) is not set.
-
-.-macros
-{macros-example} = '// Define some macros.
-{info} = '<span style="color:white;
-                       background-color:#006699;
-                       padding:2px 4px;
-                       border-radius:3px;
-                       font-weight:bold;">$1</span>'\
-{heads-up} = '{info|Heads up!}'\
-{note} = '{info|Note} <mark>$1</mark>'\
-{rimu-playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'\
-{sidebar} = '#### $1
-."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'\
-
-// Use the macros.
-{sidebar|Fun with Macros}
-..
-{heads-up} See the {rimu-playground} for documentation and hands-on
-experimentation.
-
-{note|This document is not yet finished.}
-..'
-
-{generate-rendered-example-2|macros-example}
 
 ### Macro expansion
 - Macro invocations are expanded before other elements are processed.
