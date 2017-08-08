@@ -1462,6 +1462,53 @@ promote clarity and eliminate repetition.</p>
 <p>Rimu provides elements for defining and invoking macros and includes
 features like macro parametrization, conditional processing and
 meta-programming.</p>
+<h4>Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header" style="width:10%;">
+<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('macros-example')">&#x270e;</span>
+Rimu source</td>
+<td>
+<pre id="macros-example-source" class="example-source no-highlight"><code>// Define some macros.
+{info} = '&lt;span style="color:white;
+                       background-color:#006699;
+                       padding:2px 4px;
+                       border-radius:3px;
+                       font-weight:bold;"&gt;$1&lt;/span&gt;'
+{heads-up} = '{info|Heads up!}'
+{note} = '{info|Note} &lt;mark&gt;$1&lt;/mark&gt;'
+{rimu-playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'
+{sidebar} = '#### $1
+."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'
+
+// Use the macros.
+{sidebar|Fun with Macros}
+..
+{heads-up} See the {rimu-playground} for documentation and hands-on
+experimentation.
+
+{note|This document is not yet finished.}
+..</code></pre>
+<textarea id="macros-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('macros-example')"></textarea>
+</td>
+</tr>
+<tr><td class="example-header" style="width:10%;">Rendered HTML</td>
+<td>
+<div id="macros-example-rendered" class="example-rendered">
+<h4>Fun with Macros</h4>
+<div style="padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"><p><span style="color:white;
+                       background-color:#006699;
+                       padding:2px 4px;
+                       border-radius:3px;
+                       font-weight:bold;">Heads up!</span> See the <a href="http://srackham.github.io/rimu/rimuplayground.html">Rimu Playground</a> for documentation and hands-on
+experimentation.</p>
+<p><span style="color:white;
+                       background-color:#006699;
+                       padding:2px 4px;
+                       border-radius:3px;
+                       font-weight:bold;">Note</span> <mark>This document is not yet finished.</mark></p></div>
+</div>
+</td></tr></table>
 <h3>Macro definitions</h3>
 <p>A macro definition assigns one or more lines of Rimu markup to a macro
 name.</p>
@@ -1520,54 +1567,7 @@ name.</p>
   escaped with a backslash character (otherwise they will be mistaken
   for the macro's closing brace).</li><li>Macro definitions are not processed if the <a href="#api-options">safeMode API
   option</a> is non-zero and bit 3 of <a href="#api-options">safeMode API
-  option</a> is not set.</li></ul><h4>Examples</h4>
-<table class="example bordered">
-<tr>
-<td class="example-header" style="width:10%;">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('macros-example')">&#x270e;</span>
-Rimu source</td>
-<td>
-<pre id="macros-example-source" class="example-source no-highlight"><code>// Define some macros.
-{info} = '&lt;span style="color:white;
-                       background-color:#006699;
-                       padding:2px 4px;
-                       border-radius:3px;
-                       font-weight:bold;"&gt;$1&lt;/span&gt;'
-{heads-up} = '{info|Heads up!}'
-{note} = '{info|Note} &lt;mark&gt;$1&lt;/mark&gt;'
-{rimu-playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'
-{sidebar} = '#### $1
-."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'
-
-// Use the macros.
-{sidebar|Fun with Macros}
-..
-{heads-up} See the {rimu-playground} for documentation and hands-on
-experimentation.
-
-{note|This document is not yet finished.}
-..</code></pre>
-<textarea id="macros-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('macros-example')"></textarea>
-</td>
-</tr>
-<tr><td class="example-header" style="width:10%;">Rendered HTML</td>
-<td>
-<div id="macros-example-rendered" class="example-rendered">
-<h4>Fun with Macros</h4>
-<div style="padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"><p><span style="color:white;
-                       background-color:#006699;
-                       padding:2px 4px;
-                       border-radius:3px;
-                       font-weight:bold;">Heads up!</span> See the <a href="http://srackham.github.io/rimu/rimuplayground.html">Rimu Playground</a> for documentation and hands-on
-experimentation.</p>
-<p><span style="color:white;
-                       background-color:#006699;
-                       padding:2px 4px;
-                       border-radius:3px;
-                       font-weight:bold;">Note</span> <mark>This document is not yet finished.</mark></p></div>
-</div>
-</td></tr></table>
-<h3>Macro expansion</h3>
+  option</a> is not set.</li></ul><h3>Macro expansion</h3>
 <ul><li>Macro invocations are expanded before other elements are processed.</li><li>Macro invocations are processed as <a href="#inline-elements">Inline
   elements</a> with one exception: If a block element
   begins with a Macro Invocation that is wholly contained on the first
