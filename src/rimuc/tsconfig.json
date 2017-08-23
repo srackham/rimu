@@ -7,7 +7,6 @@
     "strictNullChecks": true
   },
   "files": [
-    "node.d.ts",
     "rimu.d.ts",
     "rimuc.ts"
   ]

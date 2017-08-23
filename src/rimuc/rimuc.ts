@@ -3,8 +3,8 @@
   Run 'node rimu.js --help' for details.
 */
 
-import path = require('path')
-import fs = require('fs')
+import * as fs from 'fs'
+import * as path from 'path'
 import Rimu = require('./rimu')
 
 const MANPAGE = `NAME
@@ -248,10 +248,10 @@ if (!no_rimurc && fs.existsSync(rimurc)) {
 }
 
 // Convert Rimu source files to HTML.
-let html = ''
+let output = ''
 let errors = 0
 if (source !== '') {
-  html += Rimu.render(source) + '\n'; // --prepend options source.
+  output += Rimu.render(source) + '\n'; // --prepend options source.
 }
 let options: Rimu.Options = {}
 if (html_replacement !== undefined) {
@@ -275,7 +275,7 @@ for (let infile of files) {
   }
   let ext = infile.split('.').pop()
   if (ext === 'html') {
-    html += source + '\n'
+    output += source + '\n'
     continue
   }
   if (lint) {
@@ -290,14 +290,14 @@ for (let infile of files) {
       }
     }
   }
-  html += Rimu.render(source, options) + '\n'
+  output += Rimu.render(source, options) + '\n'
 }
-html = html.trim()
+output = output.trim()
 if (!outfile || outfile === '-') {
-  process.stdout.write(html)
+  process.stdout.write(output)
 }
 else {
-  fs.writeFileSync(outfile, html)
+  fs.writeFileSync(outfile, output)
 }
 if (errors) {
   process.exit(1)
