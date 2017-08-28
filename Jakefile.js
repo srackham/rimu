@@ -139,37 +139,41 @@ task('test', ['build-rimu', 'build-rimuc'], {async: true}, function() {
   exec(commands, complete)
 })
 
-desc(`Compile and bundle Rimu to (unminified) JavaScript library.`)
+desc(`Compile and bundle rimu.js and rimu.min.js libraries and generate .map files.`)
 task('build-rimu', [RIMU_LIB])
 
 file(RIMU_LIB, RIMU_SRC, {async: true}, function() {
-  exec('webpack -d', complete)
+  exec('webpack --config ./src/rimu/webpack.config.js', complete)
 })
 
-desc(`Compile and bundle Rimu to minified JavaScript library.`)
-task('build-rimu-min', [RIMU_LIB_MIN])
+// DEPRECATED: Webpack builds rimu.min.js
+// desc(`Compile and bundle Rimu to minified JavaScript library.`)
+// task('build-rimu-min', [RIMU_LIB_MIN])
 
-file(RIMU_LIB_MIN, RIMU_SRC.concat('./package.json'), {async: true}, function() {
-  exec('webpack --optimize-minimize --output-filename ' + RIMU_LIB_MIN, function() {
-    // Prepend package name and version comment to minified library file.
-    var header = `/* ${pkg.name} ${pkg.version} (${pkg.repository.url}) */`
-    shelljs.ShellString(`${header}\n${shelljs.cat(RIMU_LIB_MIN)}`).to(RIMU_LIB_MIN)
-    complete()
-  })
-})
+// DEPRECATED: Webpack builds rimu.min.js
+// file(RIMU_LIB_MIN, RIMU_SRC.concat('./package.json'), {async: true}, function() {
+//   exec('webpack --optimize-minimize --output-filename ' + RIMU_LIB_MIN, function() {
+//     // Prepend package name and version comment to minified library file.
+//     var header = `/* ${pkg.name} ${pkg.version} (${pkg.repository.url}) */`
+//     shelljs.ShellString(`${header}\n${shelljs.cat(RIMU_LIB_MIN)}`).to(RIMU_LIB_MIN)
+//     complete()
+//   })
+// })
 
-desc(`Compile rimuc to JavaScript executable.`)
+desc(`Compile rimuc to JavaScript executable and generate .map file.`)
 task('build-rimuc', {async: true}, function() {
-  shelljs.cp('-f', RIMU_TSD, 'src/rimuc/')  // Kludge: Because there is no way to redirect module references.
-  exec(`tsc --project src/rimuc`, function() {
-    shelljs.ShellString(`#!/usr/bin/env node\n${shelljs.cat(RIMUC)}`).to(RIMUC) // Prepend Shebang line.
-    shelljs.chmod('+x', RIMUC)
-    complete()
-  })
+  shelljs.cp('-f', RIMU_TSD, 'src/rimuc/')  // Kludge: Because there is no way to redirect relative module paths.
+  exec(`tsc --project src/rimuc`, complete)
+  // DEPRECATED: Adding shebang will invalidate the rimu.js.map file.
+  // exec(`tsc --project src/rimuc`, function() {
+  //   shelljs.ShellString(`#!/usr/bin/env node\n${shelljs.cat(RIMUC)}`).to(RIMUC) // Prepend Shebang line.
+  //   shelljs.chmod('+x', RIMUC)
+  //   complete()
+  // })
 })
 
 desc(`Generate HTML documentation`)
-task('html-docs', ['build-rimu-min'], {async: true}, function() {
+task('html-docs', ['build-rimu'], {async: true}, function() {
   let commands = DOCS.map(doc =>
     'node ' + RIMUC +
     ' --styled --lint --no-rimurc --theme default --custom-toc' +
@@ -229,7 +233,7 @@ task('push', ['test'], {async: true}, function() {
 })
 
 desc(`Publish to npm.`)
-task('publish-npm', {async: true}, ['test', 'build-rimu-min'], function() {
+task('publish-npm', {async: true}, ['test', 'build-rimu'], function() {
   exec('npm publish', complete)
 })
 
@@ -237,7 +241,7 @@ desc(`Rebuild and validate documentation then commit and publish to GitHub Pages
 task('release-gh-pages', ['build-gh-pages', 'commit-gh-pages', 'push-gh-pages'])
 
 desc(`Generate documentation and copy to local gh-pages repo`)
-task('build-gh-pages', ['build-rimu-min', 'html-docs'], function() {
+task('build-gh-pages', ['build-rimu', 'html-docs'], function() {
   shelljs.cp('-f', HTML.concat(RIMU_LIB_MIN), GH_PAGES_DIR)
 })
 
