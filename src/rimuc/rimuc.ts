@@ -5,7 +5,7 @@
 
 import * as fs from 'fs'
 import * as path from 'path'
-import Rimu = require('./rimu')
+import * as rimu from './rimu'
 
 const MANPAGE = `NAME
   rimuc - convert Rimu source to HTML
@@ -251,9 +251,9 @@ if (!no_rimurc && fs.existsSync(rimurc)) {
 let output = ''
 let errors = 0
 if (source !== '') {
-  output += Rimu.render(source) + '\n'; // --prepend options source.
+  output += rimu.render(source) + '\n'; // --prepend options source.
 }
-let options: Rimu.Options = {}
+let options: rimu.Options = {}
 if (html_replacement !== undefined) {
   options.htmlReplacement = html_replacement
 }
@@ -290,7 +290,7 @@ for (let infile of files) {
       }
     }
   }
-  output += Rimu.render(source, options) + '\n'
+  output += rimu.render(source, options) + '\n'
 }
 output = output.trim()
 if (!outfile || outfile === '-') {
