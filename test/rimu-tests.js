@@ -1,6 +1,6 @@
-var test = require('tape');
-var Rimu = require('../bin/rimu.js');
-var fs = require('fs')
+const test = require('tape');
+const Rimu = require('../bin/rimu.js');
+const fs = require('fs');
 
 test('API check', function (t) {
 
@@ -22,10 +22,10 @@ function catchLint(message) { // Should never be called.
 test('rimu', function (t) {
 
   // Execute tests specified in JSON file.
-  var data = fs.readFileSync('./test/rimu-tests.json')
-  var tests = JSON.parse(data)
+  const data = fs.readFileSync('./test/rimu-tests.json');
+  const tests = JSON.parse(data);
   tests.forEach(function (e) {
-    var msg = '';
+    let msg = '';
     if (e.expectedCallback === '') {
       e.options.callback = catchLint;
     } else {
@@ -33,7 +33,7 @@ test('rimu', function (t) {
         msg = message.type + ': ' + message.text;
       }
     }
-    var rendered = Rimu.render(e.input, e.options)
+    let rendered = Rimu.render(e.input, e.options)
     t.equal(rendered, e.expectedOutput, e.description);
     if (e.expectedCallback !== '') {
       t.equal(msg.slice(0, e.expectedCallback.length), e.expectedCallback, e.description);

@@ -1,8 +1,8 @@
-var test = require('tape');
-var exec = require('child_process').exec;
-var fs = require('fs')
+const test = require('tape');
+const exec = require('child_process').exec;
+const fs = require('fs');
 
-var test_descriptors = []
+const test_descriptors = [];
 
 // source: Rimu source.
 // options: rimuc command options.
@@ -10,7 +10,7 @@ var test_descriptors = []
 function rimuc_exec(source, options, callback) {
   source = source.replace(/\n/g, '\\n');
   source = source.replace(/"/g, '\\x22');
-  var command = '`which echo` -e "' + source + '" | ./bin/rimuc.js --no-rimurc ' + (options || '');
+  const command = '`which echo` -e "' + source + '" | node ./bin/rimuc.js --no-rimurc ' + (options || '');
   exec(command, function (error, stdout, stderr) {
     callback(stdout + stderr, error);
   })
@@ -34,8 +34,8 @@ test('rimuc', function (t) {
   t.plan(23);
 
   // Execute tests specified in JSON file.
-  var data = fs.readFileSync('./test/rimuc-tests.json')
-  var tests = JSON.parse(data)
+  const data = fs.readFileSync('./test/rimuc-tests.json');
+  const tests = JSON.parse(data);
   tests.forEach(function (e) {
     switch (e.predicate) {
       case "equals":
