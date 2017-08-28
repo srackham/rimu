@@ -7,15 +7,7 @@
 
  */
 
-// Use this in a nodejs application.
-// Compiles using rimu.d.ts typings from rimu npm package.
+import * as rimu from 'rimu'
 
-import Rimu = require('rimu');
-
-// Use this in a generic application.
-// Compiles using rimu.d.ts typings located in current directory.
-
-// import Rimu = require('./rimu');
-
-console.log(Rimu.render('Hello *Rimu*!', {safeMode:1}));
+console.log(rimu.render('Hello *Rimu*!', {safeMode: 1}))
 
