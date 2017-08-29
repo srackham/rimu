@@ -242,9 +242,9 @@ if (styled) {
 
 // Prepend $HOME/.rimurc file if it exists.
 let home_dir = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']
-let rimurc =  RESOURCE_TAG + path.resolve(home_dir, '.rimurc')
+let rimurc =  path.resolve(home_dir, '.rimurc')
 if (!no_rimurc && fs.existsSync(rimurc)) {
-  files.unshift(rimurc)
+  files.unshift(RESOURCE_TAG + rimurc)
 }
 
 // Convert Rimu source files to HTML.
