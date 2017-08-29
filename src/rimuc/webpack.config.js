@@ -12,7 +12,7 @@ module.exports = {
   },
   entry: path.resolve(__dirname, 'rimuc.ts'),
   externals: {
-    './rimu': 'commonjs ./rimu',
+    'rimu': 'commonjs ./rimu',
   },
   output: {
     path: path.resolve(__dirname, '../../bin'),

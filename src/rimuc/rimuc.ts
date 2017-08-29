@@ -5,7 +5,7 @@
 
 import * as fs from 'fs'
 import * as path from 'path'
-import * as rimu from './rimu'
+import * as rimu from 'rimu'
 
 const MANPAGE = `NAME
   rimuc - convert Rimu source to HTML

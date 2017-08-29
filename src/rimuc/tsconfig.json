@@ -5,10 +5,14 @@
     "outDir": "../../bin",
     "module": "commonjs",
     "noImplicitAny": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "baseUrl": ".", // Non-relative module paths are relative to baseUrl.
+    "paths": {
+      // Map module rimu to ../../typings/rimu.d.ts
+      "rimu": [ "../../typings/rimu.d.ts" ]
+    }
   },
   "files": [
-    "rimu.d.ts",
     "rimuc.ts"
   ]
 }
