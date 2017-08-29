@@ -162,8 +162,9 @@ file(RIMU_LIB, RIMU_SRC, {async: true}, function() {
 
 desc(`Compile rimuc to JavaScript executable and generate .map file.`)
 task('build-rimuc', {async: true}, function() {
-  shelljs.cp('-f', RIMU_TSD, 'src/rimuc/')  // Kludge: Because there is no way to redirect relative module paths.
-  exec(`tsc --project src/rimuc`, complete)
+  exec('webpack --config ./src/rimuc/webpack.config.js', complete)
+  // shelljs.cp('-f', RIMU_TSD, 'src/rimuc/')  // Kludge: Because there is no way to redirect relative module paths.
+  // exec(`tsc --project src/rimuc`, complete)
   // DEPRECATED: Adding shebang will invalidate the rimu.js.map file.
   // exec(`tsc --project src/rimuc`, function() {
   //   shelljs.ShellString(`#!/usr/bin/env node\n${shelljs.cat(RIMUC)}`).to(RIMUC) // Prepend Shebang line.

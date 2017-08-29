@@ -1,9 +1,7 @@
 // Build rimu.js, rimu.min.js modules and their source .map files.
-// This script resides in the ./src/rimu/ directory along with tsconfig.json
 
 let path = require('path')
 let webpack = require('webpack');
-// let pkg = require('../../package.json')
 
 module.exports = {
   entry: {
