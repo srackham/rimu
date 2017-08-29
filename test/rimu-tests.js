@@ -1,5 +1,5 @@
 const test = require('tape');
-const Rimu = require('../bin/rimu.js');
+const Rimu = require('../lib/rimu.js');
 const fs = require('fs');
 
 test('API check', function (t) {

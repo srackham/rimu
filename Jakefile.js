@@ -14,8 +14,8 @@ let child_process = require('child_process')
 
 /* Inputs and outputs */
 
-let RIMU_LIB = 'bin/rimu.js'
-let RIMU_LIB_MIN = 'bin/rimu.min.js'
+let RIMU_LIB = 'lib/rimu.js'
+let RIMU_LIB_MIN = 'lib/rimu.min.js'
 let RIMU_SRC = shelljs.ls('src/rimu/*.ts')
 let RIMU_TSD = 'typings/rimu.d.ts'
 let TESTS = shelljs.ls('test/*.js')

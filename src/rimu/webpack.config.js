@@ -10,7 +10,7 @@ module.exports = {
   },
   devtool: 'source-map',
   output: {
-    path: path.resolve(__dirname, '../../bin'),
+    path: path.resolve(__dirname, '../../lib'),
     filename: '[name].js',
     library: 'Rimu',
     libraryTarget: 'umd',

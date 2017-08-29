@@ -13,15 +13,15 @@
   "engines": {
     "node": ">=0.8"
   },
-  "main": "bin/rimu.js",
+  "main": "lib/rimu.js",
   "bin": {
     "rimuc": "bin/rimuc.js"
   },
   "files": [
     "LICENSE",
     "README.md",
-    "bin/rimu.js",
-    "bin/rimu.min.js",
+    "lib/rimu.js",
+    "lib/rimu.min.js",
     "bin/rimuc.js",
     "bin/header.rmu",
     "bin/footer.rmu",
