@@ -150,77 +150,77 @@ let source = ''
 let outfile: string | undefined
 let arg: string | undefined
 outer:
-    while (!!(arg = process.argv.shift())) {
-      switch (arg) {
-        case '--help':
-        case '-h':
-          console.log('\n' + MANPAGE)
-          process.exit()
-          break
-        case '--lint':
-        case '-l':
-          lint = true
-          break
-        case '--output':
-        case '-o':
-          outfile = process.argv.shift()
-          if (!outfile) {
-            die('missing --output file name')
-          }
-          break
-        case '--prepend':
-        case '-p':
-          source += process.argv.shift() + '\n'
-          break
-        case '--no-rimurc':
-          no_rimurc = true
-          break
-        case '--safe-mode':
-        case '--safeMode':  // Deprecated in Rimu 7.1.0.
-          safe_mode = parseInt(process.argv.shift() || '99', 10)
-          if (safe_mode < 0 || safe_mode > 15) {
-            die('illegal --safe-mode option value')
-          }
-          break
-        case '--html-replacement':
-        case '--htmlReplacement': // Deprecated in Rimu 7.1.0.
-          html_replacement = process.argv.shift()
-          break
-        case '--styled':
-        case '-s':
-          styled = true
-          break
-        // Styling macro definitions shortcut options.
-        case '--highlightjs':
-        case '--mathjax':
-        case '--section-numbers':
-        case '--theme':
-        case '--title':
-        case '--lang':
-        case '--toc': // DEPRECATED
-        case '--sidebar-toc':
-        case '--dropdown-toc':
-        case '--custom-toc':
-          let macro_value = ['--lang', '--title', '--theme'].indexOf(arg) > -1 ? process.argv.shift() : 'true'
-          source += '{' + arg + '}=\'' + macro_value + '\'\n'
-          break
-        case '--styled-name':
-          styled_name = process.argv.shift() || ''
-          if (!styled_name) {
-            die('missing --styled-name')
-          }
-          if (['classic', 'flex', 'v8'].indexOf(styled_name) === -1) {
-            die('illegal --styled-name: ' + styled_name)
-          }
-          break
-        default:
-          if (arg[0] === '-') {
-            die('illegal option: ' + arg)
-          }
-          process.argv.unshift(arg); // argv contains source file names.
-          break outer
-      }
+  while (!!(arg = process.argv.shift())) {
+    switch (arg) {
+      case '--help':
+      case '-h':
+        console.log('\n' + MANPAGE)
+        process.exit()
+        break
+      case '--lint':
+      case '-l':
+        lint = true
+        break
+      case '--output':
+      case '-o':
+        outfile = process.argv.shift()
+        if (!outfile) {
+          die('missing --output file name')
+        }
+        break
+      case '--prepend':
+      case '-p':
+        source += process.argv.shift() + '\n'
+        break
+      case '--no-rimurc':
+        no_rimurc = true
+        break
+      case '--safe-mode':
+      case '--safeMode':  // Deprecated in Rimu 7.1.0.
+        safe_mode = parseInt(process.argv.shift() || '99', 10)
+        if (safe_mode < 0 || safe_mode > 15) {
+          die('illegal --safe-mode option value')
+        }
+        break
+      case '--html-replacement':
+      case '--htmlReplacement': // Deprecated in Rimu 7.1.0.
+        html_replacement = process.argv.shift()
+        break
+      case '--styled':
+      case '-s':
+        styled = true
+        break
+      // Styling macro definitions shortcut options.
+      case '--highlightjs':
+      case '--mathjax':
+      case '--section-numbers':
+      case '--theme':
+      case '--title':
+      case '--lang':
+      case '--toc': // DEPRECATED
+      case '--sidebar-toc':
+      case '--dropdown-toc':
+      case '--custom-toc':
+        let macro_value = ['--lang', '--title', '--theme'].indexOf(arg) > -1 ? process.argv.shift() : 'true'
+        source += '{' + arg + '}=\'' + macro_value + '\'\n'
+        break
+      case '--styled-name':
+        styled_name = process.argv.shift() || ''
+        if (!styled_name) {
+          die('missing --styled-name')
+        }
+        if (['classic', 'flex', 'v8'].indexOf(styled_name) === -1) {
+          die('illegal --styled-name: ' + styled_name)
+        }
+        break
+      default:
+        if (arg[0] === '-') {
+          die('illegal option: ' + arg)
+        }
+        process.argv.unshift(arg); // argv contains source file names.
+        break outer
     }
+  }
 
 // process.argv contains the list of source files.
 let files = process.argv
@@ -242,7 +242,7 @@ if (styled) {
 
 // Prepend $HOME/.rimurc file if it exists.
 let home_dir = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']
-let rimurc =  path.resolve(home_dir, '.rimurc')
+let rimurc = path.resolve(home_dir, '.rimurc')
 if (!no_rimurc && fs.existsSync(rimurc)) {
   files.unshift(RESOURCE_TAG + rimurc)
 }
@@ -279,7 +279,7 @@ for (let infile of files) {
     continue
   }
   if (lint) {
-    options.callback = function(message): void {
+    options.callback = function (message): void {
       let msg = message.type + ': ' + infile + ': ' + message.text
       if (msg.length > 120) {
         msg = msg.slice(0, 117) + '...'

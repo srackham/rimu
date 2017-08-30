@@ -84,11 +84,11 @@ export function render(text: string, inline = true): string {
         // [$]$ = 1st match group; <param-number> (1, 2..) = 2nd match group;
         // :[\]<default-param-value>$ = 3rd match group; <default-param-value> = 4th match group.
         const PARAM_RE = /\\?(\$\$?)(\d+)(\\?:(|[^]*?[^\\])\$)?/g
-        value = (value || '').replace(PARAM_RE, function (match: string, p1: string, p2: string, p3: string|undefined, p4: string): string {
+        value = (value || '').replace(PARAM_RE, function (match: string, p1: string, p2: string, p3: string | undefined, p4: string): string {
           if (match[0] === '\\') {  // Unescape escaped macro parameters.
             return match.slice(1)
           }
-          let param: string|undefined = paramsList[Number(p2) - 1]
+          let param: string | undefined = paramsList[Number(p2) - 1]
           param = param === undefined ? '' : param  // Unassigned parameters are replaced with a blank string.
           if (p3 !== undefined) {
             if (p3[0] === '\\') { // Unescape escaped default parameter.

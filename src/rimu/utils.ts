@@ -3,6 +3,7 @@ import * as Spans from './spans'
 
 export interface ExpansionOptions {
   [key: string]: boolean | undefined
+
   // Processing priority (highest to lowest): container, skip, spans and specials.
   // If spans is true then both spans and specials are processed.
   // They are assumed false if they are not explicitly defined.
@@ -18,9 +19,11 @@ export interface ExpansionOptions {
 export function trimLeft(s: string): string {
   return s.replace(/^\s+/g, '')
 }
+
 export function trimRight(s: string): string {
   return s.replace(/\s+$/g, '')
 }
+
 export function trim(s: string): string {
   return s.replace(/^\s+|\s+$/g, '')
 }
@@ -41,8 +44,7 @@ export function replaceSpecialChars(s: string): string {
 // if it starts with two '$' characters add spans to `expansionOptions`.
 export function replaceMatch(match: RegExpExecArray,
                              replacement: string,
-                             expansionOptions: ExpansionOptions = {}): string
-{
+                             expansionOptions: ExpansionOptions = {}): string {
   return replacement.replace(/(\${1,2})(\d)/g, function (): string {
     // Replace $1, $2 ... with corresponding match groups.
     if (arguments[1] === '$$') {
@@ -96,6 +98,7 @@ export namespace BlockAttributes {
   export let classes: string     // Space separated HTML class names.
   export let attributes: string  // HTML element attributes (incorporates 'style' and 'id' attributes).
   export let options: ExpansionOptions
+
   export function init(): void {
     classes = ''
     attributes = ''

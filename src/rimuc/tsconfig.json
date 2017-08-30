@@ -6,10 +6,13 @@
     "module": "commonjs",
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "baseUrl": ".", // Non-relative module paths are relative to baseUrl.
+    // Non-relative module paths are relative to baseUrl.
+    "baseUrl": ".",
     "paths": {
       // Map module rimu to ../../typings/rimu.d.ts
-      "rimu": [ "../../typings/rimu.d.ts" ]
+      "rimu": [
+        "../../typings/rimu.d.ts"
+      ]
     }
   },
   "files": [

@@ -86,7 +86,7 @@ export function setOption(name: string, value: any): void {
 export function htmlSafeModeFilter(html: string): string {
   /* tslint:disable:no-bitwise */
   switch (safeMode & 0x3) {
-  /* tslint:enable:no-bitwise */
+    /* tslint:enable:no-bitwise */
     case 0:   // Raw HTML (default behavior).
       return html
     case 1:   // Drop HTML.
