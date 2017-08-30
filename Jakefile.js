@@ -148,7 +148,10 @@ file(RIMU_LIB, RIMU_SRC, {async: true}, function() {
 
 desc(`Compile rimuc to JavaScript executable and generate .map file.`)
 task('build-rimuc', {async: true}, function() {
-  exec('webpack --config ./src/rimuc/webpack.config.js', complete)
+  exec('webpack --config ./src/rimuc/webpack.config.js', function() {
+    shelljs.chmod('+x', RIMUC)
+    complete()
+  })
 })
 
 desc(`Generate HTML documentation`)
