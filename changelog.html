@@ -309,7 +309,13 @@
 <h1>Rimu Markup Change Log</h1>
 <p>See the <a href="https://github.com/srackham/rimu/commits/">Git commit log</a>
 for more detailed information.</p>
-<h2>Version 9.1.3 (2017-08-08)</h2>
+<h2>Version 9.2.0 (2017-08-30)</h2>
+<ul><li>The build process has been revamped:<ul><li>Moved <code>rimu</code> library modules from <code>./bin/</code> to <code>./lib/</code>.</li><li>Build <code>rimu</code> library modules and <code>rimuc</code> command with separate Webpack
+    configuration files. Kludges previously handled by Jakefile tasks
+    are now handled by Webpack e.g. <code>rimuc</code> shebang line.</li><li>The build tasks now generates debug map files for <code>rimu</code> library and
+    <code>rimuc</code> command.</li></ul></li><li><strong>FIXED</strong>: <code>~/.rimurc</code> was not loaded by the <em>rimuc</em> command. Version 9.1.3
+  regression (August 2017).</li><li><strong>FIXED</strong>: Rinstate missing <em>rimuc</em> <code>--styled</code> option headers and footers in
+  npm package. Version 9.0.0 regression (August 2016).</li></ul><h2>Version 9.1.3 (2017-08-08)</h2>
 <ul><li>This release coincides with the first release of the <a href="https://github.com/srackham/rimu-kt/">Kotlin port of
   Rimu</a> for the JVM platform.</li><li>The Rimu test suite has been refactored and is now driven by JSON
   test descriptor files which are shared between the JavaScript and

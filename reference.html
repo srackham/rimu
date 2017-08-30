@@ -607,7 +607,7 @@ Use the <code>reset</code> option to restore the default state.</p>
 <pre class="javascript no-highlight"><code>var Rimu = require('rimu');
 var html= Rimu.render('Hello *Rimu*!', {safeMode:1});</code></pre>
 <p>HTML script tag example (the compiled and minified <code>rimu.min.js</code> library
-can be found in the installed Rimu npm package <code>./rimu/bin</code> folder):</p>
+can be found in the installed Rimu npm package <code>./rimu/lib</code> folder):</p>
 <pre class="xml no-highlight"><code>&lt;script src="rimu.min.js"&gt;&lt;/script&gt;
 &lt;script&gt;
   console.log(Rimu.render('Hello *Rimu*!', {reset:true, safeMode:2}));
