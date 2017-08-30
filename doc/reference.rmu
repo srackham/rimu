@@ -347,7 +347,7 @@ var html= Rimu.render('Hello *Rimu*!', {safeMode:1});
 ``
 
 HTML script tag example (the compiled and minified `rimu.min.js` library
-can be found in the installed Rimu npm package `./rimu/bin` folder):
+can be found in the installed Rimu npm package `./rimu/lib` folder):
 
 .xml
 ``
