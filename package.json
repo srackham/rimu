@@ -37,6 +37,7 @@
     "jake": "^8.0.15",
     "jshint": "^2.9.5",
     "jsonlint": "^1.6.2",
+    "raw-loader": "^0.5.1",
     "shelljs": "^0.7.8",
     "tape": "^4.8.0",
     "ts-loader": "^2.3.4",

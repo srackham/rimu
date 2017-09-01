@@ -134,6 +134,12 @@ function die(message: string): void {
   process.exit(1)
 }
 
+declare const require: (filename: string) => any
+
+function readResourceFile(name: string): string {
+  return require('./resources/' + name) // tslint:disable-line no-var-requires
+}
+
 let safe_mode = 0
 let html_replacement: string | undefined
 let styled = false
@@ -236,15 +242,15 @@ const RESOURCE_TAG = 'resource:' // Tag for trusted files.
 
 if (styled) {
   // Envelope source files with header and footer.
-  files.unshift(RESOURCE_TAG + path.resolve(__dirname, `${styled_name}-header.rmu`))
-  files.push(RESOURCE_TAG + path.resolve(__dirname, `${styled_name}-footer.rmu`))
+  files.unshift(`${RESOURCE_TAG}${styled_name}-header.rmu`)
+  files.push(`${RESOURCE_TAG}${styled_name}-footer.rmu`)
 }
 
 // Prepend $HOME/.rimurc file if it exists.
 let home_dir = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']
 let rimurc = path.resolve(home_dir, '.rimurc')
 if (!no_rimurc && fs.existsSync(rimurc)) {
-  files.unshift(RESOURCE_TAG + rimurc)
+  files.unshift(rimurc)
 }
 
 // Convert Rimu source files to HTML.
@@ -258,20 +264,19 @@ if (html_replacement !== undefined) {
   options.htmlReplacement = html_replacement
 }
 for (let infile of files) {
-  if (infile.substr(0, RESOURCE_TAG.length) === RESOURCE_TAG) {
-    // Headers, footers and .rimurc are trusted.
-    infile = infile.substr(RESOURCE_TAG.length)  // Strip prefix.
-    options.safeMode = 0
+  if (infile.startsWith(RESOURCE_TAG)) {
+    source = readResourceFile(infile.substr(RESOURCE_TAG.length))
+    options.safeMode = 0  // Resources are trusted.
   } else {
-    options.safeMode = safe_mode
-  }
-  if (!fs.existsSync(infile)) {
-    die('source file does not exist: ' + infile)
-  }
-  try {
-    source = fs.readFileSync(infile).toString()
-  } catch (e) {
-    die('source file permission denied: ' + infile)
+    options.safeMode = (infile === rimurc) ? 0 : safe_mode  // ~/.rimurc is trusted.
+    if (!fs.existsSync(infile)) {
+      die('source file does not exist: ' + infile)
+    }
+    try {
+      source = fs.readFileSync(infile).toString()
+    } catch (e) {
+      die('source file permission denied: ' + infile)
+    }
   }
   let ext = infile.split('.').pop()
   if (ext === 'html') {
