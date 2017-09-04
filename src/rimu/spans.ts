@@ -125,7 +125,7 @@ function preReplacements(text: string): string {
 
 // Replace replacements placeholders with replacements text from savedReplacements[].
 function postReplacements(text: string): string {
-  return text.replace(/\u0000|\u0001/g, function (match): string {
+  return text.replace(/[\u0000\u0001]/g, function (match): string {
     let fragment = savedReplacements.shift() as Fragment
     return (match === '\u0000') ? fragment.text : Utils.replaceSpecialChars(fragment.verbatim as string)
   })

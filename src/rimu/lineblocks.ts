@@ -29,10 +29,7 @@ let defs: Definition[] = [
       }
       // Stop if the macro value is the same as the invocation (to stop infinite recursion).
       let value = Macros.render(match[0], false)
-      if (value === match[0]) {
-        return false
-      }
-      return true
+      return value !== match[0]
     },
     filter: function (match: RegExpExecArray, reader: Io.Reader): string {
       // Insert the macro value into the reader just ahead of the cursor.
@@ -58,7 +55,7 @@ let defs: Definition[] = [
   // Quote definition.
   // quote = $1, openTag = $2, separator = $3, closeTag = $4
   {
-    match: /^(\S{1,2})\s*=\s*'([^\|]*)(\|{1,2})(.*)'$/,
+    match: /^(\S{1,2})\s*=\s*'([^|]*)(\|{1,2})(.*)'$/,
     filter: function (match: RegExpExecArray): string {
       if (Options.isSafeModeNz()) {
         return ''   // Skip if a safe mode is set.
@@ -106,7 +103,8 @@ let defs: Definition[] = [
   // Headers.
   // $1 is ID, $2 is header text.
   {
-    match: /^\\?((?:#|=){1,6})\s+(.+?)(?:\s+(?:#|=){1,6})?$/,
+    // TODO match suffix with prefix
+    match: /^\\?([#=]{1,6})\s+(.+?)(?:\s+[#=]{1,6})?$/,
     replacement: '<h$1>$$2</h$1>',
     filter: function (match: RegExpExecArray): string {
       match[1] = match[1].length.toString()  // Replace $1 with header number.
@@ -120,13 +118,13 @@ let defs: Definition[] = [
   // Block image: <image:src|alt>
   // src = $1, alt = $2
   {
-    match: /^\\?<image:([^\s\|]+)\|([^]+?)>$/,
+    match: /^\\?<image:([^\s|]+)\|([^]+?)>$/,
     replacement: '<img src="$1" alt="$2">',
   },
   // Block image: <image:src>
   // src = $1, alt = $1
   {
-    match: /^\\?<image:([^\s\|]+?)>$/,
+    match: /^\\?<image:([^\s|]+?)>$/,
     replacement: '<img src="$1" alt="$1">',
   },
   // DEPRECATED as of 3.4.0.
@@ -155,7 +153,7 @@ let defs: Definition[] = [
       // class names = $1, id = $2, css-properties = $3, html-attributes = $4, block-options = $5
       let text = match[0]
       text = Utils.replaceInline(text, {macros: true})
-      let m = /^\\?\.((?:\s*[a-zA-Z][\w\-]*)+)*(?:\s*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(".+?")?(?:\s*)?(\[.+\])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text)
+      let m = /^\\?\.((?:\s*[a-zA-Z][\w\-]*)+)*(?:\s*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(".+?")?(?:\s*)?(\[.+])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text)
       if (!m) {
         return false
       }

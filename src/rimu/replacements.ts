@@ -32,42 +32,42 @@ const DEFAULT_DEFS: Definition[] = [
   // Image: <image:src|alt>
   // src = $1, alt = $2
   {
-    match: /\\?<image:([^\s\|]+)\|([^]*?)>/g,
+    match: /\\?<image:([^\s|]+)\|([^]*?)>/g,
     replacement: '<img src="$1" alt="$2">'
   },
 
   // Image: <image:src>
   // src = $1, alt = $1
   {
-    match: /\\?<image:([^\s\|]+?)>/g,
+    match: /\\?<image:([^\s|]+?)>/g,
     replacement: '<img src="$1" alt="$1">'
   },
 
   // Image: ![alt](url)
   // alt = $1, url = $2
   {
-    match: /\\?!\[([^[]*?)\]\((\S+?)\)/g,
+    match: /\\?!\[([^[]*?)]\((\S+?)\)/g,
     replacement: '<img src="$2" alt="$1">'
   },
 
   // Email: <address|caption>
   // address = $1, caption = $2
   {
-    match: /\\?<(\S+@[\w\.\-]+)\|([^]+?)>/g,
+    match: /\\?<(\S+@[\w.\-]+)\|([^]+?)>/g,
     replacement: '<a href="mailto:$1">$$2</a>'
   },
 
   // Email: <address>
   // address = $1, caption = $1
   {
-    match: /\\?<(\S+@[\w\.\-]+)>/g,
+    match: /\\?<(\S+@[\w.\-]+)>/g,
     replacement: '<a href="mailto:$1">$1</a>'
   },
 
   // Link: [caption](url)
   // caption = $1, url = $2
   {
-    match: /\\?\[([^[]*?)\]\((\S+?)\)/g,
+    match: /\\?\[([^[]*?)]\((\S+?)\)/g,
     replacement: '<a href="$2">$$1</a>'
   },
 

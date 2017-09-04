@@ -30,7 +30,7 @@ export function trim(s: string): string {
 
 // http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
 export function escapeRegExp(s: string): string {
-  return s.replace(/[\-\/\\\^$*+?.()|\[\]{}]/g, '\\$&')
+  return s.replace(/[\-\/\\^$*+?.()|\[\]{}]/g, '\\$&')
 }
 
 export function replaceSpecialChars(s: string): string {

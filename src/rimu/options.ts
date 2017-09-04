@@ -38,9 +38,7 @@ export function isSafeModeNz(): boolean {
 
 // Return true if Macro Definitions are ignored.
 export function skipMacroDefs(): boolean {
-  /* tslint:disable:no-bitwise */
-  return safeMode !== 0 && !(safeMode & 0x8)
-  /* tslint:enable:no-bitwise */
+  return safeMode !== 0 && !(safeMode & 0x8)  // tslint:disable-line no-bitwise
 }
 
 // Return true if Block Attribute elements are ignored.

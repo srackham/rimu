@@ -42,7 +42,7 @@ const DEFAULT_DEFS: Definition[] = [
       if (options.skipMacroDefs()) {
         return ''   // Skip if a safe mode is set.
       }
-      let name = (match[0].match(/^\{([\w\-]+\??)\}/) as RegExpMatchArray)[1]  // Extract macro name from opening delimiter.
+      let name = (match[0].match(/^{([\w\-]+\??)}/) as RegExpMatchArray)[1]  // Extract macro name from opening delimiter.
       text = text.replace(/' *\\\n/g, '\'\n')            // Unescape line-continuations.
       text = text.replace(/(' *[\\]+)\\\n/g, '$1\n')     // Unescape escaped line-continuations.
       text = Utils.replaceInline(text, expansionOptions) // Expand macro invocations.
@@ -89,7 +89,7 @@ const DEFAULT_DEFS: Definition[] = [
   // Code block.
   {
     name: 'code',
-    openMatch: /^\\?(\-{2,}|`{2,})([\w\s-]*)$/, // $1 is delimiter text, $2 is optional class names.
+    openMatch: /^\\?(-{2,}|`{2,})([\w\s-]*)$/, // $1 is delimiter text, $2 is optional class names.
     openTag: '<pre><code>',
     closeTag: '</code></pre>',
     expansionOptions: {

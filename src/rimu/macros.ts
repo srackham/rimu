@@ -3,17 +3,17 @@ import * as Spans from './spans'
 
 // Matches macro invocation. $1 = name, $2 = params.
 // DEPRECATED: Matches existential macro invocations.
-const MATCH_MACRO = /\{([\w\-]+)([!=|?](?:|[^]*?[^\\]))?\}/
+const MATCH_MACRO = /{([\w\-]+)([!=|?](?:|[^]*?[^\\]))?}/
 // Matches all macro invocations. $1 = name, $2 = params.
 const MATCH_MACROS = RegExp('\\\\?' + MATCH_MACRO.source, 'g')
 // Matches a line starting with a macro invocation.
 export const MACRO_LINE = RegExp('^' + MATCH_MACRO.source + '.*$')
 // Match multi-line macro definition open delimiter. $1 is first line of macro.
-export const MACRO_DEF_OPEN = /^\\?\{[\w\-]+\??\}\s*=\s*'(.*)$/
+export const MACRO_DEF_OPEN = /^\\?{[\w\-]+\??}\s*=\s*'(.*)$/
 // Match multi-line macro definition open delimiter. $1 is last line of macro.
 export const MACRO_DEF_CLOSE = /^(.*)'$/
 // Match single-line macro definition. $1 = name, $2 = value.
-export const MACRO_DEF = /^\\?\{([\w\-]+\??)\}\s*=\s*'(.*)'$/
+export const MACRO_DEF = /^\\?{([\w\-]+\??)}\s*=\s*'(.*)'$/
 
 export interface Macro {
   name: string
@@ -75,7 +75,7 @@ export function render(text: string, inline = true): string {
       }
       return match
     }
-    params = params.replace(/\\\}/g, '}')   // Unescape escaped } characters.
+    params = params.replace(/\\}/g, '}')   // Unescape escaped } characters.
     switch (params[0]) {
       case '|': // Parametrized macro.
         let paramsList = params.slice(1).split('|')
