@@ -103,8 +103,7 @@ let defs: Definition[] = [
   // Headers.
   // $1 is ID, $2 is header text.
   {
-    // TODO match suffix with prefix
-    match: /^\\?([#=]{1,6})\s+(.+?)(?:\s+[#=]{1,6})?$/,
+    match: /^\\?([#=]{1,6})\s+(.+?)(?:\s+\1)?$/,
     replacement: '<h$1>$$2</h$1>',
     filter: function (match: RegExpExecArray): string {
       match[1] = match[1].length.toString()  // Replace $1 with header number.
