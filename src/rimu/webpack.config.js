@@ -5,8 +5,8 @@ let webpack = require('webpack');
 
 module.exports = {
   entry: {
-    'rimu': path.resolve(__dirname, 'main.ts'),
-    'rimu.min': path.resolve(__dirname, 'main.ts'),
+    'rimu': path.resolve(__dirname, 'rimu.ts'),
+    'rimu.min': path.resolve(__dirname, 'rimu.ts'),
   },
   devtool: 'source-map',
   output: {

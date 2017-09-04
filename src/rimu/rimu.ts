@@ -8,6 +8,8 @@
 import * as Api from './api'
 import * as Options from './options'
 
+export {RenderOptions as Options, CallbackMessage, CallbackFunction} from './options'
+
 /*
   The single public API which translates Rimu Markup to HTML:
 

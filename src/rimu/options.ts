@@ -12,12 +12,12 @@ export interface RenderOptions {
   callback?: CallbackFunction
 }
 
-interface CallbackMessage {
+export interface CallbackMessage {
   type: string
   text: string
 }
 
-type CallbackFunction = (message: CallbackMessage) => void
+export type CallbackFunction = (message: CallbackMessage) => void
 
 // Global option values.
 let safeMode: number

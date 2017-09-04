@@ -12,7 +12,7 @@
     "lineblocks.ts",
     "lists.ts",
     "macros.ts",
-    "main.ts",
+    "rimu.ts",
     "options.ts",
     "quotes.ts",
     "api.ts",
