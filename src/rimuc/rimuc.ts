@@ -127,6 +127,8 @@ STYLING MACROS AND CLASSES
   ul-counter       Prepend ul item counter to element content.
   ______________________________________________________________
 `
+const HOME_DIR = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']
+const RIMURC = path.resolve(HOME_DIR, '.rimurc')
 
 // Helpers.
 function die(message: string): void {
@@ -137,7 +139,7 @@ function die(message: string): void {
 declare const require: (filename: string) => any
 
 function readResourceFile(name: string): string {
-  return require('./resources/' + name) // tslint:disable-line no-var-requires
+  return require(`./resources/${name}`)
 }
 
 let safe_mode = 0
@@ -247,10 +249,8 @@ if (styled) {
 }
 
 // Prepend $HOME/.rimurc file if it exists.
-let home_dir = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']
-let rimurc = path.resolve(home_dir, '.rimurc')
-if (!no_rimurc && fs.existsSync(rimurc)) {
-  files.unshift(rimurc)
+if (!no_rimurc && fs.existsSync(RIMURC)) {
+  files.unshift(RIMURC)
 }
 
 // Convert Rimu source files to HTML.
@@ -268,7 +268,7 @@ for (let infile of files) {
     source = readResourceFile(infile.substr(RESOURCE_TAG.length))
     options.safeMode = 0  // Resources are trusted.
   } else {
-    options.safeMode = (infile === rimurc) ? 0 : safe_mode  // ~/.rimurc is trusted.
+    options.safeMode = (infile === RIMURC) ? 0 : safe_mode  // ~/.rimurc is trusted.
     if (!fs.existsSync(infile)) {
       die('source file does not exist: ' + infile)
     }
