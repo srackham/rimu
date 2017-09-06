@@ -1,135 +1,135 @@
 [
-    {
-        "description": "rimuc basic test",
-        "args": "",
-        "input": "*Hello World!*",
-        "expectedOutput": "<p><em>Hello World!</em></p>",
-        "predicate": "equals"
-    },
-    {
-        "description": "rimuc --prepend",
-        "args": "--prepend \"{x}='X'\"",
-        "input": "{x}",
-        "expectedOutput": "<p>X</p>",
-        "predicate": "equals"
-    },
-    {
-        "description": "rimuc --safe-mode 0",
-        "args": "--safe-mode 0",
-        "input": "<br>",
-        "expectedOutput": "<p><br></p>",
-        "predicate": "equals"
-    },
-    {
-        "description": "rimuc --safe-mode 1",
-        "args": "--safe-mode 1",
-        "input": "<br>",
-        "expectedOutput": "<p></p>",
-        "predicate": "equals"
-    },
-    {
-        "description": "rimuc --safe-mode 2",
-        "args": "--safe-mode 2",
-        "input": "<br>",
-        "expectedOutput": "<p><mark>replaced HTML</mark></p>",
-        "predicate": "equals"
-    },
-    {
-        "description": "rimuc --safe-mode 3",
-        "args": "--safe-mode 3",
-        "input": "<br>",
-        "expectedOutput": "<p>&lt;br&gt;</p>",
-        "predicate": "equals"
-    },
-    {
-        "description": "rimuc --safe-mode 5",
-        "args": "--safe-mode 5",
-        "input": ".\"color:red\"\nHello World!",
-        "expectedOutput": "<p>Hello World!</p>",
-        "predicate": "equals"
-    },
-    {
-        "description": "rimuc --html-replacement",
-        "args": "--safe-mode 2 --html-replacement X",
-        "input": "<br>",
-        "expectedOutput": "<p>X</p>",
-        "predicate": "equals"
-    },
-    {
-        "description": "rimuc --title",
-        "args": "--styled --title X",
-        "input": "",
-        "expectedOutput": "<title>X</title>",
-        "predicate": "contains"
-    },
-    {
-        "description": "rimuc --lang",
-        "args": "--styled --lang fr",
-        "input": "",
-        "expectedOutput": "<html lang=\"fr\">",
-        "predicate": "contains"
-    },
-    {
-        "description": "rimuc --highlightjs",
-        "args": "--styled --highlightjs",
-        "input": "",
-        "expectedOutput": "<script>hljs.initHighlightingOnLoad();</script>",
-        "predicate": "contains"
-    },
-    {
-        "description": "rimuc --mathjax",
-        "args": "--styled --mathjax",
-        "input": "",
-        "expectedOutput": "<script src=\"http://cdn.mathjax.org",
-        "predicate": "contains"
-    },
-    {
-        "description": "rimuc --toc (DEPRECATED)",
-        "args": "--styled --toc",
-        "input": "",
-        "expectedOutput": "<div id=\"toc\"",
-        "predicate": "contains"
-    },
-    {
-        "description": "rimuc --sidebar-toc",
-        "args": "--styled --sidebar-toc",
-        "input": "",
-        "expectedOutput": "<div id=\"toc\"",
-        "predicate": "contains"
-    },
-    {
-        "description": "rimuc --dropdown-toc",
-        "args": "--styled --dropdown-toc",
-        "input": "",
-        "expectedOutput": "<div id=\"toc-button\"",
-        "predicate": "contains"
-    },
-    {
-        "description": "rimuc --section-numbers",
-        "args": "--styled --section-numbers",
-        "input": "",
-        "expectedOutput": "body,h1 { counter-reset: h2-counter; }",
-        "predicate": "contains"
-    },
-    {
-        "description": "classic named style",
-        "args": "--styled --styled-name \"classic\"",
-        "input": "_Hello World!_",
-        "expectedOutput": "<p><em>Hello World!</em></p",
-        "predicate": "contains"
-    },
-    {
-        "description": "flex named style",
-        "args": "--styled --styled-name \"flex\"",
-        "input": "_Hello World!_",
-        "expectedOutput": "<p><em>Hello World!</em></p",
-        "predicate": "contains"
-    },
-    {
-        "description": "v8 named style",
-        "args": "--styled --styled-name \"v8\"",
-        "input": "_Hello World!_",
-        "expectedOutput": "<p><em>Hello World!</em></p",
-        "predicate": "contains"
-    }
+  {
+    "description": "rimuc basic test",
+    "args": "",
+    "input": "*Hello World!*",
+    "expectedOutput": "<p><em>Hello World!</em></p>",
+    "predicate": "equals"
+  },
+  {
+    "description": "rimuc --prepend",
+    "args": "--prepend \"{x}='X'\"",
+    "input": "{x}",
+    "expectedOutput": "<p>X</p>",
+    "predicate": "equals"
+  },
+  {
+    "description": "rimuc --safe-mode 0",
+    "args": "--safe-mode 0",
+    "input": "<br>",
+    "expectedOutput": "<p><br></p>",
+    "predicate": "equals"
+  },
+  {
+    "description": "rimuc --safe-mode 1",
+    "args": "--safe-mode 1",
+    "input": "<br>",
+    "expectedOutput": "<p></p>",
+    "predicate": "equals"
+  },
+  {
+    "description": "rimuc --safe-mode 2",
+    "args": "--safe-mode 2",
+    "input": "<br>",
+    "expectedOutput": "<p><mark>replaced HTML</mark></p>",
+    "predicate": "equals"
+  },
+  {
+    "description": "rimuc --safe-mode 3",
+    "args": "--safe-mode 3",
+    "input": "<br>",
+    "expectedOutput": "<p>&lt;br&gt;</p>",
+    "predicate": "equals"
+  },
+  {
+    "description": "rimuc --safe-mode 5",
+    "args": "--safe-mode 5",
+    "input": ".\"color:red\"\nHello World!",
+    "expectedOutput": "<p>Hello World!</p>",
+    "predicate": "equals"
+  },
+  {
+    "description": "rimuc --html-replacement",
+    "args": "--safe-mode 2 --html-replacement X",
+    "input": "<br>",
+    "expectedOutput": "<p>X</p>",
+    "predicate": "equals"
+  },
+  {
+    "description": "rimuc --title",
+    "args": "--styled --title X",
+    "input": "",
+    "expectedOutput": "<title>X</title>",
+    "predicate": "contains"
+  },
+  {
+    "description": "rimuc --lang",
+    "args": "--styled --lang fr",
+    "input": "",
+    "expectedOutput": "<html lang=\"fr\">",
+    "predicate": "contains"
+  },
+  {
+    "description": "rimuc --highlightjs",
+    "args": "--styled --highlightjs",
+    "input": "",
+    "expectedOutput": "<script>hljs.initHighlightingOnLoad();</script>",
+    "predicate": "contains"
+  },
+  {
+    "description": "rimuc --mathjax",
+    "args": "--styled --mathjax",
+    "input": "",
+    "expectedOutput": "<script src=\"http://cdn.mathjax.org",
+    "predicate": "contains"
+  },
+  {
+    "description": "rimuc --toc (DEPRECATED)",
+    "args": "--styled --toc",
+    "input": "",
+    "expectedOutput": "<div id=\"toc\"",
+    "predicate": "contains"
+  },
+  {
+    "description": "rimuc --sidebar-toc",
+    "args": "--styled --sidebar-toc",
+    "input": "",
+    "expectedOutput": "<div id=\"toc\"",
+    "predicate": "contains"
+  },
+  {
+    "description": "rimuc --dropdown-toc",
+    "args": "--styled --dropdown-toc",
+    "input": "",
+    "expectedOutput": "<div id=\"toc-button\"",
+    "predicate": "contains"
+  },
+  {
+    "description": "rimuc --section-numbers",
+    "args": "--styled --section-numbers",
+    "input": "",
+    "expectedOutput": "body,h1 { counter-reset: h2-counter; }",
+    "predicate": "contains"
+  },
+  {
+    "description": "classic named style",
+    "args": "--styled --styled-name \"classic\"",
+    "input": "_Hello World!_",
+    "expectedOutput": "<p><em>Hello World!</em></p",
+    "predicate": "contains"
+  },
+  {
+    "description": "flex named style",
+    "args": "--styled --styled-name \"flex\"",
+    "input": "_Hello World!_",
+    "expectedOutput": "<p><em>Hello World!</em></p",
+    "predicate": "contains"
+  },
+  {
+    "description": "v8 named style",
+    "args": "--styled --styled-name \"v8\"",
+    "input": "_Hello World!_",
+    "expectedOutput": "<p><em>Hello World!</em></p",
+    "predicate": "contains"
+  }
 ]
