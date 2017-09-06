@@ -160,6 +160,7 @@ export namespace BlockAttributes {
       }
     }
     if (id) {
+      ids.push(id)
       attrs += ' id="' + id + '"'
     }
     if (css) {
@@ -183,6 +184,20 @@ export namespace BlockAttributes {
     css = ''
     attributes = ''
     return tag
+  }
+
+  export function slugify(text: string): string {
+    let slug = text.replace(/\s+/g, '-') // Replace spaces with dashes.
+      .replace(/[^\w-]/g, '')            // Retain alphanumeric, '-' and '_' characters.
+      .toLowerCase()
+    if (!slug) slug = 'x';
+    if (ids.indexOf(slug) > -1) { // Another element already has that id.
+      let i = 2;
+      while (ids.indexOf(slug += '-' + i) > -1) {
+        i++
+      }
+    }
+    return slug;
   }
 
 }
