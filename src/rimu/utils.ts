@@ -1,4 +1,6 @@
+import * as DelimitedBlocks from './delimitedblocks'
 import * as Macros from './macros'
+import * as Options from './options'
 import * as Spans from './spans'
 
 export interface ExpansionOptions {
@@ -96,42 +98,93 @@ export function replaceInline(text: string, expansionOptions: ExpansionOptions):
 // Global Block Attributes state (namespace "singleton", see http://stackoverflow.com/a/30174360).
 export namespace BlockAttributes {
   export let classes: string     // Space separated HTML class names.
-  export let attributes: string  // HTML element attributes (incorporates 'style' and 'id' attributes).
+  export let id: string          // HTML element id.
+  export let css: string         // HTML CSS styles.
+  export let attributes: string  // Other HTML element attributes.
   export let options: ExpansionOptions
+
+  let ids: string[] // List of allocated HTML ids.
 
   export function init(): void {
     classes = ''
+    id = ''
+    css = ''
     attributes = ''
     options = {}
+    ids = []
   }
-}
 
-// Inject HTML attributes from attrs into the opening tag.
-// Consume HTML attributes unless the 'tag' argument is blank.
-export function injectHtmlAttributes(tag: string): string {
-  if (!tag) {
+  export function parse(match: RegExpExecArray): boolean {
+    // Parse Block Attributes.
+    // class names = $1, id = $2, css-properties = $3, html-attributes = $4, block-options = $5
+    let text = match[0]
+    text = replaceInline(text, {macros: true})
+    let m = /^\\?\.((?:\s*[a-zA-Z][\w\-]*)+)*(?:\s*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(".+?")?(?:\s*)?(\[.+])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text)
+    if (!m) {
+      return false
+    }
+    if (!Options.skipBlockAttributes()) {
+      if (m[1]) { // HTML element class names.
+        classes += ' ' + trim(m[1])
+        classes = trim(classes)
+      }
+      if (m[2]) { // HTML element id.
+        id = trim(m[2]).slice(1)
+      }
+      if (m[3]) { // CSS properties.
+        css = m[3]
+      }
+      if (m[4] && !Options.isSafeModeNz()) { // HTML attributes.
+        attributes += ' ' + trim(m[4].slice(1, m[4].length - 1))
+        attributes = trim(attributes)
+      }
+      DelimitedBlocks.setBlockOptions(options, m[5])
+    }
+    return true
+  }
+
+  // Inject HTML attributes from attrs into the opening tag.
+  // Consume HTML attributes unless the 'tag' argument is blank.
+  export function inject(tag: string): string {
+    if (!tag) {
+      return tag
+    }
+    let attrs = ''
+    if (classes) {
+      if (/class="\S.*"/.test(tag)) {
+        // Inject class names into existing class attribute.
+        tag = tag.replace(/class="(\S.*?)"/, 'class="' + classes + ' $1"')
+      }
+      else {
+        attrs = 'class="' + classes + '"'
+      }
+    }
+    if (id) {
+      attrs += ' id="' + id + '"'
+    }
+    if (css) {
+      attrs += ' style=' + css
+    }
+    if (attributes) {
+      attrs += ' ' + attributes
+    }
+    attrs = trim(attrs)
+    if (attrs) {
+      let match = tag.match(/^<([a-zA-Z]+|h[1-6])(?=[ >])/)
+      if (match) {
+        let before = tag.slice(0, match[0].length)
+        let after = tag.slice(match[0].length)
+        tag = before + ' ' + attrs + after
+      }
+    }
+    // Consume the attributes.
+    classes = ''
+    id = ''
+    css = ''
+    attributes = ''
     return tag
   }
-  if (BlockAttributes.classes) {
-    if (/class="\S.*"/.test(tag)) {
-      // Inject class names into existing class attribute.
-      tag = tag.replace(/class="(\S.*?)"/, 'class="' + BlockAttributes.classes + ' $1"')
-    }
-    else {
-      // Prepend new class attribute to HTML attributes.
-      BlockAttributes.attributes = trim('class="' + BlockAttributes.classes + '" ' + BlockAttributes.attributes)
-    }
-  }
-  if (BlockAttributes.attributes) {
-    let match = tag.match(/^<([a-zA-Z]+|h[1-6])(?=[ >])/)
-    if (match) {
-      let before = tag.slice(0, match[0].length)
-      let after = tag.slice(match[0].length)
-      tag = before + ' ' + BlockAttributes.attributes + after
-    }
-  }
-  // Consume the attributes.
-  BlockAttributes.classes = ''
-  BlockAttributes.attributes = ''
-  return tag
+
 }
+
+

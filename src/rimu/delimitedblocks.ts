@@ -248,10 +248,10 @@ export function render(reader: Io.Reader, writer: Io.Writer): boolean {
         }
         let opentag = def.openTag
         if (def.name === 'html') {
-          text = Utils.injectHtmlAttributes(text)
+          text = BlockAttributes.inject(text)
         }
         else {
-          opentag = Utils.injectHtmlAttributes(opentag)
+          opentag = BlockAttributes.inject(opentag)
         }
         if (expansionOptions.container) {
           delete BlockAttributes.options.container  // Consume before recursion.

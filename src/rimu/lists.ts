@@ -1,6 +1,7 @@
 import * as DelimitedBlocks from './delimitedblocks'
 import * as Io from './io'
 import * as Utils from './utils'
+import {BlockAttributes} from './utils';
 
 interface Definition {
   match: RegExp
@@ -69,7 +70,7 @@ export function render(reader: Io.Reader, writer: Io.Writer): boolean {
 
 function renderList(startItem: ItemState, reader: Io.Reader, writer: Io.Writer): ItemState | null {
   ids.push(startItem.id)
-  writer.write(Utils.injectHtmlAttributes(startItem.def.listOpenTag))
+  writer.write(BlockAttributes.inject(startItem.def.listOpenTag))
   let nextItem: ItemState | null
   while (true) {
     nextItem = renderListItem(startItem, reader, writer)
