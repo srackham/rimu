@@ -64,7 +64,7 @@ OPTIONS
     Defaults to '<mark>replaced HTML</mark>'.
 
   --theme THEME, --lang LANG, --title TITLE, --highlightjs, --mathjax,
-  --sidebar-toc, --dropdown-toc, --custom-toc, --section-numbers
+  --sidebar-toc, --dropdown-toc, --custom-toc, --section-numbers, --header-ids
     Shortcuts for the following prepended macro definitions:
     --prepend "{--theme}='THEME'"
     --prepend "{--lang}='LANG'"
@@ -75,6 +75,7 @@ OPTIONS
     --prepend "{--dropdown-toc}='true'"
     --prepend "{--custom-toc}='true'"
     --prepend "{--section-numbers}='true'"
+    --prepend "{--header-ids}='true'"
 
   --styled-name NAME
     Specify the --styled option header and footer files:
@@ -82,15 +83,21 @@ OPTIONS
     'flex':    Flexbox "mobile first" styling (experimental).
     'v8':      Rimu version 8 styling.
 
+PREDEFINED MACROS
+  Macro name         Description
+  _______________________________________________________________
+  --                 Blank macro (empty string).
+  --header-ids       Set to a non-blank value to generate header
+                     id attributes.
+  _______________________________________________________________
+
 STYLING MACROS AND CLASSES
   The following macros and CSS classes are available when the
   --styled option is used:
 
   Macro name         Description
   _______________________________________________________________
-  --                 Blank macro (empty string).
-  --theme            Set styling themes.
-                     Theme names: default, graystone.
+  --theme            Styling theme. Theme names: default, graystone.
   --lang             HTML document language attribute value.
   --title            HTML document title.
   --highlightjs      Set to non-blank value to enable syntax
@@ -209,6 +216,7 @@ outer:
       case '--sidebar-toc':
       case '--dropdown-toc':
       case '--custom-toc':
+      case '--header-ids':
         let macro_value = ['--lang', '--title', '--theme'].indexOf(arg) > -1 ? process.argv.shift() : 'true'
         source += '{' + arg + '}=\'' + macro_value + '\'\n'
         break

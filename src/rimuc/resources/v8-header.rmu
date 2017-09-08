@@ -20,9 +20,6 @@
 {--toc?} = ''
 {--sidebar-toc} = '{--toc}{--sidebar-toc}'
 
-// "Blank" macro.
-{--} = ''
-
 <!DOCTYPE HTML>
 <html lang="{--lang}">
 <head>

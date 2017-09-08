@@ -25,6 +25,9 @@ export let defs: Macro[] = []
 // Reset definitions to defaults.
 export function init(): void {
   defs = []
+  // Initialize predefined macros.
+  setValue('--', '')
+  setValue('--header-ids', '')
 }
 
 // Return named macro value or null if it doesn't exist.
