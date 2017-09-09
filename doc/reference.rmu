@@ -828,6 +828,9 @@ Definition for second term.'
   penatibus. Maecenas at tellus. Sapien quam mauris.
   Non a pede in.
 
+  * Ac lacinia mi.
+  * Egestas congue quam.
+
 - Facilisi vestibulum montes quam eget donec.
 ..
 Cras proin molestie quam sem conubia. Ligula vel elit. Elit a earum.
@@ -1311,10 +1314,27 @@ Invocation syntax:
     `sidebar` macro in the examples above generates a _Header_ block
     element followed by a _Block Attributes_ block element.
 
-### Reserved macros
-Macros with names starting with two hyphen characters are _Reserved_
-macros, a number of reserved macros are used by the [rimuc
-command](#rimuc-command).
+### Reserved macro names
+Macros with names starting with two hyphen characters are reserved for
+use by Rimu. Reserved macros are used by the Rimu library and by the
+[rimuc command](#rimuc-command).
+
+### Predefined macros
+The following macros are available for use in Rimu markup:
+
+.light-background
+``
+Macro name         Description
+_______________________________________________________________
+--                 Blank macro (empty string).
+--header-ids       Set to a non-blank value to generate header
+                   id attributes.
+_______________________________________________________________
+``
+
+### rimuc macros
+The [rimuc command](#rimuc-command) makes a number of additional
+predefined macros available when you use the `--styled` option.
 
 
 .#vim-syntax-file
