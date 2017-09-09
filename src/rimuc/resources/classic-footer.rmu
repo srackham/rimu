@@ -9,18 +9,27 @@
 
 {--mathjax!}<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
+.+skip
+{--has-toc!}.-skip
+{--header-ids=}.-skip
 <script>
 window.onload = function() {
   var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
   headings.forEach(function(heading) {
-    var title = heading.textContent;
-    var id = heading.getAttribute('id');
-    if (!id) {
-      id = slugify(title);
-      heading.setAttribute('id', id);
-    }
-{--has-toc!}    appendTocEntry(heading, id);
+{--header-ids=}    setHeadingId(heading);
+{--has-toc!}    appendTocEntry(heading);
   });
+}
+</script>
+
+{--header-ids!}.+skip
+<script>
+function setHeadingId(heading) {
+  var id = heading.getAttribute('id');
+  if (!id) {
+    id = slugify(heading.textContent);
+    heading.setAttribute('id', id);
+  }
 }
 function slugify(text) {
   var slug = text.replace(/\s+/g, '-') // Replace spaces with dashes.
@@ -37,7 +46,8 @@ function slugify(text) {
 
 {--has-toc=}.+skip
 <script>
-function appendTocEntry(heading, id) {
+function appendTocEntry(heading) {
+  var id = heading.getAttribute('id');
   if (heading.classList.contains('no-auto-toc')) {
     return;
   }

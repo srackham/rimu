@@ -131,5 +131,47 @@
     "input": "_Hello World!_",
     "expectedOutput": "<p><em>Hello World!</em></p",
     "predicate": "contains"
+  },
+  {
+    "description": "dynamic header ids",
+    "args": "--styled",
+    "input": "",
+    "expectedOutput": "function setHeadingId(heading)",
+    "predicate": "contains"
+  },
+  {
+    "description": "flex dynamic header ids",
+    "args": "--styled --styled-name flex",
+    "input": "",
+    "expectedOutput": "function setHeadingId(heading)",
+    "predicate": "contains"
+  },
+  {
+    "description": "static header ids",
+    "args": "--styled --header-ids",
+    "input": "",
+    "expectedOutput": "function setHeadingId(heading)",
+    "predicate": "!contains"
+  },
+  {
+    "description": "flex static header ids",
+    "args": "--styled --header-ids --styled-name flex",
+    "input": "",
+    "expectedOutput": "function setHeadingId(heading)",
+    "predicate": "!contains"
+  },
+  {
+    "description": "static header ids and no TOC",
+    "args": "--styled --header-ids",
+    "input": "",
+    "expectedOutput": "window.onload = function()",
+    "predicate": "!contains"
+  },
+  {
+    "description": "flex static header ids and no TOC",
+    "args": "--styled --header-ids --styled-name flex",
+    "input": "",
+    "expectedOutput": "window.onload = function()",
+    "predicate": "!contains"
   }
 ]

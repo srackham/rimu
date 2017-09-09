@@ -9,19 +9,28 @@
 
 {--mathjax!}<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
+.+skip
+{--has-toc!}.-skip
+{--header-ids=}.-skip
 <script>
 window.onload = function() {
 {--has-toc!}  document.getElementsByTagName('body')[0].appendChild(document.getElementById('toc')); // Ensure custom TOC is child of body.
   var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
   headings.forEach(function(heading) {
-    var title = heading.textContent;
-    var id = heading.getAttribute('id');
-    if (!id) {
-      id = slugify(title);
-      heading.setAttribute('id', id);
-    }
-{--has-toc!}    appendTocEntry(heading, id);
+{--header-ids=}    setHeadingId(heading);
+{--has-toc!}    appendTocEntry(heading);
   });
+}
+</script>
+
+{--header-ids!}.+skip
+<script>
+function setHeadingId(heading) {
+  var id = heading.getAttribute('id');
+  if (!id) {
+    id = slugify(heading.textContent);
+    heading.setAttribute('id', id);
+  }
 }
 function slugify(text) {
   var slug = text.replace(/\s+/g, '-') // Replace spaces with dashes.
@@ -38,17 +47,8 @@ function slugify(text) {
 
 {--has-toc=}.+skip
 <script>
-// matches() polyfill for old browsers.
-if (!Element.prototype.matches) {
-  var p = Element.prototype;
-  if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
-    p.matches = p.webkitMatchesSelector;
-  if (p.msMatchesSelector) // IE9/10/11 & Edge
-    p.matches = p.msMatchesSelector;
-  if (p.mozMatchesSelector) // FF<34
-    p.matches = p.mozMatchesSelector;
-}
-function appendTocEntry(heading, id) {
+function appendTocEntry(heading) {
+  var id = heading.getAttribute('id');
   if (heading.classList.contains('no-auto-toc')) {
     return;
   }
@@ -63,6 +63,16 @@ function appendTocEntry(heading, id) {
   tocEntry.setAttribute('class', heading.tagName.toLowerCase());
   tocEntry.appendChild(tocLink);
   container.appendChild(tocEntry);
+}
+// matches() polyfill for old browsers.
+if (!Element.prototype.matches) {
+  var p = Element.prototype;
+  if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
+    p.matches = p.webkitMatchesSelector;
+  if (p.msMatchesSelector) // IE9/10/11 & Edge
+    p.matches = p.msMatchesSelector;
+  if (p.mozMatchesSelector) // FF<34
+    p.matches = p.mozMatchesSelector;
 }
 document.onclick = function(event) {
   if (event.target.matches('#toc-button *, #toc a')) {
