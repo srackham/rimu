@@ -16,22 +16,7 @@ function rimuc_exec(source, options, callback) {
   })
 }
 
-function rimuc_equals(t, source, expected, options, message) {
-  // test_descriptors.push({ description: message, args: options, input: source, expectedOutput: expected, predicate: 'equals' })
-  rimuc_exec(source, options, function (output) {
-    t.equal(output, expected, message)
-  });
-}
-
-function rimuc_contains(t, source, expected, options, message) {
-  // test_descriptors.push({ description: message, args: options, input: source, expectedOutput: expected, predicate: 'contains' })
-  rimuc_exec(source, options, function (output) {
-    t.ok(output.indexOf(expected) > 0, message)
-  });
-}
-
 test('rimuc', function (t) {
-  t.plan(23);
 
   // Execute tests specified in JSON file.
   const data = fs.readFileSync('./test/rimuc-tests.json');
@@ -39,10 +24,24 @@ test('rimuc', function (t) {
   tests.forEach(function (e) {
     switch (e.predicate) {
       case "equals":
-        rimuc_equals(t, e.input, e.expectedOutput, e.args, e.description);
+        rimuc_exec(e.input, e.args, function (output) {
+          t.equal(output, e.expectedOutput, e.description)
+        });
+        break;
+      case "!equals":
+        rimuc_exec(e.input, e.args, function (output) {
+          t.notEqual(output, e.expectedOutput, e.description)
+        });
         break;
       case "contains":
-        rimuc_contains(t, e.input, e.expectedOutput, e.args, e.description);
+        rimuc_exec(e.input, e.args, function (output) {
+          t.ok(output.indexOf(e.expectedOutput) >= 0, e.description)
+        });
+        break;
+      case "!contains":
+        rimuc_exec(e.input, e.args, function (output) {
+          t.ok(output.indexOf(e.expectedOutput) === -1, e.description)
+        });
         break;
     }
   });
@@ -64,5 +63,6 @@ test('rimuc', function (t) {
     t.ok(output.indexOf('undefined macro') > 0 && error.code === 1, 'rimuc --lint')
   });
 
+  t.end();
 });
 
