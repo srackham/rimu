@@ -206,7 +206,7 @@
     "description": "rimuc --lint",
     "args": "--lint",
     "input": "{x}",
-    "expectedOutput": 1,
+    "expectedOutput": "1",
     "predicate": "exitCode"
   }
 ]
