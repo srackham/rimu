@@ -43,24 +43,17 @@ test('rimuc', function (t) {
           t.ok(output.indexOf(e.expectedOutput) === -1, e.description)
         });
         break;
+      case "startsWith":
+        rimuc_exec(e.input, e.args, function (output) {
+          t.ok(output.startsWith(e.expectedOutput), e.description)
+        });
+        break;
+      case "exitCode":
+        rimuc_exec(e.input, e.args, function (output, error) {
+          t.ok(error.code == e.expectedOutput, e.description)
+        });
+        break;
     }
-  });
-
-  // Tests that don't fit the fixture driven mold.
-  rimuc_exec('', '--help', function (output) {
-    t.ok(output.startsWith('\nNAME\n  rimuc'), 'rimuc --help')
-  });
-
-  rimuc_exec('', '--styled', function (output) {
-    t.ok(output.startsWith('<!DOCTYPE HTML>'), 'rimuc --styled')
-  });
-
-  rimuc_exec('', '--styled --sidebar-toc --custom-toc', function (output) {
-    t.ok(output.indexOf('<div id="toc"') === -1, 'rimuc --sidebar-toc --custom-toc')
-  });
-
-  rimuc_exec('{x}', '--lint', function (output, error) {
-    t.ok(output.indexOf('undefined macro') > 0 && error.code === 1, 'rimuc --lint')
   });
 
   t.end();

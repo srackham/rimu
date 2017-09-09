@@ -173,5 +173,40 @@
     "input": "",
     "expectedOutput": "window.onload = function()",
     "predicate": "!contains"
+  },
+  {
+    "description": "rimuc --help",
+    "args": "--help",
+    "input": "",
+    "expectedOutput": "\nNAME\n  rimuc",
+    "predicate": "startsWith"
+  },
+  {
+    "description": "rimuc --styled",
+    "args": "--styled",
+    "input": "",
+    "expectedOutput": "<!DOCTYPE HTML>",
+    "predicate": "startsWith"
+  },
+  {
+    "description": "rimuc --sidebar-toc --custom-toc",
+    "args": "--styled --sidebar-toc --custom-toc",
+    "input": "",
+    "expectedOutput": "<div id=\"toc\"",
+    "predicate": "!contains"
+  },
+  {
+    "description": "rimuc --lint",
+    "args": "--lint",
+    "input": "{x}",
+    "expectedOutput": "undefined macro",
+    "predicate": "contains"
+  },
+  {
+    "description": "rimuc --lint",
+    "args": "--lint",
+    "input": "{x}",
+    "expectedOutput": 1,
+    "predicate": "exitCode"
   }
 ]
