@@ -107,11 +107,10 @@ let defs: Definition[] = [
     replacement: '<h$1>$$2</h$1>',
     filter: function (match: RegExpExecArray): string {
       match[1] = match[1].length.toString()  // Replace $1 with header number.
-      match[2] = Macros.render(match[2])
       if (Macros.getValue('--header-ids') && BlockAttributes.id === '') {
         BlockAttributes.id = BlockAttributes.slugify(match[2])
       }
-      return Utils.replaceMatch(match, this.replacement)
+      return Utils.replaceMatch(match, this.replacement, {macros: true})
     }
   },
   // Comment line.

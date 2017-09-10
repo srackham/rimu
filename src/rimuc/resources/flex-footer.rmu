@@ -35,9 +35,10 @@ function setHeaderId(heading) {
   }
 }
 function slugify(text) {
-  var slug = text.replace(/\s+/g, '-') // Replace spaces with dashes.
-      .replace(/[^\w-]/g, '')          // Retain alphanumeric, '-' and '_' characters.
-      .toLowerCase()
+  var slug = text.replace(/\W+/g, '-')  // Replace non-alphanumeric characters with dashes.
+    .replace(/-+/g, '-')                // Replace multiple dashes with single dash.
+    .replace(/(^-)|(-$)/g, '')          // Trim leading and trailing dashes.
+    .toLowerCase();
   if (!slug) slug = 'x';
   if (document.getElementById(slug)) { // Another element already has that id.
     var i = 2, prefix = slug;

@@ -187,10 +187,11 @@ export namespace BlockAttributes {
   }
 
   export function slugify(text: string): string {
-    let slug = text.replace(/\s+/g, '-') // Replace spaces with dashes.
-      .replace(/[^\w-]/g, '')            // Retain alphanumeric, '-' and '_' characters.
+    let slug = text.replace(/\W+/g, '-')  // Replace non-alphanumeric characters with dashes.
+      .replace(/-+/g, '-')                // Replace multiple dashes with single dash.
+      .replace(/(^-)|(-$)/g, '')          // Trim leading and trailing dashes.
       .toLowerCase()
-    if (!slug) slug = 'x';
+    if (!slug) slug = 'x'
     if (ids.indexOf(slug) > -1) { // Another element already has that id.
       let i = 2;
       while (ids.indexOf(slug += '-' + i) > -1) {
