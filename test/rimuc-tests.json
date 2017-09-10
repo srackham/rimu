@@ -133,20 +133,6 @@
     "predicate": "contains"
   },
   {
-    "description": "dynamic header ids",
-    "args": "--styled",
-    "input": "",
-    "expectedOutput": "function setHeaderId(heading)",
-    "predicate": "contains"
-  },
-  {
-    "description": "flex dynamic header ids",
-    "args": "--styled --styled-name flex",
-    "input": "",
-    "expectedOutput": "function setHeaderId(heading)",
-    "predicate": "contains"
-  },
-  {
     "description": "static header ids",
     "args": "--styled --header-ids",
     "input": "",

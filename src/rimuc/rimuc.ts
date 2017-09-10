@@ -46,7 +46,7 @@ OPTIONS
     Include an HTML header and footer for styling the HTML output
     document. If only one source file is specified and the --output
     option is not specified then the output is written to a
-    same-named file with an .html extension.
+    same-named file with an .html extension. Enable --header-ids.
 
   --safe-mode NUMBER
     Non-zero safe modes ignore: Definition elements; API option elements;
@@ -207,6 +207,7 @@ outer:
         break
       case '--styled':
       case '-s':
+        source += '{--header-ids}=\'true\'\n'
         styled = true
         break
       // Styling macro definitions shortcut options.

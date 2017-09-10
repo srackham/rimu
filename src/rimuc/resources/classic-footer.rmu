@@ -11,39 +11,14 @@
 
 .+skip
 {--has-toc!}.-skip
-{--header-ids=}.-skip
 {--header-links!}.-skip
 <script>
 window.onload = function() {
   var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
   headings.forEach(function(heading) {
-{--header-ids=}    setHeaderId(heading);
 {--header-links!}    setHeaderLink(heading);
 {--has-toc!}    appendTocEntry(heading);
   });
-}
-</script>
-
-{--header-ids!}.+skip
-<script>
-function setHeaderId(heading) {
-  var id = heading.getAttribute('id');
-  if (!id) {
-    id = slugify(heading.textContent);
-    heading.setAttribute('id', id);
-  }
-}
-function slugify(text) {
-  var slug = text.replace(/\W+/g, '-')  // Replace non-alphanumeric characters with dashes.
-    .replace(/-+/g, '-')                // Replace multiple dashes with single dash.
-    .replace(/(^-)|(-$)/g, '')          // Trim leading and trailing dashes.
-    .toLowerCase();
-  if (!slug) slug = 'x';
-  if (document.getElementById(slug)) { // Another element already has that id.
-    var i = 2, prefix = slug;
-    while (document.getElementById(slug = prefix + '-' + i++)) {}
-  }
-  return slug;
 }
 </script>
 
