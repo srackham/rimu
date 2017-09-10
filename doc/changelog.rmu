@@ -1,23 +1,42 @@
 # Rimu Markup Change Log
 
 See the [Git commit log](https://github.com/srackham/rimu/commits/)
-for more detailed information.
+for a full list of changes.
+
+
+## Version 9.3.0 (2017-09-11)
+- Implemented predefined `--header-ids` macro.  If the `--header-ids`
+  macro value is non-blank Rimu generates unique HTML `id` attributes
+  for `h1`, `h2` and `h3` section headers.  This feature is enabled by
+  default when the `rimuc` `--styled` option is used and replaces the
+  dynamic header id generation previously used by the `--styled`
+  option.
+- The `rimuc` command has a new `--header-links` option for use in
+  conjunction with the `--styled` option. I generates header links
+  which are displayed when you hover over `h2` and `h3` section header
+  titles. Their purpose is to provide an easy way copy and paste links
+  to document sections.
+
+- **FIXED**: When header lines contain an optional postfix the postfix
+  must match the prefix exactly (previously any valid prefix could be
+  used).
 
 
 ## Version 9.2.0 (2017-08-30)
 - The build process has been revamped:
 
   * Moved `rimu` library modules from `./bin/` to `./lib/`.
-  * Build `rimu` library modules and `rimuc` command with separate Webpack
-    configuration files. Kludges previously handled by Jakefile tasks
-    are now handled by Webpack e.g. `rimuc` shebang line.
-  * The build tasks now generates debug map files for `rimu` library and
-    `rimuc` command.
+  * Build `rimu` library modules and `rimuc` command with separate
+    Webpack configuration files. Kludges previously handled by
+    Jakefile tasks are now handled by Webpack e.g. `rimuc` shebang
+    line.
+  * The build tasks now generates debug map files for `rimu` library
+    and `rimuc` command.
 
-- **FIXED**: `~/.rimurc` was not loaded by the _rimuc_ command. Version 9.1.3
-  regression (August 2017).
-- **FIXED**: Rinstate missing _rimuc_ `--styled` option headers and footers in
-  npm package. Version 9.0.0 regression (August 2016).
+- **FIXED**: `~/.rimurc` was not loaded by the _rimuc_ command.
+  Version 9.1.3 regression (August 2017).
+- **FIXED**: Rinstate missing _rimuc_ `--styled` option headers and
+  footers in npm package. Version 9.0.0 regression (August 2016).
 
 
 ## Version 9.1.3 (2017-08-08)

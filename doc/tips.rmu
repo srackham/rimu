@@ -193,7 +193,7 @@ You can use the online
 convert arbitrary Rimu source to pure Markdown:
 
 . First convert Rimu to raw HTML using the
-  [rimuc](../reference.html#rimuc) command e.g.
+  [rimuc](reference.html#rimuc-command) command e.g.
 
   rimuc mydoc.rmu > mydoc.html
 
