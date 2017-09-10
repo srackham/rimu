@@ -19,6 +19,7 @@
 {--sidebar-toc} = '{--toc}{--sidebar-toc}'
 // Non-blank if a TOC was specified.
 {--has-toc} = '{--dropdown-toc}{--sidebar-toc}'
+{--header-links?} = ''
 
 /*
   CSS variables.
@@ -334,6 +335,29 @@
   }
 </style>
 
+{--header-links=}.+skip
+<style>
+  .header-link {
+    text-decoration: none;
+    color: lightgray;
+    visibility: hidden;
+  }
+  .header-link:hover {
+    text-decoration: none;
+    color: gray;
+  }
+  .header-link::before {
+    content: " \00b6";
+  }
+  h2:hover > .header-link, h3:hover > .header-link {
+    visibility: visible;
+  }
+  @media print {
+    .header-link {
+      display: none !important;
+    }
+  }
+</style>
 
 /*
   Layout styles

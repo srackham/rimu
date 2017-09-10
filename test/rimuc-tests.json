@@ -136,28 +136,28 @@
     "description": "dynamic header ids",
     "args": "--styled",
     "input": "",
-    "expectedOutput": "function setHeadingId(heading)",
+    "expectedOutput": "function setHeaderId(heading)",
     "predicate": "contains"
   },
   {
     "description": "flex dynamic header ids",
     "args": "--styled --styled-name flex",
     "input": "",
-    "expectedOutput": "function setHeadingId(heading)",
+    "expectedOutput": "function setHeaderId(heading)",
     "predicate": "contains"
   },
   {
     "description": "static header ids",
     "args": "--styled --header-ids",
     "input": "",
-    "expectedOutput": "function setHeadingId(heading)",
+    "expectedOutput": "function setHeaderId(heading)",
     "predicate": "!contains"
   },
   {
     "description": "flex static header ids",
     "args": "--styled --header-ids --styled-name flex",
     "input": "",
-    "expectedOutput": "function setHeadingId(heading)",
+    "expectedOutput": "function setHeaderId(heading)",
     "predicate": "!contains"
   },
   {
@@ -208,5 +208,19 @@
     "input": "{x}",
     "expectedOutput": "1",
     "predicate": "exitCode"
+  },
+  {
+    "description": "header links",
+    "args": "--styled --header-links",
+    "input": "",
+    "expectedOutput": "function setHeaderLink(heading)",
+    "predicate": "contains"
+  },
+  {
+    "description": "flex header links",
+    "args": "--styled --header-links --styled-name flex",
+    "input": "",
+    "expectedOutput": "function setHeaderLink(heading)",
+    "predicate": "contains"
   }
 ]

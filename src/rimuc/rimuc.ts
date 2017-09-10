@@ -64,7 +64,8 @@ OPTIONS
     Defaults to '<mark>replaced HTML</mark>'.
 
   --theme THEME, --lang LANG, --title TITLE, --highlightjs, --mathjax,
-  --sidebar-toc, --dropdown-toc, --custom-toc, --section-numbers, --header-ids
+  --sidebar-toc, --dropdown-toc, --custom-toc, --section-numbers,
+  --header-ids, --header-links
     Shortcuts for the following prepended macro definitions:
     --prepend "{--theme}='THEME'"
     --prepend "{--lang}='LANG'"
@@ -76,6 +77,7 @@ OPTIONS
     --prepend "{--custom-toc}='true'"
     --prepend "{--section-numbers}='true'"
     --prepend "{--header-ids}='true'"
+    --prepend "{--header-links}='true'"
 
   --styled-name NAME
     Specify the --styled option header and footer files:
@@ -87,8 +89,8 @@ PREDEFINED MACROS
   Macro name         Description
   _______________________________________________________________
   --                 Blank macro (empty string).
-  --header-ids       Set to a non-blank value to generate header
-                     id attributes.
+  --header-ids       Set to a non-blank value to generate h1, h2
+                     and h3 header id attributes.
   _______________________________________________________________
 
 STYLING MACROS AND CLASSES
@@ -110,6 +112,8 @@ STYLING MACROS AND CLASSES
   --custom-toc       Set to a non-blank value if a custom table
                      of contents is used.
   --section-numbers  Apply h2 and h3 section numbering.
+  --header-links     Set to a non-blank value to generate h2 and
+                     h3 header header links.
   _______________________________________________________________
   These macros must be defined prior to processing (using rimuc
   options or in .rimurc).
@@ -217,6 +221,7 @@ outer:
       case '--dropdown-toc':
       case '--custom-toc':
       case '--header-ids':
+      case '--header-links':
         let macro_value = ['--lang', '--title', '--theme'].indexOf(arg) > -1 ? process.argv.shift() : 'true'
         source += '{' + arg + '}=\'' + macro_value + '\'\n'
         break

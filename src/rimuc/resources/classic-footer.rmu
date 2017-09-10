@@ -12,11 +12,13 @@
 .+skip
 {--has-toc!}.-skip
 {--header-ids=}.-skip
+{--header-links!}.-skip
 <script>
 window.onload = function() {
   var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
   headings.forEach(function(heading) {
-{--header-ids=}    setHeadingId(heading);
+{--header-ids=}    setHeaderId(heading);
+{--header-links!}    setHeaderLink(heading);
 {--has-toc!}    appendTocEntry(heading);
   });
 }
@@ -24,7 +26,7 @@ window.onload = function() {
 
 {--header-ids!}.+skip
 <script>
-function setHeadingId(heading) {
+function setHeaderId(heading) {
   var id = heading.getAttribute('id');
   if (!id) {
     id = slugify(heading.textContent);
@@ -41,6 +43,19 @@ function slugify(text) {
     while (document.getElementById(slug = prefix + '-' + i++)) {}
   }
   return slug;
+}
+</script>
+
+{--header-links=}.+skip
+<script>
+function setHeaderLink(heading) {
+  var id = heading.getAttribute('id');
+  if (id) {
+    var link = document.createElement('a');
+    link.classList.add('header-link');
+    link.setAttribute('href', '#' + id);
+    heading.appendChild(link);
+  }
 }
 </script>
 

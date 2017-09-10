@@ -166,7 +166,8 @@ desc(`Generate HTML documentation`)
 task('html-docs', ['build-rimu'], {async: true}, function () {
   let commands = DOCS.map(doc =>
     'node ' + RIMUC +
-    ' --styled --lint --no-rimurc --theme default --custom-toc --header-ids' +
+    ' --styled --lint --no-rimurc --theme default --custom-toc' +
+    ' --header-ids --header-links' +
     ' --styled-name "classic"' +
     ' --output "' + doc.dst + '"' +
     ' --lang "en"' +
