@@ -187,6 +187,21 @@ to raw HTML with `markdown`:
   rimuc --styled mydoc.html
 
 
+## Converting Rimu to Markdown
+You can use the online
+[to-markdown](https://domchristie.github.io/to-markdown/) website to
+convert arbitrary Rimu source to pure Markdown:
+
+. First convert Rimu to raw HTML using the
+  [rimuc](../reference.html#rimuc) command e.g.
+
+  rimuc mydoc.rmu > mydoc.html
+
+. Then open the HTML file in a text editor and copy and paste the
+  contents into the
+  [to-markdown](https://domchristie.github.io/to-markdown/) HTML box.
+
+
 ## Escaping Rimu syntax
 If you have text that you don't want interpreted as a Rimu
 element then you can render it literally (escape it) by prefixing the
