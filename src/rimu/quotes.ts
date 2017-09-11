@@ -100,7 +100,8 @@ export function setDefinition(def: Definition): void {
   // before single-quote definitions (which are appended to the array).
   if (def.quote.length === 2) {
     defs.unshift(def)
-  } else {
+  }
+  else {
     defs.push(def)
   }
   initializeRegExps()

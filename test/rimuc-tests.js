@@ -15,7 +15,6 @@ function rimuc_exec(source, options, callback) {
 }
 
 test('rimuc', function (t) {
-
   // Execute tests specified in JSON file.
   const data = fs.readFileSync('./test/rimuc-tests.json');
   const tests = JSON.parse(data);
@@ -56,7 +55,6 @@ test('rimuc', function (t) {
         break;
     }
   });
-
   t.end();
 });
 

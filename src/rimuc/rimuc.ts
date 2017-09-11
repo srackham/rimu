@@ -281,7 +281,8 @@ for (let infile of files) {
   if (infile.startsWith(RESOURCE_TAG)) {
     source = readResourceFile(infile.substr(RESOURCE_TAG.length))
     options.safeMode = 0  // Resources are trusted.
-  } else {
+  }
+  else {
     options.safeMode = (infile === RIMURC) ? 0 : safe_mode  // ~/.rimurc is trusted.
     if (!fs.existsSync(infile)) {
       die('source file does not exist: ' + infile)
