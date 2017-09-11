@@ -29,7 +29,7 @@ Code block.
 
 # Rimu Playground
 
-###  {showhide|playground-source} Rimu markup
+##  {showhide|playground-source} Rimu markup
 .#playground-source
 ..
 Edit these examples or add your own:
@@ -47,13 +47,13 @@ Diagnostic messages:
 ..
 
 
-### {showhide|playground-preview} HTML preview
+## {showhide|playground-preview} HTML preview
 .#playground-preview "border: 1px solid #dddddd; border-radius: 4px; padding: 4px; {box-shadow}"
 ..
 ..
 
 
-### {showhide|playground-html} HTML markup
+## {showhide|playground-html} HTML markup
 .#playground-html "{box-shadow}"
 ``
 ``
