@@ -240,11 +240,33 @@
     margin-left: 1.5em;
     font-size: 90%;
   }
-  #toc div:nth-child(even) {
+  #toc div[class^="h"]:nth-child(even) {
     background-color: #f8f8f8;
   }
   #auto-toc {
     width: 100%;
+  }
+</style>
+<style>
+  .header-link {
+    text-decoration: none;
+    color: lightgray;
+    visibility: hidden;
+  }
+  .header-link:hover {
+    text-decoration: none;
+    color: gray;
+  }
+  .header-link::before {
+    content: " \00b6";
+  }
+  h2:hover > .header-link, h3:hover > .header-link {
+    visibility: visible;
+  }
+  @media print {
+    .header-link {
+      display: none !important;
+    }
   }
 </style>
 <style>
@@ -306,24 +328,41 @@
   <h2 style="font-size:1.2em; margin-top:1.0em">Table of Contents</h2>
   <div id="auto-toc"></div>
 </div>
-<h1>Rimu Markup Change Log</h1>
+<h1 id="rimu-markup-change-log">Rimu Markup Change Log</h1>
 <p>See the <a href="https://github.com/srackham/rimu/commits/">Git commit log</a>
-for more detailed information.</p>
-<h2>Version 9.2.0 (2017-08-30)</h2>
-<ul><li>The build process has been revamped:<ul><li>Moved <code>rimu</code> library modules from <code>./bin/</code> to <code>./lib/</code>.</li><li>Build <code>rimu</code> library modules and <code>rimuc</code> command with separate Webpack
-    configuration files. Kludges previously handled by Jakefile tasks
-    are now handled by Webpack e.g. <code>rimuc</code> shebang line.</li><li>The build tasks now generates debug map files for <code>rimu</code> library and
-    <code>rimuc</code> command.</li></ul></li><li><strong>FIXED</strong>: <code>~/.rimurc</code> was not loaded by the <em>rimuc</em> command. Version 9.1.3
-  regression (August 2017).</li><li><strong>FIXED</strong>: Rinstate missing <em>rimuc</em> <code>--styled</code> option headers and footers in
-  npm package. Version 9.0.0 regression (August 2016).</li></ul><h2>Version 9.1.3 (2017-08-08)</h2>
+for a full list of changes.</p>
+<h2 id="version-9-3-0-2017-09-11">Version 9.3.0 (2017-09-11)</h2>
+<ul><li>Implemented predefined <code>--header-ids</code> macro.  If the <code>--header-ids</code>
+  macro value is non-blank Rimu generates unique HTML <code>id</code> attributes
+  for <code>h1</code>, <code>h2</code> and <code>h3</code> section headers.</li><li>Added a <code>--header-ids</code> option to the <code>rimuc</code> command, it enables
+  header id generation by setting the <code>--header-ids</code> macro to a
+  non-blank value.  The <code>rimuc</code> <code>--header-ids</code> option is enabled by
+  default when the <code>--styled</code> option is used, this replaces the
+  dynamic header id generation previously used by the <code>--styled</code>
+  option.</li><li>The <code>rimuc</code> command has a new <code>--header-links</code> option for use in
+  conjunction with the <code>--styled</code> option. I generates header links
+  which are displayed when you hover over <code>h2</code> and <code>h3</code> section header
+  titles. Their purpose is to provide an easy way copy and paste
+  document section links.  For example, this page's headings use this
+  feature.</li><li><strong>FIXED</strong>: When Rimu headers contain an optional postfix the postfix
+  must match the prefix exactly (previously valid but mismatched
+  prefixes and suffixes were accepted).</li><li><strong>FIXED</strong>: The <code>rimuc</code> command <code>--styled</code> option did not always
+  alternate the table of contents entry background colors.</li></ul><h2 id="version-9-2-0-2017-08-30">Version 9.2.0 (2017-08-30)</h2>
+<ul><li>The build process has been revamped:<ul><li>Moved <code>rimu</code> library modules from <code>./bin/</code> to <code>./lib/</code>.</li><li>Build <code>rimu</code> library modules and <code>rimuc</code> command with separate
+    Webpack configuration files. Kludges previously handled by
+    Jakefile tasks are now handled by Webpack e.g. <code>rimuc</code> shebang
+    line.</li><li>The build tasks now generates debug map files for <code>rimu</code> library
+    and <code>rimuc</code> command.</li></ul></li><li><strong>FIXED</strong>: <code>~/.rimurc</code> was not loaded by the <em>rimuc</em> command.
+  Version 9.1.3 regression (August 2017).</li><li><strong>FIXED</strong>: Rinstate missing <em>rimuc</em> <code>--styled</code> option headers and
+  footers in npm package. Version 9.0.0 regression (August 2016).</li></ul><h2 id="version-9-1-3-2017-08-08">Version 9.1.3 (2017-08-08)</h2>
 <ul><li>This release coincides with the first release of the <a href="https://github.com/srackham/rimu-kt/">Kotlin port of
   Rimu</a> for the JVM platform.</li><li>The Rimu test suite has been refactored and is now driven by JSON
   test descriptor files which are shared between the JavaScript and
   JVM platform versions of Rimu.</li><li>Includes a couple of fixes for latent bugs discovered while porting
-  to Kotlin.</li></ul><h2>Version 9.1.2 (2017-04-07)</h2>
-<ul><li>Rimu Playground: Show diagnostic messages.</li><li>Rimu Playground: Added section show/hide buttons.</li><li>Documentation polishing and errata.</li></ul><h2>Version 9.1.1 (2017-01-01)</h2>
+  to Kotlin.</li></ul><h2 id="version-9-1-2-2017-04-07">Version 9.1.2 (2017-04-07)</h2>
+<ul><li>Rimu Playground: Show diagnostic messages.</li><li>Rimu Playground: Added section show/hide buttons.</li><li>Documentation polishing and errata.</li></ul><h2 id="version-9-1-1-2017-01-01">Version 9.1.1 (2017-01-01)</h2>
 <ul><li>Allow multi-line default macro parameter values.</li><li>Added <em>Change Log</em> to documentation sidebar <em>Links</em>.</li><li>URL captions syntax:<ul><li>Do not allow <code>[</code> character in Markdown style URL captions (<a href="tips.html#url-captions">use <code>&amp;#x5b;</code>
-    entity instead</a>).</li><li>Allow <code>&lt;</code> character in Rimu style URL captions.</li></ul></li><li><strong>FIXED</strong>: <em>Rimu Tips</em> documentation examples.</li></ul><h2>Version 9.1.0 (2016-11-19)</h2>
+    entity instead</a>).</li><li>Allow <code>&lt;</code> character in Rimu style URL captions.</li></ul></li><li><strong>FIXED</strong>: <em>Rimu Tips</em> documentation examples.</li></ul><h2 id="version-9-1-0-2016-11-19">Version 9.1.0 (2016-11-19)</h2>
 <ul><li><a href="reference.html#block-attributes">Block Attributes</a> can now be injected into
   <a href="reference.html#block-html-elements">Block HTML elements</a>.</li><li>Added double-dollar (<code>$$1, $$2...</code>) macro parameters which expand quotes and
   replacements.  Double-dollar parameters are normally only necessary inside
@@ -332,18 +371,18 @@ for more detailed information.</p>
   macros</a> by appending <code>:default-value$</code> to the
   parameter name e.g. <code>$2:Ford$</code> will assign <code>Ford</code> to the <code>$2</code> parameter if it
   is blank or not specified in the macro invocation.</li><li><strong>FIXED</strong>: <code>rimuc</code>: The <code>.bordered</code> CSS tables class (available with the
-  <code>--styled</code> option) no longer propagates to nested tables.</li></ul><h2>Version 9.0.3 (2016-10-26)</h2>
+  <code>--styled</code> option) no longer propagates to nested tables.</li></ul><h2 id="version-9-0-3-2016-10-26">Version 9.0.3 (2016-10-26)</h2>
 <ul><li><em>Quote paragraphs</em> are attached to list items in exactly the same way as
   <em>Indented paragraphs</em> i.e. by being separated from the list item by a
   single blank line. Previously the Quote paragraph was attached if it
   followed the list item immediately (without a blank line) which was
   both surprising and inconsistent.</li><li>Drop API  argument checks. They are redundant if the caller is
   written in TypeScript; if not then checking is the caller's
-  responsibility.</li></ul><h2>Version 9.0.2 (2016-10-07)</h2>
-<ul><li>Refactored codebase to compile with TypeScript <code>strictNullChecks</code> option.</li></ul><h2>Version 9.0.1 (2016-10-02)</h2>
+  responsibility.</li></ul><h2 id="version-9-0-2-2016-10-07">Version 9.0.2 (2016-10-07)</h2>
+<ul><li>Refactored codebase to compile with TypeScript <code>strictNullChecks</code> option.</li></ul><h2 id="version-9-0-1-2016-10-02">Version 9.0.1 (2016-10-02)</h2>
 <ul><li>Added the <code>--lang</code> option to <code>rimuc</code> command. This option sets the
   HTML tag's <code>lang</code> attribute value and is used in conjunction with
-  the <code>--styled</code> option.</li><li>Migrated codebase to TypeScript 2.</li></ul><h2>Version 9.0.0 (2016-08-21)</h2>
+  the <code>--styled</code> option.</li><li>Migrated codebase to TypeScript 2.</li></ul><h2 id="version-9-0-0-2016-08-21">Version 9.0.0 (2016-08-21)</h2>
 <ul><li>Added <a href="reference.html#styled-names"><code>--styled-name</code></a> option to <code>rimuc</code>
   along with built-in <em>classic</em>, <em>flex</em> and <em>v8</em> named styles. <em>flex</em>
   is an experimental mobile-first HTML5 + CSS3 layout based on CSS3
@@ -365,9 +404,9 @@ for more detailed information.</p>
   immediately follows a <a href="reference.html#lists">list item</a> without any
   intervening blank lines then it will be attached to the list item.</li><li>Rimu documentation examples no longer use the <code>&lt;style&gt;</code> element
   <code>scoped</code> attribute as it has been <a href="tips.html#scoped-css">dropped from the HTML5
-  specification</a>.</li></ul><h2>Version 8.0.1 (2016-06-26)</h2>
+  specification</a>.</li></ul><h2 id="version-8-0-1-2016-06-26">Version 8.0.1 (2016-06-26)</h2>
 <ul><li><strong>FIXED</strong>: <code>rimuc</code>: If a <code>.html</code> input file was encountered then
-  all succeeding input files were ignored.</li><li>Documentation updates.</li></ul><h2>Version 8.0.0 (2016-06-25)</h2>
+  all succeeding input files were ignored.</li><li>Documentation updates.</li></ul><h2 id="version-8-0-0-2016-06-25">Version 8.0.0 (2016-06-25)</h2>
 <ul><li>Renamed <code>rimuc</code> <code>--toc</code> option to <code>--sidebar-toc</code>. The <code>--toc</code>
   option has been retained for backward compatibility.</li><li>Added the <code>--dropdown-toc</code> option to <code>rimuc</code> command. This option
   generates a drop-down table of contents menu and is an alternative
@@ -384,16 +423,16 @@ for more detailed information.</p>
   Rimu.</li><li>Multiple <a href="tips.html#themes">themes</a> can be specified using the <code>rimuc</code>
   <code>--theme</code> option.</li><li>The table of contents document title link (generated by the <code>rimuc</code>
    <code>--sidebar-toc</code> and <code>--dropdown-toc</code> options) navigates to the top
-   of the document window (not the title header).</li><li>Bug fixes.</li></ul><h2>Version 7.3.0 (2016-04-15)</h2>
+   of the document window (not the title header).</li><li>Bug fixes.</li></ul><h2 id="version-7-3-0-2016-04-15">Version 7.3.0 (2016-04-15)</h2>
 <ul><li>The <code>rimuc</code> command now supports <a href="tips.html#themes">named themes</a> with
   the new <code>--theme</code> option.  The following example styles the output
   using the built-in <em>graystone</em> theme:<pre class="no-highlight"><code>rimuc --styled --theme graystone document.rmu</code></pre>
-</li></ul><h2>Version 7.2.1 (2016-04-12)</h2>
-<ul><li>Documentation updates.</li><li>Bug fixes.</li></ul><h2>Version 7.2.0 (2016-04-06)</h2>
+</li></ul><h2 id="version-7-2-1-2016-04-12">Version 7.2.1 (2016-04-12)</h2>
+<ul><li>Documentation updates.</li><li>Bug fixes.</li></ul><h2 id="version-7-2-0-2016-04-06">Version 7.2.0 (2016-04-06)</h2>
 <ul><li>Added <code>safeMode</code> bit-mask 8 (add 8 to <code>safeMode</code>) to unconditionally
   enable Macro Definitions. Allowing Macro Definitions is not
   intrinsically unsafe because their safety or otherwise is solely
-  determined by the safety of their constituent elements.</li><li><code>safeMode</code> 5 generalized by incorporating it into a bit-mask (4).</li><li>Bug fixes.</li></ul><h2>Version 7.1.0 (2016-04-02)</h2>
+  determined by the safety of their constituent elements.</li><li><code>safeMode</code> 5 generalized by incorporating it into a bit-mask (4).</li><li>Bug fixes.</li></ul><h2 id="version-7-1-0-2016-04-02">Version 7.1.0 (2016-04-02)</h2>
 <ul><li>Added <code>"css-properties"</code> syntax to <em>Block Attributes</em> element (a
   shortcut for the commonly used <em>Block Attributes</em> <code>[style="..."]</code> idiom).</li><li>Added  CSS text alignment classes <code>align-left</code>, <code>align-center</code>,
   <code>align-right</code> to the <em>rimuc</em> <code>--styled</code> option.</li><li>Added <code>page-break</code> and <code>no-page-break</code> CSS classes to the <em>rimuc</em>
@@ -401,11 +440,11 @@ for more detailed information.</p>
   altogether which:<ol><li>Disables direct CSS control (via CSS classes or CSS properties).</li><li>Disables HTML element ID creation (so you cannot override existing IDs).</li></ol></li><li><em>rimuc</em> command outputs error messages to <code>stderr</code> (not <code>stdout</code>).</li><li><em>rimuc</em> command outputs rendered HTML even if there are errors (previously
   if an error occurred no HTML would be outputted which was surprising).</li><li><em>rimuc</em> <code>--safeMode</code> and <code>--htmlReplacement</code> options have been
   deprecated and are superceded by standard lower case hyphenated
-  option names <code>--safe-mode</code> and <code>--html-replacement</code>.</li></ul><h2>Version 7.0.3 (2016-03-27)</h2>
-<ul><li>Documentation updates.</li></ul><h2>Version 7.0.2 (2016-01-10)</h2>
-<ul><li>Documentation updates.</li></ul><h2>Version 7.0.1 (2016-01-08)</h2>
+  option names <code>--safe-mode</code> and <code>--html-replacement</code>.</li></ul><h2 id="version-7-0-3-2016-03-27">Version 7.0.3 (2016-03-27)</h2>
+<ul><li>Documentation updates.</li></ul><h2 id="version-7-0-2-2016-01-10">Version 7.0.2 (2016-01-10)</h2>
+<ul><li>Documentation updates.</li></ul><h2 id="version-7-0-1-2016-01-08">Version 7.0.1 (2016-01-08)</h2>
 <ul><li>npm publication glitch &mdash; did not pick up README. The &ldquo;glitch&rdquo;
-  was subsequently found to be bogus.</li></ul><h2>Version 7.0.0 (2016-01-08)</h2>
+  was subsequently found to be bogus.</li></ul><h2 id="version-7-0-0-2016-01-08">Version 7.0.0 (2016-01-08)</h2>
 <ul><li><strong>BREAKING CHANGE:</strong> A single UMD formatted Rimu library file
   <code>rimu.js</code> (along with the minified version <code>rimu.min.js</code>) are now
   distributed instead of previous separate CommonJS and browser
@@ -419,8 +458,8 @@ for more detailed information.</p>
   library from a TypeScript source file:<pre class="no-highlight"><code>// Automatically loads node_modules/rimu/bin/rimu.d.ts
 import Rimu = require('rimu')</code></pre>
 </li><li>Use Webpack to minify the Rimu library &mdash; this reduced the minified
-  <code>rimu.min.js</code> to 18.7KB (previously was 28.2KB).</li><li>Upgrade all build tools to latest versions.</li></ul><h2>Version 6.1.0 (2015-08-19)</h2>
-<ul><li>Allow macro invocations in <em>API Option</em> element values.</li><li>Allow <em>Quote</em> elements in URL and and email address captions.</li><li>Add <code>callback</code> API to <code>rimu.d.ts</code> type definitions file.</li><li>Replaced <em>nodeunit</em> with <a href="https://github.com/substack/tape">Tape</a> for unit tests.</li></ul><h2>Version 6.0.0 (2015-07-12)</h2>
+  <code>rimu.min.js</code> to 18.7KB (previously was 28.2KB).</li><li>Upgrade all build tools to latest versions.</li></ul><h2 id="version-6-1-0-2015-08-19">Version 6.1.0 (2015-08-19)</h2>
+<ul><li>Allow macro invocations in <em>API Option</em> element values.</li><li>Allow <em>Quote</em> elements in URL and and email address captions.</li><li>Add <code>callback</code> API to <code>rimu.d.ts</code> type definitions file.</li><li>Replaced <em>nodeunit</em> with <a href="https://github.com/substack/tape">Tape</a> for unit tests.</li></ul><h2 id="version-6-0-0-2015-07-12">Version 6.0.0 (2015-07-12)</h2>
 <p>Misspelled macro invocations are insidious and easily overlooked.  The
 problem has finally been resolved with the introduction of an API
 callback option that emits diagnostic messages.</p>
@@ -457,23 +496,23 @@ suppress these warnings escape the macro invocation with a backslash).</p>
   will emit a deprecation error.</li><li>The previously undefined <code>{--}</code> reserved macro is now set to an empty string
   when the <code>rimuc</code> <code>--styled</code> option is used so it still behaves the same
   with Inclusion and Exclusion macro invocations &mdash; if you use it
-  in other contexts you should explicitly set it: <code>{--} = ''</code>.</li></ul><h2>Version 5.4.0 (2015-06-28)</h2>
+  in other contexts you should explicitly set it: <code>{--} = ''</code>.</li></ul><h2 id="version-5-4-0-2015-06-28">Version 5.4.0 (2015-06-28)</h2>
 <ul><li>Moved Rimu reference documentation from the <em>Rimu Playground</em> into a
   separate updated <em>Reference</em> manual.</li><li>Restyled and simplified the <em>Playground</em>.</li><li>Features added to the <code>rimuc</code> command <code>--styled</code> option (details in
   the new <em>Reference</em> manual):<ul><li>Now generates unique slug ids for top level <code>h1</code>, <code>h2</code> and <code>h3</code>
     headers irrespective of the <code>--toc</code> option (previously it was
-    possible to generate non-unique slug ids).</li><li>It Highlights broken fragment URLs.</li></ul></li></ul><h2>Version 5.3.0 (2015-06-22)</h2>
+    possible to generate non-unique slug ids).</li><li>It Highlights broken fragment URLs.</li></ul></li></ul><h2 id="version-5-3-0-2015-06-22">Version 5.3.0 (2015-06-22)</h2>
 <p>Added <code>--title TITLE</code>, <code>--highlightjs</code>, <code>--mathjax</code>, <code>--toc</code>, <code>--section-numbers</code>
 styling macro shortcut options to <code>rimuc</code>. The preceding example can now be
 shortened to:</p>
 <pre class="no-highlight"><code>rimuc --styled --toc README.md</code></pre>
-<h2>Version 5.2.0 (2015-06-20)</h2>
+<h2 id="version-5-2-0-2015-06-20">Version 5.2.0 (2015-06-20)</h2>
 <p>The <code>rimuc</code> command can now generate a table of contents: If the <code>--toc</code> macro is defined
 and is not blank then the <code>rimuc</code> command <code>--styled</code> option generates a table of contents.
 For example:</p>
 <pre class="no-highlight"><code>rimuc --styled --prepend "{--toc}='yes'" README.md</code></pre>
 <p>Top-level <code>h1</code>, <code>h2</code> and <code>h3</code> HTML tags contribute to the table of contents.</p>
-<h2>Version 5.1.0 (2015-06-13)</h2>
+<h2 id="version-5-1-0-2015-06-13">Version 5.1.0 (2015-06-13)</h2>
 <p>New features:</p>
 <ul><li>You can append CSS class names to Delimited Block opening delimiter lines and they
   will be injected into the block's opening HTML tag (this is
@@ -486,7 +525,7 @@ if (message) {
 ```</code></pre>
 </li><li>Underscores within words rendered verbatim and are not treated as
   underscore emphasis quotes (Github Flavored Markdown behaviour).</li><li>Add <code>+</code> bulleted list ID (Markdown syntax).</li><li>Lists can be terminated by two or more blank lines.</li><li>Typographical nicities added to the
-  <a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example .rimurc file</a>.</li></ul><h2>Version 5.0.0 (2015-06-07)</h2>
+  <a href="https://github.com/srackham/rimu/blob/master/examples/.rimurc">example .rimurc file</a>.</li></ul><h2 id="version-5-0-0-2015-06-07">Version 5.0.0 (2015-06-07)</h2>
 <p>This version adds new API options, an <em>API Options</em> element and more Markdown
 compatibility. It also includes some breaking changes.</p>
 <ul><li>Added <code>macroMode</code> API option to specify which macro invocations are processed.</li><li>Added <code>reset</code> API option to reset the API to its default state.</li><li>Added Markdown compatible double back-tick <code>``code quotes``</code> and double
@@ -505,21 +544,21 @@ compatibility. It also includes some breaking changes.</p>
   Previously, unspecified <code>options</code> were set to their default values which was
   surprising and potentially dangerous because it reset the <code>safeMode</code> to the default
   unsafe value of zero unless <code>safeMode</code> was explicitly specified otherwise.</li><li>A backslash immediately preceding a closing <em>code</em> quote is now rendered verbatim
-  and does not escape the quote.</li></ul><h2>Version 4.0.1 (2015-05-06)</h2>
+  and does not escape the quote.</li></ul><h2 id="version-4-0-1-2015-05-06">Version 4.0.1 (2015-05-06)</h2>
 <p>Documentation updates (no functional changes).</p>
 <ul><li>Use Markdown links and headers syntax in documentation.
   Most users will already know and use Markdown so this makes Rimu
-  example source more familar and easier to assimilate.</li></ul><h2>Version 4.0.0 (2015-05-05)</h2>
+  example source more familar and easier to assimilate.</li></ul><h2 id="version-4-0-0-2015-05-05">Version 4.0.0 (2015-05-05)</h2>
 <ul><li>Switched codebase from Internal to External (ES6 compatible) module
   syntax.</li><li>Modules are bundled into deployable JavaScript libraries using Webpack.</li><li>The single <code>rimu.js</code> compiled library file has been replaced by two separate
-  library files:<ol><li><code>rimu-var.js</code> for use in HTML <em>script</em> tags.</li><li><code>rimu-commonjs2.js</code> for use with CommonJS (Node.js) applications.</li></ol></li></ul><h2>Version 3.3 (2015-01-12)</h2>
+  library files:<ol><li><code>rimu-var.js</code> for use in HTML <em>script</em> tags.</li><li><code>rimu-commonjs2.js</code> for use with CommonJS (Node.js) applications.</li></ol></li></ul><h2 id="version-3-3-2015-01-12">Version 3.3 (2015-01-12)</h2>
 <p>More Markdown compatible syntaxes added to Rimu core
 (these syntaxes were previously added using custom definitions):</p>
-<ul><li>Links: <code>[caption](url)</code>.</li><li>Images: <code>![alt](url)</code>.</li><li>Bold text: <code>**bold**</code>.</li><li>Strikethrough text: <code>~~strikethrough~~</code> (GitHub Flavored Markdown).</li></ul><h2>Version 3.2 (2015-01-07)</h2>
+<ul><li>Links: <code>[caption](url)</code>.</li><li>Images: <code>![alt](url)</code>.</li><li>Bold text: <code>**bold**</code>.</li><li>Strikethrough text: <code>~~strikethrough~~</code> (GitHub Flavored Markdown).</li></ul><h2 id="version-3-2-2015-01-07">Version 3.2 (2015-01-07)</h2>
 <ul><li>Auto-encode (most) raw HTTP URLs as links.</li><li>Added Markdown compatible Quote Paragraphs (paragraphs starting with <code>&gt;</code>
   rendered inside a <code>&lt;blockquote&gt;</code> HTML element).</li><li>Added backtick delimiter for code blocks - - backtick is now the normative
   code block delimiter (the older dash delimiter is deprecated but will never
-  be dropped). backtick rationale:<ol><li>Consistency: aligned with use of backtick to quote inline code.</li><li>Familarity: looks like a Github Flavored Markdown fenced code block.</li></ol></li></ul><h2>Version 3.0 (2013-10-28)</h2>
+  be dropped). backtick rationale:<ol><li>Consistency: aligned with use of backtick to quote inline code.</li><li>Familarity: looks like a Github Flavored Markdown fenced code block.</li></ol></li></ul><h2 id="version-3-0-2013-10-28">Version 3.0 (2013-10-28)</h2>
 <ul><li>Added <em>Delimited Block</em> definitions.</li><li>Enhanced and refined Macros.</li><li>Many other enhancements, additions and documentation updates.</li><li><em>Indented Paragraphs</em> and <em>Code Blocks</em> no longer expand macro
   invocations by default. To reinstate old behavior use these delimited
   block definitions:<pre class="no-highlight"><code>|code| = '+macros'
@@ -529,36 +568,32 @@ compatibility. It also includes some breaking changes.</p>
 </li><li>Dropped the deprecated <em>+</em> line-break, use the newer backslash
   line-break. To reinstate the old <em>+</em> line-break use this replacement
   definition:<pre class="no-highlight"><code>/[\\ ]\+(\n|$)/g = '&lt;br&gt;$1'</code></pre>
-</li></ul><h2>Version 2 (2013-07-26)</h2>
+</li></ul><h2 id="version-2-2013-07-26">Version 2 (2013-07-26)</h2>
 <ul><li>Added Quote and Replacements definitions.</li><li>A number of other enhancements, additions and documentation updates.</li></ul>
 </div>
 <script>
 window.onload = function() {
   var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
   headings.forEach(function(heading) {
-    var title = heading.textContent;
-    var id = heading.getAttribute('id');
-    if (!id) {
-      id = slugify(title);
-      heading.setAttribute('id', id);
-    }
-    appendTocEntry(heading, id);
+    setHeaderLink(heading);
+    appendTocEntry(heading);
   });
-}
-function slugify(text) {
-  var slug = text.replace(/\s+/g, '-') // Replace spaces with dashes.
-      .replace(/[^\w-]/g, '')          // Retain alphanumeric, '-' and '_' characters.
-      .toLowerCase()
-  if (!slug) slug = 'x';
-  if (document.getElementById(slug)) { // Another element already has that id.
-    var i = 2, prefix = slug;
-    while (document.getElementById(slug = prefix + '-' + i++)) {}
-  }
-  return slug;
 }
 </script>
 <script>
-function appendTocEntry(heading, id) {
+function setHeaderLink(heading) {
+  var id = heading.getAttribute('id');
+  if (id) {
+    var link = document.createElement('a');
+    link.classList.add('header-link');
+    link.setAttribute('href', '#' + id);
+    heading.appendChild(link);
+  }
+}
+</script>
+<script>
+function appendTocEntry(heading) {
+  var id = heading.getAttribute('id');
   if (heading.classList.contains('no-auto-toc')) {
     return;
   }

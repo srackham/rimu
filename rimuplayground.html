@@ -240,11 +240,33 @@
     margin-left: 1.5em;
     font-size: 90%;
   }
-  #toc div:nth-child(even) {
+  #toc div[class^="h"]:nth-child(even) {
     background-color: #f8f8f8;
   }
   #auto-toc {
     width: 100%;
+  }
+</style>
+<style>
+  .header-link {
+    text-decoration: none;
+    color: lightgray;
+    visibility: hidden;
+  }
+  .header-link:hover {
+    text-decoration: none;
+    color: gray;
+  }
+  .header-link::before {
+    content: " \00b6";
+  }
+  h2:hover > .header-link, h3:hover > .header-link {
+    visibility: visible;
+  }
+  @media print {
+    .header-link {
+      display: none !important;
+    }
   }
 </style>
 <style>
@@ -382,8 +404,8 @@ function updateExample(name) {
   <h2 style="font-size:1.2em; margin-top:1.0em">Table of Contents</h2>
   <div id="auto-toc"></div>
 </div>
-<h1>Rimu Playground</h1>
-<h3><span onclick="showHide('playground-source')" title="Show/Hide" style="cursor: pointer;">&#9660;</span> Rimu markup</h3>
+<h1 id="rimu-playground">Rimu Playground</h1>
+<h2 id="showhide-playground-source-rimu-markup"><span onclick="showHide('playground-source')" title="Show/Hide" style="cursor: pointer;">&#9660;</span> Rimu markup</h2>
 <div id="playground-source"><p>Edit these examples or add your own:</p>
 <div>
   <textarea id="playground-edit" class="edit-source"
@@ -406,9 +428,9 @@ Code block.
 </div>
 <p>Diagnostic messages:</p>
 <pre id="playground-diagnostics" style="box-shadow: 0 0 10px #9ecaed;" class="no-highlight"><code></code></pre></div>
-<h3><span onclick="showHide('playground-preview')" title="Show/Hide" style="cursor: pointer;">&#9660;</span> HTML preview</h3>
+<h2 id="showhide-playground-preview-html-preview"><span onclick="showHide('playground-preview')" title="Show/Hide" style="cursor: pointer;">&#9660;</span> HTML preview</h2>
 <div id="playground-preview" style="border: 1px solid #dddddd; border-radius: 4px; padding: 4px; box-shadow: 0 0 10px #9ecaed;"></div>
-<h3><span onclick="showHide('playground-html')" title="Show/Hide" style="cursor: pointer;">&#9660;</span> HTML markup</h3>
+<h2 id="showhide-playground-html-html-markup"><span onclick="showHide('playground-html')" title="Show/Hide" style="cursor: pointer;">&#9660;</span> HTML markup</h2>
 <pre id="playground-html" style="box-shadow: 0 0 10px #9ecaed;" class="no-highlight"><code></code></pre>
 <script>
 function escapeSpecialChars(s) {
@@ -441,29 +463,25 @@ convert();
 window.onload = function() {
   var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
   headings.forEach(function(heading) {
-    var title = heading.textContent;
-    var id = heading.getAttribute('id');
-    if (!id) {
-      id = slugify(title);
-      heading.setAttribute('id', id);
-    }
-    appendTocEntry(heading, id);
+    setHeaderLink(heading);
+    appendTocEntry(heading);
   });
-}
-function slugify(text) {
-  var slug = text.replace(/\s+/g, '-') // Replace spaces with dashes.
-      .replace(/[^\w-]/g, '')          // Retain alphanumeric, '-' and '_' characters.
-      .toLowerCase()
-  if (!slug) slug = 'x';
-  if (document.getElementById(slug)) { // Another element already has that id.
-    var i = 2, prefix = slug;
-    while (document.getElementById(slug = prefix + '-' + i++)) {}
-  }
-  return slug;
 }
 </script>
 <script>
-function appendTocEntry(heading, id) {
+function setHeaderLink(heading) {
+  var id = heading.getAttribute('id');
+  if (id) {
+    var link = document.createElement('a');
+    link.classList.add('header-link');
+    link.setAttribute('href', '#' + id);
+    heading.appendChild(link);
+  }
+}
+</script>
+<script>
+function appendTocEntry(heading) {
+  var id = heading.getAttribute('id');
   if (heading.classList.contains('no-auto-toc')) {
     return;
   }

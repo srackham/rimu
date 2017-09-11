@@ -240,11 +240,33 @@
     margin-left: 1.5em;
     font-size: 90%;
   }
-  #toc div:nth-child(even) {
+  #toc div[class^="h"]:nth-child(even) {
     background-color: #f8f8f8;
   }
   #auto-toc {
     width: 100%;
+  }
+</style>
+<style>
+  .header-link {
+    text-decoration: none;
+    color: lightgray;
+    visibility: hidden;
+  }
+  .header-link:hover {
+    text-decoration: none;
+    color: gray;
+  }
+  .header-link::before {
+    content: " \00b6";
+  }
+  h2:hover > .header-link, h3:hover > .header-link {
+    visibility: visible;
+  }
+  @media print {
+    .header-link {
+      display: none !important;
+    }
   }
 </style>
 <style>
@@ -306,22 +328,22 @@
   <h2 style="font-size:1.2em; margin-top:1.0em">Table of Contents</h2>
   <div id="auto-toc"></div>
 </div>
-<h1>Rimu Markup</h1>
+<h1 id="rimu-markup">Rimu Markup</h1>
 <p>Rimu is a readable-text to HTML markup language inspired by AsciiDoc
 and Markdown.</p>
-<h2>Features summary</h2>
+<h2 id="features-summary">Features summary</h2>
 <ul><li>Markup generation can be customized and extended.</li><li>Includes a simple, flexible macro language.</li><li>HTML attribute injection and parametrized macros.</li><li>Accepts raw HTML (a la Markdown).</li><li>A subset of the Rimu syntax is <a href="http://srackham.github.io/rimu/tips.html#markdown-compatible">Markdown
   compatible</a>.</li><li>Single JavaScript file (less than 20KB minified) that can be dropped
   onto a Web page or used as a Node module.</li><li>No dependencies.</li><li>One-function API.</li><li>Written in TypeScript.</li><li>Includes command-line compiler, JavaScript library, TypeScript
   library declaration file, playground GUI, Vim syntax highlighter and
   a unit test suite.</li><li>MIT license.</li><li>There is also a <a href="https://github.com/srackham/rimu-kt/">Kotlin port of
-  Rimu</a> for the JVM platform.</li></ul><h2>Learn more</h2>
+  Rimu</a> for the JVM platform.</li></ul><h2 id="learn-more">Learn more</h2>
 <p>Read the documentation and experiment with Rimu in the <a href="http://srackham.github.io/rimu/rimuplayground.html">Rimu
 Playground</a> or open the
 <code>rimuplayground.html</code> file locally in your browser.</p>
 <p>See the Rimu <a href="http://srackham.github.io/rimu/changelog.html">Change Log</a> for
 the latest changes.</p>
-<h2>Installing Rimu</h2>
+<h2 id="installing-rimu">Installing Rimu</h2>
 <p>Install Rimu as a Node.js module (includes the <code>rimu</code> library and the
 <code>rimuc</code> command-line tool):</p>
 <pre class="no-highlight"><code>sudo npm install -g rimu</code></pre>
@@ -329,14 +351,14 @@ the latest changes.</p>
 <pre class="no-highlight"><code>echo 'Hello *Rimu*!' | rimuc</code></pre>
 <p>This should output:</p>
 <pre class="no-highlight"><code>&lt;p&gt;Hello &lt;em&gt;Rimu&lt;/em&gt;!&lt;/p&gt;</code></pre>
-<h2>Building Rimu</h2>
+<h2 id="building-rimu">Building Rimu</h2>
 <p>To build Rimu and the Rimu documentation from source:</p>
 <ol><li>Install the Git repository from <a href="https://github.com/srackham/rimu">Github</a>.<pre class="no-highlight"><code>git clone git@github.com:srackham/rimu.git</code></pre>
 </li><li>Install gh-pages sub-repository:<pre class="no-highlight"><code>cd rimu
 git clone git@github.com:srackham/rimu.git -b gh-pages gh-pages</code></pre>
 </li><li>Install dependencies:<pre class="no-highlight"><code>npm install</code></pre>
 </li><li>Build Rimu:<pre class="no-highlight"><code>jake build</code></pre>
-</li></ol><h2>Using the Rimu library</h2>
+</li></ol><h2 id="using-the-rimu-library">Using the Rimu library</h2>
 <ul><li>First read the <a href="http://srackham.github.io/rimu/reference.html#api">Rimu
   API</a>
   documentation.</li><li>A minimal TypeScript example
@@ -346,7 +368,7 @@ git clone git@github.com:srackham/rimu.git -b gh-pages gh-pages</code></pre>
   Playground</a> &mdash;
   examples of using Rimu in Node.js and in the browser respectively.</li><li>A simple <a href="https://github.com/srackham/rimu-chrome-extension.git">Chrome browser
   extension</a>
-  for rendering Rimu Markup files directly in the browser.</li></ul><h2>Browser compatibility</h2>
+  for rendering Rimu Markup files directly in the browser.</li></ul><h2 id="browser-compatibility">Browser compatibility</h2>
 <p>The generated HTML is compatible with all modern browsers. The Rimu
 JavaScript library works with the latest versions of IE, Firefox and
 Chrome, seems OK on Android and iOS. Does not run on IE8.</p>
@@ -355,29 +377,25 @@ Chrome, seems OK on Android and iOS. Does not run on IE8.</p>
 window.onload = function() {
   var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
   headings.forEach(function(heading) {
-    var title = heading.textContent;
-    var id = heading.getAttribute('id');
-    if (!id) {
-      id = slugify(title);
-      heading.setAttribute('id', id);
-    }
-    appendTocEntry(heading, id);
+    setHeaderLink(heading);
+    appendTocEntry(heading);
   });
-}
-function slugify(text) {
-  var slug = text.replace(/\s+/g, '-') // Replace spaces with dashes.
-      .replace(/[^\w-]/g, '')          // Retain alphanumeric, '-' and '_' characters.
-      .toLowerCase()
-  if (!slug) slug = 'x';
-  if (document.getElementById(slug)) { // Another element already has that id.
-    var i = 2, prefix = slug;
-    while (document.getElementById(slug = prefix + '-' + i++)) {}
-  }
-  return slug;
 }
 </script>
 <script>
-function appendTocEntry(heading, id) {
+function setHeaderLink(heading) {
+  var id = heading.getAttribute('id');
+  if (id) {
+    var link = document.createElement('a');
+    link.classList.add('header-link');
+    link.setAttribute('href', '#' + id);
+    heading.appendChild(link);
+  }
+}
+</script>
+<script>
+function appendTocEntry(heading) {
+  var id = heading.getAttribute('id');
   if (heading.classList.contains('no-auto-toc')) {
     return;
   }
