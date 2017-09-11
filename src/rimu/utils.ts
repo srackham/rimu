@@ -194,9 +194,10 @@ export namespace BlockAttributes {
     if (!slug) slug = 'x'
     if (ids.indexOf(slug) > -1) { // Another element already has that id.
       let i = 2;
-      while (ids.indexOf(slug += '-' + i) > -1) {
+      while (ids.indexOf(slug + '-' + i) > -1) {
         i++
       }
+      slug += '-' + i
     }
     return slug;
   }

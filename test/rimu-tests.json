@@ -2202,9 +2202,9 @@
     }
   },
   {
-    "description": "header slug synthesis",
-    "input": "{--header-ids}='true'\n# Title\n# ???\n# \\{--x--y}-z-\n.#foo\nFoobar\n\n## Foo\n.#barbell\n### Bar\n{--header-ids}=''\n# Title",
-    "expectedOutput": "<h1 id=\"title\">Title</h1>\n<h1 id=\"x\">???</h1>\n<h1 id=\"x-y-z\">{--x--y}-z-</h1>\n<p id=\"foo\">Foobar</p>\n<h2 id=\"foo-2\">Foo</h2>\n<h3 id=\"barbell\">Bar</h3>\n<h1>Title</h1>",
+    "description": "header id synthesis",
+    "input": "{--header-ids}='true'\n# Title\n# ???\n# \\{--x--y}-z-\n.#foo\nFoobar\n\n## Foo\n## Foo\n.#barbell\n### Bar\n{--header-ids}=''\n# Title",
+    "expectedOutput": "<h1 id=\"title\">Title</h1>\n<h1 id=\"x\">???</h1>\n<h1 id=\"x-y-z\">{--x--y}-z-</h1>\n<p id=\"foo\">Foobar</p>\n<h2 id=\"foo-2\">Foo</h2>\n<h2 id=\"foo-3\">Foo</h2>\n<h3 id=\"barbell\">Bar</h3>\n<h1>Title</h1>",
     "expectedCallback": "",
     "options": {
       "reset": true
