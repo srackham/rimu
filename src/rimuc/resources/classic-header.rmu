@@ -290,6 +290,9 @@
     .no-print, .no-print * {
       display: none !important;
     }
+    a:hover {
+      text-decoration: none !important;
+    }
   }
 </style>
 
@@ -473,15 +476,9 @@
   }
   a, a:hover {
     color: {graystone-color};
-    text-decoration: underline;
   }
   #nav {
     background: {graystone-color};
-  }
-  @media print {
-    a {
-      text-decoration: none;
-    }
   }
 </style>
 
