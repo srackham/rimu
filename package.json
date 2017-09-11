@@ -23,7 +23,6 @@
     "lib/rimu.js",
     "lib/rimu.min.js",
     "bin/rimuc.js",
-    "bin/*.rmu",
     "typings/rimu.d.ts"
   ],
   "typings": "typings/rimu.d.ts",
