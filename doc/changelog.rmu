@@ -7,19 +7,25 @@ for a full list of changes.
 ## Version 9.3.0 (2017-09-11)
 - Implemented predefined `--header-ids` macro.  If the `--header-ids`
   macro value is non-blank Rimu generates unique HTML `id` attributes
-  for `h1`, `h2` and `h3` section headers.  This feature is enabled by
-  default when the `rimuc` `--styled` option is used and replaces the
+  for `h1`, `h2` and `h3` section headers.
+- Added a `--header-ids` option to the `rimuc` command, it enables
+  header id generation by setting the `--header-ids` macro to a
+  non-blank value.  The `rimuc` `--header-ids` option is enabled by
+  default when the `--styled` option is used, this replaces the
   dynamic header id generation previously used by the `--styled`
   option.
 - The `rimuc` command has a new `--header-links` option for use in
   conjunction with the `--styled` option. I generates header links
   which are displayed when you hover over `h2` and `h3` section header
-  titles. Their purpose is to provide an easy way copy and paste links
-  to document sections.
+  titles. Their purpose is to provide an easy way copy and paste
+  document section links.  For example, this page's headings use this
+  feature.
 
-- **FIXED**: When header lines contain an optional postfix the postfix
-  must match the prefix exactly (previously any valid prefix could be
-  used).
+- **FIXED**: When Rimu headers contain an optional postfix the postfix
+  must match the prefix exactly (previously valid but mismatched
+  prefixes and suffixes were accepted).
+- **FIXED**: The `rimuc` command `--styled` option did not always
+  alternate the table of contents entry background colors.
 
 
 ## Version 9.2.0 (2017-08-30)
