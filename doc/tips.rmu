@@ -355,7 +355,7 @@ used the `style` element `scoped` attribute.
 
 See also:
 
-- [What is the current state of the “scoped” attribute for the style
+- [What is the current state of the "scoped" attribute for the style
   element in
   HTML5?](http://stackoverflow.com/questions/28633038/what-is-the-current-state-of-the-scoped-attribute-for-the-style-element-in-htm)
 ""
@@ -1079,7 +1079,7 @@ Here's an example of a personal letter:
 .-macros
 {letter-example} = '
 ."font-family:serif; font-size:12pt;"
-.....................................
+...
 
 ."margin-left:75%"
 ..
@@ -1107,7 +1107,7 @@ rhoncus, egestas aliquet lundium! Lundium auctor vel natoque enim.
 ."margin-top:2em"
 Yours sincerely \
 Joe Jetson
-.....................................
+...
 '
 
 {generate-rendered-example-2|letter-example}

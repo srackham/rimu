@@ -976,8 +976,8 @@ Notes:
 6. <example.html#basics|The basics>
 7. <#api-options|API Options>
 8. <file:///example/user-guide.pdf|User Guide>
-9. <file:///home/example/downloads/>
-10. <ftp://example.com/pub/standards/RFC/rfc959.txt>
+9. <file:///downloads/>
+10. <ftp://example.com/rfc959.txt|rfc959.txt>
 11. <joe@example.com>
 12. <joe@example.org|Joe Bloggs>'
 
