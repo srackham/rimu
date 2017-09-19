@@ -1,0 +1,86 @@
+/*
+  Used by rimuc `--layout sequel` option.
+*/
+
+// Close main and article divs.
+</div>
+</div>
+
+{--highlightjs!}<script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>
+
+{--mathjax!}<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script>
+window.onload = function() {
+  document.getElementById('sidebar').appendChild(document.getElementById('toc')); // Ensure custom TOC is child of sidebar.
+  var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
+  headings.forEach(function(heading) {
+{--header-links!}    setHeaderLink(heading);
+    appendTocEntry(heading);
+  });
+  if (isSmallScreen()) {
+    toggleToc();  // Hide TOC.
+  }
+}
+</script>
+
+{--header-links=}.+skip
+<script>
+function setHeaderLink(heading) {
+  var id = heading.getAttribute('id');
+  if (id) {
+    var link = document.createElement('a');
+    link.classList.add('header-link');
+    link.setAttribute('href', '#' + id);
+    heading.appendChild(link);
+  }
+}
+</script>
+
+<script>
+function appendTocEntry(heading) {
+  var id = heading.getAttribute('id');
+  if (heading.classList.contains('no-auto-toc')) {
+    return;
+  }
+  var container = document.getElementById('auto-toc');
+  if (container === null) {
+    return;
+  }
+  var tocLink = document.createElement('a');
+  tocLink.setAttribute('href', '#' + id);
+  tocLink.textContent = heading.textContent;
+  var tocEntry = document.createElement('div');
+  tocEntry.setAttribute('class', heading.tagName.toLowerCase());
+  tocEntry.appendChild(tocLink);
+  container.appendChild(tocEntry);
+}
+</script>
+
+<script>
+  document.onclick = function (event) {
+    if (event.target.matches('#toc-button') || event.target.matches('#toc a') && isSmallScreen()) {
+      // Toggle TOC if nav bar or small-screen TOC link is clicked.
+      toggleToc();
+    }
+  }
+  function toggleToc() {
+    document.body.classList.toggle('hide-toc');
+  }
+  function isSmallScreen() {
+    return String(window.getComputedStyle(document.getElementById('nav'), null).getPropertyValue('z-index')) === '99';
+  }
+  // matches() polyfill for old browsers.
+  if (!Element.prototype.matches) {
+    var p = Element.prototype;
+    if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
+      p.matches = p.webkitMatchesSelector;
+    if (p.msMatchesSelector) // IE9/10/11 & Edge
+      p.matches = p.msMatchesSelector;
+    if (p.mozMatchesSelector) // FF<34
+      p.matches = p.mozMatchesSelector;
+  }
+</script>
+
+</body>
+</html>

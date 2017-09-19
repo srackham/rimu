@@ -231,7 +231,7 @@ outer:
         if (!styled_name) {
           die('missing --styled-name')
         }
-        if (['classic', 'flex', 'v8'].indexOf(styled_name) === -1) {
+        if (['classic', 'flex', 'sequel', 'v8'].indexOf(styled_name) === -1) {
           die('illegal --styled-name: ' + styled_name)
         }
         break
