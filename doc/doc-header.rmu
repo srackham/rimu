@@ -157,7 +157,7 @@ Rimu source</td>
 
 // Custom table of contents.
 <div id="toc" class="no-print">
-  <h2 style="font-size:1.2em; margin-top:1.0em">Links</h2>
+  <h2>Links</h2>
   <div class="h2"><a href="{homepage}">Rimu Home</a></div>
   <div class="h2"><a href="{playground}">Rimu Playground</a></div>
   <div class="h2"><a href="{reference}">Rimu Reference</a></div>
@@ -165,6 +165,6 @@ Rimu source</td>
   <div class="h2"><a href="{changelog}">Change Log</a></div>
   <div class="h2"><a href="{github}">Github</a></div>
   <div class="h2"><a href="{npm}">npm</a></div>
-  <h2 style="font-size:1.2em; margin-top:1.0em">Table of Contents</h2>
+  <h2>Table of Contents</h2>
   <div id="auto-toc"></div>
 </div>
