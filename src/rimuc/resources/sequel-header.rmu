@@ -300,7 +300,7 @@
 // TOC styling.
 <style>
   #toc h2 {
-    font-size:1.2rem;
+    font-size: 125%;
     padding-left: 1rem;
     margin-top:1.0rem;
     margin-left: 0;
