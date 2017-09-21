@@ -80,7 +80,7 @@
     "description": "rimuc --mathjax",
     "args": "--styled --mathjax",
     "input": "",
-    "expectedOutput": "<script src=\"http://cdn.mathjax.org",
+    "expectedOutput": "<script async src=\"https://cdnjs.cloudflare.com/ajax/libs/mathjax/",
     "predicate": "contains"
   },
   {
@@ -98,8 +98,8 @@
     "predicate": "contains"
   },
   {
-    "description": "rimuc --dropdown-toc",
-    "args": "--styled --dropdown-toc",
+    "description": "rimuc classic --dropdown-toc",
+    "args": "--styled --styled-name classic --dropdown-toc",
     "input": "",
     "expectedOutput": "<div id=\"toc-button\"",
     "predicate": "contains"
@@ -113,7 +113,7 @@
   },
   {
     "description": "classic named style",
-    "args": "--styled --styled-name \"classic\"",
+    "args": "--styled --styled-name classic",
     "input": "_Hello World!_",
     "expectedOutput": "<p><em>Hello World!</em></p",
     "predicate": "contains"
@@ -148,7 +148,7 @@
   },
   {
     "description": "static header ids and no TOC",
-    "args": "--styled --header-ids",
+    "args": "--styled --styled-name classic --header-ids",
     "input": "",
     "expectedOutput": "window.onload = function()",
     "predicate": "!contains"

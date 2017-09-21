@@ -81,8 +81,9 @@ OPTIONS
 
   --styled-name NAME
     Specify the --styled option header and footer files:
-    'classic': Default styling.
-    'flex':    Flexbox "mobile first" styling (experimental).
+    'classic': Desktop-centric styling.
+    'flex':    Flexbox responsive styling (experimental).
+    'sequel':  Responsive cross-device styling (default).
     'v8':      Rimu version 8 styling.
 
 PREDEFINED MACROS
@@ -156,7 +157,7 @@ function readResourceFile(name: string): string {
 let safe_mode = 0
 let html_replacement: string | undefined
 let styled = false
-let styled_name = 'classic'
+let styled_name = 'sequel'
 let no_rimurc = false
 let lint = false
 

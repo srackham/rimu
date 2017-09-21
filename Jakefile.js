@@ -163,11 +163,11 @@ task('build-rimuc', {async: true}, function () {
 })
 
 desc(`Generate HTML documentation`)
-task('html-docs', ['build-rimu'], {async: true}, function () {
+task('build-docs', ['build-rimu'], {async: true}, function () {
   let commands = DOCS.map(doc =>
     'node ' + RIMUC +
     ' --styled --lint --no-rimurc --theme default --custom-toc --header-links' +
-    ' --styled-name "classic"' +
+    ' --styled-name "sequel"' +
     ' --output "' + doc.dst + '"' +
     ' --lang "en"' +
     ' --title "' + doc.title + '"' +
@@ -231,7 +231,7 @@ desc(`Rebuild and validate documentation then commit and publish to GitHub Pages
 task('release-gh-pages', ['build-gh-pages', 'commit-gh-pages', 'push-gh-pages'])
 
 desc(`Generate documentation and copy to local gh-pages repo`)
-task('build-gh-pages', ['build-rimu', 'html-docs'], function () {
+task('build-gh-pages', ['build-rimu', 'build-docs'], function () {
   shelljs.cp('-f', HTML.concat(RIMU_LIB_MIN), GH_PAGES_DIR)
 })
 
