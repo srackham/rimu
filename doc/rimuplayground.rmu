@@ -48,7 +48,7 @@ Diagnostic messages:
 
 
 ## {showhide|playground-preview} HTML preview
-.#playground-preview "border: 1px solid #dddddd; border-radius: 4px; padding: 4px; {box-shadow}"
+.#playground-preview "border: 1px solid #dddddd; border-radius: 0; padding: 4px; {box-shadow}"
 ..
 ..
 
