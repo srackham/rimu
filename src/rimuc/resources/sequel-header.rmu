@@ -378,8 +378,9 @@
     z-index: 2;
     position: fixed;
 {--nav-top=}    top: 0;
-{--nav-top=}    left: 40px;
+{--nav-top=}    left: 0;
 {--nav-top=}    bottom: 0;
+{--nav-top=}    margin-left: 40px;
 {--nav-top!}    top: 40px;
 {--nav-top!}    height: 100%;
 {--nav-top!}    left: 0;
@@ -433,6 +434,9 @@
     }
     body:not(.hide-toc) #main {
       visibility: hidden;
+    }
+    #toc {
+      margin-right: 40px;
     }
     * {
       overflow-wrap: break-word;
