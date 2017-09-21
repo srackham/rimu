@@ -60,7 +60,7 @@ function appendTocEntry(heading) {
 <script>
   document.onclick = function (event) {
     if (event.target.matches('#toc-button') || event.target.matches('#toc a') && isSmallScreen()) {
-      // Toggle TOC if nav bar or small-screen TOC link is clicked.
+{--!} Toggle TOC if nav bar or small-screen TOC link is clicked.
       toggleToc();
     }
   }
@@ -68,7 +68,7 @@ function appendTocEntry(heading) {
     document.body.classList.toggle('hide-toc');
   }
   function isSmallScreen() {
-    return String(window.getComputedStyle(document.getElementById('nav'), null).getPropertyValue('z-index')) === '99';
+    return window.matchMedia('{small-screen}').matches;
   }
   // matches() polyfill for old browsers.
   if (!Element.prototype.matches) {
