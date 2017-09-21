@@ -65,19 +65,19 @@
     margin: 10px 0;
     color: {primary-color};
   }
-  h1 { font-size: 2.2em; line-height: 40px;}
-  h2 { font-size: 1.5em; }
-  h3 { font-size: 1.2em; }
-  h4 { font-size: 1.1em; }
-  h5 { font-size: 1.0em; }
-  h6 { font-size: 0.9em; }
+  h1 { font-size: 2.2rem; line-height: 40px;}
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.2rem; }
+  h4 { font-size: 1.1rem; }
+  h5 { font-size: 1.0rem; }
+  h6 { font-size: 0.9rem; }
   h2, h3, h4, h5, h6 {
     line-height: normal;
-    margin-top: 1.0em;
-    margin-bottom: 0.2em;
+    margin-top: 1.0rem;
+    margin-bottom: 0.2rem;
   }
   h2 {
-    margin-top: 1.5em;
+    margin-top: 1.5rem;
     border-bottom: 1px solid {border-color};
   }
   img {
@@ -108,8 +108,8 @@
   }
   p, pre, li, dt, dd, blockquote p {
     line-height: 1.45;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   }
   ul, ol {
     padding: 0;
@@ -120,7 +120,7 @@
     font-style: italic;
   }
   dd {
-    margin-left: 1.0em;
+    margin-left: 1.0rem;
     margin-top: 0;
   }
   blockquote {
@@ -160,7 +160,7 @@
     border: none;
   }
   .dl-horizontal > dd {
-    margin-top: 1.0em;
+    margin-top: 1.0rem;
   }
   pre > code {
     background-color: inherit;
@@ -179,8 +179,8 @@
   div.verse p, p.verse {
     font-family: {serif-font};
     white-space: pre-wrap;
-    margin-top: 0.75em;
-    margin-bottom: 0.75em;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
   }
   {--!} Apply sidebar class to Normal Paragraphs and Division blocks.
   .sidebar {
@@ -191,7 +191,7 @@
     margin: 1.5em 0;
   }
   div.sidebar *:first-child {
-    margin-top: 0.2em;
+    margin-top: 0.2rem;
   }
   {--!} Force page break before the element.
   .page-break {
@@ -231,12 +231,12 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     text-align: left;
-    margin-top: 1.0em;
+    margin-top: 1.0rem;
     width: 25%;
   }
   .dl-horizontal > dd {
     margin-left: 25%;
-    padding-left: 1.0em;
+    padding-left: 1.0rem;
   }
   {--!} List item counters.
   dl {
