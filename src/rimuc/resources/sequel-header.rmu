@@ -16,18 +16,18 @@
 {--header-links?} = ''
 
 // CSS.
-{small-screen?} = '(max-width: 800px)'
-{sans-font?} = 'Arimo, Arial, Helvetica, sans-serif'
-{serif-font?} = 'Tinos, Georgia, serif'
-{mono-font?} = 'Cousine, Consolas, "Andale Mono", Monaco, monospace'
-{mono-size?} = '90%'
-{text-color?} = '#333333'
-{border-color?} = '#dddddd'
-{primary-color?} = '#34495e'
-{primary-background?} = 'white'
-{gray-background?} = '#f8f8f8'
-{butter-background?} = '#ffffee'
-{link-color?} = '#428bca'
+{--small-screen} = '(max-width: 800px)'
+{--sans-font} = 'Arimo, Arial, Helvetica, sans-serif'
+{--serif-font} = 'Tinos, Georgia, serif'
+{--mono-font} = 'Cousine, Consolas, "Andale Mono", Monaco, monospace'
+{--mono-size} = '90%'
+{--text-color} = '#333333'
+{--border-color} = '#dddddd'
+{--primary-color} = '#34495e'
+{--primary-background} = 'white'
+{--gray-background} = '#f8f8f8'
+{--butter-background} = '#ffffee'
+{--link-color} = '#428bca'
 
 /*
   HTML header
@@ -57,13 +57,13 @@
   body {
     font-size: 16px;
     line-height: 20px;
-    color: {text-color};
-    background-color: {primary-background};
-    font-family: {sans-font};
+    color: {--text-color};
+    background-color: {--primary-background};
+    font-family: {--sans-font};
   }
   h1, h2, h3, h4, h5, h6 {
     margin: 10px 0;
-    color: {primary-color};
+    color: {--primary-color};
   }
   h1 { font-size: 2.2rem; line-height: 40px;}
   h2 { font-size: 1.5rem; }
@@ -78,7 +78,7 @@
   }
   h2 {
     margin-top: 1.5rem;
-    border-bottom: 1px solid {border-color};
+    border-bottom: 1px solid {--border-color};
   }
   img {
     max-width: 100%;
@@ -95,10 +95,10 @@
   {--!} tbody necessary because: http://stackoverflow.com/questions/7490364/why-do-browsers-still-inject-tbody-in-html5
   table.bordered > tbody > tr > th,
   table.bordered > tbody > tr > td {
-    border: 1px solid {border-color};
+    border: 1px solid {--border-color};
   }
   a, a:hover {
-    color: {link-color};
+    color: {--link-color};
   }
   a {
     text-decoration: none;
@@ -127,7 +127,7 @@
     padding: 0 0 0 15px;
     border: none;
     border-left: 5px solid #eeeeee;
-    font-family: {serif-font};
+    font-family: {--serif-font};
     width: 80%;
     margin: 1.5em 0;
     color: #383838;
@@ -140,23 +140,23 @@
     content: "\2014 \2009";
   }
   code {
-    font-family: {mono-font};
+    font-family: {--mono-font};
     {--!} Monspace fonts are relatively oversized.
-    font-size: {mono-size};
-    background-color: {gray-background};
+    font-size: {--mono-size};
+    background-color: {--gray-background};
   }
   pre {
-    font-family: {mono-font};
+    font-family: {--mono-font};
     line-height: normal;
     white-space: pre-wrap;
     word-break: break-all;
-    background-color: {gray-background};
-    border: 1px solid {border-color};
+    background-color: {--gray-background};
+    border: 1px solid {--border-color};
     border-radius: 0;
     padding: 6px;
   }
   .light-background {
-    background-color: {gray-background};
+    background-color: {--gray-background};
     border: none;
   }
   .dl-horizontal > dd {
@@ -177,16 +177,16 @@
     margin: 1.5em 20px;
   }
   div.verse p, p.verse {
-    font-family: {serif-font};
+    font-family: {--serif-font};
     white-space: pre-wrap;
     margin-top: 0.75rem;
     margin-bottom: 0.75rem;
   }
   {--!} Apply sidebar class to Normal Paragraphs and Division blocks.
   .sidebar {
-    border: 1px solid {border-color};
+    border: 1px solid {--border-color};
     border-radius: 0;
-    background: {butter-background};
+    background: {--butter-background};
     padding: 10px;
     margin: 1.5em 0;
   }
@@ -321,13 +321,13 @@
     font-size: 90%;
   }
   #toc div[class^="h"]:nth-child(even) {
-    background-color: {gray-background};
+    background-color: {--gray-background};
   }
   #auto-toc {
     width: 100%;
   }
   #toc a, #toc a:hover {
-    color: {primary-color};
+    color: {--primary-color};
   }
 </style>
 
@@ -367,7 +367,7 @@
     left: 0;
     height: 100%;
     width: 40px;
-    background-color: {primary-color};
+    background-color: {--primary-color};
     color: white;
   }
   #sidebar {
@@ -409,7 +409,7 @@
     display: inline-block;
     padding-left: 5px;
   }
-  @media only screen and {small-screen} {
+  @media only screen and {--small-screen} {
     body {
       font-size: 20px;
     }
@@ -439,20 +439,20 @@
 </style>
 
 // Graystone theme.
-{graystone-color} = '#888'
+{--graystone-color} = '#888'
 {--theme!.*\bgraystone\b.*}.+skip
 <style>
   h1, h2, h3, h4, h5, h6 {
-    color: {graystone-color};
+    color: {--graystone-color};
   }
   h1, h2 {
     text-transform: uppercase;
   }
   a, a:hover {
-    color: {graystone-color};
+    color: {--graystone-color};
   }
   #nav {
-    background: {graystone-color};
+    background: {--graystone-color};
   }
 </style>
 

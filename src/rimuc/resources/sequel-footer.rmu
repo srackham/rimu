@@ -68,7 +68,7 @@ function appendTocEntry(heading) {
     document.body.classList.toggle('hide-toc');
   }
   function isSmallScreen() {
-    return window.matchMedia('{small-screen}').matches;
+    return window.matchMedia('{--small-screen}').matches;
   }
   // matches() polyfill for old browsers.
   if (!Element.prototype.matches) {

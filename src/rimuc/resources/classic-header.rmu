@@ -24,19 +24,19 @@
 /*
   CSS variables.
 */
-{small-screen} = 'screen and (max-width: 700px)'
+{--small-screen} = 'screen and (max-width: 700px)'
 
-{sans-font} = 'Arimo, Arial, Helvetica, sans-serif'
-{serif-font} = 'Tinos, Georgia, serif'
-{mono-font} = 'Cousine, Consolas, "Andale Mono", Monaco, monospace'
-{mono-size} = '90%'
+{--sans-font} = 'Arimo, Arial, Helvetica, sans-serif'
+{--serif-font} = 'Tinos, Georgia, serif'
+{--mono-font} = 'Cousine, Consolas, "Andale Mono", Monaco, monospace'
+{--mono-size} = '90%'
 
-{text-color} = '#333333'
-{border-color} = '#dddddd'
-{primary-color} = '#527bbd'
-{primary-background} = 'white'
-{gray-background} = '#f8f8f8'
-{butter-background} = '#ffffee'
+{--text-color} = '#333333'
+{--border-color} = '#dddddd'
+{--primary-color} = '#527bbd'
+{--primary-background} = 'white'
+{--gray-background} = '#f8f8f8'
+{--butter-background} = '#ffffee'
 
 
 /*
@@ -68,13 +68,13 @@
   body {
     font-size: 16px;
     line-height: 20px;
-    color: {text-color};
-    background-color: {primary-background};
-    font-family: {sans-font};
+    color: {--text-color};
+    background-color: {--primary-background};
+    font-family: {--sans-font};
   }
   h1, h2, h3, h4, h5, h6 {
     margin: 10px 0;
-    color: {primary-color};
+    color: {--primary-color};
   }
   h1 { font-size: 2.2em; line-height: 40px;}
   h2 { font-size: 1.5em; }
@@ -89,7 +89,7 @@
   }
   h2 {
     margin-top: 1.5em;
-    border-bottom: 1px solid {border-color};
+    border-bottom: 1px solid {--border-color};
   }
   img {
     max-width: 100%;
@@ -105,10 +105,10 @@
   {--!} tbody necessary because: http://stackoverflow.com/questions/7490364/why-do-browsers-still-inject-tbody-in-html5
   table.bordered > tbody > tr > th,
   table.bordered > tbody > tr > td {
-    border: 1px solid {border-color};
+    border: 1px solid {--border-color};
   }
   a, a:hover {
-    color: {primary-color};
+    color: {--primary-color};
   }
   a {
     text-decoration: none;
@@ -137,7 +137,7 @@
     padding: 0 0 0 15px;
     border: none;
     border-left: 5px solid #eeeeee;
-    font-family: {serif-font};
+    font-family: {--serif-font};
     width: 80%;
     margin: 1.5em 0;
     color: #383838;
@@ -150,23 +150,23 @@
     content: "\2014 \2009";
   }
   code {
-    font-family: {mono-font};
+    font-family: {--mono-font};
     {--!} Monspace fonts are relatively oversized.
-    font-size: {mono-size};
-    background-color: {gray-background};
+    font-size: {--mono-size};
+    background-color: {--gray-background};
   }
   pre {
-    font-family: {mono-font};
+    font-family: {--mono-font};
     line-height: normal;
     white-space: pre-wrap;
     word-break: break-all;
-    background-color: {gray-background};
-    border: 1px solid {border-color};
+    background-color: {--gray-background};
+    border: 1px solid {--border-color};
     border-radius: 4px;
     padding: 6px;
   }
   .light-background {
-    background-color: {gray-background};
+    background-color: {--gray-background};
     border: none;
   }
   *:not(pre) > code {
@@ -190,16 +190,16 @@
     margin: 1.5em 20px;
   }
   div.verse p, p.verse {
-    font-family: {serif-font};
+    font-family: {--serif-font};
     white-space: pre;
     margin-top: 0.75em;
     margin-bottom: 0.75em;
   }
   {--!} Apply sidebar class to Normal Paragraphs and Division blocks.
   .sidebar {
-    border: 1px solid {border-color};
+    border: 1px solid {--border-color};
     border-radius: 4px;
-    background: {butter-background};
+    background: {--butter-background};
     padding: 10px;
     margin: 1.5em 0px;
   }
@@ -331,7 +331,7 @@
     font-size: 90%;
   }
   #toc div[class^="h"]:nth-child(even) {
-    background-color: {gray-background};
+    background-color: {--gray-background};
   }
   #auto-toc {
     width: 100%;
@@ -395,7 +395,7 @@
       padding-left: 1em;
     }
   }
-  @media {small-screen} {
+  @media {--small-screen} {
     {--!}  Sidebar TOC hidden as it does not work on small screens.
     body {
       padding-left: 0;
@@ -430,7 +430,7 @@
     max-width: 30em;
     max-height: 80%;
     overflow-y: auto;
-    background-color: {primary-background};
+    background-color: {--primary-background};
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
   }
   #article {
@@ -441,7 +441,7 @@
       margin-left: 0px;
     }
   }
-  @media {small-screen} {
+  @media {--small-screen} {
     {--!}  Reposition TOC and TOC button.
     #toc {
       top: 60px;
@@ -456,7 +456,7 @@
 
 // Format (non-layout) related styles.
 <style>
-  @media {small-screen} {
+  @media {--small-screen} {
     body {
       font-size: 20px;
       margin: 5px;
@@ -465,20 +465,20 @@
 </style>
 
 // Graystone theme.
-{graystone-color} = '#888'
+{--graystone-color} = '#888'
 {--theme!.*\bgraystone\b.*}.+skip
 <style>
   h1, h2, h3, h4, h5, h6 {
-    color: {graystone-color};
+    color: {--graystone-color};
   }
   h1, h2 {
     text-transform: uppercase;
   }
   a, a:hover {
-    color: {graystone-color};
+    color: {--graystone-color};
   }
   #nav {
-    background: {graystone-color};
+    background: {--graystone-color};
   }
 </style>
 
