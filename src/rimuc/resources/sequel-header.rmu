@@ -416,6 +416,10 @@
     body {
       font-size: 20px;
     }
+    body:not(.hide-toc) {
+{--!} Hide body Y scroll bar when #main content is hidden.
+      overflow: hidden;
+    }
     body:not(.hide-toc) #sidebar {
       width: 100%;
     }
