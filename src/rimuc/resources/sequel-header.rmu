@@ -5,17 +5,18 @@
 /*
   Macro default values.
 */
-// Layout and content.
+// Layout and content options.
 {--highlightjs?} = ''
 {--mathjax?} = ''
 {--section-numbers?} = ''
 {--lang?} = ''
 {--title?} = '&nbsp;'
 {--theme?} = 'default'
+{--no-toc?} = ''
 {--custom-toc?} = ''
 {--header-links?} = ''
 
-// CSS.
+// CSS property values.
 {--small-screen} = '(max-width: 800px)'
 {--sans-font} = 'Arimo, Arial, Helvetica, sans-serif'
 {--serif-font} = 'Tinos, Georgia, serif'
@@ -298,6 +299,7 @@
 </style>
 
 // TOC styling.
+{--no-toc!}.+skip
 <style>
   #toc h2 {
     font-size: 125%;
@@ -360,6 +362,7 @@
   Layout styles
   -------------
 */
+{--no-toc!}.+skip
 <style>
   #nav {
     z-index: 3;
@@ -438,6 +441,33 @@
   }
 </style>
 
+{--no-toc=}.+skip
+<style>
+  #main {
+    min-height: 100%;
+    max-width: 50rem;
+    padding-left: 40px;
+    padding-right: 60px;
+  }
+  @media only screen and {--small-screen} {
+    body {
+      font-size: 20px;
+    }
+    #main {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+    * {
+      overflow-wrap: break-word;
+    }
+  }
+  @media print {
+    #main {
+      margin-left: 0;
+    }
+  }
+</style>
+
 // Graystone theme.
 {--graystone-color} = '#888'
 {--theme!.*\bgraystone\b.*}.+skip
@@ -459,18 +489,22 @@
 </head>
 <body>
 
+{--no-toc!}.+skip
 <div id="nav" class="no-print">
     <span id="toc-button">&#8801;</span>
 </div>
 
+{--no-toc!}.+skip
 <div id="sidebar" class="no-print">
 
-// Include TOC unless a custom TOC is specified.
+// Include TOC unless no TOC or custom TOC is specified.
+{--no-toc!}.+skip
 {--custom-toc!}.+skip
 <div id="toc" class="no-print">
   <div id="auto-toc"></div>
 </div>
 
+{--no-toc!}.+skip
 </div>
 
 <div id="main">

@@ -10,6 +10,7 @@
 
 {--mathjax!}<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
+{--no-toc!}.+skip
 <script>
 window.onload = function() {
   document.getElementById('sidebar').appendChild(document.getElementById('toc')); // Ensure custom TOC is child of sidebar.
@@ -37,6 +38,7 @@ function setHeaderLink(heading) {
 }
 </script>
 
+{--no-toc!}.+skip
 <script>
 function appendTocEntry(heading) {
   var id = heading.getAttribute('id');
@@ -57,6 +59,7 @@ function appendTocEntry(heading) {
 }
 </script>
 
+{--no-toc!}.+skip
 <script>
   document.onclick = function (event) {
     if (event.target.matches('#toc-button') || event.target.matches('#toc a') && isSmallScreen()) {
