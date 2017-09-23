@@ -1,43 +1,101 @@
 /*
-  Used by rimuc.js --styled option.
+  Used by rimuc `--layout classic` option.
 */
 
 /*
-  Set macro default values.
+  Default values for styling themes and content options.
 */
+
 {--highlightjs?} = ''
 {--mathjax?} = ''
 {--section-numbers?} = ''
 {--lang?} = ''
 {--title?} = '&nbsp;'
-{--theme?} = 'default'
-{--dropdown-toc?} = ''
-{--sidebar-toc?} = ''
+{--theme?} = ''
+{--no-toc?} = ''
 {--custom-toc?} = ''
+{--header-links?} = ''
+
+// Classic layout specific.
+{--dropdown-toc?} = ''
+// {--sidebar-toc?} = 'yes' TODO: YES! Do we default to TOC (breaks compatibility and some tests).
+{--sidebar-toc?} = ''
 // DEPRECATED --toc: If --toc is non-blank make --sidebar-toc non-blank.
 {--toc?} = ''
 {--sidebar-toc} = '{--toc}{--sidebar-toc}'
+// Ensures no TOC.
+{--no-toc=}.+skip
+..
+{--dropdown-toc} = ''
+{--sidebar-toc} = ''
+..
 // Non-blank if a TOC was specified.
 {--has-toc} = '{--dropdown-toc}{--sidebar-toc}'
-{--header-links?} = ''
 
 /*
-  CSS variables.
+  Legend theme.
 */
-{--small-screen} = 'screen and (max-width: 700px)'
+{--theme!.*\blegend\b.*}.+skip
+..
+{--small-screen?}= '(max-width: 800px)'
+{--sans-font?}= 'Arimo, Arial, Helvetica, sans-serif'
+{--serif-font?}= 'Tinos, Georgia, serif'
+{--mono-font?}= 'Cousine, Consolas, "Andale Mono", Monaco, monospace'
+{--mono-size?}= '90%'
+{--text-color?}= '#333333'
+{--border-color?}= '#dddddd'
+{--primary-color?}= '#34495e'
+{--primary-background?}= 'white'
+{--gray-background?}= '#f8f8f8'
+{--sidebar-background?}= '#ffffee'
+{--link-color?}= '#428bca'
+{--border-radius?} = '0'
+{--max-text-width?} = '50rem'
+..
 
-{--sans-font} = 'Arimo, Arial, Helvetica, sans-serif'
-{--serif-font} = 'Tinos, Georgia, serif'
-{--mono-font} = 'Cousine, Consolas, "Andale Mono", Monaco, monospace'
-{--mono-size} = '90%'
+/*
+  Vintage theme.
+*/
+{--theme!.*\bvintage\b.*}.+skip
+// Default to this theme if none of the built-in themes is specified.
+{--theme!.*\b(legend|vintage|graystone)\b.*}.-skip
+..
+{--small-screen?} = 'screen and (max-width: 800px)'
+{--sans-font?} = 'Arimo, Arial, Helvetica, sans-serif'
+{--serif-font?} = 'Tinos, Georgia, serif'
+{--mono-font?} = 'Cousine, Consolas, "Andale Mono", Monaco, monospace'
+{--mono-size?} = '90%'
+{--text-color?} = '#333333'
+{--border-color?} = '#dddddd'
+{--primary-color?} = '#527bbd'
+{--primary-background?} = 'white'
+{--gray-background?} = '#f8f8f8'
+{--sidebar-background?} = '#ffffee'
+{--link-color?} = '#527bbd'
+{--border-radius?} = '4px'
+{--max-text-width?} = '50rem'
+..
 
-{--text-color} = '#333333'
-{--border-color} = '#dddddd'
-{--primary-color} = '#527bbd'
-{--primary-background} = 'white'
-{--gray-background} = '#f8f8f8'
-{--butter-background} = '#ffffee'
-
+/*
+  Graystone theme.
+*/
+{--theme!.*\bgraystone\b.*}.+skip
+..
+{--small-screen?}= '(max-width: 800px)'
+{--sans-font?}= 'Arimo, Arial, Helvetica, sans-serif'
+{--serif-font?}= 'Tinos, Georgia, serif'
+{--mono-font?}= 'Cousine, Consolas, "Andale Mono", Monaco, monospace'
+{--mono-size?}= '90%'
+{--text-color?}= '#333333'
+{--border-color?}= '#dddddd'
+{--primary-color?}= '#888'
+{--primary-background?}= 'white'
+{--gray-background?}= '#f8f8f8'
+{--sidebar-background?}= '#ffffee'
+{--link-color?}= '#888'
+{--border-radius?} = '0'
+{--max-text-width?} = '50rem'
+..
 
 /*
   HTML header
@@ -162,7 +220,7 @@
     word-break: break-all;
     background-color: {--gray-background};
     border: 1px solid {--border-color};
-    border-radius: 4px;
+    border-radius: {--border-radius};
     padding: 6px;
   }
   .light-background {
@@ -198,8 +256,8 @@
   {--!} Apply sidebar class to Normal Paragraphs and Division blocks.
   .sidebar {
     border: 1px solid {--border-color};
-    border-radius: 4px;
-    background: {--butter-background};
+    border-radius: {--border-radius};
+    background: {--sidebar-background};
     padding: 10px;
     margin: 1.5em 0px;
   }
@@ -370,7 +428,7 @@
 <style>
   body {
     margin: 1em;
-    max-width: 50em;
+    max-width: {--max-text-width};
   }
 </style>
 
@@ -464,21 +522,13 @@
   }
 </style>
 
-// Graystone theme.
-{--graystone-color} = '#888'
+/*
+  Theme related styles
+*/
 {--theme!.*\bgraystone\b.*}.+skip
 <style>
-  h1, h2, h3, h4, h5, h6 {
-    color: {--graystone-color};
-  }
   h1, h2 {
     text-transform: uppercase;
-  }
-  a, a:hover {
-    color: {--graystone-color};
-  }
-  #nav {
-    background: {--graystone-color};
   }
 </style>
 
