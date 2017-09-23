@@ -17,24 +17,7 @@
 {--header-links?} = ''
 
 // Classic layout specific.
-// Accomodate the new default TOC generation and --no-toc option.
-{--sidebar-toc?} = ''
 {--dropdown-toc?} = ''
-{--dropdown-toc!}.+skip
-..
-{--sidebar-toc?} = 'yes'
-..
-// DEPRECATED --toc: If --toc is non-blank make --sidebar-toc non-blank.
-{--toc?} = ''
-{--sidebar-toc} = '{--toc}{--sidebar-toc}'
-// Ensures no TOC.
-{--no-toc=}.+skip
-..
-{--dropdown-toc} = ''
-{--sidebar-toc} = ''
-..
-// Non-blank if a TOC was specified.
-{--has-toc} = '{--dropdown-toc}{--sidebar-toc}'
 
 /*
   Legend theme.
@@ -100,6 +83,31 @@
 {--border-radius?} = '0'
 {--max-text-width?} = '50rem'
 ..
+
+/*
+  Private layout parameters.
+*/
+// Accomodate the new default TOC generation and --no-toc option.
+// DEPRECATED --sidebar-toc: Used internally but external definition tolerated for backward comaptibility.
+{--dropdown-toc!}.+skip
+..
+{--sidebar-toc?} = 'yes'
+..
+{--dropdown-toc=}.+skip
+..
+{--sidebar-toc?} = ''
+..
+// DEPRECATED --toc: If --toc is non-blank make --sidebar-toc non-blank.
+{--toc?} = ''
+{--sidebar-toc} = '{--toc}{--sidebar-toc}'
+// Ensures no TOC.
+{--no-toc=}.+skip
+..
+{--dropdown-toc} = ''
+{--sidebar-toc} = ''
+..
+// Non-blank if a TOC was specified.
+{--has-toc} = '{--dropdown-toc}{--sidebar-toc}'
 
 /*
   HTML header
