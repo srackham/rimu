@@ -375,6 +375,11 @@
   #toc {
     padding-left: 1em;
   }
+  #toc h2 {
+    font-size: 125%;
+    margin-top:1.0rem;
+    margin-left: 0;
+  }
   #toc .h1 {
     font-size: 110%;
     font-weight: bold;
