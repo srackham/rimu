@@ -2209,5 +2209,14 @@
     "options": {
       "reset": true
     }
+  },
+  {
+    "description": "illegal macro pattern",
+    "input": "{m}='42'\n{m=[}",
+    "expectedOutput": "<p>{m=[}</p>",
+    "expectedCallback": "error: illegal macro regular expression: [: {m=[}",
+    "options": {
+      "reset": true
+    }
   }
 ]
