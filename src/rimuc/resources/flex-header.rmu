@@ -17,9 +17,13 @@
 {--header-links?} = ''
 
 // Flex layout specific.
-{--dropdown-toc?} = ''
-// {--sidebar-toc?} = 'yes' TODO: YES! Do we default to TOC (breaks compatibility and some tests).
+// Accomodate the new default TOC generation and --no-toc option.
 {--sidebar-toc?} = ''
+{--dropdown-toc?} = ''
+{--dropdown-toc!}.+skip
+..
+{--sidebar-toc?} = 'yes'
+..
 // DEPRECATED --toc: If --toc is non-blank make --sidebar-toc non-blank.
 {--toc?} = ''
 {--sidebar-toc} = '{--toc}{--sidebar-toc}'
