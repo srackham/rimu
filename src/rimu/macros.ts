@@ -60,6 +60,8 @@ export function setValue(name: string, value: string): void {
 }
 
 // Render all macro invocations in text string.
+// The `inline` argument is used to ensure macro errors are not reported
+// multiple times from block and inline contexts.
 export function render(text: string, inline = true): string {
   text = text.replace(MATCH_MACROS, function (match: string, ...submatches: string[]): string {
     if (match[0] === '\\') {
@@ -114,7 +116,16 @@ export function render(text: string, inline = true): string {
       case '!': // Inclusion macro.
       case '=':
         let pattern = params.slice(1)
-        let skip = !RegExp('^' + pattern + '$').test(value || '')
+        let skip = false
+        try {
+          skip = !RegExp('^' + pattern + '$').test(value || '')
+        }
+        catch {
+          if (inline) {
+            Options.errorCallback('illegal macro regular expression: ' + pattern + ': ' + text)
+          }
+          return match
+        }
         if (params[0] === '!') {
           skip = !skip
         }
