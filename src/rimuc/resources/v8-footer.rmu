@@ -1,5 +1,6 @@
 /*
-  Used by rimuc.js --styled option.
+  Used by rimuc `--layout v8` option.
+  DEPRECATED: This layout is no longer maintained, for Rimu version 8 compatibility.
 */
 
 // Close contents div.
