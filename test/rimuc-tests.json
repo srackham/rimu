@@ -147,15 +147,15 @@
     "predicate": "!contains"
   },
   {
-    "description": "static header ids and no TOC",
-    "args": "--styled --styled-name classic --header-ids",
+    "description": "classic static header ids and no TOC",
+    "args": "--styled --styled-name --no-toc classic --header-ids",
     "input": "",
     "expectedOutput": "window.onload = function()",
     "predicate": "!contains"
   },
   {
     "description": "flex static header ids and no TOC",
-    "args": "--styled --header-ids --styled-name flex",
+    "args": "--styled --no-toc --header-ids --styled-name flex",
     "input": "",
     "expectedOutput": "window.onload = function()",
     "predicate": "!contains"
