@@ -26,39 +26,39 @@ let RIMUC_TS = 'src/rimuc/rimuc.ts'
 let DOCS = [
   {
     src: 'README.md', dst: 'doc/index.html', title: 'Rimu Markup',
-    rimucOptions: '--sidebar-toc'
+    rimucOptions: ''
   },
   {
     src: 'doc/changelog.rmu',
     dst: 'doc/changelog.html',
     title: 'Rimu Change Log',
-    rimucOptions: '--sidebar-toc'
+    rimucOptions: ''
   },
   {
     src: 'doc/reference.rmu',
     dst: 'doc/reference.html',
     title: 'Rimu Reference',
-    rimucOptions: '--sidebar-toc --highlightjs --prepend "{generate-examples}=\'yes\'"'
+    rimucOptions: '--highlightjs --prepend "{generate-examples}=\'yes\'"'
   },
   {
     src: 'doc/tips.rmu', dst: 'doc/tips.html', title: 'Rimu Tips',
-    rimucOptions: '--sidebar-toc --highlightjs --mathjax --prepend "{generate-examples}=\'yes\'"'
+    rimucOptions: '--highlightjs --mathjax --prepend "{generate-examples}=\'yes\'"'
   },
   {
     src: 'doc/rimuplayground.rmu',
     dst: 'doc/rimuplayground.html',
     title: 'Rimu Playground',
-    rimucOptions: '--dropdown-toc --prepend "{generate-examples}=\'yes\'"'
+    rimucOptions: '--layout classic --dropdown-toc --prepend "{generate-examples}=\'yes\'"'
   },
   {
     src: 'README.md', dst: 'doc/flex-example.html', title: 'Rimu Markup',
-    rimucOptions: '--sidebar-toc --styled-name flex'
+    rimucOptions: '--layout flex --theme vintage'
   },
   {
     src: 'README.md',
     dst: 'doc/flex-graystone-example.html',
     title: 'Rimu Markup',
-    rimucOptions: '--dropdown-toc --styled-name flex --theme graystone'
+    rimucOptions: '--layout flex --theme graystone --prepend "{top-bar}=\'yes\'"'
   }
 ]
 let HTML = DOCS.map(doc => doc.dst)
@@ -166,10 +166,10 @@ desc(`Generate HTML documentation`)
 task('build-docs', ['build-rimu'], {async: true}, function () {
   let commands = DOCS.map(doc =>
     'node ' + RIMUC +
-    ' --styled --lint --no-rimurc --theme default --custom-toc --header-links' +
-    ' --styled-name "sequel"' +
+    ' --styled --no-rimurc --theme legend --custom-toc --header-links' +
+    ' --layout sequel' +
     ' --output "' + doc.dst + '"' +
-    ' --lang "en"' +
+    ' --lang en' +
     ' --title "' + doc.title + '"' +
     ' ' + doc.rimucOptions + ' ' +
     ' ./src/examples/example-rimurc.rmu ./doc/doc-header.rmu ' + doc.src
