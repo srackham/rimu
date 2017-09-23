@@ -3,32 +3,83 @@
 */
 
 /*
-  Macro default values.
+  Default values for styling themes and content options.
 */
-// Layout and content options.
+
 {--highlightjs?} = ''
 {--mathjax?} = ''
 {--section-numbers?} = ''
 {--lang?} = ''
 {--title?} = '&nbsp;'
-{--theme?} = 'default'
+{--theme?} = ''
 {--no-toc?} = ''
 {--custom-toc?} = ''
 {--header-links?} = ''
 
-// CSS property values.
-{--small-screen} = '(max-width: 800px)'
-{--sans-font} = 'Arimo, Arial, Helvetica, sans-serif'
-{--serif-font} = 'Tinos, Georgia, serif'
-{--mono-font} = 'Cousine, Consolas, "Andale Mono", Monaco, monospace'
-{--mono-size} = '90%'
-{--text-color} = '#333333'
-{--border-color} = '#dddddd'
-{--primary-color} = '#34495e'
-{--primary-background} = 'white'
-{--gray-background} = '#f8f8f8'
-{--butter-background} = '#ffffee'
-{--link-color} = '#428bca'
+/*
+  Legend theme.
+*/
+{--theme!.*\blegend\b.*}.+skip
+// Default to this theme if none of the built-in themes is specified.
+{--theme!.*\b(legend|vintage|graystone)\b.*}.-skip
+..
+{--small-screen?}= '(max-width: 800px)'
+{--sans-font?}= 'Arimo, Arial, Helvetica, sans-serif'
+{--serif-font?}= 'Tinos, Georgia, serif'
+{--mono-font?}= 'Cousine, Consolas, "Andale Mono", Monaco, monospace'
+{--mono-size?}= '90%'
+{--text-color?}= '#333333'
+{--border-color?}= '#dddddd'
+{--primary-color?}= '#34495e'
+{--primary-background?}= 'white'
+{--gray-background?}= '#f8f8f8'
+{--sidebar-background?}= '#ffffee'
+{--link-color?}= '#428bca'
+{--border-radius?} = '0'
+{--max-text-width?} = '50rem'
+..
+
+/*
+  Vintage theme.
+*/
+{--theme!.*\bvintage\b.*}.+skip
+..
+{--small-screen?} = 'screen and (max-width: 800px)'
+{--sans-font?} = 'Arimo, Arial, Helvetica, sans-serif'
+{--serif-font?} = 'Tinos, Georgia, serif'
+{--mono-font?} = 'Cousine, Consolas, "Andale Mono", Monaco, monospace'
+{--mono-size?} = '90%'
+{--text-color?} = '#333333'
+{--border-color?} = '#dddddd'
+{--primary-color?} = '#527bbd'
+{--primary-background?} = 'white'
+{--gray-background?} = '#f8f8f8'
+{--sidebar-background?} = '#ffffee'
+{--link-color?} = '#527bbd'
+{--border-radius?} = '4px'
+{--max-text-width?} = '50rem'
+..
+
+/*
+  Graystone theme.
+*/
+{--theme!.*\bgraystone\b.*}.+skip
+..
+{--small-screen?}= '(max-width: 800px)'
+{--sans-font?}= 'Arimo, Arial, Helvetica, sans-serif'
+{--serif-font?}= 'Tinos, Georgia, serif'
+{--mono-font?}= 'Cousine, Consolas, "Andale Mono", Monaco, monospace'
+{--mono-size?}= '90%'
+{--text-color?}= '#333333'
+{--border-color?}= '#dddddd'
+{--primary-color?}= '#888'
+{--primary-background?}= 'white'
+{--gray-background?}= '#f8f8f8'
+{--sidebar-background?}= '#ffffee'
+{--link-color?}= '#888'
+{--border-radius?} = '0'
+{--max-text-width?} = '50rem'
+..
 
 /*
   HTML header
@@ -47,7 +98,6 @@
 
 /*
   Layout independent styles
-  -------------------------
 */
 <style>
   * {
@@ -153,7 +203,7 @@
     word-break: break-all;
     background-color: {--gray-background};
     border: 1px solid {--border-color};
-    border-radius: 0;
+    border-radius: {--border-radius};
     padding: 6px;
   }
   .light-background {
@@ -186,8 +236,8 @@
   {--!} Apply sidebar class to Normal Paragraphs and Division blocks.
   .sidebar {
     border: 1px solid {--border-color};
-    border-radius: 0;
-    background: {--butter-background};
+    border-radius: {--border-radius};
+    background: {--sidebar-background};
     padding: 10px;
     margin: 1.5em 0;
   }
@@ -360,7 +410,6 @@
 
 /*
   Layout styles
-  -------------
 */
 {--no-toc!}.+skip
 <style>
@@ -391,7 +440,7 @@
   #main {
     z-index: 1;
     min-height: 100%;
-    max-width: 50rem;
+    max-width: {--max-text-width};
     margin-left: 341px;
     padding-left: 40px;
     padding-right: 60px;
@@ -449,7 +498,7 @@
 <style>
   #main {
     min-height: 100%;
-    max-width: 50rem;
+    max-width: {--max-text-width};
     padding-left: 40px;
     padding-right: 60px;
   }
@@ -472,21 +521,13 @@
   }
 </style>
 
-// Graystone theme.
-{--graystone-color} = '#888'
+/*
+  Theme related styles
+*/
 {--theme!.*\bgraystone\b.*}.+skip
 <style>
-  h1, h2, h3, h4, h5, h6 {
-    color: {--graystone-color};
-  }
   h1, h2 {
     text-transform: uppercase;
-  }
-  a, a:hover {
-    color: {--graystone-color};
-  }
-  #nav {
-    background: {--graystone-color};
   }
 </style>
 

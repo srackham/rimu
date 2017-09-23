@@ -19,7 +19,7 @@
   outline: none;
   padding: 0.5em;
   width: 100%;
-  background-color: {--butter-background};
+  background-color: {--sidebar-background};
   box-shadow: 0 0 10px #9ecaed;
   box-sizing: border-box;
 }
@@ -34,7 +34,6 @@
 .example-header {
   font-weight: bold;
   color: {--primary-color};
-{--theme=.*\bgraystone\b.*}  color: {--graystone-color};
   padding: 0.5em !important;
 }
 .example-source, .example-rendered {
