@@ -92,28 +92,29 @@
 {--dropdown-toc?} = ''
 {--dropdown-toc=}.+skip
 ..
-{--top-bar?} = 'yes'
+{--top-bar} = 'yes'
 ..
-// DEPRECATED --sidebar-toc: Used internally but external definition tolerated for backward comaptibility.
-{--dropdown-toc!}.+skip
+// DEPRECATED --sidebar-toc: Replaced by --side-bar, external definition tolerated for backward comaptibility.
+{--top-bar!}.+skip
 ..
 {--sidebar-toc?} = 'yes'
 ..
-{--dropdown-toc=}.+skip
+{--top-bar=}.+skip
 ..
 {--sidebar-toc?} = ''
 ..
-// DEPRECATED --toc: If --toc is non-blank make --sidebar-toc non-blank.
+{--side-bar} = '{--sidebar-toc}'
+// DEPRECATED --toc: If --toc is non-blank make --side-bar non-blank.
 {--toc?} = ''
-{--sidebar-toc} = '{--toc}{--sidebar-toc}'
+{--side-bar} = '{--toc}{--side-bar}'
 // Ensures no TOC.
 {--no-toc=}.+skip
 ..
-{--dropdown-toc} = ''
-{--sidebar-toc} = ''
+{--top-bar} = ''
+{--side-bar} = ''
 ..
 // Non-blank if a TOC was specified.
-{--has-toc} = '{--dropdown-toc}{--sidebar-toc}'
+{--has-toc} = '{--top-bar}{--side-bar}'
 
 /*
   HTML header
@@ -387,7 +388,7 @@
   }
 </style>
 
-// Common to --sidebar-toc and --dropdown-toc.
+// Common to --side-bar and --top-bar.
 {--has-toc=}.+skip
 <style>
   #toc {
@@ -516,7 +517,7 @@
   }
 </style>
 
-{--sidebar-toc=}.+skip
+{--side-bar=}.+skip
 <style>
   body {
     flex-direction: row;
@@ -530,7 +531,7 @@
   }
 </style>
 
-{--dropdown-toc=}.+skip
+{--top-bar=}.+skip
 <style>
   body {
     flex-direction: column;
