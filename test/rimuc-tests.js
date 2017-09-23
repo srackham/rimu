@@ -14,47 +14,63 @@ function rimuc_exec(source, options, callback) {
   })
 }
 
-test('rimuc', function (t) {
+function runTest(tester, test) {
+  switch (test.predicate) {
+    case "equals":
+      rimuc_exec(test.input, test.args, function (output) {
+        tester.equal(output, test.expectedOutput, test.description)
+      });
+      break;
+    case "!equals":
+      rimuc_exec(test.input, test.args, function (output) {
+        tester.notEqual(output, test.expectedOutput, test.description)
+      });
+      break;
+    case "contains":
+      rimuc_exec(test.input, test.args, function (output) {
+        tester.ok(output.indexOf(test.expectedOutput) >= 0, test.description)
+      });
+      break;
+    case "!contains":
+      rimuc_exec(test.input, test.args, function (output) {
+        tester.ok(output.indexOf(test.expectedOutput) === -1, test.description)
+      });
+      break;
+    case "startsWith":
+      rimuc_exec(test.input, test.args, function (output) {
+        tester.ok(output.startsWith(test.expectedOutput), test.description)
+      });
+      break;
+    case "exitCode":
+      rimuc_exec(test.input, test.args, function (output, error) {
+        tester.ok(String(error.code) === test.expectedOutput, test.description)
+      });
+      break;
+    default:
+      tester.ok(false, test.description + ': illegal predicate: ' + test.predicate)
+      break;
+  }
+}
+
+test('rimuc', function (tester) {
   // Execute tests specified in JSON file.
   const data = fs.readFileSync('./test/rimuc-tests.json');
   const tests = JSON.parse(data);
-  tests.forEach(function (e) {
-    switch (e.predicate) {
-      case "equals":
-        rimuc_exec(e.input, e.args, function (output) {
-          t.equal(output, e.expectedOutput, e.description)
-        });
-        break;
-      case "!equals":
-        rimuc_exec(e.input, e.args, function (output) {
-          t.notEqual(output, e.expectedOutput, e.description)
-        });
-        break;
-      case "contains":
-        rimuc_exec(e.input, e.args, function (output) {
-          t.ok(output.indexOf(e.expectedOutput) >= 0, e.description)
-        });
-        break;
-      case "!contains":
-        rimuc_exec(e.input, e.args, function (output) {
-          t.ok(output.indexOf(e.expectedOutput) === -1, e.description)
-        });
-        break;
-      case "startsWith":
-        rimuc_exec(e.input, e.args, function (output) {
-          t.ok(output.startsWith(e.expectedOutput), e.description)
-        });
-        break;
-      case "exitCode":
-        rimuc_exec(e.input, e.args, function (output, error) {
-          t.ok(String(error.code) === e.expectedOutput, e.description)
-        });
-        break;
-      default:
-        t.ok(false, e.description + ': illegal predicate: ' + e.predicate)
-        break;
+  tests.forEach(function (test) {
+    if (test.layouts) {
+      // Run the test on built-in layouts.
+      ['classic', 'flex', 'sequel'].forEach(function (layout) {
+        let t = {};
+        Object.assign(t, test);
+        t.args = '--layout ' + layout + ' ' + test.args;
+        t.description = layout + ' layout: ' + test.description;
+        runTest(tester, t);
+      });
+    }
+    else {
+      runTest(tester, test);
     }
   });
-  t.end();
+  tester.end();
 });
 

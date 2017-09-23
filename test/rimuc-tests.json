@@ -57,108 +57,89 @@
   },
   {
     "description": "rimuc --title",
-    "args": "--styled --title X",
+    "args": "--title X",
     "input": "",
     "expectedOutput": "<title>X</title>",
-    "predicate": "contains"
+    "predicate": "contains",
+    "layouts": true
   },
   {
     "description": "rimuc --lang",
-    "args": "--styled --lang fr",
+    "args": "--lang fr",
     "input": "",
     "expectedOutput": "<html lang=\"fr\">",
-    "predicate": "contains"
+    "predicate": "contains",
+    "layouts": true
   },
   {
     "description": "rimuc --highlightjs",
-    "args": "--styled --highlightjs",
+    "args": "--highlightjs",
     "input": "",
     "expectedOutput": "<script>hljs.initHighlightingOnLoad();</script>",
-    "predicate": "contains"
+    "predicate": "contains",
+    "layouts": true
   },
   {
     "description": "rimuc --mathjax",
-    "args": "--styled --mathjax",
+    "args": "--mathjax",
     "input": "",
     "expectedOutput": "<script async src=\"https://cdnjs.cloudflare.com/ajax/libs/mathjax/",
-    "predicate": "contains"
+    "predicate": "contains",
+    "layouts": true
   },
   {
     "description": "rimuc --toc (DEPRECATED)",
-    "args": "--styled --toc",
+    "args": "--toc",
+    "input": "",
+    "expectedOutput": "<div id=\"toc\"",
+    "predicate": "contains",
+    "layouts": true
+  },
+  {
+    "description": "rimuc --layout classic --sidebar-toc",
+    "args": "--layout classic --sidebar-toc",
     "input": "",
     "expectedOutput": "<div id=\"toc\"",
     "predicate": "contains"
   },
   {
-    "description": "rimuc --sidebar-toc",
-    "args": "--styled --sidebar-toc",
-    "input": "",
-    "expectedOutput": "<div id=\"toc\"",
-    "predicate": "contains"
-  },
-  {
-    "description": "rimuc classic --dropdown-toc",
-    "args": "--styled --styled-name classic --dropdown-toc",
+    "description": "rimuc --layout classic --dropdown-toc",
+    "args": "--layout classic --dropdown-toc",
     "input": "",
     "expectedOutput": "<div id=\"toc-button\"",
     "predicate": "contains"
   },
   {
     "description": "rimuc --section-numbers",
-    "args": "--styled --section-numbers",
+    "args": "--section-numbers",
     "input": "",
     "expectedOutput": "body,h1 { counter-reset: h2-counter; }",
-    "predicate": "contains"
+    "predicate": "contains",
+    "layouts": true
   },
   {
-    "description": "classic named style",
-    "args": "--styled --styled-name classic",
+    "description": "hello world",
+    "args": "",
     "input": "_Hello World!_",
     "expectedOutput": "<p><em>Hello World!</em></p",
-    "predicate": "contains"
-  },
-  {
-    "description": "flex named style",
-    "args": "--styled --styled-name \"flex\"",
-    "input": "_Hello World!_",
-    "expectedOutput": "<p><em>Hello World!</em></p",
-    "predicate": "contains"
-  },
-  {
-    "description": "v8 named style",
-    "args": "--styled --styled-name \"v8\"",
-    "input": "_Hello World!_",
-    "expectedOutput": "<p><em>Hello World!</em></p",
-    "predicate": "contains"
+    "predicate": "contains",
+    "layouts": true
   },
   {
     "description": "static header ids",
-    "args": "--styled --header-ids",
+    "args": "--header-ids",
     "input": "",
     "expectedOutput": "function setHeaderId(heading)",
-    "predicate": "!contains"
+    "predicate": "!contains",
+    "layouts": true
   },
   {
-    "description": "flex static header ids",
-    "args": "--styled --header-ids --styled-name flex",
-    "input": "",
-    "expectedOutput": "function setHeaderId(heading)",
-    "predicate": "!contains"
-  },
-  {
-    "description": "classic static header ids and no TOC",
-    "args": "--styled --styled-name --no-toc classic --header-ids",
+    "description": "static header ids and no TOC",
+    "args": "--no-toc --header-ids",
     "input": "",
     "expectedOutput": "window.onload = function()",
-    "predicate": "!contains"
-  },
-  {
-    "description": "flex static header ids and no TOC",
-    "args": "--styled --no-toc --header-ids --styled-name flex",
-    "input": "",
-    "expectedOutput": "window.onload = function()",
-    "predicate": "!contains"
+    "predicate": "!contains",
+    "layouts": true
   },
   {
     "description": "rimuc --help",
@@ -168,45 +149,48 @@
     "predicate": "startsWith"
   },
   {
-    "description": "rimuc --styled",
-    "args": "--styled",
+    "description": "HTML DOCTYPE",
+    "args": "",
     "input": "",
     "expectedOutput": "<!DOCTYPE HTML>",
-    "predicate": "startsWith"
+    "predicate": "startsWith",
+    "layouts": true
   },
   {
-    "description": "rimuc --sidebar-toc --custom-toc",
-    "args": "--styled --sidebar-toc --custom-toc",
+    "description": "rimuc --custom-toc",
+    "args": "--custom-toc",
     "input": "",
     "expectedOutput": "<div id=\"toc\"",
-    "predicate": "!contains"
+    "predicate": "!contains",
+    "layouts": true
   },
   {
-    "description": "rimuc --lint",
+    "description": "rimuc --lint (DEPRECATED OPTION)",
     "args": "--lint",
     "input": "{x}",
     "expectedOutput": "undefined macro",
     "predicate": "contains"
   },
   {
-    "description": "rimuc --lint",
-    "args": "--lint",
+    "description": "rimuc undefined macro error",
+    "args": "",
+    "input": "{x}",
+    "expectedOutput": "undefined macro",
+    "predicate": "contains"
+  },
+  {
+    "description": "rimuc exitCode",
+    "args": "",
     "input": "{x}",
     "expectedOutput": "1",
     "predicate": "exitCode"
   },
   {
     "description": "header links",
-    "args": "--styled --header-links",
+    "args": "--header-links",
     "input": "",
     "expectedOutput": "function setHeaderLink(heading)",
-    "predicate": "contains"
-  },
-  {
-    "description": "flex header links",
-    "args": "--styled --header-links --styled-name flex",
-    "input": "",
-    "expectedOutput": "function setHeaderLink(heading)",
-    "predicate": "contains"
+    "predicate": "contains",
+    "layouts": true
   }
 ]
