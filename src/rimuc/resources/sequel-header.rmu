@@ -210,6 +210,10 @@
     background-color: {--gray-background};
     border: none;
   }
+{--!} So hyphenated words like `--word-wrap` are not broken (there is no CSS property that will break on white space only).
+  *:not(pre) > code {
+    white-space: nowrap;
+  }
   .dl-horizontal > dd {
     margin-top: 1.0rem;
   }
