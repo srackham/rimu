@@ -41,20 +41,20 @@ Edit these examples or add your own:
 
 Diagnostic messages:
 
-.#playground-diagnostics "{box-shadow}"
+.#playground-diagnostics "{box-shadow} margin-top: 0.5rem"
 ``
 ``
 ..
 
 
 ## {showhide|playground-preview} HTML preview
-.#playground-preview "border: 1px solid #dddddd; border-radius: 0; padding: 4px; {box-shadow}"
+.#playground-preview "border: 1px solid #dddddd; margin-top: 0.5rem; padding: 4px; {box-shadow}"
 ..
 ..
 
 
 ## {showhide|playground-html} HTML markup
-.#playground-html "{box-shadow}"
+.#playground-html "margin-top: 0.5rem; {box-shadow}"
 ``
 ``
 
