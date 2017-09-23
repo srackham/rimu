@@ -28,8 +28,19 @@ OPTIONS
   -h, --help
     Display help message.
 
-  -l, --lint
-    Check the Rimu source for inconsistencies and errors.
+  --layout LAYOUT
+    Generate a styled HTML document with one of the following
+    predefined document layouts:
+
+    'classic': Desktop-centric styling.
+    'flex':    Flexbox responsive styling (experimental).
+    'sequel':  Responsive cross-device styling.
+    'v8':      Rimu version 8 styling.
+
+    If only one source file is specified and the --output
+    option is not specified then the output is written to a
+    same-named file with an .html extension.
+    This option enables --header-ids.
 
   -o, --output OUTFILE
     Write output to file OUTFILE instead of stdout.
@@ -42,20 +53,16 @@ OPTIONS
   --no-rimurc
     Do not process .rimurc from the user's home directory.
 
-  -s, --styled
-    Include an HTML header and footer for styling the HTML output
-    document. If only one source file is specified and the --output
-    option is not specified then the output is written to a
-    same-named file with an .html extension. Enable --header-ids.
-
   --safe-mode NUMBER
     Non-zero safe modes ignore: Definition elements; API option elements;
     HTML attributes in Block Attributes elements.
     Also specifies how to process HTML elements:
+
     --safe-mode 0 renders HTML (default).
     --safe-mode 1 ignores HTML.
     --safe-mode 2 replaces HTML with --html-replacement option value.
     --safe-mode 3 renders HTML as text.
+
     Add 4 to --safe-mode to ignore Block Attribute elements.
     Add 8 to --safe-mode to allow Macro Definitions.
 
@@ -64,27 +71,19 @@ OPTIONS
     Defaults to '<mark>replaced HTML</mark>'.
 
   --theme THEME, --lang LANG, --title TITLE, --highlightjs, --mathjax,
-  --sidebar-toc, --dropdown-toc, --custom-toc, --section-numbers,
-  --header-ids, --header-links
+  --no-toc, --custom-toc, --section-numbers, --header-ids, --header-links
+
     Shortcuts for the following prepended macro definitions:
     --prepend "{--theme}='THEME'"
     --prepend "{--lang}='LANG'"
     --prepend "{--title}='TITLE'"
     --prepend "{--highlightjs}='true'"
     --prepend "{--mathjax}='true'"
-    --prepend "{--sidebar-toc}='true'"
-    --prepend "{--dropdown-toc}='true'"
+    --prepend "{--no-toc}='true'"
     --prepend "{--custom-toc}='true'"
     --prepend "{--section-numbers}='true'"
     --prepend "{--header-ids}='true'"
     --prepend "{--header-links}='true'"
-
-  --styled-name NAME
-    Specify the --styled option header and footer files:
-    'classic': Desktop-centric styling.
-    'flex':    Flexbox responsive styling (experimental).
-    'sequel':  Responsive cross-device styling (default).
-    'v8':      Rimu version 8 styling.
 
 PREDEFINED MACROS
   Macro name         Description
@@ -96,20 +95,19 @@ PREDEFINED MACROS
 
 STYLING MACROS AND CLASSES
   The following macros and CSS classes are available when the
-  --styled option is used:
+  --layout option is used:
 
   Macro name         Description
   _______________________________________________________________
-  --theme            Styling theme. Theme names: default, graystone.
+  --theme            Styling theme. Theme names:
+                     'legend', 'graystone', 'vintage'.
   --lang             HTML document language attribute value.
   --title            HTML document title.
   --highlightjs      Set to non-blank value to enable syntax
                      highlighting with Highlight.js.
   --mathjax          Set to a non-blank value to enable MathJax.
-  --sidebar-toc      Set to a non-blank value to generate a
-                     table of contents sidebar.
-  --dropdown-toc     Set to a non-blank value to generate a
-                     table of contents dropdown menu.
+  --no-toc           Set to a non-blank value to suppress table of
+                     contents generation.
   --custom-toc       Set to a non-blank value if a custom table
                      of contents is used.
   --section-numbers  Apply h2 and h3 section numbering.
@@ -156,10 +154,8 @@ function readResourceFile(name: string): string {
 
 let safe_mode = 0
 let html_replacement: string | undefined
-let styled = false
-let styled_name = 'sequel'
+let layout = ''
 let no_rimurc = false
-let lint = false
 
 // Skip executable and script paths.
 process.argv.shift(); // Skip executable path.
@@ -177,9 +173,8 @@ outer:
         console.log('\n' + MANPAGE)
         process.exit()
         break
-      case '--lint':
+      case '--lint': // Deprecated in Rimu 10.0.0
       case '-l':
-        lint = true
         break
       case '--output':
       case '-o':
@@ -206,10 +201,12 @@ outer:
       case '--htmlReplacement': // Deprecated in Rimu 7.1.0.
         html_replacement = process.argv.shift()
         break
-      case '--styled':
+      case '--styled': // Deprecated in Rimu 10.0.0
       case '-s':
         source += '{--header-ids}=\'true\'\n'
-        styled = true
+        if (layout === '') {
+          layout = 'classic'
+        }
         break
       // Styling macro definitions shortcut options.
       case '--highlightjs':
@@ -218,23 +215,26 @@ outer:
       case '--theme':
       case '--title':
       case '--lang':
-      case '--toc': // DEPRECATED
-      case '--sidebar-toc':
-      case '--dropdown-toc':
+      case '--toc': // Deprecated in Rimu 8.0.0
+      case '--no-toc':
+      case '--sidebar-toc': // Deprecated in Rimu 10.0.0
+      case '--dropdown-toc': // Deprecated in Rimu 10.0.0
       case '--custom-toc':
       case '--header-ids':
       case '--header-links':
         let macro_value = ['--lang', '--title', '--theme'].indexOf(arg) > -1 ? process.argv.shift() : 'true'
         source += '{' + arg + '}=\'' + macro_value + '\'\n'
         break
-      case '--styled-name':
-        styled_name = process.argv.shift() || ''
-        if (!styled_name) {
-          die('missing --styled-name')
+      case '--layout':
+      case '--styled-name': // Deprecated in Rimu 10.0.0
+        layout = process.argv.shift() || ''
+        if (!layout) {
+          die('missing --layout')
         }
-        if (['classic', 'flex', 'sequel', 'v8'].indexOf(styled_name) === -1) {
-          die('illegal --styled-name: ' + styled_name)
+        if (['classic', 'flex', 'sequel', 'v8'].indexOf(layout) === -1) {
+          die('illegal --layout: ' + layout)
         }
+        source += '{--header-ids}=\'true\'\n'
         break
       default:
         if (arg[0] === '-') {
@@ -250,17 +250,17 @@ let files = process.argv
 if (files.length === 0) {
   files.push('/dev/stdin')
 }
-else if (styled && !outfile && files.length === 1) {
+else if (layout !== '' && !outfile && files.length === 1) {
   // Use the source file name with .html extension for the output file.
   outfile = files[0].substr(0, files[0].lastIndexOf('.')) + '.html'
 }
 
 const RESOURCE_TAG = 'resource:' // Tag for trusted files.
 
-if (styled) {
+if (layout !== '') {
   // Envelope source files with header and footer.
-  files.unshift(`${RESOURCE_TAG}${styled_name}-header.rmu`)
-  files.push(`${RESOURCE_TAG}${styled_name}-footer.rmu`)
+  files.unshift(`${RESOURCE_TAG}${layout}-header.rmu`)
+  files.push(`${RESOURCE_TAG}${layout}-footer.rmu`)
 }
 
 // Prepend $HOME/.rimurc file if it exists.
@@ -299,16 +299,14 @@ for (let infile of files) {
     output += source + '\n'
     continue
   }
-  if (lint) {
-    options.callback = function (message): void {
-      let msg = message.type + ': ' + infile + ': ' + message.text
-      if (msg.length > 120) {
-        msg = msg.slice(0, 117) + '...'
-      }
-      console.error(msg)
-      if (message.type === 'error') {
-        errors += 1
-      }
+  options.callback = function (message): void {
+    let msg = message.type + ': ' + infile + ': ' + message.text
+    if (msg.length > 120) {
+      msg = msg.slice(0, 117) + '...'
+    }
+    console.error(msg)
+    if (message.type === 'error') {
+      errors += 1
     }
   }
   output += rimu.render(source, options) + '\n'
