@@ -51,6 +51,12 @@ let DOCS = [
     rimucOptions: '--layout classic --dropdown-toc --prepend "{generate-examples}=\'yes\'"'
   },
   {
+    src: 'doc/gallery/index.rmu',
+    dst: 'doc/gallery/index.html',
+    title: 'Rimu layout and themes gallery',
+    rimucOptions: ''
+  },
+  {
     src: 'README.md', dst: 'doc/flex-example.html', title: 'Rimu Markup',
     rimucOptions: '--layout flex --theme vintage'
   },
@@ -166,7 +172,7 @@ desc(`Generate HTML documentation`)
 task('build-docs', ['build-rimu'], {async: true}, function () {
   let commands = DOCS.map(doc =>
     'node ' + RIMUC +
-    ' --styled --no-rimurc --theme legend --custom-toc --header-links' +
+    ' --no-rimurc --theme legend --custom-toc --header-links' +
     ' --layout sequel' +
     ' --output "' + doc.dst + '"' +
     ' --lang en' +
@@ -175,6 +181,49 @@ task('build-docs', ['build-rimu'], {async: true}, function () {
     ' ./src/examples/example-rimurc.rmu ./doc/doc-header.rmu ' + doc.src
   )
   exec(commands, complete)
+})
+
+desc(`Generate gallery documentation examples`)
+task('build-gallery', ['build-rimu'], {async: true}, function () {
+  let commands = [];
+  ['sequel', 'classic', 'flex'].forEach(function (layout) {
+    console.log('\n## ' + layout + ' layout');
+    ['legend', 'vintage', 'graystone'].forEach(function(theme) {
+      console.log('\n### ' + theme + ' theme');
+      ['', 'no-toc', 'top-bar', 'dropdown-toc'].forEach(function (variant) {
+        let option = variant;
+        if (variant === 'no-toc') {
+          option = '--no-toc'
+        }
+        if (variant === 'top-bar') {
+          if (layout !== 'flex') return
+          else option = '--prepend "{--top-bar}=\'yes\'"'
+        }
+        if (variant === 'dropdown-toc') {
+          if (layout !== 'classic') return
+          else option = '--prepend "{--dropdown-toc}=\'yes\'"'
+        }
+        let command = '--layout ' + layout + ' --theme ' + theme + ' ' + option
+        let outfile = layout + '-' + theme + '-' + variant + '-example.html'
+        outfile = outfile.replace('--', '-')
+        let link = '[`rimuc ' + command.replace('{', '\\{').trim() + '`](' + outfile + ')'
+        console.log('- ' + link)
+        command =
+          'node ' + RIMUC +
+          // ' --no-rimurc --custom-toc --header-links' +
+          ' --no-rimurc' +
+          ' --lang en' +
+          ' ' + command +
+          ' --output ./doc/gallery/' + outfile +
+          // ' ./src/examples/example-rimurc.rmu ./doc/doc-header.rmu' +
+          ' ./src/examples/example-rimurc.rmu' +
+          ' README.md'
+        // console.log(command);
+        commands.push(command)
+      })
+    })
+    exec(commands, complete)
+  })
 })
 
 // NOTE: This task has no dependents assumes html-validator npm package is installed.
