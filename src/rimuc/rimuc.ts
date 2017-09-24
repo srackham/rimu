@@ -74,16 +74,16 @@ OPTIONS
   --no-toc, --custom-toc, --section-numbers, --header-ids, --header-links
 
     Shortcuts for the following prepended macro definitions:
-    --prepend "{--theme}='THEME'"
-    --prepend "{--lang}='LANG'"
-    --prepend "{--title}='TITLE'"
-    --prepend "{--highlightjs}='true'"
-    --prepend "{--mathjax}='true'"
-    --prepend "{--no-toc}='true'"
     --prepend "{--custom-toc}='true'"
-    --prepend "{--section-numbers}='true'"
     --prepend "{--header-ids}='true'"
     --prepend "{--header-links}='true'"
+    --prepend "{--highlightjs}='true'"
+    --prepend "{--lang}='LANG'"
+    --prepend "{--mathjax}='true'"
+    --prepend "{--no-toc}='true'"
+    --prepend "{--section-numbers}='true'"
+    --prepend "{--theme}='THEME'"
+    --prepend "{--title}='TITLE'"
 
 PREDEFINED MACROS
   Macro name         Description
@@ -99,42 +99,43 @@ STYLING MACROS AND CLASSES
 
   Macro name         Description
   _______________________________________________________________
-  --theme            Styling theme. Theme names:
-                     'legend', 'graystone', 'vintage'.
-  --lang             HTML document language attribute value.
-  --title            HTML document title.
+  --custom-toc       Set to a non-blank value if a custom table
+                     of contents is used.
+  --header-links     Set to a non-blank value to generate h2 and
+                     h3 header header links.
   --highlightjs      Set to non-blank value to enable syntax
                      highlighting with Highlight.js.
+  --lang             HTML document language attribute value.
   --mathjax          Set to a non-blank value to enable MathJax.
   --no-toc           Set to a non-blank value to suppress table of
                      contents generation.
-  --custom-toc       Set to a non-blank value if a custom table
-                     of contents is used.
   --section-numbers  Apply h2 and h3 section numbering.
-  --header-links     Set to a non-blank value to generate h2 and
-                     h3 header header links.
+  --theme            Styling theme. Theme names:
+                     'legend', 'graystone', 'vintage'.
+  --title            HTML document title.
   _______________________________________________________________
   These macros must be defined prior to processing (using rimuc
   options or in .rimurc).
 
   CSS class        Description
   ______________________________________________________________
-  verse            Verse format (paragraphs, division blocks).
-  sidebar          Sidebar format (paragraphs, division blocks).
-  cite             Quote and verse attribution.
-  bordered         Add borders to table.
-  align-left       Text alignment left.
   align-center     Text alignment center.
+  align-left       Text alignment left.
   align-right      Text alignment right.
-  no-print         Do not print.
-  line-breaks      Honor line breaks in source text.
-  page-break       Force page break before the element.
-  no-page-break    Avoid page break inside the element.
-  dl-numbered      Number labeled list items.
-  dl-horizontal    Format labeled lists horizontally.
+  bordered         Add borders to table.
+  cite             Quote and verse attribution.
   dl-counter       Prepend dl item counter to element content.
+  dl-horizontal    Format labeled lists horizontally.
+  dl-numbered      Number labeled list items.
+  line-breaks      Honor line breaks in source text.
+  no-auto-toc      Exclude heading from table of contents.
+  no-page-break    Avoid page break inside the element.
+  no-print         Do not print.
   ol-counter       Prepend ol item counter to element content.
+  page-break       Force page break before the element.
+  sidebar          Sidebar format (paragraphs, division blocks).
   ul-counter       Prepend ul item counter to element content.
+  verse            Verse format (paragraphs, division blocks).
   ______________________________________________________________
 `
 const HOME_DIR = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']
