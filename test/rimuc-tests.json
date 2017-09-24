@@ -192,5 +192,13 @@
     "expectedOutput": "function setHeaderLink(heading)",
     "predicate": "contains",
     "layouts": true
+  },
+  {
+    "description": "rimuc layout custom CSS value",
+    "args": "--prepend \"{--primary-color}='#123456'\"",
+    "input": "",
+    "expectedOutput": "color: #123456;",
+    "predicate": "contains",
+    "layouts": true
   }
 ]
