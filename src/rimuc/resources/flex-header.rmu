@@ -468,6 +468,7 @@
   #nav {
     flex: auto;
     order: 1;
+    flex-grow: 0;
     background: {--primary-color};
   }
   #toc {
