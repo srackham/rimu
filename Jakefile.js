@@ -51,8 +51,8 @@ let DOCS = [
     rimucOptions: '--layout classic --dropdown-toc --prepend "{generate-examples}=\'yes\'"'
   },
   {
-    src: 'doc/gallery/index.rmu',
-    dst: 'doc/gallery/index.html',
+    src: 'doc/gallery.rmu',
+    dst: 'doc/gallery.html',
     title: 'Rimu layout and themes gallery',
     rimucOptions: ''
   },
@@ -169,7 +169,7 @@ task('build-rimuc', {async: true}, function () {
 })
 
 desc(`Generate HTML documentation`)
-task('build-docs', ['build-rimu'], {async: true}, function () {
+task('build-docs', ['build-rimu', 'build-gallery'], {async: true}, function () {
   let commands = DOCS.map(doc =>
     'node ' + RIMUC +
     ' --no-rimurc --theme legend --custom-toc --header-links' +
@@ -183,18 +183,13 @@ task('build-docs', ['build-rimu'], {async: true}, function () {
   exec(commands, complete)
 })
 
-desc(`Generate gallery documentation examples`)
-task('build-gallery', ['build-rimu'], {async: true}, function () {
-  let commands = [];
+function forEachGalleryDocument(documentCallback, layoutCallback, themeCallback) {
   ['sequel', 'classic', 'flex'].forEach(function (layout) {
-    console.log('\n## ' + layout + ' layout');
-    ['legend', 'vintage', 'graystone'].forEach(function(theme) {
-      console.log('\n### ' + theme + ' theme');
-      ['', 'no-toc', 'top-bar', 'dropdown-toc'].forEach(function (variant) {
+    if (layoutCallback) layoutCallback(layout);
+      ['legend', 'vintage', 'graystone'].forEach(function (theme) {
+      if (themeCallback) themeCallback(layout, theme);
+        ['', 'top-bar', 'dropdown-toc'].forEach(function (variant) {
         let option = variant;
-        if (variant === 'no-toc') {
-          option = '--no-toc'
-        }
         if (variant === 'top-bar') {
           if (layout !== 'flex') return
           else option = '--prepend "{--top-bar}=\'yes\'"'
@@ -203,27 +198,48 @@ task('build-gallery', ['build-rimu'], {async: true}, function () {
           if (layout !== 'classic') return
           else option = '--prepend "{--dropdown-toc}=\'yes\'"'
         }
-        let command = '--layout ' + layout + ' --theme ' + theme + ' ' + option
+        let options = '--layout ' + layout + ' --theme ' + theme + ' ' + option
+        options = options.trim()
         let outfile = layout + '-' + theme + '-' + variant + '-example.html'
         outfile = outfile.replace('--', '-')
-        let link = '[`rimuc ' + command.replace('{', '\\{').trim() + '`](' + outfile + ')'
-        console.log('- ' + link)
-        command =
-          'node ' + RIMUC +
-          // ' --no-rimurc --custom-toc --header-links' +
-          ' --no-rimurc' +
-          ' --lang en' +
-          ' ' + command +
-          ' --output ./doc/gallery/' + outfile +
-          // ' ./src/examples/example-rimurc.rmu ./doc/doc-header.rmu' +
-          ' ./src/examples/example-rimurc.rmu' +
-          ' README.md'
-        // console.log(command);
-        commands.push(command)
+        documentCallback(options, outfile, layout, theme)
       })
     })
-    exec(commands, complete)
   })
+}
+
+desc(`Generate gallery documentation examples`)
+task('build-gallery', ['build-rimu'], {async: true}, function () {
+  let commands = [];
+  forEachGalleryDocument(function (options, outfile, layout, theme) {
+    let command =
+      'node ' + RIMUC +
+      ' --no-rimurc --custom-toc' +
+      ' --no-rimurc' +
+      ' --lang en' +
+      ' ' + options +
+      ' --output ./doc/' + outfile +
+      ' --prepend "{gallery-options}=\'' + options.replace(/(["{])/g, '\\$1') + '\'"' +
+      ' ./src/examples/example-rimurc.rmu ./doc/doc-header.rmu' +
+      ' ./src/examples/example-rimurc.rmu' +
+      ' doc/gallery-example-template.rmu'
+    commands.push(command)
+  })
+  exec(commands, complete)
+})
+
+desc(`Generate gallery index Rimu markup for doc/gallery.rmu`)
+task('gallery-markup', function () {
+  forEachGalleryDocument(function (options, outfile, layout, theme) {
+      let link = '[`' + options.replace(/{/g, '\\{') + '`](' + outfile + ')'
+      console.log('- ' + link)
+    },
+    function (layout) {
+      console.log('\n## ' + layout + ' layout');
+    },
+    function (layout, theme) {
+      console.log('\n### ' + theme + ' theme');
+    })
 })
 
 // NOTE: This task has no dependents assumes html-validator npm package is installed.
@@ -282,6 +298,7 @@ task('release-gh-pages', ['build-gh-pages', 'commit-gh-pages', 'push-gh-pages'])
 desc(`Generate documentation and copy to local gh-pages repo`)
 task('build-gh-pages', ['build-rimu', 'build-docs'], function () {
   shelljs.cp('-f', HTML.concat(RIMU_LIB_MIN), GH_PAGES_DIR)
+  shelljs.cp('-f', 'doc/*-example.html', GH_PAGES_DIR)
 })
 
 desc(`Commit changes to local gh-pages repo. Use msg='commit message' to set a custom commit message.`)

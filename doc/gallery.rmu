@@ -1,0 +1,47 @@
+# Rimu Gallery
+
+Here are some examples of styled HTML documents generated using the
+{rimuc} command `--layout` option.
+
+See {layouts} and {themes} for more explanatory information.
+
+
+## sequel layout
+
+### legend theme
+- [`--layout sequel --theme legend`](sequel-legend-example.html)
+
+### vintage theme
+- [`--layout sequel --theme vintage`](sequel-vintage-example.html)
+
+### graystone theme
+- [`--layout sequel --theme graystone`](sequel-graystone-example.html)
+
+## classic layout
+
+### legend theme
+- [`--layout classic --theme legend`](classic-legend-example.html)
+- [`--layout classic --theme legend --prepend "\{--dropdown-toc}='yes'"`](classic-legend-dropdown-toc-example.html)
+
+### vintage theme
+- [`--layout classic --theme vintage`](classic-vintage-example.html)
+- [`--layout classic --theme vintage --prepend "\{--dropdown-toc}='yes'"`](classic-vintage-dropdown-toc-example.html)
+
+### graystone theme
+- [`--layout classic --theme graystone`](classic-graystone-example.html)
+- [`--layout classic --theme graystone --prepend "\{--dropdown-toc}='yes'"`](classic-graystone-dropdown-toc-example.html)
+
+## flex layout
+
+### legend theme
+- [`--layout flex --theme legend`](flex-legend-example.html)
+- [`--layout flex --theme legend --prepend "\{--top-bar}='yes'"`](flex-legend-top-bar-example.html)
+
+### vintage theme
+- [`--layout flex --theme vintage`](flex-vintage-example.html)
+- [`--layout flex --theme vintage --prepend "\{--top-bar}='yes'"`](flex-vintage-top-bar-example.html)
+
+### graystone theme
+- [`--layout flex --theme graystone`](flex-graystone-example.html)
+- [`--layout flex --theme graystone --prepend "\{--top-bar}='yes'"`](flex-graystone-top-bar-example.html)
+

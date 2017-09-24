@@ -145,9 +145,12 @@ Rimu source</td>
 {changelog} = 'changelog.html'
 {reference} = 'reference.html'
 {tips} = 'tips.html'
+{gallery} = 'gallery.html'
 
 // Documentation links.
 {rimuc} = '[rimuc]({reference}#rimuc-command)'
+{layouts} = '[Layouts]({reference}#layouts)'
+{themes} = '[Themes]({reference}#themes)'
 
 // External Web pages.
 {github} = 'https://github.com/srackham/rimu'
@@ -161,6 +164,7 @@ Rimu source</td>
   <div class="h2"><a href="{playground}">Rimu Playground</a></div>
   <div class="h2"><a href="{reference}">Rimu Reference</a></div>
   <div class="h2"><a href="{tips}">Rimu Tips</a></div>
+  <div class="h2"><a href="{gallery}">Rimu Gallery</a></div>
   <div class="h2"><a href="{changelog}">Change Log</a></div>
   <div class="h2"><a href="{github}">Github</a></div>
   <div class="h2"><a href="{npm}">npm</a></div>
