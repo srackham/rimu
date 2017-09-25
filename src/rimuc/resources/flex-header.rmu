@@ -33,7 +33,7 @@
 {--border-color?} = '#dddddd'
 {--primary-color?} = '#34495e'
 {--primary-background?} = 'white'
-{--gray-background?} = '#f8f8f8'
+{--code-background?} = '#f8f8f8'
 {--sidebar-background?} = '#ffffee'
 {--link-color?} = '#428bca'
 {--border-radius?} = '0'
@@ -56,7 +56,7 @@
 {--border-color?} = '#dddddd'
 {--primary-color?} = '#527bbd'
 {--primary-background?} = 'white'
-{--gray-background?} = '#f8f8f8'
+{--code-background?} = '#f8f8f8'
 {--sidebar-background?} = '#ffffee'
 {--link-color?} = '#527bbd'
 {--border-radius?} = '4px'
@@ -77,7 +77,7 @@
 {--border-color?} = '#dddddd'
 {--primary-color?} = '#888'
 {--primary-background?} = 'white'
-{--gray-background?} = '#f8f8f8'
+{--code-background?} = '#f8f8f8'
 {--sidebar-background?} = '#ffffee'
 {--link-color?} = '#888'
 {--border-radius?} = '0'
@@ -228,21 +228,21 @@
     font-family: {--mono-font};
     {--!} Monspace fonts are relatively oversized.
     font-size: {--mono-size};
-    background-color: {--gray-background};
+    background-color: {--code-background};
   }
-{--highlightjs!}  .hljs { background-color: {--gray-background}; }
+{--highlightjs!}  .hljs { background-color: {--code-background}; }
   pre {
     font-family: {--mono-font};
     line-height: normal;
     white-space: pre-wrap;
     word-break: break-all;
-    background-color: {--gray-background};
+    background-color: {--code-background};
     border: 1px solid {--border-color};
     border-radius: {--border-radius};
     padding: 6px;
   }
   .light-background {
-    background-color: {--gray-background};
+    background-color: {--code-background};
     border: none;
   }
   *:not(pre) > code {
@@ -407,7 +407,7 @@
     font-size: 90%;
   }
   #toc div[class^="h"]:nth-child(even) {
-    background-color: {--gray-background};
+    background-color: #f8f8f8;
   }
   #auto-toc {
     width: 100%;
