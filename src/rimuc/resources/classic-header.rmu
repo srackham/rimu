@@ -24,18 +24,18 @@
 */
 {--theme!.*\blegend\b.*}.+skip
 ..
-{--small-screen?}= '(max-width: 800px)'
-{--sans-font?}= 'Arimo, Arial, Helvetica, sans-serif'
-{--serif-font?}= 'Tinos, Georgia, serif'
-{--mono-font?}= 'Cousine, Consolas, "Andale Mono", Monaco, monospace'
-{--mono-size?}= '90%'
-{--text-color?}= '#333333'
-{--border-color?}= '#dddddd'
-{--primary-color?}= '#34495e'
-{--primary-background?}= 'white'
-{--gray-background?}= '#f8f8f8'
-{--sidebar-background?}= '#ffffee'
-{--link-color?}= '#428bca'
+{--small-screen?} = '(max-width: 800px)'
+{--sans-font?} = 'Helvetica, Arial, sans-serif'
+{--serif-font?} = 'Georgia, Times, serif'
+{--mono-font?} = 'Consolas, "Andale Mono", Monaco, monospace'
+{--mono-size?} = '90%'
+{--text-color?} = '#333333'
+{--border-color?} = '#dddddd'
+{--primary-color?} = '#34495e'
+{--primary-background?} = 'white'
+{--gray-background?} = '#f8f8f8'
+{--sidebar-background?} = '#ffffee'
+{--link-color?} = '#428bca'
 {--border-radius?} = '0'
 {--max-text-width?} = '50rem'
 ..
@@ -48,9 +48,9 @@
 {--theme!.*\b(legend|vintage|graystone)\b.*}.-skip
 ..
 {--small-screen?} = 'screen and (max-width: 800px)'
-{--sans-font?} = 'Arimo, Arial, Helvetica, sans-serif'
-{--serif-font?} = 'Tinos, Georgia, serif'
-{--mono-font?} = 'Cousine, Consolas, "Andale Mono", Monaco, monospace'
+{--sans-font?} = 'Helvetica, Arial, sans-serif'
+{--serif-font?} = 'Georgia, Times, serif'
+{--mono-font?} = 'Consolas, "Andale Mono", Monaco, monospace'
 {--mono-size?} = '90%'
 {--text-color?} = '#333333'
 {--border-color?} = '#dddddd'
@@ -68,18 +68,18 @@
 */
 {--theme!.*\bgraystone\b.*}.+skip
 ..
-{--small-screen?}= '(max-width: 800px)'
-{--sans-font?}= 'Arimo, Arial, Helvetica, sans-serif'
-{--serif-font?}= 'Tinos, Georgia, serif'
-{--mono-font?}= 'Cousine, Consolas, "Andale Mono", Monaco, monospace'
-{--mono-size?}= '90%'
-{--text-color?}= '#333333'
-{--border-color?}= '#dddddd'
-{--primary-color?}= '#888'
-{--primary-background?}= 'white'
-{--gray-background?}= '#f8f8f8'
-{--sidebar-background?}= '#ffffee'
-{--link-color?}= '#888'
+{--small-screen?} = '(max-width: 800px)'
+{--sans-font?} = 'Helvetica, Arial, sans-serif'
+{--serif-font?} = 'Georgia, Times, serif'
+{--mono-font?} = 'Consolas, "Andale Mono", Monaco, monospace'
+{--mono-size?} = '90%'
+{--text-color?} = '#333333'
+{--border-color?} = '#dddddd'
+{--primary-color?} = '#888'
+{--primary-background?} = 'white'
+{--gray-background?} = '#f8f8f8'
+{--sidebar-background?} = '#ffffee'
+{--link-color?} = '#888'
 {--border-radius?} = '0'
 {--max-text-width?} = '50rem'
 ..
@@ -121,8 +121,6 @@
 <meta name="viewport" content="width=device-width">
 <title>{--title}</title>
 {--highlightjs!}<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
-{--!} Primary fonts are Google Croscore fonts (https://en.wikipedia.org/wiki/Croscore_fonts).
-<link href="https://fonts.googleapis.com/css?family=Arimo%7CCousine%7CTinos" rel="stylesheet">
 
 
 /*
