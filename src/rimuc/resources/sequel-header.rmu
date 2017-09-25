@@ -44,7 +44,7 @@
 */
 {--theme!.*\bvintage\b.*}.+skip
 ..
-{--small-screen?} = 'screen and (max-width: 800px)'
+{--small-screen?} = '(max-width: 800px)'
 {--sans-font?} = 'Helvetica, Arial, sans-serif'
 {--serif-font?} = 'Georgia, Times, serif'
 {--mono-font?} = 'Consolas, "Andale Mono", Monaco, monospace'
@@ -490,11 +490,6 @@
       overflow-wrap: break-word;
     }
   }
-  @media print {
-    #main {
-      margin-left: 0;
-    }
-  }
 </style>
 
 {--no-toc=}.+skip
@@ -517,6 +512,9 @@
       overflow-wrap: break-word;
     }
   }
+</style>
+
+<style>
   @media print {
     #main {
       margin-left: 0;

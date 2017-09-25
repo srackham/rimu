@@ -47,7 +47,7 @@
 // Default to this theme if none of the built-in themes is specified.
 {--theme!.*\b(legend|vintage|graystone)\b.*}.-skip
 ..
-{--small-screen?} = 'screen and (max-width: 800px)'
+{--small-screen?} = '(max-width: 800px)'
 {--sans-font?} = 'Helvetica, Arial, sans-serif'
 {--serif-font?} = 'Georgia, Times, serif'
 {--mono-font?} = 'Consolas, "Andale Mono", Monaco, monospace'
@@ -469,7 +469,7 @@
       padding-left: 1em;
     }
   }
-  @media {--small-screen} {
+  @media only screen and {--small-screen} {
     {--!}  Sidebar TOC hidden as it does not work on small screens.
     body {
       padding-left: 0;
@@ -515,7 +515,7 @@
       margin-left: 0px;
     }
   }
-  @media {--small-screen} {
+  @media only screen and {--small-screen} {
     {--!}  Reposition TOC and TOC button.
     #toc {
       top: 60px;
@@ -530,7 +530,7 @@
 
 // Format (non-layout) related styles.
 <style>
-  @media {--small-screen} {
+  @media only screen and {--small-screen} {
     body {
       font-size: 20px;
       margin: 5px;
