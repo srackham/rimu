@@ -127,7 +127,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width">
 <title>{--title}</title>
-{--highlightjs!}<link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
+{--highlightjs!}<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
 {--!} Primary fonts are Google Croscore fonts (https://en.wikipedia.org/wiki/Croscore_fonts).
 <link href="https://fonts.googleapis.com/css?family=Arimo%7CCousine%7CTinos" rel="stylesheet">
 
@@ -232,6 +232,7 @@
     font-size: {--mono-size};
     background-color: {--gray-background};
   }
+{--highlightjs!}  .hljs { background-color: {--gray-background}; }
   pre {
     font-family: {--mono-font};
     line-height: normal;
