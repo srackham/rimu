@@ -24,10 +24,11 @@ export let defs: Macro[] = []
 
 // Reset definitions to defaults.
 export function init(): void {
-  defs = []
   // Initialize predefined macros.
-  setValue('--', '')
-  setValue('--header-ids', '')
+  defs = [
+    {name: '--', value: ''},
+    {name: '--header-ids', value: ''}
+  ]
 }
 
 // Return named macro value or null if it doesn't exist.
@@ -47,6 +48,10 @@ export function setValue(name: string, value: string): void {
   if (name.slice(-1) === '?') {
     name = name.slice(0, -1)
     existential = true
+  }
+  if (name === '--' && value !== '') {
+    Options.errorCallback('the predefined blank \'--\' macro cannot be redefined')
+    return
   }
   for (let def of defs) {
     if (def.name === name) {
