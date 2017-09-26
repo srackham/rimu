@@ -2218,5 +2218,14 @@
     "options": {
       "reset": true
     }
+  },
+  {
+    "description": "blank '--' macro cannot be redefined",
+    "input": "{--} = '42'",
+    "expectedOutput": "",
+    "expectedCallback": "error: the predefined blank '--' macro cannot be redefined",
+    "options": {
+      "reset": true
+    }
   }
 ]
