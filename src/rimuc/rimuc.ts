@@ -32,10 +32,9 @@ OPTIONS
     Generate a styled HTML document with one of the following
     predefined document layouts:
 
-    'classic': Desktop-centric styling.
-    'flex':    Flexbox responsive styling (experimental).
-    'sequel':  Responsive cross-device styling.
-    'v8':      Rimu version 8 styling.
+    'classic': Desktop-centric layout.
+    'flex':    Flexbox mobile layout (experimental).
+    'sequel':  Responsive cross-device layout.
 
     If only one source file is specified and the --output
     option is not specified then the output is written to a
@@ -72,8 +71,8 @@ OPTIONS
 
   --theme THEME, --lang LANG, --title TITLE, --highlightjs, --mathjax,
   --no-toc, --custom-toc, --section-numbers, --header-ids, --header-links
-
     Shortcuts for the following prepended macro definitions:
+
     --prepend "{--custom-toc}='true'"
     --prepend "{--header-ids}='true'"
     --prepend "{--header-links}='true'"
@@ -93,9 +92,9 @@ PREDEFINED MACROS
                      and h3 header id attributes.
   _______________________________________________________________
 
-STYLING MACROS AND CLASSES
-  The following macros and CSS classes are available when the
-  --layout option is used:
+LAYOUT MACROS
+  The following macros are available when the --layout option is
+  used:
 
   Macro name         Description
   _______________________________________________________________
@@ -115,26 +114,30 @@ STYLING MACROS AND CLASSES
   --title            HTML document title.
   _______________________________________________________________
   These macros must be defined prior to processing (using rimuc
-  options or in .rimurc).
+  prepend options or in .rimurc).
+
+LAYOUT CLASSES
+  The following CSS classes are available for use by Rimu Block
+  Attributes elements when the --layout option is used:
 
   CSS class        Description
   ______________________________________________________________
   align-center     Text alignment center.
   align-left       Text alignment left.
   align-right      Text alignment right.
-  bordered         Add borders to table.
+  bordered         Adds table borders.
   cite             Quote and verse attribution.
-  dl-counter       Prepend dl item counter to element content.
   dl-horizontal    Format labeled lists horizontally.
   dl-numbered      Number labeled list items.
+  dl-counter       Prepend dl item counter to element content.
+  ol-counter       Prepend ol item counter to element content.
+  ul-counter       Prepend ul item counter to element content.
   line-breaks      Honor line breaks in source text.
   no-auto-toc      Exclude heading from table of contents.
   no-page-break    Avoid page break inside the element.
   no-print         Do not print.
-  ol-counter       Prepend ol item counter to element content.
   page-break       Force page break before the element.
   sidebar          Sidebar format (paragraphs, division blocks).
-  ul-counter       Prepend ul item counter to element content.
   verse            Verse format (paragraphs, division blocks).
   ______________________________________________________________
 `
