@@ -48,23 +48,13 @@ let DOCS = [
     src: 'doc/rimuplayground.rmu',
     dst: 'doc/rimuplayground.html',
     title: 'Rimu Playground',
-    rimucOptions: '--layout classic --dropdown-toc --prepend "{generate-examples}=\'yes\'"'
+    rimucOptions: '--prepend "{generate-examples}=\'yes\'"'
   },
   {
     src: 'doc/gallery.rmu',
     dst: 'doc/gallery.html',
     title: 'Rimu layout and themes gallery',
     rimucOptions: ''
-  },
-  {
-    src: 'README.md', dst: 'doc/flex-example.html', title: 'Rimu Markup',
-    rimucOptions: '--layout flex --theme vintage'
-  },
-  {
-    src: 'README.md',
-    dst: 'doc/flex-graystone-example.html',
-    title: 'Rimu Markup',
-    rimucOptions: '--layout flex --theme graystone --prepend "{top-bar}=\'yes\'"'
   }
 ]
 let HTML = DOCS.map(doc => doc.dst)
@@ -235,7 +225,7 @@ task('gallery-markup', function () {
       console.log('- ' + link)
     },
     function (layout) {
-      console.log('\n## ' + layout + ' layout');
+      console.log('\n\n## ' + layout + ' layout');
     },
     function (layout, theme) {
       console.log('\n### ' + theme + ' theme');
