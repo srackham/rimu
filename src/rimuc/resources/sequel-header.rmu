@@ -15,6 +15,11 @@
 {--no-toc?} = ''
 {--custom-toc?} = ''
 {--header-links?} = ''
+{--small-screen?} = '(max-width: 800px)'
+{--meta?} = '<meta charset="UTF-8">
+  {--!} Make old IE versions use the latest rendering engine.
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">'
 
 /*
   Legend theme.
@@ -23,7 +28,6 @@
 // Default to this theme if none of the built-in themes is specified.
 {--theme!.*\b(legend|vintage|graystone)\b.*}.-skip
 ..
-{--small-screen?} = '(max-width: 800px)'
 {--sans-font?} = 'Helvetica, Arial, sans-serif'
 {--serif-font?} = 'Georgia, Times, serif'
 {--mono-font?} = 'Consolas, "Andale Mono", Monaco, monospace'
@@ -44,7 +48,6 @@
 */
 {--theme!.*\bvintage\b.*}.+skip
 ..
-{--small-screen?} = '(max-width: 800px)'
 {--sans-font?} = 'Helvetica, Arial, sans-serif'
 {--serif-font?} = 'Georgia, Times, serif'
 {--mono-font?} = 'Consolas, "Andale Mono", Monaco, monospace'
@@ -65,7 +68,6 @@
 */
 {--theme!.*\bgraystone\b.*}.+skip
 ..
-{--small-screen?} = '(max-width: 800px)'
 {--sans-font?} = 'Helvetica, Arial, sans-serif'
 {--serif-font?} = 'Georgia, Times, serif'
 {--mono-font?} = 'Consolas, "Andale Mono", Monaco, monospace'
@@ -87,10 +89,7 @@
 <!DOCTYPE HTML>
 <html lang="{--lang}">
 <head>
-<meta charset="UTF-8">
-{--!} Make old IE versions use the latest rendering engine.
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+{--meta}
 <title>{--title}</title>
 {--highlightjs!}<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
 
