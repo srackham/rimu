@@ -15,6 +15,11 @@
 {--no-toc?} = ''
 {--custom-toc?} = ''
 {--header-links?} = ''
+{--small-screen?} = '(max-width: 800px)'
+{--meta?} = '<meta charset="UTF-8">
+  {--!} Make old IE versions use the latest rendering engine.
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">'
 
 // Flex layout specific.
 {--top-bar?} = ''
@@ -24,7 +29,6 @@
 */
 {--theme!.*\blegend\b.*}.+skip
 ..
-{--small-screen?} = '(max-width: 800px)'
 {--sans-font?} = 'Helvetica, Arial, sans-serif'
 {--serif-font?} = 'Georgia, Times, serif'
 {--mono-font?} = 'Consolas, "Andale Mono", Monaco, monospace'
@@ -47,7 +51,6 @@
 // Default to this theme if none of the built-in themes is specified.
 {--theme!.*\b(legend|vintage|graystone)\b.*}.-skip
 ..
-{--small-screen?} = '(max-width: 800px)'
 {--sans-font?} = 'Helvetica, Arial, sans-serif'
 {--serif-font?} = 'Georgia, Times, serif'
 {--mono-font?} = 'Consolas, "Andale Mono", Monaco, monospace'
@@ -68,7 +71,6 @@
 */
 {--theme!.*\bgraystone\b.*}.+skip
 ..
-{--small-screen?} = '(max-width: 800px)'
 {--sans-font?} = 'Helvetica, Arial, sans-serif'
 {--serif-font?} = 'Georgia, Times, serif'
 {--mono-font?} = 'Consolas, "Andale Mono", Monaco, monospace'
@@ -122,10 +124,7 @@
 <!DOCTYPE HTML>
 <html lang="{--lang}">
 <head>
-<meta charset="UTF-8">
-{--!} Make old IE versions use the latest rendering engine.
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width">
+{--meta}
 <title>{--title}</title>
 {--highlightjs!}<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
 
@@ -235,7 +234,6 @@
     font-family: {--mono-font};
     line-height: normal;
     white-space: pre-wrap;
-    word-break: break-all;
     background-color: {--code-background};
     border: 1px solid {--border-color};
     border-radius: {--border-radius};
@@ -244,6 +242,7 @@
   .light-background {
     background-color: {--code-background};
     border: none;
+    white-space: pre;
   }
   *:not(pre) > code {
     white-space: nowrap;
@@ -300,7 +299,11 @@
   .align-right {
     text-align: right;
   }
-  {--!} Do not wrap line breaks.
+  {--!} Preserve line breaks.
+  .preserve-breaks {
+    white-space: pre;
+  }
+  {--!} DEPRECATED: Use `preserve-breaks` instead.
   .line-breaks {
     white-space: pre;
   }
