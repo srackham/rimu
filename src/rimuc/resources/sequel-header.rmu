@@ -90,7 +90,7 @@
 <meta charset="UTF-8">
 {--!} Make old IE versions use the latest rendering engine.
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <title>{--title}</title>
 {--highlightjs!}<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
 
@@ -199,7 +199,6 @@
     font-family: {--mono-font};
     line-height: normal;
     white-space: pre-wrap;
-    word-break: break-all;
     background-color: {--code-background};
     border: 1px solid {--border-color};
     border-radius: {--border-radius};
@@ -208,6 +207,7 @@
   .light-background {
     background-color: {--code-background};
     border: none;
+    white-space: pre;
   }
 {--!} So hyphenated words like `--word-wrap` are not broken (there is no CSS property that will break on white space only).
   *:not(pre) > code {
@@ -265,7 +265,11 @@
   .align-right {
     text-align: right;
   }
-  {--!} Do not wrap line breaks.
+  {--!} Preserve line breaks.
+  .preserve-breaks {
+    white-space: pre;
+  }
+  {--!} DEPRECATED: Use `preserve-breaks` instead.
   .line-breaks {
     white-space: pre-wrap;
   }
