@@ -3,7 +3,9 @@
 Here are some examples of styled HTML documents generated using the
 {rimuc} command `--layout` option.
 
-See {layouts} and {themes} for more explanatory information.
+Click the options links to view the generated documents.
+
+See [Layouts and themes]({reference}#layouts-and-themes) for more explanatory information.
 
 
 ## sequel layout
@@ -16,6 +18,7 @@ See {layouts} and {themes} for more explanatory information.
 
 ### graystone theme
 - [`--layout sequel --theme graystone`](sequel-graystone-example.html)
+
 
 ## classic layout
 
@@ -30,6 +33,7 @@ See {layouts} and {themes} for more explanatory information.
 ### graystone theme
 - [`--layout classic --theme graystone`](classic-graystone-example.html)
 - [`--layout classic --theme graystone --prepend "\{--dropdown-toc}='yes'"`](classic-graystone-dropdown-toc-example.html)
+
 
 ## flex layout
 

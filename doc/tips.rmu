@@ -76,10 +76,6 @@ Rimu URL syntax.'
 
 {generate-rendered-example-1|document-links-example}
 
-NOTE: The [rimuc]({reference}#rimuc-command) `--styled` option
-automatically synthesises `id` attributes for those top level `#`,
-`##` and `###` header elements that do not already have an `id`.
-
 
 .#syntax-highlighting
 ## Source code syntax highlighting
@@ -87,7 +83,7 @@ The {rimuc} command can highlight code in Rimu _Code Blocks_ and
 _Indented Paragraphs_ using the
 [Highlight.js](https://github.com/isagalaev/highlight.js) syntax
 highlighter.  To include _Highlight.js_ support use the {rimuc}
-command `--highlightjs` option with the `--styled` option.
+command `--highlightjs` option with the `--layout` option.
 
 Set the language you want to highlight by injecting the language CSS
 class name into the code block.  Here are two examples, the first uses
@@ -167,24 +163,24 @@ _npmjs.org_ README formats.
 directly to the output.  This allows you to generate styled HTML5
 documents from raw HTML files (HTML files with no `<html>`, `<head>` or
 `<body>` tags), or from non Rimu compatible Markdown files, using the
-{rimuc} `--styled` option. Examples:
+{rimuc} `--layout` option. Examples:
 
 Raw HTML file:: Convert `mydoc.html` to styled HTML5 document with
 table of contents:
 
-  rimuc --styled --dropdown-toc mydoc.html
+  rimuc --layout sequel mydoc.html
 
 Rimu compatible Markdown file::
 Convert `mydoc.md` to styled HTML5 document:
 
-  rimuc --styled mydoc.md
+  rimuc --layout sequel mydoc.md
 
 Markdown file containing non Rimu compatible elements::
 Convert `mydoc.md` to styled HTML5 document after first converting it
 to raw HTML with `markdown`:
 
   markdown mydoc.md > mydoc.html
-  rimuc --styled mydoc.html
+  rimuc --layout sequel mydoc.html
 
 
 ## Converting Rimu to Markdown
@@ -233,12 +229,12 @@ separate file and specify it as the first Rimu source file in the
 The following example sets the {rimuc} `--title` macro value, this
 sets the HTML _title_ in the `kotlin-notes.html` output document:
 
-  rimuc --styled --prepend "{--title}='Kotlin Notes'" kotlin-notes.rmu
+  rimuc --layout sequel --prepend "{--title}='Kotlin Notes'" kotlin-notes.rmu
 
-{rimuc} has a `--title` shortcut comand-line option for this common
+{rimuc} has a `--title` shortcut command-line option for this common
 use-case:
 
-  rimuc --styled --title "Kotlin Notes" kotlin-notes.rmu
+  rimuc --layout sequel --title "Kotlin Notes" kotlin-notes.rmu
 
 Other macro shortcut options can be found in the {rimuc}
 documentation.
@@ -374,21 +370,18 @@ to. This will not change.
 
 ## Themes
 A _theme_ is the overall typographical style of the rendered HTML
-document.  You can tailor the theme using [custom CSS style
-elements](#scoped-css).
+document.
 
-The {rimuc} command supports named themes with the `--theme` option,
-all this does is set the `--theme` macro value which is then used to
+The {rimuc} command supports named themes with the `--theme` option.
+All this does is set the `--theme` macro value which is then used to
 [conditionally include](#conditional-inclusion) HTML `style` elements.
 
-The following example styles the output using the built-in _graystone_
-theme:
+The `--layouts` option supports a number of [built-in
+themes]({reference}#layouts-and-themes) You can customize these themes
+by setting theme macro values and by including [custom CSS style
+elements](#scoped-css).
 
-  rimuc --styled --theme graystone document.rmu
-
-You can create your own themes or tweak existing themes by
-[conditionally including](#conditional-inclusion) HTML `style`
-elements.  Here is an example theme named _redheads_:
+Here is an example theme named _redheads_:
 
 ``
 {--theme!.*\bredheads\b.*}.+skip
@@ -399,21 +392,21 @@ elements.  Here is an example theme named _redheads_:
 </style>
 ``
 
-The HTML `style` element will be included when the `--theme` macro
-value includes the word `redheads`, for example:
+The HTML `style` element will be included in the output when the
+`--theme` macro value includes the word `redheads`, for example:
 
-  rimuc --styled --theme redheads document.rmu
+  rimuc --layout sequel --theme redheads document.rmu
 
 You can combine themes by specifying more than one theme, for example:
 
-  rimuc --styled --theme "graystone redheads" document.rmu
+  rimuc --layout sequel --theme "graystone redheads" document.rmu
 
-NOTE: If you specify multiple themes their CSS styles will casacade in
-the order they are processed in the Rimu source documents.
+If you specify multiple themes their CSS styles will cascade in the
+order they are processed in the Rimu source documents.
 
 
 ## Verse and sidebar styles
-The {rimuc} command `--styled` option includes _verse_ and _sidebar_
+The {rimuc} command `--layout` option includes _verse_ and _sidebar_
 CSS styles for poetry and highlighted passages of text.
 
 {verse-and-sidebar-example} = 'Verse styled paragraph:
@@ -472,7 +465,7 @@ var html = Rimu.render(untrusted_rimu_markup, {safeMode: 5});
 ## Mathematical formulae
 The {rimuc} command supports [MathJax](http://www.mathjax.org/) LaTeX
 and MathML mathematical formulas.  To include _MathJax_ support use
-the {rimuc} command `--mathjax` option with the `--styled` option.
+the {rimuc} command `--mathjax` option with the `--layout` option.
 
 .-macros
 {mathjax-example} = '.-macros
@@ -507,47 +500,38 @@ MathJax.
 
 .#conditional-inclusion
 ## Conditional Inclusion
-Macro invocations can be used to conditionally include Rimu source
-text:
+Macro invocations can be used to conditionally include and exclude
+Rimu source text. Here are some examples:
 
 ``
 // Include script if `foo` value is non-blank.
-{foo!}<script src="foo-min.js"></script>
+{foo!}<script src="bar-min.js"></script>
 
 // Include paragraph if `foo` is blank.
 {foo=}.+skip
-Macro `foo`
-must be blank.
+Macro `foo` must be blank.
 
 // Conditional inclusion of arbitrary blocks of Rimu source.
-// Assign `x` and `y` macro values and include some CSS if
-// both `foo` and `bar` are non-blank.
+// Include some CSS if both `foo` and `bar` are non-blank.
 // Works because a Division Block does not emit div tags if they
 // have no HTML attributes.
 {foo=}.+skip
 {bar=}.+skip
 ..
-{x} = '42'
-{y} = '24'
 <style>
   * { margin: 0; padding: 0; }
 </style>
 ..
 
 // Inline examples.
-This line is included {foo=} if foo value is blank.
-This line is included {foo!} if foo value is not blank.
-This line is included {foo=one} if foo value is 'one'.
-This line is included {foo=two} if foo value is 'two'.
-This line is included {foo!\d+} if foo value is not a number.
-
-// Use parametrized macros to exclude arbitrary inline text.
-{foo} = ''
-Mauris vitae {foo|This text is excluded}
-
-{foo} = '$1'
-Mauris vitae {foo|This text is included}
+This line is included {foo=} if the value of foo is blank.
+This line is included {foo!} if the value of foo is not blank.
+This line is included {foo=one} if the value of foo is 'one'.
+This line is included {foo=two} if the value of foo is 'two'.
+This line is included {foo!\d+} if the value of foo is not a number.
 ``
+
+Use [Comments]({reference}#comments) to unconditionally exclude text.
 
 
 ## Tables
@@ -558,7 +542,7 @@ creation](#use-macros-to-create-tables)).
 NOTE: HTML blocks must start at the left margin and end with a blank
 line.
 
-The {rimuc} `--styled` option includes the `bordered` CSS class for
+The {rimuc} `--layout` option includes the `bordered` CSS class for
 styling bordered tables.
 
 .-macros
@@ -629,8 +613,8 @@ difficult to read.
 Parametrized macros can be used to generate row oriented tables:
 
 .-macros
-{table-macro-example} = '{person} = '<table><tr><td style="width:15em">$$1</td>
-<td style="width:5em">$$2</td>
+{table-macro-example} = '{person} = '<table><tr><td style="width:40%">$$1</td>
+<td style="width:20%">$$2</td>
 <td>$$3</td></tr></table>
 '\
 
@@ -771,7 +755,7 @@ Generates:
 
 ## List item counters
 In addition to the _verse_ and _sidebar_ CSS styles the  {rimuc} tool
-`--styled` option also includes CSS classes for counting list items
+`--layout` option also includes CSS classes for counting list items
 and for numbering labeled list items.
 
 {list-item-counters-example} = '#### Numbered labeled list
@@ -873,13 +857,13 @@ Three:: Item three.
 
 
 ## Section numbering
-Use the {rimuc} `--section-numbers` option with the `--styled` option
+Use the {rimuc} `--section-numbers` option with the `--layout` option
 to number top level _h2_ and _h3_ sub-sections. For example:
 
-  rimuc --styled --section-numbers mydoc.rmu
+  rimuc --layout sequel --section-numbers mydoc.rmu
 
 The  {rimuc} `--section-numbers` option is a shortcut for
-`\{--section-numbers} = 'yes'`.
+`--prepend \{--section-numbers} = 'yes'`.
 
 
 ## Nested Fenced Blocks
@@ -965,8 +949,9 @@ There are three ways to preserve line breaks:
 . Terminate lines with a Rimu line break (a space followed by a
   backslash character).
 . Terminate lines with an HTML break element (`<br>`).
-. Inject the `line-breaks` CSS class into a Rimu block element and
-  compile with the `rimuc` command `--styled` option.
+. Apply the `line-breaks` class to a Rimu block element and
+  compile with the `rimuc` command [`--layout`
+  option]({reference}#layout-option).
 
 {line-breaks-example} = '
 Urna aliquam pid \
@@ -1004,7 +989,7 @@ this sidebar.
 ### A header that starts on a new page
 ```
 
-The {rimuc} tool `--styled` option includes `page-break` and
+The {rimuc} tool `--layout` option includes `page-break` and
 `no-page-break` CSS classes which apply `page-break-before:always` and
 `page-break-inside:avoid` properties respectively.  Here is the
 previous example using the {rimuc} page break classes:
@@ -1031,7 +1016,7 @@ Enim odio ultrices'
 
 {generate-rendered-example-1|text-alignment-example-1}
 
-The {rimuc} tool `--styled` option includes `align-left`,
+The {rimuc} tool `--layout` option includes `align-left`,
 `align-center` and `align-right` CSS classes.  Here is the previous
 example using the `align-center` text alignment class:
 
@@ -1042,7 +1027,7 @@ Enim odio ultrices'
 
 
 ## Citing quotes and verses
-The {rimuc} command `--styled` option includes the CSS _cite_ class
+The {rimuc} command `--layout` option includes the CSS _cite_ class
 for attributing quotes and verses. For example:
 
 {citation-example} = 'Quotation:
@@ -1079,15 +1064,15 @@ Here's an example of a personal letter:
 .-macros
 {letter-example} = '
 ."font-family:serif; font-size:12pt;"
-...
+..
 
 ."margin-left:75%"
-..
+...
 24 Milky Way \
 Skyhome 1234 \
 
 17th June 2016
-..
+...
 
 ."margin-bottom:1.5em"
 Mr. A. N. Mouse \
@@ -1107,7 +1092,7 @@ rhoncus, egestas aliquet lundium! Lundium auctor vel natoque enim.
 ."margin-top:2em"
 Yours sincerely \
 Joe Jetson
-...
+..
 '
 
 {generate-rendered-example-2|letter-example}
@@ -1148,7 +1133,7 @@ For example:
 {primary-background} = 'white'
 {text-color} = '#333333'
 
-// Only expand macros in Division Block.
+// Only expand macros.
 .-spans -specials -container
 ..
 body {

@@ -26,15 +26,14 @@ Install Rimu as a Node.js module (includes the `rimu` library and the
 
 
 ## Resources
-### Learning
 
+### Learning
 - Experiment with Rimu in the [Rimu Playground]({playground}).
 - Edit the examples (click the _Edit icon_ {edit-icon} in the examples
   below to enable live example editing of the Rimu source).
 - Read [Rimu Tips]({tips}).
 
 ### Example applications
-
 See the [API documentation](#api).
 
 - Rimu includes the [rimuc](#rimuc-command) command-line tool and the
@@ -47,12 +46,10 @@ See the [API documentation](#api).
 
 .#rimuc-command
 ## `rimuc` command
-_rimuc_ is a Node.js command-line tool that converts Rimu source (or
-[Rimu compatible Markdown]({tips}#markdown-compatible)) to HTML.
 
-The `--styled` option outputs an HTML5 conformant document containing
-the generated HTML, themed styling, an optional table of contents
-(TOC) and optional code syntax highlighting.
+_rimuc_ is a lightweight Node.js command-line tool that uses the Rimu
+library to convert Rimu markup (or [Rimu compatible
+Markdown]({tips}#markdown-compatible)) to HTML.
 
 Run `rimuc --help` to view the `rimuc` manpage:
 
@@ -79,8 +76,18 @@ OPTIONS
   -h, --help
     Display help message.
 
-  -l, --lint
-    Check the Rimu source for inconsistencies and errors.
+  --layout LAYOUT
+    Generate a styled HTML document with one of the following
+    predefined document layouts:
+
+    'classic': Desktop-centric layout.
+    'flex':    Flexbox mobile layout (experimental).
+    'sequel':  Responsive cross-device layout.
+
+    If only one source file is specified and the --output
+    option is not specified then the output is written to a
+    same-named file with an .html extension.
+    This option enables --header-ids.
 
   -o, --output OUTFILE
     Write output to file OUTFILE instead of stdout.
@@ -93,20 +100,16 @@ OPTIONS
   --no-rimurc
     Do not process .rimurc from the user's home directory.
 
-  -s, --styled
-    Include an HTML header and footer for styling the HTML output
-    document. If only one source file is specified and the --output
-    option is not specified then the output is written to a
-    same-named file with an .html extension. Enable --header-ids.
-
   --safe-mode NUMBER
     Non-zero safe modes ignore: Definition elements; API option elements;
     HTML attributes in Block Attributes elements.
     Also specifies how to process HTML elements:
+
     --safe-mode 0 renders HTML (default).
     --safe-mode 1 ignores HTML.
     --safe-mode 2 replaces HTML with --html-replacement option value.
     --safe-mode 3 renders HTML as text.
+
     Add 4 to --safe-mode to ignore Block Attribute elements.
     Add 8 to --safe-mode to allow Macro Definitions.
 
@@ -115,26 +118,19 @@ OPTIONS
     Defaults to '<mark>replaced HTML</mark>'.
 
   --theme THEME, --lang LANG, --title TITLE, --highlightjs, --mathjax,
-  --sidebar-toc, --dropdown-toc, --custom-toc, --section-numbers,
-  --header-ids, --header-links
+  --no-toc, --custom-toc, --section-numbers, --header-ids, --header-links
     Shortcuts for the following prepended macro definitions:
-    --prepend "{--theme}='THEME'"
-    --prepend "{--lang}='LANG'"
-    --prepend "{--title}='TITLE'"
-    --prepend "{--highlightjs}='true'"
-    --prepend "{--mathjax}='true'"
-    --prepend "{--sidebar-toc}='true'"
-    --prepend "{--dropdown-toc}='true'"
+
     --prepend "{--custom-toc}='true'"
-    --prepend "{--section-numbers}='true'"
     --prepend "{--header-ids}='true'"
     --prepend "{--header-links}='true'"
-
-  --styled-name NAME
-    Specify the --styled option header and footer files:
-    'classic': Default styling.
-    'flex':    Flexbox "mobile first" styling (experimental).
-    'v8':      Rimu version 8 styling.
+    --prepend "{--highlightjs}='true'"
+    --prepend "{--lang}='LANG'"
+    --prepend "{--mathjax}='true'"
+    --prepend "{--no-toc}='true'"
+    --prepend "{--section-numbers}='true'"
+    --prepend "{--theme}='THEME'"
+    --prepend "{--title}='TITLE'"
 
 PREDEFINED MACROS
   Macro name         Description
@@ -144,63 +140,67 @@ PREDEFINED MACROS
                      and h3 header id attributes.
   _______________________________________________________________
 
-STYLING MACROS AND CLASSES
-  The following macros and CSS classes are available when the
-  --styled option is used:
+LAYOUT MACROS
+  The following macros are available when the --layout option is
+  used:
 
   Macro name         Description
   _______________________________________________________________
-  --theme            Styling theme. Theme names: default, graystone.
-  --lang             HTML document language attribute value.
-  --title            HTML document title.
-  --highlightjs      Set to non-blank value to enable syntax
-                     highlighting with Highlight.js.
-  --mathjax          Set to a non-blank value to enable MathJax.
-  --sidebar-toc      Set to a non-blank value to generate a
-                     table of contents sidebar.
-  --dropdown-toc     Set to a non-blank value to generate a
-                     table of contents dropdown menu.
   --custom-toc       Set to a non-blank value if a custom table
                      of contents is used.
-  --section-numbers  Apply h2 and h3 section numbering.
   --header-links     Set to a non-blank value to generate h2 and
                      h3 header header links.
+  --highlightjs      Set to non-blank value to enable syntax
+                     highlighting with Highlight.js.
+  --lang             HTML document language attribute value.
+  --mathjax          Set to a non-blank value to enable MathJax.
+  --no-toc           Set to a non-blank value to suppress table of
+                     contents generation.
+  --section-numbers  Apply h2 and h3 section numbering.
+  --theme            Styling theme. Theme names:
+                     'legend', 'graystone', 'vintage'.
+  --title            HTML document title.
   _______________________________________________________________
   These macros must be defined prior to processing (using rimuc
-  options or in .rimurc).
+  prepend options or in .rimurc).
+
+LAYOUT CLASSES
+  The following CSS classes are available for use by Rimu Block
+  Attributes elements when the --layout option is used:
 
   CSS class        Description
   ______________________________________________________________
-  verse            Verse format (paragraphs, division blocks).
-  sidebar          Sidebar format (paragraphs, division blocks).
-  cite             Quote and verse attribution.
-  bordered         Add borders to table.
-  align-left       Text alignment left.
   align-center     Text alignment center.
+  align-left       Text alignment left.
   align-right      Text alignment right.
-  no-print         Do not print.
-  line-breaks      Honor line breaks in source text.
-  page-break       Force page break before the element.
-  no-page-break    Avoid page break inside the element.
-  dl-numbered      Number labeled list items.
+  bordered         Adds table borders.
+  cite             Quote and verse attribution.
   dl-horizontal    Format labeled lists horizontally.
+  dl-numbered      Number labeled list items.
   dl-counter       Prepend dl item counter to element content.
   ol-counter       Prepend ol item counter to element content.
   ul-counter       Prepend ul item counter to element content.
+  line-breaks      Honor line breaks in source text.
+  no-auto-toc      Exclude heading from table of contents.
+  no-page-break    Avoid page break inside the element.
+  no-print         Do not print.
+  page-break       Force page break before the element.
+  sidebar          Sidebar format (paragraphs, division blocks).
+  verse            Verse format (paragraphs, division blocks).
   ______________________________________________________________
+
 ``
 
-Example usage:
+### Example usage
 
 1. Use _rimuc_ as a filter:
 
   echo 'Hello *Rimu*!' | rimuc
 
-2. Generate a styled HTML Web page including a sidebar table of
-   contents and code syntax highlighting styling macro shortcut
-   options:
+2. Generate a styled HTML document with a table of contents and code
+   syntax highlighting: options:
 
-  rimuc --styled --sidebar-toc --highlightjs reference.rmu
+  rimuc --layout sequel --highlightjs reference.rmu
 
 3. Prefix a custom macro definition:
 
@@ -210,100 +210,109 @@ Example usage:
 
   rimuc -o book.html frontmatter.rmu chapter*.rmu backmatter.rmu
 
-### `--styled` option
-The `--styled` option works by prepending a header file and appending
-a footer file to the list of source files. The actual header and
-footer files is determined by the [`--styled-name`](#styled-names)
-option.
-
-The Rimu `--styled` option:
+### `--layout` option
+The `--layout` option:
 
 - Outputs a stand-alone HTML5 document.
-- Supports [table of contents generation](#toc-generation).
-- Supports named [themes]({tips}#themes). There are two built-in
-  themes: `default` (the default theme) and `graystone`.
-- Includes additional styles for verses, sidebars, text alignment,
+- Generates a [table of contents](#toc-generation).
+- Supports named [themes]({tips}#themes).
+- Includes CSS styles for verses, sidebars, text alignment,
   page break control and section numbering (see `rimuc --help` command
   and examples in [Rimu Tips]({tips})).
-- Generates [header ids](#header-id-generation).
+- Generates unique [header id](#header-id-generation) attributes.
 - If the `--highlightjs` macro is non-blank
-  [Highlightjs](https://highlightjs.org/) is included.
+  [Highlightjs]({tips}#syntax-highlighting) is included.
 - If the `--mathjax` macro is non-blank
-  [MathJax](https://www.mathjax.org/) is included.
+  [MathJax]({tips}#mathematical-formulae) is included.
 - Can be used to [convert raw HTML and arbitrary Markdown
   files]({tips}#rimuc-html).
 
-All features enabled by the `--styled` option are implemented with
-Rimu source code in the header and footer files -- they are not
-hard-wired into Rimu -- and serve to illustrate the power and
-flexibility of the Rimu markup language.
+.#layouts-and-themes
+### Built-in layouts and themes
+You can choose from the following built-in layouts:
 
-.#styled-names
-### Styled names
-The `--styled-name` option is used to choose between the following
-header and footer files:
+sequel:: Responsive cross-device layout.
 
-classic:: Default styling for desktop browser.
+classic:: Desktop-centric layout.
 
-flex:: Flexbox "mobile first" styling (experimental). Examples:
+  - Set the `--dropdown-toc` macro to a non-blank value to place the
+    table of contents in a popup.
 
-  - [Flex layout with _sidebar_ table of contents](flex-example.html)
-    compiled with:
+flex:: Experimental flexbox layout. It currently works best on mobile
+devices.
 
-    rimuc --styled --styled-name flex --sidebar-toc README.md
+  - Set the `--top-bar` macro to a non-blank value to place the
+    navigation bar along the top of the document.
 
-  - [Flex layout with _dropdown_ table of contents and _graystone_
-    theme](flex-graystone-example.html) compiled with:
+v8:: Legacy Rimu version 8 layout.
 
-    rimuc --styled --styled-name flex --dropdown-toc --theme graystone README.md
+The `sequel`, `classic` and `flex` layouts implement `legend`,
+`graystone` and `vintage` [themes]({tips}#themes).  The `--theme`
+option value is assigned to the `--theme` macro which the layout
+header then uses to conditionally include HTML `style` elements.
 
-v8:: Rimu version 8 styling.
+Examples of the layouts and themes can be viewed in the [Rimu
+Gallery]({gallery}).
 
+### Layout customization
+All features enabled by the `--layout` option are implemented with
+Rimu markup from the [built-in header and footer
+files]({github}/tree/master/src/rimuc/resources).
+
+The `--layout` option simply concatenates the input with built-in Rimu
+header and footer files, for example, the following two commands are
+functionally identical:
+
+``
+rimuc --layout sequel sites.rmu
+rimuc --output sites.html sequel-header.rmu sites.rmu sequel-footer.rmu
+``
+
+Prominent layout styles are set by header file macro values and can be
+overriden by prepending new values. For example:
+
+  rimuc --layout sequel --prepend "{--primary-color}='#0cc'" sites.rmu
+
+You can view full list of layout macros in the corresponding built-in
+layout [header file]({github}/tree/master/src/rimuc/resources).
 
 .#toc-generation
 ### Table of contents generation
-In conjunction with the {rimuc} `--styled` option, the `--sidebar-toc`
-and `--dropdown-toc` options will generate sidebar-styled and
-dropdown-styled table of contents (TOC) respectively. The
-`--custom-toc` option allows the user to include a [custom
-TOC](#custom-table-of-contents).
+The  `--layout` option automatically includes a table of contents in
+the generated HTML document.
 
-If the `--sidebar-toc` macro or the `--dropdown-toc` macro is
-non-blank then JavaScript and HTML is included in the output to
-generate (at load time) a TOC from the top level `h1`, `h2` and `h3`
-HTML header elements.  This page was compiled using the
-`--sidebar-toc` option, the [Rimu Playground]({playground}) page has
-been compiled using the `--dropdown-toc` option.
-
-Use the `no-auto-toc` CSS class attribute to exclude a section header
-from the TOC, for example:
+- The table of contents is synthesised from top level `h1`, `h2` and
+  `h3` HTML header elements.
+- You can suppress the table of contents generation using the
+  `--no-toc` option.
+- The `--custom-toc` option allows the user to include a [custom
+  TOC](#custom-table-of-contents).
+- Use the `no-auto-toc` CSS class attribute to exclude a section
+  header from the table of contents, for example:
 
   .no-auto-toc
   ## This header does not appear in the TOC
 
 ### Custom Table of contents
-The `--custom-toc` option can be used in conjunction with the
-`--sidebar-toc` and `--dropdown-toc` options. The `--custom-toc`
-option inhibits the generation of an HTML TOC container and it is up
-to the user to include a custom HTML TOC container in the rendered
-HTML. This allows you to customise the location, style and content of
-the TOC:
+The `--custom-toc` option is used in conjunction with the `--layout`
+option. The `--custom-toc` option inhibits the generation of an HTML
+TOC container and it is up to the user to include a custom HTML TOC
+container in the Rimu markup. This allows you to customise the
+location, style and content of the TOC:
 
-- The TOC container must be a div element with `id="toc"`.
-- If the TOC container contains a div container with `id="auto-toc"`
-  then it will be injected (at run time) with the auto-generated TOC.
-- If you omit the `auto-toc` div the auto-generation of TOC entries
-  will be skipped.
+- The TOC container must be an HTML element with `id="toc"`.
+- If the document contains an element with `id="auto-toc"` then it
+  will be loaded with the auto-generated TOC entries, if this element
+  is omitted TOC entries will be skipped.
 
-Here is the default TOC container that {rimuc} emits if `--custom-toc`
-is omitted:
+Here is the default TOC container that the layout headers emit if
+`--custom-toc` is not specified:
 
 ``
 <div id="toc">
   <div id="auto-toc"></div>
 </div>
 ``
-
 
 .#api
 ## API
@@ -525,29 +534,58 @@ element.
 
 
 ## Comments
-A _Multi-line comment_ starts with a line containing only `/*` and
-ends with a line containing only `*/`.
+Use comments to exclude text in Rimu markup from the outputted HTML.
 
-A _Single-line comment_ is a line of text starting with `//`.
+### Single and Multi-line comments
+Rimu has both single line and multi-line comment elements.
 
+- A _Multi-line comment_ starts with a line containing only `/*` and
+  ends with a line containing only `*/`.
+- A _Single-line comment_ is a line of text starting with `//`.
 - Comments are not included in the HTML output.
 - Comments are block elements and cannot be used inline, for example
-  mid-paragraph.
+  mid-paragraph (use [Inline comments](#inline-comments)
+  instead).
 - Comment delimiters must start at the left margin.
 - Comments can be escaped by prefixing the opening delimiter with a
   backslash character.
-- Use HTML comments (see [HTML elements](#html-elements)) if you want
-  comments to appear in the rendered HTML, for example:
+- Use an [HTML](#html-elements) comment if you want the comment to be
+  included in the HTML output.
 
 {comments-example} = '/*
-  This comment does not appear in the
-  rendered HTML.
+  This comment is not included in the
+  HTML output.
 */
 
-// This comment does not appear in the rendered HTML.
+// This comment is not included in the HTML output.
 
-<!-- This comment appears in the rendered HTML. -->'
+<!-- This comment is included in the HTML output. -->'
 {generate-rendered-example-2|comments-example}
+
+### Inline comments
+The predefined [Blank macro (`--`)](#predefined-macros) can be used
+for inline comments:
+
+- Exclude individual lines using an [Exclusion macro
+  invocation](#macro-invocations).
+- Place comments anywhere in an inline context using a [Parametrized
+  macro invocation](#macro-invocations).  This works because the Blank
+  macro has no formal parameters).
+
+{macro-comments-example} = 'Lorem ipsum dolor sit amet sapien.
+\{--!} THIS LINE IS EXCLUDED.
+Imperdiet pellentesque minim.
+
+Lorem ipsum \{--|THIS TEXT IS EXCLUDED} dolor sit amet sapien.
+Imperdiet pellentesque minim. \{--|THIS TEXT IS EXCLUDED}
+
+Lorem ipsum dolor sit \{--|THIS TECHNIQUE CAN BE USED
+TO EXCLUDE TEXT THAT SPANS MULTIPLE LINES
+STARTING AND ENDING ANYWHERE} amet sapien.
+Imperdiet pellentesque minim.'
+{generate-rendered-example-2|macro-comments-example}
+
+See also [Conditional inclusion]({tips}#conditional-inclusion).
 
 
 ## Headers
@@ -612,7 +650,7 @@ Anonymous
 ""'
 {generate-rendered-example-1|quote-block-example}
 
-The above example uses the [rimuc](#rimuc-command) command `--styled`
+The above example uses the [rimuc](#rimuc-command) command `--layout`
 option's CSS _cite_ class to style the Anonymous attribution.
 
 .#division-block
@@ -1006,7 +1044,7 @@ Notes:
 
 <image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
 
-Centered using [rimuc](#rimuc-command) `--styled` option CSS class:
+Centered using [rimuc](#rimuc-command) `--layout` option CSS class:
 
 .align-center
 ![W3C logo](http://www.w3.org/Icons/w3c_home.png)
@@ -1251,7 +1289,7 @@ Invocation syntax:
     macro invocation which performs no parameter substitution.
 
 - The `\{macro-name=pattern}` _Inclusion_ invocation is replaced by a
-  blank string if the macro value matches the `pattern` (where
+  blank string if the macro value entirely matches the `pattern` (where
   `pattern` is a JavaScript regular expression).  If the macro value
   does not match the `pattern` the containing line is skipped.
 - The `\{macro-name!pattern}` _Exclusion_ invocation syntax is the
@@ -1310,6 +1348,7 @@ The following macros are available for use in Rimu markup:
 Macro name         Description
 _______________________________________________________________
 --                 Blank macro (empty string).
+                   The Blank macro cannot be redefined.
 --header-ids       Set to a non-blank value to generate header
                    id attributes.
 _______________________________________________________________
@@ -1318,7 +1357,7 @@ _______________________________________________________________
 
 ### rimuc macros
 The [rimuc command](#rimuc-command) makes a number of additional
-predefined macros available when you use the `--styled` option.
+predefined macros available when you use the `--layout` option.
 
 
 ### Header id generation
