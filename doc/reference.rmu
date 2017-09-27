@@ -180,11 +180,11 @@ LAYOUT CLASSES
   dl-counter       Prepend dl item counter to element content.
   ol-counter       Prepend ol item counter to element content.
   ul-counter       Prepend ul item counter to element content.
-  line-breaks      Honor line breaks in source text.
   no-auto-toc      Exclude heading from table of contents.
   no-page-break    Avoid page break inside the element.
   no-print         Do not print.
   page-break       Force page break before the element.
+  preserve-breaks  Honor line breaks in source text.
   sidebar          Sidebar format (paragraphs, division blocks).
   verse            Verse format (paragraphs, division blocks).
   ______________________________________________________________
@@ -305,8 +305,8 @@ location, style and content of the TOC:
   will be loaded with the auto-generated TOC entries, if this element
   is omitted TOC entries will be skipped.
 
-Here is the default TOC container that the layout headers emit if
-`--custom-toc` is not specified:
+If `--custom-toc` is not specified the following TOC container is
+inserted in the output document:
 
 ``
 <div id="toc">
@@ -461,7 +461,7 @@ Invocations](#macro-invocations), [Quotes](#quotes) and
 ### Taxonomy
 Rimu markup elements are categorized as follows:
 
-.light-background line-breaks
+.light-background
 ..
 [Block elements](#documents)
         [Delimited Blocks](#delimited-blocks)

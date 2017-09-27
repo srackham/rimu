@@ -949,7 +949,7 @@ There are three ways to preserve line breaks:
 . Terminate lines with a Rimu line break (a space followed by a
   backslash character).
 . Terminate lines with an HTML break element (`<br>`).
-. Apply the `line-breaks` class to a Rimu block element and
+. Apply the `preserve-breaks` class to a Rimu block element and
   compile with the `rimuc` command [`--layout`
   option]({reference}#layout-option).
 
@@ -958,7 +958,7 @@ Urna aliquam pid \
 Aenean enim cum sed <br>
 Augue non egestas amet?
 
-.line-breaks
+.preserve-breaks
 Urna aliquam pid
 Aenean enim cum sed
 Augue non egestas amet?

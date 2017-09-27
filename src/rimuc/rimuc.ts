@@ -132,11 +132,11 @@ LAYOUT CLASSES
   dl-counter       Prepend dl item counter to element content.
   ol-counter       Prepend ol item counter to element content.
   ul-counter       Prepend ul item counter to element content.
-  line-breaks      Honor line breaks in source text.
   no-auto-toc      Exclude heading from table of contents.
   no-page-break    Avoid page break inside the element.
   no-print         Do not print.
   page-break       Force page break before the element.
+  preserve-breaks  Honor line breaks in source text.
   sidebar          Sidebar format (paragraphs, division blocks).
   verse            Verse format (paragraphs, division blocks).
   ______________________________________________________________
