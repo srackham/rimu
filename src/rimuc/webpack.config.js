@@ -28,7 +28,7 @@ module.exports = {
   module: {
     rules: [
       {test: /\.tsx?$/, loader: 'ts-loader'},
-      {test: /\/resources\//, loader: 'raw-loader'},
+      {test: /\/resources\/.*\.rmu$/, loader: 'raw-loader'},
     ]
   }
 };
