@@ -276,7 +276,7 @@
     border-radius: {--border-radius};
     background: {--sidebar-background};
     padding: 10px;
-    margin: 1.5em 0px;
+    margin: 1.5em 0;
   }
   div.sidebar *:first-child {
     margin-top: 0.2em;
@@ -319,7 +319,6 @@
   .dl-horizontal > dt {
     float: left;
     clear: left;
-    text-align: right;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -480,6 +479,10 @@
     overflow-y: scroll;
     height: 100%;
     width: 100%;
+  }
+  #toc h2 {
+    font-size: 125%;
+    margin-top:1.0rem;
   }
   #toc-button {
     cursor: pointer;
