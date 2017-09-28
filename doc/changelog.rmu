@@ -1,7 +1,74 @@
 # Rimu Markup Change Log
 
-See the [Git commit log](https://github.com/srackham/rimu/commits/)
-for a full list of changes.
+See the [Git commit log]({github}/commits/) for a full list of
+changes.
+
+
+## Version 10.0.0 (2017-09-30)
+This release includes improved documentation and big changes to the
+{rimuc} command, the Rimu markup language has escaped unscathed.
+
+- The Rimu documentation is now rendered using the new _sequel_ layout
+  and the new _legend_ theme.
+
+- `rimuc` command _styled names_ are now called _layouts_.
+
+- The new `rimuc` command [`--layout`
+  option]({reference}#layout-option)  specifies which layout to use
+  (replacing the deprecated `--styled-name` option).
+
+- Added a new `rimuc` layout called _sequel_. This responsive layout
+  is designed to work across desktop, tablet and mobile devices.
+  Along with the other layouts _sequel_ generates light-weight
+  stand-alone HTML documents.
+
+- The `rimuc` command now has three built-in layouts and three
+  built-in themes, you can view layout and theme examples in the new
+  [Rimu Gallery]({gallery}). Layouts and themes are implemented purely
+  with Rimu markup, checkout the [sources on
+  Github]({github}/tree/master/src/rimuc/resources).
+
+- `rimuc` layouts have been refactored:
+
+  * Layout macros now use [reserved
+    names]({reference}#reserved-macro-names).
+  * [Layout header files]({github}/tree/master/src/rimuc/resources)
+    expose a consistent set of layout and theme macros that can be
+    [user customized]({reference}#layout-customization).
+  * They now import the latest versions of MathJax and HighlightJS.
+  * CSS tweaks.
+
+- Use the `rimuc` command `--no-toc` macro to disable table of
+  contents generation.
+
+- Rimu emits an error callback if [Exclusion or Inclusion macro
+  invocations]({reference}#macro-invocations) contain an illegal
+  regular expression.
+
+- Rimu emits an error callback if an attempt is made to redefine the
+  predefined [Blank macro (`--`)]({reference}#predefined-macros).
+
+NOTE: The deprecations and breaking changes below relate to the
+`rimuc` command, (**not** the Rimu language):
+
+- **DEPRECATED**: The `--lint` option has been deprecated, lint checks
+  are enabled by default.
+
+- **DEPRECATED**: The confusingly named `line-breaks` CSS class has
+  been renamed to `preserve-breaks`.
+
+- **DEPRECATED**: The `--styled` and `--styled-name` options have been
+  deprecated (replaced by the `--layout` option).
+
+- **DEPRECATED**: The `--sidebar-toc` option has been deprecated (made
+  redundant by the new `--layout` option).
+
+- **DEPRECATED**: The _flex_ layout `--dropdown-toc` macro has been
+  renamed `--top-bar`.
+
+- **BREAKING CHANGE**: For consistency both _classic_ and _flex_
+  layouts generate a table of contents by default.  Use the new
+  `--no-toc` option to disable table of contents generation.
 
 
 ## Version 9.3.0 (2017-09-11)
@@ -111,7 +178,7 @@ for a full list of changes.
 
 
 ## Version 9.0.0 (2016-08-21)
-- Added [`--styled-name`]({reference}#styled-names) option to `rimuc`
+- Added `--styled-name` option to `rimuc`
   along with built-in _classic_, _flex_ and _v8_ named styles. _flex_
   is an experimental mobile-first HTML5 + CSS3 layout based on CSS3
   flexboxes. _flex_ is currently tagged experimental because it is not

@@ -20,8 +20,8 @@ DESCRIPTION
   with an .html extension are passed directly to the output.
 
   If a file named .rimurc exists in the user's home directory
-  then its contents is processed (with --safe-mode 0) after
-  --prepend sources but before any other inputs.
+  then its contents is processed (with --safe-mode 0), this
+  happens after --prepend processing but prior to other inputs.
   This behavior can be disabled with the --no-rimurc option.
 
 OPTIONS
@@ -84,19 +84,11 @@ OPTIONS
     --prepend "{--theme}='THEME'"
     --prepend "{--title}='TITLE'"
 
-PREDEFINED MACROS
-  Macro name         Description
-  _______________________________________________________________
-  --                 Blank macro (empty string).
-  --header-ids       Set to a non-blank value to generate h1, h2
-                     and h3 header id attributes.
-  _______________________________________________________________
-
-LAYOUT MACROS
-  The following macros are available when the --layout option is
+LAYOUT OPTIONS
+  The following options are available when the --layout option is
   used:
 
-  Macro name         Description
+  Option             Description
   _______________________________________________________________
   --custom-toc       Set to a non-blank value if a custom table
                      of contents is used.
@@ -113,11 +105,11 @@ LAYOUT MACROS
                      'legend', 'graystone', 'vintage'.
   --title            HTML document title.
   _______________________________________________________________
-  These macros must be defined prior to processing (using rimuc
-  prepend options or in .rimurc).
+  These options are translated by rimuc to corresponding layout
+  macro definitions using the --prepend option.
 
 LAYOUT CLASSES
-  The following CSS classes are available for use by Rimu Block
+  The following CSS classes are available for use in Rimu Block
   Attributes elements when the --layout option is used:
 
   CSS class        Description
@@ -140,6 +132,14 @@ LAYOUT CLASSES
   sidebar          Sidebar format (paragraphs, division blocks).
   verse            Verse format (paragraphs, division blocks).
   ______________________________________________________________
+
+PREDEFINED MACROS
+  Macro name         Description
+  _______________________________________________________________
+  --                 Blank macro (empty string).
+  --header-ids       Set to a non-blank value to generate h1, h2
+                     and h3 header id attributes.
+  _______________________________________________________________
 `
 const HOME_DIR = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']
 const RIMURC = path.resolve(HOME_DIR, '.rimurc')

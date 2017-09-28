@@ -85,8 +85,8 @@ function updateExample(name) {
 <tr>
 <td class="example-header">
 {--=$3}{example-edit-icon|$1}
-Rimu source</td>
-<td class="example-header">Rendered HTML</td>
+Rimu Markup</td>
+<td class="example-header">HTML Preview</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -118,7 +118,7 @@ Rimu source</td>
 <tr>
 <td class="example-header" style="width:10%;">
 {--=$3}{example-edit-icon|$1}
-Rimu source</td>
+Rimu Markup</td>
 <td>
 
 .example-source #$1-source +macros
@@ -128,7 +128,7 @@ Rimu source</td>
 <textarea id="$1-edit" class="edit-source" style="display:none" onkeyup="updateExample('$1')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">Rendered HTML</td>
+<tr><td class="example-header" style="width:10%;">HTML Preview</td>
 <td>
 <div id="$1-rendered" class="example-rendered">
 
@@ -149,8 +149,6 @@ Rimu source</td>
 
 // Documentation links.
 {rimuc} = '[rimuc]({reference}#rimuc-command)'
-{layouts} = '[Layouts]({reference}#layouts)'
-{themes} = '[Themes]({reference}#themes)'
 
 // External Web pages.
 {github} = 'https://github.com/srackham/rimu'

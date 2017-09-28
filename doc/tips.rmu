@@ -456,10 +456,10 @@ Safe Mode. To apply Macro, Replacement or Quote definitions to Rimu
 markup that is processed in Safe Mode you need to load the definitions
 with a separate API call, for example:
 
-``` javascript
+`` javascript
 Rimu.render(trusted_rimu_definitions, {safeMode: 0});
 var html = Rimu.render(untrusted_rimu_markup, {safeMode: 5});
-```
+``
 
 
 ## Mathematical formulae
@@ -719,14 +719,12 @@ lines that end with a single-quote.
   macro expansion).
 - A macro invocation can be rendered verbatim in a code block by
   disabling macro expansion. For example:
-..
-``
+```
 .-macros
-```
-{example-42}
-```
 ``
-..
+{example-42}
+``
+```
 - Macro definition elements cannot be prefixed with an Inclusion/Exclusion
   macro (see <#conditional-inclusion|Conditional Inclusion>).
 - Macro invocations in macro definition values are expanded when the
@@ -735,21 +733,21 @@ lines that end with a single-quote.
   case of multi-line definitions) by using the `-macros` _Block
   Attributes_ option. For example this Rimu markup:
 ..
-```
+``
 {m1} = 'foo'
 {m2} = '{m1} \{m1}'
 {m2}
 
 {m1} = 'bar'
 {m2}
-```
+``
 
 Generates:
 
-```
+``
 <p>foo foo</p>
 <p>foo bar</p>
-```
+``
 ..
 
 
@@ -967,34 +965,12 @@ Augue non egestas amet?
 {generate-rendered-example-1|line-breaks-example}
 
 
-## Controlling page breaks
-You can control printer page breaks by using Rimu _Attribute Blocks_
-to inject CSS
-[page-break-inside](https://developer.mozilla.org/en/docs/Web/CSS/page-break-inside),
-[page-break-before](https://developer.mozilla.org/en/docs/Web/CSS/page-break-before)
-and
-[page-break-after](https://developer.mozilla.org/en/docs/Web/CSS/page-break-after)
-properties into HTML output elements.
-
-Examples:
-
-```
-.sidebar "page-break-inside:avoid"
-..
-Page breaks are avoided inside
-this sidebar.
-..
-
-."page-break-before:always"
-### A header that starts on a new page
-```
-
+## Controlling printer page breaks
 The {rimuc} tool `--layout` option includes `page-break` and
 `no-page-break` CSS classes which apply `page-break-before:always` and
-`page-break-inside:avoid` properties respectively.  Here is the
-previous example using the {rimuc} page break classes:
+`page-break-inside:avoid` properties respectively:
 
-```
+``
 .sidebar no-page-break
 ..
 Page breaks are avoided inside
@@ -1003,24 +979,21 @@ this sidebar.
 
 .page-break
 ### A header that starts on a new page
-```
+``
 
 ## Controlling text alignment
-You can control the horizontal alignment of flowed inline elements
-(e.g. text, inline images) by injecting the CSS `text-align` property
-into the container block element using the Rimu _Attribute Blocks_
-element. For example:
-
-{text-alignment-example-1} = '."text-align:center"
-Enim odio ultrices'
-
-{generate-rendered-example-1|text-alignment-example-1}
-
 The {rimuc} tool `--layout` option includes `align-left`,
-`align-center` and `align-right` CSS classes.  Here is the previous
-example using the `align-center` text alignment class:
+`align-center` and `align-right` CSS classes to apply the CSS
+`text-align` property.  Use them to control the horizontal alignment
+of flowed inline elements (e.g. text, inline images):
 
-{text-alignment-example-2} = '.align-center
+{text-alignment-example-2} = '.align-left
+Enim odio ultrices
+
+.align-center
+Enim odio ultrices
+
+.align-right
 Enim odio ultrices'
 
 {generate-rendered-example-1|text-alignment-example-2}
@@ -1165,7 +1138,7 @@ h1, h2, h3, h4, h5, h6 {
 To pass arbitrary blocks of text directly to the output disable all
 processing options. For example:
 
-```
+``
 // Disable all processing inside Division Block.
 .-macros -spans -specials -container
 ..
@@ -1175,7 +1148,7 @@ function toggleToc() {
 
 window.onclick = toggleToc
 ..
-```
+``
 
 To enable only macro expansion drop the `-macros` option
 (c.f. [General purpose macro processor](#general-purpose-macro-processor)).

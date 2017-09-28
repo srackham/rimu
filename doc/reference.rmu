@@ -24,6 +24,14 @@ Install Rimu as a Node.js module (includes the `rimu` library and the
 
   sudo npm install -g rimu
 
+Run a simple test from the command prompt to check `rimuc` is working:
+
+  echo 'Hello *Rimu*!' | rimuc
+
+This should output:
+
+  <p>Hello <em>Rimu</em>!</p>
+
 
 ## Resources
 
@@ -68,8 +76,8 @@ DESCRIPTION
   with an .html extension are passed directly to the output.
 
   If a file named .rimurc exists in the user's home directory
-  then its contents is processed (with --safe-mode 0) after
-  --prepend sources but before any other inputs.
+  then its contents is processed (with --safe-mode 0), this
+  happens after --prepend processing but prior to other inputs.
   This behavior can be disabled with the --no-rimurc option.
 
 OPTIONS
@@ -132,19 +140,11 @@ OPTIONS
     --prepend "{--theme}='THEME'"
     --prepend "{--title}='TITLE'"
 
-PREDEFINED MACROS
-  Macro name         Description
-  _______________________________________________________________
-  --                 Blank macro (empty string).
-  --header-ids       Set to a non-blank value to generate h1, h2
-                     and h3 header id attributes.
-  _______________________________________________________________
-
-LAYOUT MACROS
-  The following macros are available when the --layout option is
+LAYOUT OPTIONS
+  The following options are available when the --layout option is
   used:
 
-  Macro name         Description
+  Option             Description
   _______________________________________________________________
   --custom-toc       Set to a non-blank value if a custom table
                      of contents is used.
@@ -161,11 +161,11 @@ LAYOUT MACROS
                      'legend', 'graystone', 'vintage'.
   --title            HTML document title.
   _______________________________________________________________
-  These macros must be defined prior to processing (using rimuc
-  prepend options or in .rimurc).
+  These options are translated by rimuc to corresponding layout
+  macro definitions using the --prepend option.
 
 LAYOUT CLASSES
-  The following CSS classes are available for use by Rimu Block
+  The following CSS classes are available for use in Rimu Block
   Attributes elements when the --layout option is used:
 
   CSS class        Description
@@ -189,6 +189,13 @@ LAYOUT CLASSES
   verse            Verse format (paragraphs, division blocks).
   ______________________________________________________________
 
+PREDEFINED MACROS
+  Macro name         Description
+  _______________________________________________________________
+  --                 Blank macro (empty string).
+  --header-ids       Set to a non-blank value to generate h1, h2
+                     and h3 header id attributes.
+  _______________________________________________________________
 ``
 
 ### Example usage
@@ -211,11 +218,11 @@ LAYOUT CLASSES
   rimuc -o book.html frontmatter.rmu chapter*.rmu backmatter.rmu
 
 ### `--layout` option
-The `--layout` option:
+The `--layout` option envelopes the output in an HTML header and
+footer that:
 
-- Outputs a stand-alone HTML5 document.
+- Creates a stand-alone HTML5 document.
 - Generates a [table of contents](#toc-generation).
-- Supports named [themes]({tips}#themes).
 - Includes CSS styles for verses, sidebars, text alignment,
   page break control and section numbering (see `rimuc --help` command
   and examples in [Rimu Tips]({tips})).
@@ -224,14 +231,29 @@ The `--layout` option:
   [Highlightjs]({tips}#syntax-highlighting) is included.
 - If the `--mathjax` macro is non-blank
   [MathJax]({tips}#mathematical-formulae) is included.
+- Supports named [themes]({tips}#themes).
 - Can be used to [convert raw HTML and arbitrary Markdown
   files]({tips}#rimuc-html).
+
+All features enabled by the `--layout` option are implemented with
+Rimu markup in the [built-in header and footer
+files]({github}/tree/master/src/rimuc/resources).  The magic is
+performed by the Rimu markup, the `--layout` option simply
+concatenates the input with built-in header and footer files, for
+example, the following two commands are functionally identical:
+
+``
+rimuc --layout sequel sites.rmu
+rimuc --output sites.html sequel-header.rmu sites.rmu sequel-footer.rmu
+``
 
 .#layouts-and-themes
 ### Built-in layouts and themes
 You can choose from the following built-in layouts:
 
-sequel:: Responsive cross-device layout.
+sequel:: Responsive cross-device layout designed to render nicely on
+desktops, laptops, tablets and phones. This website uses the _sequel_
+layout.
 
 classic:: Desktop-centric layout.
 
@@ -246,8 +268,8 @@ devices.
 
 v8:: Legacy Rimu version 8 layout.
 
-The `sequel`, `classic` and `flex` layouts implement `legend`,
-`graystone` and `vintage` [themes]({tips}#themes).  The `--theme`
+The _sequel_, _classic_ and _flex_ layouts implement _legend_,
+_graystone_ and _vintage_ [themes]({tips}#themes).  The `--theme`
 option value is assigned to the `--theme` macro which the layout
 header then uses to conditionally include HTML `style` elements.
 
@@ -255,21 +277,8 @@ Examples of the layouts and themes can be viewed in the [Rimu
 Gallery]({gallery}).
 
 ### Layout customization
-All features enabled by the `--layout` option are implemented with
-Rimu markup from the [built-in header and footer
-files]({github}/tree/master/src/rimuc/resources).
-
-The `--layout` option simply concatenates the input with built-in Rimu
-header and footer files, for example, the following two commands are
-functionally identical:
-
-``
-rimuc --layout sequel sites.rmu
-rimuc --output sites.html sequel-header.rmu sites.rmu sequel-footer.rmu
-``
-
-Prominent layout styles are set by header file macro values and can be
-overriden by prepending new values. For example:
+Prominent layout and theme styles are set by header file macro values
+and can be overriden by prepending new values. For example:
 
   rimuc --layout sequel --prepend "{--primary-color}='#0cc'" sites.rmu
 
@@ -1247,7 +1256,6 @@ Definition syntax:
   replaced with parameter values in _Parametrized_ macro invocations.
 
 
-.#macro-invocations
 ### Macro invocations
 Invocation syntax:
 
@@ -1355,9 +1363,10 @@ _______________________________________________________________
 ``
 - See [Header id generation](#header-id-generation).
 
-### rimuc macros
+### rimuc layout macros
 The [rimuc command](#rimuc-command) makes a number of additional
-predefined macros available when you use the `--layout` option.
+layout macros available when you use the [`--layout`
+option](#layout-option).
 
 
 ### Header id generation

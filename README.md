@@ -81,7 +81,7 @@ To build Rimu and the Rimu documentation from source:
 - A minimal TypeScript example
   [minimal-example.ts](https://github.com/srackham/rimu/blob/master/src/examples/minimal-example.ts).
 - Rimu includes the
-  [rimuc](https://github.com/srackham/rimu/blob/master/src/rimuc/rimuc.ts)
+  [rimuc](http://srackham.github.io/rimu/reference.html#rimuc-command)
   command-line tool  and the [Rimu
   Playground](http://srackham.github.io/rimu/rimuplayground.html) --
   examples of using Rimu in Node.js and in the browser respectively.
@@ -92,6 +92,5 @@ To build Rimu and the Rimu documentation from source:
 
 ## Browser compatibility
 
-The generated HTML is compatible with all modern browsers. The Rimu
-JavaScript library works with the latest versions of IE, Firefox and
-Chrome, seems OK on Android and iOS. Does not run on IE8.
+The generated HTML is compatible with all Web browsers. The Rimu
+JavaScript library works with IE11, Edge, Firefox, Chrome and Android.
