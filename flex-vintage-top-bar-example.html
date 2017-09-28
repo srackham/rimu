@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width">
-<title>Rimu Markup</title>
-<link href="https://fonts.googleapis.com/css?family=Arimo%7CCousine%7CTinos" rel="stylesheet">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<title>&nbsp;</title>
 <style>
   * {
     margin: 0;
@@ -13,11 +12,11 @@
     white-space: inherit;
   }
   body {
-    font-size: 20px;
+    font-size: 16px;
     line-height: 20px;
     color: #333333;
     background-color: white;
-    font-family: Arimo, Arial, Helvetica, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
     margin: 10px 0;
@@ -83,7 +82,7 @@
     padding: 0 0 0 15px;
     border: none;
     border-left: 5px solid #eeeeee;
-    font-family: Tinos, Georgia, serif;
+    font-family: Georgia, Times, serif;
     width: 80%;
     margin: 1.5em 0;
     color: #383838;
@@ -96,15 +95,14 @@
     content: "\2014 \2009";
   }
   code {
-    font-family: Cousine, Consolas, "Andale Mono", Monaco, monospace;
+    font-family: Consolas, "Andale Mono", Monaco, monospace;
     font-size: 90%;
     background-color: #f8f8f8;
   }
   pre {
-    font-family: Cousine, Consolas, "Andale Mono", Monaco, monospace;
+    font-family: Consolas, "Andale Mono", Monaco, monospace;
     line-height: normal;
     white-space: pre-wrap;
-    word-break: break-all;
     background-color: #f8f8f8;
     border: 1px solid #dddddd;
     border-radius: 4px;
@@ -113,6 +111,7 @@
   .light-background {
     background-color: #f8f8f8;
     border: none;
+    white-space: pre;
   }
   *:not(pre) > code {
     white-space: nowrap;
@@ -131,7 +130,7 @@
     margin: 1.5em 20px;
   }
   div.verse p, p.verse {
-    font-family: Tinos, Georgia, serif;
+    font-family: Georgia, Times, serif;
     white-space: pre;
     margin-top: 0.75em;
     margin-bottom: 0.75em;
@@ -141,7 +140,7 @@
     border-radius: 4px;
     background: #ffffee;
     padding: 10px;
-    margin: 1.5em 0px;
+    margin: 1.5em 0;
   }
   div.sidebar *:first-child {
     margin-top: 0.2em;
@@ -161,6 +160,9 @@
   .align-right {
     text-align: right;
   }
+  .preserve-breaks {
+    white-space: pre;
+  }
   .line-breaks {
     white-space: pre;
   }
@@ -175,7 +177,6 @@
   .dl-horizontal > dt {
     float: left;
     clear: left;
-    text-align: right;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -221,6 +222,9 @@
     .no-print, .no-print * {
       display: none !important;
     }
+    a:hover {
+      text-decoration: none !important;
+    }
   }
 </style>
 <style>
@@ -248,34 +252,12 @@
   }
 </style>
 <style>
-  .header-link {
-    text-decoration: none;
-    color: lightgray;
-    visibility: hidden;
-  }
-  .header-link:hover {
-    text-decoration: none;
-    color: gray;
-  }
-  .header-link::before {
-    content: " \00b6";
-  }
-  h2:hover > .header-link, h3:hover > .header-link {
-    visibility: visible;
-  }
-  @media print {
-    .header-link {
-      display: none !important;
-    }
-  }
-</style>
-<style>
   #nav, #article, #toc {
     padding-left: 5px;
     padding-right: 5px;
   }
   #article > * {
-    max-width: 725px;
+    max-width: 50rem;
   }
 </style>
 <style>
@@ -290,6 +272,7 @@
   #nav {
     flex: auto;
     order: 1;
+    flex-grow: 0;
     background: #527bbd;
   }
   #toc {
@@ -299,6 +282,10 @@
     overflow-y: scroll;
     height: 100%;
     width: 100%;
+  }
+  #toc h2 {
+    font-size: 125%;
+    margin-top:1.0rem;
   }
   #toc-button {
     cursor: pointer;
@@ -340,20 +327,20 @@
 </style>
 <style>
   body {
-    flex-direction: row;
+    flex-direction: column;
   }
   #nav {
-    height: 100%;
-    width: 30px;
+    height:40px;
+    width: 100%;
   }
   #toc-button {
-    padding-top: 15px;
+    padding-top: 10px;
   }
 </style>
 <style>
-  @media print, screen and (min-width: 700px) {
+  @media only screen and (max-width: 800px) {
     body {
-      font-size: 16px;
+      font-size: 20px;
     }
   }
 </style>
@@ -368,81 +355,53 @@
 <div id="article">
 
 <div id="toc" class="no-print">
-  <h2 style="font-size:1.2em; margin-top:1.0em">Links</h2>
+  <h2>Links</h2>
   <div class="h2"><a href="index.html">Rimu Home</a></div>
   <div class="h2"><a href="rimuplayground.html">Rimu Playground</a></div>
   <div class="h2"><a href="reference.html">Rimu Reference</a></div>
   <div class="h2"><a href="tips.html">Rimu Tips</a></div>
+  <div class="h2"><a href="gallery.html">Rimu Gallery</a></div>
   <div class="h2"><a href="changelog.html">Change Log</a></div>
   <div class="h2"><a href="https://github.com/srackham/rimu">Github</a></div>
   <div class="h2"><a href="https://npmjs.org/package/rimu">npm</a></div>
-  <h2 style="font-size:1.2em; margin-top:1.0em">Table of Contents</h2>
+  <h2>Table of Contents</h2>
   <div id="auto-toc"></div>
 </div>
-<h1 id="rimu-markup">Rimu Markup</h1>
-<p>Rimu is a readable-text to HTML markup language inspired by AsciiDoc
-and Markdown.</p>
-<h2 id="features-summary">Features summary</h2>
-<ul><li>Markup generation can be customized and extended.</li><li>Includes a simple, flexible macro language.</li><li>HTML attribute injection and parametrized macros.</li><li>Accepts raw HTML (a la Markdown).</li><li>A subset of the Rimu syntax is <a href="http://srackham.github.io/rimu/tips.html#markdown-compatible">Markdown
-  compatible</a>.</li><li>Single JavaScript file (less than 20KB minified) that can be dropped
-  onto a Web page or used as a Node module.</li><li>No dependencies.</li><li>One-function API.</li><li>Written in TypeScript.</li><li>Includes command-line compiler, JavaScript library, TypeScript
-  library declaration file, playground GUI, Vim syntax highlighter and
-  a unit test suite.</li><li>MIT license.</li><li>There is also a <a href="https://github.com/srackham/rimu-kt/">Kotlin port of
-  Rimu</a> for the JVM platform.</li></ul><h2 id="learn-more">Learn more</h2>
-<p>Read the documentation and experiment with Rimu in the <a href="http://srackham.github.io/rimu/rimuplayground.html">Rimu
-Playground</a> or open the
-<code>rimuplayground.html</code> file locally in your browser.</p>
-<p>See the Rimu <a href="http://srackham.github.io/rimu/changelog.html">Change Log</a> for
-the latest changes.</p>
-<h2 id="installing-rimu">Installing Rimu</h2>
-<p>Install Rimu as a Node.js module (includes the <code>rimu</code> library and the
-<code>rimuc</code> command-line tool):</p>
-<pre class="no-highlight"><code>sudo npm install -g rimu</code></pre>
-<p>Run a simple test from the command prompt to check <code>rimuc</code> is working:</p>
-<pre class="no-highlight"><code>echo 'Hello *Rimu*!' | rimuc</code></pre>
-<p>This should output:</p>
-<pre class="no-highlight"><code>&lt;p&gt;Hello &lt;em&gt;Rimu&lt;/em&gt;!&lt;/p&gt;</code></pre>
-<h2 id="building-rimu">Building Rimu</h2>
-<p>To build Rimu and the Rimu documentation from source:</p>
-<ol><li>Install the Git repository from <a href="https://github.com/srackham/rimu">Github</a>.<pre class="no-highlight"><code>git clone git@github.com:srackham/rimu.git</code></pre>
-</li><li>Install gh-pages sub-repository:<pre class="no-highlight"><code>cd rimu
-git clone git@github.com:srackham/rimu.git -b gh-pages gh-pages</code></pre>
-</li><li>Install dependencies:<pre class="no-highlight"><code>npm install</code></pre>
-</li><li>Build Rimu:<pre class="no-highlight"><code>jake build</code></pre>
-</li></ol><h2 id="using-the-rimu-library">Using the Rimu library</h2>
-<ul><li>First read the <a href="http://srackham.github.io/rimu/reference.html#api">Rimu
-  API</a>
-  documentation.</li><li>A minimal TypeScript example
-  <a href="https://github.com/srackham/rimu/blob/master/src/examples/minimal-example.ts">minimal-example.ts</a>.</li><li>Rimu includes the
-  <a href="https://github.com/srackham/rimu/blob/master/src/rimuc/rimuc.ts">rimuc</a>
-  command-line tool  and the <a href="http://srackham.github.io/rimu/rimuplayground.html">Rimu
-  Playground</a> &mdash;
-  examples of using Rimu in Node.js and in the browser respectively.</li><li>A simple <a href="https://github.com/srackham/rimu-chrome-extension.git">Chrome browser
-  extension</a>
-  for rendering Rimu Markup files directly in the browser.</li></ul><h2 id="browser-compatibility">Browser compatibility</h2>
-<p>The generated HTML is compatible with all modern browsers. The Rimu
-JavaScript library works with the latest versions of IE, Firefox and
-Chrome, seems OK on Android and iOS. Does not run on IE8.</p>
+
+<h1 id="rimuc-layout-and-theme-example">rimuc layout and theme example</h1>
+<h3 class="no-auto-toc" id="gallery-options"><code>--layout flex --theme vintage --prepend "{--top-bar}='yes'"</code></h3>
+<h2 id="ultricies-lundium">Ultricies lundium</h2>
+<p>Arcu sed hac nisi duis porta, sociis pulvinar. Montes enim, facilisis
+urna? Augue vel, magnis montes sociis auctor, ut! Placerat porta
+etiam, aliquet? Et turpis magna mus nascetur arcu ultrices enim arcu
+aliquam sociis, integer nisi? Rhoncus a, scelerisque etiam magna
+natoque! Turpis in vel. Hac nec adipiscing, aenean ut.</p>
+<h3 id="est-vel-montes">Est vel montes. </h3>
+<ul><li>Dictumst sed duis sagittis odio scelerisque penatibus dolor,
+  scelerisque penatibus.</li><li>Porta magna tincidunt a rhoncus tortor sit integer pulvinar.<ul><li>Et sit proin penatibus scelerisque porttitor in? Auctor et.</li><li>Ac ridiculus. Rhoncus augue augue mauris in dignissim placerat.</li></ul></li></ul><div class="sidebar"><h4 id="parturient-ultrices-lorem">Parturient ultrices lorem</h4>
+<p>Tempor, integer ridiculus a rhoncus. Ac turpis massa enim pulvinar
+facilisis in dignissim mauris, lacus? Turpis cum, auctor velit?
+Turpis, dapibus, velit vel ultrices mattis, tempor, urna natoque diam.
+Aliquam! Cum augue est elementum. Parturient ultrices lorem, montes
+risus eros nunc, mattis, odio turpis porttitor nunc augue? Natoque
+lacus.</p></div>
+<p>Sociis. Ultricies lundium ut aenean odio cras est, porta a sagittis
+lorem et? Egestas integer cras! Nec eros nisi enim mid, vel rhoncus
+nisi a sed. Vel! Ac, porta, sociis elit vut elementum in mattis ut
+turpis magnis, nunc duis ultrices etiam ultricies vel?  Turpis
+habitasse.</p>
+<pre class="no-highlight"><code>Mauris? Augue nec, nec pulvinar, odio augue elit tortor? Adipiscing
+nec et dignissim vel, sit integer phasellus? Tempor lacus et magna
+porta natoque elementum velit placerat aenean dis tincidunt.</code></pre>
+
 </div>
 <script>
 window.onload = function() {
   document.getElementsByTagName('body')[0].appendChild(document.getElementById('toc')); // Ensure custom TOC is child of body.
   var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
   headings.forEach(function(heading) {
-    setHeaderLink(heading);
     appendTocEntry(heading);
   });
-}
-</script>
-<script>
-function setHeaderLink(heading) {
-  var id = heading.getAttribute('id');
-  if (id) {
-    var link = document.createElement('a');
-    link.classList.add('header-link');
-    link.setAttribute('href', '#' + id);
-    heading.appendChild(link);
-  }
 }
 </script>
 <script>

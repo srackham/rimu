@@ -20,21 +20,21 @@
   }
   h1, h2, h3, h4, h5, h6 {
     margin: 10px 0;
-    color: #888;
+    color: #527bbd;
   }
-  h1 { font-size: 2.2em; line-height: 40px;}
-  h2 { font-size: 1.5em; }
-  h3 { font-size: 1.2em; }
-  h4 { font-size: 1.1em; }
-  h5 { font-size: 1.0em; }
-  h6 { font-size: 0.9em; }
+  h1 { font-size: 2.2rem; line-height: 40px;}
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.2rem; }
+  h4 { font-size: 1.1rem; }
+  h5 { font-size: 1.0rem; }
+  h6 { font-size: 0.9rem; }
   h2, h3, h4, h5, h6 {
     line-height: normal;
-    margin-top: 1.0em;
-    margin-bottom: 0.2em;
+    margin-top: 1.0rem;
+    margin-bottom: 0.2rem;
   }
   h2 {
-    margin-top: 1.5em;
+    margin-top: 1.5rem;
     border-bottom: 1px solid #dddddd;
   }
   img {
@@ -42,6 +42,7 @@
   }
   table {
     border-collapse: collapse;
+    table-layout: fixed;
     width: 100%;
   }
   td, th {
@@ -53,7 +54,7 @@
     border: 1px solid #dddddd;
   }
   a, a:hover {
-    color: #888;
+    color: #527bbd;
   }
   a {
     text-decoration: none;
@@ -63,8 +64,8 @@
   }
   p, pre, li, dt, dd, blockquote p {
     line-height: 1.45;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   }
   ul, ol {
     padding: 0;
@@ -75,7 +76,7 @@
     font-style: italic;
   }
   dd {
-    margin-left: 1.0em;
+    margin-left: 1.0rem;
     margin-top: 0;
   }
   blockquote {
@@ -105,7 +106,7 @@
     white-space: pre-wrap;
     background-color: #f8f8f8;
     border: 1px solid #dddddd;
-    border-radius: 0;
+    border-radius: 4px;
     padding: 6px;
   }
   .light-background {
@@ -117,7 +118,7 @@
     white-space: nowrap;
   }
   .dl-horizontal > dd {
-    margin-top: 1.0em;
+    margin-top: 1.0rem;
   }
   pre > code {
     background-color: inherit;
@@ -131,19 +132,19 @@
   }
   div.verse p, p.verse {
     font-family: Georgia, Times, serif;
-    white-space: pre;
-    margin-top: 0.75em;
-    margin-bottom: 0.75em;
+    white-space: pre-wrap;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
   }
   .sidebar {
     border: 1px solid #dddddd;
-    border-radius: 0;
+    border-radius: 4px;
     background: #ffffee;
     padding: 10px;
     margin: 1.5em 0;
   }
   div.sidebar *:first-child {
-    margin-top: 0.2em;
+    margin-top: 0.2rem;
   }
   .page-break {
     page-break-before: always;
@@ -164,7 +165,7 @@
     white-space: pre;
   }
   .line-breaks {
-    white-space: pre;
+    white-space: pre-wrap;
   }
   .dl-horizontal:before, .dl-horizontal:after {
     display: table;
@@ -181,12 +182,12 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     text-align: left;
-    margin-top: 1.0em;
+    margin-top: 1.0rem;
     width: 25%;
   }
   .dl-horizontal > dd {
     margin-left: 25%;
-    padding-left: 1.0em;
+    padding-left: 1.0rem;
   }
   dl {
     counter-reset: dl-counter;
@@ -228,20 +229,25 @@
   }
 </style>
 <style>
-  #toc {
-    padding-left: 1em;
+  #toc h2 {
+    font-size: 125%;
+    padding-left: 1rem;
+    margin-top:1.0rem;
+    margin-left: 0;
   }
   #toc .h1 {
     font-size: 110%;
     font-weight: bold;
-    margin-top: 0.5em;
-    margin-bottom: 0.4em;
+    padding-left: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.4rem;
   }
   #toc .h2 {
-    margin-top: 0.4em;
+    padding-left: 1rem;
+    margin-top: 0.4rem;
   }
   #toc .h3 {
-    margin-left: 1.5em;
+    padding-left: 2.5rem;
     font-size: 90%;
   }
   #toc div[class^="h"]:nth-child(even) {
@@ -250,113 +256,100 @@
   #auto-toc {
     width: 100%;
   }
-</style>
-<style>
-  #nav, #article, #toc {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
-  #article > * {
-    max-width: 50rem;
+  #toc a, #toc a:hover {
+    color: #527bbd;
   }
 </style>
 <style>
-  html, body {
-    height: 100%;
-    min-height: 100%;
-    overflow: hidden;
-  }
-  body {
-    display: flex;
-  }
   #nav {
-    flex: auto;
-    order: 1;
-    flex-grow: 0;
-    background: #888;
-  }
-  #toc {
-    display: none;
-    flex: auto;
-    order: 2;
-    overflow-y: scroll;
+    z-index: 3;
+    position: fixed;
+    left: 0;
     height: 100%;
-    width: 100%;
+    width: 40px;
+    background-color: #527bbd;
+    color: white;
   }
-  #toc h2 {
-    font-size: 125%;
-    margin-top:1.0rem;
+  #sidebar {
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    margin-left: 40px;
+    width: 300px;
+    overflow: auto;
+    border-right: 1px solid #ccc;
+    background: #eee;
+  }
+  body.hide-toc #sidebar {
+    display: none !important;
+  }
+  #main {
+    z-index: 1;
+    min-height: 100%;
+    max-width: 50rem;
+    margin-left: 341px;
+    padding-left: 40px;
+    padding-right: 60px;
+  }
+  body.hide-toc #main {
+    margin-left: 40px;
+  }
+  #article {
+    padding-top: 1px;
+    padding-bottom: 10px;
   }
   #toc-button {
     cursor: pointer;
     color: white;
     font-size: 48px;
-    font-family: Arial;
+    line-height: 40px;
+    font-family: Arial, sans-serif;
     display: inline-block;
+    padding-left: 5px;
   }
-  #article {
-    flex: auto;
-    order: 3;
-    overflow-y: scroll;
-    width: 100%;
-  }
-  #close-icon {
-    display: none;
-  }
-  .show-toc #toc {
-    display: block !important;
-  }
-  .show-toc #article {
-    display: none !important;
-  }
-  .show-toc #menu-icon {
-    display: none !important;
-  }
-  .show-toc #close-icon {
-    display: inline !important;
-  }
-  @media print {
-    html, body {
-      height: auto;
-      min-height: 0;
-    }
-    #article, #toc {
-      overflow-y: visible;
-    }
-  }
-</style>
-<style>
-  body {
-    flex-direction: row;
-  }
-  #nav {
-    height: 100%;
-    width: 30px;
-  }
-  #toc-button {
-    padding-top: 15px;
-  }
-</style>
-<style>
   @media only screen and (max-width: 800px) {
     body {
       font-size: 20px;
     }
+    body:not(.hide-toc) {
+      overflow: hidden;
+    }
+    body:not(.hide-toc) #sidebar {
+      width: 100%;
+    }
+    #main {
+      margin-left: 40px;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+    body:not(.hide-toc) #main {
+      visibility: hidden;
+    }
+    #toc {
+      margin-right: 40px;
+    }
+    * {
+      overflow-wrap: break-word;
+    }
   }
 </style>
 <style>
-  h1, h2 {
-    text-transform: uppercase;
+  @media print {
+    #main {
+      margin-left: 0;
+    }
   }
 </style>
 </head>
 <body>
 <div id="nav" class="no-print">
-  <span id="toc-button">
-    <span id="menu-icon">&#8801;</span>
-    <span id="close-icon">&times;</span>
-  </span>
+    <span id="toc-button">&#8801;</span>
 </div>
+<div id="sidebar" class="no-print">
+</div>
+<div id="main">
 <div id="article">
 
 <div id="toc" class="no-print">
@@ -374,7 +367,7 @@
 </div>
 
 <h1 id="rimuc-layout-and-theme-example">rimuc layout and theme example</h1>
-<h3 class="no-auto-toc" id="gallery-options"><code>--layout flex --theme graystone</code></h3>
+<h3 class="no-auto-toc" id="gallery-options"><code>--layout sequel --theme vintage</code></h3>
 <h2 id="ultricies-lundium">Ultricies lundium</h2>
 <p>Arcu sed hac nisi duis porta, sociis pulvinar. Montes enim, facilisis
 urna? Augue vel, magnis montes sociis auctor, ut! Placerat porta
@@ -400,13 +393,17 @@ nec et dignissim vel, sit integer phasellus? Tempor lacus et magna
 porta natoque elementum velit placerat aenean dis tincidunt.</code></pre>
 
 </div>
+</div>
 <script>
 window.onload = function() {
-  document.getElementsByTagName('body')[0].appendChild(document.getElementById('toc')); // Ensure custom TOC is child of body.
+  document.getElementById('sidebar').appendChild(document.getElementById('toc')); // Ensure custom TOC is child of sidebar.
   var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
   headings.forEach(function(heading) {
     appendTocEntry(heading);
   });
+  if (isSmallScreen()) {
+    toggleToc();  // Hide TOC.
+  }
 }
 </script>
 <script>
@@ -427,22 +424,29 @@ function appendTocEntry(heading) {
   tocEntry.appendChild(tocLink);
   container.appendChild(tocEntry);
 }
-// matches() polyfill for old browsers.
-if (!Element.prototype.matches) {
-  var p = Element.prototype;
-  if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
-    p.matches = p.webkitMatchesSelector;
-  if (p.msMatchesSelector) // IE9/10/11 & Edge
-    p.matches = p.msMatchesSelector;
-  if (p.mozMatchesSelector) // FF<34
-    p.matches = p.mozMatchesSelector;
-}
-document.onclick = function(event) {
-  if (event.target.matches('#toc-button *, #toc a')) {
-    // Toggle TOC if TOC button or TOC link is clicked.
-    document.getElementsByTagName('body')[0].classList.toggle('show-toc');
+</script>
+<script>
+  document.onclick = function (event) {
+    if (event.target.matches('#toc-button') || event.target.matches('#toc a') && isSmallScreen()) {
+      toggleToc();
+    }
   }
-}
+  function toggleToc() {
+    document.body.classList.toggle('hide-toc');
+  }
+  function isSmallScreen() {
+    return window.matchMedia('(max-width: 800px)').matches;
+  }
+  // matches() polyfill for old browsers.
+  if (!Element.prototype.matches) {
+    var p = Element.prototype;
+    if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
+      p.matches = p.webkitMatchesSelector;
+    if (p.msMatchesSelector) // IE9/10/11 & Edge
+      p.matches = p.msMatchesSelector;
+    if (p.mozMatchesSelector) // FF<34
+      p.matches = p.mozMatchesSelector;
+  }
 </script>
 </body>
 </html>
