@@ -2227,5 +2227,14 @@
     "options": {
       "reset": true
     }
+  },
+  {
+    "description": "accumulate block attribute CSS properties",
+    "input": ".\"margin-bottom:1.5em;\"\n.\"font-weight:bold;\"\nfoobar",
+    "expectedOutput": "<p style=\"margin-bottom:1.5em; font-weight:bold;\">foobar</p>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
   }
 ]
