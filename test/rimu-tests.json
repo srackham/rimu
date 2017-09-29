@@ -2259,7 +2259,7 @@
     "description": "duplicate attribute 'id' in tag",
     "input": ".#ID1\n<p id=\"id1\">foobar</p>",
     "expectedOutput": "<p id=\"id1\">foobar</p>",
-    "expectedCallback": "error: duplicate 'id' attribute",
+    "expectedCallback": "error: duplicate 'id' attribute: id1",
     "options": {
       "reset": true
     }
@@ -2268,7 +2268,7 @@
     "description": "duplicate attribute 'id' in block attributes",
     "input": ".#id1\nfoo\n\n.#ID1\n<p>bar</p>",
     "expectedOutput": "<p id=\"id1\">foo</p>\n<p>bar</p>",
-    "expectedCallback": "error: duplicate 'id' attribute",
+    "expectedCallback": "error: duplicate 'id' attribute: id1",
     "options": {
       "reset": true
     }

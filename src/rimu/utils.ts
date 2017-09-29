@@ -132,7 +132,7 @@ export namespace BlockAttributes {
         id = trim(m[2]).slice(1)
       }
       if (m[3]) { // CSS properties.
-        if (css &&  css.substr(-1) !== ';') css += ';'
+        if (css && css.substr(-1) !== ';') css += ';'
         css += ' ' + trim(m[3])
         css = trim(css)
       }
@@ -164,11 +164,11 @@ export namespace BlockAttributes {
     if (id) {
       id = id.toLowerCase()
       if (ids.indexOf(id) > -1 || /id=".+?"/i.test(tag)) {
-        Options.errorCallback('duplicate \'id\' attribute')
+        Options.errorCallback(`duplicate 'id' attribute: ${id}`)
       }
       else {
         ids.push(id)
-        attrs +=  ` id="${id}"`
+        attrs += ` id="${id}"`
       }
     }
     if (css) {
