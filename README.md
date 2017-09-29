@@ -12,7 +12,7 @@ and Markdown.
 - Accepts raw HTML (a la Markdown).
 - A subset of the Rimu syntax is [Markdown
   compatible](http://srackham.github.io/rimu/tips.html#markdown-compatible).
-- Single JavaScript file (less than 20KB minified) that can be dropped
+- Single JavaScript file (less than 22KB minified) that can be dropped
   onto a Web page or used as a Node module.
 - No dependencies.
 - One-function API.

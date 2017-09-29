@@ -5,8 +5,9 @@ changes.
 
 
 ## Version 10.0.0 (2017-09-30)
-This release includes improved documentation and big changes to the
-{rimuc} command, the Rimu markup language has escaped unscathed.
+This release includes additional documentation, big changes to the
+{rimuc} command (including a new layout and a new theme) and new
+diagnostic messages from the Rimu library.
 
 - The Rimu documentation is now rendered using the new _sequel_ layout
   and the new _legend_ theme.
@@ -19,13 +20,13 @@ This release includes improved documentation and big changes to the
 
 - Added a new `rimuc` layout called _sequel_. This responsive layout
   is designed to work across desktop, tablet and mobile devices.
-  Along with the other layouts _sequel_ generates light-weight
+  Along with the other layouts, _sequel_ generates light-weight
   stand-alone HTML documents.
 
 - The `rimuc` command now has three built-in layouts and three
   built-in themes, you can view layout and theme examples in the new
   [Rimu Gallery]({gallery}). Layouts and themes are implemented purely
-  with Rimu markup, checkout the [sources on
+  with Rimu markup, you can view the [sources on
   Github]({github}/tree/master/src/rimuc/resources).
 
 - `rimuc` layouts have been refactored:
@@ -36,9 +37,9 @@ This release includes improved documentation and big changes to the
     expose a consistent set of layout and theme macros that can be
     [user customized]({reference}#layout-customization).
   * They now import the latest versions of MathJax and HighlightJS.
-  * CSS tweaks.
+  * They include a number of CSS tweaks.
 
-- Use the `rimuc` command `--no-toc` macro to disable table of
+- Use the new `rimuc` command `--no-toc` macro to disable table of
   contents generation.
 
 - Rimu emits an error callback if [Exclusion or Inclusion macro
@@ -48,8 +49,21 @@ This release includes improved documentation and big changes to the
 - Rimu emits an error callback if an attempt is made to redefine the
   predefined [Blank macro (`--`)]({reference}#predefined-macros).
 
+- Rimu emits an error callback if an attempt is made to us a duplicate
+  `id` attribute using the [Block
+  Attributes]({reference}#block-attributes) element.
+
+- CSS properties defined in [Block
+  Attributes]({reference}#block-attributes) are injected into an
+  existing target HTML `style` attribute.
+
+- **FIXED**: CSS properties from multiple [Block
+  Attributes]({reference}#block-attributes) elements are now accumulated
+  prior to being consumed by the target block element (previously only
+  the last CSS properties was used).
+
 NOTE: The deprecations and breaking changes below relate to the
-`rimuc` command, (**not** the Rimu language):
+`rimuc` command:
 
 - **DEPRECATED**: The `--lint` option has been deprecated, lint checks
   are enabled by default.

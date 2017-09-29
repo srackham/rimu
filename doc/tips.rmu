@@ -613,16 +613,17 @@ difficult to read.
 Parametrized macros can be used to generate row oriented tables:
 
 .-macros
-{table-macro-example} = '{person} = '<table><tr><td style="width:40%">$$1</td>
+{table-macro-example} = '{person} = '<table style="margin-bottom:0.3em"><tr>
+<td style="width:40%">$$1</td>
 <td style="width:20%">$$2</td>
 <td>$$3</td></tr></table>
 '\
 
-.bordered "color:#527bbd;"
-{person| **Name**    | **Age**| **Gender**}
+.bordered "font-weight:bold; color:#527bbd"
+{person| Name        | Age    | Gender}
 {person| Joe Bloggs  | 25     | Male}
 {person| _Jim Smith_ | 31     | Male}
-."color:red;"
+."color:red"
 {person| Peg Legge   | **30** | Female}
 '
 

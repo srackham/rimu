@@ -137,6 +137,7 @@ PREDEFINED MACROS
   Macro name         Description
   _______________________________________________________________
   --                 Blank macro (empty string).
+                     The Blank macro cannot be redefined.
   --header-ids       Set to a non-blank value to generate h1, h2
                      and h3 header id attributes.
   _______________________________________________________________
