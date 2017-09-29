@@ -507,9 +507,9 @@ Rimu source text. Here are some examples:
 // Include script if `foo` value is non-blank.
 {foo!}<script src="bar-min.js"></script>
 
-// Include paragraph if `foo` is blank.
+// Skip paragraph if `foo` is blank.
 {foo=}.+skip
-Macro `foo` must be blank.
+Display this paragraph if macro `foo` is non-blank.
 
 // Conditional inclusion of arbitrary blocks of Rimu source.
 // Include some CSS if both `foo` and `bar` are non-blank.
