@@ -153,9 +153,9 @@ export namespace BlockAttributes {
     }
     let attrs = ''
     if (classes) {
-      if (/class=".+?"/i.test(tag)) {
+      if (/class=".*?"/i.test(tag)) {
         // Inject class names into existing class attribute.
-        tag = tag.replace(/class="(.+?)"/i, `class="${classes} $1"`)
+        tag = tag.replace(/class="(.*?)"/i, `class="${classes} $1"`)
       }
       else {
         attrs = `class="${classes}"`
@@ -163,7 +163,7 @@ export namespace BlockAttributes {
     }
     if (id) {
       id = id.toLowerCase()
-      if (ids.indexOf(id) > -1 || /id=".+?"/i.test(tag)) {
+      if (ids.indexOf(id) > -1 || /id=".*?"/i.test(tag)) {
         Options.errorCallback(`duplicate 'id' attribute: ${id}`)
       }
       else {
@@ -172,9 +172,9 @@ export namespace BlockAttributes {
       }
     }
     if (css) {
-      if (/style=".+?"/i.test(tag)) {
+      if (/style=".*?"/i.test(tag)) {
         // Inject CSS styles into existing style attribute.
-        tag = tag.replace(/style="(.+?)"/i, function (match: string, p1: string): string {
+        tag = tag.replace(/style="(.*?)"/i, function (match: string, p1: string): string {
           p1 = p1.trim()
           if (p1 && p1.substr(-1) !== ';') p1 += ';'
           return `style="${p1} ${css}"`
