@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <title>Rimu Tips</title>
-<link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
-<link href="https://fonts.googleapis.com/css?family=Arimo%7CCousine%7CTinos" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
 <style>
   * {
     margin: 0;
@@ -18,25 +17,25 @@
     line-height: 20px;
     color: #333333;
     background-color: white;
-    font-family: Arimo, Arial, Helvetica, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
     margin: 10px 0;
-    color: #527bbd;
+    color: #34495e;
   }
-  h1 { font-size: 2.2em; line-height: 40px;}
-  h2 { font-size: 1.5em; }
-  h3 { font-size: 1.2em; }
-  h4 { font-size: 1.1em; }
-  h5 { font-size: 1.0em; }
-  h6 { font-size: 0.9em; }
+  h1 { font-size: 2.2rem; line-height: 40px;}
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.2rem; }
+  h4 { font-size: 1.1rem; }
+  h5 { font-size: 1.0rem; }
+  h6 { font-size: 0.9rem; }
   h2, h3, h4, h5, h6 {
     line-height: normal;
-    margin-top: 1.0em;
-    margin-bottom: 0.2em;
+    margin-top: 1.0rem;
+    margin-bottom: 0.2rem;
   }
   h2 {
-    margin-top: 1.5em;
+    margin-top: 1.5rem;
     border-bottom: 1px solid #dddddd;
   }
   img {
@@ -44,6 +43,7 @@
   }
   table {
     border-collapse: collapse;
+    table-layout: fixed;
     width: 100%;
   }
   td, th {
@@ -55,7 +55,7 @@
     border: 1px solid #dddddd;
   }
   a, a:hover {
-    color: #527bbd;
+    color: #428bca;
   }
   a {
     text-decoration: none;
@@ -65,8 +65,8 @@
   }
   p, pre, li, dt, dd, blockquote p {
     line-height: 1.45;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   }
   ul, ol {
     padding: 0;
@@ -77,14 +77,14 @@
     font-style: italic;
   }
   dd {
-    margin-left: 1.0em;
+    margin-left: 1.0rem;
     margin-top: 0;
   }
   blockquote {
     padding: 0 0 0 15px;
     border: none;
     border-left: 5px solid #eeeeee;
-    font-family: Tinos, Georgia, serif;
+    font-family: Georgia, Times, serif;
     width: 80%;
     margin: 1.5em 0;
     color: #383838;
@@ -97,29 +97,30 @@
     content: "\2014 \2009";
   }
   code {
-    font-family: Cousine, Consolas, "Andale Mono", Monaco, monospace;
+    font-family: Consolas, "Andale Mono", Monaco, monospace;
     font-size: 90%;
     background-color: #f8f8f8;
   }
+  .hljs { background-color: #f8f8f8; }
   pre {
-    font-family: Cousine, Consolas, "Andale Mono", Monaco, monospace;
+    font-family: Consolas, "Andale Mono", Monaco, monospace;
     line-height: normal;
     white-space: pre-wrap;
-    word-break: break-all;
     background-color: #f8f8f8;
     border: 1px solid #dddddd;
-    border-radius: 4px;
+    border-radius: 0;
     padding: 6px;
   }
   .light-background {
     background-color: #f8f8f8;
     border: none;
+    white-space: pre;
   }
   *:not(pre) > code {
     white-space: nowrap;
   }
   .dl-horizontal > dd {
-    margin-top: 1.0em;
+    margin-top: 1.0rem;
   }
   pre > code {
     background-color: inherit;
@@ -132,20 +133,20 @@
     margin: 1.5em 20px;
   }
   div.verse p, p.verse {
-    font-family: Tinos, Georgia, serif;
-    white-space: pre;
-    margin-top: 0.75em;
-    margin-bottom: 0.75em;
+    font-family: Georgia, Times, serif;
+    white-space: pre-wrap;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
   }
   .sidebar {
     border: 1px solid #dddddd;
-    border-radius: 4px;
+    border-radius: 0;
     background: #ffffee;
     padding: 10px;
-    margin: 1.5em 0px;
+    margin: 1.5em 0;
   }
   div.sidebar *:first-child {
-    margin-top: 0.2em;
+    margin-top: 0.2rem;
   }
   .page-break {
     page-break-before: always;
@@ -162,8 +163,11 @@
   .align-right {
     text-align: right;
   }
-  .line-breaks {
+  .preserve-breaks {
     white-space: pre;
+  }
+  .line-breaks {
+    white-space: pre-wrap;
   }
   .dl-horizontal:before, .dl-horizontal:after {
     display: table;
@@ -176,17 +180,16 @@
   .dl-horizontal > dt {
     float: left;
     clear: left;
-    text-align: right;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     text-align: left;
-    margin-top: 1.0em;
+    margin-top: 1.0rem;
     width: 25%;
   }
   .dl-horizontal > dd {
     margin-left: 25%;
-    padding-left: 1.0em;
+    padding-left: 1.0rem;
   }
   dl {
     counter-reset: dl-counter;
@@ -222,23 +225,31 @@
     .no-print, .no-print * {
       display: none !important;
     }
+    a:hover {
+      text-decoration: none !important;
+    }
   }
 </style>
 <style>
-  #toc {
-    padding-left: 1em;
+  #toc h2 {
+    font-size: 125%;
+    padding-left: 1rem;
+    margin-top:1.0rem;
+    margin-left: 0;
   }
   #toc .h1 {
     font-size: 110%;
     font-weight: bold;
-    margin-top: 0.5em;
-    margin-bottom: 0.4em;
+    padding-left: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.4rem;
   }
   #toc .h2 {
-    margin-top: 0.4em;
+    padding-left: 1rem;
+    margin-top: 0.4rem;
   }
   #toc .h3 {
-    margin-left: 1.5em;
+    padding-left: 2.5rem;
     font-size: 90%;
   }
   #toc div[class^="h"]:nth-child(even) {
@@ -246,6 +257,9 @@
   }
   #auto-toc {
     width: 100%;
+  }
+  #toc a, #toc a:hover {
+    color: #34495e;
   }
 </style>
 <style>
@@ -271,55 +285,100 @@
   }
 </style>
 <style>
-  body {
-    margin: 1em;
-    max-width: 50em;
+  #nav {
+    z-index: 3;
+    position: fixed;
+    left: 0;
+    height: 100%;
+    width: 40px;
+    background-color: #34495e;
+    color: white;
   }
-</style>
-<style>
-  body {
-    padding-left: 21em;
-  }
-  #toc {
+  #sidebar {
+    z-index: 2;
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
-    width: 18em;
-    border-right: 1px solid #cccccc;
-    overflow-y: auto;
-    overflow-x: hidden;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.35);
+    margin-left: 40px;
+    width: 300px;
+    overflow: auto;
+    border-right: 1px solid #ccc;
+    background: #eee;
   }
-  @media print {
+  body.hide-toc #sidebar {
+    display: none !important;
+  }
+  #main {
+    z-index: 1;
+    min-height: 100%;
+    max-width: 50rem;
+    margin-left: 341px;
+    padding-left: 40px;
+    padding-right: 60px;
+  }
+  body.hide-toc #main {
+    margin-left: 40px;
+  }
+  #article {
+    padding-top: 1px;
+    padding-bottom: 10px;
+  }
+  #toc-button {
+    cursor: pointer;
+    color: white;
+    font-size: 48px;
+    line-height: 40px;
+    font-family: Arial, sans-serif;
+    display: inline-block;
+    padding-left: 5px;
+  }
+  @media only screen and (max-width: 800px) {
     body {
-      padding-left: 1em;
+      font-size: 20px;
     }
-  }
-  @media screen and (max-width: 700px) {
-    body {
-      padding-left: 0;
+    body:not(.hide-toc) {
+      overflow: hidden;
+    }
+    body:not(.hide-toc) #sidebar {
+      width: 100%;
+    }
+    #main {
+      margin-left: 40px;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+    body:not(.hide-toc) #main {
+      visibility: hidden;
     }
     #toc {
-      display: none !important;
+      margin-right: 40px;
+    }
+    * {
+      overflow-wrap: break-word;
     }
   }
 </style>
 <style>
-  @media screen and (max-width: 700px) {
-    body {
-      font-size: 20px;
-      margin: 5px;
+  @media print {
+    #main {
+      margin-left: 0;
     }
   }
 </style>
 </head>
 <body>
+<div id="nav" class="no-print">
+    <span id="toc-button">&#8801;</span>
+</div>
+<div id="sidebar" class="no-print">
+</div>
+<div id="main">
 <div id="article">
 
 <style>
 .edit-source {
-  font-family: Cousine, Consolas, "Andale Mono", Monaco, monospace;
+  font-family: Consolas, "Andale Mono", Monaco, monospace;
   font-size: 90%;
   line-height: normal;
   white-space: pre-wrap;
@@ -327,7 +386,7 @@
   margin: 0;
   border: none;
   outline: none;
-  padding: 0.5em;
+  padding: 0.5rem;
   width: 100%;
   background-color: #ffffee;
   box-shadow: 0 0 10px #9ecaed;
@@ -343,14 +402,14 @@
 }
 .example-header {
   font-weight: bold;
-  color: #527bbd;
+  color: #34495e;
   padding: 0.5em !important;
 }
 .example-source, .example-rendered {
   border: none;
   background-color: inherit;
   margin: 0;
-  padding: 0.5em;
+  padding: 0.5rem;
 }
 .example-source > code {
   padding: 0;
@@ -377,15 +436,16 @@ function updateExample(name) {
 }
 </script>
 <div id="toc" class="no-print">
-  <h2 style="font-size:1.2em; margin-top:1.0em">Links</h2>
+  <h2>Links</h2>
   <div class="h2"><a href="index.html">Rimu Home</a></div>
   <div class="h2"><a href="rimuplayground.html">Rimu Playground</a></div>
   <div class="h2"><a href="reference.html">Rimu Reference</a></div>
   <div class="h2"><a href="tips.html">Rimu Tips</a></div>
+  <div class="h2"><a href="gallery.html">Rimu Gallery</a></div>
   <div class="h2"><a href="changelog.html">Change Log</a></div>
   <div class="h2"><a href="https://github.com/srackham/rimu">Github</a></div>
   <div class="h2"><a href="https://npmjs.org/package/rimu">npm</a></div>
-  <h2 style="font-size:1.2em; margin-top:1.0em">Table of Contents</h2>
+  <h2>Table of Contents</h2>
   <div id="auto-toc"></div>
 </div>
 <h1 id="rimu-tips">Rimu Tips</h1>
@@ -411,7 +471,7 @@ markup vocabulary.</p>
 <tr>
 <td class="example-header" style="width:10%;">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('macros-example')">&#x270e;</span>
-Rimu source</td>
+Rimu Markup</td>
 <td>
 <pre id="macros-example-source" class="example-source no-highlight"><code>// Define some macros.
 {info} = '&lt;span style="color:white;
@@ -436,7 +496,7 @@ experimentation.
 <textarea id="macros-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('macros-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">Rendered HTML</td>
+<tr><td class="example-header" style="width:10%;">HTML Preview</td>
 <td>
 <div id="macros-example-rendered" class="example-rendered">
 <h4 id="fun-with-macros">Fun with Macros</h4>
@@ -464,8 +524,8 @@ experimentation.</p>
 <tr>
 <td class="example-header">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('document-links-example')">&#x270e;</span>
-Rimu source</td>
-<td class="example-header">Rendered HTML</td>
+Rimu Markup</td>
+<td class="example-header">HTML Preview</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -488,15 +548,12 @@ the above paragraph.</p>
 Rimu URL syntax.</p>
 </div>
 </td></tr></table>
-<p><b>NOTE</b>: The <a href="reference.html#rimuc-command">rimuc</a> <code>--styled</code> option
-automatically synthesises <code>id</code> attributes for those top level <code>#</code>,
-<code>##</code> and <code>###</code> header elements that do not already have an <code>id</code>.</p>
 <h2 id="syntax-highlighting">Source code syntax highlighting</h2>
 <p>The <a href="reference.html#rimuc-command">rimuc</a> command can highlight code in Rimu <em>Code Blocks</em> and
 <em>Indented Paragraphs</em> using the
 <a href="https://github.com/isagalaev/highlight.js">Highlight.js</a> syntax
 highlighter.  To include <em>Highlight.js</em> support use the <a href="reference.html#rimuc-command">rimuc</a>
-command <code>--highlightjs</code> option with the <code>--styled</code> option.</p>
+command <code>--highlightjs</code> option with the <code>--layout</code> option.</p>
 <p>Set the language you want to highlight by injecting the language CSS
 class name into the code block.  Here are two examples, the first uses
 Github Flavored Markdown style syntax, the second uses Rimu's <em>Block
@@ -505,8 +562,8 @@ Attributes</em> element:</p>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-Rimu source</td>
-<td class="example-header">Rendered HTML</td>
+Rimu Markup</td>
+<td class="example-header">HTML Preview</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -564,13 +621,13 @@ syntaxes plus Github Flavored Markdown <em>URL autolinking</em>.</dd><dt>Images<
 directly to the output.  This allows you to generate styled HTML5
 documents from raw HTML files (HTML files with no <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code> or
 <code>&lt;body&gt;</code> tags), or from non Rimu compatible Markdown files, using the
-<a href="reference.html#rimuc-command">rimuc</a> <code>--styled</code> option. Examples:</p>
+<a href="reference.html#rimuc-command">rimuc</a> <code>--layout</code> option. Examples:</p>
 <dl><dt>Raw HTML file</dt><dd>Convert <code>mydoc.html</code> to styled HTML5 document with
-table of contents:<pre class="no-highlight"><code>rimuc --styled --dropdown-toc mydoc.html</code></pre>
-</dd><dt>Rimu compatible Markdown file</dt><dd>Convert <code>mydoc.md</code> to styled HTML5 document:<pre class="no-highlight"><code>rimuc --styled mydoc.md</code></pre>
+table of contents:<pre class="no-highlight"><code>rimuc --layout sequel mydoc.html</code></pre>
+</dd><dt>Rimu compatible Markdown file</dt><dd>Convert <code>mydoc.md</code> to styled HTML5 document:<pre class="no-highlight"><code>rimuc --layout sequel mydoc.md</code></pre>
 </dd><dt>Markdown file containing non Rimu compatible elements</dt><dd>Convert <code>mydoc.md</code> to styled HTML5 document after first converting it
 to raw HTML with <code>markdown</code>:<pre class="no-highlight"><code>markdown mydoc.md &gt; mydoc.html
-rimuc --styled mydoc.html</code></pre>
+rimuc --layout sequel mydoc.html</code></pre>
 </dd></dl><h2 id="converting-rimu-to-markdown">Converting Rimu to Markdown</h2>
 <p>You can use the online
 <a href="https://domchristie.github.io/to-markdown/">to-markdown</a> website to
@@ -588,8 +645,8 @@ element with a backslash character.</p>
 <tr>
 <td class="example-header">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('escaped-elements-example')">&#x270e;</span>
-Rimu source</td>
-<td class="example-header">Rendered HTML</td>
+Rimu Markup</td>
+<td class="example-header">HTML Preview</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -621,10 +678,10 @@ separate file and specify it as the first Rimu source file in the
 <a href="reference.html#rimuc-command">rimuc</a> command.</p>
 <p>The following example sets the <a href="reference.html#rimuc-command">rimuc</a> <code>--title</code> macro value, this
 sets the HTML <em>title</em> in the <code>kotlin-notes.html</code> output document:</p>
-<pre class="no-highlight"><code>rimuc --styled --prepend "{--title}='Kotlin Notes'" kotlin-notes.rmu</code></pre>
-<p><a href="reference.html#rimuc-command">rimuc</a> has a <code>--title</code> shortcut comand-line option for this common
+<pre class="no-highlight"><code>rimuc --layout sequel --prepend "{--title}='Kotlin Notes'" kotlin-notes.rmu</code></pre>
+<p><a href="reference.html#rimuc-command">rimuc</a> has a <code>--title</code> shortcut command-line option for this common
 use-case:</p>
-<pre class="no-highlight"><code>rimuc --styled --title "Kotlin Notes" kotlin-notes.rmu</code></pre>
+<pre class="no-highlight"><code>rimuc --layout sequel --title "Kotlin Notes" kotlin-notes.rmu</code></pre>
 <p>Other macro shortcut options can be found in the <a href="reference.html#rimuc-command">rimuc</a>
 documentation.</p>
 <h2 id="the-rimu-markup-looks-correct-but-the-generated-html-is-wrong">The Rimu markup looks correct but the generated HTML is wrong</h2>
@@ -663,8 +720,8 @@ or special configuration file syntax were necessary.</p>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-Rimu source</td>
-<td class="example-header">Rendered HTML</td>
+Rimu Markup</td>
+<td class="example-header">HTML Preview</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -725,7 +782,7 @@ and the <code>scoped</code> attribute is ignored).</p>
 HTML5 validator checks. Prior to Rimu version 9 these examples
 used the <code>style</code> element <code>scoped</code> attribute.</p>
 <p>See also:</p>
-<ul><li><a href="http://stackoverflow.com/questions/28633038/what-is-the-current-state-of-the-scoped-attribute-for-the-style-element-in-htm">What is the current state of the “scoped” attribute for the style
+<ul><li><a href="http://stackoverflow.com/questions/28633038/what-is-the-current-state-of-the-scoped-attribute-for-the-style-element-in-htm">What is the current state of the &ldquo;scoped&rdquo; attribute for the style
   element in
   HTML5?</a><blockquote><p>The primary goal of HTML5 was to formally specify the behavior that
 browsers have had implemented basically &ldquo;forever&rdquo; regardless of
@@ -737,40 +794,38 @@ to. This will not change.</p></blockquote>
   HTML</a>.</li></ul></div>
 <h2 id="themes">Themes</h2>
 <p>A <em>theme</em> is the overall typographical style of the rendered HTML
-document.  You can tailor the theme using <a href="#scoped-css">custom CSS style
-elements</a>.</p>
-<p>The <a href="reference.html#rimuc-command">rimuc</a> command supports named themes with the <code>--theme</code> option,
-all this does is set the <code>--theme</code> macro value which is then used to
+document.</p>
+<p>The <a href="reference.html#rimuc-command">rimuc</a> command supports named themes with the <code>--theme</code> option.
+All this does is set the <code>--theme</code> macro value which is then used to
 <a href="#conditional-inclusion">conditionally include</a> HTML <code>style</code> elements.</p>
-<p>The following example styles the output using the built-in <em>graystone</em>
-theme:</p>
-<pre class="no-highlight"><code>rimuc --styled --theme graystone document.rmu</code></pre>
-<p>You can create your own themes or tweak existing themes by
-<a href="#conditional-inclusion">conditionally including</a> HTML <code>style</code>
-elements.  Here is an example theme named <em>redheads</em>:</p>
+<p>The <code>--layouts</code> option supports a number of <a href="reference.html#layouts-and-themes">built-in
+themes</a> You can customize these themes
+by setting theme macro values and by including <a href="#scoped-css">custom CSS style
+elements</a>.</p>
+<p>Here is an example theme named <em>redheads</em>:</p>
 <pre class="no-highlight"><code>{--theme!.*\bredheads\b.*}.+skip
 &lt;style&gt;
   h1, h2, h3, h4, h5, h6 {
     color: red;
   }
 &lt;/style&gt;</code></pre>
-<p>The HTML <code>style</code> element will be included when the <code>--theme</code> macro
-value includes the word <code>redheads</code>, for example:</p>
-<pre class="no-highlight"><code>rimuc --styled --theme redheads document.rmu</code></pre>
+<p>The HTML <code>style</code> element will be included in the output when the
+<code>--theme</code> macro value includes the word <code>redheads</code>, for example:</p>
+<pre class="no-highlight"><code>rimuc --layout sequel --theme redheads document.rmu</code></pre>
 <p>You can combine themes by specifying more than one theme, for example:</p>
-<pre class="no-highlight"><code>rimuc --styled --theme "graystone redheads" document.rmu</code></pre>
-<p><b>NOTE</b>: If you specify multiple themes their CSS styles will casacade in
-the order they are processed in the Rimu source documents.</p>
+<pre class="no-highlight"><code>rimuc --layout sequel --theme "graystone redheads" document.rmu</code></pre>
+<p>If you specify multiple themes their CSS styles will cascade in the
+order they are processed in the Rimu source documents.</p>
 <h2 id="verse-and-sidebar-styles">Verse and sidebar styles</h2>
-<p>The <a href="reference.html#rimuc-command">rimuc</a> command <code>--styled</code> option includes <em>verse</em> and <em>sidebar</em>
+<p>The <a href="reference.html#rimuc-command">rimuc</a> command <code>--layout</code> option includes <em>verse</em> and <em>sidebar</em>
 CSS styles for poetry and highlighted passages of text.</p>
 <h4 id="examples-6">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('verse-and-sidebar-example')">&#x270e;</span>
-Rimu source</td>
-<td class="example-header">Rendered HTML</td>
+Rimu Markup</td>
+<td class="example-header">HTML Preview</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -847,12 +902,12 @@ var html = Rimu.render(untrusted_rimu_markup, {safeMode: 5});</code></pre>
 <h2 id="mathematical-formulae">Mathematical formulae</h2>
 <p>The <a href="reference.html#rimuc-command">rimuc</a> command supports <a href="http://www.mathjax.org/">MathJax</a> LaTeX
 and MathML mathematical formulas.  To include <em>MathJax</em> support use
-the <a href="reference.html#rimuc-command">rimuc</a> command <code>--mathjax</code> option with the <code>--styled</code> option.</p>
+the <a href="reference.html#rimuc-command">rimuc</a> command <code>--mathjax</code> option with the <code>--layout</code> option.</p>
 <h4 id="examples-7">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
-Rimu source</td>
+Rimu Markup</td>
 <td>
 <pre id="mathjax-example-source" class="example-source no-highlight"><code>.-macros
 A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\)
@@ -875,7 +930,7 @@ A MathML block formula:
 <textarea id="mathjax-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('mathjax-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">Rendered HTML</td>
+<tr><td class="example-header" style="width:10%;">HTML Preview</td>
 <td>
 <div id="mathjax-example-rendered" class="example-rendered">
 <p>A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\)</p>
@@ -897,58 +952,48 @@ A MathML block formula:
 documentation</a> to learn how to use
 MathJax.</p>
 <h2 id="conditional-inclusion">Conditional Inclusion</h2>
-<p>Macro invocations can be used to conditionally include Rimu source
-text:</p>
+<p>Macro invocations can be used to conditionally include and exclude
+Rimu source text. Here are some examples:</p>
 <pre class="no-highlight"><code>// Include script if `foo` value is non-blank.
-{foo!}&lt;script src="foo-min.js"&gt;&lt;/script&gt;
+{foo!}&lt;script src="bar-min.js"&gt;&lt;/script&gt;
 
 // Include paragraph if `foo` is blank.
 {foo=}.+skip
-Macro `foo`
-must be blank.
+Macro `foo` must be blank.
 
 // Conditional inclusion of arbitrary blocks of Rimu source.
-// Assign `x` and `y` macro values and include some CSS if
-// both `foo` and `bar` are non-blank.
+// Include some CSS if both `foo` and `bar` are non-blank.
 // Works because a Division Block does not emit div tags if they
 // have no HTML attributes.
 {foo=}.+skip
 {bar=}.+skip
 ..
-{x} = '42'
-{y} = '24'
 &lt;style&gt;
   * { margin: 0; padding: 0; }
 &lt;/style&gt;
 ..
 
 // Inline examples.
-This line is included {foo=} if foo value is blank.
-This line is included {foo!} if foo value is not blank.
-This line is included {foo=one} if foo value is 'one'.
-This line is included {foo=two} if foo value is 'two'.
-This line is included {foo!\d+} if foo value is not a number.
-
-// Use parametrized macros to exclude arbitrary inline text.
-{foo} = ''
-Mauris vitae {foo|This text is excluded}
-
-{foo} = '$1'
-Mauris vitae {foo|This text is included}</code></pre>
+This line is included {foo=} if the value of foo is blank.
+This line is included {foo!} if the value of foo is not blank.
+This line is included {foo=one} if the value of foo is 'one'.
+This line is included {foo=two} if the value of foo is 'two'.
+This line is included {foo!\d+} if the value of foo is not a number.</code></pre>
+<p>Use <a href="reference.html#comments">Comments</a> to unconditionally exclude text.</p>
 <h2 id="tables">Tables</h2>
 <p>Create tables using <em>Block HTML elements</em> (Rimu has no dedicated
 syntax for tables <a href="#use-macros-to-create-tables">but you can use macros to simplify table
 creation</a>).</p>
 <p><b>NOTE</b>: HTML blocks must start at the left margin and end with a blank
 line.</p>
-<p>The <a href="reference.html#rimuc-command">rimuc</a> <code>--styled</code> option includes the <code>bordered</code> CSS class for
+<p>The <a href="reference.html#rimuc-command">rimuc</a> <code>--layout</code> option includes the <code>bordered</code> CSS class for
 styling bordered tables.</p>
 <h4 id="examples-8">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('tables-example')">&#x270e;</span>
-Rimu source</td>
+Rimu Markup</td>
 <td>
 <pre id="tables-example-source" class="example-source no-highlight"><code>&lt;table class="bordered"&gt;&lt;tr&gt;
 &lt;td style="width: 50%; padding: 6px;"&gt;
@@ -993,7 +1038,7 @@ Lobortis lacus vestibulum sem.
 <textarea id="tables-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('tables-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">Rendered HTML</td>
+<tr><td class="example-header" style="width:10%;">HTML Preview</td>
 <td>
 <div id="tables-example-rendered" class="example-rendered">
 <table class="bordered"><tr>
@@ -1037,37 +1082,42 @@ difficult to read.</p>
 <tr>
 <td class="example-header" style="width:10%;">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('table-macro-example')">&#x270e;</span>
-Rimu source</td>
+Rimu Markup</td>
 <td>
-<pre id="table-macro-example-source" class="example-source no-highlight"><code>{person} = '&lt;table&gt;&lt;tr&gt;&lt;td style="width:15em"&gt;$$1&lt;/td&gt;
-&lt;td style="width:5em"&gt;$$2&lt;/td&gt;
+<pre id="table-macro-example-source" class="example-source no-highlight"><code>{person} = '&lt;table style="margin-bottom:0.3em"&gt;&lt;tr&gt;
+&lt;td style="width:40%"&gt;$$1&lt;/td&gt;
+&lt;td style="width:20%"&gt;$$2&lt;/td&gt;
 &lt;td&gt;$$3&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 '
 
-.bordered "color:#527bbd;"
-{person| **Name**    | **Age**| **Gender**}
+.bordered "font-weight:bold; color:#527bbd"
+{person| Name        | Age    | Gender}
 {person| Joe Bloggs  | 25     | Male}
 {person| _Jim Smith_ | 31     | Male}
-."color:red;"
+."color:red"
 {person| Peg Legge   | **30** | Female}
 </code></pre>
 <textarea id="table-macro-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('table-macro-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">Rendered HTML</td>
+<tr><td class="example-header" style="width:10%;">HTML Preview</td>
 <td>
 <div id="table-macro-example-rendered" class="example-rendered">
-<table class="bordered" style="color:#527bbd;"><tr><td style="width:15em"> <strong>Name</strong>    </td>
-<td style="width:5em"> <strong>Age</strong></td>
-<td> <strong>Gender</strong></td></tr></table>
-<table><tr><td style="width:15em"> Joe Bloggs  </td>
-<td style="width:5em"> 25     </td>
+<table class="bordered" style="margin-bottom:0.3em; font-weight:bold; color:#527bbd"><tr>
+<td style="width:40%"> Name        </td>
+<td style="width:20%"> Age    </td>
+<td> Gender</td></tr></table>
+<table style="margin-bottom:0.3em"><tr>
+<td style="width:40%"> Joe Bloggs  </td>
+<td style="width:20%"> 25     </td>
 <td> Male</td></tr></table>
-<table><tr><td style="width:15em"> <em>Jim Smith</em> </td>
-<td style="width:5em"> 31     </td>
+<table style="margin-bottom:0.3em"><tr>
+<td style="width:40%"> <em>Jim Smith</em> </td>
+<td style="width:20%"> 31     </td>
 <td> Male</td></tr></table>
-<table style="color:red;"><tr><td style="width:15em"> Peg Legge   </td>
-<td style="width:5em"> <strong>30</strong> </td>
+<table style="margin-bottom:0.3em; color:red"><tr>
+<td style="width:40%"> Peg Legge   </td>
+<td style="width:20%"> <strong>30</strong> </td>
 <td> Female</td></tr></table>
 </div>
 </td></tr></table>
@@ -1079,7 +1129,7 @@ Rimu source</td>
 <tr>
 <td class="example-header" style="width:10%;">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('columnar-text-example')">&#x270e;</span>
-Rimu source</td>
+Rimu Markup</td>
 <td>
 <pre id="columnar-text-example-source" class="example-source no-highlight"><code>// Each macro generates an HTML block which together generate a single table.
 {column1} = '&lt;table&gt;&lt;tr&gt;&lt;td style="width:33%;padding:0.5em;"&gt;
@@ -1124,7 +1174,7 @@ consequat quisque duis mollis magna arcu.
 <textarea id="columnar-text-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('columnar-text-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">Rendered HTML</td>
+<tr><td class="example-header" style="width:10%;">HTML Preview</td>
 <td>
 <div id="columnar-text-example-rendered" class="example-rendered">
 <table><tr><td style="width:33%;padding:0.5em;">
@@ -1158,7 +1208,7 @@ title.</p>
 <tr>
 <td class="example-header" style="width:10%;">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('meta-macros-example')">&#x270e;</span>
-Rimu source</td>
+Rimu Markup</td>
 <td>
 <pre id="meta-macros-example-source" class="example-source no-highlight"><code>// toc macro generates section TOC entry, link macro and header macro.
 // $1 = section ID, $2 = section title.
@@ -1180,7 +1230,7 @@ Link to {section1}.</code></pre>
 <textarea id="meta-macros-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('meta-macros-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">Rendered HTML</td>
+<tr><td class="example-header" style="width:10%;">HTML Preview</td>
 <td>
 <div id="meta-macros-example-rendered" class="example-rendered">
 <h4 id="table-of-contents">Table of Contents</h4>
@@ -1200,9 +1250,9 @@ lines that end with a single-quote.</p>
   a macro invocation (because Rimu elements are recognized before
   macro expansion).</li><li>A macro invocation can be rendered verbatim in a code block by
   disabling macro expansion. For example:<pre class="no-highlight"><code>.-macros
-```
+``
 {example-42}
-```</code></pre>
+``</code></pre>
 </li><li>Macro definition elements cannot be prefixed with an Inclusion/Exclusion
   macro (see <a href="#conditional-inclusion">Conditional Inclusion</a>).</li><li>Macro invocations in macro definition values are expanded when the
   macro is declared, not when it is invoked. You can defer evaluation
@@ -1219,15 +1269,15 @@ lines that end with a single-quote.</p>
 &lt;p&gt;foo bar&lt;/p&gt;</code></pre>
 </li></ul><h2 id="list-item-counters">List item counters</h2>
 <p>In addition to the <em>verse</em> and <em>sidebar</em> CSS styles the  <a href="reference.html#rimuc-command">rimuc</a> tool
-<code>--styled</code> option also includes CSS classes for counting list items
+<code>--layout</code> option also includes CSS classes for counting list items
 and for numbering labeled list items.</p>
 <h4 id="examples-10">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('list-item-counters-example')">&#x270e;</span>
-Rimu source</td>
-<td class="example-header">Rendered HTML</td>
+Rimu Markup</td>
+<td class="example-header">HTML Preview</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1275,8 +1325,8 @@ block elements to a list item.</p>
 <tr>
 <td class="example-header">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('composite-list-item-example')">&#x270e;</span>
-Rimu source</td>
-<td class="example-header">Rendered HTML</td>
+Rimu Markup</td>
+<td class="example-header">HTML Preview</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1310,8 +1360,8 @@ the first list item in the example below.</p>
 <tr>
 <td class="example-header">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('list-item-block-attributes-example')">&#x270e;</span>
-Rimu source</td>
-<td class="example-header">Rendered HTML</td>
+Rimu Markup</td>
+<td class="example-header">HTML Preview</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1374,11 +1424,11 @@ lacus!</code></pre>
 </li></ul></div>
 </td></tr></table>
 <h2 id="section-numbering">Section numbering</h2>
-<p>Use the <a href="reference.html#rimuc-command">rimuc</a> <code>--section-numbers</code> option with the <code>--styled</code> option
+<p>Use the <a href="reference.html#rimuc-command">rimuc</a> <code>--section-numbers</code> option with the <code>--layout</code> option
 to number top level <em>h2</em> and <em>h3</em> sub-sections. For example:</p>
-<pre class="no-highlight"><code>rimuc --styled --section-numbers mydoc.rmu</code></pre>
+<pre class="no-highlight"><code>rimuc --layout sequel --section-numbers mydoc.rmu</code></pre>
 <p>The  <a href="reference.html#rimuc-command">rimuc</a> <code>--section-numbers</code> option is a shortcut for
-<code>{--section-numbers} = 'yes'</code>.</p>
+<code>--prepend {--section-numbers} = 'yes'</code>.</p>
 <h2 id="nested-fenced-blocks">Nested Fenced Blocks</h2>
 <p><a href="reference.html#fenced-blocks">Fenced blocks</a> of the same type can be
 nested by using differing numbers of delimiter characters to
@@ -1388,8 +1438,8 @@ distinguish between them.</p>
 <tr>
 <td class="example-header">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('nested-fenced-blocks-example')">&#x270e;</span>
-Rimu source</td>
-<td class="example-header">Rendered HTML</td>
+Rimu Markup</td>
+<td class="example-header">HTML Preview</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1441,8 +1491,8 @@ a fenced code block.</p>
 <tr>
 <td class="example-header">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('list-ambiguity-example')">&#x270e;</span>
-Rimu source</td>
-<td class="example-header">Rendered HTML</td>
+Rimu Markup</td>
+<td class="example-header">HTML Preview</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1475,14 +1525,15 @@ Rimu source</td>
 </li></ul><h2 id="controlling-line-breaks">Controlling line breaks</h2>
 <p>There are three ways to preserve line breaks:</p>
 <ol><li>Terminate lines with a Rimu line break (a space followed by a
-  backslash character).</li><li>Terminate lines with an HTML break element (<code>&lt;br&gt;</code>).</li><li>Inject the <code>line-breaks</code> CSS class into a Rimu block element and
-  compile with the <code>rimuc</code> command <code>--styled</code> option.</li></ol><h4 id="examples-15">Examples</h4>
+  backslash character).</li><li>Terminate lines with an HTML break element (<code>&lt;br&gt;</code>).</li><li>Apply the <code>preserve-breaks</code> class to a Rimu block element and
+  compile with the <code>rimuc</code> command <a href="reference.html#layout-option"><code>--layout</code>
+  option</a>.</li></ol><h4 id="examples-15">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('line-breaks-example')">&#x270e;</span>
-Rimu source</td>
-<td class="example-header">Rendered HTML</td>
+Rimu Markup</td>
+<td class="example-header">HTML Preview</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1490,7 +1541,7 @@ Rimu source</td>
 Aenean enim cum sed &lt;br&gt;
 Augue non egestas amet?
 
-.line-breaks
+.preserve-breaks
 Urna aliquam pid
 Aenean enim cum sed
 Augue non egestas amet?
@@ -1502,32 +1553,15 @@ Augue non egestas amet?
 <p>Urna aliquam pid<br>
 Aenean enim cum sed <br>
 Augue non egestas amet?</p>
-<p class="line-breaks">Urna aliquam pid
+<p class="preserve-breaks">Urna aliquam pid
 Aenean enim cum sed
 Augue non egestas amet?</p>
 </div>
 </td></tr></table>
-<h2 id="controlling-page-breaks">Controlling page breaks</h2>
-<p>You can control printer page breaks by using Rimu <em>Attribute Blocks</em>
-to inject CSS
-<a href="https://developer.mozilla.org/en/docs/Web/CSS/page-break-inside">page-break-inside</a>,
-<a href="https://developer.mozilla.org/en/docs/Web/CSS/page-break-before">page-break-before</a>
-and
-<a href="https://developer.mozilla.org/en/docs/Web/CSS/page-break-after">page-break-after</a>
-properties into HTML output elements.</p>
-<p>Examples:</p>
-<pre class="no-highlight"><code>.sidebar "page-break-inside:avoid"
-..
-Page breaks are avoided inside
-this sidebar.
-..
-
-."page-break-before:always"
-### A header that starts on a new page</code></pre>
-<p>The <a href="reference.html#rimuc-command">rimuc</a> tool <code>--styled</code> option includes <code>page-break</code> and
+<h2 id="controlling-printer-page-breaks">Controlling printer page breaks</h2>
+<p>The <a href="reference.html#rimuc-command">rimuc</a> tool <code>--layout</code> option includes <code>page-break</code> and
 <code>no-page-break</code> CSS classes which apply <code>page-break-before:always</code> and
-<code>page-break-inside:avoid</code> properties respectively.  Here is the
-previous example using the <a href="reference.html#rimuc-command">rimuc</a> page break classes:</p>
+<code>page-break-inside:avoid</code> properties respectively:</p>
 <pre class="no-highlight"><code>.sidebar no-page-break
 ..
 Page breaks are avoided inside
@@ -1537,61 +1571,47 @@ this sidebar.
 .page-break
 ### A header that starts on a new page</code></pre>
 <h2 id="controlling-text-alignment">Controlling text alignment</h2>
-<p>You can control the horizontal alignment of flowed inline elements
-(e.g. text, inline images) by injecting the CSS <code>text-align</code> property
-into the container block element using the Rimu <em>Attribute Blocks</em>
-element. For example:</p>
+<p>The <a href="reference.html#rimuc-command">rimuc</a> tool <code>--layout</code> option includes <code>align-left</code>,
+<code>align-center</code> and <code>align-right</code> CSS classes to apply the CSS
+<code>text-align</code> property.  Use them to control the horizontal alignment
+of flowed inline elements (e.g. text, inline images):</p>
 <h4 id="examples-16">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('text-alignment-example-1')">&#x270e;</span>
-Rimu source</td>
-<td class="example-header">Rendered HTML</td>
-</tr>
-<tr>
-<td style="width:50%;">
-<pre id="text-alignment-example-1-source" class="example-source no-highlight"><code>."text-align:center"
-Enim odio ultrices</code></pre>
-<textarea id="text-alignment-example-1-edit" class="edit-source" style="display:none" onkeyup="updateExample('text-alignment-example-1')"></textarea>
-</td>
-<td style="width:50%;">
-<div id="text-alignment-example-1-rendered" class="example-rendered">
-<p style="text-align:center">Enim odio ultrices</p>
-</div>
-</td></tr></table>
-<p>The <a href="reference.html#rimuc-command">rimuc</a> tool <code>--styled</code> option includes <code>align-left</code>,
-<code>align-center</code> and <code>align-right</code> CSS classes.  Here is the previous
-example using the <code>align-center</code> text alignment class:</p>
-<h4 id="examples-17">Examples</h4>
-<table class="example bordered">
-<tr>
-<td class="example-header">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('text-alignment-example-2')">&#x270e;</span>
-Rimu source</td>
-<td class="example-header">Rendered HTML</td>
+Rimu Markup</td>
+<td class="example-header">HTML Preview</td>
 </tr>
 <tr>
 <td style="width:50%;">
-<pre id="text-alignment-example-2-source" class="example-source no-highlight"><code>.align-center
+<pre id="text-alignment-example-2-source" class="example-source no-highlight"><code>.align-left
+Enim odio ultrices
+
+.align-center
+Enim odio ultrices
+
+.align-right
 Enim odio ultrices</code></pre>
 <textarea id="text-alignment-example-2-edit" class="edit-source" style="display:none" onkeyup="updateExample('text-alignment-example-2')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="text-alignment-example-2-rendered" class="example-rendered">
+<p class="align-left">Enim odio ultrices</p>
 <p class="align-center">Enim odio ultrices</p>
+<p class="align-right">Enim odio ultrices</p>
 </div>
 </td></tr></table>
 <h2 id="citing-quotes-and-verses">Citing quotes and verses</h2>
-<p>The <a href="reference.html#rimuc-command">rimuc</a> command <code>--styled</code> option includes the CSS <em>cite</em> class
+<p>The <a href="reference.html#rimuc-command">rimuc</a> command <code>--layout</code> option includes the CSS <em>cite</em> class
 for attributing quotes and verses. For example:</p>
-<h4 id="examples-18">Examples</h4>
+<h4 id="examples-17">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('citation-example')">&#x270e;</span>
-Rimu source</td>
-<td class="example-header">Rendered HTML</td>
+Rimu Markup</td>
+<td class="example-header">HTML Preview</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1639,23 +1659,23 @@ Augue non egestas amet?</p>
 </td></tr></table>
 <h2 id="an-example-letter">An example letter</h2>
 <p>Here's an example of a personal letter:</p>
-<h4 id="examples-19">Examples</h4>
+<h4 id="examples-18">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
 <span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('letter-example')">&#x270e;</span>
-Rimu source</td>
+Rimu Markup</td>
 <td>
 <pre id="letter-example-source" class="example-source no-highlight"><code>."font-family:serif; font-size:12pt;"
-.....................................
+..
 
 ."margin-left:75%"
-..
+...
 24 Milky Way \
 Skyhome 1234 \
 
 17th June 2016
-..
+...
 
 ."margin-bottom:1.5em"
 Mr. A. N. Mouse \
@@ -1675,12 +1695,12 @@ rhoncus, egestas aliquet lundium! Lundium auctor vel natoque enim.
 ."margin-top:2em"
 Yours sincerely \
 Joe Jetson
-.....................................
+..
 </code></pre>
 <textarea id="letter-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('letter-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">Rendered HTML</td>
+<tr><td class="example-header" style="width:10%;">HTML Preview</td>
 <td>
 <div id="letter-example-rendered" class="example-rendered">
 <div style="font-family:serif; font-size:12pt;"><div style="margin-left:75%"><p>24 Milky Way<br>
@@ -1723,7 +1743,7 @@ For example:</p>
 {primary-background} = 'white'
 {text-color} = '#333333'
 
-// Only expand macros in Division Block.
+// Only expand macros.
 .-spans -specials -container
 ..
 body {
@@ -1759,15 +1779,20 @@ window.onclick = toggleToc
 (c.f. <a href="#general-purpose-macro-processor">General purpose macro processor</a>).</p>
 
 </div>
-<script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 <script>
 window.onload = function() {
+  document.getElementById('sidebar').appendChild(document.getElementById('toc')); // Ensure custom TOC is child of sidebar.
   var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
   headings.forEach(function(heading) {
     setHeaderLink(heading);
     appendTocEntry(heading);
   });
+  if (isSmallScreen()) {
+    toggleToc();  // Hide TOC.
+  }
 }
 </script>
 <script>
@@ -1799,6 +1824,29 @@ function appendTocEntry(heading) {
   tocEntry.appendChild(tocLink);
   container.appendChild(tocEntry);
 }
+</script>
+<script>
+  document.onclick = function (event) {
+    if (event.target.matches('#toc-button') || event.target.matches('#toc a') && isSmallScreen()) {
+      toggleToc();
+    }
+  }
+  function toggleToc() {
+    document.body.classList.toggle('hide-toc');
+  }
+  function isSmallScreen() {
+    return window.matchMedia('(max-width: 800px)').matches;
+  }
+  // matches() polyfill for old browsers.
+  if (!Element.prototype.matches) {
+    var p = Element.prototype;
+    if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
+      p.matches = p.webkitMatchesSelector;
+    if (p.msMatchesSelector) // IE9/10/11 & Edge
+      p.matches = p.msMatchesSelector;
+    if (p.mozMatchesSelector) // FF<34
+      p.matches = p.mozMatchesSelector;
+  }
 </script>
 </body>
 </html>

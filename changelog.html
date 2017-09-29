@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <title>Rimu Change Log</title>
-<link href="https://fonts.googleapis.com/css?family=Arimo%7CCousine%7CTinos" rel="stylesheet">
 <style>
   * {
     margin: 0;
@@ -17,25 +16,25 @@
     line-height: 20px;
     color: #333333;
     background-color: white;
-    font-family: Arimo, Arial, Helvetica, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
     margin: 10px 0;
-    color: #527bbd;
+    color: #34495e;
   }
-  h1 { font-size: 2.2em; line-height: 40px;}
-  h2 { font-size: 1.5em; }
-  h3 { font-size: 1.2em; }
-  h4 { font-size: 1.1em; }
-  h5 { font-size: 1.0em; }
-  h6 { font-size: 0.9em; }
+  h1 { font-size: 2.2rem; line-height: 40px;}
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.2rem; }
+  h4 { font-size: 1.1rem; }
+  h5 { font-size: 1.0rem; }
+  h6 { font-size: 0.9rem; }
   h2, h3, h4, h5, h6 {
     line-height: normal;
-    margin-top: 1.0em;
-    margin-bottom: 0.2em;
+    margin-top: 1.0rem;
+    margin-bottom: 0.2rem;
   }
   h2 {
-    margin-top: 1.5em;
+    margin-top: 1.5rem;
     border-bottom: 1px solid #dddddd;
   }
   img {
@@ -43,6 +42,7 @@
   }
   table {
     border-collapse: collapse;
+    table-layout: fixed;
     width: 100%;
   }
   td, th {
@@ -54,7 +54,7 @@
     border: 1px solid #dddddd;
   }
   a, a:hover {
-    color: #527bbd;
+    color: #428bca;
   }
   a {
     text-decoration: none;
@@ -64,8 +64,8 @@
   }
   p, pre, li, dt, dd, blockquote p {
     line-height: 1.45;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   }
   ul, ol {
     padding: 0;
@@ -76,14 +76,14 @@
     font-style: italic;
   }
   dd {
-    margin-left: 1.0em;
+    margin-left: 1.0rem;
     margin-top: 0;
   }
   blockquote {
     padding: 0 0 0 15px;
     border: none;
     border-left: 5px solid #eeeeee;
-    font-family: Tinos, Georgia, serif;
+    font-family: Georgia, Times, serif;
     width: 80%;
     margin: 1.5em 0;
     color: #383838;
@@ -96,29 +96,29 @@
     content: "\2014 \2009";
   }
   code {
-    font-family: Cousine, Consolas, "Andale Mono", Monaco, monospace;
+    font-family: Consolas, "Andale Mono", Monaco, monospace;
     font-size: 90%;
     background-color: #f8f8f8;
   }
   pre {
-    font-family: Cousine, Consolas, "Andale Mono", Monaco, monospace;
+    font-family: Consolas, "Andale Mono", Monaco, monospace;
     line-height: normal;
     white-space: pre-wrap;
-    word-break: break-all;
     background-color: #f8f8f8;
     border: 1px solid #dddddd;
-    border-radius: 4px;
+    border-radius: 0;
     padding: 6px;
   }
   .light-background {
     background-color: #f8f8f8;
     border: none;
+    white-space: pre;
   }
   *:not(pre) > code {
     white-space: nowrap;
   }
   .dl-horizontal > dd {
-    margin-top: 1.0em;
+    margin-top: 1.0rem;
   }
   pre > code {
     background-color: inherit;
@@ -131,20 +131,20 @@
     margin: 1.5em 20px;
   }
   div.verse p, p.verse {
-    font-family: Tinos, Georgia, serif;
-    white-space: pre;
-    margin-top: 0.75em;
-    margin-bottom: 0.75em;
+    font-family: Georgia, Times, serif;
+    white-space: pre-wrap;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
   }
   .sidebar {
     border: 1px solid #dddddd;
-    border-radius: 4px;
+    border-radius: 0;
     background: #ffffee;
     padding: 10px;
-    margin: 1.5em 0px;
+    margin: 1.5em 0;
   }
   div.sidebar *:first-child {
-    margin-top: 0.2em;
+    margin-top: 0.2rem;
   }
   .page-break {
     page-break-before: always;
@@ -161,8 +161,11 @@
   .align-right {
     text-align: right;
   }
-  .line-breaks {
+  .preserve-breaks {
     white-space: pre;
+  }
+  .line-breaks {
+    white-space: pre-wrap;
   }
   .dl-horizontal:before, .dl-horizontal:after {
     display: table;
@@ -175,17 +178,16 @@
   .dl-horizontal > dt {
     float: left;
     clear: left;
-    text-align: right;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     text-align: left;
-    margin-top: 1.0em;
+    margin-top: 1.0rem;
     width: 25%;
   }
   .dl-horizontal > dd {
     margin-left: 25%;
-    padding-left: 1.0em;
+    padding-left: 1.0rem;
   }
   dl {
     counter-reset: dl-counter;
@@ -221,23 +223,31 @@
     .no-print, .no-print * {
       display: none !important;
     }
+    a:hover {
+      text-decoration: none !important;
+    }
   }
 </style>
 <style>
-  #toc {
-    padding-left: 1em;
+  #toc h2 {
+    font-size: 125%;
+    padding-left: 1rem;
+    margin-top:1.0rem;
+    margin-left: 0;
   }
   #toc .h1 {
     font-size: 110%;
     font-weight: bold;
-    margin-top: 0.5em;
-    margin-bottom: 0.4em;
+    padding-left: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.4rem;
   }
   #toc .h2 {
-    margin-top: 0.4em;
+    padding-left: 1rem;
+    margin-top: 0.4rem;
   }
   #toc .h3 {
-    margin-left: 1.5em;
+    padding-left: 2.5rem;
     font-size: 90%;
   }
   #toc div[class^="h"]:nth-child(even) {
@@ -245,6 +255,9 @@
   }
   #auto-toc {
     width: 100%;
+  }
+  #toc a, #toc a:hover {
+    color: #34495e;
   }
 </style>
 <style>
@@ -270,68 +283,151 @@
   }
 </style>
 <style>
-  body {
-    margin: 1em;
-    max-width: 50em;
+  #nav {
+    z-index: 3;
+    position: fixed;
+    left: 0;
+    height: 100%;
+    width: 40px;
+    background-color: #34495e;
+    color: white;
   }
-</style>
-<style>
-  body {
-    padding-left: 21em;
-  }
-  #toc {
+  #sidebar {
+    z-index: 2;
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
-    width: 18em;
-    border-right: 1px solid #cccccc;
-    overflow-y: auto;
-    overflow-x: hidden;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.35);
+    margin-left: 40px;
+    width: 300px;
+    overflow: auto;
+    border-right: 1px solid #ccc;
+    background: #eee;
   }
-  @media print {
+  body.hide-toc #sidebar {
+    display: none !important;
+  }
+  #main {
+    z-index: 1;
+    min-height: 100%;
+    max-width: 50rem;
+    margin-left: 341px;
+    padding-left: 40px;
+    padding-right: 60px;
+  }
+  body.hide-toc #main {
+    margin-left: 40px;
+  }
+  #article {
+    padding-top: 1px;
+    padding-bottom: 10px;
+  }
+  #toc-button {
+    cursor: pointer;
+    color: white;
+    font-size: 48px;
+    line-height: 40px;
+    font-family: Arial, sans-serif;
+    display: inline-block;
+    padding-left: 5px;
+  }
+  @media only screen and (max-width: 800px) {
     body {
-      padding-left: 1em;
+      font-size: 20px;
     }
-  }
-  @media screen and (max-width: 700px) {
-    body {
-      padding-left: 0;
+    body:not(.hide-toc) {
+      overflow: hidden;
+    }
+    body:not(.hide-toc) #sidebar {
+      width: 100%;
+    }
+    #main {
+      margin-left: 40px;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+    body:not(.hide-toc) #main {
+      visibility: hidden;
     }
     #toc {
-      display: none !important;
+      margin-right: 40px;
+    }
+    * {
+      overflow-wrap: break-word;
     }
   }
 </style>
 <style>
-  @media screen and (max-width: 700px) {
-    body {
-      font-size: 20px;
-      margin: 5px;
+  @media print {
+    #main {
+      margin-left: 0;
     }
   }
 </style>
 </head>
 <body>
+<div id="nav" class="no-print">
+    <span id="toc-button">&#8801;</span>
+</div>
+<div id="sidebar" class="no-print">
+</div>
+<div id="main">
 <div id="article">
 
 <div id="toc" class="no-print">
-  <h2 style="font-size:1.2em; margin-top:1.0em">Links</h2>
+  <h2>Links</h2>
   <div class="h2"><a href="index.html">Rimu Home</a></div>
   <div class="h2"><a href="rimuplayground.html">Rimu Playground</a></div>
   <div class="h2"><a href="reference.html">Rimu Reference</a></div>
   <div class="h2"><a href="tips.html">Rimu Tips</a></div>
+  <div class="h2"><a href="gallery.html">Rimu Gallery</a></div>
   <div class="h2"><a href="changelog.html">Change Log</a></div>
   <div class="h2"><a href="https://github.com/srackham/rimu">Github</a></div>
   <div class="h2"><a href="https://npmjs.org/package/rimu">npm</a></div>
-  <h2 style="font-size:1.2em; margin-top:1.0em">Table of Contents</h2>
+  <h2>Table of Contents</h2>
   <div id="auto-toc"></div>
 </div>
 <h1 id="rimu-markup-change-log">Rimu Markup Change Log</h1>
-<p>See the <a href="https://github.com/srackham/rimu/commits/">Git commit log</a>
-for a full list of changes.</p>
-<h2 id="version-9-3-0-2017-09-11">Version 9.3.0 (2017-09-11)</h2>
+<p>See the <a href="https://github.com/srackham/rimu/commits/">Git commit log</a> for a full list of
+changes.</p>
+<h2 id="version-10-0-0-2017-09-30">Version 10.0.0 (2017-09-30)</h2>
+<p>This release includes additional documentation, big changes to the
+<a href="reference.html#rimuc-command">rimuc</a> command (including a new layout and a new theme) and new
+diagnostic messages from the Rimu library.</p>
+<ul><li>The Rimu documentation is now rendered using the new <em>sequel</em> layout
+  and the new <em>legend</em> theme.</li><li><code>rimuc</code> command <em>styled names</em> are now called <em>layouts</em>.</li><li>The new <code>rimuc</code> command <a href="reference.html#layout-option"><code>--layout</code>
+  option</a>  specifies which layout to use
+  (replacing the deprecated <code>--styled-name</code> option).</li><li>Added a new <code>rimuc</code> layout called <em>sequel</em>. This responsive layout
+  is designed to work across desktop, tablet and mobile devices.
+  Along with the other layouts, <em>sequel</em> generates light-weight
+  stand-alone HTML documents.</li><li>The <code>rimuc</code> command now has three built-in layouts and three
+  built-in themes, you can view layout and theme examples in the new
+  <a href="gallery.html">Rimu Gallery</a>. Layouts and themes are implemented purely
+  with Rimu markup, you can view the <a href="https://github.com/srackham/rimu/tree/master/src/rimuc/resources">sources on
+  Github</a>.</li><li><code>rimuc</code> layouts have been refactored:<ul><li>Layout macros now use <a href="reference.html#reserved-macro-names">reserved
+    names</a>.</li><li><a href="https://github.com/srackham/rimu/tree/master/src/rimuc/resources">Layout header files</a>
+    expose a consistent set of layout and theme macros that can be
+    <a href="reference.html#layout-customization">user customized</a>.</li><li>They now import the latest versions of MathJax and HighlightJS.</li><li>They include a number of CSS tweaks.</li></ul></li><li>Use the new <code>rimuc</code> command <code>--no-toc</code> macro to disable table of
+  contents generation.</li><li>Rimu emits an error callback if <a href="reference.html#macro-invocations">Exclusion or Inclusion macro
+  invocations</a> contain an illegal
+  regular expression.</li><li>Rimu emits an error callback if an attempt is made to redefine the
+  predefined <a href="reference.html#predefined-macros">Blank macro (<code>--</code>)</a>.</li><li>Rimu emits an error callback if an attempt is made to us a duplicate
+  <code>id</code> attribute using the <a href="reference.html#block-attributes">Block
+  Attributes</a> element.</li><li>CSS properties defined in <a href="reference.html#block-attributes">Block
+  Attributes</a> are injected into an
+  existing target HTML <code>style</code> attribute.</li><li><strong>FIXED</strong>: CSS properties from multiple <a href="reference.html#block-attributes">Block
+  Attributes</a> elements are now accumulated
+  prior to being consumed by the target block element (previously only
+  the last CSS properties was used).</li></ul><p><b>NOTE</b>: The deprecations and breaking changes below relate to the
+<code>rimuc</code> command:</p>
+<ul><li><strong>DEPRECATED</strong>: The <code>--lint</code> option has been deprecated, lint checks
+  are enabled by default.</li><li><strong>DEPRECATED</strong>: The confusingly named <code>line-breaks</code> CSS class has
+  been renamed to <code>preserve-breaks</code>.</li><li><strong>DEPRECATED</strong>: The <code>--styled</code> and <code>--styled-name</code> options have been
+  deprecated (replaced by the <code>--layout</code> option).</li><li><strong>DEPRECATED</strong>: The <code>--sidebar-toc</code> option has been deprecated (made
+  redundant by the new <code>--layout</code> option).</li><li><strong>DEPRECATED</strong>: The <em>flex</em> layout <code>--dropdown-toc</code> macro has been
+  renamed <code>--top-bar</code>.</li><li><strong>BREAKING CHANGE</strong>: For consistency both <em>classic</em> and <em>flex</em>
+  layouts generate a table of contents by default.  Use the new
+  <code>--no-toc</code> option to disable table of contents generation.</li></ul><h2 id="version-9-3-0-2017-09-11">Version 9.3.0 (2017-09-11)</h2>
 <ul><li>Implemented predefined <code>--header-ids</code> macro.  If the <code>--header-ids</code>
   macro value is non-blank Rimu generates unique HTML <code>id</code> attributes
   for <code>h1</code>, <code>h2</code> and <code>h3</code> section headers.</li><li>Added a <code>--header-ids</code> option to the <code>rimuc</code> command, it enables
@@ -383,7 +479,7 @@ for a full list of changes.</p>
 <ul><li>Added the <code>--lang</code> option to <code>rimuc</code> command. This option sets the
   HTML tag's <code>lang</code> attribute value and is used in conjunction with
   the <code>--styled</code> option.</li><li>Migrated codebase to TypeScript 2.</li></ul><h2 id="version-9-0-0-2016-08-21">Version 9.0.0 (2016-08-21)</h2>
-<ul><li>Added <a href="reference.html#styled-names"><code>--styled-name</code></a> option to <code>rimuc</code>
+<ul><li>Added <code>--styled-name</code> option to <code>rimuc</code>
   along with built-in <em>classic</em>, <em>flex</em> and <em>v8</em> named styles. <em>flex</em>
   is an experimental mobile-first HTML5 + CSS3 layout based on CSS3
   flexboxes. <em>flex</em> is currently tagged experimental because it is not
@@ -571,13 +667,18 @@ compatibility. It also includes some breaking changes.</p>
 </li></ul><h2 id="version-2-2013-07-26">Version 2 (2013-07-26)</h2>
 <ul><li>Added Quote and Replacements definitions.</li><li>A number of other enhancements, additions and documentation updates.</li></ul>
 </div>
+</div>
 <script>
 window.onload = function() {
+  document.getElementById('sidebar').appendChild(document.getElementById('toc')); // Ensure custom TOC is child of sidebar.
   var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
   headings.forEach(function(heading) {
     setHeaderLink(heading);
     appendTocEntry(heading);
   });
+  if (isSmallScreen()) {
+    toggleToc();  // Hide TOC.
+  }
 }
 </script>
 <script>
@@ -609,6 +710,29 @@ function appendTocEntry(heading) {
   tocEntry.appendChild(tocLink);
   container.appendChild(tocEntry);
 }
+</script>
+<script>
+  document.onclick = function (event) {
+    if (event.target.matches('#toc-button') || event.target.matches('#toc a') && isSmallScreen()) {
+      toggleToc();
+    }
+  }
+  function toggleToc() {
+    document.body.classList.toggle('hide-toc');
+  }
+  function isSmallScreen() {
+    return window.matchMedia('(max-width: 800px)').matches;
+  }
+  // matches() polyfill for old browsers.
+  if (!Element.prototype.matches) {
+    var p = Element.prototype;
+    if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
+      p.matches = p.webkitMatchesSelector;
+    if (p.msMatchesSelector) // IE9/10/11 & Edge
+      p.matches = p.msMatchesSelector;
+    if (p.mozMatchesSelector) // FF<34
+      p.matches = p.mozMatchesSelector;
+  }
 </script>
 </body>
 </html>
