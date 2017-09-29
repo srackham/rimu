@@ -2230,9 +2230,45 @@
   },
   {
     "description": "accumulate block attribute CSS properties",
-    "input": ".\"margin-bottom:1.5em;\"\n.\"font-weight:bold;\"\nfoobar",
+    "input": ".\"margin-bottom:1.5em\"\n.\"font-weight:bold;\"\nfoobar",
     "expectedOutput": "<p style=\"margin-bottom:1.5em; font-weight:bold;\">foobar</p>",
     "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "accumulate block attribute classes",
+    "input": ".class1\n.class2 class3\nfoobar",
+    "expectedOutput": "<p class=\"class1 class2 class3\">foobar</p>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "inject block attribute classes and CSS properties into HTML element",
+    "input": ".class2 \"background:blue;\"\n<p class=\"class1\" style=\"color:red\">foobar</p>",
+    "expectedOutput": "<p class=\"class2 class1\" style=\"color:red; background:blue;\">foobar</p>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "duplicate attribute 'id' in tag",
+    "input": ".#ID1\n<p id=\"id1\">foobar</p>",
+    "expectedOutput": "<p id=\"id1\">foobar</p>",
+    "expectedCallback": "error: duplicate 'id' attribute",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "duplicate attribute 'id' in block attributes",
+    "input": ".#id1\nfoo\n\n.#ID1\n<p>bar</p>",
+    "expectedOutput": "<p id=\"id1\">foo</p>\n<p>bar</p>",
+    "expectedCallback": "error: duplicate 'id' attribute",
     "options": {
       "reset": true
     }
