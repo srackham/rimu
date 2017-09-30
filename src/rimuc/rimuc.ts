@@ -21,7 +21,7 @@ DESCRIPTION
 
   If a file named .rimurc exists in the user's home directory
   then its contents is processed (with --safe-mode 0), this
-  happens after --prepend processing but prior to other inputs.
+  happens immediately after --prepend processing.
   This behavior can be disabled with the --no-rimurc option.
 
 OPTIONS
@@ -46,7 +46,12 @@ OPTIONS
     If OUTFILE is a hyphen '-' write to stdout.
 
   -p, --prepend SOURCE
-    Process the SOURCE text before other inputs.
+    Process the SOURCE text before all other inputs.
+    Rendered with --safe-mode 0.
+
+  --prepend-file PREPEND_FILE
+    Process the PREPEND_FILE contents immediately after --prepend
+    and .rimurc processing.
     Rendered with --safe-mode 0.
 
   --no-rimurc
@@ -161,6 +166,7 @@ let safe_mode = 0
 let html_replacement: string | undefined
 let layout = ''
 let no_rimurc = false
+let prepend_files: string[] = []
 
 // Skip executable and script paths.
 process.argv.shift(); // Skip executable path.
@@ -191,6 +197,13 @@ outer:
       case '--prepend':
       case '-p':
         source += process.argv.shift() + '\n'
+        break
+      case '--prepend-file':
+        let prepend_file = process.argv.shift()
+        if (!prepend_file) {
+          die('missing --prepend-file file name')
+        }
+        prepend_files.push(prepend_file!)
         break
       case '--no-rimurc':
         no_rimurc = true
@@ -249,7 +262,6 @@ outer:
         break outer
     }
   }
-
 // process.argv contains the list of source files.
 let files = process.argv
 if (files.length === 0) {
@@ -259,20 +271,18 @@ else if (layout !== '' && !outfile && files.length === 1) {
   // Use the source file name with .html extension for the output file.
   outfile = files[0].substr(0, files[0].lastIndexOf('.')) + '.html'
 }
-
 const RESOURCE_TAG = 'resource:' // Tag for trusted files.
-
 if (layout !== '') {
   // Envelope source files with header and footer.
   files.unshift(`${RESOURCE_TAG}${layout}-header.rmu`)
   files.push(`${RESOURCE_TAG}${layout}-footer.rmu`)
 }
-
 // Prepend $HOME/.rimurc file if it exists.
 if (!no_rimurc && fs.existsSync(RIMURC)) {
-  files.unshift(RIMURC)
+  prepend_files.unshift(RIMURC)
 }
-
+// Prepend --prepend-file files.
+files = prepend_files.concat(files)
 // Convert Rimu source files to HTML.
 let output = ''
 let errors = 0
@@ -289,7 +299,8 @@ for (let infile of files) {
     options.safeMode = 0  // Resources are trusted.
   }
   else {
-    options.safeMode = (infile === RIMURC) ? 0 : safe_mode  // ~/.rimurc is trusted.
+    // Prepended and ~/.rimurc files are trusted.
+    options.safeMode = (prepend_files.indexOf(infile) > -1) ? 0 : safe_mode
     if (!fs.existsSync(infile)) {
       die('source file does not exist: ' + infile)
     }
