@@ -200,5 +200,19 @@
     "expectedOutput": "color: #123456;",
     "predicate": "contains",
     "layouts": true
+  },
+  {
+    "description": "rimuc --prepend-file",
+    "args": "--prepend-file ./test/fixtures/prepend-file.rmu",
+    "input": "{x}",
+    "expectedOutput": "<p>X</p>",
+    "predicate": "equals"
+  },
+  {
+    "description": "rimuc --prepend-file ordering",
+    "args": "--prepend-file ./test/fixtures/prepend-file.rmu --prepend-file ./test/fixtures/prepend-file-2.rmu",
+    "input": "{x}",
+    "expectedOutput": "<p>X2</p>",
+    "predicate": "equals"
   }
 ]
