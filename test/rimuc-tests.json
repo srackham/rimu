@@ -214,5 +214,12 @@
     "input": "{x}",
     "expectedOutput": "<p>X2</p>",
     "predicate": "equals"
+  },
+  {
+    "description": "rimuc basic input file test",
+    "args": "./test/fixtures/hello-rimu.rmu",
+    "input": "",
+    "expectedOutput": "<p>Hello <em>Rimu</em>!</p>",
+    "predicate": "equals"
   }
 ]
