@@ -20,6 +20,8 @@
   {--!} Make old IE versions use the latest rendering engine.
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">'
+// Additional <head> child elements.
+{--head?} = ''
 
 // Flex layout specific.
 {--top-bar?} = ''
@@ -569,6 +571,8 @@
     text-transform: uppercase;
   }
 </style>
+
+{--head}
 
 </head>
 <body>
