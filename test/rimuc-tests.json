@@ -221,5 +221,13 @@
     "input": "",
     "expectedOutput": "<p>Hello <em>Rimu</em>!</p>",
     "predicate": "equals"
+  },
+  {
+    "description": "rimuc --head macro",
+    "args": "--prepend \"{--head}='<style>foobar</style>'\"",
+    "input": "",
+    "expectedOutput": "<style>foobar</style>\n</head>",
+    "predicate": "contains",
+    "layouts": true
   }
 ]
