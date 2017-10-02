@@ -416,10 +416,10 @@ var html = Rimu.render('Hello *Rimu*!', {
 ``
 
 `reset`::
-This boolean option causes the `render()` API to be set to
-its default state (default option values; default Quotes, Replacements
-and Delimited Block definitions; no macro definitions; no callback).
-The `reset` option is processed before other options.
+This boolean option causes the `render()` API to be set to its default
+state (default option values; default Quotes, Replacements and
+Delimited Block definitions; predefined macro definitions only; no
+callback). The `reset` option is processed before other options.
 
 ### API Option elements
 API options can be set in the Rimu source using a [Line
@@ -562,15 +562,18 @@ Rimu has both single line and multi-line comment elements.
 - Use an [HTML](#html-elements) comment if you want the comment to be
   included in the HTML output.
 
-{comments-example} = '/*
+Examples:
+
+``
+/*
   This comment is not included in the
   HTML output.
 */
 
 // This comment is not included in the HTML output.
 
-<!-- This comment is included in the HTML output. -->'
-{generate-rendered-example-2|comments-example}
+<!-- This comment is included in the HTML output. -->
+``
 
 ### Inline comments
 The predefined [Blank macro (`--`)](#predefined-macros) can be used
