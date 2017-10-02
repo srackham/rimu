@@ -2272,5 +2272,41 @@
     "options": {
       "reset": true
     }
+  },
+  {
+    "description": "line block macro expression value definition",
+    "input": "{foo} = `(parseInt(40) + parseInt(2)) + 'px'`\n{foo}",
+    "expectedOutput": "<p>42px</p>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "delimited block macro expression value definition",
+    "input": "{foo} = `(parseInt(40) + parseInt(2)) \n+ 'px'`\n{foo}",
+    "expectedOutput": "<p>42px</p>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "delimited block macro expression line continuation",
+    "input": "{foo} = `(parseInt(40) + parseInt(2)) + ` \\\npx``\n{foo}",
+    "expectedOutput": "<p>42\npx</p>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "delimited block macro expression escaped line continuation",
+    "input": "{foo} = `(parseInt(40) + parseInt(2)) + ` \\\\\npx``\n{foo}",
+    "expectedOutput": "<p>42 px</p>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
   }
 ]

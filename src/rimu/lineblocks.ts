@@ -94,9 +94,10 @@ let defs: Definition[] = [
         return ''   // Skip if a safe mode is set.
       }
       let name = match[1]
-      let value = match[2]
+      let quote = match[2]
+      let value = match[3]
       value = Utils.replaceInline(value, {macros: true})
-      Macros.setValue(name, value)
+      Macros.setValue(name, value, quote)
       return ''
     }
   },

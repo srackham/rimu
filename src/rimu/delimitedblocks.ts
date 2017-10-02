@@ -36,17 +36,23 @@ const DEFAULT_DEFS: Definition[] = [
     expansionOptions: {
       macros: true
     },
+    verify: function (match: RegExpMatchArray): boolean {
+      let quote = match[0][match[0].length - match[1].length - 1] // The leading macro value quote character.
+      this.closeMatch = quote === '`' ? Macros.MACRO_DEF_CLOSE_EXPRESSION : Macros.MACRO_DEF_CLOSE
+      return true
+    },
     delimiterFilter: delimiterTextFilter,
     contentFilter: function (text, match, expansionOptions): string {
       // Process macro definition.
       if (options.skipMacroDefs()) {
         return ''   // Skip if a safe mode is set.
       }
-      let name = (match[0].match(/^{([\w\-]+\??)}/) as RegExpMatchArray)[1]  // Extract macro name from opening delimiter.
-      text = text.replace(/' *\\\n/g, '\'\n')            // Unescape line-continuations.
-      text = text.replace(/(' *[\\]+)\\\n/g, '$1\n')     // Unescape escaped line-continuations.
-      text = Utils.replaceInline(text, expansionOptions) // Expand macro invocations.
-      Macros.setValue(name, text)
+      let quote = match[0][match[0].length - match[1].length - 1]                            // The leading macro value quote character.
+      let name = (match[0].match(/^{([\w\-]+\??)}/) as RegExpMatchArray)[1]           // Extract macro name from opening delimiter.
+      text = text.replace(RegExp('(' + quote + ') *\\\\\\n', 'g'), '$1\n')        // Unescape line-continuations.
+      text = text.replace(RegExp('(' + quote + ' *[\\\\]+)\\\\\\n', 'g'), '$1\n') // Unescape escaped line-continuations.
+      text = Utils.replaceInline(text, expansionOptions)                                     // Expand macro invocations.
+      Macros.setValue(name, text, quote)
       return ''
     }
   },
