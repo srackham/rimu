@@ -2,7 +2,7 @@ import * as Options from './options'
 import * as Spans from './spans'
 
 // Matches macro invocation. $1 = name, $2 = params.
-// DEPRECATED: Matches existential macro invocations.
+// DEPRECATED: Matches existential (`{macro-name?}`) macro invocations.
 const MATCH_MACRO = /{([\w\-]+)([!=|?](?:|[^]*?[^\\]))?}/
 // Matches all macro invocations. $1 = name, $2 = params.
 const MATCH_MACROS = RegExp('\\\\?' + MATCH_MACRO.source, 'g')
@@ -47,7 +47,7 @@ export function getValue(name: string): string | null {
 // If the name ends with '?' then don't set the macro if it already exists.
 // `quote` is a single character: ' if a literal value, ` if an expression value.
 export function setValue(name: string, value: string, quote: string): void {
-  if (Options.skipMacroDefs()) {
+  if (Options.getSafeMode() !== 0 && !(Options.getSafeMode() & 0x8)) {  // tslint:disable-line no-bitwise
     return  // Skip if a safe mode is set.
   }
   let existential = false;
