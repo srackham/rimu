@@ -28,12 +28,12 @@ let defs: Definition[] = [
         return false
       }
       // Stop if the macro value is the same as the invocation (to stop infinite recursion).
-      let value = Macros.render(match[0], false)
+      let value = Macros.render(match[0], ['silent'])
       return value !== match[0]
     },
     filter: function (match: RegExpExecArray, reader: Io.Reader): string {
       // Insert the macro value into the reader just ahead of the cursor.
-      let value = Macros.render(match[0], false)
+      let value = Macros.render(match[0], ['silent'])
       let spliceArgs = [reader.pos + 1, 0, ...value.split('\n')]
       Array.prototype.splice.apply(reader.lines, spliceArgs)
       return ''

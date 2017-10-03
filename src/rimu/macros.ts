@@ -17,6 +17,10 @@ export const LITERAL_DEF_CLOSE = /^(.*)'$/
 export const EXPRESSION_DEF_OPEN = /^\\?{[\w\-]+\??}\s*=\s*`(.*)$/
 export const EXPRESSION_DEF_CLOSE = /^(.*)`$/
 
+// If 'silent' then do not emit error callbacks.
+// If 'simple' then only render Simple macro invocations.
+export type RenderOptions = 'silent' | 'simple'
+
 export interface Macro {
   name: string
   value: string
@@ -81,7 +85,7 @@ export function setValue(name: string, value: string, quote: string): void {
 // Render all macro invocations in text string.
 // The `inline` argument is used to ensure macro errors are not reported
 // multiple times from block and inline contexts.
-export function render(text: string, inline = true): string {
+export function render(text: string, options: RenderOptions[] = []): string {
   text = text.replace(MATCH_MACROS, function (match: string, ...submatches: string[]): string {
     if (match[0] === '\\') {
       return match.slice(1)
@@ -89,12 +93,12 @@ export function render(text: string, inline = true): string {
     let name = submatches[0]
     let params = submatches[1] || ''
     if (params[0] === '?') { // DEPRECATED: Existential macro invocation.
-      if (inline) Options.errorCallback('existential macro invocations are deprecated: ' + match)
+      if (options.indexOf('silent') === -1) Options.errorCallback('existential macro invocations are deprecated: ' + match)
       return match
     }
     let value = getValue(name)  // Macro value is null if macro is undefined.
     if (value === null) {
-      if (inline) {
+      if (options.indexOf('silent') === -1) {
         Options.errorCallback('undefined macro: ' + match + ': ' + text)
       }
       return match
@@ -140,7 +144,7 @@ export function render(text: string, inline = true): string {
           skip = !RegExp('^' + pattern + '$').test(value || '')
         }
         catch {
-          if (inline) {
+          if (options.indexOf('silent') === -1) {
             Options.errorCallback('illegal macro regular expression: ' + pattern + ': ' + text)
           }
           return match
