@@ -2283,7 +2283,7 @@
     }
   },
   {
-    "description": "delimited block macro expression value definition",
+    "description": "multi-line macro expression value definition",
     "input": "{foo} = `(parseInt(40) + parseInt(2)) \n+ 'px'`\n{foo}",
     "expectedOutput": "<p>42px</p>",
     "expectedCallback": "",
@@ -2305,6 +2305,15 @@
     "input": "{foo} = `(parseInt(40) + parseInt(2)) + ` \\\\\npx``\n{foo}",
     "expectedOutput": "<p>42 px</p>",
     "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "illegal macro expression",
+    "input": "{foo} = `1 + x`",
+    "expectedOutput": "",
+    "expectedCallback": "error: illegal macro expression: x is not defined: 1 + x",
     "options": {
       "reset": true
     }

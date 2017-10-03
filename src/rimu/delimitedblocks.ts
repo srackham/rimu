@@ -1,7 +1,7 @@
 import * as Api from './api'
 import {BlockAttributes} from './utils'
 import * as Utils from './utils'
-import * as options from './options'
+import * as Options from './options'
 import * as Io from './io'
 import * as Macros from './macros'
 
@@ -27,34 +27,29 @@ export let defs: Definition[]  // Mutable definitions initialized by DEFAULT_DEF
 const DEFAULT_DEFS: Definition[] = [
   // Delimited blocks cannot be escaped with a backslash.
 
-  // Macro definition block.
+  // Multi-line macro literal value definition.
   {
-    openMatch: Macros.MACRO_DEF_OPEN,    // $1 is first line of macro.
-    closeMatch: Macros.MACRO_DEF_CLOSE,  // $1 is last line of macro.
+    openMatch: Macros.LITERAL_DEF_OPEN,    // $1 is first line of macro.
+    closeMatch: Macros.LITERAL_DEF_CLOSE,
     openTag: '',
     closeTag: '',
     expansionOptions: {
       macros: true
     },
-    verify: function (match: RegExpMatchArray): boolean {
-      let quote = match[0][match[0].length - match[1].length - 1] // The leading macro value quote character.
-      this.closeMatch = quote === '`' ? Macros.MACRO_DEF_CLOSE_EXPRESSION : Macros.MACRO_DEF_CLOSE
-      return true
+    delimiterFilter: delimiterTextFilter,
+    contentFilter: macroDefContentFilter
+  },
+  // Multi-line macro expression value definition.
+  {
+    openMatch: Macros.EXPRESSION_DEF_OPEN,    // $1 is first line of macro.
+    closeMatch: Macros.EXPRESSION_DEF_CLOSE,
+    openTag: '',
+    closeTag: '',
+    expansionOptions: {
+      macros: true
     },
     delimiterFilter: delimiterTextFilter,
-    contentFilter: function (text, match, expansionOptions): string {
-      // Process macro definition.
-      if (options.skipMacroDefs()) {
-        return ''   // Skip if a safe mode is set.
-      }
-      let quote = match[0][match[0].length - match[1].length - 1]                            // The leading macro value quote character.
-      let name = (match[0].match(/^{([\w\-]+\??)}/) as RegExpMatchArray)[1]           // Extract macro name from opening delimiter.
-      text = text.replace(RegExp('(' + quote + ') *\\\\\\n', 'g'), '$1\n')        // Unescape line-continuations.
-      text = text.replace(RegExp('(' + quote + ' *[\\\\]+)\\\\\\n', 'g'), '$1\n') // Unescape escaped line-continuations.
-      text = Utils.replaceInline(text, expansionOptions)                                     // Expand macro invocations.
-      Macros.setValue(name, text, quote)
-      return ''
-    }
+    contentFilter: macroDefContentFilter
   },
   // Comment block.
   {
@@ -131,7 +126,7 @@ const DEFAULT_DEFS: Definition[] = [
       }
     },
     delimiterFilter: delimiterTextFilter,
-    contentFilter: options.htmlSafeModeFilter
+    contentFilter: Options.htmlSafeModeFilter
   },
   // Indented paragraph.
   {
@@ -231,7 +226,7 @@ export function render(reader: Io.Reader, writer: Io.Writer): boolean {
       reader.next()
       let content = reader.readTo(def.closeMatch as RegExp)
       if (content === null) {
-        options.errorCallback('unterminated delimited block: ' + match[0])
+        Options.errorCallback('unterminated delimited block: ' + match[0])
       }
       if (content) {
         lines = [...lines, ...content]
@@ -298,15 +293,15 @@ export function setBlockOptions(blockOptions: Utils.ExpansionOptions, optionsStr
   if (optionsString) {
     let opts = optionsString.trim().split(/\s+/)
     for (let opt of opts) {
-      if (options.isSafeModeNz() && opt === '-specials') {
-        options.errorCallback('-specials block option not valid in safeMode')
+      if (Options.isSafeModeNz() && opt === '-specials') {
+        Options.errorCallback('-specials block option not valid in safeMode')
         continue
       }
       if (/^[+-](macros|spans|specials|container|skip)$/.test(opt)) {
         blockOptions[opt.slice(1)] = opt[0] === '+'
       }
       else {
-        options.errorCallback('illegal block option: ' + opt)
+        Options.errorCallback('illegal block option: ' + opt)
       }
     }
   }
@@ -317,7 +312,7 @@ export function setBlockOptions(blockOptions: Utils.ExpansionOptions, optionsStr
 export function setDefinition(name: string, value: string): void {
   let def = getDefinition(name)
   if (!def) {
-    options.errorCallback('illegal delimited block name: ' + name + ': |' + name + '|=\'' + value + '\'')
+    Options.errorCallback('illegal delimited block name: ' + name + ': |' + name + '|=\'' + value + '\'')
     return
   }
   let match = Utils.trim(value).match(/^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/)
@@ -348,3 +343,13 @@ function classInjectionFilter(match: string[]): string {
   return ''
 }
 
+// contentFilter for multi-line macro definitions.
+function macroDefContentFilter(text: string, match: string[], expansionOptions: Utils.ExpansionOptions): string {
+  let quote = match[0][match[0].length - match[1].length - 1]                            // The leading macro value quote character.
+  let name = (match[0].match(/^{([\w\-]+\??)}/) as RegExpMatchArray)[1]           // Extract macro name from opening delimiter.
+  text = text.replace(RegExp('(' + quote + ') *\\\\\\n', 'g'), '$1\n')        // Unescape line-continuations.
+  text = text.replace(RegExp('(' + quote + ' *[\\\\]+)\\\\\\n', 'g'), '$1\n') // Unescape escaped line-continuations.
+  text = Utils.replaceInline(text, expansionOptions)                                     // Expand macro invocations.
+  Macros.setValue(name, text, quote)
+  return ''
+}

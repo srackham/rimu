@@ -24,7 +24,7 @@ let defs: Definition[] = [
     match: Macros.MACRO_LINE,
     verify: function (match: RegExpExecArray): boolean {
       // Do not process macro definitions.
-      if (Macros.MACRO_DEF_OPEN.test(match[0])) {
+      if (Macros.LITERAL_DEF_OPEN.test(match[0]) || Macros.EXPRESSION_DEF_OPEN.test(match[0])) {
         return false
       }
       // Stop if the macro value is the same as the invocation (to stop infinite recursion).
@@ -88,11 +88,8 @@ let defs: Definition[] = [
   // Macro definition.
   // name = $1, value = $2
   {
-    match: Macros.MACRO_DEF,
+    match: Macros.LINE_DEF,
     filter: function (match: RegExpExecArray): string {
-      if (Options.skipMacroDefs()) {
-        return ''   // Skip if a safe mode is set.
-      }
       let name = match[1]
       let quote = match[2]
       let value = match[3]

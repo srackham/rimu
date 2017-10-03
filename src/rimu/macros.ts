@@ -8,13 +8,14 @@ const MATCH_MACRO = /{([\w\-]+)([!=|?](?:|[^]*?[^\\]))?}/
 const MATCH_MACROS = RegExp('\\\\?' + MATCH_MACRO.source, 'g')
 // Matches a line starting with a macro invocation.
 export const MACRO_LINE = RegExp('^' + MATCH_MACRO.source + '.*$')
-// Match multi-line macro definition open delimiter. $1 is first line of macro.
-export const MACRO_DEF_OPEN = /^\\?{[\w\-]+\??}\s*=\s*['`](.*)$/
-// Match multi-line macro definition open delimiter. $1 is last line of macro.
-export const MACRO_DEF_CLOSE = /^(.*)'$/
-export const MACRO_DEF_CLOSE_EXPRESSION = /^(.*)`$/
 // Match single-line macro definition. $1 = name, $2 = delimiter, $3 = value.
-export const MACRO_DEF = /^\\?{([\w\-]+\??)}\s*=\s*(['`])(.*)\2$/
+export const LINE_DEF = /^\\?{([\w\-]+\??)}\s*=\s*(['`])(.*)\2$/
+// Match multi-line macro definition literal value open delimiter. $1 is first line of macro.
+export const LITERAL_DEF_OPEN = /^\\?{[\w\-]+\??}\s*=\s*'(.*)$/
+export const LITERAL_DEF_CLOSE = /^(.*)'$/
+// Match multi-line macro definition expression value open delimiter. $1 is first line of macro.
+export const EXPRESSION_DEF_OPEN = /^\\?{[\w\-]+\??}\s*=\s*`(.*)$/
+export const EXPRESSION_DEF_CLOSE = /^(.*)`$/
 
 export interface Macro {
   name: string
@@ -44,7 +45,11 @@ export function getValue(name: string): string | null {
 
 // Set named macro value or add it if it doesn't exist.
 // If the name ends with '?' then don't set the macro if it already exists.
-export function setValue(name: string, value: string, quote: string = '\''): void {
+// `quote` is a single character: ' if a literal value, ` if an expression value.
+export function setValue(name: string, value: string, quote: string): void {
+  if (Options.skipMacroDefs()) {
+    return  // Skip if a safe mode is set.
+  }
   let existential = false;
   if (name.slice(-1) === '?') {
     name = name.slice(0, -1)
@@ -55,8 +60,12 @@ export function setValue(name: string, value: string, quote: string = '\''): voi
     return
   }
   if (quote === '`') {
-    // TODO: Trap and report eval() errors.
-    value = eval(value) // tslint:disable-line no-eval
+    try {
+      value = eval(value) // tslint:disable-line no-eval
+    }
+    catch (e) {
+      Options.errorCallback(`illegal macro expression: ${e.message}: ${value}`)
+    }
   }
   for (let def of defs) {
     if (def.name === name) {
