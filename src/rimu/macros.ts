@@ -1,11 +1,8 @@
 import * as Options from './options'
 import * as Spans from './spans'
 
-// Match various macro invocations. $1 = name, $2 = params.
-const MATCH_COMPLEX =  /\\?{([\w\-]+)([!=|?](?:|[^]*?[^\\]))}/g     // Parmetrized, Inclusion and Exclusion invocations.
-const MATCH_SIMPLE = /\\?{([\w\-]+)()}/g                            // Simple macro invocation.
-export const MATCH_LINE = /^{([\w\-]+)([!=|?](?:|[^]*?[^\\]))?}.*$/ // Matches a line starting with a macro invocation.
-
+// Matches a line starting with a macro invocation. $1 = name, $2 = value.
+export const MATCH_LINE = /^{([\w\-]+)([!=|?](?:|[^]*?[^\\]))?}.*$/
 // Match single-line macro definition. $1 = name, $2 = delimiter, $3 = value.
 export const LINE_DEF = /^\\?{([\w\-]+\??)}\s*=\s*(['`])(.*)\2$/
 // Match multi-line macro definition literal value open delimiter. $1 is first line of macro.
@@ -77,105 +74,89 @@ export function setValue(name: string, value: string, quote: string): void {
 }
 
 // Render macro invocations in text string.
-// 'silent' option => do not emit error callbacks.
-// 'simple' option => only render Simple macro invocations.
-export type RenderOptions = ('silent' | 'simple')[]
+// Render Simple invocations first, followed by Parametized, Inclusion and Exclusion invocations.
+// 'silent' => do not emit error callbacks.
+// Match various macro invocations. $1 = name, $2 = params.
+const MATCH_COMPLEX = /\\?{([\w\-]+)([!=|?](?:|[^]*?[^\\]))}/g      // Parametrized, Inclusion and Exclusion invocations.
+const MATCH_SIMPLE = /\\?{([\w\-]+)()}/g                            // Simple macro invocation.
 
-export function render(text: string, options: RenderOptions = []): string {
-  if (options.indexOf('simple') > -1) {
-    // Simple invocations only.
-    return _render(text, options)
-  }
-  else {
-    // All macro invocations.
-    text = _render(text, options.concat('simple'))  // Render Simple invocations first.
-    return _render(text, options)
-  }
-}
-
-function _render(text: string, options: RenderOptions = []): string {
-  let silent = options.indexOf('silent') === -1
-  let find: RegExp
-  if (options.indexOf('simple') > -1) {
-    find = MATCH_SIMPLE
-  }
-  else {
-    find = MATCH_COMPLEX
-  }
-  text = text.replace(find, function (match: string, ...submatches: string[]): string {
-    if (match[0] === '\\') {
-      return match.slice(1)
-    }
-    let name = submatches[0]
-    let params = submatches[1] || ''
-    if (params[0] === '?') { // DEPRECATED: Existential macro invocation.
-      if (silent) {
-        Options.errorCallback('existential macro invocations are deprecated: ' + match)
+export function render(text: string, silent: boolean = false): string {
+  [MATCH_SIMPLE, MATCH_COMPLEX].forEach(find => {
+    text = text.replace(find, function (match: string, ...submatches: string[]): string {
+      if (match[0] === '\\') {
+        return match.slice(1)
       }
-      return match
-    }
-    let value = getValue(name)  // Macro value is null if macro is undefined.
-    if (value === null) {
-      if (silent) {
-        Options.errorCallback('undefined macro: ' + match + ': ' + text)
+      let name = submatches[0]
+      let params = submatches[1] || ''
+      if (params[0] === '?') { // DEPRECATED: Existential macro invocation.
+        if (silent) {
+          Options.errorCallback('existential macro invocations are deprecated: ' + match)
+        }
+        return match
       }
-      return match
-    }
-    params = params.replace(/\\}/g, '}')   // Unescape escaped } characters.
-    switch (params[0]) {
-      case '|': // Parametrized macro.
-        let paramsList = params.slice(1).split('|')
-        // Substitute macro parameters.
-        // Matches macro definition formal parameters [$]$<param-number>[[\]:<default-param-value>$]
-        // [$]$ = 1st match group; <param-number> (1, 2..) = 2nd match group;
-        // :[\]<default-param-value>$ = 3rd match group; <default-param-value> = 4th match group.
-        const PARAM_RE = /\\?(\$\$?)(\d+)(\\?:(|[^]*?[^\\])\$)?/g
-        value = (value || '').replace(PARAM_RE, function (match: string, p1: string, p2: string, p3: string | undefined, p4: string): string {
-          if (match[0] === '\\') {  // Unescape escaped macro parameters.
-            return match.slice(1)
-          }
-          let param: string | undefined = paramsList[Number(p2) - 1]
-          param = param === undefined ? '' : param  // Unassigned parameters are replaced with a blank string.
-          if (p3 !== undefined) {
-            if (p3[0] === '\\') { // Unescape escaped default parameter.
-              param += p3.slice(1)
+      let value = getValue(name)  // Macro value is null if macro is undefined.
+      if (value === null) {
+        if (silent) {
+          Options.errorCallback('undefined macro: ' + match + ': ' + text)
+        }
+        return match
+      }
+      params = params.replace(/\\}/g, '}')   // Unescape escaped } characters.
+      switch (params[0]) {
+        case '|': // Parametrized macro.
+          let paramsList = params.slice(1).split('|')
+          // Substitute macro parameters.
+          // Matches macro definition formal parameters [$]$<param-number>[[\]:<default-param-value>$]
+          // [$]$ = 1st match group; <param-number> (1, 2..) = 2nd match group;
+          // :[\]<default-param-value>$ = 3rd match group; <default-param-value> = 4th match group.
+          const PARAM_RE = /\\?(\$\$?)(\d+)(\\?:(|[^]*?[^\\])\$)?/g
+          value = (value || '').replace(PARAM_RE, function (match: string, p1: string, p2: string, p3: string | undefined, p4: string): string {
+            if (match[0] === '\\') {  // Unescape escaped macro parameters.
+              return match.slice(1)
             }
-            else {
-              if (param === '') {
-                param = p4                              // Assign default parameter value.
-                param = param.replace(/\\\$/g, '$')     // Unescape escaped $ characters in the default value.
+            let param: string | undefined = paramsList[Number(p2) - 1]
+            param = param === undefined ? '' : param  // Unassigned parameters are replaced with a blank string.
+            if (p3 !== undefined) {
+              if (p3[0] === '\\') { // Unescape escaped default parameter.
+                param += p3.slice(1)
+              }
+              else {
+                if (param === '') {
+                  param = p4                              // Assign default parameter value.
+                  param = param.replace(/\\\$/g, '$')     // Unescape escaped $ characters in the default value.
+                }
               }
             }
-          }
-          if (p1 === '$$') {
-            param = Spans.render(param)
-          }
-          return param
-        })
-        return value
+            if (p1 === '$$') {
+              param = Spans.render(param)
+            }
+            return param
+          })
+          return value
 
-      case '!': // Inclusion macro.
-      case '=':
-        let pattern = params.slice(1)
-        let skip = false
-        try {
-          skip = !RegExp('^' + pattern + '$').test(value || '')
-        }
-        catch {
-          if (silent) {
-            Options.errorCallback('illegal macro regular expression: ' + pattern + ': ' + text)
+        case '!': // Exclusion macro.
+        case '=': // Inclusion macro.
+          let pattern = params.slice(1)
+          let skip = false
+          try {
+            skip = !RegExp('^' + pattern + '$').test(value || '')
           }
-          return match
-        }
-        if (params[0] === '!') {
-          skip = !skip
-        }
-        return skip ? '\0' : ''   // '\0' flags line for deletion.
+          catch {
+            if (silent) {
+              Options.errorCallback('illegal macro regular expression: ' + pattern + ': ' + text)
+            }
+            return match
+          }
+          if (params[0] === '!') {
+            skip = !skip
+          }
+          return skip ? '\0' : ''   // '\0' flags line for deletion.
 
-      default:  // Simple macro.
-        return value || ''       // Undefined macro replaced by empty string.
+        default:  // Simple macro.
+          return value || ''       // Undefined macro replaced by empty string.
 
-    }
+      }
+    })
   })
   // Delete lines marked for deletion by inclusion macros.
   if (text.indexOf('\0') !== -1) {
