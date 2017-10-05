@@ -2317,5 +2317,14 @@
     "options": {
       "reset": true
     }
+  },
+  {
+    "description": "escape closing brace in macro 'pattern' parameter",
+    "input": "{foo} = 'xx'\n{foo=x{2\\}}foo",
+    "expectedOutput": "<p>foo</p>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
   }
 ]

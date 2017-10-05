@@ -21,7 +21,7 @@ let defs: Definition[] = [
   // Expand lines prefixed with a macro invocation prior to all other processing.
   // macro name = $1, macro value = $2
   {
-    match: Macros.MACRO_LINE,
+    match: Macros.MATCH_LINE,
     verify: function (match: RegExpExecArray): boolean {
       // Do not process macro definitions.
       if (Macros.LITERAL_DEF_OPEN.test(match[0]) || Macros.EXPRESSION_DEF_OPEN.test(match[0])) {

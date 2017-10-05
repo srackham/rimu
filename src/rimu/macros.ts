@@ -1,13 +1,11 @@
 import * as Options from './options'
 import * as Spans from './spans'
 
-// Matches macro invocation. $1 = name, $2 = params.
-// DEPRECATED: Matches existential (`{macro-name?}`) macro invocations.
-const MATCH_MACRO = /{([\w\-]+)([!=|?](?:|[^]*?[^\\]))?}/
-// Matches all macro invocations. $1 = name, $2 = params.
-const MATCH_MACROS = RegExp('\\\\?' + MATCH_MACRO.source, 'g')
-// Matches a line starting with a macro invocation.
-export const MACRO_LINE = RegExp('^' + MATCH_MACRO.source + '.*$')
+// Match various macro invocations. $1 = name, $2 = params.
+const MATCH_COMPLEX =  /\\?{([\w\-]+)([!=|?](?:|[^]*?[^\\]))}/g     // Parmetrized, Inclusion and Exclusion invocations.
+const MATCH_SIMPLE = /\\?{([\w\-]+)()}/g                            // Simple macro invocation.
+export const MATCH_LINE = /^{([\w\-]+)([!=|?](?:|[^]*?[^\\]))?}.*$/ // Matches a line starting with a macro invocation.
+
 // Match single-line macro definition. $1 = name, $2 = delimiter, $3 = value.
 export const LINE_DEF = /^\\?{([\w\-]+\??)}\s*=\s*(['`])(.*)\2$/
 // Match multi-line macro definition literal value open delimiter. $1 is first line of macro.
@@ -16,10 +14,6 @@ export const LITERAL_DEF_CLOSE = /^(.*)'$/
 // Match multi-line macro definition expression value open delimiter. $1 is first line of macro.
 export const EXPRESSION_DEF_OPEN = /^\\?{[\w\-]+\??}\s*=\s*`(.*)$/
 export const EXPRESSION_DEF_CLOSE = /^(.*)`$/
-
-// If 'silent' then do not emit error callbacks.
-// If 'simple' then only render Simple macro invocations.
-export type RenderOptions = 'silent' | 'simple'
 
 export interface Macro {
   name: string
@@ -82,23 +76,47 @@ export function setValue(name: string, value: string, quote: string): void {
   defs.push({name: name, value: value})
 }
 
-// Render all macro invocations in text string.
-// The `inline` argument is used to ensure macro errors are not reported
-// multiple times from block and inline contexts.
-export function render(text: string, options: RenderOptions[] = []): string {
-  text = text.replace(MATCH_MACROS, function (match: string, ...submatches: string[]): string {
+// Render macro invocations in text string.
+// 'silent' option => do not emit error callbacks.
+// 'simple' option => only render Simple macro invocations.
+export type RenderOptions = ('silent' | 'simple')[]
+
+export function render(text: string, options: RenderOptions = []): string {
+  if (options.indexOf('simple') > -1) {
+    // Simple invocations only.
+    return _render(text, options)
+  }
+  else {
+    // All macro invocations.
+    text = _render(text, options.concat('simple'))  // Render Simple invocations first.
+    return _render(text, options)
+  }
+}
+
+function _render(text: string, options: RenderOptions = []): string {
+  let silent = options.indexOf('silent') === -1
+  let find: RegExp
+  if (options.indexOf('simple') > -1) {
+    find = MATCH_SIMPLE
+  }
+  else {
+    find = MATCH_COMPLEX
+  }
+  text = text.replace(find, function (match: string, ...submatches: string[]): string {
     if (match[0] === '\\') {
       return match.slice(1)
     }
     let name = submatches[0]
     let params = submatches[1] || ''
     if (params[0] === '?') { // DEPRECATED: Existential macro invocation.
-      if (options.indexOf('silent') === -1) Options.errorCallback('existential macro invocations are deprecated: ' + match)
+      if (silent) {
+        Options.errorCallback('existential macro invocations are deprecated: ' + match)
+      }
       return match
     }
     let value = getValue(name)  // Macro value is null if macro is undefined.
     if (value === null) {
-      if (options.indexOf('silent') === -1) {
+      if (silent) {
         Options.errorCallback('undefined macro: ' + match + ': ' + text)
       }
       return match
@@ -144,7 +162,7 @@ export function render(text: string, options: RenderOptions[] = []): string {
           skip = !RegExp('^' + pattern + '$').test(value || '')
         }
         catch {
-          if (options.indexOf('silent') === -1) {
+          if (silent) {
             Options.errorCallback('illegal macro regular expression: ' + pattern + ': ' + text)
           }
           return match
@@ -154,7 +172,7 @@ export function render(text: string, options: RenderOptions[] = []): string {
         }
         return skip ? '\0' : ''   // '\0' flags line for deletion.
 
-      default:  // Plain macro.
+      default:  // Simple macro.
         return value || ''       // Undefined macro replaced by empty string.
 
     }
