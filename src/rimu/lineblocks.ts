@@ -8,11 +8,11 @@ import * as Replacements from './replacements'
 import * as Utils from './utils'
 
 export interface Definition {
-  name?: string   // Optional unique identifier.
-  filter?: (match: RegExpExecArray, reader: Io.Reader) => string
-  verify?: (match: RegExpExecArray) => boolean   // Additional match verification checks.
   match: RegExp
   replacement?: string
+  name?: string   // Optional unique identifier.
+  verify?: (match: RegExpExecArray, reader: Io.Reader) => boolean   // Additional match verification checks.
+  filter?: (match: RegExpExecArray, reader: Io.Reader) => string
 }
 
 let defs: Definition[] = [
@@ -22,21 +22,23 @@ let defs: Definition[] = [
   // macro name = $1, macro value = $2
   {
     match: Macros.MATCH_LINE,
-    verify: function (match: RegExpExecArray): boolean {
-      // Do not process macro definitions.
+    verify: function (match: RegExpExecArray, reader: Io.Reader): boolean {
       if (Macros.LITERAL_DEF_OPEN.test(match[0]) || Macros.EXPRESSION_DEF_OPEN.test(match[0])) {
+        // Do not process macro definitions.
         return false
       }
-      // Stop if the macro value is the same as the invocation (to stop infinite recursion).
-      let value = Macros.render(match[0], true)
-      return value !== match[0]
-    },
-    filter: function (match: RegExpExecArray, reader: Io.Reader): string {
+      let value = Macros.render(match[0])
+      if (value === match[0]) {
+        // Do not process if the macro value is the same as the invocation (to stop infinite recursion).
+        return false
+      }
       // Insert the macro value into the reader just ahead of the cursor.
-      let value = Macros.render(match[0], true)
       let spliceArgs = [reader.pos + 1, 0, ...value.split('\n')]
       Array.prototype.splice.apply(reader.lines, spliceArgs)
-      return ''
+      return true
+    },
+    filter: function (match: RegExpExecArray, reader: Io.Reader): string {
+      return '' // Already processed in the `verify` function.
     }
   },
   // Delimited Block definition.
@@ -181,7 +183,7 @@ export function render(reader: Io.Reader, writer: Io.Writer): boolean {
         reader.cursor = reader.cursor.slice(1)
         continue
       }
-      if (def.verify && !def.verify(match)) {
+      if (def.verify && !def.verify(match, reader)) {
         continue
       }
       let text: string

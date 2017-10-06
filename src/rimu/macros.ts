@@ -75,12 +75,9 @@ export function setValue(name: string, value: string, quote: string): void {
 
 // Render macro invocations in text string.
 // Render Simple invocations first, followed by Parametized, Inclusion and Exclusion invocations.
-// 'silent' => do not emit error callbacks.
-// Match various macro invocations. $1 = name, $2 = params.
-const MATCH_COMPLEX = /\\?{([\w\-]+)([!=|?](?:|[^]*?[^\\]))}/g      // Parametrized, Inclusion and Exclusion invocations.
-const MATCH_SIMPLE = /\\?{([\w\-]+)()}/g                            // Simple macro invocation.
-
-export function render(text: string, silent: boolean = false): string {
+export function render(text: string): string {
+  const MATCH_COMPLEX = /\\?{([\w\-]+)([!=|?](?:|[^]*?[^\\]))}/g; // Parametrized, Inclusion and Exclusion invocations.
+  const MATCH_SIMPLE  = /\\?{([\w\-]+)()}/g;                      // Simple macro invocation.
   [MATCH_SIMPLE, MATCH_COMPLEX].forEach(find => {
     text = text.replace(find, function (match: string, ...submatches: string[]): string {
       if (match[0] === '\\') {
@@ -89,16 +86,12 @@ export function render(text: string, silent: boolean = false): string {
       let name = submatches[0]
       let params = submatches[1] || ''
       if (params[0] === '?') { // DEPRECATED: Existential macro invocation.
-        if (silent) {
-          Options.errorCallback('existential macro invocations are deprecated: ' + match)
-        }
+        Options.errorCallback('existential macro invocations are deprecated: ' + match)
         return match
       }
       let value = getValue(name)  // Macro value is null if macro is undefined.
       if (value === null) {
-        if (silent) {
-          Options.errorCallback('undefined macro: ' + match + ': ' + text)
-        }
+        Options.errorCallback('undefined macro: ' + match + ': ' + text)
         return match
       }
       params = params.replace(/\\}/g, '}')   // Unescape escaped } characters.
@@ -133,7 +126,6 @@ export function render(text: string, silent: boolean = false): string {
             return param
           })
           return value
-
         case '!': // Exclusion macro.
         case '=': // Inclusion macro.
           let pattern = params.slice(1)
@@ -142,19 +134,15 @@ export function render(text: string, silent: boolean = false): string {
             skip = !RegExp('^' + pattern + '$').test(value || '')
           }
           catch {
-            if (silent) {
-              Options.errorCallback('illegal macro regular expression: ' + pattern + ': ' + text)
-            }
+            Options.errorCallback('illegal macro regular expression: ' + pattern + ': ' + text)
             return match
           }
           if (params[0] === '!') {
             skip = !skip
           }
           return skip ? '\0' : ''   // '\0' flags line for deletion.
-
         default:  // Simple macro.
           return value || ''       // Undefined macro replaced by empty string.
-
       }
     })
   })
