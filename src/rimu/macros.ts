@@ -77,7 +77,8 @@ export function setValue(name: string, value: string, quote: string): void {
 // Render Simple invocations first, followed by Parametized, Inclusion and Exclusion invocations.
 export function render(text: string): string {
   const MATCH_COMPLEX = /\\?{([\w\-]+)([!=|?](?:|[^]*?[^\\]))}/g; // Parametrized, Inclusion and Exclusion invocations.
-  const MATCH_SIMPLE  = /\\?{([\w\-]+)()}/g;                      // Simple macro invocation.
+  const MATCH_SIMPLE = /\\?{([\w\-]+)()}/g;                       // Simple macro invocation.
+  const saved_simple: string[] = [];
   [MATCH_SIMPLE, MATCH_COMPLEX].forEach(find => {
     text = text.replace(find, function (match: string, ...submatches: string[]): string {
       if (match[0] === '\\') {
@@ -140,17 +141,22 @@ export function render(text: string): string {
           if (params[0] === '!') {
             skip = !skip
           }
-          return skip ? '\0' : ''   // '\0' flags line for deletion.
+          return skip ? '\u0000' : '' // Flag line for deletion.
         default:  // Simple macro.
-          return value || ''       // Undefined macro replaced by empty string.
+          saved_simple.push(value)
+          return '\u0001' // Placeholder to forestall further expansion of Simple values.
       }
     })
   })
+  // Restore expanded Simple values.
+  text = text.replace(/\u0001/g, function (): string {
+    return saved_simple.shift()!
+  })
   // Delete lines marked for deletion by inclusion macros.
-  if (text.indexOf('\0') !== -1) {
+  if (text.indexOf('\u0000') !== -1) {
     let lines = text.split('\n')
     for (let i = lines.length - 1; i >= 0; --i) {
-      if (lines[i].indexOf('\0') !== -1) {
+      if (lines[i].indexOf('\u0000') !== -1) {
         lines.splice(i, 1)  // Delete line[i].
       }
     }

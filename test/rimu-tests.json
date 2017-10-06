@@ -2326,5 +2326,14 @@
     "options": {
       "reset": true
     }
+  },
+  {
+    "description": "Simple macros are only expanded once",
+    "input": ".-macros\n{m1}='{m2}='$1'\\\n{m3}='{m2|foo}'\\\n'\n{m1}\n{m3}",
+    "expectedOutput": "<p>foo</p>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
   }
 ]
