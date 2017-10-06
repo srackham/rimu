@@ -20,8 +20,11 @@
   {--!} Make old IE versions use the latest rendering engine.
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">'
-// Additional <head> child elements.
+// Additional <head> element children.
 {--head?} = ''
+
+// Sequel layout specific.
+{--toc-width?} = '300px'
 
 /*
   Legend theme.
@@ -84,6 +87,12 @@
 {--border-radius?} = '0'
 {--max-text-width?} = '50rem'
 ..
+
+/*
+  Private layout parameters.
+*/
+{--nav-width} = '40px'
+{--content-margin} = `(parseInt('{--nav-width}') + parseInt('{--toc-width}') + 1) + 'px'`
 
 /*
   HTML header
@@ -426,7 +435,7 @@
     position: fixed;
     left: 0;
     height: 100%;
-    width: 40px;
+    width: {--nav-width};
     background-color: {--primary-color};
     color: white;
   }
@@ -436,8 +445,8 @@
     top: 0;
     left: 0;
     bottom: 0;
-    margin-left: 40px;
-    width: 300px;
+    margin-left: {--nav-width};
+    width: {--toc-width};
     overflow: auto;
     border-right: 1px solid #ccc;
     background: #eee;
@@ -449,12 +458,12 @@
     z-index: 1;
     min-height: 100%;
     max-width: {--max-text-width};
-    margin-left: 341px;
+    margin-left: {--content-margin};
     padding-left: 40px;
     padding-right: 60px;
   }
   body.hide-toc #main {
-    margin-left: 40px;
+    margin-left: {--nav-width};
   }
   #article {
     padding-top: 1px;
@@ -481,7 +490,7 @@
       width: 100%;
     }
     #main {
-      margin-left: 40px;
+      margin-left: {--nav-width};
       padding-left: 5px;
       padding-right: 5px;
     }
