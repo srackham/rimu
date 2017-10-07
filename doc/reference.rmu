@@ -77,7 +77,7 @@ DESCRIPTION
 
   If a file named .rimurc exists in the user's home directory
   then its contents is processed (with --safe-mode 0), this
-  happens after --prepend processing but prior to other inputs.
+  happens immediately after --prepend processing.
   This behavior can be disabled with the --no-rimurc option.
 
 OPTIONS
@@ -102,7 +102,12 @@ OPTIONS
     If OUTFILE is a hyphen '-' write to stdout.
 
   -p, --prepend SOURCE
-    Process the SOURCE text before other inputs.
+    Process the SOURCE text before all other inputs.
+    Rendered with --safe-mode 0.
+
+  --prepend-file PREPEND_FILE
+    Process the PREPEND_FILE contents immediately after --prepend
+    and .rimurc processing.
     Rendered with --safe-mode 0.
 
   --no-rimurc
@@ -370,12 +375,15 @@ This option has a number value that controls how Rimu renders embedded
 HTML and how Rimu definition and option elements will be processed:
 ..
 .light-background
-  0 => Render HTML (default behavior).
-  1 => Ignore HTML.
-  2 => Replace HTML with the 'htmlReplacement' option string.
-  3 => Render HTML as text.
-  Add 4 to safeMode to ignore Block Attribute elements.
-  Add 8 to safeMode to allow Macro Definitions.
+``
+0 => Render HTML (default behavior).
+1 => Ignore HTML.
+2 => Replace HTML with the 'htmlReplacement' option string.
+3 => Render HTML as text.
+
+Add 4 to safeMode to ignore Block Attribute elements.
+Add 8 to safeMode to allow Macro Definitions.
+``
 
 - If `safeMode` is zero all Rimu elements will be processed.
 - If `safeMode` is non-zero the following Rimu elements are ignored:
@@ -1197,35 +1205,12 @@ _Replacement_ processing in Paragraphs:
 ## Macros
 Macros are a simple yet powerful mechanism for creating shortcuts for
 repeatedly used markup.  They can be used to parametrize documents,
-promote clarity and eliminate repetition.
+promote clarity and eliminate repetition (see [Macro
+Examples](#macro-examples)).
 
 Rimu provides elements for defining and invoking macros and includes
-features like macro parametrization, conditional processing and
-meta-programming.
-
-.-macros
-{macros-example} = '// Define some macros.
-{info} = '<span style="color:white;
-                       background-color:#006699;
-                       padding:2px 4px;
-                       border-radius:3px;
-                       font-weight:bold;">$1</span>'\
-{heads-up} = '{info|Heads up!}'\
-{note} = '{info|Note} <mark>$1</mark>'\
-{rimu-playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'\
-{sidebar} = '#### $1
-."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'\
-
-// Use the macros.
-{sidebar|Fun with Macros}
-..
-{heads-up} See the {rimu-playground} for documentation and hands-on
-experimentation.
-
-{note|This document is not yet finished.}
-..'
-
-{generate-rendered-example-2|macros-example}
+features like macro parametrization, conditional processing,
+expression evaluation and meta-programming.
 
 ### Macro definitions
 A macro definition assigns one or more lines of Rimu markup to a macro
@@ -1235,24 +1220,36 @@ Definition syntax:
 
 .light-background
 ``
-{macro-name} = 'macro-value'      Simple macro definition
-{macro-name?} = 'macro-value'     Existential macro definition
+{macro-name} = macro-value         Simple macro definition
+{macro-name?} = macro-value        Existential macro definition
 ``
 
+- A macro definition must start at the left margin.
 - _Simple_ macro definitions are processed unconditionally;
   _Existential_ macro definitions are only processed if the macro has
   not been defined.
+- There are two types of macro values:
+
+  . _Literal macro values_ are assigned verbatim and are enclosed in
+    _single quote_ characters. For example `\{hello} = 'Hello World!'`
+
+  . _Expression macro values_ are enclosed in _backtick_ characters
+    and are evaluated by the JavaScript
+    [eval()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval)
+    function.  For example ``\{date} = `new Date().toDateString()```
+
+- _Expression macro values_ are evaluated when the definition is
+  processed (not when it is invoked). 
+- Macro values can contain macro invocations. They are expanded when
+  the definition is processed (not when it is invoked).
 - A macro name consists of one or more alphanumeric, underscore or
   dash characters.
-- Macro values are enclosed by single-quote characters and can extend
-  over multiple lines.
+- Macro values can extend over multiple lines.
 - Macro values can be escaped with a leading backslash character
   prefix.
-- A macro definition must start at the left margin.
-- Macro definition lines ending with a single-quote character can be
-  continued to the next line by appending a backslash character.
-- Macro values can contain macro invocations. These are expanded when
-  the definition is processed (not when it is invoked).
+- Macro definition lines ending with a quote character can be
+  continued to the next line by appending a backslash character to the
+  end of the line.
 - Macro expansion can be disabled in multi-line macro definitions
   using a preceding [Block Attributes](#block-attributes) `-macros`
   option.
@@ -1321,7 +1318,8 @@ Invocation syntax:
   macro invocations are rendered verbatim minus the backslash.
   Escaping is unnecessary in blocks that do not perform macro
   expansion (_Code_ blocks and _Indented_ paragraphs).
-- Macro invocations cannot be nested.
+- _Simple_ macro invocations are allowed in macro parameters and
+  patterns (non-Simple invocations are not).
 - Macro invocations can contain `}` characters but they must be
   escaped with a backslash character (otherwise they will be mistaken
   for the macro's closing brace).
@@ -1346,6 +1344,15 @@ Invocation syntax:
   . Macros can be used to generate Rimu Block elements. For example, the
     `sidebar` macro in the examples above generates a _Header_ block
     element followed by a _Block Attributes_ block element.
+
+### Macro examples
+
+- [Using Rimu Macros]({tips}#using-rimu-macros).
+- [Use macros to create tables]({tips}#use-macros-to-create-tables).
+- [Macro meta-programming]({tips}#macro-meta-programming).
+- [Macro tips]({tips}#macro-tips).
+- [General purpose macro processor]({tips}#general-purpose-macro-processor).
+- [Macro Expression values]({tips}#macro-expression-values).
 
 ### Reserved macro names
 Macros with names starting with two hyphen characters are reserved for

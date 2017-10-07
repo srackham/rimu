@@ -23,7 +23,7 @@ to PDF:
   file.
 
 
-## Extend Rimu with Macros
+## Using Rimu Macros
 Macros provide a simple, consistent mechanism for extending the Rimu
 markup vocabulary.
 
@@ -35,15 +35,16 @@ markup vocabulary.
                        border-radius:3px;
                        font-weight:bold;">$1</span>'\
 {heads-up} = '{info|Heads up!}'\
-{note} = '{info|Note} <mark>$1</mark>'\
-{playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'\
+{date} = `new Date().toDateString()`
+{note} = '{info|Note} **{date}** <mark>$1</mark>'\
+{rimu-playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'\
 {sidebar} = '#### $1
 ."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'\
 
 // Use the macros.
 {sidebar|Fun with Macros}
 ..
-{heads-up} See the {playground} for documentation and hands-on
+{heads-up} See the {rimu-playground} for documentation and hands-on
 experimentation.
 
 {note|This document is not yet finished.}
@@ -56,6 +57,14 @@ experimentation.
   elements> to style the output).
 - Note how macro definitions can span multiple lines and can contain
   any valid Rimu markup (including HTML and blank lines).
+
+See also:
+
+- [Use macros to create tables](#use-macros-to-create-tables).
+- [Macro meta-programming](#macro-meta-programming).
+- [Macro tips](#macro-tips).
+- [General purpose macro processor](#general-purpose-macro-processor).
+- [Macro Expression values](#macro-expression-values).
 
 
 ## Intra-document Links
@@ -1155,3 +1164,38 @@ To enable only macro expansion drop the `-macros` option
 (c.f. [General purpose macro processor](#general-purpose-macro-processor)).
 
 
+## Macro Expression values
+[Macro definition]({reference}#macro-definitions) _Expression values_
+are enclosed by backtick characters and contain JavaScript code. The
+code is executed by the JavaScript
+[eval()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval)
+function and the result becomes the assigned macro value.
+
+Here are some examples using _Expression values_ (the `\{date}`,
+`\{time}` and `\{sum}` definitions are taken from the [example
+`.rimurc` file]({example-rimurc})).
+
+.-macros
+{macro-expressions-example} = '
+// Date/time.
+{date} = `new Date().toDateString()`
+{time} = `new Date().toTimeString()`
+// Add up to 9 numbers.
+{sum} = '(parseFloat('$1:0$') + parseFloat('$2:0$') + parseFloat('$3:0$') +
+        + parseFloat('$4:0$') + parseFloat('$5:0$') + parseFloat('$6:0$') +
+        + parseFloat('$7:0$') + parseFloat('$8:0$') + parseFloat('$9:0$'))' \
+
+{hms} = `'{time}'.split(' ')[0]`
+**Time**: {hms}
+
+**Date**: {date}
+
+{radius} = '6371' \
+{circumference} = `Math.round(2 * Math.PI * {radius}).toLocaleString()`
+**Circumference**: {circumference} Km
+
+{width} = `{sum| 40px | 300px | 1} + 'px'`
+**Width**: {width}
+'
+
+{generate-rendered-example-2|macro-expressions-example}
