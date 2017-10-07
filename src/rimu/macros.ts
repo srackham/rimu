@@ -149,18 +149,12 @@ export function render(text: string): string {
     })
   })
   // Restore expanded Simple values.
-  text = text.replace(/\u0001/g, function (): string {
-    return saved_simple.shift()!
-  })
-  // Delete lines marked for deletion by inclusion macros.
+  text = text.replace(/\u0001/g, () => saved_simple.shift()! )
+  // Delete lines flagged by Inclusion/Exclusion macros.
   if (text.indexOf('\u0000') !== -1) {
-    let lines = text.split('\n')
-    for (let i = lines.length - 1; i >= 0; --i) {
-      if (lines[i].indexOf('\u0000') !== -1) {
-        lines.splice(i, 1)  // Delete line[i].
-      }
-    }
-    text = lines.join('\n')
+    text = text.split('\n')
+      .filter(line => line.indexOf('\u0000') === -1)
+      .join('\n')
   }
   return text
 }
