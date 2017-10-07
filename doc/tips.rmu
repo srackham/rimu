@@ -1117,7 +1117,7 @@ For example:
 {text-color} = '#333333'
 
 // Only expand macros.
-.-spans -specials -container
+.+macros -specials -container
 ..
 body {
   font-family: {sans-font};
