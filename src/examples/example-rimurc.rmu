@@ -52,3 +52,19 @@ __ = '<u>|</u>'
 // Turn off auto-hightlighting.
 |code| = '<pre class="no-highlight"><code>|</code></pre>'
 |indented| = '<pre class="no-highlight"><code>|</code></pre>'
+
+
+/*
+  Utility expression macros.
+*/
+// Date/time.
+{date} = `new Date().toDateString()`
+{time} = `new Date().toTimeString()`
+// Math.
+{add} =      '(parseFloat('$1') + parseFloat('$2'))'
+{subtract} = '(parseFloat('$1') - parseFloat('$2'))'
+{multiply} = '(parseFloat('$1') - parseFloat('$2'))'
+{divide} =   '(parseFloat('$1') - parseFloat('$2'))'
+{sum} = '(parseFloat('$1:0$') + parseFloat('$2:0$') + parseFloat('$3:0$') +
+        + parseFloat('$4:0$') + parseFloat('$5:0$') + parseFloat('$6:0$') +
+        + parseFloat('$7:0$') + parseFloat('$8:0$') + parseFloat('$9:0$'))'
