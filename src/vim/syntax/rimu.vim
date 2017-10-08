@@ -50,7 +50,7 @@ syn region rimuQuoteParagraph start=/\(\%^\|\_^\n\|^\(=\|#\)\{1,6}\s\+\S\+.*\n\|
 syn match rimuQuotePrefix /^\\\@<!>/ contained
 syn region rimuHTMLBlock start=/<!\|\(<\/\?\(html\|head\|body\|script\|style\|address\|article\|aside\|audio\|blockquote\|canvas\|dd\|div\|dl\|fieldset\|figcaption\|figure\|figcaption\|footer\|form\|h1\|h2\|h3\|h4\|h5\|h6\|header\|hgroup\|hr\|noscript\|ol\|output\|p\|pre\|section\|table\|tfoot\|ul\|video\)[ >\n]\?\)/ end=/\n\n/ contains=rimuSpanHTML keepend
 
-syn match rimuMacroDefinition /^{[0-9A-Za-z_-]\+}\s*=\s*'\_.\{-}'\n/
+syn match rimuMacroDefinition /^{[0-9A-Za-z_-]\+}\s*=\s*\(['`]\)\_.\{-}\1\n/
 syn match rimuReplacementDefinition /^\/.\+\/[igm]*\s*=\s*'\_.\{-}'\n/
 syn match rimuReplacementRegExp /^\/.\+\/[igm]*[\t =]\@=/ contained containedin=rimuReplacementDefinition
 syn match rimuDelimitedBlockDefinition /^|[0-9A-Za-z-]\+|*\s*=\s*'\_.\{-}'\n/
@@ -70,7 +70,8 @@ syn match rimuApiOption /^\.\(safeMode\|htmlReplacement\|macroMode\|reset\)/ con
 syn match rimuQuoteDefinition /^\S\{1,2}\s*=\s*'\_.\{-}'\n/
 syn match rimuQuoteQuote /^\S\{1,2}/ contained containedin=rimuQuoteDefinition
 syn match rimuDefinitionValue /'\_.\{-}'\n/ contained containedin=rimuMacroDefinition,rimuReplacementDefinition,rimuQuoteDefinition,rimuDelimitedBlockDefinition,rimuApiElement
-syn match rimuDefinitionParam /\(\\\@<!$\{1,2}\d\+\(\\\@<!:.\{-}\\\@<!\$\)\?\)\|\(|\)/ contained containedin=rimuDefinitionValue
+syn match rimuExpressionValue /`\_.\{-}`\n/ contained containedin=rimuMacroDefinition
+syn match rimuDefinitionParam /\(\\\@<!$\{1,2}\d\+\(\\\@<!:.\{-}\\\@<!\$\)\?\)\|\(|\)/ contained containedin=rimuDefinitionValue,rimuExpressionValue
 
 hi def link rimuApiOption Special
 hi def link rimuBackslash Special
@@ -101,6 +102,7 @@ hi def link rimuSpanQuoteDeleted Todo
 hi def link rimuSpanURL Title
 hi def link rimuTodo Todo
 hi def link rimuDefinitionValue Type
+hi def link rimuExpressionValue Label
 hi def link rimuDefinitionParam Macro
 hi def link rimuMacroInvocation Special
 
