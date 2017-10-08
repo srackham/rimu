@@ -1,8 +1,8 @@
 import * as Options from './options'
 import * as Spans from './spans'
 
-// Matches a line starting with a macro invocation. $1 = name, $2 = value.
-export const MATCH_LINE = /^{([\w\-]+)([!=|?](?:|[^]*?[^\\]))?}.*$/
+// Matches a line starting with a macro invocation. $1 = macro invocation.
+export const MATCH_LINE = /^({(?:[\w\-]+)(?:[!=|?](?:|[^]*?[^\\]))?}).*$/
 // Match single-line macro definition. $1 = name, $2 = delimiter, $3 = value.
 export const LINE_DEF = /^\\?{([\w\-]+\??)}\s*=\s*(['`])(.*)\2$/
 // Match multi-line macro definition literal value open delimiter. $1 is first line of macro.
