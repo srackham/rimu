@@ -252,5 +252,13 @@
     "expectedOutput": "<p>{x}</p>error: --prepend options: undefined macro: {x}: {x}\n",
     "exitCode": 1,
     "predicate": "equals"
+  },
+  {
+    "description": "rimuc non-existant input file",
+    "args": "--prepend-file ./test/fixtures/a-non-existent-file",
+    "input": "",
+    "expectedOutput": "source file does not exist: ./test/fixtures/a-non-existent-file\n",
+    "exitCode": 1,
+    "predicate": "equals"
   }
 ]
