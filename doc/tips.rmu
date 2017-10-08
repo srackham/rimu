@@ -950,6 +950,16 @@ The caption in the following example displays as `<Header>`
   <#header|<Header&gt;>
 ..
 
+### Braces in macro patterns
+You need to escape closing brace characters in Inclusion and Exclusion
+macro patterns. For example:
+
+  {foo=x{2\}}
+
+Escaping the brace serves two purposes: It excludes `\{2}` from being
+seen as a Simple macro invocation and it stops the brace character
+from being seen as the Inclusion macro's closing brace
+
 
 ## Controlling line breaks
 There are three ways to preserve line breaks:
@@ -1117,7 +1127,7 @@ For example:
 {text-color} = '#333333'
 
 // Only expand macros.
-.+macros -specials -container
+.+macros -specials -spans -container
 ..
 body {
   font-family: {sans-font};
@@ -1194,8 +1204,9 @@ Here are some examples using _Expression values_ (the `\{date}`,
 {circumference} = `Math.round(2 * Math.PI * {radius}).toLocaleString()`
 **Circumference**: {circumference} Km
 
-{width} = `{sum| 40px | 300px | 1} + 'px'`
-**Width**: {width}
+{toc-width} = '300px' \
+{content-margin} = `{sum| 40px | {toc-width} | 1} + 'px'`
+**Content margin**: {content-margin}
 '
 
 {generate-rendered-example-2|macro-expressions-example}

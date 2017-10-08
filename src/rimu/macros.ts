@@ -144,7 +144,7 @@ export function render(text: string): string {
           return skip ? '\u0000' : '' // Flag line for deletion.
         default:  // Simple macro.
           saved_simple.push(value)
-          return '\u0001' // Placeholder to forestall further expansion of Simple values.
+          return '\u0001' // Placeholder to forestall further expansion of Simple macros.
       }
     })
   })
