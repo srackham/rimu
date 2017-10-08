@@ -43,7 +43,8 @@ function runTest(tester, test) {
       break;
     case "exitCode":
       rimuc_exec(test.input, test.args, function (output, error) {
-        tester.ok(String(error.code) === test.expectedOutput, test.description)
+        tester.equal(output, test.expectedOutput, test.description)
+        tester.ok(error.code === test.exitCode, test.description)
       });
       break;
     default:
