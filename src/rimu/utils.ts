@@ -17,19 +17,6 @@ export interface ExpansionOptions {
   specials?: boolean
 }
 
-// Whitespace strippers.
-export function trimLeft(s: string): string {
-  return s.replace(/^\s+/g, '')
-}
-
-export function trimRight(s: string): string {
-  return s.replace(/\s+$/g, '')
-}
-
-export function trim(s: string): string {
-  return s.replace(/^\s+|\s+$/g, '')
-}
-
 // http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
 export function escapeRegExp(s: string): string {
   return s.replace(/[\-\/\\^$*+?.()|\[\]{}]/g, '\\$&')
@@ -125,20 +112,20 @@ export namespace BlockAttributes {
     }
     if (!Options.skipBlockAttributes()) {
       if (m[1]) { // HTML element class names.
-        classes += ' ' + trim(m[1])
-        classes = trim(classes)
+        classes += ' ' + m[1].trim()
+        classes = classes.trim()
       }
       if (m[2]) { // HTML element id.
-        id = trim(m[2]).slice(1)
+        id = m[2].trim().slice(1)
       }
       if (m[3]) { // CSS properties.
         if (css && css.substr(-1) !== ';') css += ';'
-        css += ' ' + trim(m[3])
-        css = trim(css)
+        css += ' ' + m[3].trim()
+        css = css.trim()
       }
       if (m[4] && !Options.isSafeModeNz()) { // HTML attributes.
-        attributes += ' ' + trim(m[4].slice(1, m[4].length - 1))
-        attributes = trim(attributes)
+        attributes += ' ' + m[4].slice(1, m[4].length - 1).trim()
+        attributes = attributes.trim()
       }
       DelimitedBlocks.setBlockOptions(options, m[5])
     }
@@ -187,7 +174,7 @@ export namespace BlockAttributes {
     if (attributes) {
       attrs += ' ' + attributes
     }
-    attrs = trim(attrs)
+    attrs = attrs.trim()
     if (attrs) {
       let match = tag.match(/^<([a-zA-Z]+|h[1-6])(?=[ >])/)
       if (match) {

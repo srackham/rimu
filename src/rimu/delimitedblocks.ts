@@ -99,7 +99,7 @@ const DEFAULT_DEFS: Definition[] = [
     },
     verify: function (match: RegExpMatchArray): boolean {
       // The deprecated '-' delimiter does not support appended class names.
-      return !(match[1][0] === '-' && Utils.trim(match[2]) !== '')
+      return !(match[1][0] === '-' && match[2].trim() !== '')
     },
     delimiterFilter: classInjectionFilter
   },
@@ -315,7 +315,7 @@ export function setDefinition(name: string, value: string): void {
     Options.errorCallback('illegal delimited block name: ' + name + ': |' + name + '|=\'' + value + '\'')
     return
   }
-  let match = Utils.trim(value).match(/^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/)
+  let match = value.trim().match(/^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/)
   if (match) {
     if (match[1]) {
       def.openTag = match[1]
@@ -335,7 +335,7 @@ function delimiterTextFilter(match: string[]): string {
 function classInjectionFilter(match: string[]): string {
   if (match[2]) {
     let p1: string
-    if ((p1 = Utils.trim(match[2]))) {
+    if ((p1 = match[2].trim())) {
       BlockAttributes.classes = p1
     }
   }
