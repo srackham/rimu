@@ -20,9 +20,11 @@ DESCRIPTION
   with an .html extension are passed directly to the output.
 
   If a file named .rimurc exists in the user's home directory
-  then its contents is processed (with --safe-mode 0), this
-  happens immediately after --prepend processing.
+  then its contents is processed (with --safe-mode 0).
   This behavior can be disabled with the --no-rimurc option.
+
+  Inputs are processed in the following order: .rimurc file,
+  --prepend-file options, --prepend options, FILES...
 
 OPTIONS
   -h, --help
@@ -173,7 +175,7 @@ process.argv.shift(); // Skip executable path.
 process.argv.shift(); // Skip rimuc script path.
 
 // Parse command-line options.
-let source = ''
+let prepend = ''
 let outfile: string | undefined
 let arg: string | undefined
 outer:
@@ -196,7 +198,7 @@ outer:
         break
       case '--prepend':
       case '-p':
-        source += process.argv.shift() + '\n'
+        prepend += process.argv.shift() + '\n'
         break
       case '--prepend-file':
         let prepend_file = process.argv.shift()
@@ -221,7 +223,7 @@ outer:
         break
       case '--styled': // Deprecated in Rimu 10.0.0
       case '-s':
-        source += '{--header-ids}=\'true\'\n'
+        prepend += '{--header-ids}=\'true\'\n'
         if (layout === '') {
           layout = 'classic'
         }
@@ -241,7 +243,7 @@ outer:
       case '--header-ids':
       case '--header-links':
         let macro_value = ['--lang', '--title', '--theme'].indexOf(arg) > -1 ? process.argv.shift() : 'true'
-        source += '{' + arg + '}=\'' + macro_value + '\'\n'
+        prepend += '{' + arg + '}=\'' + macro_value + '\'\n'
         break
       case '--layout':
       case '--styled-name': // Deprecated in Rimu 10.0.0
@@ -252,7 +254,7 @@ outer:
         if (['classic', 'flex', 'sequel', 'v8'].indexOf(layout) === -1) {
           die('illegal --layout: ' + layout)
         }
-        source += '{--header-ids}=\'true\'\n'
+        prepend += '{--header-ids}=\'true\'\n'
         break
       default:
         if (arg[0] === '-') {
@@ -271,7 +273,8 @@ else if (layout !== '' && !outfile && files.length === 1) {
   // Use the source file name with .html extension for the output file.
   outfile = files[0].substr(0, files[0].lastIndexOf('.')) + '.html'
 }
-const RESOURCE_TAG = 'resource:' // Tag for trusted files.
+const RESOURCE_TAG = 'resource:' // Tag for resource files.
+const PREPEND = '--prepend options'
 if (layout !== '') {
   // Envelope source files with header and footer.
   files.unshift(`${RESOURCE_TAG}${layout}-header.rmu`)
@@ -281,26 +284,28 @@ if (layout !== '') {
 if (!no_rimurc && fs.existsSync(RIMURC)) {
   prepend_files.unshift(RIMURC)
 }
-// Prepend --prepend-file files.
+if (prepend !== '') {
+  prepend_files.push(PREPEND)
+}
 files = prepend_files.concat(files)
 // Convert Rimu source files to HTML.
 let output = ''
 let errors = 0
-if (source !== '') {
-  output += rimu.render(source) + '\n'; // --prepend options source.
-}
 let options: rimu.Options = {}
 if (html_replacement !== undefined) {
   options.htmlReplacement = html_replacement
 }
 for (let infile of files) {
+  let source = ''
   if (infile.startsWith(RESOURCE_TAG)) {
     source = readResourceFile(infile.substr(RESOURCE_TAG.length))
     options.safeMode = 0  // Resources are trusted.
   }
+  else if (infile === PREPEND) {
+    source = prepend
+    options.safeMode = 0  // --prepend options are trusted.
+  }
   else {
-    // Prepended and ~/.rimurc files are trusted.
-    options.safeMode = (prepend_files.indexOf(infile) > -1) ? 0 : safe_mode
     if (!fs.existsSync(infile)) {
       die('source file does not exist: ' + infile)
     }
@@ -309,6 +314,8 @@ for (let infile of files) {
     } catch (e) {
       die('source file permission denied: ' + infile)
     }
+    // Prepended and ~/.rimurc files are trusted.
+    options.safeMode = (prepend_files.indexOf(infile) > -1) ? 0 : safe_mode
   }
   let ext = infile.split('.').pop()
   if (ext === 'html') {

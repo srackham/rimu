@@ -229,5 +229,26 @@
     "expectedOutput": "<style>foobar</style>\n</head>",
     "predicate": "contains",
     "layouts": true
+  },
+  {
+    "description": "rimuc --prepend has priority over --prepend-file",
+    "args": "--prepend \"{x}='X2'\" --prepend-file ./test/fixtures/prepend-file.rmu",
+    "input": "{x}",
+    "expectedOutput": "<p>X2</p>",
+    "predicate": "equals"
+  },
+  {
+    "description": "rimuc --prepend option ordering",
+    "args": "--prepend \"{x}='X1'\" --prepend \"{x}='X2'\"",
+    "input": "{x}",
+    "expectedOutput": "<p>X2</p>",
+    "predicate": "equals"
+  },
+  {
+    "description": "rimuc --prepend option error",
+    "args": "--prepend \"{x}\"",
+    "input": "",
+    "expectedOutput": "<p>{x}</p>error: --prepend options: undefined macro: {x}: {x}\n",
+    "predicate": "equals"
   }
 ]
