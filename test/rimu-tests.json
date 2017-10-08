@@ -2133,7 +2133,7 @@
     "description": "callback api: undefined macro",
     "input": "{undefined}",
     "expectedOutput": "<p>{undefined}</p>",
-    "expectedCallback": "error: undefined macro",
+    "expectedCallback": "error: undefined macro: {undefined}: {undefined}",
     "options": {
       "reset": true
     }
@@ -2142,7 +2142,7 @@
     "description": "callback api: undefined inclusion macro",
     "input": "{undefined=}",
     "expectedOutput": "<p>{undefined=}</p>",
-    "expectedCallback": "error: undefined macro",
+    "expectedCallback": "error: undefined macro: {undefined=}: {undefined=}",
     "options": {
       "reset": true
     }
@@ -2151,7 +2151,7 @@
     "description": "callback api: unterminated delimited block",
     "input": "..\nLorum ipsum",
     "expectedOutput": "",
-    "expectedCallback": "error: unterminated delimited block",
+    "expectedCallback": "error: unterminated delimited block: ..",
     "options": {
       "reset": true
     }
@@ -2169,7 +2169,7 @@
     "description": "callback api: illegal delimited block name",
     "input": "|foobar| = '<p>|</p>'",
     "expectedOutput": "",
-    "expectedCallback": "error: illegal delimited block name: foobar",
+    "expectedCallback": "error: illegal delimited block name: foobar: |foobar|='<p>|</p>'",
     "options": {
       "reset": true
     }
@@ -2187,7 +2187,7 @@
     "description": "callback api: illegal API option",
     "input": ".zafeMode='2'",
     "expectedOutput": "",
-    "expectedCallback": "error: illegal API option: zafeMode",
+    "expectedCallback": "error: illegal API option: zafeMode: .zafeMode='2'",
     "options": {
       "reset": true
     }

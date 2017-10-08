@@ -24,13 +24,14 @@ test('rimu', function (t) {
       e.options.callback = catchLint;
     } else {
       e.options.callback = function (message) {
-        msg = message.type + ': ' + message.text;
+        msg += message.type + ': ' + message.text + '\n';
       }
     }
     let rendered = rimu.render(e.input, e.options)
     t.equal(rendered, e.expectedOutput, e.description);
     if (e.expectedCallback !== '') {
-      t.equal(msg.slice(0, e.expectedCallback.length), e.expectedCallback, e.description);
+      // t.equal(msg.slice(0, e.expectedCallback.length), e.expectedCallback, e.description);
+      t.equal(msg.trim(), e.expectedCallback, e.description);
     }
   });
   t.end();
