@@ -76,9 +76,11 @@ DESCRIPTION
   with an .html extension are passed directly to the output.
 
   If a file named .rimurc exists in the user's home directory
-  then its contents is processed (with --safe-mode 0), this
-  happens immediately after --prepend processing.
+  then its contents is processed (with --safe-mode 0).
   This behavior can be disabled with the --no-rimurc option.
+
+  Inputs are processed in the following order: .rimurc file,
+  --prepend-file options, --prepend options, FILES...
 
 OPTIONS
   -h, --help
@@ -1341,8 +1343,9 @@ Invocation syntax:
     Block](#line-blocks) elements by prefixing them with _Inclusion_ or
     _Exclusion_ macros.
 
-  . Macros can be used to generate Rimu Block elements. For example, the
-    `sidebar` macro in the examples above generates a _Header_ block
+  . Macros can be used to generate Rimu Block elements. For example,
+    take a look at the `\{sidebar}` macro in [these
+    examples]({tips}#using-rimu-macros), it generates a _Header_ block
     element followed by a _Block Attributes_ block element.
 
 ### Macro examples
