@@ -143,14 +143,14 @@ const DEFAULT_DEFS: Definition[] = [
     contentFilter: function (text: string): string {
       // Strip indent from start of each line.
       let first_indent = text.search(/\S/)
-      let buffer = text.split('\n')
-      for (let i in buffer) {
-        // Strip first line indent width or up to first non-space character.
-        let indent = buffer[i].search(/\S|$/)
-        if (indent > first_indent) indent = first_indent
-        buffer[i] = buffer[i].slice(indent)
-      }
-      return buffer.join('\n')
+      return text.split('\n')
+        .map(line => {
+          // Strip first line indent width or up to first non-space character.
+          let indent = line.search(/\S|$/)
+          if (indent > first_indent) indent = first_indent
+          return line.slice(indent)
+        })
+        .join('\n')
     }
   },
   // Quote paragraph.
@@ -168,12 +168,11 @@ const DEFAULT_DEFS: Definition[] = [
     delimiterFilter: delimiterTextFilter,
     contentFilter: function (text: string): string {
       // Strip leading > from start of each line and unescape escaped leading >.
-      let buffer = text.split('\n')
-      for (let i in buffer) {
-        buffer[i] = buffer[i].replace(/^>/, '')
-        buffer[i] = buffer[i].replace(/^\\>/, '>')
-      }
-      return buffer.join('\n')
+      return text.split('\n')
+        .map(line => line
+          .replace(/^>/, '')
+          .replace(/^\\>/, '>'))
+        .join('\n')
     }
   },
   // Paragraph (lowest priority, cannot be escaped).
