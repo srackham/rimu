@@ -4,6 +4,38 @@ See the [Git commit log]({github}/commits/) for a full list of
 changes.
 
 
+## Version 10.1.0 (2017-10-10)
+This release adds [_Expression
+values_]({tips}#macro-expression-values) to [Macro
+definitions]({reference}#macro-definitions).
+
+- Implemented macro definition [_Expression
+  values_]({tips}#macro-expression-values).
+
+- Added Expression value macros to example `.rimurc` file.
+
+- Allow _Simple_ macro invocations in macro invocation parameters and
+  patterns.
+
+- Updated the Vim syntax file to highlight macro Expression values.
+
+- Added optional {rimuc} layouts `--head` macro which can be used to
+  insert additional `<head>` child elements into layout headers.
+
+- Added `\{--toc-width}` layout parameter to the {rimuc} command
+  `sequel` layout which sets the width of the table of contents
+  column.
+
+- Added {rimuc} command `--prepend-file` option which allows rimu
+  source files to preceed the built-in layout header file.
+
+- The {rimuc} command processing order has been rationalized.  The
+  order of processing is: `.rimurc`, `--prepend-file` options,
+  `--prepend` options and finally input source files.  Previously the
+  `--prepend` options were processed before the `.rimurc` file so they
+  could not override macros defined in `.rimurc`
+
+
 ## Version 10.0.0 (2017-09-30)
 This release includes additional documentation, big changes to the
 {rimuc} command (including a new layout and a new theme) and new
