@@ -463,7 +463,7 @@ to PDF:</p>
 <ol><li>Use Libre Office Writer or Microsoft Word to open the HTML document
   then export it to a PDF file.</li><li>Use a command-line application such as
   <a href="https://wkhtmltopdf.org/">wkhtmltopdf</a> to convert HTML to PDF.</li><li>Google's Chrome web browser has an option to print HTML to a PDF
-  file.</li></ol><h2 id="extend-rimu-with-macros">Extend Rimu with Macros</h2>
+  file.</li></ol><h2 id="using-rimu-macros">Using Rimu Macros</h2>
 <p>Macros provide a simple, consistent mechanism for extending the Rimu
 markup vocabulary.</p>
 <h4 id="examples">Examples</h4>
@@ -480,15 +480,16 @@ Rimu Markup</td>
                        border-radius:3px;
                        font-weight:bold;"&gt;$1&lt;/span&gt;'
 {heads-up} = '{info|Heads up!}'
-{note} = '{info|Note} &lt;mark&gt;$1&lt;/mark&gt;'
-{playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'
+{date} = `new Date().toDateString()`
+{note} = '{info|Note} **{date}** &lt;mark&gt;$1&lt;/mark&gt;'
+{rimu-playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'
 {sidebar} = '#### $1
 ."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'
 
 // Use the macros.
 {sidebar|Fun with Macros}
 ..
-{heads-up} See the {playground} for documentation and hands-on
+{heads-up} See the {rimu-playground} for documentation and hands-on
 experimentation.
 
 {note|This document is not yet finished.}
@@ -510,13 +511,14 @@ experimentation.</p>
                        background-color:#006699;
                        padding:2px 4px;
                        border-radius:3px;
-                       font-weight:bold;">Note</span> <mark>This document is not yet finished.</mark></p></div>
+                       font-weight:bold;">Note</span> <strong>Tue Oct 10 2017</strong> <mark>This document is not yet finished.</mark></p></div>
 </div>
 </td></tr></table>
 <ul><li>The <code>{sidebar}</code> macro shows how you can inject CSS styles into a
   <em>Division Block</em> (you can also use use <a href="#scoped-css">HTML &lt;style&gt;
   elements</a> to style the output).</li><li>Note how macro definitions can span multiple lines and can contain
-  any valid Rimu markup (including HTML and blank lines).</li></ul><h2 id="intra-document-links">Intra-document Links</h2>
+  any valid Rimu markup (including HTML and blank lines).</li></ul><p>See also:</p>
+<ul><li><a href="#use-macros-to-create-tables">Use macros to create tables</a>.</li><li><a href="#macro-meta-programming">Macro meta-programming</a>.</li><li><a href="#macro-tips">Macro tips</a>.</li><li><a href="#general-purpose-macro-processor">General purpose macro processor</a>.</li><li><a href="#macro-expression-values">Macro Expression values</a>.</li></ul><h2 id="intra-document-links">Intra-document Links</h2>
 <p>To link to another place within a document:</p>
 <ol><li>Create an ID for the element you want to link to using the Rimu
   <em>Block Attribute</em> element.</li><li>Link to it using a fragment identifier URL.</li></ol><h4 id="examples-2">Examples</h4>
@@ -1522,7 +1524,14 @@ Rimu Markup</td>
   <code>&amp;gt;</code> entity instead of the <code>&gt;</code> character.<p>The caption in the following example displays as <code>&lt;Header&gt;</code>
 (if the <code>&gt;</code> character were used the caption would be <code>&lt;Header</code>):</p>
 <pre class="no-highlight"><code>&lt;#header|&lt;Header&amp;gt;&gt;</code></pre>
-</li></ul><h2 id="controlling-line-breaks">Controlling line breaks</h2>
+</li></ul><h3 id="braces-in-macro-patterns">Braces in macro patterns</h3>
+<p>You need to escape closing brace characters in Inclusion and Exclusion
+macro patterns. For example:</p>
+<pre class="no-highlight"><code>{foo=x{2\}}</code></pre>
+<p>Escaping the brace serves two purposes: It excludes <code>{2}</code> from being
+seen as a Simple macro invocation and it stops the brace character
+from being seen as the Inclusion macro's closing brace</p>
+<h2 id="controlling-line-breaks">Controlling line breaks</h2>
 <p>There are three ways to preserve line breaks:</p>
 <ol><li>Terminate lines with a Rimu line break (a space followed by a
   backslash character).</li><li>Terminate lines with an HTML break element (<code>&lt;br&gt;</code>).</li><li>Apply the <code>preserve-breaks</code> class to a Rimu block element and
@@ -1744,7 +1753,7 @@ For example:</p>
 {text-color} = '#333333'
 
 // Only expand macros.
-.-spans -specials -container
+.+macros -specials -spans -container
 ..
 body {
   font-family: {sans-font};
@@ -1777,6 +1786,55 @@ window.onclick = toggleToc
 ..</code></pre>
 <p>To enable only macro expansion drop the <code>-macros</code> option
 (c.f. <a href="#general-purpose-macro-processor">General purpose macro processor</a>).</p>
+<h2 id="macro-expression-values">Macro Expression values</h2>
+<p><a href="reference.html#macro-definitions">Macro definition</a> <em>Expression values</em>
+are enclosed by backtick characters and contain JavaScript code. The
+code is executed by the JavaScript
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval">eval()</a>
+function and the result becomes the assigned macro value.</p>
+<p>Here are some examples using <em>Expression values</em> (the <code>{date}</code>,
+<code>{time}</code> and <code>{sum}</code> definitions are taken from the <a href="https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.rmu">example
+<code>.rimurc</code> file</a>).</p>
+<h4 id="examples-19">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header" style="width:10%;">
+<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('macro-expressions-example')">&#x270e;</span>
+Rimu Markup</td>
+<td>
+<pre id="macro-expressions-example-source" class="example-source no-highlight"><code>// Date/time.
+{date} = `new Date().toDateString()`
+{time} = `new Date().toTimeString()`
+// Add up to 9 numbers.
+{sum} = '(parseFloat('$1:0$') + parseFloat('$2:0$') + parseFloat('$3:0$') +
+        + parseFloat('$4:0$') + parseFloat('$5:0$') + parseFloat('$6:0$') +
+        + parseFloat('$7:0$') + parseFloat('$8:0$') + parseFloat('$9:0$'))'
+
+{hms} = `'{time}'.split(' ')[0]`
+**Time**: {hms}
+
+**Date**: {date}
+
+{radius} = '6371'
+{circumference} = `Math.round(2 * Math.PI * {radius}).toLocaleString()`
+**Circumference**: {circumference} Km
+
+{toc-width} = '300px'
+{content-margin} = `{sum| 40px | {toc-width} | 1} + 'px'`
+**Content margin**: {content-margin}
+</code></pre>
+<textarea id="macro-expressions-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('macro-expressions-example')"></textarea>
+</td>
+</tr>
+<tr><td class="example-header" style="width:10%;">HTML Preview</td>
+<td>
+<div id="macro-expressions-example-rendered" class="example-rendered">
+<p><strong>Time</strong>: 13:03:14</p>
+<p><strong>Date</strong>: Tue Oct 10 2017</p>
+<p><strong>Circumference</strong>: 40,030 Km</p>
+<p><strong>Content margin</strong>: 341px</p>
+</div>
+</td></tr></table>
 
 </div>
 </div>
