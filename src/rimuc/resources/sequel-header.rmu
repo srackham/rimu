@@ -15,7 +15,8 @@
 {--no-toc?} = ''
 {--custom-toc?} = ''
 {--header-links?} = ''
-{--small-screen?} = '(max-width: 800px)'
+{--!} The min-width: 1px clause stops page load transitions in IE11 and Edge (https://stackoverflow.com/a/25850649).
+{--small-screen?} = '(min-width: 1px) and (max-width: 800px)'
 {--meta?} = '<meta charset="UTF-8">
   {--!} Make old IE versions use the latest rendering engine.
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,6 +26,7 @@
 
 // Sequel layout specific.
 {--toc-width?} = '300px'
+{--transition-duration?} = '0.3s'
 
 /*
   Legend theme.
@@ -452,7 +454,7 @@
     background: #eee;
   }
   body.hide-toc #sidebar {
-    display: none !important;
+    width: 0;
   }
   #main {
     z-index: 1;
@@ -478,7 +480,24 @@
     display: inline-block;
     padding-left: 5px;
   }
-  @media only screen and {--small-screen} {
+{--!} Apply TOC slide in/out transition when not in small screen mode.
+  @media not screen and {--small-screen} {
+    #sidebar {
+      opacity: 1;
+      transition: opacity {--transition-duration} ease;
+    }
+    body.hide-toc #sidebar {
+      width: 0;
+      opacity: 0;
+    }
+    #main {
+      transition: margin-left {--transition-duration} ease;
+    }
+    body.hide-toc #main {
+      transition: margin-left {--transition-duration} ease;
+    }
+  }
+  @media screen and {--small-screen} {
     body {
       font-size: 20px;
     }
@@ -514,7 +533,7 @@
     padding-left: 40px;
     padding-right: 60px;
   }
-  @media only screen and {--small-screen} {
+  @media screen and {--small-screen} {
     body {
       font-size: 20px;
     }

@@ -63,7 +63,7 @@ function appendTocEntry(heading) {
 <script>
   document.onclick = function (event) {
     if (event.target.matches('#toc-button') || event.target.matches('#toc a') && isSmallScreen()) {
-{--!} Toggle TOC if nav bar or small-screen TOC link is clicked.
+{--!} Toggle TOC if TOC button or small-screen TOC link is clicked.
       toggleToc();
     }
   }
