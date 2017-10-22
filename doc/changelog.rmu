@@ -11,6 +11,8 @@ changes.
 
 -  Added table of contents slide in/out transition to `sequel` layout.
 
+- Improvements to `flex` layout.
+
 
 ## Version 10.1.0 (2017-10-10)
 This release adds [_Expression
