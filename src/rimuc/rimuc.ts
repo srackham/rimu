@@ -31,8 +31,8 @@ OPTIONS
     Display help message.
 
   --layout LAYOUT
-    Generate a styled HTML document with one of the following
-    predefined document layouts:
+    Generate a styled HTML document. rimuc includes the
+    following built-in document layouts:
 
     'classic': Desktop-centric layout.
     'flex':    Flexbox mobile layout (experimental).
@@ -92,8 +92,8 @@ OPTIONS
     --prepend "{--title}='TITLE'"
 
 LAYOUT OPTIONS
-  The following options are available when the --layout option is
-  used:
+  The following options are available when the --layout option
+  specifies a built-in layout:
 
   Option             Description
   _______________________________________________________________
@@ -117,7 +117,8 @@ LAYOUT OPTIONS
 
 LAYOUT CLASSES
   The following CSS classes are available for use in Rimu Block
-  Attributes elements when the --layout option is used:
+  Attributes elements when the --layout option specifies a
+  built-in layout:
 
   CSS class        Description
   ______________________________________________________________
@@ -162,6 +163,21 @@ declare const require: (filename: string) => any
 
 function readResourceFile(name: string): string {
   return require(`./resources/${name}`)
+}
+
+function importLayoutFile(name: string): string {
+  // Attempt to read header or footer file from external module `rimu-<layout-name>-layout`.
+  // Extract layout name and header/footer from the file `name`.
+  let match = name.match(/^(.+?)-(header|footer).rmu$/)!
+  let result = ''
+  try {
+    // Kludge to force Webpack to ignore the dynamic require().
+    result = eval(`require('rimu-${match[1]}-layout')['${match[2]}']`) // tslint:disable-line no-eval
+  }
+  catch {
+    die(`missing --layout: ${match[1]}`)
+  }
+  return result
 }
 
 let safe_mode = 0
@@ -251,9 +267,6 @@ outer:
         if (!layout) {
           die('missing --layout')
         }
-        if (['classic', 'flex', 'sequel', 'v8'].indexOf(layout) === -1) {
-          die('illegal --layout: ' + layout)
-        }
         prepend += '{--header-ids}=\'true\'\n'
         break
       default:
@@ -298,7 +311,13 @@ if (html_replacement !== undefined) {
 for (let infile of files) {
   let source = ''
   if (infile.startsWith(RESOURCE_TAG)) {
-    source = readResourceFile(infile.substr(RESOURCE_TAG.length))
+    infile = infile.substr(RESOURCE_TAG.length)
+    if (['classic', 'flex', 'sequel', 'v8'].indexOf(layout) >= 0) {
+      source = readResourceFile(infile)
+    }
+    else {
+      source = importLayoutFile(infile)
+    }
     options.safeMode = 0  // Resources are trusted.
   }
   else if (infile === PREPEND) {
