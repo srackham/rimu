@@ -23,9 +23,6 @@
 // Additional <head> child elements.
 {--head?} = ''
 
-// Flex layout specific.
-{--top-bar?} = ''
-
 /*
   Legend theme.
 */
@@ -88,37 +85,6 @@
 {--max-text-width?} = '50rem'
 ..
 
-/*
-  Private layout parameters.
-*/
-// Accomodate the new default TOC generation and --no-toc option.
-// DEPRECATED --dropdown-toc: Replaced by --top-bar, external definition tolerated for backward comaptibility.
-{--dropdown-toc?} = ''
-{--dropdown-toc=}.+skip
-..
-{--top-bar} = 'yes'
-..
-// DEPRECATED --sidebar-toc: Replaced by --side-bar, external definition tolerated for backward comaptibility.
-{--top-bar!}.+skip
-..
-{--sidebar-toc?} = 'yes'
-..
-{--top-bar=}.+skip
-..
-{--sidebar-toc?} = ''
-..
-{--side-bar} = '{--sidebar-toc}'
-// DEPRECATED --toc: If --toc is non-blank make --side-bar non-blank.
-{--toc?} = ''
-{--side-bar} = '{--toc}{--side-bar}'
-// Ensures no TOC.
-{--no-toc=}.+skip
-..
-{--top-bar} = ''
-{--side-bar} = ''
-..
-// Non-blank if a TOC was specified.
-{--has-toc} = '{--top-bar}{--side-bar}'
 
 /*
   HTML header
@@ -392,8 +358,7 @@
   }
 </style>
 
-// Common to --side-bar and --top-bar.
-{--has-toc=}.+skip
+{--no-toc!}.+skip
 <style>
   #toc {
     padding-left: 1em;
@@ -459,7 +424,7 @@
 
 // TOC specific styles.
 // Flexbox layout inspired by http://codepen.io/VinSpee/pen/zxBJVO
-{--has-toc=}.+skip
+{--no-toc!}.+skip
 <style>
   html, body {
     height: 100%;
@@ -526,8 +491,9 @@
   }
 </style>
 
-{--side-bar=}.+skip
+{--no-toc!}.+skip
 <style>
+{--!} Side-bar for large screen and small screen landscape mode.
   body {
     flex-direction: row;
   }
@@ -538,25 +504,24 @@
   #toc-button {
     padding-top: 15px;
   }
-</style>
-
-{--top-bar=}.+skip
-<style>
-  body {
-    flex-direction: column;
-  }
-  #nav {
-    height:40px;
-    width: 100%;
-  }
-  #toc-button {
-    padding-top: 10px;
+{--!} Top-bar for small screen portrait mode.
+  @media screen and (max-width: 800px) and (orientation: portrait) {
+    body {
+      flex-direction: column;
+    }
+    #nav {
+      height: 40px;
+      width: 100%;
+    }
+    #toc-button {
+      padding-top: 10px;
+    }
   }
 </style>
 
 // Format (non-layout) related styles.
 <style>
-  @media only screen and {--small-screen} {
+  @media screen and {--small-screen} {
     body {
       font-size: 20px;
     }
@@ -579,7 +544,7 @@
 <body>
 
 // Include TOC menu bar if a TOC is specified.
-{--has-toc=}.+skip
+{--no-toc!}.+skip
 <div id="nav" class="no-print">
   <span id="toc-button">
     <span id="menu-icon">&#8801;</span>
@@ -589,7 +554,7 @@
 
 // Include TOC unless a custom TOC is specified.
 .+skip
-{--has-toc!}.-skip
+{--no-toc=}.-skip
 {--custom-toc!}.+skip
 <div id="toc">
   <div id="auto-toc"></div>
