@@ -378,17 +378,10 @@ to. This will not change.
 
 
 ## Themes
-A _theme_ is the overall typographical style of the rendered HTML
-document.
-
-The {rimuc} command supports named themes with the `--theme` option.
-All this does is set the `--theme` macro value which is then used to
-[conditionally include](#conditional-inclusion) HTML `style` elements.
-
-The `--layouts` option supports a number of [built-in
-themes]({reference}#layouts-and-themes) You can customize these themes
-by setting theme macro values and by including [custom CSS style
-elements](#scoped-css).
+A [theme]({reference}#themes) is a layout styling variation.  The
+`--layouts` option supports a number of [built-in
+themes]({reference}#built-in-layouts). You can create your own themes
+by including [custom CSS style elements](#scoped-css).
 
 Here is an example theme named _redheads_:
 

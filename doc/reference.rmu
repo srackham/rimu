@@ -87,8 +87,8 @@ OPTIONS
     Display help message.
 
   --layout LAYOUT
-    Generate a styled HTML document with one of the following
-    predefined document layouts:
+    Generate a styled HTML document. rimuc includes the
+    following built-in document layouts:
 
     'classic': Desktop-centric layout.
     'flex':    Flexbox mobile layout (experimental).
@@ -148,8 +148,8 @@ OPTIONS
     --prepend "{--title}='TITLE'"
 
 LAYOUT OPTIONS
-  The following options are available when the --layout option is
-  used:
+  The following options are available when the --layout option
+  specifies a built-in layout:
 
   Option             Description
   _______________________________________________________________
@@ -173,7 +173,8 @@ LAYOUT OPTIONS
 
 LAYOUT CLASSES
   The following CSS classes are available for use in Rimu Block
-  Attributes elements when the --layout option is used:
+  Attributes elements when the --layout option specifies a
+  built-in layout:
 
   CSS class        Description
   ______________________________________________________________
@@ -226,28 +227,16 @@ PREDEFINED MACROS
   rimuc -o book.html frontmatter.rmu chapter*.rmu backmatter.rmu
 
 ### `--layout` option
-The `--layout` option envelopes the output in an HTML header and
-footer that:
+The `--layout` option is used to generate styled HTML documents.  It
+does this by enveloping the compiled output in a layout specific HTML
+header and footer.
 
-- Creates a stand-alone HTML5 document.
-- Generates a [table of contents](#toc-generation).
-- Includes CSS styles for verses, sidebars, text alignment,
-  page break control and section numbering (see `rimuc --help` command
-  and examples in [Rimu Tips]({tips})).
-- Generates unique [header id](#header-id-generation) attributes.
-- If the `--highlightjs` macro is non-blank
-  [Highlightjs]({tips}#syntax-highlighting) is included.
-- If the `--mathjax` macro is non-blank
-  [MathJax]({tips}#mathematical-formulae) is included.
-- Supports named [themes]({tips}#themes).
-- Can be used to [convert raw HTML and arbitrary Markdown
-  files]({tips}#rimuc-html).
+`rimuc` comes with [built-in layouts](#built-in-layouts) and it also
+supports [imported layouts](#imported-layouts).
 
 All features enabled by the `--layout` option are implemented with
-Rimu markup in the [built-in header and footer
-files]({github}/tree/master/src/rimuc/resources).  The magic is
-performed by the Rimu markup, the `--layout` option simply
-concatenates the input with built-in header and footer files, for
+Rimu markup in the header and footer files.  The `--layout` option
+concatenates the input with built-in header and footer files.  For
 example, the following two commands are functionally identical:
 
 ``
@@ -255,8 +244,7 @@ rimuc --layout sequel sites.rmu
 rimuc --output sites.html sequel-header.rmu sites.rmu sequel-footer.rmu
 ``
 
-.#layouts-and-themes
-### Built-in layouts and themes
+### Built-in Layouts
 You can choose from the following built-in layouts:
 
 sequel:: Responsive cross-device layout designed to render nicely on
@@ -274,29 +262,49 @@ devices.
   - Set the `--top-bar` macro to a non-blank value to place the
     navigation bar along the top of the document.
 
-v8:: Legacy Rimu version 8 layout.
+v8:: Deprecated Rimu version 8 layout.
 
-The _sequel_, _classic_ and _flex_ layouts implement _legend_,
-_graystone_ and _vintage_ [themes]({tips}#themes).  The `--theme`
-option value is assigned to the `--theme` macro which the layout
-header then uses to conditionally include HTML `style` elements.
-
-Examples of the layouts and themes can be viewed in the [Rimu
+Examples of the built-in layouts can be viewed in the [Rimu
 Gallery]({gallery}).
 
-### Layout customization
-Prominent layout and theme styles are set by header file macro values
-and can be overriden by prepending new values. For example:
+The built-in layouts:
+
+- Create a stand-alone HTML5 document.
+- Optionally generate a [table of contents](#toc-generation).
+- Include CSS styles for verses, sidebars, text alignment,
+  page break control and section numbering (see `rimuc --help` command
+  and examples in [Rimu Tips]({tips})).
+- Generate unique [header id](#header-id-generation) attributes.
+- If the `--highlightjs` macro is non-blank
+  [Highlightjs]({tips}#syntax-highlighting) is included.
+- If the `--mathjax` macro is non-blank
+  [MathJax]({tips}#mathematical-formulae) is included.
+- Support named [themes]({tips}#themes).
+
+A number of built-in layout styles are set by header file macro values
+that can be overridden. For example:
 
   rimuc --layout sequel --prepend "{--primary-color}='#0cc'" sites.rmu
 
 You can view full list of layout macros in the corresponding built-in
 layout [header file]({github}/tree/master/src/rimuc/resources).
 
+### Themes
+A theme is a layout styling variation.  Named themes are specified
+using the `--theme` option.  The built-in layouts implement _legend_,
+_graystone_ and _vintage_ themes.
+
+Examples of the built-in layout themes can be viewed in the [Rimu
+Gallery]({gallery}).
+
+The `--theme` option value sets the `--theme` macro which the layout
+header then uses to [conditionally
+include]({tips}#conditional-inclusion) HTML `style` elements.
+
 .#toc-generation
 ### Table of contents generation
-The  `--layout` option automatically includes a table of contents in
-the generated HTML document.
+Built-in layouts automatically include a table of contents in the
+generated HTML document.
 
 - The table of contents is synthesised from top level `h1`, `h2` and
   `h3` HTML header elements.
@@ -310,9 +318,9 @@ the generated HTML document.
   .no-auto-toc
   ## This header does not appear in the TOC
 
-### Custom Table of contents
-The `--custom-toc` option is used in conjunction with the `--layout`
-option. The `--custom-toc` option inhibits the generation of an HTML
+### Custom table of contents
+The `--custom-toc` option is used in conjunction with built-in
+layouts. The `--custom-toc` option inhibits the generation of an HTML
 TOC container and it is up to the user to include a custom HTML TOC
 container in the Rimu markup. This allows you to customise the
 location, style and content of the TOC:
@@ -330,6 +338,22 @@ inserted in the output document:
   <div id="auto-toc"></div>
 </div>
 ``
+
+### Imported Layouts
+`rimuc` supports third-party externally sourced layouts. When the
+`--layout <layout-name>` option is specified `rimuc` searches for a
+built-in layout with the same name. If it is not found then an attempt
+is made to import a nodejs module named like
+`rimu-<layout-name>-layout`.  The imported module contains two
+attributes, `header` and `footer`, which return the Rimu header markup
+and footer markup respectively.
+
+For example, take a look at the [Rimu _plain_
+Layout](https://github.com/srackham/rimu-plain-layout.git).
+
+Consult the imported layout's documentation for supported layout
+options.
+
 
 .#api
 ## API
@@ -1100,9 +1124,14 @@ Syntax:
 
   .class-names #id "css-properties" [html-attributes] block-options
 
+- `block-options` is used to control the processing of the succeeding
+  [Delimited Block element](#delimited-block) contents.
+- Macro invocations in _Block Attributes_ are expanded.
 - The leading period character must start at the left margin and the
   attributes must not extend beyond the end of the line.
-- All items are optional.
+- All items are optional but their order is not.
+- Successive Block Attributes elements accumulate until they are
+  consumed by the first succeeding Delimited Block element.
 - `class-names` is one or more HTML _class_ attribute names (separated
   by spaces).
 - `id` is a unique HTML _id_ attribute value.
@@ -1111,17 +1140,12 @@ Syntax:
   opening tag.
 - `html-attributes` is one or more HTML attribute name/value pairs:
   they are injected into the target opening tag.
-- Successive Block Attributes elements accumulate until they are
-  consumed by the first succeeding Delimited Block element.
 - The `[html-attributes]` section is ignored if the [safeMode API
   option](#api-options) is not zero.
 - The `-specials` block option is ignored if the [safeMode API
   option](#api-options)  is not zero.
 - The entire Block Attributes element is ignored if bit 2 of the
   [safeMode API option](#api-options) is set.
-- `block-options` is used to control the processing of the succeeding
-  [Delimited Block element](#delimited-block) contents.
-- Macro invocations in _Block Attributes_ are expanded.
 
 {block-attributes-example} = '.error "color:red"
 Lorum ipsum.
@@ -1376,12 +1400,6 @@ _______________________________________________________________
 _______________________________________________________________
 ``
 - See [Header id generation](#header-id-generation).
-
-### rimuc layout macros
-The [rimuc command](#rimuc-command) makes a number of additional
-layout macros available when you use the [`--layout`
-option](#layout-option).
-
 
 ### Header id generation
 If the [predefined macro](#predefined-macros) `--header-ids` is
