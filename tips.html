@@ -307,7 +307,7 @@
     background: #eee;
   }
   body.hide-toc #sidebar {
-    display: none !important;
+    width: 0;
   }
   #main {
     z-index: 1;
@@ -333,7 +333,23 @@
     display: inline-block;
     padding-left: 5px;
   }
-  @media only screen and (max-width: 800px) {
+  @media not screen and (min-width: 1px) and (max-width: 800px) {
+    #sidebar {
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+    body.hide-toc #sidebar {
+      width: 0;
+      opacity: 0;
+    }
+    #main {
+      transition: margin-left 0.3s ease;
+    }
+    body.hide-toc #main {
+      transition: margin-left 0.3s ease;
+    }
+  }
+  @media screen and (min-width: 1px) and (max-width: 800px) {
     body {
       font-size: 20px;
     }
@@ -511,7 +527,7 @@ experimentation.</p>
                        background-color:#006699;
                        padding:2px 4px;
                        border-radius:3px;
-                       font-weight:bold;">Note</span> <strong>Tue Oct 10 2017</strong> <mark>This document is not yet finished.</mark></p></div>
+                       font-weight:bold;">Note</span> <strong>Mon Oct 23 2017</strong> <mark>This document is not yet finished.</mark></p></div>
 </div>
 </td></tr></table>
 <ul><li>The <code>{sidebar}</code> macro shows how you can inject CSS styles into a
@@ -795,15 +811,10 @@ to. This will not change.</p></blockquote>
   &lt;style&gt;</a>.</li><li><a href="http://stackoverflow.com/a/16844668/1136455">Using &lt;style&gt; tags in the &lt;body&gt; with other
   HTML</a>.</li></ul></div>
 <h2 id="themes">Themes</h2>
-<p>A <em>theme</em> is the overall typographical style of the rendered HTML
-document.</p>
-<p>The <a href="reference.html#rimuc-command">rimuc</a> command supports named themes with the <code>--theme</code> option.
-All this does is set the <code>--theme</code> macro value which is then used to
-<a href="#conditional-inclusion">conditionally include</a> HTML <code>style</code> elements.</p>
-<p>The <code>--layouts</code> option supports a number of <a href="reference.html#layouts-and-themes">built-in
-themes</a> You can customize these themes
-by setting theme macro values and by including <a href="#scoped-css">custom CSS style
-elements</a>.</p>
+<p>A <a href="reference.html#themes">theme</a> is a layout styling variation.  The
+<code>--layouts</code> option supports a number of <a href="reference.html#built-in-layouts">built-in
+themes</a>. You can create your own themes
+by including <a href="#scoped-css">custom CSS style elements</a>.</p>
 <p>Here is an example theme named <em>redheads</em>:</p>
 <pre class="no-highlight"><code>{--theme!.*\bredheads\b.*}.+skip
 &lt;style&gt;
@@ -1829,8 +1840,8 @@ Rimu Markup</td>
 <tr><td class="example-header" style="width:10%;">HTML Preview</td>
 <td>
 <div id="macro-expressions-example-rendered" class="example-rendered">
-<p><strong>Time</strong>: 13:03:14</p>
-<p><strong>Date</strong>: Tue Oct 10 2017</p>
+<p><strong>Time</strong>: 11:19:24</p>
+<p><strong>Date</strong>: Mon Oct 23 2017</p>
 <p><strong>Circumference</strong>: 40,030 Km</p>
 <p><strong>Content margin</strong>: 341px</p>
 </div>
@@ -1893,7 +1904,7 @@ function appendTocEntry(heading) {
     document.body.classList.toggle('hide-toc');
   }
   function isSmallScreen() {
-    return window.matchMedia('(max-width: 800px)').matches;
+    return window.matchMedia('(min-width: 1px) and (max-width: 800px)').matches;
   }
   // matches() polyfill for old browsers.
   if (!Element.prototype.matches) {

@@ -307,7 +307,7 @@
     background: #eee;
   }
   body.hide-toc #sidebar {
-    display: none !important;
+    width: 0;
   }
   #main {
     z-index: 1;
@@ -333,7 +333,23 @@
     display: inline-block;
     padding-left: 5px;
   }
-  @media only screen and (max-width: 800px) {
+  @media not screen and (min-width: 1px) and (max-width: 800px) {
+    #sidebar {
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+    body.hide-toc #sidebar {
+      width: 0;
+      opacity: 0;
+    }
+    #main {
+      transition: margin-left 0.3s ease;
+    }
+    body.hide-toc #main {
+      transition: margin-left 0.3s ease;
+    }
+  }
+  @media screen and (min-width: 1px) and (max-width: 800px) {
     body {
       font-size: 20px;
     }
@@ -502,8 +518,8 @@ OPTIONS
     Display help message.
 
   --layout LAYOUT
-    Generate a styled HTML document with one of the following
-    predefined document layouts:
+    Generate a styled HTML document. rimuc includes the
+    following built-in document layouts:
 
     'classic': Desktop-centric layout.
     'flex':    Flexbox mobile layout (experimental).
@@ -563,8 +579,8 @@ OPTIONS
     --prepend "{--title}='TITLE'"
 
 LAYOUT OPTIONS
-  The following options are available when the --layout option is
-  used:
+  The following options are available when the --layout option
+  specifies a built-in layout:
 
   Option             Description
   _______________________________________________________________
@@ -588,7 +604,8 @@ LAYOUT OPTIONS
 
 LAYOUT CLASSES
   The following CSS classes are available for use in Rimu Block
-  Attributes elements when the --layout option is used:
+  Attributes elements when the --layout option specifies a
+  built-in layout:
 
   CSS class        Description
   ______________________________________________________________
@@ -626,52 +643,57 @@ PREDEFINED MACROS
 </li><li>Prefix a custom macro definition:<pre class="no-highlight"><code>rimuc --prepend "{annotations}='yes'" showcase.rmu</code></pre>
 </li><li>Compile multiple source files to single output file:<pre class="no-highlight"><code>rimuc -o book.html frontmatter.rmu chapter*.rmu backmatter.rmu</code></pre>
 </li></ol><h3 id="layout-option"><code>--layout</code> option</h3>
-<p>The <code>--layout</code> option envelopes the output in an HTML header and
-footer that:</p>
-<ul><li>Creates a stand-alone HTML5 document.</li><li>Generates a <a href="#toc-generation">table of contents</a>.</li><li>Includes CSS styles for verses, sidebars, text alignment,
-  page break control and section numbering (see <code>rimuc --help</code> command
-  and examples in <a href="tips.html">Rimu Tips</a>).</li><li>Generates unique <a href="#header-id-generation">header id</a> attributes.</li><li>If the <code>--highlightjs</code> macro is non-blank
-  <a href="tips.html#syntax-highlighting">Highlightjs</a> is included.</li><li>If the <code>--mathjax</code> macro is non-blank
-  <a href="tips.html#mathematical-formulae">MathJax</a> is included.</li><li>Supports named <a href="tips.html#themes">themes</a>.</li><li>Can be used to <a href="tips.html#rimuc-html">convert raw HTML and arbitrary Markdown
-  files</a>.</li></ul><p>All features enabled by the <code>--layout</code> option are implemented with
-Rimu markup in the <a href="https://github.com/srackham/rimu/tree/master/src/rimuc/resources">built-in header and footer
-files</a>.  The magic is
-performed by the Rimu markup, the <code>--layout</code> option simply
-concatenates the input with built-in header and footer files, for
+<p>The <code>--layout</code> option is used to generate styled HTML documents.  It
+does this by enveloping the compiled output in a layout specific HTML
+header and footer.</p>
+<p><code>rimuc</code> comes with <a href="#built-in-layouts">built-in layouts</a> and it also
+supports <a href="#imported-layouts">imported layouts</a>.</p>
+<p>All features enabled by the <code>--layout</code> option are implemented with
+Rimu markup in the header and footer files.  The <code>--layout</code> option
+concatenates the input with built-in header and footer files.  For
 example, the following two commands are functionally identical:</p>
 <pre class="no-highlight"><code>rimuc --layout sequel sites.rmu
 rimuc --output sites.html sequel-header.rmu sites.rmu sequel-footer.rmu</code></pre>
-<h3 id="layouts-and-themes">Built-in layouts and themes</h3>
+<h3 id="built-in-layouts">Built-in Layouts</h3>
 <p>You can choose from the following built-in layouts:</p>
 <dl><dt>sequel</dt><dd>Responsive cross-device layout designed to render nicely on
 desktops, laptops, tablets and phones. This website uses the <em>sequel</em>
 layout.</dd><dt>classic</dt><dd>Desktop-centric layout.<ul><li>Set the <code>--dropdown-toc</code> macro to a non-blank value to place the
     table of contents in a popup.</li></ul></dd><dt>flex</dt><dd>Experimental flexbox layout. It currently works best on mobile
 devices.<ul><li>Set the <code>--top-bar</code> macro to a non-blank value to place the
-    navigation bar along the top of the document.</li></ul></dd><dt>v8</dt><dd>Legacy Rimu version 8 layout.</dd></dl><p>The <em>sequel</em>, <em>classic</em> and <em>flex</em> layouts implement <em>legend</em>,
-<em>graystone</em> and <em>vintage</em> <a href="tips.html#themes">themes</a>.  The <code>--theme</code>
-option value is assigned to the <code>--theme</code> macro which the layout
-header then uses to conditionally include HTML <code>style</code> elements.</p>
-<p>Examples of the layouts and themes can be viewed in the <a href="gallery.html">Rimu
+    navigation bar along the top of the document.</li></ul></dd><dt>v8</dt><dd>Deprecated Rimu version 8 layout.</dd></dl><p>Examples of the built-in layouts can be viewed in the <a href="gallery.html">Rimu
 Gallery</a>.</p>
-<h3 id="layout-customization">Layout customization</h3>
-<p>Prominent layout and theme styles are set by header file macro values
-and can be overriden by prepending new values. For example:</p>
+<p>The built-in layouts:</p>
+<ul><li>Create a stand-alone HTML5 document.</li><li>Optionally generate a <a href="#toc-generation">table of contents</a>.</li><li>Include CSS styles for verses, sidebars, text alignment,
+  page break control and section numbering (see <code>rimuc --help</code> command
+  and examples in <a href="tips.html">Rimu Tips</a>).</li><li>Generate unique <a href="#header-id-generation">header id</a> attributes.</li><li>If the <code>--highlightjs</code> macro is non-blank
+  <a href="tips.html#syntax-highlighting">Highlightjs</a> is included.</li><li>If the <code>--mathjax</code> macro is non-blank
+  <a href="tips.html#mathematical-formulae">MathJax</a> is included.</li><li>Support named <a href="tips.html#themes">themes</a>.</li></ul><p>A number of built-in layout styles are set by header file macro values
+that can be overridden. For example:</p>
 <pre class="no-highlight"><code>rimuc --layout sequel --prepend "{--primary-color}='#0cc'" sites.rmu</code></pre>
 <p>You can view full list of layout macros in the corresponding built-in
 layout <a href="https://github.com/srackham/rimu/tree/master/src/rimuc/resources">header file</a>.</p>
+<h3 id="themes">Themes</h3>
+<p>A theme is a layout styling variation.  Named themes are specified
+using the <code>--theme</code> option.  The built-in layouts implement <em>legend</em>,
+<em>graystone</em> and <em>vintage</em> themes.</p>
+<p>Examples of the built-in layout themes can be viewed in the <a href="gallery.html">Rimu
+Gallery</a>.</p>
+<p>The <code>--theme</code> option value sets the <code>--theme</code> macro which the layout
+header then uses to <a href="tips.html#conditional-inclusion">conditionally
+include</a> HTML <code>style</code> elements.</p>
 <h3 id="toc-generation">Table of contents generation</h3>
-<p>The  <code>--layout</code> option automatically includes a table of contents in
-the generated HTML document.</p>
+<p>Built-in layouts automatically include a table of contents in the
+generated HTML document.</p>
 <ul><li>The table of contents is synthesised from top level <code>h1</code>, <code>h2</code> and
   <code>h3</code> HTML header elements.</li><li>You can suppress the table of contents generation using the
   <code>--no-toc</code> option.</li><li>The <code>--custom-toc</code> option allows the user to include a <a href="#custom-table-of-contents">custom
   TOC</a>.</li><li>Use the <code>no-auto-toc</code> CSS class attribute to exclude a section
   header from the table of contents, for example:<pre class="no-highlight"><code>.no-auto-toc
 ## This header does not appear in the TOC</code></pre>
-</li></ul><h3 id="custom-table-of-contents">Custom Table of contents</h3>
-<p>The <code>--custom-toc</code> option is used in conjunction with the <code>--layout</code>
-option. The <code>--custom-toc</code> option inhibits the generation of an HTML
+</li></ul><h3 id="custom-table-of-contents">Custom table of contents</h3>
+<p>The <code>--custom-toc</code> option is used in conjunction with built-in
+layouts. The <code>--custom-toc</code> option inhibits the generation of an HTML
 TOC container and it is up to the user to include a custom HTML TOC
 container in the Rimu markup. This allows you to customise the
 location, style and content of the TOC:</p>
@@ -682,6 +704,18 @@ inserted in the output document:</p>
 <pre class="no-highlight"><code>&lt;div id="toc"&gt;
   &lt;div id="auto-toc"&gt;&lt;/div&gt;
 &lt;/div&gt;</code></pre>
+<h3 id="imported-layouts">Imported Layouts</h3>
+<p><code>rimuc</code> supports third-party externally sourced layouts. When the
+<code>--layout &lt;layout-name&gt;</code> option is specified <code>rimuc</code> searches for a
+built-in layout with the same name. If it is not found then an attempt
+is made to import a nodejs module named like
+<code>rimu-&lt;layout-name&gt;-layout</code>.  The imported module contains two
+attributes, <code>header</code> and <code>footer</code>, which return the Rimu header markup
+and footer markup respectively.</p>
+<p>For example, take a look at the <a href="https://github.com/srackham/rimu-plain-layout.git">Rimu <em>plain</em>
+Layout</a>.</p>
+<p>Consult the imported layout's documentation for supported layout
+options.</p>
 <h2 id="api">API</h2>
 <p>Rimu has just one API for translating Rimu markup to HTML:</p>
 <pre class="no-highlight"><code>render(source [, options])</code></pre>
@@ -1489,17 +1523,17 @@ attributes.  The Block Attributes element can also include
 processing of <a href="#delimited-blocks">Delimited Block</a> elements.</p>
 <p>Syntax:</p>
 <pre class="no-highlight"><code>.class-names #id "css-properties" [html-attributes] block-options</code></pre>
-<ul><li>The leading period character must start at the left margin and the
-  attributes must not extend beyond the end of the line.</li><li>All items are optional.</li><li><code>class-names</code> is one or more HTML <em>class</em> attribute names (separated
+<ul><li><code>block-options</code> is used to control the processing of the succeeding
+  <a href="#delimited-block">Delimited Block element</a> contents.</li><li>Macro invocations in <em>Block Attributes</em> are expanded.</li><li>The leading period character must start at the left margin and the
+  attributes must not extend beyond the end of the line.</li><li>All items are optional but their order is not.</li><li>Successive Block Attributes elements accumulate until they are
+  consumed by the first succeeding Delimited Block element.</li><li><code>class-names</code> is one or more HTML <em>class</em> attribute names (separated
   by spaces).</li><li><code>id</code> is a unique HTML <em>id</em> attribute value.</li><li><code>css-properties</code> is one or more CSS property name/value pairs: it
   injects a <code>style="css-properties"</code> attribute into the target
   opening tag.</li><li><code>html-attributes</code> is one or more HTML attribute name/value pairs:
-  they are injected into the target opening tag.</li><li>Successive Block Attributes elements accumulate until they are
-  consumed by the first succeeding Delimited Block element.</li><li>The <code>[html-attributes]</code> section is ignored if the <a href="#api-options">safeMode API
+  they are injected into the target opening tag.</li><li>The <code>[html-attributes]</code> section is ignored if the <a href="#api-options">safeMode API
   option</a> is not zero.</li><li>The <code>-specials</code> block option is ignored if the <a href="#api-options">safeMode API
   option</a>  is not zero.</li><li>The entire Block Attributes element is ignored if bit 2 of the
-  <a href="#api-options">safeMode API option</a> is set.</li><li><code>block-options</code> is used to control the processing of the succeeding
-  <a href="#delimited-block">Delimited Block element</a> contents.</li><li>Macro invocations in <em>Block Attributes</em> are expanded.</li></ul><h4 id="examples-18">Examples</h4>
+  <a href="#api-options">safeMode API option</a> is set.</li></ul><h4 id="examples-18">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
@@ -1672,11 +1706,7 @@ _______________________________________________________________
 --header-ids       Set to a non-blank value to generate h1, h2
                    and h3 header id attributes.
 _______________________________________________________________</code></pre>
-<ul><li>See <a href="#header-id-generation">Header id generation</a>.</li></ul><h3 id="rimuc-layout-macros">rimuc layout macros</h3>
-<p>The <a href="#rimuc-command">rimuc command</a> makes a number of additional
-layout macros available when you use the <a href="#layout-option"><code>--layout</code>
-option</a>.</p>
-<h3 id="header-id-generation">Header id generation</h3>
+<ul><li>See <a href="#header-id-generation">Header id generation</a>.</li></ul><h3 id="header-id-generation">Header id generation</h3>
 <p>If the <a href="#predefined-macros">predefined macro</a> <code>--header-ids</code> is
 non-blank Rimu generates unique HTML <code>id</code> attributes for <code>h1</code>, <code>h2</code>
 and <code>h3</code> <a href="#headers">section headers</a> that do not have an explicit id.</p>
@@ -1756,7 +1786,7 @@ function appendTocEntry(heading) {
     document.body.classList.toggle('hide-toc');
   }
   function isSmallScreen() {
-    return window.matchMedia('(max-width: 800px)').matches;
+    return window.matchMedia('(min-width: 1px) and (max-width: 800px)').matches;
   }
   // matches() polyfill for old browsers.
   if (!Element.prototype.matches) {
