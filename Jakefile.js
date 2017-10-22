@@ -178,12 +178,8 @@ function forEachGalleryDocument(documentCallback, layoutCallback, themeCallback)
     if (layoutCallback) layoutCallback(layout);
       ['legend', 'vintage', 'graystone'].forEach(function (theme) {
       if (themeCallback) themeCallback(layout, theme);
-        ['', 'top-bar', 'dropdown-toc'].forEach(function (variant) {
+        ['', 'dropdown-toc'].forEach(function (variant) {
         let option = variant;
-        if (variant === 'top-bar') {
-          if (layout !== 'flex') return
-          else option = '--prepend "{--top-bar}=\'yes\'"'
-        }
         if (variant === 'dropdown-toc') {
           if (layout !== 'classic') return
           else option = '--prepend "{--dropdown-toc}=\'yes\'"'

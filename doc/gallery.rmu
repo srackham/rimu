@@ -39,13 +39,10 @@ See [Built-in layouts]({reference}#built-in-layouts) for more information.
 
 ### legend theme
 - [`--layout flex --theme legend`](flex-legend-example.html)
-- [`--layout flex --theme legend --prepend "\{--top-bar}='yes'"`](flex-legend-top-bar-example.html)
 
 ### vintage theme
 - [`--layout flex --theme vintage`](flex-vintage-example.html)
-- [`--layout flex --theme vintage --prepend "\{--top-bar}='yes'"`](flex-vintage-top-bar-example.html)
 
 ### graystone theme
 - [`--layout flex --theme graystone`](flex-graystone-example.html)
-- [`--layout flex --theme graystone --prepend "\{--top-bar}='yes'"`](flex-graystone-top-bar-example.html)
 
