@@ -107,6 +107,7 @@
     margin: 0;
     padding: 0;
     white-space: inherit;
+    box-sizing: border-box;
   }
   body {
     font-size: 16px;
@@ -360,9 +361,6 @@
 
 {--no-toc!}.+skip
 <style>
-  #toc {
-    padding-left: 1em;
-  }
   #toc .h1 {
     font-size: 110%;
     font-weight: bold;
@@ -413,9 +411,9 @@
   -------------
 */
 <style>
-  #nav, #article, #toc {
-    padding-left: 5px;
-    padding-right: 5px;
+  #article, #toc {
+    padding-left: 1em;
+    padding-right: 1em;
   }
   #article > * {
     max-width: {--max-text-width};
@@ -499,13 +497,21 @@
   }
   #nav {
     height: 100%;
-    width: 30px;
+    width: 40px;
   }
   #toc-button {
+    padding-left: 4px;
     padding-top: 15px;
   }
+{--!} Small screen.
+  @media screen and {--small-screen} {
+    #article, #toc {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }
 {--!} Top-bar for small screen portrait mode.
-  @media screen and (max-width: 800px) and (orientation: portrait) {
+  @media screen and {--small-screen} and (orientation: portrait) {
     body {
       flex-direction: column;
     }
@@ -514,6 +520,7 @@
       width: 100%;
     }
     #toc-button {
+      padding-left: 10px;
       padding-top: 10px;
     }
   }
