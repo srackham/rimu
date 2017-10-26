@@ -55,9 +55,10 @@ See the [API documentation](#api).
 .#rimuc-command
 ## `rimuc` command
 
-_rimuc_ is a lightweight Node.js command-line tool that uses the Rimu
-library to convert Rimu markup (or [Rimu compatible
-Markdown]({tips}#markdown-compatible)) to HTML.
+_rimuc_ is a lightweight Node.js command-line tool that converts Rimu
+markup  to HTML. _rimuc_ has options to generate stand-alone styled
+HTML documents, either from Rimu Markup or [from Markdown or any
+text-to-HTML markup]({tips}#rimuc-html).
 
 Run `rimuc --help` to view the `rimuc` manpage:
 
@@ -86,6 +87,10 @@ OPTIONS
   -h, --help
     Display help message.
 
+  --html-replacement TEXT
+    Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
+    Defaults to '<mark>replaced HTML</mark>'.
+
   --layout LAYOUT
     Generate a styled HTML document. rimuc includes the
     following built-in document layouts:
@@ -102,6 +107,9 @@ OPTIONS
   -o, --output OUTFILE
     Write output to file OUTFILE instead of stdout.
     If OUTFILE is a hyphen '-' write to stdout.
+
+  --pass
+    Pass the stdin input verbatim to the output.
 
   -p, --prepend SOURCE
     Process the SOURCE text before all other inputs.
@@ -127,10 +135,6 @@ OPTIONS
 
     Add 4 to --safe-mode to ignore Block Attribute elements.
     Add 8 to --safe-mode to allow Macro Definitions.
-
-  --html-replacement TEXT
-    Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
-    Defaults to '<mark>replaced HTML</mark>'.
 
   --theme THEME, --lang LANG, --title TITLE, --highlightjs, --mathjax,
   --no-toc, --custom-toc, --section-numbers, --header-ids, --header-links

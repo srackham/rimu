@@ -168,28 +168,30 @@ _npmjs.org_ README formats.
 
 .#rimuc-html
 ## Processing HTML and Markdown with the `rimuc` command
-{rimuc} passes the contents of input files with a `.html` extension
-directly to the output.  This allows you to generate styled HTML5
-documents from raw HTML files (HTML files with no `<html>`, `<head>` or
-`<body>` tags), or from non Rimu compatible Markdown files, using the
-{rimuc} `--layout` option. Examples:
+{rimuc} passes files with a `.html` extension directly to the output,
+similarly the standard input is passed directly to the output if the
+`--pass` option is specified.
 
-Raw HTML file:: Convert `mydoc.html` to styled HTML5 document with
-table of contents:
+When it comes to processing Markdown there are two options:
 
-  rimuc --layout sequel mydoc.html
+1. If your Markdown file is compatible with the [Rimu Markdown
+   subset](#markdown-compatible) then you don't have to do anything,
+   {rimuc} will process it just like any other Rimu source file.
 
-Rimu compatible Markdown file::
-Convert `mydoc.md` to styled HTML5 document:
+2. Otherwise convert the Markdown (or, for that matter, any other
+   text-to-HTML markup) to HTML before processing it using {rimuc}.
+   For example:
+..
+``
+  markdown mydoc.md > mydoc.html && rimuc --layout sequel mydoc.html
 
-  rimuc --layout sequel mydoc.md
-
-Markdown file containing non Rimu compatible elements::
-Convert `mydoc.md` to styled HTML5 document after first converting it
-to raw HTML with `markdown`:
-
-  markdown mydoc.md > mydoc.html
-  rimuc --layout sequel mydoc.html
+  cat mydoc.md | markdown | rimuc --layout sequel --pass > mydoc.html
+``
+The first example works because {rimuc} passes the contents of input
+files with a `.html` extension directly to the output. The second
+example works because the {rimuc} `--pass` option passes the standard
+input verbatim to the output.
+..
 
 
 ## Converting Rimu to Markdown
