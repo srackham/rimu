@@ -260,5 +260,12 @@
     "expectedOutput": "source file does not exist: ./test/fixtures/a-non-existent-file\n",
     "exitCode": 1,
     "predicate": "equals"
+  },
+  {
+    "description": "rimuc --pass option",
+    "args": "--pass",
+    "input": "foo",
+    "expectedOutput": "foo",
+    "predicate": "equals"
   }
 ]
