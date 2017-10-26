@@ -146,19 +146,19 @@
     margin: 10px 0;
     color: {--primary-color};
   }
-  h1 { font-size: 2.2em; line-height: 40px;}
-  h2 { font-size: 1.5em; }
-  h3 { font-size: 1.2em; }
-  h4 { font-size: 1.1em; }
-  h5 { font-size: 1.0em; }
-  h6 { font-size: 0.9em; }
+  h1 { font-size: 2.2rem; line-height: 40px;}
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.2rem; }
+  h4 { font-size: 1.1rem; }
+  h5 { font-size: 1.0rem; }
+  h6 { font-size: 0.9rem; }
   h2, h3, h4, h5, h6 {
     line-height: normal;
-    margin-top: 1.0em;
-    margin-bottom: 0.2em;
+    margin-top: 1.0rem;
+    margin-bottom: 0.2rem;
   }
   h2 {
-    margin-top: 1.5em;
+    margin-top: 1.5rem;
     border-bottom: 1px solid {--border-color};
   }
   img {
@@ -188,8 +188,8 @@
   }
   p, pre, li, dt, dd, blockquote p {
     line-height: 1.45;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   }
   ul, ol {
     padding: 0;
@@ -200,7 +200,7 @@
     font-style: italic;
   }
   dd {
-    margin-left: 1.0em;
+    margin-left: 1.0rem;
     margin-top: 0;
   }
   blockquote {
@@ -244,7 +244,7 @@
     white-space: nowrap;
   }
   .dl-horizontal > dd {
-    margin-top: 1.0em;
+    margin-top: 1.0rem;
   }
   pre > code {
     background-color: inherit;
@@ -263,8 +263,8 @@
   div.verse p, p.verse {
     font-family: {--serif-font};
     white-space: pre;
-    margin-top: 0.75em;
-    margin-bottom: 0.75em;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
   }
   {--!} Apply sidebar class to Normal Paragraphs and Division blocks.
   .sidebar {
@@ -275,7 +275,7 @@
     margin: 1.5em 0;
   }
   div.sidebar *:first-child {
-    margin-top: 0.2em;
+    margin-top: 0.2rem;
   }
   {--!} Force page break before the element.
   .page-break {
@@ -319,12 +319,12 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     text-align: left;
-    margin-top: 1.0em;
+    margin-top: 1.0rem;
     width: 25%;
   }
   .dl-horizontal > dd {
     margin-left: 25%;
-    padding-left: 1.0em;
+    padding-left: 1.0rem;
   }
   {--!} List item counters.
   dl {
@@ -389,7 +389,7 @@
 {--has-toc=}.+skip
 <style>
   #toc {
-    padding-left: 1em;
+    padding-left: 1rem;
   }
   #toc h2 {
     font-size: 125%;
@@ -399,14 +399,14 @@
   #toc .h1 {
     font-size: 110%;
     font-weight: bold;
-    margin-top: 0.5em;
-    margin-bottom: 0.4em;
+    margin-top: 0.5rem;
+    margin-bottom: 0.4rem;
   }
   #toc .h2 {
-    margin-top: 0.4em;
+    margin-top: 0.4rem;
   }
   #toc .h3 {
-    margin-left: 1.5em;
+    margin-left: 1.5rem;
     font-size: 90%;
   }
   #toc div[class^="h"]:nth-child(even) {
@@ -448,7 +448,7 @@
 */
 <style>
   body {
-    margin: 1em;
+    margin: 1rem;
     max-width: {--max-text-width};
   }
 </style>
@@ -456,14 +456,14 @@
 {--sidebar-toc=}.+skip
 <style>
   body {
-    padding-left: 21em;
+    padding-left: 21rem;
   }
   #toc {
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
-    width: 18em;
+    width: 18rem;
     border-right: 1px solid #cccccc;
     overflow-y: auto;
     overflow-x: hidden;
@@ -471,10 +471,10 @@
   }
   @media print {
     body {
-      padding-left: 1em;
+      padding-left: 1rem;
     }
   }
-  @media only screen and {--small-screen} {
+  @media screen and {--small-screen} {
     {--!}  Sidebar TOC hidden as it does not work on small screens.
     body {
       padding-left: 0;
@@ -497,7 +497,7 @@
     z-index: 1;
     cursor: pointer;
     color: silver;
-    font-size: 3.2em;
+    font-size: 3.2rem;
   }
   #toc {
     display: none;
@@ -506,7 +506,7 @@
     left: 15px;
     right: 10%;
     z-index: 1;
-    max-width: 30em;
+    max-width: 30rem;
     max-height: 80%;
     overflow-y: auto;
     background-color: {--primary-background};
@@ -520,7 +520,7 @@
       margin-left: 0;
     }
   }
-  @media only screen and {--small-screen} {
+  @media screen and {--small-screen} {
     {--!}  Reposition TOC and TOC button.
     #toc {
       top: 60px;
@@ -535,7 +535,7 @@
 
 // Format (non-layout) related styles.
 <style>
-  @media only screen and {--small-screen} {
+  @media screen and {--small-screen} {
     body {
       font-size: 20px;
       margin: 5px;
