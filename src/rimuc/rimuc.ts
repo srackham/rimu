@@ -30,6 +30,10 @@ OPTIONS
   -h, --help
     Display help message.
 
+  --html-replacement TEXT
+    Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
+    Defaults to '<mark>replaced HTML</mark>'.
+
   --layout LAYOUT
     Generate a styled HTML document. rimuc includes the
     following built-in document layouts:
@@ -46,6 +50,9 @@ OPTIONS
   -o, --output OUTFILE
     Write output to file OUTFILE instead of stdout.
     If OUTFILE is a hyphen '-' write to stdout.
+
+  --pass
+    Pass the stdin input verbatim to the output.
 
   -p, --prepend SOURCE
     Process the SOURCE text before all other inputs.
@@ -71,10 +78,6 @@ OPTIONS
 
     Add 4 to --safe-mode to ignore Block Attribute elements.
     Add 8 to --safe-mode to allow Macro Definitions.
-
-  --html-replacement TEXT
-    Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
-    Defaults to '<mark>replaced HTML</mark>'.
 
   --theme THEME, --lang LANG, --title TITLE, --highlightjs, --mathjax,
   --no-toc, --custom-toc, --section-numbers, --header-ids, --header-links
@@ -150,6 +153,7 @@ PREDEFINED MACROS
                      and h3 header id attributes.
   _______________________________________________________________
 `
+const STDIN = '/dev/stdin'
 const HOME_DIR = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']
 const RIMURC = path.resolve(HOME_DIR, '.rimurc')
 
@@ -185,6 +189,7 @@ let html_replacement: string | undefined
 let layout = ''
 let no_rimurc = false
 let prepend_files: string[] = []
+let pass = false
 
 // Skip executable and script paths.
 process.argv.shift(); // Skip executable path.
@@ -211,6 +216,9 @@ outer:
         if (!outfile) {
           die('missing --output file name')
         }
+        break
+      case '--pass':
+        pass = true
         break
       case '--prepend':
       case '-p':
@@ -280,9 +288,9 @@ outer:
 // process.argv contains the list of source files.
 let files = process.argv
 if (files.length === 0) {
-  files.push('/dev/stdin')
+  files.push(STDIN)
 }
-else if (layout !== '' && !outfile && files.length === 1) {
+else if (files.length === 1 && layout !== '' && !outfile) {
   // Use the source file name with .html extension for the output file.
   outfile = files[0].substr(0, files[0].lastIndexOf('.')) + '.html'
 }
@@ -337,7 +345,7 @@ for (let infile of files) {
     options.safeMode = (prepend_files.indexOf(infile) > -1) ? 0 : safe_mode
   }
   let ext = infile.split('.').pop()
-  if (ext === 'html') {
+  if (ext === 'html' || (pass && infile === STDIN)) {
     output += source + '\n'
     continue
   }
