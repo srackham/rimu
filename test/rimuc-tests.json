@@ -262,6 +262,13 @@
     "predicate": "equals"
   },
   {
+    "description": "rimuc HTML input file",
+    "args": "--prepend-file ./test/fixtures/hello-rimu.html",
+    "input": "",
+    "expectedOutput": "Hello *Rimu*!",
+    "predicate": "equals"
+  },
+  {
     "description": "rimuc --pass option",
     "args": "--pass",
     "input": "foo",
