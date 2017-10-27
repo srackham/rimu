@@ -8,6 +8,7 @@ const fs = require('fs');
 function rimuc_exec(source, options, callback) {
   source = source.replace(/\n/g, '\\n');
   source = source.replace(/"/g, '\\x22');
+  source = source.replace(/`/g, '\\x60');
   const command = '`which echo` -e "' + source + '" | node ./bin/rimuc.js --no-rimurc ' + (options || '');
   exec(command, function (error, stdout, stderr) {
     callback(stdout + stderr, error);
