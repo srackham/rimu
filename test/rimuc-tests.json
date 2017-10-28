@@ -302,5 +302,12 @@
     "input": "NOTES: foobar\n\nWARNINGS: foobar\n\nTIPS: foobar",
     "expectedOutput": "<p><b>NOTES</b>: foobar</p>\n<p><b>WARNINGS</b>: foobar</p>\n<p><b>TIPS</b>: foobar</p>",
     "predicate": "equals"
+  },
+  {
+    "description": "rimuc imported layout",
+    "args": "--layout plain",
+    "input": "foobar",
+    "expectedOutput": "<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"UTF-8\">\n<title>Title</title>\n</head>\n<body>\n<p>foobar</p>\n</body>\n</html>",
+    "predicate": "equals"
   }
 ]
