@@ -75,6 +75,7 @@ DESCRIPTION
   then writes the HTML to stdout. If FILES are specified
   the Rimu source is read from FILES. The contents of files
   with an .html extension are passed directly to the output.
+  An input file named '-' is read from stdin.
 
   If a file named .rimurc exists in the user's home directory
   then its contents is processed (with --safe-mode 0).
