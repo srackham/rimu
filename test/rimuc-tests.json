@@ -255,17 +255,17 @@
   },
   {
     "description": "rimuc non-existant input file",
-    "args": "--prepend-file ./test/fixtures/a-non-existent-file",
+    "args": "./test/fixtures/a-non-existent-file",
     "input": "",
     "expectedOutput": "source file does not exist: ./test/fixtures/a-non-existent-file\n",
     "exitCode": 1,
     "predicate": "equals"
   },
   {
-    "description": "rimuc HTML input file",
-    "args": "--prepend-file ./test/fixtures/hello-rimu.html",
-    "input": "",
-    "expectedOutput": "Hello *Rimu*!",
+    "description": "rimuc HTML and stdin input files",
+    "args": "./test/fixtures/hello-rimu.html -",
+    "input": "Hello *again*!",
+    "expectedOutput": "Hello *Rimu*!\n\n<p>Hello <em>again</em>!</p>",
     "predicate": "equals"
   },
   {
