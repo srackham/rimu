@@ -18,6 +18,7 @@ DESCRIPTION
   then writes the HTML to stdout. If FILES are specified
   the Rimu source is read from FILES. The contents of files
   with an .html extension are passed directly to the output.
+  An input file named '-' is read from stdin.
 
   If a file named .rimurc exists in the user's home directory
   then its contents is processed (with --safe-mode 0).
@@ -278,9 +279,6 @@ outer:
         prepend += '{--header-ids}=\'true\'\n'
         break
       default:
-        if (arg[0] === '-') {
-          die('illegal option: ' + arg)
-        }
         process.argv.unshift(arg); // argv contains source file names.
         break outer
     }
@@ -290,7 +288,7 @@ let files = process.argv
 if (files.length === 0) {
   files.push(STDIN)
 }
-else if (files.length === 1 && layout !== '' && !outfile) {
+else if (files.length === 1 && layout !== '' && files[0] !== '-' && !outfile) {
   // Use the source file name with .html extension for the output file.
   outfile = files[0].substr(0, files[0].lastIndexOf('.')) + '.html'
 }
@@ -317,6 +315,9 @@ if (html_replacement !== undefined) {
   options.htmlReplacement = html_replacement
 }
 for (let infile of files) {
+  if (infile === '-') {
+    infile = STDIN
+  }
   let source = ''
   if (infile.startsWith(RESOURCE_TAG)) {
     infile = infile.substr(RESOURCE_TAG.length)
