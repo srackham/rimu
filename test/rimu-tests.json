@@ -1257,8 +1257,8 @@
   },
   {
     "description": "parametrized macro: default parameters",
-    "input": "{v}='Hello $1:World$!'\n{v} {v|} {v|Mars}",
-    "expectedOutput": "<p>Hello $1:World$! Hello World! Hello Mars!</p>",
+    "input": "{v}='Hello $1:cruel$ $2:World$!'\n{v} {v|} {v||Mars} {v|happy|Mercury}",
+    "expectedOutput": "<p>Hello $1:cruel$ $2:World$! Hello cruel World! Hello cruel Mars! Hello happy Mercury!</p>",
     "expectedCallback": "",
     "options": {
       "reset": true
