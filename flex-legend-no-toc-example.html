@@ -21,7 +21,7 @@
   }
   h1, h2, h3, h4, h5, h6 {
     margin: 10px 0;
-    color: #527bbd;
+    color: #34495e;
   }
   h1 { font-size: 2.2rem; line-height: 40px;}
   h2 { font-size: 1.5rem; }
@@ -54,7 +54,7 @@
     border: 1px solid #dddddd;
   }
   a, a:hover {
-    color: #527bbd;
+    color: #34495e;
   }
   a {
     text-decoration: none;
@@ -106,7 +106,7 @@
     white-space: pre-wrap;
     background-color: #f8f8f8;
     border: 1px solid #dddddd;
-    border-radius: 4px;
+    border-radius: 0;
     padding: 6px;
   }
   .light-background {
@@ -138,7 +138,7 @@
   }
   .sidebar {
     border: 1px solid #dddddd;
-    border-radius: 4px;
+    border-radius: 0;
     background: #ffffee;
     padding: 10px;
     margin: 1.5em 0;
@@ -229,69 +229,18 @@
   }
 </style>
 <style>
-  #toc {
-    padding-left: 1rem;
-  }
-  #toc h2 {
-    font-size: 125%;
-    margin-top:1.0rem;
-    margin-left: 0;
-  }
-  #toc .h1 {
-    font-size: 110%;
-    font-weight: bold;
-    margin-top: 0.5rem;
-    margin-bottom: 0.4rem;
-  }
-  #toc .h2 {
-    margin-top: 0.4rem;
-  }
-  #toc .h3 {
-    margin-left: 1.5rem;
-    font-size: 90%;
-  }
-  #toc div[class^="h"]:nth-child(even) {
-    background-color: #f8f8f8;
-  }
-  #auto-toc {
-    width: 100%;
-  }
-</style>
-<style>
-  #article {
-    padding-left: 2rem;
-    padding-right: 1rem;
+  #article > * {
     max-width: 50rem;
   }
-</style>
-<style>
-  .show-toc #toc {
-    display: block !important;
+  #article, #toc {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
-  #toc-button {
-    position: fixed;
-    top: 22px;
-    left: 15px;
-    z-index: 1;
-    cursor: pointer;
-    color: silver;
-    font-size: 3.2rem;
-  }
-  #toc {
-    display: none;
-    position: fixed;
-    top: 55px;
-    left: 17px;
-    right: 10%;
-    z-index: 1;
-    max-width: 30rem;
-    max-height: 80%;
-    overflow-y: auto;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
-  }
-  #article {
-    margin-left: 2rem;
+  @media screen and (max-width: 800px) {
+    #article, #toc {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
   }
 </style>
 <style>
@@ -300,34 +249,15 @@
       font-size: 20px;
     }
   }
-  @media print {
-    #article {
-      margin-left: 0;
-      max-width: 100%;
-    }
-  }
 </style>
 </head>
 <body>
-<div id="toc-button" class="no-print">&#8801;</div>
 <div id="article">
 
-<div id="toc" class="no-print">
-  <h2>Links</h2>
-  <div class="h2"><a href="index.html">Rimu Home</a></div>
-  <div class="h2"><a href="rimuplayground.html">Rimu Playground</a></div>
-  <div class="h2"><a href="reference.html">Rimu Reference</a></div>
-  <div class="h2"><a href="tips.html">Rimu Tips</a></div>
-  <div class="h2"><a href="gallery.html">Rimu Gallery</a></div>
-  <div class="h2"><a href="changelog.html">Change Log</a></div>
-  <div class="h2"><a href="https://github.com/srackham/rimu">Github</a></div>
-  <div class="h2"><a href="https://npmjs.org/package/rimu">npm</a></div>
-  <h2>Table of Contents</h2>
-  <div id="auto-toc"></div>
-</div>
+
 
 <h1 id="rimuc-layout-and-theme-example">rimuc layout and theme example</h1>
-<h3 class="no-auto-toc" id="gallery-options"><code>--layout classic --theme vintage --prepend "{--dropdown-toc}='yes'"</code></h3>
+<h3 class="no-auto-toc" id="gallery-options"><code>--layout flex --theme legend --no-toc</code></h3>
 <h2 id="ultricies-lundium">Ultricies lundium</h2>
 <p>Arcu sed hac nisi duis porta, sociis pulvinar. Montes enim, facilisis
 urna? Augue vel, magnis montes sociis auctor, ut! Placerat porta
@@ -353,55 +283,5 @@ nec et dignissim vel, sit integer phasellus? Tempor lacus et magna
 porta natoque elementum velit placerat aenean dis tincidunt.</code></pre>
 
 </div>
-<script>
-window.onload = function() {
-  var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
-  headings.forEach(function(heading) {
-    appendTocEntry(heading);
-  });
-}
-</script>
-<script>
-function appendTocEntry(heading) {
-  var id = heading.getAttribute('id');
-  if (heading.classList.contains('no-auto-toc')) {
-    return;
-  }
-  var container = document.getElementById('auto-toc');
-  if (container === null) {
-    return;
-  }
-  var tocLink = document.createElement('a');
-  tocLink.setAttribute('href', '#' + id);
-  tocLink.textContent = heading.textContent;
-  var tocEntry = document.createElement('div');
-  tocEntry.setAttribute('class', heading.tagName.toLowerCase());
-  tocEntry.appendChild(tocLink);
-  container.appendChild(tocEntry);
-}
-</script>
-<script>
-// matches() polyfill for old browsers.
-if (!Element.prototype.matches) {
-  var p = Element.prototype;
-  if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
-    p.matches = p.webkitMatchesSelector;
-  if (p.msMatchesSelector) // IE9/10/11 & Edge
-    p.matches = p.msMatchesSelector;
-  if (p.mozMatchesSelector) // FF<34
-    p.matches = p.mozMatchesSelector;
-}
-window.onclick = function(event) {
-  var body = document.getElementsByTagName('body')[0];
-  if (event.target.matches('#toc-button, #toc a')) {
-    // Toggle TOC if TOC button or TOC link is clicked.
-    body.classList.toggle('show-toc');
-  }
-  else if (!event.target.matches('#toc, #toc *')) {
-    // Hide TOC if clicked outside TOC.
-    body.classList.remove('show-toc');
-  }
-}
-</script>
 </body>
 </html>

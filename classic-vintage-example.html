@@ -10,6 +10,7 @@
     margin: 0;
     padding: 0;
     white-space: inherit;
+    box-sizing: border-box;
   }
   body {
     font-size: 16px;
@@ -22,19 +23,19 @@
     margin: 10px 0;
     color: #527bbd;
   }
-  h1 { font-size: 2.2em; line-height: 40px;}
-  h2 { font-size: 1.5em; }
-  h3 { font-size: 1.2em; }
-  h4 { font-size: 1.1em; }
-  h5 { font-size: 1.0em; }
-  h6 { font-size: 0.9em; }
+  h1 { font-size: 2.2rem; line-height: 40px;}
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.2rem; }
+  h4 { font-size: 1.1rem; }
+  h5 { font-size: 1.0rem; }
+  h6 { font-size: 0.9rem; }
   h2, h3, h4, h5, h6 {
     line-height: normal;
-    margin-top: 1.0em;
-    margin-bottom: 0.2em;
+    margin-top: 1.0rem;
+    margin-bottom: 0.2rem;
   }
   h2 {
-    margin-top: 1.5em;
+    margin-top: 1.5rem;
     border-bottom: 1px solid #dddddd;
   }
   img {
@@ -63,8 +64,8 @@
   }
   p, pre, li, dt, dd, blockquote p {
     line-height: 1.45;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   }
   ul, ol {
     padding: 0;
@@ -75,7 +76,7 @@
     font-style: italic;
   }
   dd {
-    margin-left: 1.0em;
+    margin-left: 1.0rem;
     margin-top: 0;
   }
   blockquote {
@@ -117,7 +118,7 @@
     white-space: nowrap;
   }
   .dl-horizontal > dd {
-    margin-top: 1.0em;
+    margin-top: 1.0rem;
   }
   pre > code {
     background-color: inherit;
@@ -132,8 +133,8 @@
   div.verse p, p.verse {
     font-family: Georgia, Times, serif;
     white-space: pre;
-    margin-top: 0.75em;
-    margin-bottom: 0.75em;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
   }
   .sidebar {
     border: 1px solid #dddddd;
@@ -143,7 +144,7 @@
     margin: 1.5em 0;
   }
   div.sidebar *:first-child {
-    margin-top: 0.2em;
+    margin-top: 0.2rem;
   }
   .page-break {
     page-break-before: always;
@@ -181,12 +182,12 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     text-align: left;
-    margin-top: 1.0em;
+    margin-top: 1.0rem;
     width: 25%;
   }
   .dl-horizontal > dd {
     margin-left: 25%;
-    padding-left: 1.0em;
+    padding-left: 1.0rem;
   }
   dl {
     counter-reset: dl-counter;
@@ -229,7 +230,7 @@
 </style>
 <style>
   #toc {
-    padding-left: 1em;
+    padding-left: 1rem;
   }
   #toc h2 {
     font-size: 125%;
@@ -239,14 +240,14 @@
   #toc .h1 {
     font-size: 110%;
     font-weight: bold;
-    margin-top: 0.5em;
-    margin-bottom: 0.4em;
+    margin-top: 0.5rem;
+    margin-bottom: 0.4rem;
   }
   #toc .h2 {
-    margin-top: 0.4em;
+    margin-top: 0.4rem;
   }
   #toc .h3 {
-    margin-left: 1.5em;
+    margin-left: 1.5rem;
     font-size: 90%;
   }
   #toc div[class^="h"]:nth-child(even) {
@@ -257,34 +258,30 @@
   }
 </style>
 <style>
-  body {
-    margin: 1em;
+  #article {
+    padding-left: 2rem;
+    padding-right: 1rem;
     max-width: 50rem;
   }
 </style>
 <style>
-  body {
-    padding-left: 21em;
+  #article {
+    margin-left: 20rem;
   }
   #toc {
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
-    width: 18em;
+    width: 20rem;
     border-right: 1px solid #cccccc;
     overflow-y: auto;
     overflow-x: hidden;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.35);
   }
-  @media print {
-    body {
-      padding-left: 1em;
-    }
-  }
-  @media only screen and (max-width: 800px) {
-    body {
-      padding-left: 0;
+  @media screen and (max-width: 800px) {
+    #article {
+      margin-left: 0;
     }
     #toc {
       display: none !important;
@@ -292,10 +289,15 @@
   }
 </style>
 <style>
-  @media only screen and (max-width: 800px) {
+  @media screen and (max-width: 800px) {
     body {
       font-size: 20px;
-      margin: 5px;
+    }
+  }
+  @media print {
+    #article {
+      margin-left: 0;
+      max-width: 100%;
     }
   }
 </style>

@@ -11,6 +11,7 @@
     margin: 0;
     padding: 0;
     white-space: inherit;
+    box-sizing: border-box;
   }
   body {
     font-size: 16px;
@@ -285,6 +286,22 @@
   }
 </style>
 <style>
+  #main {
+    z-index: 1;
+    min-height: 100%;
+    max-width: 55rem;
+    margin-left: 0;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  #article {
+    padding-top: 1px;
+  }
+</style>
+<style>
+  #main {
+    margin-left: 340px;
+  }
   #nav {
     z-index: 3;
     position: fixed;
@@ -309,20 +326,8 @@
   body.hide-toc #sidebar {
     width: 0;
   }
-  #main {
-    z-index: 1;
-    min-height: 100%;
-    max-width: 50rem;
-    margin-left: 341px;
-    padding-left: 40px;
-    padding-right: 60px;
-  }
   body.hide-toc #main {
     margin-left: 40px;
-  }
-  #article {
-    padding-top: 1px;
-    padding-bottom: 10px;
   }
   #toc-button {
     cursor: pointer;
@@ -350,9 +355,6 @@
     }
   }
   @media screen and (min-width: 1px) and (max-width: 800px) {
-    body {
-      font-size: 20px;
-    }
     body:not(.hide-toc) {
       overflow: hidden;
     }
@@ -361,14 +363,23 @@
     }
     #main {
       margin-left: 40px;
-      padding-left: 5px;
-      padding-right: 5px;
     }
     body:not(.hide-toc) #main {
       visibility: hidden;
     }
     #toc {
       margin-right: 40px;
+    }
+  }
+</style>
+<style>
+  @media screen and (min-width: 1px) and (max-width: 800px) {
+    body {
+      font-size: 20px;
+    }
+    #main {
+      padding-left: 10px;
+      padding-right: 10px;
     }
     * {
       overflow-wrap: break-word;
@@ -490,9 +501,10 @@ into the Rimu markup syntax):</p>
   and in the browser respectively.</li><li>A <a href="https://github.com/srackham/rimu-chrome-extension.git">Chrome browser
   extension</a>
   for rendering Rimu Markup files directly in the browser.</li></ul><h2 id="rimuc-command"><code>rimuc</code> command</h2>
-<p><em>rimuc</em> is a lightweight Node.js command-line tool that uses the Rimu
-library to convert Rimu markup (or <a href="tips.html#markdown-compatible">Rimu compatible
-Markdown</a>) to HTML.</p>
+<p><em>rimuc</em> is a lightweight Node.js command-line tool that converts Rimu
+markup  to HTML. <em>rimuc</em> has options to generate stand-alone styled
+HTML documents, either from Rimu Markup or <a href="tips.html#rimuc-html">from Markdown or any
+text-to-HTML markup</a>.</p>
 <p>Run <code>rimuc --help</code> to view the <code>rimuc</code> manpage:</p>
 <pre class="light-background no-highlight"><code>NAME
   rimuc - convert Rimu source to HTML
@@ -505,6 +517,7 @@ DESCRIPTION
   then writes the HTML to stdout. If FILES are specified
   the Rimu source is read from FILES. The contents of files
   with an .html extension are passed directly to the output.
+  An input file named '-' is read from stdin.
 
   If a file named .rimurc exists in the user's home directory
   then its contents is processed (with --safe-mode 0).
@@ -516,6 +529,10 @@ DESCRIPTION
 OPTIONS
   -h, --help
     Display help message.
+
+  --html-replacement TEXT
+    Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
+    Defaults to '&lt;mark&gt;replaced HTML&lt;/mark&gt;'.
 
   --layout LAYOUT
     Generate a styled HTML document. rimuc includes the
@@ -533,6 +550,9 @@ OPTIONS
   -o, --output OUTFILE
     Write output to file OUTFILE instead of stdout.
     If OUTFILE is a hyphen '-' write to stdout.
+
+  --pass
+    Pass the stdin input verbatim to the output.
 
   -p, --prepend SOURCE
     Process the SOURCE text before all other inputs.
@@ -558,10 +578,6 @@ OPTIONS
 
     Add 4 to --safe-mode to ignore Block Attribute elements.
     Add 8 to --safe-mode to allow Macro Definitions.
-
-  --html-replacement TEXT
-    Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
-    Defaults to '&lt;mark&gt;replaced HTML&lt;/mark&gt;'.
 
   --theme THEME, --lang LANG, --title TITLE, --highlightjs, --mathjax,
   --no-toc, --custom-toc, --section-numbers, --header-ids, --header-links

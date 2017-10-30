@@ -10,6 +10,7 @@
     margin: 0;
     padding: 0;
     white-space: inherit;
+    box-sizing: border-box;
   }
   body {
     font-size: 16px;
@@ -283,6 +284,22 @@
   }
 </style>
 <style>
+  #main {
+    z-index: 1;
+    min-height: 100%;
+    max-width: 55rem;
+    margin-left: 0;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  #article {
+    padding-top: 1px;
+  }
+</style>
+<style>
+  #main {
+    margin-left: 340px;
+  }
   #nav {
     z-index: 3;
     position: fixed;
@@ -307,20 +324,8 @@
   body.hide-toc #sidebar {
     width: 0;
   }
-  #main {
-    z-index: 1;
-    min-height: 100%;
-    max-width: 50rem;
-    margin-left: 341px;
-    padding-left: 40px;
-    padding-right: 60px;
-  }
   body.hide-toc #main {
     margin-left: 40px;
-  }
-  #article {
-    padding-top: 1px;
-    padding-bottom: 10px;
   }
   #toc-button {
     cursor: pointer;
@@ -348,9 +353,6 @@
     }
   }
   @media screen and (min-width: 1px) and (max-width: 800px) {
-    body {
-      font-size: 20px;
-    }
     body:not(.hide-toc) {
       overflow: hidden;
     }
@@ -359,14 +361,23 @@
     }
     #main {
       margin-left: 40px;
-      padding-left: 5px;
-      padding-right: 5px;
     }
     body:not(.hide-toc) #main {
       visibility: hidden;
     }
     #toc {
       margin-right: 40px;
+    }
+  }
+</style>
+<style>
+  @media screen and (min-width: 1px) and (max-width: 800px) {
+    body {
+      font-size: 20px;
+    }
+    #main {
+      padding-left: 10px;
+      padding-right: 10px;
     }
     * {
       overflow-wrap: break-word;
@@ -410,17 +421,17 @@
 <p>See <a href="reference.html#built-in-layouts">Built-in layouts</a> for more information.</p>
 <h2 id="sequel-layout">sequel layout</h2>
 <h3 id="legend-theme">legend theme</h3>
-<ul><li><a href="sequel-legend-example.html"><code>--layout sequel --theme legend</code></a></li></ul><h3 id="vintage-theme">vintage theme</h3>
-<ul><li><a href="sequel-vintage-example.html"><code>--layout sequel --theme vintage</code></a></li></ul><h3 id="graystone-theme">graystone theme</h3>
-<ul><li><a href="sequel-graystone-example.html"><code>--layout sequel --theme graystone</code></a></li></ul><h2 id="classic-layout">classic layout</h2>
+<ul><li><a href="sequel-legend-example.html"><code>--layout sequel --theme legend</code></a></li><li><a href="sequel-legend-no-toc-example.html"><code>--layout sequel --theme legend --no-toc</code></a></li></ul><h3 id="vintage-theme">vintage theme</h3>
+<ul><li><a href="sequel-vintage-example.html"><code>--layout sequel --theme vintage</code></a></li><li><a href="sequel-vintage-no-toc-example.html"><code>--layout sequel --theme vintage --no-toc</code></a></li></ul><h3 id="graystone-theme">graystone theme</h3>
+<ul><li><a href="sequel-graystone-example.html"><code>--layout sequel --theme graystone</code></a></li><li><a href="sequel-graystone-no-toc-example.html"><code>--layout sequel --theme graystone --no-toc</code></a></li></ul><h2 id="classic-layout">classic layout</h2>
 <h3 id="legend-theme-2">legend theme</h3>
-<ul><li><a href="classic-legend-example.html"><code>--layout classic --theme legend</code></a></li><li><a href="classic-legend-dropdown-toc-example.html"><code>--layout classic --theme legend --prepend "{--dropdown-toc}='yes'"</code></a></li></ul><h3 id="vintage-theme-2">vintage theme</h3>
-<ul><li><a href="classic-vintage-example.html"><code>--layout classic --theme vintage</code></a></li><li><a href="classic-vintage-dropdown-toc-example.html"><code>--layout classic --theme vintage --prepend "{--dropdown-toc}='yes'"</code></a></li></ul><h3 id="graystone-theme-2">graystone theme</h3>
-<ul><li><a href="classic-graystone-example.html"><code>--layout classic --theme graystone</code></a></li><li><a href="classic-graystone-dropdown-toc-example.html"><code>--layout classic --theme graystone --prepend "{--dropdown-toc}='yes'"</code></a></li></ul><h2 id="flex-layout">flex layout</h2>
+<ul><li><a href="classic-legend-example.html"><code>--layout classic --theme legend</code></a></li><li><a href="classic-legend-dropdown-toc-example.html"><code>--layout classic --theme legend --prepend "{--dropdown-toc}='yes'"</code></a></li><li><a href="classic-legend-no-toc-example.html"><code>--layout classic --theme legend --no-toc</code></a></li></ul><h3 id="vintage-theme-2">vintage theme</h3>
+<ul><li><a href="classic-vintage-example.html"><code>--layout classic --theme vintage</code></a></li><li><a href="classic-vintage-dropdown-toc-example.html"><code>--layout classic --theme vintage --prepend "{--dropdown-toc}='yes'"</code></a></li><li><a href="classic-vintage-no-toc-example.html"><code>--layout classic --theme vintage --no-toc</code></a></li></ul><h3 id="graystone-theme-2">graystone theme</h3>
+<ul><li><a href="classic-graystone-example.html"><code>--layout classic --theme graystone</code></a></li><li><a href="classic-graystone-dropdown-toc-example.html"><code>--layout classic --theme graystone --prepend "{--dropdown-toc}='yes'"</code></a></li><li><a href="classic-graystone-no-toc-example.html"><code>--layout classic --theme graystone --no-toc</code></a></li></ul><h2 id="flex-layout">flex layout</h2>
 <h3 id="legend-theme-3">legend theme</h3>
-<ul><li><a href="flex-legend-example.html"><code>--layout flex --theme legend</code></a></li></ul><h3 id="vintage-theme-3">vintage theme</h3>
-<ul><li><a href="flex-vintage-example.html"><code>--layout flex --theme vintage</code></a></li></ul><h3 id="graystone-theme-3">graystone theme</h3>
-<ul><li><a href="flex-graystone-example.html"><code>--layout flex --theme graystone</code></a></li></ul>
+<ul><li><a href="flex-legend-example.html"><code>--layout flex --theme legend</code></a></li><li><a href="flex-legend-no-toc-example.html"><code>--layout flex --theme legend --no-toc</code></a></li></ul><h3 id="vintage-theme-3">vintage theme</h3>
+<ul><li><a href="flex-vintage-example.html"><code>--layout flex --theme vintage</code></a></li><li><a href="flex-vintage-no-toc-example.html"><code>--layout flex --theme vintage --no-toc</code></a></li></ul><h3 id="graystone-theme-3">graystone theme</h3>
+<ul><li><a href="flex-graystone-example.html"><code>--layout flex --theme graystone</code></a></li><li><a href="flex-graystone-no-toc-example.html"><code>--layout flex --theme graystone --no-toc</code></a></li></ul>
 </div>
 </div>
 <script>
