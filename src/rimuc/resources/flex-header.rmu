@@ -100,7 +100,6 @@
 
 /*
   Layout independent styles
-  -------------------------
 */
 <style>
   * {
@@ -408,15 +407,21 @@
 
 /*
   Layout styles
-  -------------
 */
 <style>
+  #article > * {
+    max-width: {--max-text-width};
+  }
   #article, #toc {
     padding-left: 1rem;
     padding-right: 1rem;
   }
-  #article > * {
-    max-width: {--max-text-width};
+{--!} Small screen.
+  @media screen and {--small-screen} {
+    #article, #toc {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
   }
 </style>
 
@@ -502,13 +507,6 @@
   #toc-button {
     padding-left: 4px;
     padding-top: 15px;
-  }
-{--!} Small screen.
-  @media screen and {--small-screen} {
-    #article, #toc {
-      padding-left: 10px;
-      padding-right: 10px;
-    }
   }
 {--!} Top-bar for small screen portrait mode.
   @media screen and {--small-screen} and (orientation: portrait) {

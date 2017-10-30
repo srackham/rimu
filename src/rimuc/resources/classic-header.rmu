@@ -92,26 +92,28 @@
   Private layout parameters.
 */
 // Accomodate the new default TOC generation and --no-toc option.
-// DEPRECATED --sidebar-toc: Used internally but external definition tolerated for backward comaptibility.
+// DEPRECATED --sidebar-toc: Used internally, external definition tolerated for backward comaptibility.
 {--dropdown-toc!}.+skip
 ..
 {--sidebar-toc?} = 'yes'
 ..
+
 {--dropdown-toc=}.+skip
 ..
 {--sidebar-toc?} = ''
 ..
+
 // DEPRECATED --toc: If --toc is non-blank make --sidebar-toc non-blank.
 {--toc?} = ''
 {--sidebar-toc} = '{--toc}{--sidebar-toc}'
+
 // Ensures no TOC.
 {--no-toc=}.+skip
 ..
 {--dropdown-toc} = ''
 {--sidebar-toc} = ''
 ..
-// Non-blank if a TOC was specified.
-{--has-toc} = '{--dropdown-toc}{--sidebar-toc}'
+
 
 /*
   HTML header
@@ -127,13 +129,13 @@
 
 /*
   Layout independent styles
-  -------------------------
 */
 <style>
   * {
     margin: 0;
     padding: 0;
     white-space: inherit;
+    box-sizing: border-box;
   }
   body {
     font-size: 16px;
@@ -386,7 +388,7 @@
 </style>
 
 // Common to --sidebar-toc and --dropdown-toc.
-{--has-toc=}.+skip
+{--no-toc!}.+skip
 <style>
   #toc {
     padding-left: 1rem;
@@ -444,40 +446,35 @@
 
 /*
   Layout styles
-  -------------
 */
 <style>
-  body {
-    margin: 1rem;
+  #article {
+    padding-left: 2rem;
+    padding-right: 1rem;
     max-width: {--max-text-width};
   }
 </style>
 
 {--sidebar-toc=}.+skip
 <style>
-  body {
-    padding-left: 21rem;
+  #article {
+    margin-left: 20rem;
   }
   #toc {
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
-    width: 18rem;
+    width: 20rem;
     border-right: 1px solid #cccccc;
     overflow-y: auto;
     overflow-x: hidden;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.35);
   }
-  @media print {
-    body {
-      padding-left: 1rem;
-    }
-  }
   @media screen and {--small-screen} {
     {--!}  Sidebar TOC hidden as it does not work on small screens.
-    body {
-      padding-left: 0;
+    #article {
+      margin-left: 0;
     }
     #toc {
       display: none !important;
@@ -503,7 +500,7 @@
     display: none;
     position: fixed;
     top: 55px;
-    left: 15px;
+    left: 17px;
     right: 10%;
     z-index: 1;
     max-width: 30rem;
@@ -513,23 +510,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
   }
   #article {
-    margin-left: 40px;
-  }
-  @media print {
-    #article {
-      margin-left: 0;
-    }
-  }
-  @media screen and {--small-screen} {
-    {--!}  Reposition TOC and TOC button.
-    #toc {
-      top: 60px;
-      left: 5px;
-    }
-    #toc-button {
-      top: 20px;
-      left: 5px;
-    }
+    margin-left: 2rem;
   }
 </style>
 
@@ -538,7 +519,12 @@
   @media screen and {--small-screen} {
     body {
       font-size: 20px;
-      margin: 5px;
+    }
+  }
+  @media print {
+    #article {
+      margin-left: 0;
+      max-width: 100%;
     }
   }
 </style>
@@ -564,7 +550,7 @@
 
 // Include TOC unless a custom TOC is specified.
 .+skip
-{--has-toc!}.-skip
+{--no-toc=}.-skip
 {--custom-toc!}.+skip
 <div id="toc" class="no-print">
   <div id="auto-toc"></div>

@@ -10,14 +10,14 @@
 {--mathjax!}<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 .+skip
-{--has-toc!}.-skip
+{--no-toc=}.-skip
 {--header-links!}.-skip
 <script>
 window.onload = function() {
   var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
   headings.forEach(function(heading) {
 {--header-links!}    setHeaderLink(heading);
-{--has-toc!}    appendTocEntry(heading);
+{--no-toc=}    appendTocEntry(heading);
   });
 }
 </script>
@@ -35,7 +35,7 @@ function setHeaderLink(heading) {
 }
 </script>
 
-{--has-toc=}.+skip
+{--no-toc!}.+skip
 <script>
 function appendTocEntry(heading) {
   var id = heading.getAttribute('id');

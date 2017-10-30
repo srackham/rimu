@@ -47,7 +47,7 @@
 {--sidebar-background?} = '#ffffee'
 {--link-color?} = '#428bca'
 {--border-radius?} = '0'
-{--max-text-width?} = '50rem'
+{--max-text-width?} = '55rem'
 ..
 
 /*
@@ -67,7 +67,7 @@
 {--sidebar-background?} = '#ffffee'
 {--link-color?} = '#527bbd'
 {--border-radius?} = '4px'
-{--max-text-width?} = '50rem'
+{--max-text-width?} = '55rem'
 ..
 
 /*
@@ -87,14 +87,15 @@
 {--sidebar-background?} = '#ffffee'
 {--link-color?} = '#888'
 {--border-radius?} = '0'
-{--max-text-width?} = '50rem'
+{--max-text-width?} = '55rem'
 ..
 
 /*
   Private layout parameters.
 */
 {--nav-width} = '40px'
-{--content-margin} = `(parseInt('{--nav-width}') + parseInt('{--toc-width}') + 1) + 'px'`
+{--content-margin} = `(parseInt('{--nav-width}') + parseInt('{--toc-width}')) + 'px'`
+
 
 /*
   HTML header
@@ -115,6 +116,7 @@
     margin: 0;
     padding: 0;
     white-space: inherit;
+    box-sizing: border-box;
   }
   body {
     font-size: 16px;
@@ -431,8 +433,25 @@
 /*
   Layout styles
 */
+<style>
+  #main {
+    z-index: 1;
+    min-height: 100%;
+    max-width: {--max-text-width};
+    margin-left: 0;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  #article {
+    padding-top: 1px;
+  }
+</style>
+
 {--no-toc!}.+skip
 <style>
+  #main {
+    margin-left: {--content-margin};
+  }
   #nav {
     z-index: 3;
     position: fixed;
@@ -457,20 +476,8 @@
   body.hide-toc #sidebar {
     width: 0;
   }
-  #main {
-    z-index: 1;
-    min-height: 100%;
-    max-width: {--max-text-width};
-    margin-left: {--content-margin};
-    padding-left: 40px;
-    padding-right: 60px;
-  }
   body.hide-toc #main {
     margin-left: {--nav-width};
-  }
-  #article {
-    padding-top: 1px;
-    padding-bottom: 10px;
   }
   #toc-button {
     cursor: pointer;
@@ -499,9 +506,6 @@
     }
   }
   @media screen and {--small-screen} {
-    body {
-      font-size: 20px;
-    }
     body:not(.hide-toc) {
 {--!} Hide body Y scroll bar when #main content is hidden.
       overflow: hidden;
@@ -511,8 +515,6 @@
     }
     #main {
       margin-left: {--nav-width};
-      padding-left: 5px;
-      padding-right: 5px;
     }
     body:not(.hide-toc) #main {
       visibility: hidden;
@@ -520,27 +522,17 @@
     #toc {
       margin-right: 40px;
     }
-    * {
-      overflow-wrap: break-word;
-    }
   }
 </style>
 
-{--no-toc=}.+skip
 <style>
-  #main {
-    min-height: 100%;
-    max-width: {--max-text-width};
-    padding-left: 40px;
-    padding-right: 60px;
-  }
   @media screen and {--small-screen} {
     body {
       font-size: 20px;
     }
     #main {
-      padding-left: 5px;
-      padding-right: 5px;
+      padding-left: 10px;
+      padding-right: 10px;
     }
     * {
       overflow-wrap: break-word;
