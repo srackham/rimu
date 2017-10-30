@@ -346,21 +346,24 @@ for (let infile of files) {
     options.safeMode = (prepend_files.indexOf(infile) > -1) ? 0 : safe_mode
   }
   let ext = infile.split('.').pop()
-  if (ext === 'html' || (pass && infile === STDIN)) {
+  // Skip .html and pass-through inputs.
+  if (!(ext === 'html' || (pass && infile === STDIN))) {
+    options.callback = function (message): void {
+      let msg = message.type + ': ' + infile + ': ' + message.text
+      if (msg.length > 120) {
+        msg = msg.slice(0, 117) + '...'
+      }
+      console.error(msg)
+      if (message.type === 'error') {
+        errors += 1
+      }
+    }
+    source = rimu.render(source, options)
+  }
+  source = source.trim()
+  if (source !== '') {
     output += source + '\n'
-    continue
   }
-  options.callback = function (message): void {
-    let msg = message.type + ': ' + infile + ': ' + message.text
-    if (msg.length > 120) {
-      msg = msg.slice(0, 117) + '...'
-    }
-    console.error(msg)
-    if (message.type === 'error') {
-      errors += 1
-    }
-  }
-  output += rimu.render(source, options) + '\n'
 }
 output = output.trim()
 if (!outfile || outfile === '-') {
