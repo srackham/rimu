@@ -12,12 +12,15 @@ See [Built-in layouts]({reference}#built-in-layouts) for more information.
 
 ### legend theme
 - [`--layout sequel --theme legend`](sequel-legend-example.html)
+- [`--layout sequel --theme legend --no-toc`](sequel-legend-no-toc-example.html)
 
 ### vintage theme
 - [`--layout sequel --theme vintage`](sequel-vintage-example.html)
+- [`--layout sequel --theme vintage --no-toc`](sequel-vintage-no-toc-example.html)
 
 ### graystone theme
 - [`--layout sequel --theme graystone`](sequel-graystone-example.html)
+- [`--layout sequel --theme graystone --no-toc`](sequel-graystone-no-toc-example.html)
 
 
 ## classic layout
@@ -25,24 +28,30 @@ See [Built-in layouts]({reference}#built-in-layouts) for more information.
 ### legend theme
 - [`--layout classic --theme legend`](classic-legend-example.html)
 - [`--layout classic --theme legend --prepend "\{--dropdown-toc}='yes'"`](classic-legend-dropdown-toc-example.html)
+- [`--layout classic --theme legend --no-toc`](classic-legend-no-toc-example.html)
 
 ### vintage theme
 - [`--layout classic --theme vintage`](classic-vintage-example.html)
 - [`--layout classic --theme vintage --prepend "\{--dropdown-toc}='yes'"`](classic-vintage-dropdown-toc-example.html)
+- [`--layout classic --theme vintage --no-toc`](classic-vintage-no-toc-example.html)
 
 ### graystone theme
 - [`--layout classic --theme graystone`](classic-graystone-example.html)
 - [`--layout classic --theme graystone --prepend "\{--dropdown-toc}='yes'"`](classic-graystone-dropdown-toc-example.html)
+- [`--layout classic --theme graystone --no-toc`](classic-graystone-no-toc-example.html)
 
 
 ## flex layout
 
 ### legend theme
 - [`--layout flex --theme legend`](flex-legend-example.html)
+- [`--layout flex --theme legend --no-toc`](flex-legend-no-toc-example.html)
 
 ### vintage theme
 - [`--layout flex --theme vintage`](flex-vintage-example.html)
+- [`--layout flex --theme vintage --no-toc`](flex-vintage-no-toc-example.html)
 
 ### graystone theme
 - [`--layout flex --theme graystone`](flex-graystone-example.html)
+- [`--layout flex --theme graystone --no-toc`](flex-graystone-no-toc-example.html)
 

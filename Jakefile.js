@@ -176,13 +176,18 @@ task('build-docs', ['build-rimu', 'build-gallery'], {async: true}, function () {
 function forEachGalleryDocument(documentCallback, layoutCallback, themeCallback) {
   ['sequel', 'classic', 'flex'].forEach(function (layout) {
     if (layoutCallback) layoutCallback(layout);
-      ['legend', 'vintage', 'graystone'].forEach(function (theme) {
+    ['legend', 'vintage', 'graystone'].forEach(function (theme) {
       if (themeCallback) themeCallback(layout, theme);
-        ['', 'dropdown-toc'].forEach(function (variant) {
+      ['', 'dropdown-toc', 'no-toc'].forEach(function (variant) {
         let option = variant;
-        if (variant === 'dropdown-toc') {
-          if (layout !== 'classic') return
-          else option = '--prepend "{--dropdown-toc}=\'yes\'"'
+        switch (variant) {
+          case 'dropdown-toc':
+            if (layout !== 'classic') return
+            else option = '--prepend "{--dropdown-toc}=\'yes\'"';
+            break;
+          case 'no-toc':
+            option = '--no-toc';
+            break;
         }
         let options = '--layout ' + layout + ' --theme ' + theme + ' ' + option
         options = options.trim()
