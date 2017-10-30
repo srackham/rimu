@@ -262,10 +262,10 @@
     "predicate": "equals"
   },
   {
-    "description": "rimuc HTML and stdin input files",
-    "args": "./test/fixtures/hello-rimu.html -",
+    "description": "rimuc HTML, empty and stdin input files",
+    "args": "./test/fixtures/hello-rimu.html ./test/fixtures/empty-file.rmu -",
     "input": "Hello *again*!",
-    "expectedOutput": "Hello *Rimu*!\n\n<p>Hello <em>again</em>!</p>",
+    "expectedOutput": "Hello *Rimu*!\n<p>Hello <em>again</em>!</p>",
     "predicate": "equals"
   },
   {
@@ -308,6 +308,13 @@
     "args": "--layout plain",
     "input": "foobar",
     "expectedOutput": "<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"UTF-8\">\n<title>Title</title>\n</head>\n<body>\n<p>foobar</p>\n</body>\n</html>",
+    "predicate": "equals"
+  },
+  {
+    "description": "rimuc empty input file",
+    "args": "./test/fixtures/empty-file.rmu",
+    "input": "",
+    "expectedOutput": "",
     "predicate": "equals"
   }
 ]
