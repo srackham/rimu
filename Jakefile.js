@@ -174,8 +174,12 @@ task('build-docs', ['build-rimu', 'build-gallery'], {async: true}, function () {
 })
 
 function forEachGalleryDocument(documentCallback, layoutCallback, themeCallback) {
-  ['sequel', 'classic', 'flex'].forEach(function (layout) {
+  ['sequel', 'classic', 'flex', 'plain'].forEach(function (layout) {
     if (layoutCallback) layoutCallback(layout);
+    if (layout === 'plain') {
+      documentCallback('--layout plain --no-toc', 'plain-example.html')
+      return
+    }
     ['legend', 'vintage', 'graystone'].forEach(function (theme) {
       if (themeCallback) themeCallback(layout, theme);
       ['', 'dropdown-toc', 'no-toc'].forEach(function (variant) {
@@ -205,15 +209,14 @@ task('build-gallery', ['build-rimu'], {async: true}, function () {
   forEachGalleryDocument(function (options, outfile, layout, theme) {
     let command =
       'node ' + RIMUC +
-      ' --no-rimurc --custom-toc' +
+      ' --custom-toc' +
       ' --no-rimurc' +
-      ' --lang en' +
       ' ' + options +
       ' --output ./doc/' + outfile +
       ' --prepend "{gallery-options}=\'' + options.replace(/(["{])/g, '\\$1') + '\'"' +
-      ' ./src/examples/example-rimurc.rmu ./doc/doc-header.rmu' +
       ' ./src/examples/example-rimurc.rmu' +
-      ' doc/gallery-example-template.rmu'
+      ' ./doc/doc-header.rmu' +
+      ' ./doc/gallery-example-template.rmu'
     commands.push(command)
   })
   exec(commands, complete)

@@ -55,3 +55,7 @@ See [Built-in layouts]({reference}#built-in-layouts) for more information.
 - [`--layout flex --theme graystone`](flex-graystone-example.html)
 - [`--layout flex --theme graystone --no-toc`](flex-graystone-no-toc-example.html)
 
+
+## plain layout
+- [`--layout plain`](plain-example.html)
+
