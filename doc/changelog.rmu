@@ -4,12 +4,27 @@ See the [Git commit log]({github}/commits/) for a full list of
 changes.
 
 
+## Version 10.3.0 (2017-11-01)
+- Added {rimuc} command `--pass` option which passes the stdin input verbatim
+  to the output.
+
+- A {rimuc} input file named `-` is read from the standard input.
+
+- The {rimuc} command built-in layouts have been refactored to use the
+  `box-sizing` `border-box` CSS property throughout along with a number of
+  other CSS tweaks.
+
+- Added {rimuc} `--no-toc` examples to the [Rimu Gallery]({gallery}).
+
+- Added {rimuc} `plain` layout example to the [Rimu Gallery]({gallery}).
+
+
 ## Version 10.2.0 (2017-10-23)
 - The `rimuc` command now supports externally sourced [imported
   layouts]({reference}#imported-layouts) -- take a look at the example [Rimu
   _plain_ Layout](https://github.com/srackham/rimu-plain-layout.git).
 
--  Added table of contents slide in/out transition to `sequel` layout.
+- Added table of contents slide in/out transition to `sequel` layout.
 
 - Improvements to `flex` layout.
 
