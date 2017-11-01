@@ -182,6 +182,9 @@ function importLayoutFile(name: string): string {
   catch {
     die(`missing --layout: ${match[1]}`)
   }
+  if (result === undefined) {
+    die(`--layout ${match[1]}: missing ${match[2]}`)
+  }
   return result
 }
 
