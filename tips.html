@@ -418,9 +418,9 @@
   box-shadow: 0 0 10px #9ecaed;
   box-sizing: border-box;
 }
-.edit-icon {
-  text-decoration: underline;
+.edit-icon, .preview-icon {
   color: gray;
+  cursor: pointer;
 }
 .example td {
   margin: 0;
@@ -437,6 +437,12 @@
   margin: 0;
   padding: 0.5rem;
 }
+.example-html {
+  font-family: Consolas, "Andale Mono", Monaco, monospace;
+  font-size: 90%;
+  background-color: #f8f8f8;
+  white-space: pre-wrap;
+}
 .example-source > code {
   padding: 0;
 }
@@ -450,15 +456,31 @@ function editExample(name) {
   }
   var edit = document.getElementById(name + '-edit');
   edit.value = source.textContent;
-  edit.style.height = (edit.parentNode.offsetHeight - 1) + 'px';
+  edit.style.height = (edit.parentNode.offsetHeight -1) + 'px';
   edit.style.display = 'block';
   source.style.display = 'none';
 }
-function updateExample(name) {
+function renderExample(name) {
   var edit = document.getElementById(name + '-edit');
   var rendered = document.getElementById(name + '-rendered');
-  rendered.innerHTML = Rimu.render(edit.value);
-  edit.style.height = edit.parentNode.offsetHeight + 'px';
+  var source = document.getElementById(name + '-source');
+  var src = (edit.style.display === 'none') ? source.textContent : edit.value;
+  if (rendered.classList.contains('example-html')) {
+    rendered.innerHTML = replaceSpecialChars(Rimu.render(src));
+  }
+  else {
+    rendered.innerHTML = Rimu.render(src);
+  }
+}
+function toggleExample(name) {
+  var rendered = document.getElementById(name + '-rendered');
+  rendered.classList.toggle('example-html');
+  renderExample(name);
+}
+function replaceSpecialChars(s) {
+  return s.replace(/&/g, '&amp;')
+    .replace(/>/g, '&gt;')
+    .replace(/</g, '&lt;')
 }
 </script>
 <div id="toc" class="no-print">
@@ -475,8 +497,9 @@ function updateExample(name) {
   <div id="auto-toc"></div>
 </div>
 <h1 id="rimu-tips">Rimu Tips</h1>
-<p><b>TIP</b>: Click the <em>Edit icon</em> <span class="edit-icon">&#x270e;</span> in the examples below to enable
-live example editing of the Rimu source.</p>
+<p><b>TIP</b>: Click the <em>Edit icon</em> &#x270e; in the examples below to enable
+live editing of the Rimu source; click the <em>Preview icon</em> &#x2b82; to
+toogle output between <em>HTML</em> and <em>Preview</em>.</p>
 <h2 id="html-is-valid-rimu">HTML is valid Rimu</h2>
 <p>You are free to mix any valid HTML into a Rimu document &mdash; no
 special syntax is required (in this sense Rimu can be thought of as an
@@ -496,7 +519,7 @@ markup vocabulary.</p>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('macros-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('macros-example')">&#x270e;</span>
 Rimu Markup</td>
 <td>
 <pre id="macros-example-source" class="example-source no-highlight"><code>// Define some macros.
@@ -520,10 +543,14 @@ experimentation.
 
 {note|This document is not yet finished.}
 ..</code></pre>
-<textarea id="macros-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('macros-example')"></textarea>
+<textarea id="macros-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('macros-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">HTML Preview</td>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('macros-example')">&#x2b82;</span>
+Preview
+</td>
 <td>
 <div id="macros-example-rendered" class="example-rendered">
 <h4 id="fun-with-macros">Fun with Macros</h4>
@@ -537,7 +564,7 @@ experimentation.</p>
                        background-color:#006699;
                        padding:2px 4px;
                        border-radius:3px;
-                       font-weight:bold;">Note</span> <strong>Wed Nov 01 2017</strong> <mark>This document is not yet finished.</mark></p></div>
+                       font-weight:bold;">Note</span> <strong>Wed Nov 08 2017</strong> <mark>This document is not yet finished.</mark></p></div>
 </div>
 </td></tr></table>
 <ul><li>The <code>{sidebar}</code> macro shows how you can inject CSS styles into a
@@ -551,9 +578,13 @@ experimentation.</p>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('document-links-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('document-links-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('document-links-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -565,7 +596,7 @@ the above paragraph.
 
 &lt;#link-target|Same link&gt; using alternative
 Rimu URL syntax.</code></pre>
-<textarea id="document-links-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('document-links-example')"></textarea>
+<textarea id="document-links-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('document-links-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="document-links-example-rendered" class="example-rendered">
@@ -591,7 +622,10 @@ Attributes</em> element:</p>
 <tr>
 <td class="example-header">
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -611,7 +645,7 @@ x = 1
 if x == 1:
     print "x is 1."
 ``</code></pre>
-<textarea id="highlightjs-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('highlightjs-example')"></textarea>
+<textarea id="highlightjs-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('highlightjs-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="highlightjs-example-rendered" class="example-rendered">
@@ -676,9 +710,13 @@ element with a backslash character.</p>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('escaped-elements-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('escaped-elements-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('escaped-elements-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -689,7 +727,7 @@ Rimu Markup</td>
 ``backticks in `code quote```
 
 \# Escaped header.</code></pre>
-<textarea id="escaped-elements-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('escaped-elements-example')"></textarea>
+<textarea id="escaped-elements-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('escaped-elements-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="escaped-elements-example-rendered" class="example-rendered">
@@ -753,7 +791,10 @@ or special configuration file syntax were necessary.</p>
 <tr>
 <td class="example-header">
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -768,7 +809,7 @@ The 3{sup|rd} H{sub|2}O molecule...
 IMPORTANT: Admonition.
 
 TODO 10 examples +-2</code></pre>
-<textarea id="rimurc-examples-edit" class="edit-source" style="display:none" onkeyup="updateExample('rimurc-examples')"></textarea>
+<textarea id="rimurc-examples-edit" class="edit-source" style="display:none" onkeyup="renderExample('rimurc-examples')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="rimurc-examples-rendered" class="example-rendered">
@@ -850,9 +891,13 @@ CSS styles for poetry and highlighted passages of text.</p>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('verse-and-sidebar-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('verse-and-sidebar-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('verse-and-sidebar-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -893,7 +938,7 @@ Nunc mauris tempor.
 Pede mauris sed.
 Scelerisque feugiat massa alias.
 ..</code></pre>
-<textarea id="verse-and-sidebar-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('verse-and-sidebar-example')"></textarea>
+<textarea id="verse-and-sidebar-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('verse-and-sidebar-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="verse-and-sidebar-example-rendered" class="example-rendered">
@@ -954,10 +999,13 @@ A MathML block formula:
 &lt;math display="block"&gt;
   &lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mrow&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;msup&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;/mrow&gt;
 &lt;/math&gt;</code></pre>
-<textarea id="mathjax-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('mathjax-example')"></textarea>
+<textarea id="mathjax-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('mathjax-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">HTML Preview</td>
+<tr><td class="example-header" style="width:10%;">
+HTML
+Preview
+</td>
 <td>
 <div id="mathjax-example-rendered" class="example-rendered">
 <p>A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\)</p>
@@ -1019,7 +1067,7 @@ styling bordered tables.</p>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('tables-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('tables-example')">&#x270e;</span>
 Rimu Markup</td>
 <td>
 <pre id="tables-example-source" class="example-source no-highlight"><code>&lt;table class="bordered"&gt;&lt;tr&gt;
@@ -1062,10 +1110,14 @@ Lobortis lacus vestibulum sem.
 
 &lt;/td&gt;
 &lt;/tr&gt;&lt;/table&gt;</code></pre>
-<textarea id="tables-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('tables-example')"></textarea>
+<textarea id="tables-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('tables-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">HTML Preview</td>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('tables-example')">&#x2b82;</span>
+Preview
+</td>
 <td>
 <div id="tables-example-rendered" class="example-rendered">
 <table class="bordered"><tr>
@@ -1108,7 +1160,7 @@ difficult to read.</p>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('table-macro-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('table-macro-example')">&#x270e;</span>
 Rimu Markup</td>
 <td>
 <pre id="table-macro-example-source" class="example-source no-highlight"><code>{person} = '&lt;table style="margin-bottom:0.3em"&gt;&lt;tr&gt;
@@ -1124,10 +1176,14 @@ Rimu Markup</td>
 ."color:red"
 {person| Peg Legge   | **30** | Female}
 </code></pre>
-<textarea id="table-macro-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('table-macro-example')"></textarea>
+<textarea id="table-macro-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('table-macro-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">HTML Preview</td>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('table-macro-example')">&#x2b82;</span>
+Preview
+</td>
 <td>
 <div id="table-macro-example-rendered" class="example-rendered">
 <table class="bordered" style="margin-bottom:0.3em; font-weight:bold; color:#527bbd"><tr>
@@ -1155,7 +1211,7 @@ Rimu Markup</td>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('columnar-text-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('columnar-text-example')">&#x270e;</span>
 Rimu Markup</td>
 <td>
 <pre id="columnar-text-example-source" class="example-source no-highlight"><code>// Each macro generates an HTML block which together generate a single table.
@@ -1198,10 +1254,14 @@ consequat quisque duis mollis magna arcu.
 
 {end}
 </code></pre>
-<textarea id="columnar-text-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('columnar-text-example')"></textarea>
+<textarea id="columnar-text-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('columnar-text-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">HTML Preview</td>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('columnar-text-example')">&#x2b82;</span>
+Preview
+</td>
 <td>
 <div id="columnar-text-example-rendered" class="example-rendered">
 <table><tr><td style="width:33%;padding:0.5em;">
@@ -1234,7 +1294,7 @@ title.</p>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('meta-macros-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('meta-macros-example')">&#x270e;</span>
 Rimu Markup</td>
 <td>
 <pre id="meta-macros-example-source" class="example-source no-highlight"><code>// toc macro generates section TOC entry, link macro and header macro.
@@ -1254,10 +1314,14 @@ Link to {section2}.
 
 {section2-header}
 Link to {section1}.</code></pre>
-<textarea id="meta-macros-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('meta-macros-example')"></textarea>
+<textarea id="meta-macros-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('meta-macros-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">HTML Preview</td>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('meta-macros-example')">&#x2b82;</span>
+Preview
+</td>
 <td>
 <div id="meta-macros-example-rendered" class="example-rendered">
 <h4 id="table-of-contents">Table of Contents</h4>
@@ -1302,9 +1366,13 @@ and for numbering labeled list items.</p>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('list-item-counters-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('list-item-counters-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('list-item-counters-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1332,7 +1400,7 @@ unordered list items.
 
 .ol-counter
 ordered list items.</code></pre>
-<textarea id="list-item-counters-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('list-item-counters-example')"></textarea>
+<textarea id="list-item-counters-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('list-item-counters-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="list-item-counters-example-rendered" class="example-rendered">
@@ -1351,9 +1419,13 @@ block elements to a list item.</p>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('composite-list-item-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('composite-list-item-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('composite-list-item-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1364,7 +1436,7 @@ Include a paragraph in the list item.
 &gt; And a Quoted paragraph.
 ..
 - Second list item.</code></pre>
-<textarea id="composite-list-item-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('composite-list-item-example')"></textarea>
+<textarea id="composite-list-item-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('composite-list-item-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="composite-list-item-example-rendered" class="example-rendered">
@@ -1386,9 +1458,13 @@ the first list item in the example below.</p>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('list-item-block-attributes-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('list-item-block-attributes-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('list-item-block-attributes-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1430,7 +1506,7 @@ Three:: Item three.
   Duis in tincidunt rhoncus nascetur
   lacus!
 ..</code></pre>
-<textarea id="list-item-block-attributes-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('list-item-block-attributes-example')"></textarea>
+<textarea id="list-item-block-attributes-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('list-item-block-attributes-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="list-item-block-attributes-example-rendered" class="example-rendered">
@@ -1464,9 +1540,13 @@ distinguish between them.</p>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('nested-fenced-blocks-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('nested-fenced-blocks-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('nested-fenced-blocks-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1485,7 +1565,7 @@ vel mauris placerat in phasellus magna.
 Duis in tincidunt rhoncus nascetur
 lacus!
 ""</code></pre>
-<textarea id="nested-fenced-blocks-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('nested-fenced-blocks-example')"></textarea>
+<textarea id="nested-fenced-blocks-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('nested-fenced-blocks-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="nested-fenced-blocks-example-rendered" class="example-rendered">
@@ -1517,9 +1597,13 @@ a fenced code block.</p>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('list-ambiguity-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('list-ambiguity-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('list-ambiguity-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1531,7 +1615,7 @@ Rimu Markup</td>
 ``
 * Rendered as code block.
 ``</code></pre>
-<textarea id="list-ambiguity-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('list-ambiguity-example')"></textarea>
+<textarea id="list-ambiguity-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('list-ambiguity-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="list-ambiguity-example-rendered" class="example-rendered">
@@ -1565,9 +1649,13 @@ from being seen as the Inclusion macro's closing brace</p>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('line-breaks-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('line-breaks-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('line-breaks-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1580,7 +1668,7 @@ Urna aliquam pid
 Aenean enim cum sed
 Augue non egestas amet?
 </code></pre>
-<textarea id="line-breaks-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('line-breaks-example')"></textarea>
+<textarea id="line-breaks-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('line-breaks-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="line-breaks-example-rendered" class="example-rendered">
@@ -1613,9 +1701,13 @@ of flowed inline elements (e.g. text, inline images):</p>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('text-alignment-example-2')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('text-alignment-example-2')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('text-alignment-example-2')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1627,7 +1719,7 @@ Enim odio ultrices
 
 .align-right
 Enim odio ultrices</code></pre>
-<textarea id="text-alignment-example-2-edit" class="edit-source" style="display:none" onkeyup="updateExample('text-alignment-example-2')"></textarea>
+<textarea id="text-alignment-example-2-edit" class="edit-source" style="display:none" onkeyup="renderExample('text-alignment-example-2')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="text-alignment-example-2-rendered" class="example-rendered">
@@ -1643,9 +1735,13 @@ for attributing quotes and verses. For example:</p>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('citation-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('citation-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('citation-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1673,7 +1769,7 @@ Augue non egestas amet?
 .cite
 A. N. Mouse
 ..</code></pre>
-<textarea id="citation-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('citation-example')"></textarea>
+<textarea id="citation-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('citation-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="citation-example-rendered" class="example-rendered">
@@ -1697,7 +1793,7 @@ Augue non egestas amet?</p>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('letter-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('letter-example')">&#x270e;</span>
 Rimu Markup</td>
 <td>
 <pre id="letter-example-source" class="example-source no-highlight"><code>."font-family:serif; font-size:12pt;"
@@ -1731,10 +1827,14 @@ Yours sincerely \
 Joe Jetson
 ..
 </code></pre>
-<textarea id="letter-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('letter-example')"></textarea>
+<textarea id="letter-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('letter-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">HTML Preview</td>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('letter-example')">&#x2b82;</span>
+Preview
+</td>
 <td>
 <div id="letter-example-rendered" class="example-rendered">
 <div style="font-family:serif; font-size:12pt;"><div style="margin-left:75%"><p>24 Milky Way<br>
@@ -1824,7 +1924,7 @@ function and the result becomes the assigned macro value.</p>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('macro-expressions-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('macro-expressions-example')">&#x270e;</span>
 Rimu Markup</td>
 <td>
 <pre id="macro-expressions-example-source" class="example-source no-highlight"><code>// Date/time.
@@ -1848,14 +1948,18 @@ Rimu Markup</td>
 {content-margin} = `{sum| 40px | {toc-width} | 1} + 'px'`
 **Content margin**: {content-margin}
 </code></pre>
-<textarea id="macro-expressions-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('macro-expressions-example')"></textarea>
+<textarea id="macro-expressions-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('macro-expressions-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">HTML Preview</td>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('macro-expressions-example')">&#x2b82;</span>
+Preview
+</td>
 <td>
 <div id="macro-expressions-example-rendered" class="example-rendered">
-<p><strong>Time</strong>: 13:34:56</p>
-<p><strong>Date</strong>: Wed Nov 01 2017</p>
+<p><strong>Time</strong>: 17:14:20</p>
+<p><strong>Date</strong>: Wed Nov 08 2017</p>
 <p><strong>Circumference</strong>: 40,030 Km</p>
 <p><strong>Content margin</strong>: 341px</p>
 </div>

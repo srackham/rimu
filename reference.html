@@ -418,9 +418,9 @@
   box-shadow: 0 0 10px #9ecaed;
   box-sizing: border-box;
 }
-.edit-icon {
-  text-decoration: underline;
+.edit-icon, .preview-icon {
   color: gray;
+  cursor: pointer;
 }
 .example td {
   margin: 0;
@@ -437,6 +437,12 @@
   margin: 0;
   padding: 0.5rem;
 }
+.example-html {
+  font-family: Consolas, "Andale Mono", Monaco, monospace;
+  font-size: 90%;
+  background-color: #f8f8f8;
+  white-space: pre-wrap;
+}
 .example-source > code {
   padding: 0;
 }
@@ -450,15 +456,31 @@ function editExample(name) {
   }
   var edit = document.getElementById(name + '-edit');
   edit.value = source.textContent;
-  edit.style.height = (edit.parentNode.offsetHeight - 1) + 'px';
+  edit.style.height = (edit.parentNode.offsetHeight -1) + 'px';
   edit.style.display = 'block';
   source.style.display = 'none';
 }
-function updateExample(name) {
+function renderExample(name) {
   var edit = document.getElementById(name + '-edit');
   var rendered = document.getElementById(name + '-rendered');
-  rendered.innerHTML = Rimu.render(edit.value);
-  edit.style.height = edit.parentNode.offsetHeight + 'px';
+  var source = document.getElementById(name + '-source');
+  var src = (edit.style.display === 'none') ? source.textContent : edit.value;
+  if (rendered.classList.contains('example-html')) {
+    rendered.innerHTML = replaceSpecialChars(Rimu.render(src));
+  }
+  else {
+    rendered.innerHTML = Rimu.render(src);
+  }
+}
+function toggleExample(name) {
+  var rendered = document.getElementById(name + '-rendered');
+  rendered.classList.toggle('example-html');
+  renderExample(name);
+}
+function replaceSpecialChars(s) {
+  return s.replace(/&/g, '&amp;')
+    .replace(/>/g, '&gt;')
+    .replace(/</g, '&lt;')
 }
 </script>
 <div id="toc" class="no-print">
@@ -492,8 +514,9 @@ into the Rimu markup syntax):</p>
 <pre class="no-highlight"><code>&lt;p&gt;Hello &lt;em&gt;Rimu&lt;/em&gt;!&lt;/p&gt;</code></pre>
 <h2 id="resources">Resources</h2>
 <h3 id="learning">Learning</h3>
-<ul><li>Experiment with Rimu in the <a href="rimuplayground.html">Rimu Playground</a>.</li><li>Edit the examples (click the <em>Edit icon</em> <span class="edit-icon">&#x270e;</span> in the examples
-  below to enable live example editing of the Rimu source).</li><li>Read <a href="tips.html">Rimu Tips</a>.</li></ul><h3 id="example-applications">Example applications</h3>
+<ul><li>Experiment with Rimu in the <a href="rimuplayground.html">Rimu Playground</a>.</li><li>Click the <em>Edit icon</em> &#x270e; in the examples below to enable live
+  editing of the Rimu source; click the <em>Preview icon</em> &#x2b82; to
+  toogle output between <em>HTML</em> and <em>Preview</em>.</li><li>Read <a href="tips.html">Rimu Tips</a>.</li></ul><h3 id="example-applications">Example applications</h3>
 <p>See the <a href="#api">API documentation</a>.</p>
 <ul><li>Rimu includes the <a href="#rimuc-command">rimuc</a> command-line tool and the
   <a href="rimuplayground.html">Rimu Playground</a> &mdash; examples of using Rimu in Node.js
@@ -882,25 +905,45 @@ element.</p>
   instead).</li><li>Comment delimiters must start at the left margin.</li><li>Comments can be escaped by prefixing the opening delimiter with a
   backslash character.</li><li>Use an <a href="#html-elements">HTML</a> comment if you want the comment to be
   included in the HTML output.</li></ul><p>Examples:</p>
-<pre class="no-highlight"><code>/*
-  This comment is not included in the
-  HTML output.
+<h4 id="examples">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header" style="width:10%;">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('comments-example')">&#x270e;</span>
+Rimu Markup</td>
+<td>
+<pre id="comments-example-source" class="example-source no-highlight"><code>/*
+  This comment does not appear in the
+  rendered HTML.
 */
 
-// This comment is not included in the HTML output.
+// This comment does not appear in the rendered HTML.
 
-&lt;!-- This comment is included in the HTML output. --&gt;</code></pre>
+&lt;!-- This comment appears in the rendered HTML. --&gt;</code></pre>
+<textarea id="comments-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('comments-example')"></textarea>
+</td>
+</tr>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('comments-example')">&#x2b82;</span>
+Preview
+</td>
+<td>
+<div id="comments-example-rendered" class="example-rendered">
+<!-- This comment appears in the rendered HTML. -->
+</div>
+</td></tr></table>
 <h3 id="inline-comments">Inline comments</h3>
 <p>The predefined <a href="#predefined-macros">Blank macro (<code>--</code>)</a> can be used
 for inline comments:</p>
 <ul><li>Exclude individual lines using an <a href="#macro-invocations">Exclusion macro
   invocation</a>.</li><li>Place comments anywhere in an inline context using a <a href="#macro-invocations">Parametrized
   macro invocation</a>.  This works because the Blank
-  macro has no formal parameters).</li></ul><h4 id="examples">Examples</h4>
+  macro has no formal parameters).</li></ul><h4 id="examples-2">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('macro-comments-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('macro-comments-example')">&#x270e;</span>
 Rimu Markup</td>
 <td>
 <pre id="macro-comments-example-source" class="example-source no-highlight"><code>Lorem ipsum dolor sit amet sapien.
@@ -914,10 +957,14 @@ Lorem ipsum dolor sit {--|THIS TECHNIQUE CAN BE USED
 TO EXCLUDE TEXT THAT SPANS MULTIPLE LINES
 STARTING AND ENDING ANYWHERE} amet sapien.
 Imperdiet pellentesque minim.</code></pre>
-<textarea id="macro-comments-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('macro-comments-example')"></textarea>
+<textarea id="macro-comments-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('macro-comments-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">HTML Preview</td>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('macro-comments-example')">&#x2b82;</span>
+Preview
+</td>
 <td>
 <div id="macro-comments-example-rendered" class="example-rendered">
 <p>Lorem ipsum dolor sit amet sapien.
@@ -934,13 +981,17 @@ Imperdiet pellentesque minim.</p>
 which is prefixed by one to six <code>#</code> or <code>=</code> characters. A matching
 postfix is optional.</p>
 <ul><li>Header prefixes and postfixes must be separated from the title text
-  by whitespace.</li><li><a href="#inline-elements">Inline elements</a> are allowed in the header title.</li></ul><h4 id="examples-2">Examples</h4>
+  by whitespace.</li><li><a href="#inline-elements">Inline elements</a> are allowed in the header title.</li></ul><h4 id="examples-3">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('headers-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('headers-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('headers-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -950,7 +1001,7 @@ Rimu Markup</td>
 #### h4 _header_ ####
 ===== h5 header
 ====== h6 header</code></pre>
-<textarea id="headers-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('headers-example')"></textarea>
+<textarea id="headers-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('headers-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="headers-example-rendered" class="example-rendered">
@@ -977,13 +1028,17 @@ delimiter characters starting at the left margin.</p>
 <p>By default the all text in a <em>Code Block</em> is rendered verbatim.  The
 generated HTML is enveloped  with <code>&lt;pre&gt;&lt;code&gt;...&lt;/code&gt;&lt;/pre&gt;</code> tags.
 The Code Block delimiter character is a backtick.</p>
-<h4 id="examples-3">Examples</h4>
+<h4 id="examples-4">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('code-block-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('code-block-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('code-block-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -991,7 +1046,7 @@ Rimu Markup</td>
 Nunc mauris tempor.
 Scelerisque feugiat massa alias.
 ``</code></pre>
-<textarea id="code-block-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('code-block-example')"></textarea>
+<textarea id="code-block-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('code-block-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="code-block-example-rendered" class="example-rendered">
@@ -1003,13 +1058,17 @@ Scelerisque feugiat massa alias.</code></pre>
 <p>A <em>Quote Block</em> renders the enclosed block elements inside an HTML
 <code>&lt;blockquote&gt;</code> element.  The Quote Block delimiter character is a
 double-quote.</p>
-<h4 id="examples-4">Examples</h4>
+<h4 id="examples-5">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('quote-block-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('quote-block-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('quote-block-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1020,7 +1079,7 @@ Scelerisque feugiat massa alias.
 .cite
 Anonymous
 ""</code></pre>
-<textarea id="quote-block-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('quote-block-example')"></textarea>
+<textarea id="quote-block-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('quote-block-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="quote-block-example-rendered" class="example-rendered">
@@ -1036,13 +1095,17 @@ option's CSS <em>cite</em> class to style the Anonymous attribution.</p>
 <ul><li>The Division Block delimiter character is a period.</li><li>If the <em>Division Block</em> has <a href="#block-attributes">HTML attributes</a>
   then the output is enclosed in an HTML <code>div</code> element.
   If the <em>Division Block</em> has no HTML attributes then the HTML <code>div</code>
-  tags are omitted.</li></ul><h4 id="examples-5">Examples</h4>
+  tags are omitted.</li></ul><h4 id="examples-6">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('division-block-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('division-block-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('division-block-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1051,7 +1114,7 @@ Rimu Markup</td>
 Nunc mauris tempor.
 Scelerisque feugiat massa alias.
 ..</code></pre>
-<textarea id="division-block-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('division-block-example')"></textarea>
+<textarea id="division-block-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('division-block-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="division-block-example-rendered" class="example-rendered">
@@ -1066,18 +1129,22 @@ include</a> Rimu source text.</p>
 <p>Block and inline HTML elements can be mixed with Rimu markup.</p>
 <ul><li>Macro invocations in HTML elements are expanded.</li><li>HTML tags can be escaped with a backslash character prefix.</li><li>HTML elements can be excluded from the output using the API
   <a href="#api-options">safeMode option</a>.</li></ul><h3 id="inline-html-elements">Inline HTML elements</h3>
-<ul><li>Any well formed HTML tag is allowed in an inline context.</li></ul><h4 id="examples-6">Examples</h4>
+<ul><li>Any well formed HTML tag is allowed in an inline context.</li></ul><h4 id="examples-7">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('html-inline-element-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('html-inline-element-example')">&#x270e;</span>
 Rimu Markup</td>
 <td>
 <pre id="html-inline-element-example-source" class="example-source no-highlight"><code>An inline &lt;span style="color:red;"&gt;HTML span&lt;/span&gt;.</code></pre>
-<textarea id="html-inline-element-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('html-inline-element-example')"></textarea>
+<textarea id="html-inline-element-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('html-inline-element-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">HTML Preview</td>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('html-inline-element-example')">&#x2b82;</span>
+Preview
+</td>
 <td>
 <div id="html-inline-element-example-rendered" class="example-rendered">
 <p>An inline <span style="color:red;">HTML span</span>.</p>
@@ -1085,11 +1152,11 @@ Rimu Markup</td>
 </td></tr></table>
 <h3 id="block-html-elements">Block HTML elements</h3>
 <ul><li>The opening tag of an HTML block element must start at the left
-  margin.</li><li>An HTML block element is terminated with a blank line.</li></ul><h4 id="examples-7">Examples</h4>
+  margin.</li><li>An HTML block element is terminated with a blank line.</li></ul><h4 id="examples-8">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('html-block-element-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('html-block-element-example')">&#x270e;</span>
 Rimu Markup</td>
 <td>
 <pre id="html-block-element-example-source" class="example-source no-highlight"><code>An HTML table block element:
@@ -1104,10 +1171,14 @@ Rimu Markup</td>
     &lt;td&gt;Wisi ullamcorper eget.&lt;/td&gt;
   &lt;/tr&gt;
 &lt;/table&gt;</code></pre>
-<textarea id="html-block-element-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('html-block-element-example')"></textarea>
+<textarea id="html-block-element-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('html-block-element-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">HTML Preview</td>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('html-block-element-example')">&#x2b82;</span>
+Preview
+</td>
 <td>
 <div id="html-block-element-example-rendered" class="example-rendered">
 <p>An HTML table block element:</p>
@@ -1140,19 +1211,23 @@ start at the left margin.</p>
 followed by a backslash character at the end of a line.</p>
 <p>Line breaks can be escaped by prefixing the trailing backslash
 with another backslash character.</p>
-<h4 id="examples-8">Examples</h4>
+<h4 id="examples-9">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('normal-paragraph-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('normal-paragraph-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('normal-paragraph-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
 <pre id="normal-paragraph-example-source" class="example-source no-highlight"><code>Nunc mauris tempor.
 Scelerisque feugiat massa alias.</code></pre>
-<textarea id="normal-paragraph-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('normal-paragraph-example')"></textarea>
+<textarea id="normal-paragraph-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('normal-paragraph-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="normal-paragraph-example-rendered" class="example-rendered">
@@ -1166,19 +1241,23 @@ default the all text in an <em>Indented Paragraph</em> is rendered verbatim.
 This behavior can be changed using a preceding <a href="#block-attributes">Block
 Attributes</a> element.  By default the generated HTML
 is enveloped  with <code>&lt;pre&gt;&lt;code&gt;...&lt;/code&gt;&lt;/pre&gt;</code> tags.</p>
-<h4 id="examples-9">Examples</h4>
+<h4 id="examples-10">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('indented-paragraph-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('indented-paragraph-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('indented-paragraph-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
 <pre id="indented-paragraph-example-source" class="example-source no-highlight"><code>  Nunc mauris tempor.
   Scelerisque feugiat massa alias.</code></pre>
-<textarea id="indented-paragraph-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('indented-paragraph-example')"></textarea>
+<textarea id="indented-paragraph-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('indented-paragraph-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="indented-paragraph-example-rendered" class="example-rendered">
@@ -1192,19 +1271,23 @@ HTML <code>&lt;blockquote&gt;</code> element. Leading <code>&gt;</code> characte
 all lines except the first line. Leading <code>&gt;</code> characters can be escaped
 with a backslash character.  In all other respects Quote paragraphs
 behave the same as <a href="#normal-paragraph">Normal paragraphs</a>.</p>
-<h4 id="examples-10">Examples</h4>
+<h4 id="examples-11">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('quote-paragraph-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('quote-paragraph-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('quote-paragraph-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
 <pre id="quote-paragraph-example-source" class="example-source no-highlight"><code>&gt; Nunc mauris tempor.
   Scelerisque feugiat massa alias.</code></pre>
-<textarea id="quote-paragraph-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('quote-paragraph-example')"></textarea>
+<textarea id="quote-paragraph-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('quote-paragraph-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="quote-paragraph-example-rendered" class="example-rendered">
@@ -1223,20 +1306,24 @@ ___________________________________________
 ::, :::, ::::                 Labeled list
 ___________________________________________</code></pre>
 <ul><li><em>Bullet</em> and <em>Numbered</em> list items begin with the list ID.  The list
-  ID must be separated by one or more spaces from the list item text.<h4 id="examples-11">Examples</h4>
+  ID must be separated by one or more spaces from the list item text.<h4 id="examples-12">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('bullet-lists-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('bullet-lists-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('bullet-lists-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
 <pre id="bullet-lists-example-source" class="example-source no-highlight"><code>- First item.
   . Nested numbered item.
 - Second item of first list.</code></pre>
-<textarea id="bullet-lists-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('bullet-lists-example')"></textarea>
+<textarea id="bullet-lists-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('bullet-lists-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="bullet-lists-example-rendered" class="example-rendered">
@@ -1245,20 +1332,24 @@ Rimu Markup</td>
 
 </li><li><em>Labeled</em> list items begin with the <em>term</em> text followed
   immediately by the list ID, then one or more spaces or a line break,
-  then the <em>definition</em> text.<h4 id="examples-12">Examples</h4>
+  then the <em>definition</em> text.<h4 id="examples-13">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('labeled-lists-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('labeled-lists-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('labeled-lists-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
 <pre id="labeled-lists-example-source" class="example-source no-highlight"><code>First term:: Definition one.
 Second term::
 Definition for second term.</code></pre>
-<textarea id="labeled-lists-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('labeled-lists-example')"></textarea>
+<textarea id="labeled-lists-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('labeled-lists-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="labeled-lists-example-rendered" class="example-rendered">
@@ -1281,11 +1372,11 @@ Definition for second term.</code></pre>
     without any intervening blank lines then it is attached to the
     list item.</li></ul></li><li>Lists are terminated:<ul><li>When the following element is not a list item or an <em>attached
     block</em>.</li><li>By two or more blank lines.</li></ul></li><li>There are no explicit numbering or bullet styles &mdash; this is best
-  left to CSS which can apply a consistent set of list styles.</li></ul><h4 id="examples-13">Examples</h4>
+  left to CSS which can apply a consistent set of list styles.</li></ul><h4 id="examples-14">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('lists-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('lists-example')">&#x270e;</span>
 Rimu Markup</td>
 <td>
 <pre id="lists-example-source" class="example-source no-highlight"><code>- Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu
@@ -1321,10 +1412,14 @@ non magnis facilisi scelerisque luctus. Quis praesent pulvinar.
 - Integer quisque hendrerit. Arcu nunc lorem posuere.
 
 &gt; Egestas congue quam.</code></pre>
-<textarea id="lists-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('lists-example')"></textarea>
+<textarea id="lists-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('lists-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">HTML Preview</td>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('lists-example')">&#x2b82;</span>
+Preview
+</td>
 <td>
 <div id="lists-example-rendered" class="example-rendered">
 <ul><li>Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu
@@ -1358,13 +1453,17 @@ ___________________________________________________________</code></pre>
   backslash character. If the text contains multiple quotes of the
   same type then, to resolve ambiguity, additional quotes may have to
   be escaped.</li><li>The <em>Code</em> quote renders quoted text verbatim with one exception:
-  <a href="#macro-invocations">Macro Invocations</a> are expanded.</li></ul><h4 id="examples-14">Examples</h4>
+  <a href="#macro-invocations">Macro Invocations</a> are expanded.</li></ul><h4 id="examples-15">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('quote-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('quote-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('quote-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1372,7 +1471,7 @@ Rimu Markup</td>
 some _emphasized text_,
 some `monospaced text` and
 some ~~deleted text~~.</code></pre>
-<textarea id="quote-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('quote-example')"></textarea>
+<textarea id="quote-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('quote-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="quote-example-rendered" class="example-rendered">
@@ -1437,13 +1536,17 @@ url                 &lt;a href="url"&gt;url&lt;/a&gt;       Note 1
 &lt;email|caption&gt;     &lt;a href="mailto:email"&gt;caption&lt;/a&gt;
 ______________________________________________________</code></pre>
 <p>Notes:</p>
-<ol><li>Only HTTP and HTTPS raw URLs are auto-encoded.</li><li>The <code>[caption](url)</code> syntax is Markdown compatible.</li></ol><h4 id="examples-15">Examples</h4>
+<ol><li>Only HTTP and HTTPS raw URLs are auto-encoded.</li><li>The <code>[caption](url)</code> syntax is Markdown compatible.</li></ol><h4 id="examples-16">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('urls-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('urls-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('urls-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1459,7 +1562,7 @@ Rimu Markup</td>
 10. &lt;ftp://example.com/rfc959.txt|rfc959.txt&gt;
 11. &lt;joe@example.com&gt;
 12. &lt;joe@example.org|Joe Bloggs&gt;</code></pre>
-<textarea id="urls-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('urls-example')"></textarea>
+<textarea id="urls-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('urls-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="urls-example-rendered" class="example-rendered">
@@ -1475,13 +1578,17 @@ _______________________________________________________
 _______________________________________________________</code></pre>
 <p>Notes:</p>
 <ol><li>The <code>![alt](url)</code> syntax is Markdown compatible. To maintain
-   Markdown compatibility it is always processed as an inline element.</li></ol><h4 id="examples-16">Examples</h4>
+   Markdown compatibility it is always processed as an inline element.</li></ol><h4 id="examples-17">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('images-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('images-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('images-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -1496,7 +1603,7 @@ Centered using [rimuc](#rimuc-command) `--layout` option CSS class:
 
 Or an image can be &lt;image:http://www.w3.org/Icons/w3c_home.png&gt; an
 inline element.</code></pre>
-<textarea id="images-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('images-example')"></textarea>
+<textarea id="images-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('images-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="images-example-rendered" class="example-rendered">
@@ -1510,18 +1617,22 @@ inline element.</p>
 </td></tr></table>
 <h2 id="character-entities">Character entities</h2>
 <p>HTML character entities can be included in Rimu source.</p>
-<h4 id="examples-17">Examples</h4>
+<h4 id="examples-18">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('entities-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('entities-example')">&#x270e;</span>
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('entities-example')">&#x2b82;</span>
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
 <pre id="entities-example-source" class="example-source no-highlight"><code>&amp;copy; &amp;reg; &amp;alpha; &amp;omega;</code></pre>
-<textarea id="entities-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('entities-example')"></textarea>
+<textarea id="entities-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('entities-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="entities-example-rendered" class="example-rendered">
@@ -1548,11 +1659,11 @@ processing of <a href="#delimited-blocks">Delimited Block</a> elements.</p>
   they are injected into the target opening tag.</li><li>The <code>[html-attributes]</code> section is ignored if the <a href="#api-options">safeMode API
   option</a> is not zero.</li><li>The <code>-specials</code> block option is ignored if the <a href="#api-options">safeMode API
   option</a>  is not zero.</li><li>The entire Block Attributes element is ignored if bit 2 of the
-  <a href="#api-options">safeMode API option</a> is set.</li></ul><h4 id="examples-18">Examples</h4>
+  <a href="#api-options">safeMode API option</a> is set.</li></ul><h4 id="examples-19">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
-<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('block-attributes-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('block-attributes-example')">&#x270e;</span>
 Rimu Markup</td>
 <td>
 <pre id="block-attributes-example-source" class="example-source no-highlight"><code>.error "color:red"
@@ -1573,10 +1684,14 @@ Imperdiet pellentesque minim. Metus mauris tortor. Torquent leo vel.
 .-macros
 Macro {invocations} are not expanded when the `-macros` block option
 is set.</code></pre>
-<textarea id="block-attributes-example-edit" class="edit-source" style="display:none" onkeyup="updateExample('block-attributes-example')"></textarea>
+<textarea id="block-attributes-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('block-attributes-example')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">HTML Preview</td>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('block-attributes-example')">&#x2b82;</span>
+Preview
+</td>
 <td>
 <div id="block-attributes-example-rendered" class="example-rendered">
 <p class="error" style="color:red">Lorum ipsum.</p>

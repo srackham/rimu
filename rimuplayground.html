@@ -416,9 +416,9 @@
   box-shadow: 0 0 10px #9ecaed;
   box-sizing: border-box;
 }
-.edit-icon {
-  text-decoration: underline;
+.edit-icon, .preview-icon {
   color: gray;
+  cursor: pointer;
 }
 .example td {
   margin: 0;
@@ -435,6 +435,12 @@
   margin: 0;
   padding: 0.5rem;
 }
+.example-html {
+  font-family: Consolas, "Andale Mono", Monaco, monospace;
+  font-size: 90%;
+  background-color: #f8f8f8;
+  white-space: pre-wrap;
+}
 .example-source > code {
   padding: 0;
 }
@@ -448,15 +454,31 @@ function editExample(name) {
   }
   var edit = document.getElementById(name + '-edit');
   edit.value = source.textContent;
-  edit.style.height = (edit.parentNode.offsetHeight - 1) + 'px';
+  edit.style.height = (edit.parentNode.offsetHeight -1) + 'px';
   edit.style.display = 'block';
   source.style.display = 'none';
 }
-function updateExample(name) {
+function renderExample(name) {
   var edit = document.getElementById(name + '-edit');
   var rendered = document.getElementById(name + '-rendered');
-  rendered.innerHTML = Rimu.render(edit.value);
-  edit.style.height = edit.parentNode.offsetHeight + 'px';
+  var source = document.getElementById(name + '-source');
+  var src = (edit.style.display === 'none') ? source.textContent : edit.value;
+  if (rendered.classList.contains('example-html')) {
+    rendered.innerHTML = replaceSpecialChars(Rimu.render(src));
+  }
+  else {
+    rendered.innerHTML = Rimu.render(src);
+  }
+}
+function toggleExample(name) {
+  var rendered = document.getElementById(name + '-rendered');
+  rendered.classList.toggle('example-html');
+  renderExample(name);
+}
+function replaceSpecialChars(s) {
+  return s.replace(/&/g, '&amp;')
+    .replace(/>/g, '&gt;')
+    .replace(/</g, '&lt;')
 }
 </script>
 <div id="toc" class="no-print">
