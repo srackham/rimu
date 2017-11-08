@@ -37,8 +37,9 @@ This should output:
 
 ### Learning
 - Experiment with Rimu in the [Rimu Playground]({playground}).
-- Edit the examples (click the _Edit icon_ {edit-icon} in the examples
-  below to enable live example editing of the Rimu source).
+- Click the _Edit icon_ &#x270e; in the examples below to enable live
+  editing of the Rimu source; click the _Preview icon_ &#x2b82; to
+  toogle output between _HTML_ and _Preview_.
 - Read [Rimu Tips]({tips}).
 
 ### Example applications
@@ -603,16 +604,15 @@ Rimu has both single line and multi-line comment elements.
 
 Examples:
 
-``
-/*
-  This comment is not included in the
-  HTML output.
+{comments-example} = '/*
+  This comment does not appear in the
+  rendered HTML.
 */
 
-// This comment is not included in the HTML output.
+// This comment does not appear in the rendered HTML.
 
-<!-- This comment is included in the HTML output. -->
-``
+<!-- This comment appears in the rendered HTML. -->'
+{generate-rendered-example-2|comments-example}
 
 ### Inline comments
 The predefined [Blank macro (`--`)](#predefined-macros) can be used

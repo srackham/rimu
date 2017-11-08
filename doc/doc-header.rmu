@@ -23,9 +23,9 @@
   box-shadow: 0 0 10px #9ecaed;
   box-sizing: border-box;
 }
-.edit-icon {
-  text-decoration: underline;
+.edit-icon, .preview-icon {
   color: gray;
+  cursor: pointer;
 }
 .example td {
   margin: 0;
@@ -41,6 +41,12 @@
   background-color: inherit;
   margin: 0;
   padding: 0.5rem;
+}
+.example-html {
+  font-family: Consolas, "Andale Mono", Monaco, monospace;
+  font-size: 90%;
+  background-color: #f8f8f8;
+  white-space: pre-wrap;
 }
 .example-source > code {
   padding: 0;
@@ -58,21 +64,37 @@ function editExample(name) {
   }
   var edit = document.getElementById(name + '-edit');
   edit.value = source.textContent;
-  edit.style.height = (edit.parentNode.offsetHeight - 1) + 'px';
+  edit.style.height = (edit.parentNode.offsetHeight -1) + 'px';
   edit.style.display = 'block';
   source.style.display = 'none';
 }
-function updateExample(name) {
+function renderExample(name) {
   var edit = document.getElementById(name + '-edit');
   var rendered = document.getElementById(name + '-rendered');
-  rendered.innerHTML = Rimu.render(edit.value);
-  edit.style.height = edit.parentNode.offsetHeight + 'px';
+  var source = document.getElementById(name + '-source');
+  var src = (edit.style.display === 'none') ? source.textContent : edit.value;
+  if (rendered.classList.contains('example-html')) {
+    rendered.innerHTML = replaceSpecialChars(Rimu.render(src));
+  }
+  else {
+    rendered.innerHTML = Rimu.render(src);
+  }
+}
+function toggleExample(name) {
+  var rendered = document.getElementById(name + '-rendered');
+  rendered.classList.toggle('example-html');
+  renderExample(name);
+}
+function replaceSpecialChars(s) {
+  return s.replace(/&/g, '&amp;')
+    .replace(/>/g, '&gt;')
+    .replace(/</g, '&lt;')
 }
 </script>
 
 // Clickable icon button to edit the example.
-{edit-icon} = '<span class="edit-icon">&#x270e;</span>'
-{example-edit-icon} = '<span class="edit-icon no-print" style="cursor:pointer" title="Edit example" onclick="editExample('$1')">&#x270e;</span>'
+{example-edit-icon} = '<span class="edit-icon no-print" title="Edit example" onclick="editExample('$1')">&#x270e;</span>'
+{example-preview-icon} = '<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('$1')">&#x2b82;</span>'
 
 // Macro to generate Rimu markup and rendered example (stacked horizontally).
 // $1 = name of example content macro.
@@ -86,7 +108,11 @@ function updateExample(name) {
 <td class="example-header">
 {--=$3}{example-edit-icon|$1}
 Rimu Markup</td>
-<td class="example-header">HTML Preview</td>
+<td class="example-header">
+HTML
+{--=$3}{example-preview-icon|$1}
+Preview
+</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -95,7 +121,7 @@ Rimu Markup</td>
 ```
 {$1}
 ```
-<textarea id="$1-edit" class="edit-source" style="display:none" onkeyup="updateExample('$1')"></textarea>
+<textarea id="$1-edit" class="edit-source" style="display:none" onkeyup="renderExample('$1')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="$1-rendered" class="example-rendered">
@@ -125,10 +151,14 @@ Rimu Markup</td>
 ```
 {$1}
 ```
-<textarea id="$1-edit" class="edit-source" style="display:none" onkeyup="updateExample('$1')"></textarea>
+<textarea id="$1-edit" class="edit-source" style="display:none" onkeyup="renderExample('$1')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">HTML Preview</td>
+<tr><td class="example-header" style="width:10%;">
+HTML
+{--=$3}{example-preview-icon|$1}
+Preview
+</td>
 <td>
 <div id="$1-rendered" class="example-rendered">
 

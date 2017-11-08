@@ -1,7 +1,8 @@
 # Rimu Tips
 
-TIP: Click the _Edit icon_ {edit-icon} in the examples below to enable
-live example editing of the Rimu source.
+TIP: Click the _Edit icon_ &#x270e; in the examples below to enable
+live editing of the Rimu source; click the _Preview icon_ &#x2b82; to
+toogle output between _HTML_ and _Preview_.
 
 ## HTML is valid Rimu
 You are free to mix any valid HTML into a Rimu document -- no
