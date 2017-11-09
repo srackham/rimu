@@ -465,11 +465,12 @@ function renderExample(name) {
   var rendered = document.getElementById(name + '-rendered');
   var source = document.getElementById(name + '-source');
   var src = (edit.style.display === 'none') ? source.textContent : edit.value;
+  var html = Rimu.render(src, {reset: true});
   if (rendered.classList.contains('example-html')) {
-    rendered.innerHTML = replaceSpecialChars(Rimu.render(src));
+    rendered.innerHTML = replaceSpecialChars(html);
   }
   else {
-    rendered.innerHTML = Rimu.render(src);
+    rendered.innerHTML = html;
   }
 }
 function toggleExample(name) {
@@ -564,7 +565,7 @@ experimentation.</p>
                        background-color:#006699;
                        padding:2px 4px;
                        border-radius:3px;
-                       font-weight:bold;">Note</span> <strong>Wed Nov 08 2017</strong> <mark>This document is not yet finished.</mark></p></div>
+                       font-weight:bold;">Note</span> <strong>Thu Nov 09 2017</strong> <mark>This document is not yet finished.</mark></p></div>
 </div>
 </td></tr></table>
 <ul><li>The <code>{sidebar}</code> macro shows how you can inject CSS styles into a
@@ -1958,8 +1959,8 @@ Preview
 </td>
 <td>
 <div id="macro-expressions-example-rendered" class="example-rendered">
-<p><strong>Time</strong>: 17:14:20</p>
-<p><strong>Date</strong>: Wed Nov 08 2017</p>
+<p><strong>Time</strong>: 14:29:39</p>
+<p><strong>Date</strong>: Thu Nov 09 2017</p>
 <p><strong>Circumference</strong>: 40,030 Km</p>
 <p><strong>Content margin</strong>: 341px</p>
 </div>
