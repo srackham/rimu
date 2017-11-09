@@ -76,6 +76,7 @@ function convert() {
   var diagnosticsElement = document.getElementById('playground-diagnostics');
   diagnosticsElement.innerHTML = ''
   var htmlRaw = Rimu.render(source, {
+    reset: true,
     callback: function(message) {
       diagnosticsElement.innerHTML = '<code>' + escapeSpecialChars(message.type + ': ' + message.text) + '</code>';
     }

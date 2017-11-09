@@ -73,11 +73,12 @@ function renderExample(name) {
   var rendered = document.getElementById(name + '-rendered');
   var source = document.getElementById(name + '-source');
   var src = (edit.style.display === 'none') ? source.textContent : edit.value;
+  var html = Rimu.render(src, {reset: true});
   if (rendered.classList.contains('example-html')) {
-    rendered.innerHTML = replaceSpecialChars(Rimu.render(src));
+    rendered.innerHTML = replaceSpecialChars(html);
   }
   else {
-    rendered.innerHTML = Rimu.render(src);
+    rendered.innerHTML = html;
   }
 }
 function toggleExample(name) {
