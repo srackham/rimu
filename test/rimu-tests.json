@@ -2335,5 +2335,14 @@
     "options": {
       "reset": true
     }
+  },
+  {
+    "description": "Line Macro does not emit duplicate undefined macro error",
+    "input": "{x} and {y}",
+    "expectedOutput": "<p>{x} and {y}</p>",
+    "expectedCallback": "error: undefined macro: {x}: {x} and {y}\nerror: undefined macro: {y}: {x} and {y}",
+    "options": {
+      "reset": true
+    }
   }
 ]
