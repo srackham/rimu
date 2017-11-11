@@ -70,7 +70,6 @@ export function merge(target: any, source: any): void {
 export function replaceInline(text: string, expansionOptions: ExpansionOptions): string {
   if (expansionOptions.macros) {
     text = Macros.render(text)
-    text = text === null ? '' : text
   }
   // Spans also expand special characters.
   if (expansionOptions.spans) {
