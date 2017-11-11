@@ -84,7 +84,7 @@ function convert() {
   })
   htmlElement.innerHTML = '<code>' + escapeSpecialChars(htmlRaw) + '</code>';
   previewElement.innerHTML = htmlRaw;
-      diagnosticsElement.innerHTML = '<code>' + escapeSpecialChars(messages.trim()) + '</code>';
+  diagnosticsElement.innerHTML = '<code>' + escapeSpecialChars(messages.trim()) + '</code>';
 }
 convert();
 </script>
