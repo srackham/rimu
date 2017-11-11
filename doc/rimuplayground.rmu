@@ -41,7 +41,7 @@ Edit these examples or add your own:
 
 Diagnostic messages:
 
-.#playground-diagnostics "{box-shadow} margin-top: 0.5rem"
+.#playground-diagnostics "{box-shadow} color: red; font-weight: bold; margin-top: 0.5rem"
 ``
 ``
 ..
@@ -74,15 +74,17 @@ function convert() {
   var htmlElement = document.getElementById('playground-html');
   var previewElement = document.getElementById('playground-preview');
   var diagnosticsElement = document.getElementById('playground-diagnostics');
+  var messages = '';
   diagnosticsElement.innerHTML = ''
   var htmlRaw = Rimu.render(source, {
     reset: true,
     callback: function(message) {
-      diagnosticsElement.innerHTML = '<code>' + escapeSpecialChars(message.type + ': ' + message.text) + '</code>';
+      messages += message.type + ': ' + message.text + '\n';
     }
   })
   htmlElement.innerHTML = '<code>' + escapeSpecialChars(htmlRaw) + '</code>';
   previewElement.innerHTML = htmlRaw;
+      diagnosticsElement.innerHTML = '<code>' + escapeSpecialChars(messages.trim()) + '</code>';
 }
 convert();
 </script>
