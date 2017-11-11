@@ -27,14 +27,10 @@ let defs: Definition[] = [
         // Do not process macro definitions.
         return false
       }
-      let value = Macros.render(match[0])
-      // Check that the leading macro invocation was expanded.
-      // This also stops infinite recursion in the case where the macro invocation
-      // returns itself.
-      if (value.substr(0, match[1].length) === match[1]) { // If `value` starts with `match[1]`.
+      // Silent because any macro expansion errors will be subsequently addressed downstream.
+      let value = Macros.render(match[0], true)
+      if (value.substr(0, match[1].length) === match[1]) {
         // The leading macro invocation expansion failed or returned itself.
-        // Escape the macro invocation to ensure it is not processed again.
-        reader.cursor = '\\' + match[0]
         return false
       }
       // Insert the macro value into the reader just ahead of the cursor.

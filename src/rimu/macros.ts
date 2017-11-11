@@ -75,7 +75,7 @@ export function setValue(name: string, value: string, quote: string): void {
 
 // Render macro invocations in text string.
 // Render Simple invocations first, followed by Parametized, Inclusion and Exclusion invocations.
-export function render(text: string): string {
+export function render(text: string, silent: boolean = false): string {
   const MATCH_COMPLEX = /\\?{([\w\-]+)([!=|?](?:|[^]*?[^\\]))}/g; // Parametrized, Inclusion and Exclusion invocations.
   const MATCH_SIMPLE = /\\?{([\w\-]+)()}/g;                       // Simple macro invocation.
   const saved_simple: string[] = [];
@@ -87,12 +87,16 @@ export function render(text: string): string {
       let name = submatches[0]
       let params = submatches[1] || ''
       if (params[0] === '?') { // DEPRECATED: Existential macro invocation.
-        Options.errorCallback('existential macro invocations are deprecated: ' + match)
+        if (!silent) {
+          Options.errorCallback('existential macro invocations are deprecated: ' + match)
+        }
         return match
       }
       let value = getValue(name)  // Macro value is null if macro is undefined.
       if (value === null) {
-        Options.errorCallback('undefined macro: ' + match + ': ' + text)
+        if (!silent) {
+          Options.errorCallback('undefined macro: ' + match + ': ' + text)
+        }
         return match
       }
       params = params.replace(/\\}/g, '}')   // Unescape escaped } characters.
@@ -135,7 +139,9 @@ export function render(text: string): string {
             skip = !RegExp('^' + pattern + '$').test(value || '')
           }
           catch {
-            Options.errorCallback('illegal macro regular expression: ' + pattern + ': ' + text)
+            if (!silent) {
+              Options.errorCallback('illegal macro regular expression: ' + pattern + ': ' + text)
+            }
             return match
           }
           if (params[0] === '!') {
@@ -149,7 +155,7 @@ export function render(text: string): string {
     })
   })
   // Restore expanded Simple values.
-  text = text.replace(/\u0001/g, () => saved_simple.shift()! )
+  text = text.replace(/\u0001/g, () => saved_simple.shift()!)
   // Delete lines flagged by Inclusion/Exclusion macros.
   if (text.indexOf('\u0000') !== -1) {
     text = text.split('\n')
