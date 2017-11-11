@@ -31,6 +31,7 @@ let defs: Definition[] = [
       let value = Macros.render(match[0], true)
       if (value.substr(0, match[1].length) === match[1]) {
         // The leading macro invocation expansion failed or returned itself.
+        // This stops infinite recursion.
         return false
       }
       // Insert the macro value into the reader just ahead of the cursor.
