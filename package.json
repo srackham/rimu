@@ -31,7 +31,7 @@
     "url": "https://github.com/srackham/rimu.git"
   },
   "devDependencies": {
-    "@types/node": "^8.0.50",
+    "@types/node": "^8.0.51",
     "faucet": "0.0.1",
     "jake": "^8.0.15",
     "jshint": "^2.9.5",
@@ -43,7 +43,7 @@
     "ts-loader": "^3.1.1",
     "tslint": "^5.8.0",
     "typescript": "^2.6.1",
-    "uglify-js": "^3.1.8",
+    "uglify-js": "^3.1.9",
     "webpack": "^3.8.1"
   }
 }
