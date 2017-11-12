@@ -4,6 +4,15 @@ See the [Git commit log]({github}/commits/) for a full list of
 changes.
 
 
+## Version 10.3.1 (2017-11-13)
+- _HTML &#x2b82; Preview_ toggle command added to Rimu documentation live-edit
+  examples.
+- Rimu documentation live-edit examples now display Rimu diagnostic messages.
+- Rimu Playground displays all diagnostic messages, not just the most recent
+  one.
+- _Line Macro_ errors no longer generate duplicate `undefined macro` errors.
+
+
 ## Version 10.3.0 (2017-11-01)
 - Added {rimuc} command `--pass` option which passes the stdin input verbatim
   to the output.
