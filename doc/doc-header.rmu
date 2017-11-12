@@ -55,8 +55,9 @@
 }
 .example-errors {
   display: none;
-  color: red;
-  border: 1px solid red;
+  color: #d61123;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
   font-weight: bold;
 }
 </style>
