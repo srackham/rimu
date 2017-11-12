@@ -431,20 +431,29 @@
   color: #34495e;
   padding: 0.5em !important;
 }
-.example-source, .example-rendered {
+.example-source, .example-rendered, .example-errors {
   border: none;
   background-color: inherit;
   margin: 0;
   padding: 0.5rem;
 }
-.example-html {
-  font-family: Consolas, "Andale Mono", Monaco, monospace;
-  font-size: 90%;
-  background-color: #f8f8f8;
-  white-space: pre-wrap;
-}
 .example-source > code {
   padding: 0;
+}
+.example-html, .example-errors {
+  font-family: Consolas, "Andale Mono", Monaco, monospace;
+  font-size: 90%;
+  white-space: pre-wrap;
+}
+.example-html {
+  background-color: #f8f8f8;
+}
+.example-errors {
+  display: none;
+  color: #d61123;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  font-weight: bold;
 }
 </style>
 <script src="rimu.min.js"></script>
@@ -456,7 +465,7 @@ function editExample(name) {
   }
   var edit = document.getElementById(name + '-edit');
   edit.value = source.textContent;
-  edit.style.height = (edit.parentNode.offsetHeight -1) + 'px';
+  edit.style.height = (edit.parentNode.offsetHeight - 1) + 'px';
   edit.style.display = 'block';
   source.style.display = 'none';
 }
@@ -464,13 +473,30 @@ function renderExample(name) {
   var edit = document.getElementById(name + '-edit');
   var rendered = document.getElementById(name + '-rendered');
   var source = document.getElementById(name + '-source');
+  var errors = document.getElementById(name + '-errors');
   var src = (edit.style.display === 'none') ? source.textContent : edit.value;
-  var html = Rimu.render(src, {reset: true});
+  var messages = '';
+  var html = Rimu.render(src, {
+    reset: true,
+    callback: function(message) {
+      messages += message.type + ': ' + message.text.split(':', 2).join(':') + '\n';
+    }
+  });
   if (rendered.classList.contains('example-html')) {
     rendered.innerHTML = replaceSpecialChars(html);
   }
   else {
     rendered.innerHTML = html;
+  }
+  if (messages) {
+    errors.style.display = 'block';
+    errors.innerHTML = replaceSpecialChars(messages.trim());
+  }
+  else {
+    errors.style.display = 'none';
+  }
+  if (edit.style.display !== 'none') {
+    edit.style.height = (edit.parentNode.offsetHeight - 1) + 'px';
   }
 }
 function toggleExample(name) {
@@ -930,6 +956,7 @@ HTML
 Preview
 </td>
 <td>
+<div id="comments-example-errors" class="example-errors"></div>
 <div id="comments-example-rendered" class="example-rendered">
 <!-- This comment appears in the rendered HTML. -->
 </div>
@@ -967,6 +994,7 @@ HTML
 Preview
 </td>
 <td>
+<div id="macro-comments-example-errors" class="example-errors"></div>
 <div id="macro-comments-example-rendered" class="example-rendered">
 <p>Lorem ipsum dolor sit amet sapien.
 Imperdiet pellentesque minim.</p>
@@ -1005,6 +1033,7 @@ Preview
 <textarea id="headers-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('headers-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="headers-example-errors" class="example-errors"></div>
 <div id="headers-example-rendered" class="example-rendered">
 <h1 id="h1-header">h1 header</h1>
 <h2 id="h2-header">h2 header</h2>
@@ -1050,6 +1079,7 @@ Scelerisque feugiat massa alias.
 <textarea id="code-block-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('code-block-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="code-block-example-errors" class="example-errors"></div>
 <div id="code-block-example-rendered" class="example-rendered">
 <pre class="no-highlight"><code>Nunc mauris tempor.
 Scelerisque feugiat massa alias.</code></pre>
@@ -1083,6 +1113,7 @@ Anonymous
 <textarea id="quote-block-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('quote-block-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="quote-block-example-errors" class="example-errors"></div>
 <div id="quote-block-example-rendered" class="example-rendered">
 <blockquote><p>Nunc mauris tempor.
 Scelerisque feugiat massa alias.</p>
@@ -1118,6 +1149,7 @@ Scelerisque feugiat massa alias.
 <textarea id="division-block-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('division-block-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="division-block-example-errors" class="example-errors"></div>
 <div id="division-block-example-rendered" class="example-rendered">
 <div style="font-style:italic"><p>Nunc mauris tempor.
 Scelerisque feugiat massa alias.</p></div>
@@ -1147,6 +1179,7 @@ HTML
 Preview
 </td>
 <td>
+<div id="html-inline-element-example-errors" class="example-errors"></div>
 <div id="html-inline-element-example-rendered" class="example-rendered">
 <p>An inline <span style="color:red;">HTML span</span>.</p>
 </div>
@@ -1181,6 +1214,7 @@ HTML
 Preview
 </td>
 <td>
+<div id="html-block-element-example-errors" class="example-errors"></div>
 <div id="html-block-element-example-rendered" class="example-rendered">
 <p>An HTML table block element:</p>
 <table class="bordered">
@@ -1231,6 +1265,7 @@ Scelerisque feugiat massa alias.</code></pre>
 <textarea id="normal-paragraph-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('normal-paragraph-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="normal-paragraph-example-errors" class="example-errors"></div>
 <div id="normal-paragraph-example-rendered" class="example-rendered">
 <p>Nunc mauris tempor.
 Scelerisque feugiat massa alias.</p>
@@ -1261,6 +1296,7 @@ Preview
 <textarea id="indented-paragraph-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('indented-paragraph-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="indented-paragraph-example-errors" class="example-errors"></div>
 <div id="indented-paragraph-example-rendered" class="example-rendered">
 <pre class="no-highlight"><code>Nunc mauris tempor.
 Scelerisque feugiat massa alias.</code></pre>
@@ -1291,6 +1327,7 @@ Preview
 <textarea id="quote-paragraph-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('quote-paragraph-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="quote-paragraph-example-errors" class="example-errors"></div>
 <div id="quote-paragraph-example-rendered" class="example-rendered">
 <blockquote><p> Nunc mauris tempor.
   Scelerisque feugiat massa alias.</p></blockquote>
@@ -1327,6 +1364,7 @@ Preview
 <textarea id="bullet-lists-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('bullet-lists-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="bullet-lists-example-errors" class="example-errors"></div>
 <div id="bullet-lists-example-rendered" class="example-rendered">
 <ul><li>First item.<ol><li>Nested numbered item.</li></ol></li><li>Second item of first list.</li></ul></div>
 </td></tr></table>
@@ -1353,6 +1391,7 @@ Definition for second term.</code></pre>
 <textarea id="labeled-lists-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('labeled-lists-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="labeled-lists-example-errors" class="example-errors"></div>
 <div id="labeled-lists-example-rendered" class="example-rendered">
 <dl><dt>First term</dt><dd>Definition one.</dd><dt>Second term</dt><dd>Definition for second term.</dd></dl></div>
 </td></tr></table>
@@ -1422,6 +1461,7 @@ HTML
 Preview
 </td>
 <td>
+<div id="lists-example-errors" class="example-errors"></div>
 <div id="lists-example-rendered" class="example-rendered">
 <ul><li>Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu
 - lorem dolor fusce nec.<ul><li>Sit pretium quisque in wisi lobortis.</li><li>Ac curabitur elementum.<ul><li>Platea ad diam arcu vitae fermentum.<ol><li>Eu lorem nulla.</li><li>In suspendisse at dapibus nostra est.<ol><li>Montes adipiscing sodales.</li></ol></li></ol></li><li>Pellentesque nibh sit.</li></ul></li></ul></li><li>Viverra pede turpis.<dl><dt>Esse et dui</dt><dd>Nonummy modi.</dd><dt>Wisi ad diam</dt><dd>Sapien porttitor.<dl><dt>Condimentum</dt><dd>Lacus maecenas neque dolor habitant tellus.</dd></dl></dd></dl></li><li>Augue et dui malesuada purus.<pre class="no-highlight"><code>Purus aliquam mauris a aliquam orci. Massa sit sit.
@@ -1475,6 +1515,7 @@ some ~~deleted text~~.</code></pre>
 <textarea id="quote-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('quote-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="quote-example-errors" class="example-errors"></div>
 <div id="quote-example-rendered" class="example-rendered">
 <p>Some <strong>bold text</strong>,
 some <em>emphasized text</em>,
@@ -1566,6 +1607,7 @@ Preview
 <textarea id="urls-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('urls-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="urls-example-errors" class="example-errors"></div>
 <div id="urls-example-rendered" class="example-rendered">
 <ol><li><a href="http://example.com">http://example.com</a></li><li><a href="http://example.com">http://example.com</a></li><li><a href="http://example.com">Foo home</a></li><li><a href="http://example.com">Foo home</a></li><li><a href="example.html">example.html</a></li><li><a href="example.html#basics">The basics</a></li><li><a href="#api-options">API Options</a></li><li><a href="file:///example/user-guide.pdf">User Guide</a></li><li><a href="file:///downloads/">file:///downloads/</a></li><li><a href="ftp://example.com/rfc959.txt">rfc959.txt</a></li><li><a href="mailto:joe@example.com">joe@example.com</a></li><li><a href="mailto:joe@example.org">Joe Bloggs</a></li></ol></div>
 </td></tr></table>
@@ -1607,6 +1649,7 @@ inline element.</code></pre>
 <textarea id="images-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('images-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="images-example-errors" class="example-errors"></div>
 <div id="images-example-rendered" class="example-rendered">
 <p>An image can be rendered as a block element:</p>
 <img src="http://www.w3.org/Icons/w3c_home.png" alt="W3C logo">
@@ -1636,6 +1679,7 @@ Preview
 <textarea id="entities-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('entities-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="entities-example-errors" class="example-errors"></div>
 <div id="entities-example-rendered" class="example-rendered">
 <p>&copy; &reg; &alpha; &omega;</p>
 </div>
@@ -1694,6 +1738,7 @@ HTML
 Preview
 </td>
 <td>
+<div id="block-attributes-example-errors" class="example-errors"></div>
 <div id="block-attributes-example-rendered" class="example-rendered">
 <p class="error" style="color:red">Lorum ipsum.</p>
 <p id="ref2" style="color:green" title="Reference two">Ac curabitur elementum.</p>

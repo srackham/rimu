@@ -431,20 +431,29 @@
   color: #34495e;
   padding: 0.5em !important;
 }
-.example-source, .example-rendered {
+.example-source, .example-rendered, .example-errors {
   border: none;
   background-color: inherit;
   margin: 0;
   padding: 0.5rem;
 }
-.example-html {
-  font-family: Consolas, "Andale Mono", Monaco, monospace;
-  font-size: 90%;
-  background-color: #f8f8f8;
-  white-space: pre-wrap;
-}
 .example-source > code {
   padding: 0;
+}
+.example-html, .example-errors {
+  font-family: Consolas, "Andale Mono", Monaco, monospace;
+  font-size: 90%;
+  white-space: pre-wrap;
+}
+.example-html {
+  background-color: #f8f8f8;
+}
+.example-errors {
+  display: none;
+  color: #d61123;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  font-weight: bold;
 }
 </style>
 <script src="rimu.min.js"></script>
@@ -456,7 +465,7 @@ function editExample(name) {
   }
   var edit = document.getElementById(name + '-edit');
   edit.value = source.textContent;
-  edit.style.height = (edit.parentNode.offsetHeight -1) + 'px';
+  edit.style.height = (edit.parentNode.offsetHeight - 1) + 'px';
   edit.style.display = 'block';
   source.style.display = 'none';
 }
@@ -464,13 +473,30 @@ function renderExample(name) {
   var edit = document.getElementById(name + '-edit');
   var rendered = document.getElementById(name + '-rendered');
   var source = document.getElementById(name + '-source');
+  var errors = document.getElementById(name + '-errors');
   var src = (edit.style.display === 'none') ? source.textContent : edit.value;
-  var html = Rimu.render(src, {reset: true});
+  var messages = '';
+  var html = Rimu.render(src, {
+    reset: true,
+    callback: function(message) {
+      messages += message.type + ': ' + message.text.split(':', 2).join(':') + '\n';
+    }
+  });
   if (rendered.classList.contains('example-html')) {
     rendered.innerHTML = replaceSpecialChars(html);
   }
   else {
     rendered.innerHTML = html;
+  }
+  if (messages) {
+    errors.style.display = 'block';
+    errors.innerHTML = replaceSpecialChars(messages.trim());
+  }
+  else {
+    errors.style.display = 'none';
+  }
+  if (edit.style.display !== 'none') {
+    edit.style.height = (edit.parentNode.offsetHeight - 1) + 'px';
   }
 }
 function toggleExample(name) {
@@ -553,6 +579,7 @@ HTML
 Preview
 </td>
 <td>
+<div id="macros-example-errors" class="example-errors"></div>
 <div id="macros-example-rendered" class="example-rendered">
 <h4 id="fun-with-macros">Fun with Macros</h4>
 <div style="padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"><p><span style="color:white;
@@ -565,7 +592,7 @@ experimentation.</p>
                        background-color:#006699;
                        padding:2px 4px;
                        border-radius:3px;
-                       font-weight:bold;">Note</span> <strong>Thu Nov 09 2017</strong> <mark>This document is not yet finished.</mark></p></div>
+                       font-weight:bold;">Note</span> <strong>Mon Nov 13 2017</strong> <mark>This document is not yet finished.</mark></p></div>
 </div>
 </td></tr></table>
 <ul><li>The <code>{sidebar}</code> macro shows how you can inject CSS styles into a
@@ -600,6 +627,7 @@ Rimu URL syntax.</code></pre>
 <textarea id="document-links-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('document-links-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="document-links-example-errors" class="example-errors"></div>
 <div id="document-links-example-rendered" class="example-rendered">
 <p id="link-target">This paragraph has ID <code>link-target</code>.</p>
 <p><a href="#link-target">This link</a> takes you to
@@ -649,6 +677,7 @@ if x == 1:
 <textarea id="highlightjs-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('highlightjs-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="highlightjs-example-errors" class="example-errors"></div>
 <div id="highlightjs-example-rendered" class="example-rendered">
 <p>Some JavaScript code:</p>
 <pre class="javascript no-highlight"><code>if (message) {
@@ -731,6 +760,7 @@ Preview
 <textarea id="escaped-elements-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('escaped-elements-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="escaped-elements-example-errors" class="example-errors"></div>
 <div id="escaped-elements-example-rendered" class="example-rendered">
 <p>_escaped quote_</p>
 <p><strong>escaped closing** quote</strong></p>
@@ -813,6 +843,7 @@ TODO 10 examples +-2</code></pre>
 <textarea id="rimurc-examples-edit" class="edit-source" style="display:none" onkeyup="renderExample('rimurc-examples')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="rimurc-examples-errors" class="example-errors"></div>
 <div id="rimurc-examples-rendered" class="example-rendered">
 <p>Turn &leftarrow; left then right &rightarrow;</p>
 <p>Copyright &copy; 2015 &mdash; trademarked&trade;.</p>
@@ -942,6 +973,7 @@ Scelerisque feugiat massa alias.
 <textarea id="verse-and-sidebar-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('verse-and-sidebar-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="verse-and-sidebar-example-errors" class="example-errors"></div>
 <div id="verse-and-sidebar-example-rendered" class="example-rendered">
 <p>Verse styled paragraph:</p>
 <p class="verse">Neque a massa.
@@ -1008,6 +1040,7 @@ HTML
 Preview
 </td>
 <td>
+<div id="mathjax-example-errors" class="example-errors"></div>
 <div id="mathjax-example-rendered" class="example-rendered">
 <p>A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\)</p>
 <p>A LaTeX block formula:</p>
@@ -1120,6 +1153,7 @@ HTML
 Preview
 </td>
 <td>
+<div id="tables-example-errors" class="example-errors"></div>
 <div id="tables-example-rendered" class="example-rendered">
 <table class="bordered"><tr>
 <td style="width: 50%; padding: 6px;">
@@ -1186,6 +1220,7 @@ HTML
 Preview
 </td>
 <td>
+<div id="table-macro-example-errors" class="example-errors"></div>
 <div id="table-macro-example-rendered" class="example-rendered">
 <table class="bordered" style="margin-bottom:0.3em; font-weight:bold; color:#527bbd"><tr>
 <td style="width:40%"> Name        </td>
@@ -1264,6 +1299,7 @@ HTML
 Preview
 </td>
 <td>
+<div id="columnar-text-example-errors" class="example-errors"></div>
 <div id="columnar-text-example-rendered" class="example-rendered">
 <table><tr><td style="width:33%;padding:0.5em;">
 <h4 id="column-one">Column One</h4>
@@ -1324,6 +1360,7 @@ HTML
 Preview
 </td>
 <td>
+<div id="meta-macros-example-errors" class="example-errors"></div>
 <div id="meta-macros-example-rendered" class="example-rendered">
 <h4 id="table-of-contents">Table of Contents</h4>
 <p><a href="#section1">Section One</a></p>
@@ -1404,6 +1441,7 @@ ordered list items.</code></pre>
 <textarea id="list-item-counters-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('list-item-counters-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="list-item-counters-example-errors" class="example-errors"></div>
 <div id="list-item-counters-example-rendered" class="example-rendered">
 <h4 id="numbered-labeled-list">Numbered labeled list</h4>
 <dl class="dl-numbered"><dt>One</dt><dd>Item one.</dd><dt>Two</dt><dd>Item two.</dd><dt>Three</dt><dd>Item three.</dd></dl><p class="dl-counter">labeled list items.</p>
@@ -1440,6 +1478,7 @@ Include a paragraph in the list item.
 <textarea id="composite-list-item-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('composite-list-item-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="composite-list-item-example-errors" class="example-errors"></div>
 <div id="composite-list-item-example-rendered" class="example-rendered">
 <ul><li>First list item.<p>Include a paragraph in the list item.</p>
 <blockquote><p> And a Quoted paragraph.</p></blockquote>
@@ -1510,6 +1549,7 @@ Three:: Item three.
 <textarea id="list-item-block-attributes-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('list-item-block-attributes-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="list-item-block-attributes-example-errors" class="example-errors"></div>
 <div id="list-item-block-attributes-example-rendered" class="example-rendered">
 <ul><li>List item with green sidebar
   styled Division block.<div class="sidebar" style="color:green"><p>Urna aliquam pid, pulvinar augue ut
@@ -1569,6 +1609,7 @@ lacus!
 <textarea id="nested-fenced-blocks-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('nested-fenced-blocks-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="nested-fenced-blocks-example-errors" class="example-errors"></div>
 <div id="nested-fenced-blocks-example-rendered" class="example-rendered">
 <blockquote><p>Urna aliquam pid, pulvinar augue ut
 aenean enim cum lectus sed, duis odio
@@ -1619,6 +1660,7 @@ Preview
 <textarea id="list-ambiguity-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('list-ambiguity-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="list-ambiguity-example-errors" class="example-errors"></div>
 <div id="list-ambiguity-example-rendered" class="example-rendered">
 <ul><li>List item.<ul><li>Rendered as nested list item.</li></ul></li><li>List item.<pre class="no-highlight"><code>* Rendered as code block.</code></pre>
 </li></ul></div>
@@ -1672,6 +1714,7 @@ Augue non egestas amet?
 <textarea id="line-breaks-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('line-breaks-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="line-breaks-example-errors" class="example-errors"></div>
 <div id="line-breaks-example-rendered" class="example-rendered">
 <p>Urna aliquam pid<br>
 Aenean enim cum sed <br>
@@ -1723,6 +1766,7 @@ Enim odio ultrices</code></pre>
 <textarea id="text-alignment-example-2-edit" class="edit-source" style="display:none" onkeyup="renderExample('text-alignment-example-2')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="text-alignment-example-2-errors" class="example-errors"></div>
 <div id="text-alignment-example-2-rendered" class="example-rendered">
 <p class="align-left">Enim odio ultrices</p>
 <p class="align-center">Enim odio ultrices</p>
@@ -1773,6 +1817,7 @@ A. N. Mouse
 <textarea id="citation-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('citation-example')"></textarea>
 </td>
 <td style="width:50%;">
+<div id="citation-example-errors" class="example-errors"></div>
 <div id="citation-example-rendered" class="example-rendered">
 <p>Quotation:</p>
 <blockquote><p>Enim ultricies odio rhoncus ultrices,
@@ -1837,6 +1882,7 @@ HTML
 Preview
 </td>
 <td>
+<div id="letter-example-errors" class="example-errors"></div>
 <div id="letter-example-rendered" class="example-rendered">
 <div style="font-family:serif; font-size:12pt;"><div style="margin-left:75%"><p>24 Milky Way<br>
 Skyhome 1234<br></p>
@@ -1958,9 +2004,10 @@ HTML
 Preview
 </td>
 <td>
+<div id="macro-expressions-example-errors" class="example-errors"></div>
 <div id="macro-expressions-example-rendered" class="example-rendered">
-<p><strong>Time</strong>: 14:29:39</p>
-<p><strong>Date</strong>: Thu Nov 09 2017</p>
+<p><strong>Time</strong>: 08:21:50</p>
+<p><strong>Date</strong>: Mon Nov 13 2017</p>
 <p><strong>Circumference</strong>: 40,030 Km</p>
 <p><strong>Content margin</strong>: 341px</p>
 </div>

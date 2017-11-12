@@ -429,20 +429,29 @@
   color: #34495e;
   padding: 0.5em !important;
 }
-.example-source, .example-rendered {
+.example-source, .example-rendered, .example-errors {
   border: none;
   background-color: inherit;
   margin: 0;
   padding: 0.5rem;
 }
-.example-html {
-  font-family: Consolas, "Andale Mono", Monaco, monospace;
-  font-size: 90%;
-  background-color: #f8f8f8;
-  white-space: pre-wrap;
-}
 .example-source > code {
   padding: 0;
+}
+.example-html, .example-errors {
+  font-family: Consolas, "Andale Mono", Monaco, monospace;
+  font-size: 90%;
+  white-space: pre-wrap;
+}
+.example-html {
+  background-color: #f8f8f8;
+}
+.example-errors {
+  display: none;
+  color: #d61123;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  font-weight: bold;
 }
 </style>
 <script src="rimu.min.js"></script>
@@ -454,7 +463,7 @@ function editExample(name) {
   }
   var edit = document.getElementById(name + '-edit');
   edit.value = source.textContent;
-  edit.style.height = (edit.parentNode.offsetHeight -1) + 'px';
+  edit.style.height = (edit.parentNode.offsetHeight - 1) + 'px';
   edit.style.display = 'block';
   source.style.display = 'none';
 }
@@ -462,13 +471,30 @@ function renderExample(name) {
   var edit = document.getElementById(name + '-edit');
   var rendered = document.getElementById(name + '-rendered');
   var source = document.getElementById(name + '-source');
+  var errors = document.getElementById(name + '-errors');
   var src = (edit.style.display === 'none') ? source.textContent : edit.value;
-  var html = Rimu.render(src, {reset: true});
+  var messages = '';
+  var html = Rimu.render(src, {
+    reset: true,
+    callback: function(message) {
+      messages += message.type + ': ' + message.text.split(':', 2).join(':') + '\n';
+    }
+  });
   if (rendered.classList.contains('example-html')) {
     rendered.innerHTML = replaceSpecialChars(html);
   }
   else {
     rendered.innerHTML = html;
+  }
+  if (messages) {
+    errors.style.display = 'block';
+    errors.innerHTML = replaceSpecialChars(messages.trim());
+  }
+  else {
+    errors.style.display = 'none';
+  }
+  if (edit.style.display !== 'none') {
+    edit.style.height = (edit.parentNode.offsetHeight - 1) + 'px';
   }
 }
 function toggleExample(name) {
@@ -518,7 +544,7 @@ Code block.
 </textarea>
 </div>
 <p>Diagnostic messages:</p>
-<pre id="playground-diagnostics" style="box-shadow: 0 0 10px #9ecaed; margin-top: 0.5rem" class="no-highlight"><code></code></pre></div>
+<pre id="playground-diagnostics" style="display: none; box-shadow: 0 0 10px #9ecaed; color: #d61123; background-color: #f8d7da; border: 1px solid #f5c6cb; font-weight: bold; margin-top: 0.5rem" class="no-highlight"><code></code></pre></div>
 <h2 id="showhide-playground-preview-html-preview"><span onclick="showHide('playground-preview')" title="Show/Hide" style="cursor: pointer;">&#9660;</span> HTML preview</h2>
 <div id="playground-preview" style="border: 1px solid #dddddd; margin-top: 0.5rem; padding: 4px; box-shadow: 0 0 10px #9ecaed;"></div>
 <h2 id="showhide-playground-html-html-markup"><span onclick="showHide('playground-html')" title="Show/Hide" style="cursor: pointer;">&#9660;</span> HTML markup</h2>
@@ -538,15 +564,23 @@ function convert() {
   var htmlElement = document.getElementById('playground-html');
   var previewElement = document.getElementById('playground-preview');
   var diagnosticsElement = document.getElementById('playground-diagnostics');
+  var messages = '';
   diagnosticsElement.innerHTML = ''
   var htmlRaw = Rimu.render(source, {
     reset: true,
     callback: function(message) {
-      diagnosticsElement.innerHTML = '<code>' + escapeSpecialChars(message.type + ': ' + message.text) + '</code>';
+      messages += message.type + ': ' + message.text + '\n';
     }
   })
   htmlElement.innerHTML = '<code>' + escapeSpecialChars(htmlRaw) + '</code>';
   previewElement.innerHTML = htmlRaw;
+  if (messages) {
+    diagnosticsElement.innerHTML = '<code>' + escapeSpecialChars(messages.trim()) + '</code>';
+    diagnosticsElement.style.display = 'block';
+  }
+  else {
+    diagnosticsElement.style.display = 'none';
+  }
 }
 convert();
 </script>
