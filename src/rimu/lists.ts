@@ -1,4 +1,5 @@
 import * as DelimitedBlocks from './delimitedblocks'
+import * as LineBlocks from './lineblocks'
 import * as Io from './io'
 import * as Utils from './utils'
 import {BlockAttributes} from './utils';
@@ -152,6 +153,12 @@ function readToNext(reader: Io.Reader, writer: Io.Writer): ItemState | null {
   let next: ItemState | null
   while (true) {
     if (reader.eof()) return null
+    // consume Block Attributes.
+    if (LineBlocks.getDefinition('attributes').match.test(reader.cursor)) {
+      if (LineBlocks.render(reader, writer)) {
+        continue
+      }
+    }
     if (reader.cursor === '') {
       // Encountered blank line.
       reader.next()
@@ -160,7 +167,6 @@ function readToNext(reader: Io.Reader, writer: Io.Writer): ItemState | null {
         // A second blank line terminates the list.
         return null
       }
-      if (reader.eof()) return null
       // A single blank line separates list item from ensuing text.
       return matchItem(reader, ['indented', 'quote-paragraph'])
     }
