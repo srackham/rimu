@@ -2344,5 +2344,50 @@
     "options": {
       "reset": true
     }
+  },
+  {
+    "description": "Block Attributes on Fenced Block attached to List item",
+    "input": "- Item one.\n.#id\n..\nFoobar.\n..",
+    "expectedOutput": "<ul><li>Item one.<div id=\"id\"><p>Foobar.</p></div></li></ul>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "Block Attributes on Quote Paragraph attached to List item",
+    "input": "- Item one.\n.#id\n\n> Foobar.",
+    "expectedOutput": "<ul><li>Item one.<blockquote id=\"id\"><p> Foobar.</p></blockquote></li></ul>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "Multiple Block Attributes on Fenced Block attached to List item",
+    "input": "- Item one.\n.class\n.#id\n..\nFoobar.\n..",
+    "expectedOutput": "<ul><li>Item one.<div class=\"class\" id=\"id\"><p>Foobar.</p></div></li></ul>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "Block Attributes can appear anywhere in List item",
+    "input": "- Item\n.#id\none.\n..\nFoobar.\n..",
+    "expectedOutput": "<ul><li>Item\none.<div id=\"id\"><p>Foobar.</p></div></li></ul>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "Escaped Block Attributes on Fenced Block attached to List item",
+    "input": "- Item one.\n\\.#id\n\"\"\nFoobar.\n\"\"",
+    "expectedOutput": "<ul><li>Item one.\n.#id<blockquote><p>Foobar.</p></blockquote></li></ul>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
   }
 ]
