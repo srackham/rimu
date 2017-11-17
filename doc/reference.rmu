@@ -872,6 +872,8 @@ Definition for second term.'
     [Multi-line comment](#comments) immediately follows a list item
     without any intervening blank lines then it is attached to the
     list item.
+  * Attached elements can be preceded by one or more [Block
+    Attributes](#block-attributes) elements.
 
 - Lists are terminated:
 
