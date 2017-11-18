@@ -809,40 +809,41 @@ immediately follows a list item without any intervening blank lines it
 will be rendered with the list item.
 
 
-## Applying Block Attributes to attached list item elements
-Elements attached to list items can be preceded by one or more [Block
-Attributes]({reference}#block-attributes).
+.#styling-list-items
+## Applying Block Attributes to list item elements
+[Block Attribute]({reference}#block-attributes) elements within a list
+are applied to the next list item or attached list item element. This
+facilitates styling and linking within [lists]({reference}#lists).
 
-{list-item-block-attributes-example} = '- List item with green sidebar
-  styled Division block.
+{list-item-block-attributes-example} = '1. List item with attached green
+   sidebar styled Division block.
 .sidebar "color:green"
 ..
 Urna aliquam pid, pulvinar augue ut
 aenean enim cum lectus sed.
-
-Duis odio lectus, augue non egestas
-amet? Magna lectus?
 ..
 
-- List item with nested numbered
-  [labeled list](#example-list).
-.#example-list
-.dl-numbered
+."color:orange"
+2. List item with nested labled list.
+
+.#labeled-list
     One:: Item one.
+."color:red"
     Two:: Item two.
-    Three:: Item three.
 
-- List item with bold Indented
-  paragraph.
+.#third-list-item
+3. List item with attached bold Indented
+   paragraph.
+
 ."font-weight:bold"
+   Duis in tincidunt rhoncus nascetur
+   lacus!
 
-  Duis in tincidunt rhoncus nascetur
-  lacus!'
+[Link to third list item](#third-list-item).
+
+[Link to labeled list](#labeled-list).'
 
 {generate-rendered-example-1|list-item-block-attributes-example}
-
-NOTE: There can be no intervening blank lines between the list item
-and the attached _Block Attributes_ elements.
 
 
 ## Section numbering
