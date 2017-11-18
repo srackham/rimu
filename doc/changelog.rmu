@@ -4,6 +4,13 @@ See the [Git commit log]({github}/commits/) for a full list of
 changes.
 
 
+## Version 10.4.0 (2017-11-19)
+- [Block Attribute]({reference}#block-attributes) elements within a
+  list are applied to the next list item or attached list item
+  element.  This facilitates [styling and linking within
+  lists]({tips}#styling-list-items).
+
+
 ## Version 10.3.1 (2017-11-13)
 - _HTML &#x2b82; Preview_ toggle command added to Rimu documentation live-edit
   examples.
