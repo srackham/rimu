@@ -592,7 +592,7 @@ experimentation.</p>
                        background-color:#006699;
                        padding:2px 4px;
                        border-radius:3px;
-                       font-weight:bold;">Note</span> <strong>Mon Nov 13 2017</strong> <mark>This document is not yet finished.</mark></p></div>
+                       font-weight:bold;">Note</span> <strong>Sun Nov 19 2017</strong> <mark>This document is not yet finished.</mark></p></div>
 </div>
 </td></tr></table>
 <ul><li>The <code>{sidebar}</code> macro shows how you can inject CSS styles into a
@@ -1451,7 +1451,7 @@ ordered list items.</code></pre>
 <ol><li>Item one.</li><li>Item two.</li></ol><p class="ol-counter">ordered list items.</p>
 </div>
 </td></tr></table>
-<h2 id="include-arbitrary-elements-in-list-items">Include arbitrary elements in list items</h2>
+<h2 id="append-arbitrary-elements-to-list-items">Append arbitrary elements to list items</h2>
 <p>An attached <em>Division Block</em> can be used to group and append arbitrary
 block elements to a list item.</p>
 <h4 id="examples-11">Examples</h4>
@@ -1485,15 +1485,12 @@ Include a paragraph in the list item.
 </li><li>Second list item.</li></ul></div>
 </td></tr></table>
 <p>This works because if a <a href="reference.html#fenced-blocks">Fenced Block</a>
-immediately follows a list item without any intervening blank lines
-it will be rendered with the list item.</p>
-<h2 id="block-attributes-within-lists">Block Attributes within lists</h2>
-<p>To apply <em>Block Attributes</em> elements to a nested list or an attached
-element, envelope the Block Attributes and the attached element in a
-<em>Division Block</em> (this is a specific application of the <a href="#include-arbitrary-elements-in-list-items">previous
-tip</a>).</p>
-<p>Note the use of a <a href="#nested-fenced-blocks">nested Division block</a> in
-the first list item in the example below.</p>
+immediately follows a list item without any intervening blank lines it
+will be rendered with the list item.</p>
+<h2 id="styling-list-items">Applying Block Attributes to list item elements</h2>
+<p><a href="reference.html#block-attributes">Block Attribute</a> elements within a list
+are applied to the next list item or attached list item element. This
+facilitates styling and linking within <a href="reference.html#lists">lists</a>.</p>
 <h4 id="examples-12">Examples</h4>
 <table class="example bordered">
 <tr>
@@ -1508,64 +1505,47 @@ Preview
 </tr>
 <tr>
 <td style="width:50%;">
-<pre id="list-item-block-attributes-example-source" class="example-source no-highlight"><code>- List item with green sidebar
-  styled Division block.
-..
+<pre id="list-item-block-attributes-example-source" class="example-source no-highlight"><code>1. List item with attached green
+   sidebar styled Division block.
 .sidebar "color:green"
-...
+..
 Urna aliquam pid, pulvinar augue ut
 aenean enim cum lectus sed.
-
-Duis odio lectus, augue non egestas
-amet? Magna lectus?
-...
 ..
 
-- List item with verse styled
-  paragraph.
-..
-.verse
-Urna aliquam pid,
-pulvinar augue ut,
-aenean enim cum.
-..
+."color:orange"
+2. List item with nested labled list.
 
-- List item with nested numbered
-  [labeled list](#example-list).
-..
-.dl-numbered #example-list
-One:: Item one.
-Two:: Item two.
-Three:: Item three.
-..
+.#labeled-list
+    One:: Item one.
+."color:red"
+    Two:: Item two.
 
-- List item with bold Indented
-  paragraph.
-..
+.#third-list-item
+3. List item with attached bold Indented
+   paragraph.
+
 ."font-weight:bold"
-  Duis in tincidunt rhoncus nascetur
-  lacus!
-..</code></pre>
+   Duis in tincidunt rhoncus nascetur
+   lacus!
+
+[Link to third list item](#third-list-item).
+
+[Link to labeled list](#labeled-list).</code></pre>
 <textarea id="list-item-block-attributes-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('list-item-block-attributes-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="list-item-block-attributes-example-errors" class="example-errors"></div>
 <div id="list-item-block-attributes-example-rendered" class="example-rendered">
-<ul><li>List item with green sidebar
-  styled Division block.<div class="sidebar" style="color:green"><p>Urna aliquam pid, pulvinar augue ut
-aenean enim cum lectus sed.</p>
-<p>Duis odio lectus, augue non egestas
-amet? Magna lectus?</p></div>
-</li><li>List item with verse styled
-  paragraph.<p class="verse">Urna aliquam pid,
-pulvinar augue ut,
-aenean enim cum.</p>
-</li><li>List item with nested numbered
-  <a href="#example-list">labeled list</a>.<dl class="dl-numbered" id="example-list"><dt>One</dt><dd>Item one.</dd><dt>Two</dt><dd>Item two.</dd><dt>Three</dt><dd>Item three.</dd></dl>
-</li><li>List item with bold Indented
-  paragraph.<pre style="font-weight:bold" class="no-highlight"><code>Duis in tincidunt rhoncus nascetur
+<ol><li>List item with attached green
+   sidebar styled Division block.<div class="sidebar" style="color:green"><p>Urna aliquam pid, pulvinar augue ut
+aenean enim cum lectus sed.</p></div>
+</li><li style="color:orange">List item with nested labled list.<dl id="labeled-list"><dt>One</dt><dd>Item one.</dd><dt style="color:red">Two</dt><dd>Item two.</dd></dl></li><li id="third-list-item">List item with attached bold Indented
+   paragraph.<pre style="font-weight:bold" class="no-highlight"><code>Duis in tincidunt rhoncus nascetur
 lacus!</code></pre>
-</li></ul></div>
+</li></ol><p><a href="#third-list-item">Link to third list item</a>.</p>
+<p><a href="#labeled-list">Link to labeled list</a>.</p>
+</div>
 </td></tr></table>
 <h2 id="section-numbering">Section numbering</h2>
 <p>Use the <a href="reference.html#rimuc-command">rimuc</a> <code>--section-numbers</code> option with the <code>--layout</code> option
@@ -2006,8 +1986,8 @@ Preview
 <td>
 <div id="macro-expressions-example-errors" class="example-errors"></div>
 <div id="macro-expressions-example-rendered" class="example-rendered">
-<p><strong>Time</strong>: 08:21:50</p>
-<p><strong>Date</strong>: Mon Nov 13 2017</p>
+<p><strong>Time</strong>: 08:06:44</p>
+<p><strong>Date</strong>: Sun Nov 19 2017</p>
 <p><strong>Circumference</strong>: 40,030 Km</p>
 <p><strong>Content margin</strong>: 341px</p>
 </div>

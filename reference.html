@@ -1401,16 +1401,17 @@ Definition for second term.</code></pre>
   and copy-and-paste corruption).</li><li><em>Numbered</em> list IDs can be prefixed with numbers but the number has no
   semantic significance.</li><li>When a list item is followed by an item with a different ID the
   successor list is nested.</li><li>List items can be escaped with a backslash at the beginning of the
-  line.</li><li><em>Indented paragraphs</em>, <em>Quote paragraphs</em>, <em>Fenced blocks</em>, <em>HTML
-  blocks</em> and <em>Multi-line comments</em> can be implicitly attached to list
-  items:<ul><li>If an <a href="#indented-paragraph">Indented paragraph</a> or <a href="#quote-paragraph">Quote
+  line.</li><li id="attached-list-item-elements"><em>Indented paragraphs</em>, <em>Quote paragraphs</em>, <em>Fenced blocks</em>, <em>HTML
+  blocks</em> and <em>Multi-line comments</em> can be attached to list items:<ul><li>If an <a href="#indented-paragraph">Indented paragraph</a> or <a href="#quote-paragraph">Quote
     paragraph</a> is separated from
     a preceding list item by a single blank line then it is attached
     to the list item.</li><li>If a <a href="#fenced-blocks">Fenced
     block</a>, <a href="#block-html-elements">HTML block</a> or
     <a href="#comments">Multi-line comment</a> immediately follows a list item
     without any intervening blank lines then it is attached to the
-    list item.</li></ul></li><li>Lists are terminated:<ul><li>When the following element is not a list item or an <em>attached
+    list item.</li></ul></li><li><a href="reference.html#block-attributes">Block Attribute</a> elements within a
+  list are applied to the next list item or attached list item
+  element. This facilitates styling and linking within lists.</li><li>Lists are terminated:<ul><li>When the following element is not a list item or an <em>attached
     block</em>.</li><li>By two or more blank lines.</li></ul></li><li>There are no explicit numbering or bullet styles &mdash; this is best
   left to CSS which can apply a consistent set of list styles.</li></ul><h4 id="examples-14">Examples</h4>
 <table class="example bordered">
