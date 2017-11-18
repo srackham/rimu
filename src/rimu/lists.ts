@@ -90,16 +90,19 @@ function renderListItem(startItem: ItemState, reader: Io.Reader, writer: Io.Writ
   let match = startItem.match
   let text: string
   if (match.length === 4) { // 3 match groups => definition list.
-    writer.write(def.termOpenTag as string)
+    writer.write(BlockAttributes.inject(def.termOpenTag as string))
     text = Utils.replaceInline(match[1], {macros: true, spans: true})
     writer.write(text)
     writer.write(def.termCloseTag as string)
+    writer.write(def.itemOpenTag)
   }
-  writer.write(def.itemOpenTag)
-  // Process of item text.
+  else {
+    writer.write(BlockAttributes.inject(def.itemOpenTag))
+  }
+  reader.next()
+  // Process item text.
   let lines = new Io.Writer()
   lines.write(match[match.length - 1] + '\n') // Item text from first line.
-  reader.next()
   let nextItem: ItemState | null
   nextItem = readToNext(reader, lines)
   text = lines.toString().trim()
@@ -132,6 +135,7 @@ function renderListItem(startItem: ItemState, reader: Io.Reader, writer: Io.Writ
       DelimitedBlocks.render(reader, writer)
       ids = savedIds
       reader.skipBlankLines()
+      consumeBlockAttributes(reader, writer)
       if (reader.eof()) {
         writer.write(def.itemCloseTag)
         return null
@@ -152,16 +156,12 @@ function readToNext(reader: Io.Reader, writer: Io.Writer): ItemState | null {
   // item (or EOF).
   let next: ItemState | null
   while (true) {
+    consumeBlockAttributes(reader, writer)
     if (reader.eof()) return null
-    // consume Block Attributes.
-    if (LineBlocks.getDefinition('attributes').match.test(reader.cursor)) {
-      if (LineBlocks.render(reader, writer)) {
-        continue
-      }
-    }
     if (reader.cursor === '') {
       // Encountered blank line.
       reader.next()
+      consumeBlockAttributes(reader, writer)
       if (reader.eof()) return null
       if (reader.cursor === '') {
         // A second blank line terminates the list.
@@ -179,6 +179,15 @@ function readToNext(reader: Io.Reader, writer: Io.Writer): ItemState | null {
     writer.write(reader.cursor)
     writer.write('\n')
     reader.next()
+  }
+}
+
+function consumeBlockAttributes(reader: Io.Reader, writer: Io.Writer): void {
+  let def = LineBlocks.getDefinition('attributes')
+  while (true) {
+    if (reader.eof()) return
+    if (!def.match.test(reader.cursor)) return
+    if (!LineBlocks.render(reader, writer)) return
   }
 }
 
