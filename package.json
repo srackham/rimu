@@ -31,7 +31,7 @@
     "url": "https://github.com/srackham/rimu.git"
   },
   "devDependencies": {
-    "@types/node": "^8.0.51",
+    "@types/node": "^8.0.53",
     "faucet": "0.0.1",
     "jake": "^8.0.15",
     "jshint": "^2.9.5",
