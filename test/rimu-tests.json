@@ -2346,7 +2346,7 @@
     }
   },
   {
-    "description": "Block Attributes on Fenced Block attached to List item",
+    "description": "Block Attributes on Fenced Block attached to list item",
     "input": "- Item one.\n.#id\n..\nFoobar.\n..",
     "expectedOutput": "<ul><li>Item one.<div id=\"id\"><p>Foobar.</p></div></li></ul>",
     "expectedCallback": "",
@@ -2355,7 +2355,7 @@
     }
   },
   {
-    "description": "Block Attributes on Quote Paragraph attached to List item",
+    "description": "Block Attributes on Quote Paragraph attached to list item",
     "input": "- Item one.\n.#id\n\n> Foobar.",
     "expectedOutput": "<ul><li>Item one.<blockquote id=\"id\"><p> Foobar.</p></blockquote></li></ul>",
     "expectedCallback": "",
@@ -2364,7 +2364,7 @@
     }
   },
   {
-    "description": "Multiple Block Attributes on Fenced Block attached to List item",
+    "description": "Multiple Block Attributes on Fenced Block attached to list item",
     "input": "- Item one.\n.class\n.#id\n..\nFoobar.\n..",
     "expectedOutput": "<ul><li>Item one.<div class=\"class\" id=\"id\"><p>Foobar.</p></div></li></ul>",
     "expectedCallback": "",
@@ -2373,7 +2373,7 @@
     }
   },
   {
-    "description": "Block Attributes can appear anywhere in List item",
+    "description": "Block Attributes can appear anywhere in list item",
     "input": "- Item\n.#id\none.\n..\nFoobar.\n..",
     "expectedOutput": "<ul><li>Item\none.<div id=\"id\"><p>Foobar.</p></div></li></ul>",
     "expectedCallback": "",
@@ -2382,9 +2382,27 @@
     }
   },
   {
-    "description": "Escaped Block Attributes on Fenced Block attached to List item",
+    "description": "Escaped Block Attributes on Fenced Block attached to list item",
     "input": "- Item one.\n\\.#id\n\"\"\nFoobar.\n\"\"",
     "expectedOutput": "<ul><li>Item one.\n.#id<blockquote><p>Foobar.</p></blockquote></li></ul>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "Block Attributes applied to bullet list items",
+    "input": "- Item one.\n.#id1\n- Item two.\n\n.#id2\n- Item three.",
+    "expectedOutput": "<ul><li>Item one.</li><li id=\"id1\">Item two.</li><li id=\"id2\">Item three.</li></ul>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "Block Attributes applied labelled list terms",
+    "input": ".#id1\nOne:: Item one.\n\n.#id2\n.class\nTwo:: Item two.",
+    "expectedOutput": "<dl id=\"id1\"><dt>One</dt><dd>Item one.</dd><dt class=\"class\" id=\"id2\">Two</dt><dd>Item two.</dd></dl>",
     "expectedCallback": "",
     "options": {
       "reset": true
