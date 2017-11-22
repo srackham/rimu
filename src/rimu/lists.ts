@@ -85,6 +85,7 @@ function renderList(startItem: ItemState, reader: Io.Reader, writer: Io.Writer):
   }
 }
 
+// Render the current list item, return the next list item or null if there are no more items.
 function renderListItem(startItem: ItemState, reader: Io.Reader, writer: Io.Writer): ItemState | null {
   let def = startItem.def
   let match = startItem.match
@@ -106,26 +107,15 @@ function renderListItem(startItem: ItemState, reader: Io.Reader, writer: Io.Writ
   let nextItem: ItemState | null
   nextItem = readToNext(reader, lines)
   text = lines.toString().trim()
-  text = Utils.replaceInline(text, {macros: true, spans: true})
+  text = Utils.replaceInline(text, {macros: true, spans: true}) // TODO: Honor BlockAttributes.
   writer.write(text)
-  while (true) {
-    if (!nextItem) {
-      // EOF or non-list related item.
-      writer.write(def.itemCloseTag)
-      return null
-    }
-    else if (nextItem.id) {
-      // List item.
-      if (ids.indexOf(nextItem.id) !== -1) {
-        // Item belongs to current list or an ancestor list.
-        writer.write(def.itemCloseTag)
-        return nextItem
-      }
-      else {
+  if (nextItem) {
+    if (nextItem.id) {
+      // New list item.
+      if (ids.indexOf(nextItem.id) === -1) {
+        // Item does not belong to current list or an ancestor list.
         // Render new child list.
         nextItem = renderList(nextItem, reader, writer)
-        writer.write(def.itemCloseTag)
-        return nextItem
       }
     }
     else {
@@ -134,18 +124,16 @@ function renderListItem(startItem: ItemState, reader: Io.Reader, writer: Io.Writ
       ids = []
       DelimitedBlocks.render(reader, writer)
       ids = savedIds
-      reader.skipBlankLines()
-      consumeBlockAttributes(reader, writer)
-      if (reader.eof()) {
-        writer.write(def.itemCloseTag)
-        return null
+      // Skip one blank line.
+      if (!reader.eof() && reader.cursor === '') {
+        reader.next()
       }
-      else {
-        nextItem = matchItem(reader)
-      }
+      nextItem = matchItem(reader)
+      // nextItem = readToNext(reader, writer)
     }
   }
-  // Should never arrive here.
+  writer.write(def.itemCloseTag)
+  return nextItem
 }
 
 // Write the list item text from the reader to the writer. Return
@@ -198,6 +186,7 @@ function consumeBlockAttributes(reader: Io.Reader, writer: Io.Writer): void {
 // If it does not match a list related element return null.
 function matchItem(reader: Io.Reader, attachments: string[] = []): ItemState | null {
   // Check if the line matches a List definition.
+  if (reader.eof()) return null
   let line = reader.cursor
   let item = {} as ItemState    // ItemState factory.
   // Check if the line matches a list item.
