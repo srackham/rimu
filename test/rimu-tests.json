@@ -882,9 +882,27 @@
     }
   },
   {
-    "description": "list terminated by two blank lines",
+    "description": "list terminated by two blank lines after list item",
     "input": "- List 1\n\n\n* List 2",
     "expectedOutput": "<ul><li>List 1</li></ul><ul><li>List 2</li></ul>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "list terminated by two blank lines after item attached block",
+    "input": "- Item 1\n\"\"\nA\nparagraph\n\"\"\n\n\n- Item 2",
+    "expectedOutput": "<ul><li>Item 1<blockquote><p>A\nparagraph</p></blockquote>\n</li></ul><ul><li>Item 2</li></ul>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "list is not terminated by single blank line after item attached block",
+    "input": "- Item 1\n\"\"\nA\nparagraph\n\"\"\n\n- Item 2",
+    "expectedOutput": "<ul><li>Item 1<blockquote><p>A\nparagraph</p></blockquote>\n</li><li>Item 2</li></ul>",
     "expectedCallback": "",
     "options": {
       "reset": true
