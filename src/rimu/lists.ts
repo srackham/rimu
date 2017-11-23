@@ -66,6 +66,7 @@ export function render(reader: Io.Reader, writer: Io.Writer): boolean {
   ids = []
   renderList(startItem, reader, writer)
   // ids should now be empty.
+  // TODO: if (ids.length !== 0) panic('list stack failure')
   return true
 }
 
@@ -109,13 +110,16 @@ function renderListItem(startItem: ItemState, reader: Io.Reader, writer: Io.Writ
   text = lines.toString().trim()
   text = Utils.replaceInline(text, {macros: true, spans: true}) // TODO: Honor BlockAttributes.
   writer.write(text)
-  if (nextItem) {
+  while (nextItem) {
     if (nextItem.id) {
       // New list item.
       if (ids.indexOf(nextItem.id) === -1) {
         // Item does not belong to current list or an ancestor list.
         // Render new child list.
         nextItem = renderList(nextItem, reader, writer)
+      }
+      else {
+        break // Encountered sibling or ancestor list item.
       }
     }
     else {
@@ -124,20 +128,20 @@ function renderListItem(startItem: ItemState, reader: Io.Reader, writer: Io.Writ
       ids = []
       DelimitedBlocks.render(reader, writer)
       ids = savedIds
-      // Skip one blank line.
-      if (!reader.eof() && reader.cursor === '') {
-        reader.next()
+      if (reader.lines[reader.pos - 1] === '') {
+        // If the Delimited Block ended with a blank line wind the cursor back one to that blank line.
+        reader.pos = reader.pos - 1
       }
-      nextItem = matchItem(reader)
-      // nextItem = readToNext(reader, writer)
+      nextItem = readToNext(reader, writer)
     }
   }
   writer.write(def.itemCloseTag)
   return nextItem
 }
 
-// Write the list item text from the reader to the writer. Return
-// 'next' containing the next element's match and identity or null if
+// Write the list item text from the reader to the writer.
+// Consume Block Attributes.
+// Return 'next' containing the next element's match and identity or null if
 // there are no more list releated elements.
 function readToNext(reader: Io.Reader, writer: Io.Writer): ItemState | null {
   // The reader should be at the line following the first line of the list
@@ -164,8 +168,7 @@ function readToNext(reader: Io.Reader, writer: Io.Writer): ItemState | null {
       return next
     }
     // Current line is list item text so write it to the output and move to the next input line.
-    writer.write(reader.cursor)
-    writer.write('\n')
+    writer.write(reader.cursor + '\n')
     reader.next()
   }
 }
