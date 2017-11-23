@@ -1,6 +1,7 @@
 import * as DelimitedBlocks from './delimitedblocks'
 import * as LineBlocks from './lineblocks'
 import * as Io from './io'
+import * as Options from './options'
 import * as Utils from './utils'
 import {BlockAttributes} from './utils';
 
@@ -58,7 +59,7 @@ let defs: Definition[] = [
 let ids: string[]   // Stack of open list IDs.
 
 export function render(reader: Io.Reader, writer: Io.Writer): boolean {
-  if (reader.eof()) throw 'premature eof'
+  if (reader.eof()) Options.panic('premature eof')
   let startItem: ItemState | null
   if (!(startItem = matchItem(reader))) {
     return false
@@ -66,7 +67,7 @@ export function render(reader: Io.Reader, writer: Io.Writer): boolean {
   ids = []
   renderList(startItem, reader, writer)
   // ids should now be empty.
-  // TODO: if (ids.length !== 0) panic('list stack failure')
+  if (ids.length !== 0) Options.panic('list stack failure')
   return true
 }
 

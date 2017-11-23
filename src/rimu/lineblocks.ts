@@ -176,7 +176,7 @@ let defs: Definition[] = [
 // If the next element in the reader is a valid line block render it
 // and return true, else return false.
 export function render(reader: Io.Reader, writer: Io.Writer): boolean {
-  if (reader.eof()) throw 'premature eof'
+  if (reader.eof()) Options.panic('premature eof')
   for (let def of defs) {
     let match = def.match.exec(reader.cursor)
     if (match) {

@@ -102,3 +102,9 @@ export function errorCallback(message: string): void {
     callback({type: 'error', text: message})
   }
 }
+
+// Called when an unexpected program error occurs.
+export function panic(message: string): void {
+  console.error('panic: ' + message)
+  errorCallback('panic: ' + message)
+}

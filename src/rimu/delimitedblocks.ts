@@ -201,7 +201,7 @@ export function init(): void {
 // If the next element in the reader is a valid delimited block render it
 // and return true, else return false.
 export function render(reader: Io.Reader, writer: Io.Writer): boolean {
-  if (reader.eof()) throw 'premature eof'
+  if (reader.eof()) Options.panic('premature eof')
   for (let def of defs) {
     let match = reader.cursor.match(def.openMatch)
     if (match) {
