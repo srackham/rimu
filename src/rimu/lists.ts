@@ -108,7 +108,7 @@ function renderListItem(startItem: ItemState, reader: Io.Reader, writer: Io.Writ
   let nextItem: ItemState | null
   nextItem = readToNext(reader, lines)
   text = lines.toString().trim()
-  text = Utils.replaceInline(text, {macros: true, spans: true}) // TODO: Honor BlockAttributes.
+  text = Utils.replaceInline(text, {macros: true, spans: true})
   writer.write(text)
   while (nextItem) {
     if (nextItem.id) {
@@ -141,8 +141,8 @@ function renderListItem(startItem: ItemState, reader: Io.Reader, writer: Io.Writ
 
 // Write the list item text from the reader to the writer.
 // Consume Block Attributes.
-// Return 'next' containing the next element's match and identity or null if
-// there are no more list releated elements.
+// Return 'next' describing next list item or null if there are no more list
+// releated elements.
 function readToNext(reader: Io.Reader, writer: Io.Writer): ItemState | null {
   // The reader should be at the line following the first line of the list
   // item (or EOF).
