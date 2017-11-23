@@ -828,9 +828,9 @@
     }
   },
   {
-    "description": "list item with attached quote block",
-    "input": "- Item 1\n\"\"\nA\nparagraph\n\"\"",
-    "expectedOutput": "<ul><li>Item 1<blockquote><p>A\nparagraph</p></blockquote></li></ul>",
+    "description": "list item with attached quote block followed by child list",
+    "input": "- Item 1\n\"\"\nA\nparagraph\n\"\"\n. Uno",
+    "expectedOutput": "<ul><li>Item 1<blockquote><p>A\nparagraph</p></blockquote>\n<ol><li>Uno</li></ol></li></ul>",
     "expectedCallback": "",
     "options": {
       "reset": true
@@ -1776,7 +1776,7 @@
   {
     "description": "list item with Division block containing Division block with html attributes",
     "input": ".class1\n- Item\n..\n.class2\n...\nDivision\n...\n..\nParagraph",
-    "expectedOutput": "<ul class=\"class1\"><li>Item<div class=\"class2\"><p>Division</p></div>\n</li></ul><p>Paragraph</p>",
+    "expectedOutput": "<ul class=\"class1\"><li>Item<div class=\"class2\"><p>Division</p></div>\nParagraph\n</li></ul>",
     "expectedCallback": "",
     "options": {
       "reset": true
