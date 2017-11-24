@@ -130,10 +130,14 @@ function renderListItem(startItem: ItemState, reader: Io.Reader, writer: Io.Writ
       DelimitedBlocks.render(reader, writer)
       ids = savedIds
       if (reader.lines[reader.pos - 1] === '') {
-        // If the Delimited Block ended with a blank line wind the cursor back one to that blank line.
+        // If the Delimited Block was terminated with a blank line wind the cursor back one to that blank line.
         reader.pos = reader.pos - 1
       }
       nextItem = readToNext(reader, writer)
+      if (nextItem && !nextItem.id) {
+        // Only allow a single attached Delimited Block.
+        nextItem = null
+      }
     }
   }
   writer.write(def.itemCloseTag)
