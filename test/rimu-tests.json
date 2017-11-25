@@ -2425,5 +2425,32 @@
     "options": {
       "reset": true
     }
+  },
+  {
+    "description": "list item with escaped attached Division Block",
+    "input": "- Item 1\n\\..\nA\nparagraph\n\\..\n- Item 2",
+    "expectedOutput": "<ul><li>Item 1\n..\nA\nparagraph\n..</li><li>Item 2</li></ul>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "list item with escaped attached Quote Block",
+    "input": "- Item 1\n\\\"\"\n- Item 2",
+    "expectedOutput": "<ul><li>Item 1\n\"\"</li><li>Item 2</li></ul>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "list item with escaped Block Attributes preceding attached Division Block",
+    "input": ". One\n\\.id2\n..\nFoo\n..\n. Two",
+    "expectedOutput": "<ol><li>One\n.id2<p>Foo</p>\n</li><li>Two</li></ol>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
   }
 ]
