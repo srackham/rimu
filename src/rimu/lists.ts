@@ -195,11 +195,10 @@ function consumeBlockAttributes(reader: Io.Reader, writer: Io.Writer): void {
 function matchItem(reader: Io.Reader, attachments: string[] = []): ItemState | null {
   // Check if the line matches a List definition.
   if (reader.eof()) return null
-  let line = reader.cursor
   let item = {} as ItemState    // ItemState factory.
   // Check if the line matches a list item.
   for (let def of defs) {
-    let match = def.match.exec(line)
+    let match = def.match.exec(reader.cursor)
     if (match) {
       if (match[0][0] === '\\') {
         reader.cursor = reader.cursor.slice(1)   // Drop backslash.
@@ -215,7 +214,12 @@ function matchItem(reader: Io.Reader, attachments: string[] = []): ItemState | n
   for (let name of attachments) {
     let def: DelimitedBlocks.Definition
     def = DelimitedBlocks.getDefinition(name)
-    if (def.openMatch.test(line)) {
+    let match = def.openMatch.exec(reader.cursor)
+    if (match) {
+      if (match[0][0] === '\\') {
+        reader.cursor = reader.cursor.slice(1)   // Drop backslash.
+        return null
+      }
       return item
     }
   }
