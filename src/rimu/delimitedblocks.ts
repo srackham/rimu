@@ -200,9 +200,11 @@ export function init(): void {
 
 // If the next element in the reader is a valid delimited block render it
 // and return true, else return false.
-export function render(reader: Io.Reader, writer: Io.Writer): boolean {
+export function render(reader: Io.Reader, writer: Io.Writer, allowed: string[] = []): boolean {
+  // export function render(reader: Io.Reader, writer: Io.Writer): boolean {
   if (reader.eof()) Options.panic('premature eof')
   for (let def of defs) {
+    if (allowed.length > 0 && allowed.indexOf(def.name ? def.name : '') === -1) continue
     let match = reader.cursor.match(def.openMatch)
     if (match) {
       // Escape non-paragraphs.

@@ -71,26 +71,26 @@ export function render(reader: Io.Reader, writer: Io.Writer): boolean {
   return true
 }
 
-function renderList(startItem: ItemState, reader: Io.Reader, writer: Io.Writer): ItemState | null {
-  ids.push(startItem.id)
-  writer.write(BlockAttributes.inject(startItem.def.listOpenTag))
+function renderList(item: ItemState, reader: Io.Reader, writer: Io.Writer): ItemState | null {
+  ids.push(item.id)
+  writer.write(BlockAttributes.inject(item.def.listOpenTag))
   let nextItem: ItemState | null
   while (true) {
-    nextItem = renderListItem(startItem, reader, writer)
-    if (!nextItem || nextItem.id !== startItem.id) {
-      // End of list or next item belongs to ancestor.
-      writer.write(startItem.def.listCloseTag)
+    nextItem = renderListItem(item, reader, writer)
+    if (!nextItem || nextItem.id !== item.id) {
+      // End of list or next item belongs to parent list.
+      writer.write(item.def.listCloseTag)
       ids.pop()
       return nextItem
     }
-    startItem = nextItem
+    item = nextItem
   }
 }
 
 // Render the current list item, return the next list item or null if there are no more items.
-function renderListItem(startItem: ItemState, reader: Io.Reader, writer: Io.Writer): ItemState | null {
-  let def = startItem.def
-  let match = startItem.match
+function renderListItem(item: ItemState, reader: Io.Reader, writer: Io.Writer): ItemState | null {
+  let def = item.def
+  let match = item.match
   let text: string
   if (match.length === 4) { // 3 match groups => definition list.
     writer.write(BlockAttributes.inject(def.termOpenTag as string))
@@ -102,97 +102,82 @@ function renderListItem(startItem: ItemState, reader: Io.Reader, writer: Io.Writ
   else {
     writer.write(BlockAttributes.inject(def.itemOpenTag))
   }
+  // Process item text from first line.
+  let item_lines = new Io.Writer()
+  text = match[match.length - 1]
+  item_lines.write(text + '\n')
+  // Process remainder of list item: item text, optional attached block, optional child list.
   reader.next()
-  // Process item text.
-  let lines = new Io.Writer()
-  lines.write(match[match.length - 1] + '\n') // Item text from first line.
-  let nextItem: ItemState | null
-  nextItem = readToNext(reader, lines)
-  text = lines.toString().trim()
-  text = Utils.replaceInline(text, {macros: true, spans: true})
-  writer.write(text)
-  while (nextItem) {
-    if (nextItem.id) {
-      // New list item.
-      if (ids.indexOf(nextItem.id) === -1) {
-        // Item does not belong to current list or an ancestor list.
-        // Render new child list.
-        nextItem = renderList(nextItem, reader, writer)
+  let attached_lines = new Io.Writer()
+  let blank_lines: number
+  let attached_done = false
+  let next_item: ItemState | null
+  while (true) {
+    blank_lines = consumeBlockAttributes(reader, attached_lines)
+    if (blank_lines >= 2 || blank_lines === -1) {
+      // EOF or two or more blank lines terminates list.
+      next_item = null
+      break
+    }
+    next_item = matchItem(reader)
+    if (next_item) {
+      if (ids.indexOf(next_item.id) !== -1) {
+        // Next item belongs to current list or a parent list.
       }
       else {
-        break // Encountered sibling or ancestor list item.
+        // Render child list.
+        next_item = renderList(next_item, reader, attached_lines)
       }
+      break
     }
-    else {
-      // Delimited block.
+    if (attached_done)
+      break // Multiple attached blocks are not permitted.
+    if (blank_lines === 0) {
       let savedIds = ids
       ids = []
-      DelimitedBlocks.render(reader, writer)
+      if (DelimitedBlocks.render(reader, attached_lines, ['comment', 'code', 'division', 'html', 'quote'])) {
+        attached_done = true
+      }
+      else {
+        item_lines.write(reader.cursor + '\n')
+        reader.next()
+      }
       ids = savedIds
-      if (reader.lines[reader.pos - 1] === '') {
-        // If the Delimited Block was terminated with a blank line wind the cursor back one to that blank line.
-        reader.pos = reader.pos - 1
-      }
-      nextItem = readToNext(reader, writer)
-      if (nextItem && !nextItem.id) {
-        // Only allow a single attached Delimited Block.
-        nextItem = null
-      }
+    }
+    else if (blank_lines === 1) {
+      if (!DelimitedBlocks.render(reader, attached_lines, ['indented', 'quote-paragraph']))
+        break
     }
   }
+  // Write rendered item text.
+  text = item_lines.toString().trim()
+  text = Utils.replaceInline(text, {macros: true, spans: true})
+  writer.write(text)
+  // Write rendered attachments.
+  writer.buffer = writer.buffer.concat(attached_lines.buffer)
   writer.write(def.itemCloseTag)
-  return nextItem
+  return next_item
 }
 
-// Write the list item text from the reader to the writer.
-// Consume Block Attributes.
-// Return 'next' describing next list item or null if there are no more list
-// releated elements.
-function readToNext(reader: Io.Reader, writer: Io.Writer): ItemState | null {
-  // The reader should be at the line following the first line of the list
-  // item (or EOF).
-  let next: ItemState | null
+// Consume blank lines and Block Attributes.
+// Return number of blank lines read or -1 if EOF.
+function consumeBlockAttributes(reader: Io.Reader, writer: Io.Writer): number {
+  let blanks = 0
   while (true) {
-    consumeBlockAttributes(reader, writer)
-    if (reader.eof()) return null
-    if (reader.cursor === '') {
-      // Encountered blank line.
-      reader.next()
-      consumeBlockAttributes(reader, writer)
-      if (reader.eof()) return null
-      if (reader.cursor === '') {
-        // A second blank line terminates the list.
-        return null
-      }
-      // A single blank line separates list item from ensuing text.
-      return matchItem(reader, ['indented', 'quote-paragraph'])
-    }
-    next = matchItem(reader, ['comment', 'code', 'division', 'html', 'quote'])
-    if (next) {
-      // Encountered list item or attached Delimited Block.
-      return next
-    }
-    // Current line is list item text so write it to the output and move to the next input line.
-    writer.write(reader.cursor + '\n')
+    if (reader.eof())
+      return -1
+    if (LineBlocks.render(reader, writer, ['attributes']))
+      continue
+    if (reader.cursor !== '')
+      return blanks
+    blanks++
     reader.next()
   }
 }
 
-function consumeBlockAttributes(reader: Io.Reader, writer: Io.Writer): void {
-  let def = LineBlocks.getDefinition('attributes')
-  while (true) {
-    if (reader.eof()) return
-    if (!def.match.test(reader.cursor)) return
-    if (!LineBlocks.render(reader, writer)) return
-  }
-}
-
 // Check if the line at the reader cursor matches a list related element.
-// 'attachments' specifies the names of allowed Delimited Block elements (in addition to list items).
-// If it matches a list item return ItemState.
-// If it matches an attached Delimiter Block return {}.
 // If it does not match a list related element return null.
-function matchItem(reader: Io.Reader, attachments: string[] = []): ItemState | null {
+function matchItem(reader: Io.Reader): ItemState | null {
   // Check if the line matches a List definition.
   if (reader.eof()) return null
   let item = {} as ItemState    // ItemState factory.
@@ -207,19 +192,6 @@ function matchItem(reader: Io.Reader, attachments: string[] = []): ItemState | n
       item.match = match
       item.def = def
       item.id = match[match.length - 2] // The second to last match group is the list ID.
-      return item
-    }
-  }
-  // Check if the line matches an allowed attached Delimited block.
-  for (let name of attachments) {
-    let def: DelimitedBlocks.Definition
-    def = DelimitedBlocks.getDefinition(name)
-    let match = def.openMatch.exec(reader.cursor)
-    if (match) {
-      if (match[0][0] === '\\') {
-        reader.cursor = reader.cursor.slice(1)   // Drop backslash.
-        return null
-      }
       return item
     }
   }

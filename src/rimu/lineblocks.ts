@@ -175,9 +175,10 @@ let defs: Definition[] = [
 
 // If the next element in the reader is a valid line block render it
 // and return true, else return false.
-export function render(reader: Io.Reader, writer: Io.Writer): boolean {
+export function render(reader: Io.Reader, writer: Io.Writer, allowed: string[] = []): boolean {
   if (reader.eof()) Options.panic('premature eof')
   for (let def of defs) {
+    if (allowed.length > 0 && allowed.indexOf(def.name ? def.name : '') === -1) continue
     let match = def.match.exec(reader.cursor)
     if (match) {
       if (match[0][0] === '\\') {
@@ -211,9 +212,3 @@ export function render(reader: Io.Reader, writer: Io.Writer): boolean {
   }
   return false
 }
-
-// Return line block definition or undefined if not found.
-export function getDefinition(name: string): Definition {
-  return defs.filter(def => def.name === name)[0]
-}
-
