@@ -16,7 +16,7 @@ interface Definition {
 }
 
 // Information about a matched list item element.
-interface ItemState {
+interface ItemInfo {
   match: RegExpExecArray
   def: Definition
   id: string  // List ID.
@@ -60,35 +60,35 @@ let ids: string[]   // Stack of open list IDs.
 
 export function render(reader: Io.Reader, writer: Io.Writer): boolean {
   if (reader.eof()) Options.panic('premature eof')
-  let startItem: ItemState | null
-  if (!(startItem = matchItem(reader))) {
+  let start_item: ItemInfo | null
+  if (!(start_item = matchItem(reader))) {
     return false
   }
   ids = []
-  renderList(startItem, reader, writer)
+  renderList(start_item, reader, writer)
   // ids should now be empty.
   if (ids.length !== 0) Options.panic('list stack failure')
   return true
 }
 
-function renderList(item: ItemState, reader: Io.Reader, writer: Io.Writer): ItemState | null {
+function renderList(item: ItemInfo, reader: Io.Reader, writer: Io.Writer): ItemInfo | null {
   ids.push(item.id)
   writer.write(BlockAttributes.inject(item.def.listOpenTag))
-  let nextItem: ItemState | null
+  let next_item: ItemInfo | null
   while (true) {
-    nextItem = renderListItem(item, reader, writer)
-    if (!nextItem || nextItem.id !== item.id) {
+    next_item = renderListItem(item, reader, writer)
+    if (!next_item || next_item.id !== item.id) {
       // End of list or next item belongs to parent list.
       writer.write(item.def.listCloseTag)
       ids.pop()
-      return nextItem
+      return next_item
     }
-    item = nextItem
+    item = next_item
   }
 }
 
 // Render the current list item, return the next list item or null if there are no more items.
-function renderListItem(item: ItemState, reader: Io.Reader, writer: Io.Writer): ItemState | null {
+function renderListItem(item: ItemInfo, reader: Io.Reader, writer: Io.Writer): ItemInfo | null {
   let def = item.def
   let match = item.match
   let text: string
@@ -106,12 +106,12 @@ function renderListItem(item: ItemState, reader: Io.Reader, writer: Io.Writer): 
   let item_lines = new Io.Writer()
   text = match[match.length - 1]
   item_lines.write(text + '\n')
-  // Process remainder of list item: item text, optional attached block, optional child list.
+  // Process remainder of list item i.e. item text, optional attached block, optional child list.
   reader.next()
   let attached_lines = new Io.Writer()
   let blank_lines: number
   let attached_done = false
-  let next_item: ItemState | null
+  let next_item: ItemInfo | null
   while (true) {
     blank_lines = consumeBlockAttributes(reader, attached_lines)
     if (blank_lines >= 2 || blank_lines === -1) {
@@ -139,22 +139,28 @@ function renderListItem(item: ItemState, reader: Io.Reader, writer: Io.Writer): 
         attached_done = true
       }
       else {
+        // Item body line.
         item_lines.write(reader.cursor + '\n')
         reader.next()
       }
       ids = savedIds
     }
     else if (blank_lines === 1) {
-      if (!DelimitedBlocks.render(reader, attached_lines, ['indented', 'quote-paragraph']))
+      if (DelimitedBlocks.render(reader, attached_lines, ['indented', 'quote-paragraph'])) {
+        attached_done = true
+      }
+      else {
         break
+      }
     }
   }
-  // Write rendered item text.
+  // Write item text.
   text = item_lines.toString().trim()
   text = Utils.replaceInline(text, {macros: true, spans: true})
   writer.write(text)
-  // Write rendered attachments.
+  // Write attachment and child list.
   writer.buffer = writer.buffer.concat(attached_lines.buffer)
+  // Close list item.
   writer.write(def.itemCloseTag)
   return next_item
 }
@@ -176,11 +182,12 @@ function consumeBlockAttributes(reader: Io.Reader, writer: Io.Writer): number {
 }
 
 // Check if the line at the reader cursor matches a list related element.
+// Unescape escaped list items in reader.
 // If it does not match a list related element return null.
-function matchItem(reader: Io.Reader): ItemState | null {
+function matchItem(reader: Io.Reader): ItemInfo | null {
   // Check if the line matches a List definition.
   if (reader.eof()) return null
-  let item = {} as ItemState    // ItemState factory.
+  let item = {} as ItemInfo    // ItemInfo factory.
   // Check if the line matches a list item.
   for (let def of defs) {
     let match = def.match.exec(reader.cursor)
