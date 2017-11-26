@@ -54,7 +54,7 @@
     }
   },
   {
-    "description": "code quotes ending with backslashs",
+    "description": "code quotes ending with backslashes",
     "input": "`foo bar\\` `foo bar\\\\` `foo bar\\\\\\`",
     "expectedOutput": "<p><code>foo bar\\</code> <code>foo bar\\\\</code> <code>foo bar\\\\\\</code></p>",
     "expectedCallback": "",
@@ -63,7 +63,7 @@
     }
   },
   {
-    "description": "code quotes with backslashs",
+    "description": "code quotes with backslashes",
     "input": "`\\a\\b\\ c\\d \\e\\`",
     "expectedOutput": "<p><code>\\a\\b\\ c\\d \\e\\</code></p>",
     "expectedCallback": "",
@@ -2448,6 +2448,24 @@
     "description": "list item with escaped Block Attributes preceding attached Division Block",
     "input": ". One\n\\.id2\n..\nFoo\n..\n. Two",
     "expectedOutput": "<ol><li>One\n.id2<p>Foo</p>\n</li><li>Two</li></ol>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "list item with attached Quote paragraph followed by another Quote paragraph",
+    "input": "- Item 1\n\n> Quote 1\n\n> Quote 2",
+    "expectedOutput": "<ul><li>Item 1<blockquote><p> Quote 1</p></blockquote>\n</li></ul><blockquote><p> Quote 2</p></blockquote>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "list item with attached Quote block followed by another Quote block",
+    "input": "- Item 1\n\"\"\nQuote 1\n\"\"\n\"\"\nQuote 2\n\"\"",
+    "expectedOutput": "<ul><li>Item 1<blockquote><p>Quote 1</p></blockquote>\n</li></ul><blockquote><p>Quote 2</p></blockquote>",
     "expectedCallback": "",
     "options": {
       "reset": true
