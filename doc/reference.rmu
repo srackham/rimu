@@ -838,25 +838,43 @@ First term:: Definition one.
 Second term::
 Definition for second term.'
 
+{list-item-example} = '
+- First line.
+  Second line.
+""
+Optional attached Quote block.
+""
+  * Optional child list.'
+
 - _Bullet_ and _Numbered_ list items begin with the list ID.  The list
   ID must be separated by one or more spaces from the list item text.
 ..
-{generate-rendered-example-1|bullet-lists-example}
+{generate-rendered-example-1|bullet-lists-example|Bullet and numbered lists}
 ..
 - _Labeled_ list items begin with the _term_ text followed
   immediately by the list ID, then one or more spaces or a line break,
   then the _definition_ text.
 ..
-{generate-rendered-example-1|labeled-lists-example}
+{generate-rendered-example-1|labeled-lists-example|Labeled list}
 ..
-- A list item can span multiple contiguous lines.
+- A list item consists of a first line followed by zero or more
+  additional lines, followed by an optional [attached
+  element](#attached-list-item-elements), followed by an optional
+  child list.
+..
+{generate-rendered-example-1|list-item-example|List item}
+..
+- List items and attached elements can be preceded by [Block
+  Attribute]({reference}#block-attributes) elements.  This facilitates
+  styling and linking within lists.
 - List items can be indented but this has no semantic significance
   (indents are fussy to write and are prone to editor tab expansion
   and copy-and-paste corruption).
 - _Numbered_ list IDs can be prefixed with numbers but the number has no
   semantic significance.
-- When a list item is followed by an item with a different ID the
-  successor list is nested.
+- A child list is created when a list item is followed by an item with
+  a list ID that does not belong to the current list or any of its
+  ancestors.
 - List items can be escaped with a backslash at the beginning of the
   line.
 
@@ -874,14 +892,10 @@ Definition for second term.'
     without any intervening blank lines then it is attached to the
     list item.
 
-- [Block Attribute]({reference}#block-attributes) elements within a
-  list are applied to the next list item or attached list item
-  element. This facilitates styling and linking within lists.
-
 - Lists are terminated:
 
-  * When the following element is not a list item or an _attached
-    block_.
+  * When the element following the list item is not a list item.
+  * When the element following the list item is an ancestor list item.
   * By two or more blank lines.
 
 - There are no explicit numbering or bullet styles -- this is best
