@@ -1344,7 +1344,7 @@ ___________________________________________
 ::, :::, ::::                 Labeled list
 ___________________________________________</code></pre>
 <ul><li><em>Bullet</em> and <em>Numbered</em> list items begin with the list ID.  The list
-  ID must be separated by one or more spaces from the list item text.<h4 id="examples-12">Examples</h4>
+  ID must be separated by one or more spaces from the list item text.<h4 id="bullet-and-numbered-lists">Bullet and numbered lists</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1371,7 +1371,7 @@ Preview
 
 </li><li><em>Labeled</em> list items begin with the <em>term</em> text followed
   immediately by the list ID, then one or more spaces or a line break,
-  then the <em>definition</em> text.<h4 id="examples-13">Examples</h4>
+  then the <em>definition</em> text.<h4 id="labeled-list">Labeled list</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1396,11 +1396,47 @@ Definition for second term.</code></pre>
 <dl><dt>First term</dt><dd>Definition one.</dd><dt>Second term</dt><dd>Definition for second term.</dd></dl></div>
 </td></tr></table>
 
-</li><li>A list item can span multiple contiguous lines.</li><li>List items can be indented but this has no semantic significance
+</li><li>A list item consists of a first line followed by zero or more
+  additional lines, followed by an optional <a href="#attached-list-item-elements">attached
+  element</a>, followed by an optional
+  child list.<h4 id="list-item">List item</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('list-item-example')">&#x270e;</span>
+Rimu Markup</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('list-item-example')">&#x2b82;</span>
+Preview
+</td>
+</tr>
+<tr>
+<td style="width:50%;">
+<pre id="list-item-example-source" class="example-source no-highlight"><code>- First line.
+  Second line.
+""
+Optional attached Quote block.
+""
+  * Optional child list.</code></pre>
+<textarea id="list-item-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('list-item-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="list-item-example-errors" class="example-errors"></div>
+<div id="list-item-example-rendered" class="example-rendered">
+<ul><li>First line.
+  Second line.<blockquote><p>Optional attached Quote block.</p></blockquote>
+<ul><li>Optional child list.</li></ul></li></ul></div>
+</td></tr></table>
+
+</li><li>List items and attached elements can be preceded by <a href="reference.html#block-attributes">Block
+  Attribute</a> elements.  This facilitates
+  styling and linking within lists.</li><li>List items can be indented but this has no semantic significance
   (indents are fussy to write and are prone to editor tab expansion
   and copy-and-paste corruption).</li><li><em>Numbered</em> list IDs can be prefixed with numbers but the number has no
-  semantic significance.</li><li>When a list item is followed by an item with a different ID the
-  successor list is nested.</li><li>List items can be escaped with a backslash at the beginning of the
+  semantic significance.</li><li>A child list is created when a list item is followed by an item with
+  a list ID that does not belong to the current list or any of its
+  ancestors.</li><li>List items can be escaped with a backslash at the beginning of the
   line.</li><li id="attached-list-item-elements"><em>Indented paragraphs</em>, <em>Quote paragraphs</em>, <em>Fenced blocks</em>, <em>HTML
   blocks</em> and <em>Multi-line comments</em> can be attached to list items:<ul><li>If an <a href="#indented-paragraph">Indented paragraph</a> or <a href="#quote-paragraph">Quote
     paragraph</a> is separated from
@@ -1409,11 +1445,8 @@ Definition for second term.</code></pre>
     block</a>, <a href="#block-html-elements">HTML block</a> or
     <a href="#comments">Multi-line comment</a> immediately follows a list item
     without any intervening blank lines then it is attached to the
-    list item.</li></ul></li><li><a href="reference.html#block-attributes">Block Attribute</a> elements within a
-  list are applied to the next list item or attached list item
-  element. This facilitates styling and linking within lists.</li><li>Lists are terminated:<ul><li>When the following element is not a list item or an <em>attached
-    block</em>.</li><li>By two or more blank lines.</li></ul></li><li>There are no explicit numbering or bullet styles &mdash; this is best
-  left to CSS which can apply a consistent set of list styles.</li></ul><h4 id="examples-14">Examples</h4>
+    list item.</li></ul></li><li>Lists are terminated:<ul><li>When the element following the list item is not a list item.</li><li>When the element following the list item is an ancestor list item.</li><li>By two or more blank lines.</li></ul></li><li>There are no explicit numbering or bullet styles &mdash; this is best
+  left to CSS which can apply a consistent set of list styles.</li></ul><h4 id="examples-12">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
@@ -1495,7 +1528,7 @@ ___________________________________________________________</code></pre>
   backslash character. If the text contains multiple quotes of the
   same type then, to resolve ambiguity, additional quotes may have to
   be escaped.</li><li>The <em>Code</em> quote renders quoted text verbatim with one exception:
-  <a href="#macro-invocations">Macro Invocations</a> are expanded.</li></ul><h4 id="examples-15">Examples</h4>
+  <a href="#macro-invocations">Macro Invocations</a> are expanded.</li></ul><h4 id="examples-13">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1579,7 +1612,7 @@ url                 &lt;a href="url"&gt;url&lt;/a&gt;       Note 1
 &lt;email|caption&gt;     &lt;a href="mailto:email"&gt;caption&lt;/a&gt;
 ______________________________________________________</code></pre>
 <p>Notes:</p>
-<ol><li>Only HTTP and HTTPS raw URLs are auto-encoded.</li><li>The <code>[caption](url)</code> syntax is Markdown compatible.</li></ol><h4 id="examples-16">Examples</h4>
+<ol><li>Only HTTP and HTTPS raw URLs are auto-encoded.</li><li>The <code>[caption](url)</code> syntax is Markdown compatible.</li></ol><h4 id="examples-14">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1622,7 +1655,7 @@ _______________________________________________________
 _______________________________________________________</code></pre>
 <p>Notes:</p>
 <ol><li>The <code>![alt](url)</code> syntax is Markdown compatible. To maintain
-   Markdown compatibility it is always processed as an inline element.</li></ol><h4 id="examples-17">Examples</h4>
+   Markdown compatibility it is always processed as an inline element.</li></ol><h4 id="examples-15">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1662,7 +1695,7 @@ inline element.</p>
 </td></tr></table>
 <h2 id="character-entities">Character entities</h2>
 <p>HTML character entities can be included in Rimu source.</p>
-<h4 id="examples-18">Examples</h4>
+<h4 id="examples-16">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1705,7 +1738,7 @@ processing of <a href="#delimited-blocks">Delimited Block</a> elements.</p>
   they are injected into the target opening tag.</li><li>The <code>[html-attributes]</code> section is ignored if the <a href="#api-options">safeMode API
   option</a> is not zero.</li><li>The <code>-specials</code> block option is ignored if the <a href="#api-options">safeMode API
   option</a>  is not zero.</li><li>The entire Block Attributes element is ignored if bit 2 of the
-  <a href="#api-options">safeMode API option</a> is set.</li></ul><h4 id="examples-19">Examples</h4>
+  <a href="#api-options">safeMode API option</a> is set.</li></ul><h4 id="examples-17">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">

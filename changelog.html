@@ -416,7 +416,12 @@
 <h1 id="rimu-markup-change-log">Rimu Markup Change Log</h1>
 <p>See the <a href="https://github.com/srackham/rimu/commits/">Git commit log</a> for a full list of
 changes.</p>
-<h2 id="version-10-4-0-2017-11-19">Version 10.4.0 (2017-11-19)</h2>
+<h2 id="version-10-4-1-2017-11-27">Version 10.4.1 (2017-11-27)</h2>
+<p>Fixed a couple of list syntax anomalies and handle all uncaught runtime
+assertions. The list item processing code has been rewritten.</p>
+<ul><li><strong>FIXED</strong>: Two blank lines following an attached list item element did
+  not terminate the list when followed by a list item.</li><li><strong>FIXED</strong>: Previously uncaught program assertions are now handled and
+  reported to the console and via the API callback.</li></ul><h2 id="version-10-4-0-2017-11-19">Version 10.4.0 (2017-11-19)</h2>
 <ul><li><a href="reference.html#block-attributes">Block Attribute</a> elements within a
   list are applied to the next list item or attached list item
   element.  This facilitates <a href="tips.html#styling-list-items">styling and linking within
