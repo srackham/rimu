@@ -4,6 +4,21 @@ See the [Git commit log]({github}/commits/) for a full list of
 changes.
 
 
+## Version 10.4.2 (2017-11-27)
+Documentation files updates (inadvertently omitted from 10.4.1 release).
+
+
+## Version 10.4.1 (2017-11-27)
+Fixed a couple of list syntax anomalies and handle all uncaught runtime
+assertions. The list item processing code has been rewritten.
+
+- **FIXED**: Two blank lines following an attached list item element did
+  not terminate the list when followed by a list item.
+
+- **FIXED**: Previously uncaught program assertions are now handled and
+  reported to the console and via the API callback.
+
+
 ## Version 10.4.0 (2017-11-19)
 - [Block Attribute]({reference}#block-attributes) elements within a
   list are applied to the next list item or attached list item
