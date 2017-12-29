@@ -2,7 +2,7 @@ import * as Options from './options'
 import * as Spans from './spans'
 
 // Matches a line starting with a macro invocation. $1 = macro invocation.
-export const MATCH_LINE = /^({(?:[\w\-]+)(?:[!=|?](?:|[^]*?[^\\]))?}).*$/
+export const MATCH_LINE = /^({(?:[\w\-]+)(?:[!=|?](?:|.*?[^\\]))?}).*$/
 // Match single-line macro definition. $1 = name, $2 = delimiter, $3 = value.
 export const LINE_DEF = /^\\?{([\w\-]+\??)}\s*=\s*(['`])(.*)\2$/
 // Match multi-line macro definition literal value open delimiter. $1 is first line of macro.
@@ -42,6 +42,7 @@ export function getValue(name: string): string | null {
 // If the name ends with '?' then don't set the macro if it already exists.
 // `quote` is a single character: ' if a literal value, ` if an expression value.
 export function setValue(name: string, value: string, quote: string): void {
+  // TODO: Implement this as Options.skipMacroDefs() c.f. rimu-kt
   if (Options.getSafeMode() !== 0 && !(Options.getSafeMode() & 0x8)) {  // tslint:disable-line no-bitwise
     return  // Skip if a safe mode is set.
   }
