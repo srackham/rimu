@@ -2298,7 +2298,8 @@
     "expectedCallback": "",
     "options": {
       "reset": true
-    }
+    },
+    "unsupported": "rimu-kt"
   },
   {
     "description": "multi-line macro expression value definition",
@@ -2307,7 +2308,8 @@
     "expectedCallback": "",
     "options": {
       "reset": true
-    }
+    },
+    "unsupported": "rimu-kt"
   },
   {
     "description": "delimited block macro expression line continuation",
@@ -2316,7 +2318,8 @@
     "expectedCallback": "",
     "options": {
       "reset": true
-    }
+    },
+    "unsupported": "rimu-kt"
   },
   {
     "description": "delimited block macro expression escaped line continuation",
@@ -2325,7 +2328,8 @@
     "expectedCallback": "",
     "options": {
       "reset": true
-    }
+    },
+    "unsupported": "rimu-kt"
   },
   {
     "description": "illegal macro expression",
@@ -2334,7 +2338,8 @@
     "expectedCallback": "error: illegal macro expression: x is not defined: 1 + x",
     "options": {
       "reset": true
-    }
+    },
+    "unsupported": "rimu-kt"
   },
   {
     "description": "escape closing brace in macro 'pattern' parameter",
