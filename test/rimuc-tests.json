@@ -248,7 +248,7 @@
     "predicate": "equals"
   },
   {
-    "description": "rimuc non-existant input file",
+    "description": "rimuc non-existent input file",
     "args": "./test/fixtures/a-non-existent-file",
     "input": "",
     "expectedOutput": "source file does not exist: ./test/fixtures/a-non-existent-file\n",
@@ -274,7 +274,8 @@
     "args": "--prepend-file ./src/examples/example-rimurc.rmu",
     "input": "{x}=`{add|1|2}`\n{y}=`{subtract|5|2}`\n{z}=`{multiply|2|6}`\n{u}=`{divide|12|4}`\n{v}=`{sum|1|2|3|4|5}`\n{x}, {y}, {z}, {u}, {v}",
     "expectedOutput": "<p>3, 3, 12, 3, 15</p>",
-    "predicate": "equals"
+    "predicate": "equals",
+    "skip": "rimu-kt"
   },
   {
     "description": "rimuc example rimurc quotes and replacements",
@@ -302,7 +303,8 @@
     "args": "--layout plain",
     "input": "foobar",
     "expectedOutput": "<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"UTF-8\">\n<title>Title</title>\n</head>\n<body>\n<p>foobar</p>\n</body>\n</html>",
-    "predicate": "equals"
+    "predicate": "equals",
+    "skip": "rimu-kt"
   },
   {
     "description": "rimuc empty input file",

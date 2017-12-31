@@ -1820,8 +1820,17 @@
   },
   {
     "description": "enable macro expansion in Code Block",
-    "input": "{v}=''\n.+macros\n--\n{v}\n--\n--\n{v}\n--",
-    "expectedOutput": "<pre><code></code></pre>\n<pre><code>{v}</code></pre>",
+    "input": "{v}='V'\n.+macros\n``\n\\{v} = '{v}'\n``\n``\n\\{v} = '{v}'\n``",
+    "expectedOutput": "<pre><code>{v} = 'V'</code></pre>\n<pre><code>\\{v} = '{v}'</code></pre>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "escaped macro invocations in macro values",
+    "input": "{v}='\\{--!}foo\nbar'\n.+macros\n``\n{v}\n``",
+    "expectedOutput": "<pre><code>{--!}foo\nbar</code></pre>",
     "expectedCallback": "",
     "options": {
       "reset": true
