@@ -42,9 +42,9 @@ syn match rimuSpanQuoteCode /\\\@<!`[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[ \t\n]
 syn match rimuSpanQuoteCode /\\\@<!``[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[ \t\n]\@<!``/
 syn match rimuSpanQuoteDeleted /\\\@<!\~\~[ \t\n]\@!\(.\|\n\(\s*\n\)\@!\)\{-1,}[\\ \t\n]\@<!\~\~/ contains=rimuSpanEntity
 syn region rimuHeader matchgroup=rimuHeaderStartEnd start=/^\(=\|#\)\{1,6}\s\+/ end=/\(\s\+\(=\|#\)\{1,6}\)\?\_$/ contains=rimuSpan.* oneline keepend
-syn match rimuBlockDelimiter /^\("\{2,}\|\.\{2,}\)\([0-9a-zA-Z-]\|\s\)*$/
+syn match rimuBlockDelimiter /^\("\{2,}\|\.\{2,}\)[ 0-9a-zA-Z-]*$/
 syn region rimuCodeBlock start=/^-\{2,}$/ end=/^-\{2,}$/ keepend
-syn region rimuCodeBlock start=/^`\{2,}$/ end=/^`\{2,}$/ keepend
+syn region rimuCodeBlock start=/^`\{2,}[ 0-9a-zA-Z-]*$/ end=/^`\{2,}$/ keepend
 syn region rimuIndentedParagraph start=/\(\%^\|\_^\n\|^\(=\|#\)\{1,6}\s\+\S\+.*\n\|^\(\.\|"\)\{2,}\n\|^\.[a-zA-Z#\[+\-].*\n\)\@<=\s\+\S/ end=/\n\(\.\.\|""\|\n\)\@=/ keepend
 syn region rimuQuoteParagraph start=/\(\%^\|\_^\n\|^\(=\|#\)\{1,6}\s\+\S\+.*\n\|^\.\{2,}\n\)\@<=\\\@<!>\s*\S/ end=/\n\(\.\.\|""\|\n\)\@=/ keepend contains=rimuSpan.*,rimuQuotePrefix
 syn match rimuQuotePrefix /^\\\@<!>/ contained
