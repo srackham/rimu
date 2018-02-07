@@ -3,6 +3,10 @@ export class Reader {
   pos: number       // Line index of current line.
 
   constructor(text: string) {
+    text = text.replace('\u0000', ' ') // Used internally by spans package.
+    text = text.replace('\u0001', ' ') // Used internally by spans package.
+    text = text.replace('\u0002', ' ') // Used internally by macros package.
+    text = text.replace('\u0003', ' ') // Used internally by macros package.
     // Split lines on newline boundaries.
     // http://stackoverflow.com/questions/1155678/javascript-string-newline-character
     // Split is broken on IE8 e.g. 'X\n\nX'.split(/\n/g).length) returns 2 but should return 3.
