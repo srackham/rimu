@@ -156,7 +156,7 @@ PREDEFINED MACROS
 `
 const STDIN = '/dev/stdin'
 const HOME_DIR = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']
-const RIMURC = path.resolve(HOME_DIR, '.rimurc')
+const RIMURC = path.resolve(HOME_DIR || '', '.rimurc')
 
 // Helpers.
 function die(message: string): void {
