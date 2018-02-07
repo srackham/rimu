@@ -131,8 +131,8 @@ const DEFAULT_DEFS: Definition[] = [
   // Indented paragraph.
   {
     name: 'indented',
-    openMatch: /^\\?(\s+.*)$/,  // $1 is first line of block.
-    closeMatch: /^$/,           // Blank line or EOF.
+    openMatch: /^\\?(\s+\S.*)$/, // $1 is first line of block.
+    closeMatch: /^$/,            // Blank line or EOF.
     openTag: '<pre><code>',
     closeTag: '</code></pre>',
     expansionOptions: {

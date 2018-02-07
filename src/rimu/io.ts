@@ -60,7 +60,7 @@ export class Reader {
   }
 
   skipBlankLines(): void {
-    while (!this.eof() && this.cursor === '') {
+    while (!this.eof() && this.cursor.trim() === '') {
       this.next()
     }
   }
