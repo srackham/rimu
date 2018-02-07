@@ -113,6 +113,9 @@ export function render(text: string, silent: boolean = false): string {
             if (match[0] === '\\') {  // Unescape escaped macro parameters.
               return match.slice(1)
             }
+            if (Number(p2) === 0) {
+              return match // $0 is not a valid parameter name.
+            }
             let param: string | undefined = paramsList[Number(p2) - 1]
             param = param === undefined ? '' : param  // Unassigned parameters are replaced with a blank string.
             if (p3 !== undefined) {
