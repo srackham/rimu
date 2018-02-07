@@ -31,19 +31,19 @@
     "url": "https://github.com/srackham/rimu.git"
   },
   "devDependencies": {
-    "@types/node": "^8.0.53",
+    "@types/node": "^9.4.1",
     "faucet": "0.0.1",
     "jake": "^8.0.15",
     "jshint": "^2.9.5",
     "jsonlint": "^1.6.2",
     "raw-loader": "^0.5.1",
     "rimu-plain-layout": "^1.0.1",
-    "shelljs": "^0.7.8",
+    "shelljs": "^0.8.1",
     "tape": "^4.8.0",
-    "ts-loader": "^3.1.1",
-    "tslint": "^5.8.0",
-    "typescript": "^2.6.1",
-    "uglify-js": "^3.1.9",
-    "webpack": "^3.8.1"
+    "ts-loader": "^3.4.0",
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.1",
+    "uglify-js": "^3.3.9",
+    "webpack": "^3.10.0"
   }
 }
