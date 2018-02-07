@@ -20,8 +20,9 @@ let RIMU_SRC = shelljs.ls('src/rimu/*.ts')
 let RIMU_TSD = 'typings/rimu.d.ts'
 let TESTS = shelljs.ls('test/*.js')
 let GH_PAGES_DIR = 'gh-pages/'
-let RIMUC = 'bin/rimuc.js'
+let RIMUC_JS = 'bin/rimuc.js'
 let RIMUC_TS = 'src/rimuc/rimuc.ts'
+let RIMUC_EXE = 'node ' + RIMUC_JS
 
 let DOCS = [
   {
@@ -153,7 +154,7 @@ file(RIMU_LIB, RIMU_SRC, {async: true}, function () {
 desc(`Compile rimuc to JavaScript executable and generate .map file.`)
 task('build-rimuc', {async: true}, function () {
   exec('webpack --config ./src/rimuc/webpack.config.js', function () {
-    shelljs.chmod('+x', RIMUC)
+    shelljs.chmod('+x', RIMUC_JS)
     complete()
   })
 })
@@ -161,7 +162,7 @@ task('build-rimuc', {async: true}, function () {
 desc(`Generate HTML documentation`)
 task('build-docs', ['build-rimu', 'build-gallery'], {async: true}, function () {
   let commands = DOCS.map(doc =>
-    'node ' + RIMUC +
+    RIMUC_EXE +
     ' --no-rimurc --theme legend --custom-toc --header-links' +
     ' --layout sequel' +
     ' --output "' + doc.dst + '"' +
@@ -208,7 +209,7 @@ task('build-gallery', ['build-rimu'], {async: true}, function () {
   let commands = [];
   forEachGalleryDocument(function (options, outfile, layout, theme) {
     let command =
-      'node ' + RIMUC +
+      RIMUC_EXE +
       ' --custom-toc' +
       ' --no-rimurc' +
       ' ' + options +
