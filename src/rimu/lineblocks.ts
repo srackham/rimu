@@ -29,8 +29,8 @@ let defs: Definition[] = [
       }
       // Silent because any macro expansion errors will be subsequently addressed downstream.
       let value = Macros.render(match[0], true)
-      if (value.substr(0, match[1].length) === match[1]) {
-        // The leading macro invocation expansion failed or returned itself.
+      if (value.substr(0, match[0].length) === match[0] || value.indexOf('\n' + match[0])) {
+        // The leading macro invocation expansion failed or contains itself.
         // This stops infinite recursion.
         return false
       }
