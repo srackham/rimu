@@ -270,14 +270,6 @@
     "predicate": "equals"
   },
   {
-    "description": "rimuc example rimurc arithmetic expression macros",
-    "args": "--prepend-file ./src/examples/example-rimurc.rmu",
-    "input": "{x}=`{add|1|2}`\n{y}=`{subtract|5|2}`\n{z}=`{multiply|2|6}`\n{u}=`{divide|12|4}`\n{v}=`{sum|1|2|3|4|5}`\n{x}, {y}, {z}, {u}, {v}",
-    "expectedOutput": "<p>3, 3, 12, 3, 15</p>",
-    "predicate": "equals",
-    "skip": "rimu-kt"
-  },
-  {
     "description": "rimuc example rimurc quotes and replacements",
     "args": "--prepend-file ./src/examples/example-rimurc.rmu",
     "input": "__foo__ \"bar\" -- ... -> <- (c) (TM) +-",
