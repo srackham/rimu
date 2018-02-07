@@ -9,7 +9,7 @@
 */
 // Typographic replacements.
 // NOTE: &mdash; and &rightarrow; replacements generate false positives in inline HTML comment tags.
-/\\?--(?!>)/ = '&mdash;'
+/\\?--/ = '&mdash;'
 /\\?\.{3}/ = '&hellip;'
 /\\?->/ = '&rightarrow;'
 /\\?<-/ = '&leftarrow;'
