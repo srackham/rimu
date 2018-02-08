@@ -159,7 +159,15 @@ export function render(text: string, silent: boolean = false): string {
     })
   })
   // Restore expanded Simple values.
-  text = text.replace(/\u0001/g, () => saved_simple.shift()!)
+  text = text.replace(/\u0001/g, function (): string {
+    if (saved_simple.length === 0) {
+			// This should not happen but there is a limitation: repeated macro substitution parameters
+			// ($1, $2...) cannot contain simple macro invocations.
+			Options.errorCallback('repeated macro parameters: ' + text)
+			return ''
+		}
+    return saved_simple.shift()!
+  })
   // Delete lines flagged by Inclusion/Exclusion macros.
   if (text.indexOf('\u0000') !== -1) {
     text = text.split('\n')
