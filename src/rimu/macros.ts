@@ -79,9 +79,10 @@ export function setValue(name: string, value: string, quote: string): void {
 export function render(text: string, silent: boolean = false): string {
   const MATCH_COMPLEX = /\\?{([\w\-]+)([!=|?](?:|[^]*?[^\\]))}/g; // Parametrized, Inclusion and Exclusion invocations.
   const MATCH_SIMPLE = /\\?{([\w\-]+)()}/g;                       // Simple macro invocation.
-  const saved_simple: string[] = [];
+  const saved_simple: string[] = []
+  let result = text;
   [MATCH_SIMPLE, MATCH_COMPLEX].forEach(find => {
-    text = text.replace(find, function (match: string, ...submatches: string[]): string {
+    result = result.replace(find, function (match: string, ...submatches: string[]): string {
       if (match[0] === '\\') {
         return match.slice(1)
       }
@@ -100,6 +101,10 @@ export function render(text: string, silent: boolean = false): string {
         }
         return match
       }
+      if (find === MATCH_SIMPLE) {
+          saved_simple.push(value)
+          return '\u0002' // Placeholder to forestall further expansion of Simple macros.
+			}
       params = params.replace(/\\}/g, '}')   // Unescape escaped } characters.
       switch (params[0]) {
         case '|': // Parametrized macro.
@@ -151,15 +156,15 @@ export function render(text: string, silent: boolean = false): string {
           if (params[0] === '!') {
             skip = !skip
           }
-          return skip ? '\u0000' : '' // Flag line for deletion.
-        default:  // Simple macro.
-          saved_simple.push(value)
-          return '\u0001' // Placeholder to forestall further expansion of Simple macros.
+          return skip ? '\u0003' : '' // Flag line for deletion.
+        default:
+          Options.errorCallback('illegal macro syntax: ' + match[0])
+          return ''
       }
     })
   })
   // Restore expanded Simple values.
-  text = text.replace(/\u0001/g, function (): string {
+  result = result.replace(/\u0002/g, function (): string {
     if (saved_simple.length === 0) {
 			// This should not happen but there is a limitation: repeated macro substitution parameters
 			// ($1, $2...) cannot contain simple macro invocations.
@@ -169,11 +174,11 @@ export function render(text: string, silent: boolean = false): string {
     return saved_simple.shift()!
   })
   // Delete lines flagged by Inclusion/Exclusion macros.
-  if (text.indexOf('\u0000') !== -1) {
-    text = text.split('\n')
-      .filter(line => line.indexOf('\u0000') === -1)
+  if (result.indexOf('\u0003') !== -1) {
+    result = result.split('\n')
+      .filter(line => line.indexOf('\u0003') === -1)
       .join('\n')
   }
-  return text
+  return result
 }
 
