@@ -49,9 +49,11 @@ export function skipBlockAttributes(): boolean {
 
 function setSafeMode(value: number | string | undefined): void {
   let n = Number(value)
-  if (!isNaN(n)) {
-    safeMode = n
+  if (isNaN(n) || n < 0 || n > 15) {
+    errorCallback('illegal safeMode API option value: ' + value)
+    return
   }
+  safeMode = n
 }
 
 function setHtmlReplacement(value: string | undefined): void {
@@ -60,16 +62,35 @@ function setHtmlReplacement(value: string | undefined): void {
 }
 
 function setReset(value: boolean | string | undefined): void {
-  if (value === true || value === 'true') {
+  if (value === false || value === 'false') {
+    return
+  }
+  else if (value === true || value === 'true') {
     Api.init()
+  }
+  else {
+    errorCallback('illegal reset API option value: ' + value)
   }
 }
 
 export function updateOptions(options: RenderOptions): void {
-  if ('reset' in options) setReset(options.reset) // Reset takes priority.
+  for (let key in options) {
+    switch (key) {
+      case 'reset':
+      case 'safeMode':
+      case 'htmlReplacement':
+      case 'callback':
+        break
+      default:
+        errorCallback('illegal API option name: ' + key)
+        return
+    }
+  }
+  if ('callback' in options) callback = options.callback 	// Install callback first to ensure option errors are logged.
+  if ('reset' in options) setReset(options.reset)         // Reset takes priority.
+  if ('callback' in options) callback = options.callback 	// Install callback again in case it has been reset.
   if ('safeMode' in options) setSafeMode(options.safeMode)
   if ('htmlReplacement' in options) setHtmlReplacement(options.htmlReplacement)
-  if ('callback' in options) callback = options.callback
 }
 
 // Set named option value.

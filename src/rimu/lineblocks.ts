@@ -161,10 +161,7 @@ let defs: Definition[] = [
   {
     match: /^\\?\.(\w+)\s*=\s*'(.*)'$/,
     filter: function (match: RegExpExecArray): string {
-      if (!/^(safeMode|htmlReplacement|reset)$/.test(match[1])) {
-        Options.errorCallback('illegal API option: ' + match[1] + ': ' + match[0])
-      }
-      else if (!Options.isSafeModeNz()) {
+      if (!Options.isSafeModeNz()) {
         let value = Utils.replaceInline(match[2], {macros: true})
         Options.setOption(match[1], value)
       }
