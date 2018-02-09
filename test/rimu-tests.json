@@ -1,2488 +1,2620 @@
 [
-  {
-    "description": "text without markup",
-    "input": "no markup",
-    "expectedOutput": "<p>no markup</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "escape quote",
-    "input": "\\*11*",
-    "expectedOutput": "<p>*11*</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "emphasis and strong quotes",
-    "input": "*11* 22 _33_ **44**",
-    "expectedOutput": "<p><em>11</em> 22 <em>33</em> <strong>44</strong></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "quotes span words",
-    "input": "*1 1*",
-    "expectedOutput": "<p><em>1 1</em></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "quotes span lines",
-    "input": "*1\n1*",
-    "expectedOutput": "<p><em>1\n1</em></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "escape quotes",
-    "input": "\\*11* *22* \\_33_ \\**44**",
-    "expectedOutput": "<p>*11* <em>22</em> _33_ **44**</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "code quotes ending with backslashes",
-    "input": "`foo bar\\` `foo bar\\\\` `foo bar\\\\\\`",
-    "expectedOutput": "<p><code>foo bar\\</code> <code>foo bar\\\\</code> <code>foo bar\\\\\\</code></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "code quotes with backslashes",
-    "input": "`\\a\\b\\ c\\d \\e\\`",
-    "expectedOutput": "<p><code>\\a\\b\\ c\\d \\e\\</code></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "underscores in words",
-    "input": "a_b_c _d_e_f_ _g*h_i*j_",
-    "expectedOutput": "<p>a_b_c <em>d_e_f</em> <em>g<em>h_i</em>j</em></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "code quotes",
-    "input": "`<http://example.com> \\``",
-    "expectedOutput": "<p><code>&lt;http://example.com&gt; \\`</code></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "replacements and quotes nested inside escaped quotes",
-    "input": "00 \\*11 http://example.com _22_*",
-    "expectedOutput": "<p>00 *11 <a href=\"http://example.com\">http://example.com</a> <em>22</em>*</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "escape right-hand quote to resolve ambiguity",
-    "input": "\\*11 _22_\\**33**44**",
-    "expectedOutput": "<p>*11 <em>22</em>**33<strong>44</strong></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "nested quotes",
-    "input": "00 _ `_11_` _2**2**_ _2\\**2**_",
-    "expectedOutput": "<p>00 _ <code>_11_</code> <em>2<strong>2</strong></em> <em>2**2**</em></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "nested quotes",
-    "input": "_**abc `efg`** h<sup>i</sup>_ j",
-    "expectedOutput": "<p><em><strong>abc <code>efg</code></strong> h<sup>i</sup></em> j</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "nested and escaped quotes",
-    "input": "__xyz\\_ abc\\__ \\__xyz *abc*_\\_",
-    "expectedOutput": "<p><em>_xyz_ abc_</em> _<em>xyz <em>abc</em></em>_</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "strike-through quotes",
-    "input": "Some ~~rubbish~~.",
-    "expectedOutput": "<p>Some <del>rubbish</del>.</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "double underlined quotes",
-    "input": "Some __strong text__.",
-    "expectedOutput": "<p>Some <strong>strong text</strong>.</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "adjacent nested single and double quotes",
-    "input": "***single and double quotes***",
-    "expectedOutput": "<p><strong><em>single and double quotes</em></strong></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "nested double and single code quotes",
-    "input": "```nested double `and` single code quotes```",
-    "expectedOutput": "<p><code>`nested double `and` single code quotes`</code></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "two HTML attributes do not generate delete quote",
-    "input": "<a class=\"btn\">abc</a> <a class=\"btn\">xyz</a>",
-    "expectedOutput": "<p><a class=\"btn\">abc</a> <a class=\"btn\">xyz</a></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "urls",
-    "input": "http://example.com <http://example.com> [example\\nurl](http://example.com) [](http://example.com)",
-    "expectedOutput": "<p><a href=\"http://example.com\">http://example.com</a> <a href=\"http://example.com\">http://example.com</a> <a href=\"http://example.com\">example\\nurl</a> <a href=\"http://example.com\"></a></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "url with empty caption",
-    "input": "<http://example.com|>",
-    "expectedOutput": "<p><a href=\"http://example.com\"></a></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "url with < and > in caption",
-    "input": "<#header|<Header&gt;>",
-    "expectedOutput": "<p><a href=\"#header\">&lt;Header&gt;</a></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "HTML url with spaces",
-    "input": "<a href=\"http://an example.com\">foo</a>",
-    "expectedOutput": "<p><a href=\"http://an example.com\">foo</a></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "quotes expanded in url and mail address captions",
-    "input": "[*foo* &mdash; bar](http://_foobar_) <http://_foobar_|*foo* &mdash; bar> <joe@example.com|**Joe &mdash; Bloggs**>",
-    "expectedOutput": "<p><a href=\"http://_foobar_\"><em>foo</em> &mdash; bar</a> <a href=\"http://_foobar_\"><em>foo</em> &mdash; bar</a> <a href=\"mailto:joe@example.com\"><strong>Joe &mdash; Bloggs</strong></a></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "Markdown style url with encoded spaces",
-    "input": "[with spaces](http://url%20with%20spaces.com)",
-    "expectedOutput": "<p><a href=\"http://url%20with%20spaces.com\">with spaces</a></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "Markdown style url with [ in caption",
-    "input": "[the &#x5b;Main] section](#main)",
-    "expectedOutput": "<p><a href=\"#main\">the &#x5b;Main] section</a></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "Markdown style url does not allow [ in caption]",
-    "input": "[the [Main] section](#main)",
-    "expectedOutput": "<p>[the <a href=\"#main\">Main] section</a></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "URLs url with underscores",
-    "input": "[with underscores](_example_), <_example_|with underscores>",
-    "expectedOutput": "<p><a href=\"_example_\">with underscores</a>, <a href=\"_example_\">with underscores</a></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "escaped http urls",
-    "input": "\\http://example.com \\<http://example.com> \\[example url](http://example.com)",
-    "expectedOutput": "<p>http://example.com &lt;http://example.com&gt; [example url](http://example.com)</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "quoted and parametrized http urls",
-    "input": "_http://example.com_ **<http://example.com>** <http://example.com|Foo\n& Bar>",
-    "expectedOutput": "<p><em><a href=\"http://example.com\">http://example.com</a></em> <strong><a href=\"http://example.com\">http://example.com</a></strong> <a href=\"http://example.com\">Foo\n&amp; Bar</a></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "ftp url",
-    "input": "<ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt>",
-    "expectedOutput": "<p><a href=\"ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt\">ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt</a></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "file urls",
-    "input": "<file:///home/joe/downloads/> <file:///home/joe/doc/user-guide.pdf|User Guide> \\<file:///home/joe/downloads/>",
-    "expectedOutput": "<p><a href=\"file:///home/joe/downloads/\">file:///home/joe/downloads/</a> <a href=\"file:///home/joe/doc/user-guide.pdf\">User Guide</a> &lt;file:///home/joe/downloads/&gt;</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "character entities",
-    "input": "&copy; &reg;\\&para;",
-    "expectedOutput": "<p>&copy; &reg;&amp;para;</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "line breaks",
-    "input": "Lorum \\\nipsum \\\\\n`lorum \\\nipsum`\nnostra \\\\\nvestibulum \\",
-    "expectedOutput": "<p>Lorum<br>\nipsum \\\n<code>lorum \\\nipsum</code>\nnostra \\\nvestibulum<br></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "inline anchors and links",
-    "input": "Lorum <<#x1>>ipsum <#x1|lorum link> \\<<#x1>>",
-    "expectedOutput": "<p>Lorum <span id=\"x1\"></span>ipsum <a href=\"#x1\">lorum link</a> &lt;&lt;#x1&gt;&gt;</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "inline images",
-    "input": "<image:./images/tiger.png> <image:http://example.com/tiger.png|Tiger\n& Bar> ![Tiger paws](./images/tiger.png) ![Tiger paws](http://example.com/tiger.png) \\<image:tiger.png> \\![Tiger paws](./images/tiger.png)",
-    "expectedOutput": "<p><img src=\"./images/tiger.png\" alt=\"./images/tiger.png\"> <img src=\"http://example.com/tiger.png\" alt=\"Tiger\n&amp; Bar\"> <img src=\"./images/tiger.png\" alt=\"Tiger paws\"> <img src=\"http://example.com/tiger.png\" alt=\"Tiger paws\"> &lt;image:tiger.png&gt; ![Tiger paws](./images/tiger.png)</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "image with empty alt",
-    "input": "<image:./images/tiger.png|>",
-    "expectedOutput": "<p><img src=\"./images/tiger.png\" alt=\"\"></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "email addresses",
-    "input": "<joe.bloggs@example.com> <joe.bloggs@example.com|Joe\n Bloggs> \\<joe.bloggs@example.com>",
-    "expectedOutput": "<p><a href=\"mailto:joe.bloggs@example.com\">joe.bloggs@example.com</a> <a href=\"mailto:joe.bloggs@example.com\">Joe\n Bloggs</a> &lt;joe.bloggs@example.com&gt;</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "HTML tags",
-    "input": "<u>underlined *text*</u>\\<hr>",
-    "expectedOutput": "<p><u>underlined <em>text</em></u>&lt;hr&gt;</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "HTML tags across line boundary",
-    "input": "<span style=\"font-size:\n2em\">inline elements</span>",
-    "expectedOutput": "<p><span style=\"font-size:\n2em\">inline elements</span></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "HTML element enveloping image",
-    "input": "<a href='http://example.com'><image:tiger.png></a>",
-    "expectedOutput": "<p><a href='http://example.com'><img src=\"tiger.png\" alt=\"tiger.png\"></a></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "relative url",
-    "input": "<chapter1.html>",
-    "expectedOutput": "<p><a href=\"chapter1.html\">chapter1.html</a></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "parametrized relative url",
-    "input": "<./chapter1.html#x1|Foo bar>",
-    "expectedOutput": "<p><a href=\"./chapter1.html#x1\">Foo bar</a></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "macro definition",
-    "input": "{macro} = 'macro value'",
-    "expectedOutput": "",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "macro value",
-    "input": "{macro}",
-    "expectedOutput": "<p>macro value</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": false
-    }
-  },
-  {
-    "description": "macro value",
-    "input": "{macro} = 'macro value2'\n{macro}",
-    "expectedOutput": "<p>macro value2</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": false
-    }
-  },
-  {
-    "description": "escaped macro definitions and invocations",
-    "input": "&ZeroWidthSpace;\\{macro}='value'\n{macro} \\{macro}",
-    "expectedOutput": "<p>&ZeroWidthSpace;{macro}='value'\nmacro value2 {macro}</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": false
-    }
-  },
-  {
-    "description": "nested macro value",
-    "input": "{macro2} = 'nested macro: {macro}'\n{macro2}",
-    "expectedOutput": "<p>nested macro: macro value2</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": false
-    }
-  },
-  {
-    "description": "existential macro definitions",
-    "input": "{macro1} = 'XXX'\n{macro1}\n\n{macro1?}='YYY'\n{macro2?} = 'ZZZ'\n{macro1} {macro2}",
-    "expectedOutput": "<p>XXX</p>\n<p>XXX ZZZ</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "multi-line existential macro definitions",
-    "input": "{macro1} = 'XXX\nXXX'\n{macro1}\n\n{macro1?}='YYY\nYYY'\n{macro2?} = 'ZZZ\nZZZ'\n{macro1} {macro2}",
-    "expectedOutput": "<p>XXX\nXXX</p>\n<p>XXX\nXXX ZZZ\nZZZ</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "macro invocation in image url",
-    "input": "{tiger} = './images/tiger.png'\n<image:{tiger}>",
-    "expectedOutput": "<img src=\"./images/tiger.png\" alt=\"./images/tiger.png\">",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "header",
-    "input": "# Hello World!",
-    "expectedOutput": "<h1>Hello World!</h1>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "header",
-    "input": "## *Hello* World! ##",
-    "expectedOutput": "<h2><em>Hello</em> World!</h2>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "header title containing quotes and email address",
-    "input": "=== *Hello* <joe@foo.com|Joe & Jim> ===",
-    "expectedOutput": "<h3><em>Hello</em> <a href=\"mailto:joe@foo.com\">Joe &amp; Jim</a></h3>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "comment line",
-    "input": "// A comment.",
-    "expectedOutput": "",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "block image",
-    "input": "<image:./images/tiger.png>",
-    "expectedOutput": "<img src=\"./images/tiger.png\" alt=\"./images/tiger.png\">",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "block image with caption",
-    "input": "<image:http://example.com|Tiger & Bar>",
-    "expectedOutput": "<img src=\"http://example.com\" alt=\"Tiger &amp; Bar\">",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "multi-line macro value",
-    "input": "{macro} = 'macro\n value'\n{macro}",
-    "expectedOutput": "<p>macro\n value</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "redefine macro",
-    "input": "{macro} = 'macro\n value2'\n{macro}",
-    "expectedOutput": "<p>macro\n value2</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "division block",
-    "input": "..\nTo be...\n\nor not to be!\n..",
-    "expectedOutput": "<p>To be...</p>\n<p>or not to be!</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "quote block",
-    "input": "\"\"\nTo be...\n\nor not to be!\n\"\"",
-    "expectedOutput": "<blockquote><p>To be...</p>\n<p>or not to be!</p></blockquote>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "inline HTML tag is not a block",
-    "input": "<em>HTML</em>",
-    "expectedOutput": "<p><em>HTML</em></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "html block",
-    "input": "<p>Raw <em>HTML</em>\nis *passed* through</p>",
-    "expectedOutput": "<p>Raw <em>HTML</em>\nis *passed* through</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "escaped html block",
-    "input": "\\<p>escaped\\</p>",
-    "expectedOutput": "<p>&lt;p&gt;escaped&lt;/p&gt;</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "html comment",
-    "input": "<!-- An HTML comment -->",
-    "expectedOutput": "<!-- An HTML comment -->",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "indented paragraph",
-    "input": "  *Indented* paragraph\nLine 2\n \n    Line 3",
-    "expectedOutput": "<pre><code>*Indented* paragraph\nLine 2\n\n  Line 3</code></pre>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "comment block",
-    "input": "/*\nComment lines\n More comments.\n*/",
-    "expectedOutput": "",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "code block (deprecated syntax)",
-    "input": "--\nA <code> block\n Line _two_\n--",
-    "expectedOutput": "<pre><code>A &lt;code&gt; block\n Line _two_</code></pre>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "class names are not valid in deprecated code block syntax",
-    "input": "-- Anonymous\nLine one\n--",
-    "expectedOutput": "<p>-- Anonymous\nLine one\n--</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "code block",
-    "input": "``\nA <code> block\n Line _two_\n``",
-    "expectedOutput": "<pre><code>A &lt;code&gt; block\n Line _two_</code></pre>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "quote paragraph",
-    "input": ">*Hello* <joe@foo.com|Joe & Jim>",
-    "expectedOutput": "<blockquote><p><em>Hello</em> <a href=\"mailto:joe@foo.com\">Joe &amp; Jim</a></p></blockquote>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "multi-line quote paragraph",
-    "input": ">*Hello*\n> <joe@foo.com|Joe & Jim>",
-    "expectedOutput": "<blockquote><p><em>Hello</em>\n <a href=\"mailto:joe@foo.com\">Joe &amp; Jim</a></p></blockquote>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "normal paragraph",
-    "input": "*Hello* <joe@foo.com|Joe & Jim>",
-    "expectedOutput": "<p><em>Hello</em> <a href=\"mailto:joe@foo.com\">Joe &amp; Jim</a></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "multi-line quote paragraph",
-    "input": "> Line 1\nLine 2",
-    "expectedOutput": "<blockquote><p> Line 1\nLine 2</p></blockquote>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "multi-line normal paragraph",
-    "input": "Line 1\nLine 2",
-    "expectedOutput": "<p>Line 1\nLine 2</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "do not mistake url for HTML block",
-    "input": "<joe@foo.com|Joe & Jim>",
-    "expectedOutput": "<p><a href=\"mailto:joe@foo.com\">Joe &amp; Jim</a></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "nested Division blocks",
-    "input": ".noclass\n..\nTo be...\n\n...\nTo be...\n\nor not to be!\n...\n\nor not to be!\n..",
-    "expectedOutput": "<div class=\"noclass\"><p>To be...</p>\n<p>To be...</p>\n<p>or not to be!</p>\n<p>or not to be!</p></div>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "nested Code blocks",
-    "input": "``\nTo be...\n\n```\nTo be...\n\nor not to be!\n```\n\nor not to be!\n``",
-    "expectedOutput": "<pre><code>To be...\n\n```\nTo be...\n\nor not to be!\n```\n\nor not to be!</code></pre>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "Code block with class injection",
-    "input": "`` js\nvar x = 42;\n``",
-    "expectedOutput": "<pre class=\"js\"><code>var x = 42;</code></pre>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "Quote block with class injection",
-    "input": "\"\" quote highlight\nTo be...\n\"\"",
-    "expectedOutput": "<blockquote class=\"quote highlight\"><p>To be...</p></blockquote>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "Division block with class injection",
-    "input": "..one two \nTo be...\n..",
-    "expectedOutput": "<div class=\"one two\"><p>To be...</p></div>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "do not render empty Division block",
-    "input": "..\n\n..\n..\nfoobar\n..",
-    "expectedOutput": "<p>foobar</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "non-rendering elements in Division block",
-    "input": "..\n{macro}='42'\n..",
-    "expectedOutput": "",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "render empty Division block has attributes",
-    "input": ".foo\n..\n\n..",
-    "expectedOutput": "<div class=\"foo\"></div>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "definition list",
-    "input": "term::\ndef\nterm:: def",
-    "expectedOutput": "<dl><dt>term</dt><dd>def</dd><dt>term</dt><dd>def</dd></dl>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "unordered list with escaped list item",
-    "input": "- Item _1_\n - Item 2\n\\ - Escaped",
-    "expectedOutput": "<ul><li>Item <em>1</em></li><li>Item 2\n - Escaped</li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "nested unordered lists",
-    "input": "- List 1\n* List 2",
-    "expectedOutput": "<ul><li>List 1<ul><li>List 2</li></ul></li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "ordered list",
-    "input": ". Item 1\n. Item 2",
-    "expectedOutput": "<ol><li>Item 1</li><li>Item 2</li></ol>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list using \"+\" list IDs",
-    "input": "+ Item 1\n+ Item 2",
-    "expectedOutput": "<ul><li>Item 1</li><li>Item 2</li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "Mixed nested lists",
-    "input": "- List item1.\n  - List item2.\n  * List item3.\n  ** List item4.\nTerm:: List\n item5\n\n- List item6.",
-    "expectedOutput": "<ul><li>List item1.</li><li>List item2.<ul><li>List item3.<ul><li>List item4.<dl><dt>Term</dt><dd>List\n item5</dd></dl></li></ul></li></ul></li><li>List item6.</li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list item with attached division block and indented paragraph",
-    "input": "- Item 1\n..\nA\nparagraph\n..\n- Item 2\n\n  Indented",
-    "expectedOutput": "<ul><li>Item 1<p>A\nparagraph</p>\n</li><li>Item 2<pre><code>Indented</code></pre></li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list item with attached quote block followed by child list",
-    "input": "- Item 1\n\"\"\nA\nparagraph\n\"\"\n. Uno",
-    "expectedOutput": "<ul><li>Item 1<blockquote><p>A\nparagraph</p></blockquote>\n<ol><li>Uno</li></ol></li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list item with attached deprecated code block",
-    "input": "- Item 1\n--\nA\nparagraph\n--",
-    "expectedOutput": "<ul><li>Item 1<pre><code>A\nparagraph</code></pre></li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list item with attached code block",
-    "input": "- Item 1\n```\nA\nparagraph\n```",
-    "expectedOutput": "<ul><li>Item 1<pre><code>A\nparagraph</code></pre></li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "nested list in attached division block",
-    "input": "a::\n..\n- b\n..\nc::\nd",
-    "expectedOutput": "<dl><dt>a</dt><dd><ul><li>b</li></ul>\n</dd><dt>c</dt><dd>d</dd></dl>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list item with unattached code block",
-    "input": "- Item 1\n\n```\nA\nparagraph\n```",
-    "expectedOutput": "<ul><li>Item 1</li></ul><pre><code>A\nparagraph</code></pre>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list item with unattached indented paragraph (2 blank lines separation",
-    "input": "- Item 1\n\n\n  An\n  indented paragraph",
-    "expectedOutput": "<ul><li>Item 1</li></ul><pre><code>An\nindented paragraph</code></pre>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list terminated by two blank lines after list item",
-    "input": "- List 1\n\n\n* List 2",
-    "expectedOutput": "<ul><li>List 1</li></ul><ul><li>List 2</li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list terminated by two blank lines after item attached block",
-    "input": "- Item 1\n\"\"\nA\nparagraph\n\"\"\n\n\n- Item 2",
-    "expectedOutput": "<ul><li>Item 1<blockquote><p>A\nparagraph</p></blockquote>\n</li></ul><ul><li>Item 2</li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list is not terminated by single blank line after item attached block",
-    "input": "- Item 1\n\"\"\nA\nparagraph\n\"\"\n\n- Item 2",
-    "expectedOutput": "<ul><li>Item 1<blockquote><p>A\nparagraph</p></blockquote>\n</li><li>Item 2</li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list item with attached multi-line comment",
-    "input": "- Item 1\n/*\nComment\n*/\n- Item 2",
-    "expectedOutput": "<ul><li>Item 1</li><li>Item 2</li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list item with attached quote paragraph",
-    "input": "- Item 1\n\n> Quote\n\n- Item 2",
-    "expectedOutput": "<ul><li>Item 1<blockquote><p> Quote</p></blockquote>\n</li><li>Item 2</li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list item with attached HTML block element",
-    "input": "- Item 1\n<pre>Code</pre>\n\n- Item 2",
-    "expectedOutput": "<ul><li>Item 1<pre>Code</pre>\n</li><li>Item 2</li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "headers and paragraphs",
-    "input": "# Title\n## Subtitle\n\nParagraph \none.\n\r\nParagraph two.",
-    "expectedOutput": "<h1>Title</h1>\n<h2>Subtitle</h2>\n<p>Paragraph \none.</p>\n<p>Paragraph two.</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "header followed by comment line",
-    "input": "# h1 header\n\n// Comment line.",
-    "expectedOutput": "<h1>h1 header</h1>\n",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "escaped header",
-    "input": "\\# I am not a header",
-    "expectedOutput": "<p># I am not a header</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "html blocks and spans",
-    "input": "<hr>\n\n<br>\n\n\\<BR><HR>\n\n&ZeroWidthSpace;\\<div>",
-    "expectedOutput": "<hr>\n<p><br></p>\n<p>&lt;BR&gt;<HR></p>\n<p>&ZeroWidthSpace;&lt;div&gt;</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "<img> tag is inline tag (Markdown behaviour)",
-    "input": "<img src=\"test.jpg\" alt=\"Test\">",
-    "expectedOutput": "<p><img src=\"test.jpg\" alt=\"Test\"></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "relative file name url",
-    "input": "<chapter1.html>",
-    "expectedOutput": "<p><a href=\"chapter1.html\">chapter1.html</a></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "html block element and html span element",
-    "input": "<div>a block</div>\n\n<span>not a block</span>",
-    "expectedOutput": "<div>a block</div>\n<p><span>not a block</span></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "html block starting with closing tag",
-    "input": "</body></html>",
-    "expectedOutput": "</body></html>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "HTML doctype element",
-    "input": "<!DOCTYPE HTML>",
-    "expectedOutput": "<!DOCTYPE HTML>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "html block comment and html span comment",
-    "input": "<!--comment-->\n\nx <!--comment-->y`<!--comment-->`",
-    "expectedOutput": "<!--comment-->\n<p>x <!--comment-->y<code>&lt;!--comment--&gt;</code></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "anchors and links",
-    "input": "Refer to the <#x1|next paragraph> or the <#x2|second list item\nbelow>.\n\n.#x1\nNisl curabitur donec. Vel porttitor et. Et amet vitae. Quam\nporttitor integer. Bibendum neque quis quisque ac commodo. Non et\ncumque. Sit et a consequat.\n\n.#x2\n- Viverra pede turpis.\n- Esse et dui nonummy modi.\n",
-    "expectedOutput": "<p>Refer to the <a href=\"#x1\">next paragraph</a> or the <a href=\"#x2\">second list item\nbelow</a>.</p>\n<p id=\"x1\">Nisl curabitur donec. Vel porttitor et. Et amet vitae. Quam\nporttitor integer. Bibendum neque quis quisque ac commodo. Non et\ncumque. Sit et a consequat.</p>\n<ul id=\"x2\"><li>Viverra pede turpis.</li><li>Esse et dui nonummy modi.</li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "safeMode default",
-    "input": "<hr>",
-    "expectedOutput": "<hr>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "safeMode=0",
-    "input": "<hr>",
-    "expectedOutput": "<hr>",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 0,
-      "reset": true
-    }
-  },
-  {
-    "description": "safeMode=1",
-    "input": "<hr>",
-    "expectedOutput": "",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 1,
-      "reset": true
-    }
-  },
-  {
-    "description": "safeMode=3",
-    "input": "<hr>",
-    "expectedOutput": "&lt;hr&gt;",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 3,
-      "reset": true
-    }
-  },
-  {
-    "description": "safeMode default",
-    "input": "Lorum\nIpsum<br>",
-    "expectedOutput": "<p>Lorum\nIpsum<br></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "safeMode=1",
-    "input": "Lorum ipsum<br>",
-    "expectedOutput": "<p>Lorum ipsum</p>",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 1,
-      "reset": true
-    }
-  },
-  {
-    "description": "HTML safeMode=1",
-    "input": "<hr>",
-    "expectedOutput": "",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 1,
-      "reset": true
-    }
-  },
-  {
-    "description": "HTML safeMode=1+4 is same as safeMode=1",
-    "input": "<hr>",
-    "expectedOutput": "",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 5,
-      "reset": true
-    }
-  },
-  {
-    "description": "htmlReplacement option safeMode=2",
-    "input": "<hr>",
-    "expectedOutput": "XXX",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 2,
-      "htmlReplacement": "XXX",
-      "reset": true
-    }
-  },
-  {
-    "description": "htmlReplacement option safeMode=2+8 same as safeMode=2",
-    "input": "<hr>",
-    "expectedOutput": "XXX",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 10,
-      "htmlReplacement": "XXX",
-      "reset": true
-    }
-  },
-  {
-    "description": "htmlRepacement and safeMode API Option elements",
-    "input": ".htmlReplacement = 'Foo'\n.safeMode='2'\n<span>Bar</span>",
-    "expectedOutput": "<p>FooBarFoo</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "safeMode once set cannot be unset by an API Option",
-    "input": ".htmlReplacement='Foo'\n<hr>\n\n.safeMode='2'\n<hr>\n\n.safeMode='0'\n<hr>",
-    "expectedOutput": "<hr>\nFoo\nFoo",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "single-line macro definition skipped in safe mode",
-    "input": "{x}='1'\n{x}",
-    "expectedOutput": "<p>{x}</p>",
-    "expectedCallback": "error: undefined macro: {x}: {x}",
-    "options": {
-      "safeMode": 1,
-      "reset": true
-    }
-  },
-  {
-    "description": "multi-line macro definition skipped in safe mode",
-    "input": "{x}='1\n2'\n{x}",
-    "expectedOutput": "<p>{x}</p>",
-    "expectedCallback": "error: undefined macro: {x}: {x}",
-    "options": {
-      "safeMode": 1,
-      "reset": true
-    }
-  },
-  {
-    "description": "single-line macro definition allowed if safeMode bit 0x8 is set",
-    "input": "{x}='1'\n{x}",
-    "expectedOutput": "<p>1</p>",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 9,
-      "reset": true
-    }
-  },
-  {
-    "description": "multi-line macro definition allowed if safeMode bit 0x8 is set",
-    "input": "{x}='1\n2'\n{x}",
-    "expectedOutput": "<p>1\n2</p>",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 8,
-      "reset": true
-    }
-  },
-  {
-    "description": "stand-alone macro invocation",
-    "input": "{v1}='1'\n\n{v1}",
-    "expectedOutput": "<p>1</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "escaped stand-alone macro invocation",
-    "input": "{v1}='1'\n\n\\{v1}",
-    "expectedOutput": "<p>{v1}</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "inclusion macro: empty document corner case",
-    "input": "{v?}=''\n{v!}",
-    "expectedOutput": "",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "escaped HTML block",
-    "input": "\\<img href=\"url\" alt=\"alt\">",
-    "expectedOutput": "<p>&lt;img href=\"url\" alt=\"alt\"&gt;</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "block and inline macro expansion",
-    "input": "{blockref}='BLOCKREF'\n{inlineref}='INLINEREF'\n{blockref}\n\nAn {inlineref}",
-    "expectedOutput": "<p>BLOCKREF</p>\n<p>An INLINEREF</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "macro invocation in list",
-    "input": "{v1}='1'\n{v2}='2'\n{v1} and {v2}\n\n- {v1}\n\n{v2}",
-    "expectedOutput": "<p>1 and 2</p>\n<ul><li>1</li></ul><p>2</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "multi-line macro values rendered inline",
-    "input": "{v1}='1\n2'\n{v2}='3\n4'\n{v1} and {v2}",
-    "expectedOutput": "<p>1\n2 and 3\n4</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "parametrized macros",
-    "input": "{v}='$1 and $2'\n{v|a|b*c*} {v|d|e\nfg}.",
-    "expectedOutput": "<p>a and b<em>c</em> d and e\nfg.</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "parametrized macros with escaped, blank and missing parameters",
-    "input": "{v}='This $1 and \\$2 and $3 and \\$$4 and $42'\n{v|} {v|1|2}",
-    "expectedOutput": "<p>This  and $2 and  and $$4 and  This 1 and $2 and  and $$4 and </p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "parametrized macro: default parameters",
-    "input": "{v}='Hello $1:cruel$ $2:World$!'\n{v} {v|} {v||Mars} {v|happy|Mercury}",
-    "expectedOutput": "<p>Hello $1:cruel$ $2:World$! Hello cruel World! Hello cruel Mars! Hello happy Mercury!</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "parametrized macro: default parameter value with escaped $ characters",
-    "input": "{v}='$1:\\$10.00$ total'\n{v|}, {v|$5.00}.",
-    "expectedOutput": "<p>$10.00 total, $5.00 total.</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "parametrized macro: escaped default value",
-    "input": "{v}='$1\\: $2'\n{v}, {v|}, {v|$5}.",
-    "expectedOutput": "<p>$1\\: $2, : $2, $5: $2.</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "parametrized macro: multi-line default value",
-    "input": "{v}='Zero, $1:\nThree\n\nFour$'\n{v|}, {v|One\nTwo}",
-    "expectedOutput": "<p>Zero, \nThree</p>\n<p>Four, Zero, One\nTwo</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "nested parametrized macros",
-    "input": "{v1}='$1 $2'\n{v2}='{v1|1|2} $1 $2'\n{v2|3|4} {v1|5|6}",
-    "expectedOutput": "<p>1 2 3 4 5 6</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "nested parametrized macros",
-    "input": "{v1}='$1 $2'\n{v2}='<div>{v1|1|2} $1 $2</div>'\n{v2|3|4}",
-    "expectedOutput": "<div>1 2 3 4</div>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "text format parametrized macros",
-    "input": "{mark}='<mark>$1</mark>'\n{sub}='<sub>$1</sub>'\n{mark|Note}: H{sub|2}O",
-    "expectedOutput": "<p><mark>Note</mark>: H<sub>2</sub>O</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "undefined parametrized arguments replaced by an empty string",
-    "input": "{v1}='$1 and $10 and $2'\n{v1|one}\n{v1|}",
-    "expectedOutput": "<p>one and  and \n and  and </p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "double and single dollar parametrized macro arguments in HTML block element",
-    "input": "{v}='<div>$$1 and $2</div>'\n{v|**a** b|c _d_}",
-    "expectedOutput": "<div><strong>a</strong> b and c _d_</div>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "Macro expansion inside double-dollar default macro parameter value",
-    "input": "{v1}='one'\n{v2}='<div>$$1:{v1} two$</div>'\n{v2|}",
-    "expectedOutput": "<div>one two</div>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "blank macro invoked with arguments",
-    "input": "{v?}=''\n{v|one|two}",
-    "expectedOutput": "",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "multi-line macro definition defined with macros disabled",
-    "input": "{v1}='foo\n'\n.-macros\n {v1}",
-    "expectedOutput": "<pre><code>{v1}</code></pre>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "multi-line HTML defined with macros disabled",
-    "input": ".-macros\n<div>{undefined}\n</div>",
-    "expectedOutput": "<div>{undefined}\n</div>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "macro substitution in block image",
-    "input": "{src}='tiger.png'\n{caption}='Tiger'\n<image:{src}|{caption}>",
-    "expectedOutput": "<img src=\"tiger.png\" alt=\"Tiger\">",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "escaped comments",
-    "input": "\\/*\nabc\n*/\n\n\\// xyz",
-    "expectedOutput": "<p>/*\nabc\n*/</p>\n<p>// xyz</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "single quotes are ok inside macros values",
-    "input": "{v}='This 'and' that'\n{v}",
-    "expectedOutput": "<p>This 'and' that</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": false
-    }
-  },
-  {
-    "description": "escaped macros are unescaped",
-    "input": "A \\{v}",
-    "expectedOutput": "<p>A {v}</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": false
-    }
-  },
-  {
-    "description": "macros are preserved across Rimu.render() invocations",
-    "input": "{v}",
-    "expectedOutput": "<p>This 'and' that</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": false
-    }
-  },
-  {
-    "description": "comment out block contents with inclusion macro",
-    "input": "{v}=''\nfoo\n{v!}1\nbar",
-    "expectedOutput": "<p>foo\nbar</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "comment out delimited block with inclusion macro",
-    "input": "{v}='yes'\n{v!}.+skip\nfoobar",
-    "expectedOutput": "",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "comment out delimited block if macro is blank",
-    "input": "{v}=''\n{v=}.+skip\nfoobar",
-    "expectedOutput": "",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "macros with blank lines",
-    "input": "{v1}='<div>\n\n'\n{v2}='\n\n</div>\n\n'\n{v1}\nfoo\n\n{v2}\nbar",
-    "expectedOutput": "<div>\n<p>foo</p>\n</div>\n<p>bar</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "exclusion macro: non-blank value and empty pattern: included",
-    "input": "{v}='xxx'\nfoo\n{v!}bar\nmacro",
-    "expectedOutput": "<p>foo\nbar\nmacro</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "exclusion macro: blank value and empty pattern: skipped",
-    "input": "{v}=''\nfoo\n{v!}bar\nmacro",
-    "expectedOutput": "<p>foo\nmacro</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "inclusion macro: blank value and empty pattern: included",
-    "input": "{v}=''\nfoo\n{v=}bar\nmacro",
-    "expectedOutput": "<p>foo\nbar\nmacro</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "inclusion macro: blank value and non-empty pattern: skipped",
-    "input": "{v}=''\nfoo\n{v=xxx}bar\nmacro",
-    "expectedOutput": "<p>foo\nmacro</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "inclusion macro: value matches pattern: included",
-    "input": "{v}='xyz'\nfoo\n{v=.*z}bar\nmacro",
-    "expectedOutput": "<p>foo\nbar\nmacro</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "inclusion macro: value matches pattern: included",
-    "input": "{v}='1234'\nfoo\n{v=\\d+}bar\nmacro",
-    "expectedOutput": "<p>foo\nbar\nmacro</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "exclusion macro: value matches pattern: skipped",
-    "input": "{v}='xyz'\nfoo\n{v!.*z}bar\nmacro",
-    "expectedOutput": "<p>foo\nmacro</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "inclusion macro: value does not match pattern: skipped",
-    "input": "{v}='xxyz'\nfoo\n{v=x.z}bar\nmacro",
-    "expectedOutput": "<p>foo\nmacro</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "exclusion macro: value does not match pattern: included",
-    "input": "{v}='xxyz'\nfoo\n{v!x.z}bar\nmacro",
-    "expectedOutput": "<p>foo\nbar\nmacro</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "inclusion macro: matched pattern with escaped } character",
-    "input": "{v}='xxyz'\nfoo\n{v=x{2,\\}yz}bar\nmacro",
-    "expectedOutput": "<p>foo\nbar\nmacro</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "macro expansion in Block Attributes",
-    "input": "{v}='[style=\"margin:0;\"]'\n.bar {v}\nfoobar",
-    "expectedOutput": "<p class=\"bar\" style=\"margin:0;\">foobar</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "accumulated Block Attributes",
-    "input": ".#x1\n.foo\n.bar\n.\"color:red;\"\n.[data-duration=\"5\"]\n.-macros\n.-spans\n_foobar_ {undefined}\n\n_foobar_",
-    "expectedOutput": "<p class=\"foo bar\" id=\"x1\" style=\"color:red;\" data-duration=\"5\">_foobar_ {undefined}</p>\n<p><em>foobar</em></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "macro expansion in html delimited block",
-    "input": "{v}='xxx'\n<div>\nfoo {v} bar</div>",
-    "expectedOutput": "<div>\nfoo xxx bar</div>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "exclusion macro: HTML line block",
-    "input": "{v}=''\n<div>{v!}</div>",
-    "expectedOutput": "",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "inclusion macro: HTML line block",
-    "input": "{v}=''\n<div>{v=xxx}</div>",
-    "expectedOutput": "",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "exclusion macro: in html line block",
-    "input": "{v}='xxx'\n<div>{v!}foobar</div>",
-    "expectedOutput": "<div>foobar</div>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "inclusion macro: in html line block",
-    "input": "{v}='xxx'\n<div>{v=..x}foobar</div>",
-    "expectedOutput": "<div>foobar</div>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "meta-macro (macro definition that generates macro definitions)",
-    "input": "{v}='{$1} = 'foobar''\n{v|v1}\n{v1}",
-    "expectedOutput": "<p>foobar</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "macro definition with backslash continuation and escaped continuation",
-    "input": "{v}='foo' \\\nfoo' \\\\\nbar'\n{v}",
-    "expectedOutput": "<p>foo'\nfoo'<br>\nbar</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "meta-macro with deferred evaluation",
-    "input": "{v}='foo'\n{v1}='\\{v} {v}'\n{v1}\n\n{v}='bar'\n{v1}",
-    "expectedOutput": "<p>foo foo</p>\n<p>bar foo</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "meta-macro with deferred parameter evaluation",
-    "input": "{v}='foo $1 \\$1'\n{v1}='{v|1}'\n{v1|2}",
-    "expectedOutput": "<p>foo 1 2</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "Macro Line block value is macro invocation: should not recurse infinitely",
-    "input": "{x}='\\{x}'\n{x}",
-    "expectedOutput": "<p>{x}</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "html class",
-    "input": ".error\nError message\n\nNormal paragraph",
-    "expectedOutput": "<p class=\"error\">Error message</p>\n<p>Normal paragraph</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "html class, id and attributes",
-    "input": ".large error   #x1 \"color: red;\"\nError message",
-    "expectedOutput": "<p class=\"large error\" id=\"x1\" style=\"color: red;\">Error message</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "html attributes skipped by safeMode=2",
-    "input": ".[style=\"color: red;\"]\nError message",
-    "expectedOutput": "<p>Error message</p>",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 2,
-      "reset": true
-    }
-  },
-  {
-    "description": "html attributes skipped by safeMode=1",
-    "input": ".large error   #x1 [style=\"color: red;\"]\nError message",
-    "expectedOutput": "<p class=\"large error\" id=\"x1\">Error message</p>",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 1,
-      "reset": true
-    }
-  },
-  {
-    "description": "all block attributes skipped by safeMode=5",
-    "input": ".error #x1 \"color:red\" [title=\"Error message\"] +skip\nError message",
-    "expectedOutput": "<p>Error message</p>",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 5,
-      "reset": true
-    }
-  },
-  {
-    "description": "deprecated <<anchor>> block anchor skipped by safeMode=5",
-    "input": "<<#x1>>",
-    "expectedOutput": "",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 5,
-      "reset": true
-    }
-  },
-  {
-    "description": "deprecated <<anchor>> block anchor",
-    "input": "<<#x1>>",
-    "expectedOutput": "<div id=\"x1\"></div>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "deprecated <<anchor>> inline anchor skipped by safeMode=7",
-    "input": "Inline <<#x1>>",
-    "expectedOutput": "<p>Inline </p>",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 7,
-      "reset": true
-    }
-  },
-  {
-    "description": "header attributes",
-    "input": ".#preface\n== Preface",
-    "expectedOutput": "<h2 id=\"preface\">Preface</h2>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "block image html attributes",
-    "input": ".polaroid [width=\"800\"]\n<image:tiger.png>",
-    "expectedOutput": "<img class=\"polaroid\" width=\"800\" src=\"tiger.png\" alt=\"tiger.png\">",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list html attributes",
-    "input": ".dl-horizontal\nterm:: definition\nterm::: definition",
-    "expectedOutput": "<dl class=\"dl-horizontal\"><dt>term</dt><dd>definition<dl><dt>term</dt><dd>definition</dd></dl></dd></dl>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list item with Division block containing Division block with html attributes",
-    "input": ".class1\n- Item\n..\n.class2\n...\nDivision\n...\n..\nParagraph",
-    "expectedOutput": "<ul class=\"class1\"><li>Item<div class=\"class2\"><p>Division</p></div>\n</li></ul><p>Paragraph</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "html attributes assigned to macro",
-    "input": "{info}= '.info #ref2 [style=\"color:green\"]'\n{info}\ngreeny\n\nnormal\n\n{2paragraphs} ='paragraph 1\n\nparagraph2'\n{2paragraphs}",
-    "expectedOutput": "<p class=\"info\" id=\"ref2\" style=\"color:green\">greeny</p>\n<p>normal</p>\n<p>paragraph 1</p>\n<p>paragraph2</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "inject Block Attributes into Block HTML element",
-    "input": ".\"color:red\"\n<div>foobar</div>",
-    "expectedOutput": "<div style=\"color:red\">foobar</div>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "enable macro expansion in Indented paragraph",
-    "input": "{v}='xxx'\n.+macros\n {v}\n\n {v}",
-    "expectedOutput": "<pre><code>xxx</code></pre>\n<pre><code>{v}</code></pre>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "disable macro expansion in normal paragraph",
-    "input": "{v}=''\n.-macros\nThis is `{v}`\n\nThis is `{v}`",
-    "expectedOutput": "<p>This is <code>{v}</code></p>\n<p>This is ``</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "enable macro expansion in Code Block",
-    "input": "{v}='V'\n.+macros\n``\n\\{v} = '{v}'\n``\n``\n\\{v} = '{v}'\n``",
-    "expectedOutput": "<pre><code>{v} = 'V'</code></pre>\n<pre><code>\\{v} = '{v}'</code></pre>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "escaped macro invocations in macro values",
-    "input": "{v}='\\{--!}foo\nbar'\n.+macros\n``\n{v}\n``",
-    "expectedOutput": "<pre><code>{--!}foo\nbar</code></pre>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "disable macro expansion in HTML Block",
-    "input": "{v}=''\n.-macros\n<div>{v}</div>\n\n<div>{v}</div>",
-    "expectedOutput": "<div>{v}</div>\n<div></div>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "class attribute and block option",
-    "input": ".class1 -macros\nA {macro}",
-    "expectedOutput": "<p class=\"class1\">A {macro}</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "id attribute and block option",
-    "input": ".#id1 -spans\nA _test_",
-    "expectedOutput": "<p id=\"id1\">A _test_</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "multiple block options",
-    "input": ".-spans -macros +specials\n_A {macro}_",
-    "expectedOutput": "<p>_A {macro}_</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "-container expansion option",
-    "input": ".-container\n..\nfoo\n..",
-    "expectedOutput": "foo",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "+container option",
-    "input": ".+container\n``\nFoo\n``",
-    "expectedOutput": "<pre><code><p>Foo</p></code></pre>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "disable specials (both spans and specials must off)",
-    "input": ".-spans -specials\n&foo",
-    "expectedOutput": "<p>&foo</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "-spans expansion option",
-    "input": ".-spans\n_&foo_",
-    "expectedOutput": "<p>_&amp;foo_</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "+skip expansion option",
-    "input": ".+skip\nfoo\nbar",
-    "expectedOutput": "",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "new double quote definition",
-    "input": "== = '<strong>|</strong>'\n==Testing== **123**",
-    "expectedOutput": "<p><strong>Testing</strong> <strong>123</strong></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "escaped double quote",
-    "input": "\\==Testing== 123",
-    "expectedOutput": "<p>==Testing== 123</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": false
-    }
-  },
-  {
-    "description": "new single quote definition",
-    "input": "= = '<del>|</del>'\n=Testing *123*=",
-    "expectedOutput": "<p><del>Testing <em>123</em></del></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": false
-    }
-  },
-  {
-    "description": "escaped single quote",
-    "input": "\\=Testing= 123",
-    "expectedOutput": "<p>=Testing= 123</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": false
-    }
-  },
-  {
-    "description": "single and double-quotes",
-    "input": "=Testing= ==123== =Test=",
-    "expectedOutput": "<p><del>Testing</del> <strong>123</strong> <del>Test</del></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": false
-    }
-  },
-  {
-    "description": "new asymmetric double quote definition",
-    "input": "_* = '<em><strong>|</strong></em>'\n_*Testing_* **123**",
-    "expectedOutput": "<p><em><strong>Testing</strong></em> <strong>123</strong></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "escaped asymmetric double quote",
-    "input": "\\_*Testing_* 123",
-    "expectedOutput": "<p>_*Testing_* 123</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": false
-    }
-  },
-  {
-    "description": "quote definition skipped in safe mode",
-    "input": "#='<ins>|</ins>'\n#skipped#",
-    "expectedOutput": "<p>#skipped#</p>",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 1,
-      "reset": true
-    }
-  },
-  {
-    "description": "existing quotes work in safe mode",
-    "input": "*Testing* 123",
-    "expectedOutput": "<p><em>Testing</em> 123</p>",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 1,
-      "reset": true
-    }
-  },
-  {
-    "description": "second quote definition",
-    "input": "#='<ins>|</ins>'\n#Quote 2#",
-    "expectedOutput": "<p><ins>Quote 2</ins></p>",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 0,
-      "reset": true
-    }
-  },
-  {
-    "description": "update quote with no spans",
-    "input": "=='<code>||</code>'\n=Testing #123#=",
-    "expectedOutput": "<p><code>Testing #123#</code></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "modify built-in quote",
-    "input": "_='<em>|</em>'\n**Testing** _123_",
-    "expectedOutput": "<p><strong>Testing</strong> <em>123</em></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "new replacement",
-    "input": "/\\\\?\\.{3}/='&hellip;'\nTesting... ...123",
-    "expectedOutput": "<p>Testing&hellip; &hellip;123</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "escaped replacement",
-    "input": "Testing\\...",
-    "expectedOutput": "<p>Testing...</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": false
-    }
-  },
-  {
-    "description": "replacements in code quote",
-    "input": "`Testing..., testing...`",
-    "expectedOutput": "<p><code>Testing..., testing...</code></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": false
-    }
-  },
-  {
-    "description": "replacement definition skipped in safe mode",
-    "input": "/skipped/='SKIPPED'\nskipped",
-    "expectedOutput": "<p>skipped</p>",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 1,
-      "reset": false
-    }
-  },
-  {
-    "description": "existing replacements work in safe mode",
-    "input": "Testing...",
-    "expectedOutput": "<p>Testing&hellip;</p>",
-    "expectedCallback": "",
-    "options": {
-      "safeMode": 1,
-      "reset": false
-    }
-  },
-  {
-    "description": "custom replacment is processed after built-in replacements (has lower precedence)",
-    "input": "[\\...](#link) [...](#link) [`...`](#link)",
-    "expectedOutput": "<p><a href=\"#link\">...</a> <a href=\"#link\">&hellip;</a> <a href=\"#link\"><code>...</code></a></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": false
-    }
-  },
-  {
-    "description": "redefine existing replacement",
-    "input": "/\\\\?\\.{3}/i='!!!'\nTesting...",
-    "expectedOutput": "<p>Testing!!!</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "replacement with match groups",
-    "input": "/\\\\?\\B'\\b(.+?)\\b'\\B/g = '<em>$1</em>'\n'emphasized'",
-    "expectedOutput": "<p><em>emphasized</em></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "Inline comments replacement.",
-    "input": "/(^|\\n)\\\\?\\/\\/.*(?=\\n|$)/g = '$1'\nA paragraph\n//Comment\n//Comment\nwith inline comments.",
-    "expectedOutput": "<p>A paragraph\n\n\nwith inline comments.</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "update HTML tags, test class injection and macro expansion",
-    "input": "{ipsum}='normal'\n|paragraph| = '<p class=\"{ipsum}\">|</p>'\nfoobar\n\n.test1 test2\nfoobar",
-    "expectedOutput": "<p class=\"normal\">foobar</p>\n<p class=\"test1 test2 normal\">foobar</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "paragraph expansion options",
-    "input": "{ipsum}=''\n|paragraph| = '<p>|</p>'\n_Lorum_ & {ipsum}.\n\n|paragraph| = '-macros'\n\n_Lorum_ & {ipsum}.\n\n|paragraph| = '<p class=\"normal\">|</p> -spans +macros'\n\n_Lorum_ & {ipsum}.",
-    "expectedOutput": "<p><em>Lorum</em> &amp; .</p>\n<p><em>Lorum</em> &amp; {ipsum}.</p>\n<p class=\"normal\">_Lorum_ &amp; .</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "reset reenables paragraph spans expansions disabled in previous test",
-    "input": "**Hello**",
-    "expectedOutput": "<p><strong>Hello</strong></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "division block with attribute",
-    "input": "|division| = '<div class=\"noclass\">|</div>'\n..\nfoobar\n..",
-    "expectedOutput": "<div class=\"noclass\"><p>foobar</p></div>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "division block pass-through",
-    "input": ".-macros -spans -specials -container\n..\n\n<script> \n\n& _{macro}_<br>\n\n\n..",
-    "expectedOutput": "\n<script> \n\n& _{macro}_<br>\n\n",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "callback api: undefined macro",
-    "input": "{undefined}",
-    "expectedOutput": "<p>{undefined}</p>",
-    "expectedCallback": "error: undefined macro: {undefined}: {undefined}",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "callback api: undefined inclusion macro",
-    "input": "{undefined=}",
-    "expectedOutput": "<p>{undefined=}</p>",
-    "expectedCallback": "error: undefined macro: {undefined=}: {undefined=}",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "callback api: unterminated delimited block",
-    "input": "..\nLorum ipsum",
-    "expectedOutput": "",
-    "expectedCallback": "error: unterminated delimited block: ..",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "callback api: -specials block option not valid in safeMode",
-    "input": ".safeMode = '1'\n.-specials \nOpps!",
-    "expectedOutput": "<p>Opps!</p>",
-    "expectedCallback": "error: -specials block option not valid in safeMode",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "callback api: illegal delimited block name",
-    "input": "|foobar| = '<p>|</p>'",
-    "expectedOutput": "",
-    "expectedCallback": "error: illegal delimited block name: foobar: |foobar|='<p>|</p>'",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "callback api: illegal block option",
-    "input": ".-zacros",
-    "expectedOutput": "",
-    "expectedCallback": "error: illegal block option: -zacros",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "callback api: illegal API option",
-    "input": ".zafeMode='2'",
-    "expectedOutput": "",
-    "expectedCallback": "error: illegal API option: zafeMode: .zafeMode='2'",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "callback api: existential macro invocations are deprecated",
-    "input": "{undefined?foobar}",
-    "expectedOutput": "<p>{undefined?foobar}</p>",
-    "expectedCallback": "error: existential macro invocations are deprecated: {undefined?foobar}",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "header id synthesis",
-    "input": "{--header-ids}='true'\n# Title\n# ???\n# \\{--x--y}-z-\n.#foo\nFoobar\n\n## Foo\n## Foo\n.#barbell\n### Bar\n{--header-ids}=''\n# Title",
-    "expectedOutput": "<h1 id=\"title\">Title</h1>\n<h1 id=\"x\">???</h1>\n<h1 id=\"x-y-z\">{--x--y}-z-</h1>\n<p id=\"foo\">Foobar</p>\n<h2 id=\"foo-2\">Foo</h2>\n<h2 id=\"foo-3\">Foo</h2>\n<h3 id=\"barbell\">Bar</h3>\n<h1>Title</h1>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "illegal macro pattern",
-    "input": "{m}='42'\n{m=[}",
-    "expectedOutput": "<p>{m=[}</p>",
-    "expectedCallback": "error: illegal macro regular expression: [: {m=[}",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "blank '--' macro cannot be redefined",
-    "input": "{--} = '42'",
-    "expectedOutput": "",
-    "expectedCallback": "error: the predefined blank '--' macro cannot be redefined",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "accumulate block attribute CSS properties",
-    "input": ".\"margin-bottom:1.5em\"\n.\"font-weight:bold;\"\nfoobar",
-    "expectedOutput": "<p style=\"margin-bottom:1.5em; font-weight:bold;\">foobar</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "accumulate block attribute classes",
-    "input": ".class1\n.class2 class3\nfoobar",
-    "expectedOutput": "<p class=\"class1 class2 class3\">foobar</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "inject block attribute classes and CSS properties into HTML element",
-    "input": ".class2 \"background:blue;\"\n<p class=\"class1\" style=\"color:red\">foobar</p>",
-    "expectedOutput": "<p class=\"class2 class1\" style=\"color:red; background:blue;\">foobar</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "duplicate attribute 'id' in tag",
-    "input": ".#id1\n<p id=\"ID1\">foobar</p>",
-    "expectedOutput": "<p id=\"ID1\">foobar</p>",
-    "expectedCallback": "error: duplicate 'id' attribute: id1",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "duplicate attribute 'id' in block attributes",
-    "input": ".#id1\nfoo\n\n.#ID1\n<p>bar</p>",
-    "expectedOutput": "<p id=\"id1\">foo</p>\n<p id=\"id1\">bar</p>",
-    "expectedCallback": "error: duplicate 'id' attribute: id1",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "line block macro expression value definition",
-    "input": "{foo} = `(parseInt(40) + parseInt(2)) + 'px'`\n{foo}",
-    "expectedOutput": "<p>42px</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    },
-    "unsupported": "rimu-kt"
-  },
-  {
-    "description": "multi-line macro expression value definition",
-    "input": "{foo} = `(parseInt(40) + parseInt(2)) \n+ 'px'`\n{foo}",
-    "expectedOutput": "<p>42px</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    },
-    "unsupported": "rimu-kt"
-  },
-  {
-    "description": "delimited block macro expression line continuation",
-    "input": "{foo} = `(parseInt(40) + parseInt(2)) + ` \\\npx``\n{foo}",
-    "expectedOutput": "<p>42\npx</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    },
-    "unsupported": "rimu-kt"
-  },
-  {
-    "description": "delimited block macro expression escaped line continuation",
-    "input": "{foo} = `(parseInt(40) + parseInt(2)) + ` \\\\\npx``\n{foo}",
-    "expectedOutput": "<p>42 px</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    },
-    "unsupported": "rimu-kt"
-  },
-  {
-    "description": "illegal macro expression",
-    "input": "{foo} = `1 + x`",
-    "expectedOutput": "",
-    "expectedCallback": "error: illegal macro expression: x is not defined: 1 + x",
-    "options": {
-      "reset": true
-    },
-    "unsupported": "rimu-kt"
-  },
-  {
-    "description": "escape closing brace in macro 'pattern' parameter",
-    "input": "{foo} = 'xx'\n{foo=x{2\\}}foo",
-    "expectedOutput": "<p>foo</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "Simple macros are only expanded once",
-    "input": ".-macros\n{m1}='{m2}='$1'\\\n{m3}='{m2|foo}'\\\n'\n{m1}\n{m3}",
-    "expectedOutput": "<p>foo</p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "Line Macro does not emit duplicate undefined macro error",
-    "input": "{x} and {y}",
-    "expectedOutput": "<p>{x} and {y}</p>",
-    "expectedCallback": "error: undefined macro: {x}: {x} and {y}\nerror: undefined macro: {y}: {x} and {y}",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "Block Attributes on Fenced Block attached to list item",
-    "input": "- Item one.\n.#id\n..\nFoobar.\n..",
-    "expectedOutput": "<ul><li>Item one.<div id=\"id\"><p>Foobar.</p></div></li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "Block Attributes on Quote Paragraph attached to list item",
-    "input": "- Item one.\n.#id\n\n> Foobar.",
-    "expectedOutput": "<ul><li>Item one.<blockquote id=\"id\"><p> Foobar.</p></blockquote></li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "Multiple Block Attributes on Fenced Block attached to list item",
-    "input": "- Item one.\n.class\n.#id\n..\nFoobar.\n..",
-    "expectedOutput": "<ul><li>Item one.<div class=\"class\" id=\"id\"><p>Foobar.</p></div></li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "Block Attributes can appear anywhere in list item",
-    "input": "- Item\n.#id\none.\n..\nFoobar.\n..",
-    "expectedOutput": "<ul><li>Item\none.<div id=\"id\"><p>Foobar.</p></div></li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "Escaped Block Attributes on Fenced Block attached to list item",
-    "input": "- Item one.\n\\.#id\n\"\"\nFoobar.\n\"\"",
-    "expectedOutput": "<ul><li>Item one.\n.#id<blockquote><p>Foobar.</p></blockquote></li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "Block Attributes applied to bullet list items",
-    "input": "- Item one.\n.#id1\n- Item two.\n\n.#id2\n- Item three.",
-    "expectedOutput": "<ul><li>Item one.</li><li id=\"id1\">Item two.</li><li id=\"id2\">Item three.</li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "Block Attributes applied labelled list terms",
-    "input": ".#id1\nOne:: Item one.\n\n.#id2\n.class\nTwo:: Item two.",
-    "expectedOutput": "<dl id=\"id1\"><dt>One</dt><dd>Item one.</dd><dt class=\"class\" id=\"id2\">Two</dt><dd>Item two.</dd></dl>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list item with escaped attached Division Block",
-    "input": "- Item 1\n\\..\nA\nparagraph\n\\..\n- Item 2",
-    "expectedOutput": "<ul><li>Item 1\n..\nA\nparagraph\n..</li><li>Item 2</li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list item with escaped attached Quote Block",
-    "input": "- Item 1\n\\\"\"\n- Item 2",
-    "expectedOutput": "<ul><li>Item 1\n\"\"</li><li>Item 2</li></ul>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list item with escaped Block Attributes preceding attached Division Block",
-    "input": ". One\n\\.id2\n..\nFoo\n..\n. Two",
-    "expectedOutput": "<ol><li>One\n.id2<p>Foo</p>\n</li><li>Two</li></ol>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list item with attached Quote paragraph followed by another Quote paragraph",
-    "input": "- Item 1\n\n> Quote 1\n\n> Quote 2",
-    "expectedOutput": "<ul><li>Item 1<blockquote><p> Quote 1</p></blockquote>\n</li></ul><blockquote><p> Quote 2</p></blockquote>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "list item with attached Quote block followed by another Quote block",
-    "input": "- Item 1\n\"\"\nQuote 1\n\"\"\n\"\"\nQuote 2\n\"\"",
-    "expectedOutput": "<ul><li>Item 1<blockquote><p>Quote 1</p></blockquote>\n</li></ul><blockquote><p>Quote 2</p></blockquote>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  }
-]
+	{
+	  "description": "text without markup",
+	  "input": "no markup",
+	  "expectedOutput": "<p>no markup</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "escape quote",
+	  "input": "\\*11*",
+	  "expectedOutput": "<p>*11*</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "emphasis and strong quotes",
+	  "input": "*11* 22 _33_ **44**",
+	  "expectedOutput": "<p><em>11</em> 22 <em>33</em> <strong>44</strong></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "quotes span words",
+	  "input": "*1 1*",
+	  "expectedOutput": "<p><em>1 1</em></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "quotes span lines",
+	  "input": "*1\n1*",
+	  "expectedOutput": "<p><em>1\n1</em></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "escape quotes",
+	  "input": "\\*11* *22* \\_33_ \\**44**",
+	  "expectedOutput": "<p>*11* <em>22</em> _33_ **44**</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "code quotes ending with backslashes",
+	  "input": "`foo bar\\` `foo bar\\\\` `foo bar\\\\\\`",
+	  "expectedOutput": "<p><code>foo bar\\</code> <code>foo bar\\\\</code> <code>foo bar\\\\\\</code></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "code quotes with backslashes",
+	  "input": "`\\a\\b\\ c\\d \\e\\`",
+	  "expectedOutput": "<p><code>\\a\\b\\ c\\d \\e\\</code></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "underscores in words",
+	  "input": "a_b_c _d_e_f_ _g*h_i*j_",
+	  "expectedOutput": "<p>a_b_c <em>d_e_f</em> <em>g<em>h_i</em>j</em></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "code quotes",
+	  "input": "`<http://example.com> \\``",
+	  "expectedOutput": "<p><code>&lt;http://example.com&gt; \\`</code></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "replacements and quotes nested inside escaped quotes",
+	  "input": "00 \\*11 http://example.com _22_*",
+	  "expectedOutput": "<p>00 *11 <a href=\"http://example.com\">http://example.com</a> <em>22</em>*</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "escape right-hand quote to resolve ambiguity",
+	  "input": "\\*11 _22_\\**33**44**",
+	  "expectedOutput": "<p>*11 <em>22</em>**33<strong>44</strong></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "nested quotes",
+	  "input": "00 _ `_11_` _2**2**_ _2\\**2**_",
+	  "expectedOutput": "<p>00 _ <code>_11_</code> <em>2<strong>2</strong></em> <em>2**2**</em></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "nested quotes",
+	  "input": "_**abc `efg`** h<sup>i</sup>_ j",
+	  "expectedOutput": "<p><em><strong>abc <code>efg</code></strong> h<sup>i</sup></em> j</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "nested and escaped quotes",
+	  "input": "__xyz\\_ abc\\__ \\__xyz *abc*_\\_",
+	  "expectedOutput": "<p><em>_xyz_ abc_</em> _<em>xyz <em>abc</em></em>_</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "strike-through quotes",
+	  "input": "Some ~~rubbish~~.",
+	  "expectedOutput": "<p>Some <del>rubbish</del>.</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "double underlined quotes",
+	  "input": "Some __strong text__.",
+	  "expectedOutput": "<p>Some <strong>strong text</strong>.</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "adjacent nested single and double quotes",
+	  "input": "***single and double quotes***",
+	  "expectedOutput": "<p><strong><em>single and double quotes</em></strong></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "nested double and single code quotes",
+	  "input": "```nested double `and` single code quotes```",
+	  "expectedOutput": "<p><code>`nested double `and` single code quotes`</code></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "two HTML attributes do not generate delete quote",
+	  "input": "<a class=\"btn\">abc</a> <a class=\"btn\">xyz</a>",
+	  "expectedOutput": "<p><a class=\"btn\">abc</a> <a class=\"btn\">xyz</a></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "urls",
+	  "input": "http://example.com <http://example.com> [example\\nurl](http://example.com) [](http://example.com)",
+	  "expectedOutput": "<p><a href=\"http://example.com\">http://example.com</a> <a href=\"http://example.com\">http://example.com</a> <a href=\"http://example.com\">example\\nurl</a> <a href=\"http://example.com\"></a></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "url with empty caption",
+	  "input": "<http://example.com|>",
+	  "expectedOutput": "<p><a href=\"http://example.com\"></a></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "url with < and > in caption",
+	  "input": "<#header|<Header&gt;>",
+	  "expectedOutput": "<p><a href=\"#header\">&lt;Header&gt;</a></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "HTML url with spaces",
+	  "input": "<a href=\"http://an example.com\">foo</a>",
+	  "expectedOutput": "<p><a href=\"http://an example.com\">foo</a></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "quotes expanded in url and mail address captions",
+	  "input": "[*foo* &mdash; bar](http://_foobar_) <http://_foobar_|*foo* &mdash; bar> <joe@example.com|**Joe &mdash; Bloggs**>",
+	  "expectedOutput": "<p><a href=\"http://_foobar_\"><em>foo</em> &mdash; bar</a> <a href=\"http://_foobar_\"><em>foo</em> &mdash; bar</a> <a href=\"mailto:joe@example.com\"><strong>Joe &mdash; Bloggs</strong></a></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Markdown style url with encoded spaces",
+	  "input": "[with spaces](http://url%20with%20spaces.com)",
+	  "expectedOutput": "<p><a href=\"http://url%20with%20spaces.com\">with spaces</a></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Markdown style url with [ in caption",
+	  "input": "[the &#x5b;Main] section](#main)",
+	  "expectedOutput": "<p><a href=\"#main\">the &#x5b;Main] section</a></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Markdown style url does not allow [ in caption]",
+	  "input": "[the [Main] section](#main)",
+	  "expectedOutput": "<p>[the <a href=\"#main\">Main] section</a></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "URLs url with underscores",
+	  "input": "[with underscores](_example_), <_example_|with underscores>",
+	  "expectedOutput": "<p><a href=\"_example_\">with underscores</a>, <a href=\"_example_\">with underscores</a></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "escaped http urls",
+	  "input": "\\http://example.com \\<http://example.com> \\[example url](http://example.com)",
+	  "expectedOutput": "<p>http://example.com &lt;http://example.com&gt; [example url](http://example.com)</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "quoted and parametrized http urls",
+	  "input": "_http://example.com_ **<http://example.com>** <http://example.com|Foo\n& Bar>",
+	  "expectedOutput": "<p><em><a href=\"http://example.com\">http://example.com</a></em> <strong><a href=\"http://example.com\">http://example.com</a></strong> <a href=\"http://example.com\">Foo\n&amp; Bar</a></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "ftp url",
+	  "input": "<ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt>",
+	  "expectedOutput": "<p><a href=\"ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt\">ftp://ftp.funet.fi/pub/standards/RFC/rfc959.txt</a></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "file urls",
+	  "input": "<file:///home/joe/downloads/> <file:///home/joe/doc/user-guide.pdf|User Guide> \\<file:///home/joe/downloads/>",
+	  "expectedOutput": "<p><a href=\"file:///home/joe/downloads/\">file:///home/joe/downloads/</a> <a href=\"file:///home/joe/doc/user-guide.pdf\">User Guide</a> &lt;file:///home/joe/downloads/&gt;</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "character entities",
+	  "input": "&copy; &reg;\\&para;",
+	  "expectedOutput": "<p>&copy; &reg;&amp;para;</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "line breaks",
+	  "input": "Lorum \\\nipsum \\\\\n`lorum \\\nipsum`\nnostra \\\\\nvestibulum \\",
+	  "expectedOutput": "<p>Lorum<br>\nipsum \\\n<code>lorum \\\nipsum</code>\nnostra \\\nvestibulum<br></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "inline links",
+	  "input": "<#x1|lorum link> \\<#x1|lorum link>",
+	  "expectedOutput": "<p><a href=\"#x1\">lorum link</a> &lt;#x1|lorum link&gt;</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+		"unsupported":"go",
+	  "description": "inline anchors and links",
+	  "input": "Lorum <<#x1>>ipsum <#x1|lorum link> \\<<#x1>>",
+	  "expectedOutput": "<p>Lorum <span id=\"x1\"></span>ipsum <a href=\"#x1\">lorum link</a> &lt;&lt;#x1&gt;&gt;</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "inline images",
+	  "input": "<image:./images/tiger.png> <image:http://example.com/tiger.png|Tiger\n& Bar> ![Tiger paws](./images/tiger.png) ![Tiger paws](http://example.com/tiger.png) \\<image:tiger.png> \\![Tiger paws](./images/tiger.png)",
+	  "expectedOutput": "<p><img src=\"./images/tiger.png\" alt=\"./images/tiger.png\"> <img src=\"http://example.com/tiger.png\" alt=\"Tiger\n&amp; Bar\"> <img src=\"./images/tiger.png\" alt=\"Tiger paws\"> <img src=\"http://example.com/tiger.png\" alt=\"Tiger paws\"> &lt;image:tiger.png&gt; ![Tiger paws](./images/tiger.png)</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "image with empty alt",
+	  "input": "<image:./images/tiger.png|>",
+	  "expectedOutput": "<p><img src=\"./images/tiger.png\" alt=\"\"></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "email addresses",
+	  "input": "<joe.bloggs@example.com> <joe.bloggs@example.com|Joe\n Bloggs> \\<joe.bloggs@example.com>",
+	  "expectedOutput": "<p><a href=\"mailto:joe.bloggs@example.com\">joe.bloggs@example.com</a> <a href=\"mailto:joe.bloggs@example.com\">Joe\n Bloggs</a> &lt;joe.bloggs@example.com&gt;</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "HTML tags",
+	  "input": "<u>underlined *text*</u>\\<hr>",
+	  "expectedOutput": "<p><u>underlined <em>text</em></u>&lt;hr&gt;</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "HTML tags across line boundary",
+	  "input": "<span style=\"font-size:\n2em\">inline elements</span>",
+	  "expectedOutput": "<p><span style=\"font-size:\n2em\">inline elements</span></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "HTML element enveloping image",
+	  "input": "<a href='http://example.com'><image:tiger.png></a>",
+	  "expectedOutput": "<p><a href='http://example.com'><img src=\"tiger.png\" alt=\"tiger.png\"></a></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "relative url",
+	  "input": "<chapter1.html>",
+	  "expectedOutput": "<p><a href=\"chapter1.html\">chapter1.html</a></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "parametrized relative url",
+	  "input": "<./chapter1.html#x1|Foo bar>",
+	  "expectedOutput": "<p><a href=\"./chapter1.html#x1\">Foo bar</a></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "macro definition",
+	  "input": "{macro} = 'macro value'",
+	  "expectedOutput": "",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "macro value",
+	  "input": "{macro}",
+	  "expectedOutput": "<p>macro value</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": false
+	  }
+	},
+	{
+	  "description": "macro value",
+	  "input": "{macro} = 'macro value2'\n{macro}",
+	  "expectedOutput": "<p>macro value2</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": false
+	  }
+	},
+	{
+	  "description": "escaped macro definitions and invocations",
+	  "input": "&ZeroWidthSpace;\\{macro}='value'\n{macro} \\{macro}",
+	  "expectedOutput": "<p>&ZeroWidthSpace;{macro}='value'\nmacro value2 {macro}</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": false
+	  }
+	},
+	{
+	  "description": "nested macro value",
+	  "input": "{macro2} = 'nested macro: {macro}'\n{macro2}",
+	  "expectedOutput": "<p>nested macro: macro value2</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": false
+	  }
+	},
+	{
+	  "description": "existential macro definitions",
+	  "input": "{macro1} = 'XXX'\n{macro1}\n\n{macro1?}='YYY'\n{macro2?} = 'ZZZ'\n{macro1} {macro2}",
+	  "expectedOutput": "<p>XXX</p>\n<p>XXX ZZZ</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "multi-line existential macro definitions",
+	  "input": "{macro1} = 'XXX\nXXX'\n{macro1}\n\n{macro1?}='YYY\nYYY'\n{macro2?} = 'ZZZ\nZZZ'\n{macro1} {macro2}",
+	  "expectedOutput": "<p>XXX\nXXX</p>\n<p>XXX\nXXX ZZZ\nZZZ</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "macro invocation in image url",
+	  "input": "{tiger} = './images/tiger.png'\n<image:{tiger}>",
+	  "expectedOutput": "<img src=\"./images/tiger.png\" alt=\"./images/tiger.png\">",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "header",
+	  "input": "# Hello World!",
+	  "expectedOutput": "<h1>Hello World!</h1>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "header",
+	  "input": "## *Hello* World! ##",
+	  "expectedOutput": "<h2><em>Hello</em> World!</h2>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "header title containing quotes and email address",
+	  "input": "=== *Hello* <joe@foo.com|Joe & Jim> ===",
+	  "expectedOutput": "<h3><em>Hello</em> <a href=\"mailto:joe@foo.com\">Joe &amp; Jim</a></h3>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "comment line",
+	  "input": "// A comment.",
+	  "expectedOutput": "",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "block image",
+	  "input": "<image:./images/tiger.png>",
+	  "expectedOutput": "<img src=\"./images/tiger.png\" alt=\"./images/tiger.png\">",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "block image with caption",
+	  "input": "<image:http://example.com|Tiger & Bar>",
+	  "expectedOutput": "<img src=\"http://example.com\" alt=\"Tiger &amp; Bar\">",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "multi-line macro value",
+	  "input": "{macro} = 'macro\n value'\n{macro}",
+	  "expectedOutput": "<p>macro\n value</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "redefine macro",
+	  "input": "{macro} = 'macro\n value2'\n{macro}",
+	  "expectedOutput": "<p>macro\n value2</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "division block",
+	  "input": "..\nTo be...\n\nor not to be!\n..",
+	  "expectedOutput": "<p>To be...</p>\n<p>or not to be!</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "quote block",
+	  "input": "\"\"\nTo be...\n\nor not to be!\n\"\"",
+	  "expectedOutput": "<blockquote><p>To be...</p>\n<p>or not to be!</p></blockquote>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "inline HTML tag is not a block",
+	  "input": "<em>HTML</em>",
+	  "expectedOutput": "<p><em>HTML</em></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "html block",
+	  "input": "<p>Raw <em>HTML</em>\nis *passed* through</p>",
+	  "expectedOutput": "<p>Raw <em>HTML</em>\nis *passed* through</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "escaped html block",
+	  "input": "\\<p>escaped\\</p>",
+	  "expectedOutput": "<p>&lt;p&gt;escaped&lt;/p&gt;</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "html comment",
+	  "input": "<!-- An HTML comment -->",
+	  "expectedOutput": "<!-- An HTML comment -->",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "indented paragraph",
+	  "input": "  *Indented* paragraph\nLine 2\n \n    Line 3",
+	  "expectedOutput": "<pre><code>*Indented* paragraph\nLine 2\n\n  Line 3</code></pre>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "comment block",
+	  "input": "/*\nComment lines\n More comments.\n*/",
+	  "expectedOutput": "",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "code block (deprecated syntax)",
+	  "input": "--\nA <code> block\n Line _two_\n--",
+	  "expectedOutput": "<pre><code>A &lt;code&gt; block\n Line _two_</code></pre>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "class names are not valid in deprecated code block syntax",
+	  "input": "-- Anonymous\nLine one\n--",
+	  "expectedOutput": "<p>-- Anonymous\nLine one\n--</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "code block",
+	  "input": "``\nA <code> block\n Line _two_\n``",
+	  "expectedOutput": "<pre><code>A &lt;code&gt; block\n Line _two_</code></pre>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "quote paragraph",
+	  "input": ">*Hello* <joe@foo.com|Joe & Jim>",
+	  "expectedOutput": "<blockquote><p><em>Hello</em> <a href=\"mailto:joe@foo.com\">Joe &amp; Jim</a></p></blockquote>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "multi-line quote paragraph",
+	  "input": ">*Hello*\n> <joe@foo.com|Joe & Jim>",
+	  "expectedOutput": "<blockquote><p><em>Hello</em>\n <a href=\"mailto:joe@foo.com\">Joe &amp; Jim</a></p></blockquote>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "normal paragraph",
+	  "input": "*Hello* <joe@foo.com|Joe & Jim>",
+	  "expectedOutput": "<p><em>Hello</em> <a href=\"mailto:joe@foo.com\">Joe &amp; Jim</a></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "multi-line quote paragraph",
+	  "input": "> Line 1\nLine 2",
+	  "expectedOutput": "<blockquote><p> Line 1\nLine 2</p></blockquote>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "multi-line normal paragraph",
+	  "input": "Line 1\nLine 2",
+	  "expectedOutput": "<p>Line 1\nLine 2</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "do not mistake url for HTML block",
+	  "input": "<joe@foo.com|Joe & Jim>",
+	  "expectedOutput": "<p><a href=\"mailto:joe@foo.com\">Joe &amp; Jim</a></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "nested Division blocks",
+	  "input": ".noclass\n..\nTo be...\n\n...\nTo be...\n\nor not to be!\n...\n\nor not to be!\n..",
+	  "expectedOutput": "<div class=\"noclass\"><p>To be...</p>\n<p>To be...</p>\n<p>or not to be!</p>\n<p>or not to be!</p></div>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "nested Code blocks",
+	  "input": "``\nTo be...\n\n```\nTo be...\n\nor not to be!\n```\n\nor not to be!\n``",
+	  "expectedOutput": "<pre><code>To be...\n\n```\nTo be...\n\nor not to be!\n```\n\nor not to be!</code></pre>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Code block with class injection",
+	  "input": "`` js\nvar x = 42;\n``",
+	  "expectedOutput": "<pre class=\"js\"><code>var x = 42;</code></pre>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Quote block with class injection",
+	  "input": "\"\" quote highlight\nTo be...\n\"\"",
+	  "expectedOutput": "<blockquote class=\"quote highlight\"><p>To be...</p></blockquote>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Division block with class injection",
+	  "input": "..one two \nTo be...\n..",
+	  "expectedOutput": "<div class=\"one two\"><p>To be...</p></div>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "do not render empty Division block",
+	  "input": "..\n\n..\n..\nfoobar\n..",
+	  "expectedOutput": "<p>foobar</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "non-rendering elements in Division block",
+	  "input": "..\n{macro}='42'\n..",
+	  "expectedOutput": "",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "render empty Division block has attributes",
+	  "input": ".foo\n..\n\n..",
+	  "expectedOutput": "<div class=\"foo\"></div>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "definition list",
+	  "input": "term::\ndef\nterm:: def",
+	  "expectedOutput": "<dl><dt>term</dt><dd>def</dd><dt>term</dt><dd>def</dd></dl>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "unordered list with escaped list item",
+	  "input": "- Item _1_\n - Item 2\n\\ - Escaped",
+	  "expectedOutput": "<ul><li>Item <em>1</em></li><li>Item 2\n - Escaped</li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "nested unordered lists",
+	  "input": "- List 1\n* List 2",
+	  "expectedOutput": "<ul><li>List 1<ul><li>List 2</li></ul></li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "ordered list",
+	  "input": ". Item 1\n. Item 2",
+	  "expectedOutput": "<ol><li>Item 1</li><li>Item 2</li></ol>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list using \"+\" list IDs",
+	  "input": "+ Item 1\n+ Item 2",
+	  "expectedOutput": "<ul><li>Item 1</li><li>Item 2</li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Mixed nested lists",
+	  "input": "- List item1.\n  - List item2.\n  * List item3.\n  ** List item4.\nTerm:: List\n item5\n\n- List item6.",
+	  "expectedOutput": "<ul><li>List item1.</li><li>List item2.<ul><li>List item3.<ul><li>List item4.<dl><dt>Term</dt><dd>List\n item5</dd></dl></li></ul></li></ul></li><li>List item6.</li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list item with attached division block and indented paragraph",
+	  "input": "- Item 1\n..\nA\nparagraph\n..\n- Item 2\n\n  Indented",
+	  "expectedOutput": "<ul><li>Item 1<p>A\nparagraph</p>\n</li><li>Item 2<pre><code>Indented</code></pre></li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list item with attached quote block followed by child list",
+	  "input": "- Item 1\n\"\"\nA\nparagraph\n\"\"\n. Uno",
+	  "expectedOutput": "<ul><li>Item 1<blockquote><p>A\nparagraph</p></blockquote>\n<ol><li>Uno</li></ol></li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list item with attached deprecated code block",
+	  "input": "- Item 1\n--\nA\nparagraph\n--",
+	  "expectedOutput": "<ul><li>Item 1<pre><code>A\nparagraph</code></pre></li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list item with attached code block",
+	  "input": "- Item 1\n```\nA\nparagraph\n```",
+	  "expectedOutput": "<ul><li>Item 1<pre><code>A\nparagraph</code></pre></li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "nested list in attached division block",
+	  "input": "a::\n..\n- b\n..\nc::\nd",
+	  "expectedOutput": "<dl><dt>a</dt><dd><ul><li>b</li></ul>\n</dd><dt>c</dt><dd>d</dd></dl>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list item with unattached code block",
+	  "input": "- Item 1\n\n```\nA\nparagraph\n```",
+	  "expectedOutput": "<ul><li>Item 1</li></ul><pre><code>A\nparagraph</code></pre>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list item with unattached indented paragraph (2 blank lines separation",
+	  "input": "- Item 1\n\n\n  An\n  indented paragraph",
+	  "expectedOutput": "<ul><li>Item 1</li></ul><pre><code>An\nindented paragraph</code></pre>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list terminated by two blank lines after list item",
+	  "input": "- List 1\n\n\n* List 2",
+	  "expectedOutput": "<ul><li>List 1</li></ul><ul><li>List 2</li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list terminated by two blank lines after item attached block",
+	  "input": "- Item 1\n\"\"\nA\nparagraph\n\"\"\n\n\n- Item 2",
+	  "expectedOutput": "<ul><li>Item 1<blockquote><p>A\nparagraph</p></blockquote>\n</li></ul><ul><li>Item 2</li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list is not terminated by single blank line after item attached block",
+	  "input": "- Item 1\n\"\"\nA\nparagraph\n\"\"\n\n- Item 2",
+	  "expectedOutput": "<ul><li>Item 1<blockquote><p>A\nparagraph</p></blockquote>\n</li><li>Item 2</li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list item with attached multi-line comment",
+	  "input": "- Item 1\n/*\nComment\n*/\n- Item 2",
+	  "expectedOutput": "<ul><li>Item 1</li><li>Item 2</li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list item with attached quote paragraph",
+	  "input": "- Item 1\n\n> Quote\n\n- Item 2",
+	  "expectedOutput": "<ul><li>Item 1<blockquote><p> Quote</p></blockquote>\n</li><li>Item 2</li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list item with attached HTML block element",
+	  "input": "- Item 1\n<pre>Code</pre>\n\n- Item 2",
+	  "expectedOutput": "<ul><li>Item 1<pre>Code</pre>\n</li><li>Item 2</li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "headers and paragraphs",
+	  "input": "# Title\n## Subtitle\n\nParagraph \none.\n\r\nParagraph two.",
+	  "expectedOutput": "<h1>Title</h1>\n<h2>Subtitle</h2>\n<p>Paragraph \none.</p>\n<p>Paragraph two.</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "header followed by comment line",
+	  "input": "# h1 header\n\n// Comment line.",
+	  "expectedOutput": "<h1>h1 header</h1>\n",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "escaped header",
+	  "input": "\\# I am not a header",
+	  "expectedOutput": "<p># I am not a header</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "html blocks and spans",
+	  "input": "<hr>\n\n<br>\n\n\\<BR><HR>\n\n&ZeroWidthSpace;\\<div>",
+	  "expectedOutput": "<hr>\n<p><br></p>\n<p>&lt;BR&gt;<HR></p>\n<p>&ZeroWidthSpace;&lt;div&gt;</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "<img> tag is inline tag (Markdown behaviour)",
+	  "input": "<img src=\"test.jpg\" alt=\"Test\">",
+	  "expectedOutput": "<p><img src=\"test.jpg\" alt=\"Test\"></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "relative file name url",
+	  "input": "<chapter1.html>",
+	  "expectedOutput": "<p><a href=\"chapter1.html\">chapter1.html</a></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "html block element and html span element",
+	  "input": "<div>a block</div>\n\n<span>not a block</span>",
+	  "expectedOutput": "<div>a block</div>\n<p><span>not a block</span></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "html block starting with closing tag",
+	  "input": "</body></html>",
+	  "expectedOutput": "</body></html>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "HTML doctype element",
+	  "input": "<!DOCTYPE HTML>",
+	  "expectedOutput": "<!DOCTYPE HTML>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "html block comment and html span comment",
+	  "input": "<!--comment-->\n\nx <!--comment-->y`<!--comment-->`",
+	  "expectedOutput": "<!--comment-->\n<p>x <!--comment-->y<code>&lt;!--comment--&gt;</code></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "anchors and links",
+	  "input": "Refer to the <#x1|next paragraph> or the <#x2|second list item\nbelow>.\n\n.#x1\nNisl curabitur donec. Vel porttitor et. Et amet vitae. Quam\nporttitor integer. Bibendum neque quis quisque ac commodo. Non et\ncumque. Sit et a consequat.\n\n.#x2\n- Viverra pede turpis.\n- Esse et dui nonummy modi.\n",
+	  "expectedOutput": "<p>Refer to the <a href=\"#x1\">next paragraph</a> or the <a href=\"#x2\">second list item\nbelow</a>.</p>\n<p id=\"x1\">Nisl curabitur donec. Vel porttitor et. Et amet vitae. Quam\nporttitor integer. Bibendum neque quis quisque ac commodo. Non et\ncumque. Sit et a consequat.</p>\n<ul id=\"x2\"><li>Viverra pede turpis.</li><li>Esse et dui nonummy modi.</li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "safeMode default",
+	  "input": "<hr>",
+	  "expectedOutput": "<hr>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "safeMode=0",
+	  "input": "<hr>",
+	  "expectedOutput": "<hr>",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 0,
+		"reset": true
+	  }
+	},
+	{
+	  "description": "safeMode=1",
+	  "input": "<hr>",
+	  "expectedOutput": "",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 1,
+		"reset": true
+	  }
+	},
+	{
+	  "description": "safeMode=3",
+	  "input": "<hr>",
+	  "expectedOutput": "&lt;hr&gt;",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 3,
+		"reset": true
+	  }
+	},
+	{
+	  "description": "safeMode default",
+	  "input": "Lorum\nIpsum<br>",
+	  "expectedOutput": "<p>Lorum\nIpsum<br></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "safeMode=1",
+	  "input": "Lorum ipsum<br>",
+	  "expectedOutput": "<p>Lorum ipsum</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 1,
+		"reset": true
+	  }
+	},
+	{
+	  "description": "HTML safeMode=1",
+	  "input": "<hr>",
+	  "expectedOutput": "",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 1,
+		"reset": true
+	  }
+	},
+	{
+	  "description": "HTML safeMode=1+4 is same as safeMode=1",
+	  "input": "<hr>",
+	  "expectedOutput": "",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 5,
+		"reset": true
+	  }
+	},
+	{
+	  "description": "htmlReplacement option safeMode=2",
+	  "input": "<hr>",
+	  "expectedOutput": "XXX",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 2,
+		"htmlReplacement": "XXX",
+		"reset": true
+	  }
+	},
+	{
+	  "description": "htmlReplacement option safeMode=2+8 same as safeMode=2",
+	  "input": "<hr>",
+	  "expectedOutput": "XXX",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 10,
+		"htmlReplacement": "XXX",
+		"reset": true
+	  }
+	},
+	{
+	  "description": "htmlRepacement and safeMode API Option elements",
+	  "input": ".htmlReplacement = 'Foo'\n.safeMode='2'\n<span>Bar</span>",
+	  "expectedOutput": "<p>FooBarFoo</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "safeMode once set cannot be unset by an API Option",
+	  "input": ".htmlReplacement='Foo'\n<hr>\n\n.safeMode='2'\n<hr>\n\n.safeMode='0'\n<hr>",
+	  "expectedOutput": "<hr>\nFoo\nFoo",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "single-line macro definition skipped in safe mode",
+	  "input": "{x}='1'\n{x}",
+	  "expectedOutput": "<p>{x}</p>",
+	  "expectedCallback": "error: undefined macro: {x}: {x}",
+	  "options": {
+		"safeMode": 1,
+		"reset": true
+	  }
+	},
+	{
+	  "description": "multi-line macro definition skipped in safe mode",
+	  "input": "{x}='1\n2'\n{x}",
+	  "expectedOutput": "<p>{x}</p>",
+	  "expectedCallback": "error: undefined macro: {x}: {x}",
+	  "options": {
+		"safeMode": 1,
+		"reset": true
+	  }
+	},
+	{
+	  "description": "single-line macro definition allowed if safeMode bit 0x8 is set",
+	  "input": "{x}='1'\n{x}",
+	  "expectedOutput": "<p>1</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 9,
+		"reset": true
+	  }
+	},
+	{
+	  "description": "multi-line macro definition allowed if safeMode bit 0x8 is set",
+	  "input": "{x}='1\n2'\n{x}",
+	  "expectedOutput": "<p>1\n2</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 8,
+		"reset": true
+	  }
+	},
+	{
+	  "description": "stand-alone macro invocation",
+	  "input": "{v1}='1'\n\n{v1}",
+	  "expectedOutput": "<p>1</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "escaped stand-alone macro invocation",
+	  "input": "{v1}='1'\n\n\\{v1}",
+	  "expectedOutput": "<p>{v1}</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "inclusion macro: empty document corner case",
+	  "input": "{v?}=''\n{v!}",
+	  "expectedOutput": "",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "escaped HTML block",
+	  "input": "\\<img href=\"url\" alt=\"alt\">",
+	  "expectedOutput": "<p>&lt;img href=\"url\" alt=\"alt\"&gt;</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "block and inline macro expansion",
+	  "input": "{blockref}='BLOCKREF'\n{inlineref}='INLINEREF'\n{blockref}\n\nAn {inlineref}",
+	  "expectedOutput": "<p>BLOCKREF</p>\n<p>An INLINEREF</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "macro invocation in list",
+	  "input": "{v1}='1'\n{v2}='2'\n{v1} and {v2}\n\n- {v1}\n\n{v2}",
+	  "expectedOutput": "<p>1 and 2</p>\n<ul><li>1</li></ul><p>2</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "multi-line macro values rendered inline",
+	  "input": "{v1}='1\n2'\n{v2}='3\n4'\n{v1} and {v2}",
+	  "expectedOutput": "<p>1\n2 and 3\n4</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "parametrized macros",
+	  "input": "{v}='$1 and $2'\n{v|a|b*c*} {v|d|e\nfg}.",
+	  "expectedOutput": "<p>a and b<em>c</em> d and e\nfg.</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "parametrized macros with escaped, blank and missing parameters",
+	  "input": "{v}='This $1 and \\$2 and $3 and \\$$4 and $42'\n{v|} {v|1|2}",
+	  "expectedOutput": "<p>This  and $2 and  and $$4 and  This 1 and $2 and  and $$4 and </p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "parametrized macro: default parameters",
+	  "input": "{v}='Hello $1:cruel$ $2:World$!'\n{v} {v|} {v||Mars} {v|happy|Mercury}",
+	  "expectedOutput": "<p>Hello $1:cruel$ $2:World$! Hello cruel World! Hello cruel Mars! Hello happy Mercury!</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "parametrized macro: default parameter value with escaped $ characters",
+	  "input": "{v}='$1:\\$10.00$ total'\n{v|}, {v|$5.00}.",
+	  "expectedOutput": "<p>$10.00 total, $5.00 total.</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "parametrized macro: escaped default value",
+	  "input": "{v}='$1\\: $2'\n{v}, {v|}, {v|$5}.",
+	  "expectedOutput": "<p>$1\\: $2, : $2, $5: $2.</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "parametrized macro: multi-line default value",
+	  "input": "{v}='Zero, $1:\nThree\n\nFour$'\n{v|}, {v|One\nTwo}",
+	  "expectedOutput": "<p>Zero, \nThree</p>\n<p>Four, Zero, One\nTwo</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "nested parametrized macros",
+	  "input": "{v1}='$1 $2'\n{v2}='{v1|1|2} $1 $2'\n{v2|3|4} {v1|5|6}",
+	  "expectedOutput": "<p>1 2 3 4 5 6</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "nested parametrized macros",
+	  "input": "{v1}='$1 $2'\n{v2}='<div>{v1|1|2} $1 $2</div>'\n{v2|3|4}",
+	  "expectedOutput": "<div>1 2 3 4</div>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "text format parametrized macros",
+	  "input": "{mark}='<mark>$1</mark>'\n{sub}='<sub>$1</sub>'\n{mark|Note}: H{sub|2}O",
+	  "expectedOutput": "<p><mark>Note</mark>: H<sub>2</sub>O</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "undefined parametrized arguments replaced by an empty string",
+	  "input": "{v1}='$1 and $10 and $2'\n{v1|one}\n{v1|}",
+	  "expectedOutput": "<p>one and  and \n and  and </p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "$0 is not a valid macro parameter name",
+	  "input": "{v}='$0'\n{v|}",
+	  "expectedOutput": "<p>$0</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+		"description": "reordered macro parameters",
+		"input": "{v1}='foo'\n{v2}='bar'\n{v3}='$2$1'\n{v3|{v2}|{v1}}",
+		"expectedOutput": "<p>barfoo</p>",
+		"expectedCallback": "",
+		"options": {
+		  "reset": true
+		}
+	},
+	{
+		"description": "repeated macro parameter limitation (output should be '<p>foofoo</p>')",
+		"input": "{v1}='foo'\n{v2}='$1$1'\n{v2|{v1}}",
+		"expectedOutput": "<p>foo</p>",
+		"expectedCallback": "error: repeated macro parameters: {v2|{v1}}",
+		"options": {
+		  "reset": true
+		}
+	},
+	{
+	  "description": "fails if macros \\u0002 placeholder is \\u0001 (conflicts with spans use of \\u0001",
+	  "input": "{v}='$$1'\n{v|{v}}",
+	  "expectedOutput": "<p>$$1</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "double and single dollar parametrized macro arguments in HTML block element",
+	  "input": "{v}='<div>$$1 and $2</div>'\n{v|**a** b|c _d_}",
+	  "expectedOutput": "<div><strong>a</strong> b and c _d_</div>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Macro expansion inside double-dollar default macro parameter value",
+	  "input": "{v1}='one'\n{v2}='<div>$$1:{v1} two$</div>'\n{v2|}",
+	  "expectedOutput": "<div>one two</div>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "blank macro invoked with arguments",
+	  "input": "{v?}=''\n{v|one|two}",
+	  "expectedOutput": "",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "multi-line macro definition defined with macros disabled",
+	  "input": "{v1}='foo\n'\n.-macros\n {v1}",
+	  "expectedOutput": "<pre><code>{v1}</code></pre>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "multi-line HTML defined with macros disabled",
+	  "input": ".-macros\n<div>{undefined}\n</div>",
+	  "expectedOutput": "<div>{undefined}\n</div>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "macro substitution in block image",
+	  "input": "{src}='tiger.png'\n{caption}='Tiger'\n<image:{src}|{caption}>",
+	  "expectedOutput": "<img src=\"tiger.png\" alt=\"Tiger\">",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "escaped comments",
+	  "input": "\\/*\nabc\n*/\n\n\\// xyz",
+	  "expectedOutput": "<p>/*\nabc\n*/</p>\n<p>// xyz</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "single quotes are ok inside macros values",
+	  "input": "{v}='This 'and' that'\n{v}",
+	  "expectedOutput": "<p>This 'and' that</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": false
+	  }
+	},
+	{
+	  "description": "escaped macros are unescaped",
+	  "input": "A \\{v}",
+	  "expectedOutput": "<p>A {v}</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": false
+	  }
+	},
+	{
+	  "description": "macros are preserved across Rimu.render() invocations",
+	  "input": "{v}",
+	  "expectedOutput": "<p>This 'and' that</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": false
+	  }
+	},
+	{
+	  "description": "comment out block contents with inclusion macro",
+	  "input": "{v}=''\nfoo\n{v!}1\nbar",
+	  "expectedOutput": "<p>foo\nbar</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "comment out delimited block with inclusion macro",
+	  "input": "{v}='yes'\n{v!}.+skip\nfoobar",
+	  "expectedOutput": "",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "comment out delimited block if macro is blank",
+	  "input": "{v}=''\n{v=}.+skip\nfoobar",
+	  "expectedOutput": "",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "macros with blank lines",
+	  "input": "{v1}='<div>\n\n'\n{v2}='\n\n</div>\n\n'\n{v1}\nfoo\n\n{v2}\nbar",
+	  "expectedOutput": "<div>\n<p>foo</p>\n</div>\n<p>bar</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "exclusion macro: non-blank value and empty pattern: included",
+	  "input": "{v}='xxx'\nfoo\n{v!}bar\nmacro",
+	  "expectedOutput": "<p>foo\nbar\nmacro</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "exclusion macro: blank value and empty pattern: skipped",
+	  "input": "{v}=''\nfoo\n{v!}bar\nmacro",
+	  "expectedOutput": "<p>foo\nmacro</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "inclusion macro: blank value and empty pattern: included",
+	  "input": "{v}=''\nfoo\n{v=}bar\nmacro",
+	  "expectedOutput": "<p>foo\nbar\nmacro</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "inclusion macro: blank value and non-empty pattern: skipped",
+	  "input": "{v}=''\nfoo\n{v=xxx}bar\nmacro",
+	  "expectedOutput": "<p>foo\nmacro</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "inclusion macro: value matches pattern: included",
+	  "input": "{v}='xyz'\nfoo\n{v=.*z}bar\nmacro",
+	  "expectedOutput": "<p>foo\nbar\nmacro</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "inclusion macro: value matches pattern: included",
+	  "input": "{v}='1234'\nfoo\n{v=\\d+}bar\nmacro",
+	  "expectedOutput": "<p>foo\nbar\nmacro</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "exclusion macro: value matches pattern: skipped",
+	  "input": "{v}='xyz'\nfoo\n{v!.*z}bar\nmacro",
+	  "expectedOutput": "<p>foo\nmacro</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "inclusion macro: value does not match pattern: skipped",
+	  "input": "{v}='xxyz'\nfoo\n{v=x.z}bar\nmacro",
+	  "expectedOutput": "<p>foo\nmacro</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "exclusion macro: value does not match pattern: included",
+	  "input": "{v}='xxyz'\nfoo\n{v!x.z}bar\nmacro",
+	  "expectedOutput": "<p>foo\nbar\nmacro</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "inclusion macro: matched pattern with escaped } character",
+	  "input": "{v}='xxyz'\nfoo\n{v=x{2,\\}yz}bar\nmacro",
+	  "expectedOutput": "<p>foo\nbar\nmacro</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "macro expansion in Block Attributes",
+	  "input": "{v}='[style=\"margin:0;\"]'\n.bar {v}\nfoobar",
+	  "expectedOutput": "<p class=\"bar\" style=\"margin:0;\">foobar</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "accumulated Block Attributes",
+	  "input": ".#x1\n.foo\n.bar\n.\"color:red;\"\n.[data-duration=\"5\"]\n.-macros\n.-spans\n_foobar_ {undefined}\n\n_foobar_",
+	  "expectedOutput": "<p class=\"foo bar\" id=\"x1\" style=\"color:red;\" data-duration=\"5\">_foobar_ {undefined}</p>\n<p><em>foobar</em></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "macro expansion in html delimited block",
+	  "input": "{v}='xxx'\n<div>\nfoo {v} bar</div>",
+	  "expectedOutput": "<div>\nfoo xxx bar</div>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "exclusion macro: HTML line block",
+	  "input": "{v}=''\n<div>{v!}</div>",
+	  "expectedOutput": "",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "inclusion macro: HTML line block",
+	  "input": "{v}=''\n<div>{v=xxx}</div>",
+	  "expectedOutput": "",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "exclusion macro: in html line block",
+	  "input": "{v}='xxx'\n<div>{v!}foobar</div>",
+	  "expectedOutput": "<div>foobar</div>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "inclusion macro: in html line block",
+	  "input": "{v}='xxx'\n<div>{v=..x}foobar</div>",
+	  "expectedOutput": "<div>foobar</div>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "meta-macro (macro definition that generates macro definitions)",
+	  "input": "{v}='{$1} = 'foobar''\n{v|v1}\n{v1}",
+	  "expectedOutput": "<p>foobar</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "macro definition with backslash continuation and escaped continuation",
+	  "input": "{v}='foo' \\\nfoo' \\\\\nbar'\n{v}",
+	  "expectedOutput": "<p>foo'\nfoo'<br>\nbar</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "meta-macro with deferred evaluation",
+	  "input": "{v}='foo'\n{v1}='\\{v} {v}'\n{v1}\n\n{v}='bar'\n{v1}",
+	  "expectedOutput": "<p>foo foo</p>\n<p>bar foo</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "meta-macro with deferred parameter evaluation",
+	  "input": "{v}='foo $1 \\$1'\n{v1}='{v|1}'\n{v1|2}",
+	  "expectedOutput": "<p>foo 1 2</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Recursively defined macro in Line Macro context should not loop infinitely",
+	  "input": "{x}='\\{x}'\n{x}",
+	  "expectedOutput": "<p>{x}</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Recursively defined macro in Line Macro context should not loop infinitely",
+	  "input": "{x}='{x}'\n{x}",
+	  "expectedOutput": "<p>{x}</p>",
+	  "expectedCallback": "error: undefined macro: {x}: {x}",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Recursively defined macro in Line Macro context should not loop infinitely",
+	  "input": "{x}='foo\n\n{x}'\n{x}",
+	  "expectedOutput": "<p>foo\n\n{x}</p>",
+	  "expectedCallback": "error: undefined macro: {x}: foo\n\n{x}",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "html class",
+	  "input": ".error\nError message\n\nNormal paragraph",
+	  "expectedOutput": "<p class=\"error\">Error message</p>\n<p>Normal paragraph</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "html class, id and attributes",
+	  "input": ".large error   #x1 \"color: red;\"\nError message",
+	  "expectedOutput": "<p class=\"large error\" id=\"x1\" style=\"color: red;\">Error message</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "html attributes skipped by safeMode=2",
+	  "input": ".[style=\"color: red;\"]\nError message",
+	  "expectedOutput": "<p>Error message</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 2,
+		"reset": true
+	  }
+	},
+	{
+	  "description": "html attributes skipped by safeMode=1",
+	  "input": ".large error   #x1 [style=\"color: red;\"]\nError message",
+	  "expectedOutput": "<p class=\"large error\" id=\"x1\">Error message</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 1,
+		"reset": true
+	  }
+	},
+	{
+	  "description": "all block attributes skipped by safeMode=5",
+	  "input": ".error #x1 \"color:red\" [title=\"Error message\"] +skip\nError message",
+	  "expectedOutput": "<p>Error message</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 5,
+		"reset": true
+	  }
+	},
+	{
+    "unsupported":"go",
+	  "description": "deprecated <<anchor>> block anchor skipped by safeMode=5",
+	  "input": "<<#x1>>",
+	  "expectedOutput": "",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 5,
+		"reset": true
+	  }
+	},
+	{
+    "unsupported":"go",
+	  "description": "deprecated <<anchor>> block anchor",
+	  "input": "<<#x1>>",
+	  "expectedOutput": "<div id=\"x1\"></div>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+    "unsupported":"go",
+	  "description": "deprecated <<anchor>> inline anchor skipped by safeMode=7",
+	  "input": "Inline <<#x1>>",
+	  "expectedOutput": "<p>Inline </p>",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 7,
+		"reset": true
+	  }
+	},
+	{
+	  "description": "header attributes",
+	  "input": ".#preface\n== Preface",
+	  "expectedOutput": "<h2 id=\"preface\">Preface</h2>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "block image html attributes",
+	  "input": ".polaroid [width=\"800\"]\n<image:tiger.png>",
+	  "expectedOutput": "<img class=\"polaroid\" width=\"800\" src=\"tiger.png\" alt=\"tiger.png\">",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list html attributes",
+	  "input": ".dl-horizontal\nterm:: definition\nterm::: definition",
+	  "expectedOutput": "<dl class=\"dl-horizontal\"><dt>term</dt><dd>definition<dl><dt>term</dt><dd>definition</dd></dl></dd></dl>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list item with Division block containing Division block with html attributes",
+	  "input": ".class1\n- Item\n..\n.class2\n...\nDivision\n...\n..\nParagraph",
+	  "expectedOutput": "<ul class=\"class1\"><li>Item<div class=\"class2\"><p>Division</p></div>\n</li></ul><p>Paragraph</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "html attributes assigned to macro",
+	  "input": "{info}= '.info #ref2 [style=\"color:green\"]'\n{info}\ngreeny\n\nnormal\n\n{2paragraphs} ='paragraph 1\n\nparagraph2'\n{2paragraphs}",
+	  "expectedOutput": "<p class=\"info\" id=\"ref2\" style=\"color:green\">greeny</p>\n<p>normal</p>\n<p>paragraph 1</p>\n<p>paragraph2</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "inject Block Attributes into Block HTML element",
+	  "input": ".\"color:red\"\n<div>foobar</div>",
+	  "expectedOutput": "<div style=\"color:red\">foobar</div>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "enable macro expansion in Indented paragraph",
+	  "input": "{v}='xxx'\n.+macros\n {v}\n\n {v}",
+	  "expectedOutput": "<pre><code>xxx</code></pre>\n<pre><code>{v}</code></pre>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "disable macro expansion in normal paragraph",
+	  "input": "{v}=''\n.-macros\nThis is `{v}`\n\nThis is `{v}`",
+	  "expectedOutput": "<p>This is <code>{v}</code></p>\n<p>This is ``</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "enable macro expansion in Code Block",
+	  "input": "{v}='V'\n.+macros\n``\n\\{v} = '{v}'\n``\n``\n\\{v} = '{v}'\n``",
+	  "expectedOutput": "<pre><code>{v} = 'V'</code></pre>\n<pre><code>\\{v} = '{v}'</code></pre>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "escaped macro invocations in macro values",
+	  "input": "{v}='\\{--!}foo\nbar'\n.+macros\n``\n{v}\n``",
+	  "expectedOutput": "<pre><code>{--!}foo\nbar</code></pre>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "disable macro expansion in HTML Block",
+	  "input": "{v}=''\n.-macros\n<div>{v}</div>\n\n<div>{v}</div>",
+	  "expectedOutput": "<div>{v}</div>\n<div></div>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "class attribute and block option",
+	  "input": ".class1 -macros\nA {macro}",
+	  "expectedOutput": "<p class=\"class1\">A {macro}</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "id attribute and block option",
+	  "input": ".#id1 -spans\nA _test_",
+	  "expectedOutput": "<p id=\"id1\">A _test_</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "multiple block options",
+	  "input": ".-spans -macros +specials\n_A {macro}_",
+	  "expectedOutput": "<p>_A {macro}_</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "-container expansion option",
+	  "input": ".-container\n..\nfoo\n..",
+	  "expectedOutput": "foo",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "+container option",
+	  "input": ".+container\n``\nFoo\n``",
+	  "expectedOutput": "<pre><code><p>Foo</p></code></pre>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "disable specials (both spans and specials must off)",
+	  "input": ".-spans -specials\n&foo",
+	  "expectedOutput": "<p>&foo</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "-spans expansion option",
+	  "input": ".-spans\n_&foo_",
+	  "expectedOutput": "<p>_&amp;foo_</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "+skip expansion option",
+	  "input": ".+skip\nfoo\nbar",
+	  "expectedOutput": "",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "new double quote definition",
+	  "input": "== = '<strong>|</strong>'\n==Testing== **123**",
+	  "expectedOutput": "<p><strong>Testing</strong> <strong>123</strong></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "escaped double quote",
+	  "input": "\\==Testing== 123",
+	  "expectedOutput": "<p>==Testing== 123</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": false
+	  }
+	},
+	{
+	  "description": "new single quote definition",
+	  "input": "= = '<del>|</del>'\n=Testing *123*=",
+	  "expectedOutput": "<p><del>Testing <em>123</em></del></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": false
+	  }
+	},
+	{
+	  "description": "escaped single quote",
+	  "input": "\\=Testing= 123",
+	  "expectedOutput": "<p>=Testing= 123</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": false
+	  }
+	},
+	{
+	  "description": "single and double-quotes",
+	  "input": "=Testing= ==123== =Test=",
+	  "expectedOutput": "<p><del>Testing</del> <strong>123</strong> <del>Test</del></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": false
+	  }
+	},
+	{
+	  "description": "new asymmetric double quote definition",
+	  "input": "_* = '<em><strong>|</strong></em>'\n_*Testing_* **123**",
+	  "expectedOutput": "<p><em><strong>Testing</strong></em> <strong>123</strong></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "escaped asymmetric double quote",
+	  "input": "\\_*Testing_* 123",
+	  "expectedOutput": "<p>_*Testing_* 123</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": false
+	  }
+	},
+	{
+	  "description": "quote definition skipped in safe mode",
+	  "input": "#='<ins>|</ins>'\n#skipped#",
+	  "expectedOutput": "<p>#skipped#</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 1,
+		"reset": true
+	  }
+	},
+	{
+	  "description": "existing quotes work in safe mode",
+	  "input": "*Testing* 123",
+	  "expectedOutput": "<p><em>Testing</em> 123</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 1,
+		"reset": true
+	  }
+	},
+	{
+	  "description": "second quote definition",
+	  "input": "#='<ins>|</ins>'\n#Quote 2#",
+	  "expectedOutput": "<p><ins>Quote 2</ins></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 0,
+		"reset": true
+	  }
+	},
+	{
+	  "description": "update quote with no spans",
+	  "input": "=='<code>||</code>'\n=Testing #123#=",
+	  "expectedOutput": "<p><code>Testing #123#</code></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "modify built-in quote",
+	  "input": "_='<em>|</em>'\n**Testing** _123_",
+	  "expectedOutput": "<p><strong>Testing</strong> <em>123</em></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "new replacement",
+	  "input": "/\\\\?\\.{3}/='&hellip;'\nTesting... ...123",
+	  "expectedOutput": "<p>Testing&hellip; &hellip;123</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "escaped replacement",
+	  "input": "Testing\\...",
+	  "expectedOutput": "<p>Testing...</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": false
+	  }
+	},
+	{
+	  "description": "replacements in code quote",
+	  "input": "`Testing..., testing...`",
+	  "expectedOutput": "<p><code>Testing..., testing...</code></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": false
+	  }
+	},
+	{
+	  "description": "replacement definition skipped in safe mode",
+	  "input": "/skipped/='SKIPPED'\nskipped",
+	  "expectedOutput": "<p>skipped</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 1,
+		"reset": false
+	  }
+	},
+	{
+	  "description": "existing replacements work in safe mode",
+	  "input": "Testing...",
+	  "expectedOutput": "<p>Testing&hellip;</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"safeMode": 1,
+		"reset": false
+	  }
+	},
+	{
+	  "description": "custom replacment is processed after built-in replacements (has lower precedence)",
+	  "input": "[\\...](#link) [...](#link) [`...`](#link)",
+	  "expectedOutput": "<p><a href=\"#link\">...</a> <a href=\"#link\">&hellip;</a> <a href=\"#link\"><code>...</code></a></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": false
+	  }
+	},
+	{
+	  "description": "redefine existing replacement",
+	  "input": "/\\\\?\\.{3}/i='!!!'\nTesting...",
+	  "expectedOutput": "<p>Testing!!!</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "replacement with match groups",
+	  "input": "/\\\\?\\B'\\b(.+?)\\b'\\B/g = '<em>$1</em>'\n'emphasized'",
+	  "expectedOutput": "<p><em>emphasized</em></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "replacement has undefined match group",
+	  "input": "/foo/='$2'\nfoo",
+	  "expectedOutput": "<p></p>",
+	  "expectedCallback": "error: undefined replacement group: $2",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "unsupported": "go",
+	  "description": "Inline comments replacement.",
+	  "input": "/(^|\\n)\\\\?\\/\\/.*(?=\\n|$)/g = '$1'\nA paragraph\n//Comment\n//Comment\nwith inline comments.",
+	  "expectedOutput": "<p>A paragraph\n\n\nwith inline comments.</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "update HTML tags, test class injection and macro expansion",
+	  "input": "{ipsum}='normal'\n|paragraph| = '<p class=\"{ipsum}\">|</p>'\nfoobar\n\n.test1 test2\nfoobar",
+	  "expectedOutput": "<p class=\"normal\">foobar</p>\n<p class=\"test1 test2 normal\">foobar</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "paragraph expansion options",
+	  "input": "{ipsum}=''\n|paragraph| = '<p>|</p>'\n_Lorum_ & {ipsum}.\n\n|paragraph| = '-macros'\n\n_Lorum_ & {ipsum}.\n\n|paragraph| = '<p class=\"normal\">|</p> -spans +macros'\n\n_Lorum_ & {ipsum}.",
+	  "expectedOutput": "<p><em>Lorum</em> &amp; .</p>\n<p><em>Lorum</em> &amp; {ipsum}.</p>\n<p class=\"normal\">_Lorum_ &amp; .</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "reset reenables paragraph spans expansions disabled in previous test",
+	  "input": "**Hello**",
+	  "expectedOutput": "<p><strong>Hello</strong></p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "division block with attribute",
+	  "input": "|division| = '<div class=\"noclass\">|</div>'\n..\nfoobar\n..",
+	  "expectedOutput": "<div class=\"noclass\"><p>foobar</p></div>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "division block pass-through",
+	  "input": ".-macros -spans -specials -container\n..\n\n<script> \n\n& _{macro}_<br>\n\n\n..",
+	  "expectedOutput": "\n<script> \n\n& _{macro}_<br>\n\n",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "callback api: undefined macro",
+	  "input": "{undefined}",
+	  "expectedOutput": "<p>{undefined}</p>",
+	  "expectedCallback": "error: undefined macro: {undefined}: {undefined}",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "callback api: undefined inclusion macro",
+	  "input": "{undefined=}",
+	  "expectedOutput": "<p>{undefined=}</p>",
+	  "expectedCallback": "error: undefined macro: {undefined=}: {undefined=}",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "callback api: unterminated delimited block",
+	  "input": "..\nLorum ipsum",
+	  "expectedOutput": "",
+	  "expectedCallback": "error: unterminated delimited block: ..",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "callback api: -specials block option not valid in safeMode",
+	  "input": ".safeMode = '1'\n.-specials \nOpps!",
+	  "expectedOutput": "<p>Opps!</p>",
+	  "expectedCallback": "error: -specials block option not valid in safeMode",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "illegal safeMode API option",
+	  "input": ".safeMode='foobar'",
+	  "expectedOutput": "",
+	  "expectedCallback": "error: illegal safeMode API option value: foobar",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "illegal safeMode API name",
+	  "input": ".foo = 'bar'",
+	  "expectedOutput": "",
+	  "expectedCallback": "error: illegal API option name: foo",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "callback api: illegal delimited block name",
+	  "input": "|foobar| = '<p>|</p>'",
+	  "expectedOutput": "",
+	  "expectedCallback": "error: illegal delimited block name: foobar: |foobar|='<p>|</p>'",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "callback api: illegal block option",
+	  "input": ".-zacros",
+	  "expectedOutput": "",
+	  "expectedCallback": "error: illegal block option: -zacros",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "callback api: illegal API option",
+	  "input": ".zafeMode='2'",
+	  "expectedOutput": "",
+	  "expectedCallback": "error: illegal API option name: zafeMode",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "callback api: existential macro invocations are deprecated",
+	  "input": "{undefined?foobar}",
+	  "expectedOutput": "<p>{undefined?foobar}</p>",
+	  "expectedCallback": "error: existential macro invocations are deprecated: {undefined?foobar}",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "header id synthesis",
+	  "input": "{--header-ids}='true'\n# Title\n# ???\n# \\{--x--y}-z-\n.#foo\nFoobar\n\n## Foo\n## Foo\n.#barbell\n### Bar\n{--header-ids}=''\n# Title",
+	  "expectedOutput": "<h1 id=\"title\">Title</h1>\n<h1 id=\"x\">???</h1>\n<h1 id=\"x-y-z\">{--x--y}-z-</h1>\n<p id=\"foo\">Foobar</p>\n<h2 id=\"foo-2\">Foo</h2>\n<h2 id=\"foo-3\">Foo</h2>\n<h3 id=\"barbell\">Bar</h3>\n<h1>Title</h1>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "illegal macro pattern",
+	  "input": "{m}='42'\n{m=[}",
+	  "expectedOutput": "<p>{m=[}</p>",
+	  "expectedCallback": "error: illegal macro regular expression: [: {m=[}",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "blank '--' macro cannot be redefined",
+	  "input": "{--} = '42'",
+	  "expectedOutput": "",
+	  "expectedCallback": "error: the predefined blank '--' macro cannot be redefined",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "accumulate block attribute CSS properties",
+	  "input": ".\"margin-bottom:1.5em\"\n.\"font-weight:bold;\"\nfoobar",
+	  "expectedOutput": "<p style=\"margin-bottom:1.5em; font-weight:bold;\">foobar</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "accumulate block attribute classes",
+	  "input": ".class1\n.class2 class3\nfoobar",
+	  "expectedOutput": "<p class=\"class1 class2 class3\">foobar</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "inject block attribute classes and CSS properties into HTML element",
+	  "input": ".class2 \"background:blue;\"\n<p class=\"class1\" style=\"color:red\">foobar</p>",
+	  "expectedOutput": "<p class=\"class2 class1\" style=\"color:red; background:blue;\">foobar</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "duplicate attribute 'id' in tag",
+	  "input": ".#id1\n<p id=\"ID1\">foobar</p>",
+	  "expectedOutput": "<p id=\"ID1\">foobar</p>",
+	  "expectedCallback": "error: duplicate 'id' attribute: id1",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "duplicate attribute 'id' in block attributes",
+	  "input": ".#id1\nfoo\n\n.#ID1\n<p>bar</p>",
+	  "expectedOutput": "<p id=\"id1\">foo</p>\n<p id=\"id1\">bar</p>",
+	  "expectedCallback": "error: duplicate 'id' attribute: id1",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "unsupported": "go,kt",
+	  "description": "line block macro expression value definition",
+	  "input": "{foo} = `(parseInt(40) + parseInt(2)) + 'px'`\n{foo}",
+	  "expectedOutput": "<p>42px</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "unsupported": "go,kt",
+	  "description": "multi-line macro expression value definition",
+	  "input": "{foo} = `(parseInt(40) + parseInt(2)) \n+ 'px'`\n{foo}",
+	  "expectedOutput": "<p>42px</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "unsupported": "go,kt",
+	  "description": "delimited block macro expression line continuation",
+	  "input": "{foo} = `(parseInt(40) + parseInt(2)) + ` \\\npx``\n{foo}",
+	  "expectedOutput": "<p>42\npx</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "unsupported": "go,kt",
+	  "description": "delimited block macro expression escaped line continuation",
+	  "input": "{foo} = `(parseInt(40) + parseInt(2)) + ` \\\\\npx``\n{foo}",
+	  "expectedOutput": "<p>42 px</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "unsupported": "go,kt",
+	  "description": "illegal macro expression",
+	  "input": "{foo} = `1 + x`",
+	  "expectedOutput": "",
+	  "expectedCallback": "error: illegal macro expression: x is not defined: 1 + x",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "escape closing brace in macro 'pattern' parameter",
+	  "input": "{foo} = 'xx'\n{foo=x{2\\}}foo",
+	  "expectedOutput": "<p>foo</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Simple macros are only expanded once",
+	  "input": ".-macros\n{m1}='{m2}='$1'\\\n{m3}='{m2|foo}'\\\n'\n{m1}\n{m3}",
+	  "expectedOutput": "<p>foo</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Line Macro does not emit duplicate undefined macro error",
+	  "input": "{x} and {y}",
+	  "expectedOutput": "<p>{x} and {y}</p>",
+	  "expectedCallback": "error: undefined macro: {x}: {x} and {y}\nerror: undefined macro: {y}: {x} and {y}",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Block Attributes on Fenced Block attached to list item",
+	  "input": "- Item one.\n.#id\n..\nFoobar.\n..",
+	  "expectedOutput": "<ul><li>Item one.<div id=\"id\"><p>Foobar.</p></div></li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Block Attributes on Quote Paragraph attached to list item",
+	  "input": "- Item one.\n.#id\n\n> Foobar.",
+	  "expectedOutput": "<ul><li>Item one.<blockquote id=\"id\"><p> Foobar.</p></blockquote></li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Multiple Block Attributes on Fenced Block attached to list item",
+	  "input": "- Item one.\n.class\n.#id\n..\nFoobar.\n..",
+	  "expectedOutput": "<ul><li>Item one.<div class=\"class\" id=\"id\"><p>Foobar.</p></div></li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Block Attributes can appear anywhere in list item",
+	  "input": "- Item\n.#id\none.\n..\nFoobar.\n..",
+	  "expectedOutput": "<ul><li>Item\none.<div id=\"id\"><p>Foobar.</p></div></li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Escaped Block Attributes on Fenced Block attached to list item",
+	  "input": "- Item one.\n\\.#id\n\"\"\nFoobar.\n\"\"",
+	  "expectedOutput": "<ul><li>Item one.\n.#id<blockquote><p>Foobar.</p></blockquote></li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Block Attributes applied to bullet list items",
+	  "input": "- Item one.\n.#id1\n- Item two.\n\n.#id2\n- Item three.",
+	  "expectedOutput": "<ul><li>Item one.</li><li id=\"id1\">Item two.</li><li id=\"id2\">Item three.</li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "Block Attributes applied labelled list terms",
+	  "input": ".#id1\nOne:: Item one.\n\n.#id2\n.class\nTwo:: Item two.",
+	  "expectedOutput": "<dl id=\"id1\"><dt>One</dt><dd>Item one.</dd><dt class=\"class\" id=\"id2\">Two</dt><dd>Item two.</dd></dl>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list item with escaped attached Division Block",
+	  "input": "- Item 1\n\\..\nA\nparagraph\n\\..\n- Item 2",
+	  "expectedOutput": "<ul><li>Item 1\n..\nA\nparagraph\n..</li><li>Item 2</li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list item with escaped attached Quote Block",
+	  "input": "- Item 1\n\\\"\"\n- Item 2",
+	  "expectedOutput": "<ul><li>Item 1\n\"\"</li><li>Item 2</li></ul>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list item with escaped Block Attributes preceding attached Division Block",
+	  "input": ". One\n\\.id2\n..\nFoo\n..\n. Two",
+	  "expectedOutput": "<ol><li>One\n.id2<p>Foo</p>\n</li><li>Two</li></ol>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list item with attached Quote paragraph followed by another Quote paragraph",
+	  "input": "- Item 1\n\n> Quote 1\n\n> Quote 2",
+	  "expectedOutput": "<ul><li>Item 1<blockquote><p> Quote 1</p></blockquote>\n</li></ul><blockquote><p> Quote 2</p></blockquote>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "list item with attached Quote block followed by another Quote block",
+	  "input": "- Item 1\n\"\"\nQuote 1\n\"\"\n\"\"\nQuote 2\n\"\"",
+	  "expectedOutput": "<ul><li>Item 1<blockquote><p>Quote 1</p></blockquote>\n</li></ul><blockquote><p>Quote 2</p></blockquote>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "spaces",
+	  "input": " ",
+	  "expectedOutput": "",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "white space",
+	  "input": " \n \n",
+	  "expectedOutput": "",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "filter out reserved characters",
+	  "input": "\u0000\u0001\u0002\u0003",
+	  "expectedOutput": "",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
+	  }
+	},
+	{
+	  "description": "illegal render() safeMode value",
+	  "input": "",
+	  "expectedOutput": "",
+	  "expectedCallback": "error: illegal safeMode API option value: -1",
+	  "options": {
+		"safeMode": -1,
+		"reset": true
+	  }
+	}
+  ]
