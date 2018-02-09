@@ -43,8 +43,12 @@ export function replaceMatch(match: RegExpExecArray,
       expansionOptions.specials = true
     }
     let i = Number(arguments[2])  // match group number.
-    let text = match[i]           // match group text.
-    return replaceInline(text, expansionOptions)
+    let result = match[i]         // match group text.
+    if (result === undefined) {
+      Options.errorCallback('undefined replacement group: ' + arguments[0])
+      return ''
+    }
+    return replaceInline(result, expansionOptions)
   })
 }
 
