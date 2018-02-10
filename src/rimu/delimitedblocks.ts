@@ -316,11 +316,15 @@ export function setDefinition(name: string, value: string): void {
     return
   }
   let match = value.trim().match(/^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/)
-  if (match) {
-    if (match[1]) {
-      def.openTag = match[1]
-      def.closeTag = match[2]
-    }
+  if (match === null) {
+    Options.errorCallback('illegal delimited block definition: |' + name + '|=\'' + value + '\'')
+    return
+  }
+  if (match[1]) {
+    def.openTag = match[1]
+    def.closeTag = match[2]
+  }
+  if (match[3]) {
     setBlockOptions(def.expansionOptions, match[3])
   }
 }

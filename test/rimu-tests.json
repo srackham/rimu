@@ -2295,6 +2295,15 @@
 	  "options": {
 		"reset": true
 	  }
+  },
+  {
+	  "description": "callback api: illegal delimited block definition",
+	  "input": "|code| = 'foobar'",
+	  "expectedOutput": "",
+	  "expectedCallback": "error: illegal delimited block definition: |code|='foobar'",
+	  "options": {
+		"reset": true
+	  }
 	},
 	{
 	  "description": "callback api: illegal block option",
