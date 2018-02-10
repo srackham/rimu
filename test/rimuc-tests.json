@@ -96,20 +96,6 @@
     "layouts": true
   },
   {
-    "description": "rimuc --layout classic --sidebar-toc",
-    "args": "--layout classic --sidebar-toc",
-    "input": "",
-    "expectedOutput": "<div id=\"toc\"",
-    "predicate": "contains"
-  },
-  {
-    "description": "rimuc --layout classic --dropdown-toc",
-    "args": "--layout classic --dropdown-toc",
-    "input": "",
-    "expectedOutput": "<div id=\"toc-button\"",
-    "predicate": "contains"
-  },
-  {
     "description": "rimuc --section-numbers",
     "args": "--section-numbers",
     "input": "",
@@ -145,7 +131,7 @@
     "description": "rimuc --help",
     "args": "--help",
     "input": "",
-    "expectedOutput": "\nNAME\n  rimuc",
+    "expectedOutput": "\nNAME\n  rimu",
     "predicate": "startsWith"
   },
   {
@@ -291,12 +277,12 @@
     "predicate": "equals"
   },
   {
+    "unsupported": "go,kt",
     "description": "rimuc imported layout",
     "args": "--layout plain",
     "input": "foobar",
     "expectedOutput": "<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"UTF-8\">\n<title>Title</title>\n</head>\n<body>\n<p>foobar</p>\n</body>\n</html>",
-    "predicate": "equals",
-    "skip": "rimu-kt"
+    "predicate": "equals"
   },
   {
     "description": "rimuc empty input file",
