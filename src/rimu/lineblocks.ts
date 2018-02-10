@@ -18,6 +18,10 @@ export interface Definition {
 let defs: Definition[] = [
   // Prefix match with backslash to allow escaping.
 
+  // Comment line.
+  {
+    match: /^\\?\/{2}(.*)$/,
+  },
   // Expand lines prefixed with a macro invocation prior to all other processing.
   // macro name = $1, macro value = $2
   {
@@ -114,10 +118,6 @@ let defs: Definition[] = [
       }
       return Utils.replaceMatch(match, this.replacement, {macros: true})
     }
-  },
-  // Comment line.
-  {
-    match: /^\\?\/{2}(.*)$/,
   },
   // Block image: <image:src|alt>
   // src = $1, alt = $2

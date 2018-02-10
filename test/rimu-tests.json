@@ -2624,6 +2624,15 @@
 	  "options": {
 		"safeMode": -1,
 		"reset": true
+    }
+  },
+	{
+	  "description": "single-line comments take precedence over replacement definitions",
+	  "input": "//foo/='bar'\n/foo",
+	  "expectedOutput": "<p>/foo</p>",
+	  "expectedCallback": "",
+	  "options": {
+		"reset": true
 	  }
 	}
   ]
