@@ -1,11 +1,18 @@
-# EditorConfig file (see http://EditorConfig.org)
+# EditorConfig is awesome: http://EditorConfig.org
 
+# top-most EditorConfig file
 root = true
 
-# All files.
+# Defaults
 [*]
-end_of_line = lf
-insert_final_newline = true
-#trim_trailing_whitespace = true
 indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+
+[*.ts]
+indent_size = 2
+
+# The indent size used in the `package.json` file cannot be changed
+# https://github.com/npm/npm/pull/3180#issuecomment-16336516
+[*.{json,yml,yaml}]
 indent_size = 2
