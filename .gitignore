@@ -1,0 +1,10 @@
+bin/
+.gitattributes
+.idea/
+.npmrc
+.vscode/
+gitignore/
+gh-pages/
+lib/
+node_modules/
+doc/*.html
