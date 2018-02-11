@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@types/node": "^9.4.1",
-    "faucet": "0.0.1",
+    "faucet": "^0.0.1",
     "jake": "^8.0.15",
     "jshint": "^2.9.5",
     "jsonlint": "^1.6.2",
