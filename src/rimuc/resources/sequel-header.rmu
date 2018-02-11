@@ -26,6 +26,8 @@
 
 // Sequel layout specific.
 {--toc-width?} = '300px'
+{--nav-width?} = '40px'
+{--content-margin?} = '340px'
 {--transition-duration?} = '0.3s'
 
 /*
@@ -89,13 +91,6 @@
 {--border-radius?} = '0'
 {--max-text-width?} = '55rem'
 ..
-
-/*
-  Private layout parameters.
-*/
-{--nav-width} = '40px'
-{--content-margin} = `(parseInt('{--nav-width}') + parseInt('{--toc-width}')) + 'px'`
-
 
 /*
   HTML header
