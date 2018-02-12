@@ -1770,6 +1770,15 @@
     }
   },
   {
+    "description": "html class and css injection in first tag",
+    "input": ".foo \"color:red\"\n<p>bar</p>\n<p class=\"baz\" style=\"width:40%\">qux</p>",
+    "expectedOutput": "<p class=\"foo\" style=\"color:red\">bar</p>\n<p class=\"baz\" style=\"width:40%\">qux</p>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
     "description": "html attributes skipped by safeMode=2",
     "input": ".[style=\"color: red;\"]\nError message",
     "expectedOutput": "<p>Error message</p>",

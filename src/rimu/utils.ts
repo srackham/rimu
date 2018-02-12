@@ -143,9 +143,10 @@ export namespace BlockAttributes {
     }
     let attrs = ''
     if (classes) {
-      if (/class=".*?"/i.test(tag)) {
-        // Inject class names into first existing class attribute.
-        tag = tag.replace(/class="(.*?)"/i, `class="${classes} $1"`)
+      let re = /^(<[^>]*class=")(.*?)"/i
+      if (re.test(tag)) {
+        // Inject class names into first existing class attribute in first tag.
+        tag = tag.replace(re, `$1${classes} $2"`)
       }
       else {
         attrs = `class="${classes}"`
@@ -165,12 +166,13 @@ export namespace BlockAttributes {
       }
     }
     if (css) {
-      if (/style=".*?"/i.test(tag)) {
-        // Inject CSS styles into first existing style attribute.
-        tag = tag.replace(/style="(.*?)"/i, function (match: string, p1: string): string {
-          p1 = p1.trim()
-          if (p1 && p1.substr(-1) !== ';') p1 += ';'
-          return `style="${p1} ${css}"`
+      let re = /^(<[^>]*style=")(.*?)"/i
+      if (re.test(tag)) {
+        // Inject CSS styles into first existing style attribute in first tag.
+        tag = tag.replace(re, function (match: string, p1: string, p2: string): string {
+          p2 = p2.trim()
+          if (p2 && p2.substr(-1) !== ';') p2 += ';'
+          return `${p1}${p2} ${css}"`
         })
       }
       else {
