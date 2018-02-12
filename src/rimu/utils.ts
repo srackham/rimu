@@ -154,7 +154,7 @@ export namespace BlockAttributes {
     }
     if (id) {
       id = id.toLowerCase()
-      let has_id = /id=".*?"/i.test(tag)
+      let has_id = /^<[^<]*id=".*?"/i.test(tag)
       if (has_id || ids.indexOf(id) > -1) {
         Options.errorCallback(`duplicate 'id' attribute: ${id}`)
       }

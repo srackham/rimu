@@ -1779,6 +1779,15 @@
     }
   },
   {
+    "description": "html id injection in first tag",
+    "input": ".#foo\n<p></p><p id=\"bar\"></p>",
+    "expectedOutput": "<p id=\"foo\"></p><p id=\"bar\"></p>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
     "description": "html attributes skipped by safeMode=2",
     "input": ".[style=\"color: red;\"]\nError message",
     "expectedOutput": "<p>Error message</p>",
