@@ -44,6 +44,7 @@
     "tslint": "^5.9.1",
     "typescript": "^2.7.1",
     "uglify-js": "^3.3.9",
+    "html-validator-cli": "^3.2.0",
     "webpack": "^3.10.0"
   }
 }

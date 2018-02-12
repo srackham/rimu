@@ -160,7 +160,7 @@ task('build-rimuc', {async: true}, function () {
 })
 
 desc(`Generate HTML documentation`)
-task('build-docs', ['build-rimu', 'build-gallery'], {async: true}, function () {
+task('build-docs', ['build-rimu', 'build-gallery', 'validate-html'], {async: true}, function () {
   let commands = DOCS.map(doc =>
     RIMUC_EXE +
     ' --no-rimurc --theme legend --custom-toc --header-links' +
@@ -237,10 +237,6 @@ task('gallery-markup', function () {
     })
 })
 
-// NOTE: This task has no dependents assumes html-validator npm package is installed.
-// It's no longer part of the build process because some of the documentation files
-// have style elements in the document body which is not accepted by the HTML5 spec
-// even though all browsers accept them.
 desc(`Validate HTML documents.`)
 task('validate-html', {async: true}, function () {
   let commands = HTML.map(file => 'html-validator --verbose --format=text --file=' + file)
