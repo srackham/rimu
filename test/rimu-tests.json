@@ -1743,9 +1743,27 @@
     }
   },
   {
-    "description": "html class, id and attributes",
+    "description": "html class, id and css",
     "input": ".large error   #x1 \"color: red;\"\nError message",
     "expectedOutput": "<p class=\"large error\" id=\"x1\" style=\"color: red;\">Error message</p>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "html class only injected once",
+    "input": ".foo\n<p class=\"baz\"></p><p class=\"qux\"></p>",
+    "expectedOutput": "<p class=\"foo baz\"></p><p class=\"qux\"></p>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "html css only injected once",
+    "input": ".\"color:red\"\n<p style=\"width:20%\">foo</p>\n<p style=\"width:40%\">bar</p>",
+    "expectedOutput": "<p style=\"width:20%; color:red\">foo</p>\n<p style=\"width:40%\">bar</p>",
     "expectedCallback": "",
     "options": {
       "reset": true

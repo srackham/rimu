@@ -19,6 +19,7 @@ test('rimu', function (t) {
   const data = fs.readFileSync('./test/rimu-tests.json');
   const tests = JSON.parse(data);
   tests.forEach(function (e) {
+    // if (e.description != "html css only injected once") return
     let msg = '';
     if (e.expectedCallback === '') {
       e.options.callback = catchLint;

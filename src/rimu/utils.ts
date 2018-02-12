@@ -144,7 +144,7 @@ export namespace BlockAttributes {
     let attrs = ''
     if (classes) {
       if (/class=".*?"/i.test(tag)) {
-        // Inject class names into existing class attribute.
+        // Inject class names into first existing class attribute.
         tag = tag.replace(/class="(.*?)"/i, `class="${classes} $1"`)
       }
       else {
@@ -166,7 +166,7 @@ export namespace BlockAttributes {
     }
     if (css) {
       if (/style=".*?"/i.test(tag)) {
-        // Inject CSS styles into existing style attribute.
+        // Inject CSS styles into first existing style attribute.
         tag = tag.replace(/style="(.*?)"/i, function (match: string, p1: string): string {
           p1 = p1.trim()
           if (p1 && p1.substr(-1) !== ';') p1 += ';'
