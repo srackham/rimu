@@ -7,7 +7,7 @@
 # - Tests and builds all three Rimu ports.
 # - Checks that common test files are in sync.
 # - Checks that common resource files are in sync.
-# - Compiles the Rimu Reference manual with all three ports and checks they are identical.
+# - Compiles the Rimu documentation with all three ports and checks they are identical.
 #
 
 set -eux
@@ -36,7 +36,7 @@ done
 
 # Build and test all rimuc executables.
 cd $JS
-jake build-rimuc
+jake test
 cd $GO
 make
 cd $KT
