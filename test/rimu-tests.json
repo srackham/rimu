@@ -1036,6 +1036,15 @@
     }
   },
   {
+    "description": "multi-line HTML comment",
+    "input": "<!--\nfoobar\n-->",
+    "expectedOutput": "<!--\nfoobar\n-->",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
     "description": "anchors and links",
     "input": "Refer to the <#x1|next paragraph> or the <#x2|second list item\nbelow>.\n\n.#x1\nNisl curabitur donec. Vel porttitor et. Et amet vitae. Quam\nporttitor integer. Bibendum neque quis quisque ac commodo. Non et\ncumque. Sit et a consequat.\n\n.#x2\n- Viverra pede turpis.\n- Esse et dui nonummy modi.\n",
     "expectedOutput": "<p>Refer to the <a href=\"#x1\">next paragraph</a> or the <a href=\"#x2\">second list item\nbelow</a>.</p>\n<p id=\"x1\">Nisl curabitur donec. Vel porttitor et. Et amet vitae. Quam\nporttitor integer. Bibendum neque quis quisque ac commodo. Non et\ncumque. Sit et a consequat.</p>\n<ul id=\"x2\"><li>Viverra pede turpis.</li><li>Esse et dui nonummy modi.</li></ul>",
