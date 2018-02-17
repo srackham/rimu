@@ -36,8 +36,7 @@ markup vocabulary.
                        border-radius:3px;
                        font-weight:bold;">$1</span>'\
 {heads-up} = '{info|Heads up!}'\
-{date} = `new Date().toDateString()`
-{note} = '{info|Note} **{date}** <mark>$1</mark>'\
+{note} = '{info|Note} <mark>$1</mark>'\
 {rimu-playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'\
 {sidebar} = '#### $1
 ."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'\
@@ -65,7 +64,6 @@ See also:
 - [Macro meta-programming](#macro-meta-programming).
 - [Macro tips](#macro-tips).
 - [General purpose macro processor](#general-purpose-macro-processor).
-- [Macro Expression values](#macro-expression-values).
 
 
 ## Intra-document Links
@@ -349,17 +347,16 @@ Rimu HTML block elements are terminated with a blank line
 #### Scoped styling removed from HTML5 spec 12-May-2016
 The `scoped` attribute was [removed from the HTML5 spec in May
 2016](https://github.com/whatwg/html/commit/c2a3b2a2e3db49c14b486a5e99acf7d10cfe8443)
-"due to lack of implementer interest".  Consequently the examples
-above are, strictly speaking, illegal.  This is because the `style`
-element can now only reside inside the `head` element.  In practice
-however, all popular browsers allow `style` elements outside the
+"due to lack of implementer interest".  But the [HTML 5.2 Working
+Draft](https://www.w3.org/TR/2017/WD-html52-20170718/document-metadata.html#the-style-element)
+(July 2017) allows style tags "In the body, where flow content is
+expected." and as of Febuary 2018 the [Nu W3C
+validator](http://validator.w3.org/nu/) no longer treats style tags in
+the body as an error.
+
+In practice all popular browsers allow `style` elements outside the
 `head` element (the styles from these elements are applied globally
 and the `scoped` attribute is ignored).
-
-The examples below generate `style` elements located outside the
-`head` element and although they work perfectly they do not pass
-HTML5 validator checks. Prior to Rimu version 9 these examples
-used the `style` element `scoped` attribute.
 
 See also:
 
@@ -1155,40 +1152,3 @@ window.onclick = toggleToc
 To enable only macro expansion drop the `-macros` option
 (c.f. [General purpose macro processor](#general-purpose-macro-processor)).
 
-
-## Macro Expression values
-[Macro definition]({reference}#macro-definitions) _Expression values_
-are enclosed by backtick characters and contain JavaScript code. The
-code is executed by the JavaScript
-[eval()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval)
-function and the result becomes the assigned macro value.
-
-Here are some examples using _Expression values_ (the `\{date}`,
-`\{time}` and `\{sum}` definitions are taken from the [example
-`.rimurc` file]({example-rimurc})).
-
-.-macros
-{macro-expressions-example} = '
-// Date/time.
-{date} = `new Date().toDateString()`
-{time} = `new Date().toTimeString()`
-// Add up to 9 numbers.
-{sum} = '(parseFloat('$1:0$') + parseFloat('$2:0$') + parseFloat('$3:0$') +
-        + parseFloat('$4:0$') + parseFloat('$5:0$') + parseFloat('$6:0$') +
-        + parseFloat('$7:0$') + parseFloat('$8:0$') + parseFloat('$9:0$'))' \
-
-{hms} = `'{time}'.split(' ')[0]`
-**Time**: {hms}
-
-**Date**: {date}
-
-{radius} = '6371' \
-{circumference} = `Math.round(2 * Math.PI * {radius}).toLocaleString()`
-**Circumference**: {circumference} Km
-
-{toc-width} = '300px' \
-{content-margin} = `{sum| 40px | {toc-width} | 1} + 'px'`
-**Content margin**: {content-margin}
-'
-
-{generate-rendered-example-2|macro-expressions-example}

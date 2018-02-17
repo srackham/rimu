@@ -9,28 +9,16 @@ into the Rimu markup syntax):
 
 - Markup generation can be customized and extended.
 - Rimu includes a simple, flexible macro language.
-
-Plus:
-
 - A subset of Rimu syntax is [Markdown
   compatible]({tips}#markdown-compatible).
 - The generated HTML is compatible with all modern browsers.
 
+There are three functionally identical Rimu implementations:
 
-## Installing Rimu
-
-Install Rimu as a Node.js module (includes the `rimu` library and the
-{rimuc} command-line tool):
-
-  sudo npm install -g rimu
-
-Run a simple test from the command prompt to check `rimuc` is working:
-
-  echo 'Hello *Rimu*!' | rimuc
-
-This should output:
-
-  <p>Hello <em>Rimu</em>!</p>
+- The canonical [JavaScript version (written in
+  TypeScript)]({github-js}).
+- The [Kotlin port]({github-kt}).
+- The [Go language port]({github-go}).
 
 
 ## Resources
@@ -48,7 +36,7 @@ See the [API documentation](#api).
 - Rimu includes the [rimuc](#rimuc-command) command-line tool and the
   [Rimu Playground]({playground}) -- examples of using Rimu in Node.js
   and in the browser respectively.
-- A [Chrome browser
+- A toy [Chrome browser
   extension](https://github.com/srackham/rimu-chrome-extension.git)
   for rendering Rimu Markup files directly in the browser.
 
@@ -237,8 +225,7 @@ The `--layout` option is used to generate styled HTML documents.  It
 does this by enveloping the compiled output in a layout specific HTML
 header and footer.
 
-`rimuc` comes with [built-in layouts](#built-in-layouts) and it also
-supports [imported layouts](#imported-layouts).
+`rimuc` comes with [built-in layouts](#built-in-layouts).
 
 All features enabled by the `--layout` option are implemented with
 Rimu markup in the header and footer files.  The `--layout` option
@@ -345,6 +332,7 @@ inserted in the output document:
 </div>
 ``
 
+/*
 ### Imported Layouts
 `rimuc` supports third-party externally sourced layouts. When the
 `--layout <layout-name>` option is specified `rimuc` searches for a
@@ -359,6 +347,7 @@ Layout](https://github.com/srackham/rimu-plain-layout.git).
 
 Consult the imported layout's documentation for supported layout
 options.
+*/
 
 
 .#api
@@ -376,7 +365,8 @@ are retained across API calls along with API options.
 Use the `reset` option to restore the default state.
 
 ### Example usage
-Node.js example (Rimu has been previously installed from
+#### JavaScript
+Node.js example (assumes Rimu has been previously installed from
 [npm]({npm})):
 
 .javascript
@@ -395,6 +385,31 @@ can be found in the installed Rimu npm package `./rimu/lib` folder):
   console.log(Rimu.render('Hello *Rimu*!', {reset:true, safeMode:2}));
 </script>
 ``
+
+#### Kotlin
+`` kotlin
+import org.rimumarkup.RenderOptions
+import org.rimumarkup.render
+
+fun main(args: Array<String>) {
+    println(render("Hello *Rimu*!", RenderOptions()))
+}
+``
+
+#### Go
+``` go
+package main
+
+import (
+    "fmt"
+
+    "github.com/srackham/go-rimu/rimu"
+)
+
+func main() {
+    fmt.Println(rimu.Render("*Hello Rimu*!", rimu.RenderOptions{}))
+}
+```
 
 
 ### API options
@@ -447,6 +462,7 @@ A string that replaces embedded HTML when
 with a `type` property (`'error'`, `'warning'` or `'info'`) and a
 `text` property (a string containing the diagnostic message). Example
 usage:
+..
 `` javascript
 var html = Rimu.render('Hello *Rimu*!', {
   callback: function(message) {
@@ -454,9 +470,10 @@ var html = Rimu.render('Hello *Rimu*!', {
   }
 });
 ``
+..
 
 `reset`::
-This boolean option causes the `render()` API to be set to its default
+This boolean option causes the render API to be set to its default
 state (default option values; default Quotes, Replacements and
 Delimited Block definitions; predefined macro definitions only; no
 callback). The `reset` option is processed before other options.
@@ -1017,10 +1034,9 @@ Definition syntax:
 
   /pattern/flags = 'replacement'
 
-- The `/pattern/flags` regular expression syntax is identical to
-  JavaScript's [RegExp
-  literal](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/RegExp)
-  syntax.
+- The regular expression `pattern` syntax and available flags are
+  platform dependent (see [Regular
+  Expressions](#regular-expressions)).
 - `$1`, `$2`... and `$$1`, `$$2`... in `replacement` are replaced by
   the corresponding regular expression match groups. `$0` and `$$0`
   are replaced by the entire match.
@@ -1041,7 +1057,7 @@ Definition syntax:
 - Replacement definitions are not processed if the [SafeMode API
   option](#api-options) is non-zero.
 - If the replacement definition _pattern_ matches that of an existing
-  defintion it will replace the existing definition, otherwise it is
+  definition it will replace the existing definition, otherwise it is
   appended to the end of the replacement definitions list
   (where it assumes the lowest precedence).
 
@@ -1259,8 +1275,8 @@ promote clarity and eliminate repetition (see [Macro
 Examples](#macro-examples)).
 
 Rimu provides elements for defining and invoking macros and includes
-features like macro parametrization, conditional processing,
-expression evaluation and meta-programming.
+features like macro parametrization, conditional processing and
+meta-programming.
 
 ### Macro definitions
 A macro definition assigns one or more lines of Rimu markup to a macro
@@ -1270,36 +1286,25 @@ Definition syntax:
 
 .light-background
 ``
-{macro-name} = macro-value         Simple macro definition
-{macro-name?} = macro-value        Existential macro definition
+{macro-name} = 'macro-value'         Simple macro definition
+{macro-name?} = 'macro-value'        Existential macro definition
 ``
 
 - A macro definition must start at the left margin.
+- A macro name consists of one or more alphanumeric, underscore or
+  dash characters.
+- Macro values are enclosed by single-quote characters and can extend
+  over multiple lines.
 - _Simple_ macro definitions are processed unconditionally;
   _Existential_ macro definitions are only processed if the macro has
   not been defined.
-- There are two types of macro values:
-
-  . _Literal macro values_ are assigned verbatim and are enclosed in
-    _single quote_ characters. For example `\{hello} = 'Hello World!'`
-
-  . _Expression macro values_ are enclosed in _backtick_ characters
-    and are evaluated by the JavaScript
-    [eval()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval)
-    function.  For example ``\{date} = `new Date().toDateString()```
-
-- _Expression macro values_ are evaluated when the definition is
-  processed (not when it is invoked). 
 - Macro values can contain macro invocations. They are expanded when
   the definition is processed (not when it is invoked).
-- A macro name consists of one or more alphanumeric, underscore or
-  dash characters.
 - Macro values can extend over multiple lines.
 - Macro values can be escaped with a leading backslash character
   prefix.
-- Macro definition lines ending with a quote character can be
-  continued to the next line by appending a backslash character to the
-  end of the line.
+- Macro definition lines  can be continued to the next line by
+  appending a backslash character to the end of the line.
 - Macro expansion can be disabled in multi-line macro definitions
   using a preceding [Block Attributes](#block-attributes) `-macros`
   option.
@@ -1348,21 +1353,24 @@ Invocation syntax:
     macro invocation which performs no parameter substitution.
 
 - The `\{macro-name=pattern}` _Inclusion_ invocation is replaced by a
-  blank string if the macro value entirely matches the `pattern` (where
-  `pattern` is a JavaScript regular expression).  If the macro value
-  does not match the `pattern` the containing line is skipped.
+  blank string if the macro value entirely matches the `pattern`
+  (where `pattern` is a regular expression.  If the macro value does
+  not match the `pattern` the containing line is skipped.
 - The `\{macro-name!pattern}` _Exclusion_ invocation syntax is the
   inverse of the `\{macro-name=pattern}` syntax i.e. the macro
   invocation is replaced by a blank string if the macro value does not
   match the `pattern`, if it does match the containing line is
   skipped.
+- The regular expression `pattern` syntax in inclusion and exclusion
+  invocations is platform dependent (see [Regular
+  Expressions](#regular-expressions)).
 - By default macro invocations are expanded everywhere except inside
   _Code_ blocks and _Indented_ paragraphs. Use the [Block
   Attributes](#block-attributes) `+macros` and `-macros` options to
   enable and disable expansion inside [Delimited
   blocks](#delimited-blocks).
-- Undefined macro invocations are not processed and are passed verbatim
-  to the output.
+- Undefined macro invocations are not processed and are passed
+  verbatim to the output.
 - Macro invocations can be escaped in block elements that have macro
   expansion enable using a leading backslash character prefix. Escaped
   macro invocations are rendered verbatim minus the backslash.
@@ -1403,7 +1411,6 @@ Invocation syntax:
 - [Macro meta-programming]({tips}#macro-meta-programming).
 - [Macro tips]({tips}#macro-tips).
 - [General purpose macro processor]({tips}#general-purpose-macro-processor).
-- [Macro Expression values]({tips}#macro-expression-values).
 
 ### Reserved macro names
 Macros with names starting with two hyphen characters are reserved for
@@ -1459,6 +1466,31 @@ syntax highlighting:
 
 The syntax file also sets Vim text formatting options, if they're not
 to your taste delete them from the end of the file.
+
+
+## Regular Expressions
+Regular expressions can be embedded in [replacements](#TODO)
+definitions and [inclusion/exclusion macro](#TODO) invocations.
+
+The language specific regular expression engine is used. This means
+that platform differences between regular expression syntax is a
+potential source of cross-platform incompatibility.  To avoid
+cross-platform incompatibility use regular expression syntax that is
+common to all platforms:
+
+- [JavaScript regular
+  expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions).
+- [Java regular
+  expressions](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html).
+- [Go regular expressions](https://github.com/google/re2/wiki/Syntax).
+
+Guidelines:
+
+- No named groups.
+- No look-ahead or look-behind groups.
+- No backreferences (`\1, \2, ...`).
+- Use only the `i` flag in replacement definitions.
+- No embedded flags.
 
 
 ## Other

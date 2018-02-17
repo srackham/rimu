@@ -1,7 +1,41 @@
 # Rimu Markup Change Log
 
-See the [Git commit log]({github}/commits/) for a full list of
-changes.
+See the various Github commit logs for a full list of changes:
+[JavaScript]({github-js}/commits/), [Go]({github-go}/commits/),
+[Kotlin]({github-kt}/commits/).
+
+
+## Version 11.0.0 (2018-02-17)
+This release sees tight convergence and the simultaneous release of
+all three Rimu implementations:
+
+- The canonical [JavaScript version (written in
+  TypeScript)]({github-js}).
+- The [Kotlin port]({github-kt}).
+- The [Go language port]({github-go}).
+
+There are no new features in this release but two recent
+features have been deprecated:
+
+1. _Imported Layouts_ (added in version 10.2.0, Oct-2017).
+2. Macro definition _Expression Values_ (added in version 10.1.0,
+   Oct-2017).
+
+Both these features were non-portable and specific to the Rimu
+JavaScript implementation, this why they have been deprecated. They
+still work but should not be used and may be disabled in a future
+release.
+
+This release resolved a number of bug fixes that were unearthed by Go
+Fuzz testing -- they have been fixed and back-ported to all
+implementations. Consequently this release is much more robust with
+respect to malformed inputs.
+
+This is a recommended upgrade.
+
+### rimu-kt specific
+- The Rimu CLI command has been renamed to `rimukt` (was previously
+  `rimuc` which clashed with the Rimu JS port).
 
 
 ## Version 10.4.2 (2017-11-27)
@@ -550,8 +584,7 @@ New features:
   underscore emphasis quotes (Github Flavored Markdown behaviour).
 - Add `+` bulleted list ID (Markdown syntax).
 - Lists can be terminated by two or more blank lines.
-- Typographical nicities added to the
-  [example .rimurc file](https://github.com/srackham/rimu/blob/master/examples/.rimurc).
+- Typographical nicities added to the example `.rimurc` file.
 
 
 ## Version 5.0.0 (2015-06-07)
