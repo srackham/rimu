@@ -529,17 +529,10 @@ and Markdown.</p>
 <p>At its core Rimu is a simple readable-text markup similar in scope to
 Markdown, but with two additional areas of functionality (both built
 into the Rimu markup syntax):</p>
-<ul><li>Markup generation can be customized and extended.</li><li>Rimu includes a simple, flexible macro language.</li></ul><p>Plus:</p>
-<ul><li>A subset of Rimu syntax is <a href="tips.html#markdown-compatible">Markdown
-  compatible</a>.</li><li>The generated HTML is compatible with all modern browsers.</li></ul><h2 id="installing-rimu">Installing Rimu</h2>
-<p>Install Rimu as a Node.js module (includes the <code>rimu</code> library and the
-<a href="reference.html#rimuc-command">rimuc</a> command-line tool):</p>
-<pre class="no-highlight"><code>sudo npm install -g rimu</code></pre>
-<p>Run a simple test from the command prompt to check <code>rimuc</code> is working:</p>
-<pre class="no-highlight"><code>echo 'Hello *Rimu*!' | rimuc</code></pre>
-<p>This should output:</p>
-<pre class="no-highlight"><code>&lt;p&gt;Hello &lt;em&gt;Rimu&lt;/em&gt;!&lt;/p&gt;</code></pre>
-<h2 id="resources">Resources</h2>
+<ul><li>Markup generation can be customized and extended.</li><li>Rimu includes a simple, flexible macro language.</li><li>A subset of Rimu syntax is <a href="tips.html#markdown-compatible">Markdown
+  compatible</a>.</li><li>The generated HTML is compatible with all modern browsers.</li></ul><p>There are three functionally identical Rimu implementations:</p>
+<ul><li>The canonical <a href="https://github.com/srackham/rimu">JavaScript version (written in
+  TypeScript)</a>.</li><li>The <a href="https://github.com/srackham/rimu-kt">Kotlin port</a>.</li><li>The <a href="https://github.com/srackham/go-rimu">Go language port</a>.</li></ul><h2 id="resources">Resources</h2>
 <h3 id="learning">Learning</h3>
 <ul><li>Experiment with Rimu in the <a href="rimuplayground.html">Rimu Playground</a>.</li><li>Click the <em>Edit icon</em> &#x270e; in the examples below to enable live
   editing of the Rimu source; click the <em>Preview icon</em> &#x2b82; to
@@ -547,7 +540,7 @@ into the Rimu markup syntax):</p>
 <p>See the <a href="#api">API documentation</a>.</p>
 <ul><li>Rimu includes the <a href="#rimuc-command">rimuc</a> command-line tool and the
   <a href="rimuplayground.html">Rimu Playground</a> &mdash; examples of using Rimu in Node.js
-  and in the browser respectively.</li><li>A <a href="https://github.com/srackham/rimu-chrome-extension.git">Chrome browser
+  and in the browser respectively.</li><li>A toy <a href="https://github.com/srackham/rimu-chrome-extension.git">Chrome browser
   extension</a>
   for rendering Rimu Markup files directly in the browser.</li></ul><h2 id="rimuc-command"><code>rimuc</code> command</h2>
 <p><em>rimuc</em> is a lightweight Node.js command-line tool that converts Rimu
@@ -711,8 +704,7 @@ PREDEFINED MACROS
 <p>The <code>--layout</code> option is used to generate styled HTML documents.  It
 does this by enveloping the compiled output in a layout specific HTML
 header and footer.</p>
-<p><code>rimuc</code> comes with <a href="#built-in-layouts">built-in layouts</a> and it also
-supports <a href="#imported-layouts">imported layouts</a>.</p>
+<p><code>rimuc</code> comes with <a href="#built-in-layouts">built-in layouts</a>.</p>
 <p>All features enabled by the <code>--layout</code> option are implemented with
 Rimu markup in the header and footer files.  The <code>--layout</code> option
 concatenates the input with built-in header and footer files.  For
@@ -769,18 +761,6 @@ inserted in the output document:</p>
 <pre class="no-highlight"><code>&lt;div id="toc"&gt;
   &lt;div id="auto-toc"&gt;&lt;/div&gt;
 &lt;/div&gt;</code></pre>
-<h3 id="imported-layouts">Imported Layouts</h3>
-<p><code>rimuc</code> supports third-party externally sourced layouts. When the
-<code>--layout &lt;layout-name&gt;</code> option is specified <code>rimuc</code> searches for a
-built-in layout with the same name. If it is not found then an attempt
-is made to import a nodejs module named like
-<code>rimu-&lt;layout-name&gt;-layout</code>.  The imported module contains two
-attributes, <code>header</code> and <code>footer</code>, which return the Rimu header markup
-and footer markup respectively.</p>
-<p>For example, take a look at the <a href="https://github.com/srackham/rimu-plain-layout.git">Rimu <em>plain</em>
-Layout</a>.</p>
-<p>Consult the imported layout's documentation for supported layout
-options.</p>
 <h2 id="api">API</h2>
 <p>Rimu has just one API for translating Rimu markup to HTML:</p>
 <pre class="no-highlight"><code>render(source [, options])</code></pre>
@@ -791,7 +771,8 @@ The optional <code>options</code> argument controls rendering behaviour.</p>
 are retained across API calls along with API options.
 Use the <code>reset</code> option to restore the default state.</p>
 <h3 id="example-usage-2">Example usage</h3>
-<p>Node.js example (Rimu has been previously installed from
+<h4 id="javascript">JavaScript</h4>
+<p>Node.js example (assumes Rimu has been previously installed from
 <a href="https://npmjs.org/package/rimu">npm</a>):</p>
 <pre class="javascript no-highlight"><code>var Rimu = require('rimu');
 var html= Rimu.render('Hello *Rimu*!', {safeMode:1});</code></pre>
@@ -801,6 +782,25 @@ can be found in the installed Rimu npm package <code>./rimu/lib</code> folder):<
 &lt;script&gt;
   console.log(Rimu.render('Hello *Rimu*!', {reset:true, safeMode:2}));
 &lt;/script&gt;</code></pre>
+<h4 id="kotlin">Kotlin</h4>
+<pre class="kotlin no-highlight"><code>import org.rimumarkup.RenderOptions
+import org.rimumarkup.render
+
+fun main(args: Array&lt;String&gt;) {
+    println(render("Hello *Rimu*!", RenderOptions()))
+}</code></pre>
+<h4 id="go">Go</h4>
+<pre class="go no-highlight"><code>package main
+
+import (
+    "fmt"
+
+    "github.com/srackham/go-rimu/rimu"
+)
+
+func main() {
+    fmt.Println(rimu.Render("*Hello Rimu*!", rimu.RenderOptions{}))
+}</code></pre>
 <h3 id="api-options">API options</h3>
 <p>The <code>options</code> argument is a JavaScript object with zero or more of the
 following properties:</p>
@@ -832,7 +832,7 @@ usage:<pre class="javascript no-highlight"><code>var html = Rimu.render('Hello *
     console.log(message.type + ': ' + message.text);
   }
 });</code></pre>
-</dd><dt><code>reset</code></dt><dd>This boolean option causes the <code>render()</code> API to be set to its default
+</dd><dt><code>reset</code></dt><dd>This boolean option causes the render API to be set to its default
 state (default option values; default Quotes, Replacements and
 Delimited Block definitions; predefined macro definitions only; no
 callback). The <code>reset</code> option is processed before other options.</dd></dl><h3 id="api-option-elements">API Option elements</h3>
@@ -1581,10 +1581,9 @@ images</a>, <a href="#html-elements">inline HTML tags</a>.</p>
 <h3 id="replacement-definition">Replacement Definition</h3>
 <p>Definition syntax:</p>
 <pre class="no-highlight"><code>/pattern/flags = 'replacement'</code></pre>
-<ul><li>The <code>/pattern/flags</code> regular expression syntax is identical to
-  JavaScript's <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/RegExp">RegExp
-  literal</a>
-  syntax.</li><li><code>$1</code>, <code>$2</code>&hellip; and <code>$$1</code>, <code>$$2</code>&hellip; in <code>replacement</code> are replaced by
+<ul><li>The regular expression <code>pattern</code> syntax and available flags are
+  platform dependent (see <a href="#regular-expressions">Regular
+  Expressions</a>).</li><li><code>$1</code>, <code>$2</code>&hellip; and <code>$$1</code>, <code>$$2</code>&hellip; in <code>replacement</code> are replaced by
   the corresponding regular expression match groups. <code>$0</code> and <code>$$0</code>
   are replaced by the entire match.<ul><li>Special characters are escaped in <code>$1</code>, <code>$2</code>&hellip;</li><li><a href="#quotes">Quotes</a> are expanded and special characters escaped in
     <code>$$0</code>, <code>$$1</code>, <code>$$2</code>&hellip;</li></ul></li><li>Replacements are only expanded in inline contexts.</li><li>Replacements are not expanded inside <a href="#quotes">Code quotes</a>, <a href="#code-block">Code
@@ -1593,7 +1592,7 @@ images</a>, <a href="#html-elements">inline HTML tags</a>.</p>
   ensure it can be escaped.</li><li>A replacement definition must start at the left margin and must not
   extend beyond the end of the line.</li><li>The <code>replacement</code> text can invoke previously defined macros.</li><li>Replacement definitions are not processed if the <a href="#api-options">SafeMode API
   option</a> is non-zero.</li><li>If the replacement definition <em>pattern</em> matches that of an existing
-  defintion it will replace the existing definition, otherwise it is
+  definition it will replace the existing definition, otherwise it is
   appended to the end of the replacement definitions list
   (where it assumes the lowest precedence).</li></ul><p>Example replacement definitions:</p>
 <pre class="no-highlight"><code>/\.{3}/ = '&amp;hellip;'
@@ -1825,27 +1824,22 @@ repeatedly used markup.  They can be used to parametrize documents,
 promote clarity and eliminate repetition (see <a href="#macro-examples">Macro
 Examples</a>).</p>
 <p>Rimu provides elements for defining and invoking macros and includes
-features like macro parametrization, conditional processing,
-expression evaluation and meta-programming.</p>
+features like macro parametrization, conditional processing and
+meta-programming.</p>
 <h3 id="macro-definitions">Macro definitions</h3>
 <p>A macro definition assigns one or more lines of Rimu markup to a macro
 name.</p>
 <p>Definition syntax:</p>
-<pre class="light-background no-highlight"><code>{macro-name} = macro-value         Simple macro definition
-{macro-name?} = macro-value        Existential macro definition</code></pre>
-<ul><li>A macro definition must start at the left margin.</li><li><em>Simple</em> macro definitions are processed unconditionally;
+<pre class="light-background no-highlight"><code>{macro-name} = 'macro-value'         Simple macro definition
+{macro-name?} = 'macro-value'        Existential macro definition</code></pre>
+<ul><li>A macro definition must start at the left margin.</li><li>A macro name consists of one or more alphanumeric, underscore or
+  dash characters.</li><li>Macro values are enclosed by single-quote characters and can extend
+  over multiple lines.</li><li><em>Simple</em> macro definitions are processed unconditionally;
   <em>Existential</em> macro definitions are only processed if the macro has
-  not been defined.</li><li>There are two types of macro values:<ol><li><em>Literal macro values</em> are assigned verbatim and are enclosed in
-    <em>single quote</em> characters. For example <code>{hello} = 'Hello World!'</code></li><li><em>Expression macro values</em> are enclosed in <em>backtick</em> characters
-    and are evaluated by the JavaScript
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval">eval()</a>
-    function.  For example <code>{date} = `new Date().toDateString()`</code></li></ol></li><li><em>Expression macro values</em> are evaluated when the definition is
-  processed (not when it is invoked).</li><li>Macro values can contain macro invocations. They are expanded when
-  the definition is processed (not when it is invoked).</li><li>A macro name consists of one or more alphanumeric, underscore or
-  dash characters.</li><li>Macro values can extend over multiple lines.</li><li>Macro values can be escaped with a leading backslash character
-  prefix.</li><li>Macro definition lines ending with a quote character can be
-  continued to the next line by appending a backslash character to the
-  end of the line.</li><li>Macro expansion can be disabled in multi-line macro definitions
+  not been defined.</li><li>Macro values can contain macro invocations. They are expanded when
+  the definition is processed (not when it is invoked).</li><li>Macro values can extend over multiple lines.</li><li>Macro values can be escaped with a leading backslash character
+  prefix.</li><li>Macro definition lines  can be continued to the next line by
+  appending a backslash character to the end of the line.</li><li>Macro expansion can be disabled in multi-line macro definitions
   using a preceding <a href="#block-attributes">Block Attributes</a> <code>-macros</code>
   option.</li><li><code>$1</code>, <code>$2</code>&hellip; and <code>$$1</code>, <code>$$2</code>&hellip; are parameter names, they are
   replaced with parameter values in <em>Parametrized</em> macro invocations.</li></ul><h3 id="macro-invocations">Macro invocations</h3>
@@ -1871,18 +1865,20 @@ name.</p>
     backslash character e.g. <code>$2\:One dollar$</code>.</li><li>The <code>{macro-name|}</code> invocation syntax uses only default parameter
     values. This is <strong>not the same</strong> as the <code>{macro-name}</code> simple
     macro invocation which performs no parameter substitution.</li></ul></li><li>The <code>{macro-name=pattern}</code> <em>Inclusion</em> invocation is replaced by a
-  blank string if the macro value entirely matches the <code>pattern</code> (where
-  <code>pattern</code> is a JavaScript regular expression).  If the macro value
-  does not match the <code>pattern</code> the containing line is skipped.</li><li>The <code>{macro-name!pattern}</code> <em>Exclusion</em> invocation syntax is the
+  blank string if the macro value entirely matches the <code>pattern</code>
+  (where <code>pattern</code> is a regular expression.  If the macro value does
+  not match the <code>pattern</code> the containing line is skipped.</li><li>The <code>{macro-name!pattern}</code> <em>Exclusion</em> invocation syntax is the
   inverse of the <code>{macro-name=pattern}</code> syntax i.e. the macro
   invocation is replaced by a blank string if the macro value does not
   match the <code>pattern</code>, if it does match the containing line is
-  skipped.</li><li>By default macro invocations are expanded everywhere except inside
+  skipped.</li><li>The regular expression <code>pattern</code> syntax in inclusion and exclusion
+  invocations is platform dependent (see <a href="#regular-expressions">Regular
+  Expressions</a>).</li><li>By default macro invocations are expanded everywhere except inside
   <em>Code</em> blocks and <em>Indented</em> paragraphs. Use the <a href="#block-attributes">Block
   Attributes</a> <code>+macros</code> and <code>-macros</code> options to
   enable and disable expansion inside <a href="#delimited-blocks">Delimited
-  blocks</a>.</li><li>Undefined macro invocations are not processed and are passed verbatim
-  to the output.</li><li>Macro invocations can be escaped in block elements that have macro
+  blocks</a>.</li><li>Undefined macro invocations are not processed and are passed
+  verbatim to the output.</li><li>Macro invocations can be escaped in block elements that have macro
   expansion enable using a leading backslash character prefix. Escaped
   macro invocations are rendered verbatim minus the backslash.
   Escaping is unnecessary in blocks that do not perform macro
@@ -1903,7 +1899,7 @@ name.</p>
     take a look at the <code>{sidebar}</code> macro in <a href="tips.html#using-rimu-macros">these
     examples</a>, it generates a <em>Header</em> block
     element followed by a <em>Block Attributes</em> block element.</li></ol></li></ul><h3 id="macro-examples">Macro examples</h3>
-<ul><li><a href="tips.html#using-rimu-macros">Using Rimu Macros</a>.</li><li><a href="tips.html#use-macros-to-create-tables">Use macros to create tables</a>.</li><li><a href="tips.html#macro-meta-programming">Macro meta-programming</a>.</li><li><a href="tips.html#macro-tips">Macro tips</a>.</li><li><a href="tips.html#general-purpose-macro-processor">General purpose macro processor</a>.</li><li><a href="tips.html#macro-expression-values">Macro Expression values</a>.</li></ul><h3 id="reserved-macro-names">Reserved macro names</h3>
+<ul><li><a href="tips.html#using-rimu-macros">Using Rimu Macros</a>.</li><li><a href="tips.html#use-macros-to-create-tables">Use macros to create tables</a>.</li><li><a href="tips.html#macro-meta-programming">Macro meta-programming</a>.</li><li><a href="tips.html#macro-tips">Macro tips</a>.</li><li><a href="tips.html#general-purpose-macro-processor">General purpose macro processor</a>.</li></ul><h3 id="reserved-macro-names">Reserved macro names</h3>
 <p>Macros with names starting with two hyphen characters are reserved for
 use by Rimu. Reserved macros are used by the Rimu library and by the
 <a href="#rimuc-command">rimuc command</a>.</p>
@@ -1936,7 +1932,18 @@ syntax highlighting:</p>
 <pre class="no-highlight"><code>autocmd BufRead,BufNewFile *.rmu setlocal filetype=rimu</code></pre>
 <p>The syntax file also sets Vim text formatting options, if they're not
 to your taste delete them from the end of the file.</p>
-<h2 id="other">Other</h2>
+<h2 id="regular-expressions">Regular Expressions</h2>
+<p>Regular expressions can be embedded in <a href="#TODO">replacements</a>
+definitions and <a href="#TODO">inclusion/exclusion macro</a> invocations.</p>
+<p>The language specific regular expression engine is used. This means
+that platform differences between regular expression syntax is a
+potential source of cross-platform incompatibility.  To avoid
+cross-platform incompatibility use regular expression syntax that is
+common to all platforms:</p>
+<ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">JavaScript regular
+  expressions</a>.</li><li><a href="https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html">Java regular
+  expressions</a>.</li><li><a href="https://github.com/google/re2/wiki/Syntax">Go regular expressions</a>.</li></ul><p>Guidelines:</p>
+<ul><li>No named groups.</li><li>No look-ahead or look-behind groups.</li><li>No backreferences (<code>\1, \2, ...</code>).</li><li>Use only the <code>i</code> flag in replacement definitions.</li><li>No embedded flags.</li></ul><h2 id="other">Other</h2>
 <ul><li>By convention Rimu markup text files have a <code>.rmu</code> file name
   extension but if your markup is confined to Rimu's Markdown
   compatible subset then use <code>.md</code> to signal your intent.</li></ul>

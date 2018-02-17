@@ -556,8 +556,7 @@ Rimu Markup</td>
                        border-radius:3px;
                        font-weight:bold;"&gt;$1&lt;/span&gt;'
 {heads-up} = '{info|Heads up!}'
-{date} = `new Date().toDateString()`
-{note} = '{info|Note} **{date}** &lt;mark&gt;$1&lt;/mark&gt;'
+{note} = '{info|Note} &lt;mark&gt;$1&lt;/mark&gt;'
 {rimu-playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'
 {sidebar} = '#### $1
 ."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'
@@ -592,14 +591,14 @@ experimentation.</p>
                        background-color:#006699;
                        padding:2px 4px;
                        border-radius:3px;
-                       font-weight:bold;">Note</span> <strong>Mon Nov 27 2017</strong> <mark>This document is not yet finished.</mark></p></div>
+                       font-weight:bold;">Note</span> <mark>This document is not yet finished.</mark></p></div>
 </div>
 </td></tr></table>
 <ul><li>The <code>{sidebar}</code> macro shows how you can inject CSS styles into a
   <em>Division Block</em> (you can also use use <a href="#scoped-css">HTML &lt;style&gt;
   elements</a> to style the output).</li><li>Note how macro definitions can span multiple lines and can contain
   any valid Rimu markup (including HTML and blank lines).</li></ul><p>See also:</p>
-<ul><li><a href="#use-macros-to-create-tables">Use macros to create tables</a>.</li><li><a href="#macro-meta-programming">Macro meta-programming</a>.</li><li><a href="#macro-tips">Macro tips</a>.</li><li><a href="#general-purpose-macro-processor">General purpose macro processor</a>.</li><li><a href="#macro-expression-values">Macro Expression values</a>.</li></ul><h2 id="intra-document-links">Intra-document Links</h2>
+<ul><li><a href="#use-macros-to-create-tables">Use macros to create tables</a>.</li><li><a href="#macro-meta-programming">Macro meta-programming</a>.</li><li><a href="#macro-tips">Macro tips</a>.</li><li><a href="#general-purpose-macro-processor">General purpose macro processor</a>.</li></ul><h2 id="intra-document-links">Intra-document Links</h2>
 <p>To link to another place within a document:</p>
 <ol><li>Create an ID for the element you want to link to using the Rimu
   <em>Block Attribute</em> element.</li><li>Link to it using a fragment identifier URL.</li></ol><h4 id="examples-2">Examples</h4>
@@ -876,16 +875,15 @@ Rimu HTML block elements are terminated with a blank line</p>
 <div class="sidebar"><h4 id="scoped-styling-removed-from-html5-spec-12-may-2016">Scoped styling removed from HTML5 spec 12-May-2016</h4>
 <p>The <code>scoped</code> attribute was <a href="https://github.com/whatwg/html/commit/c2a3b2a2e3db49c14b486a5e99acf7d10cfe8443">removed from the HTML5 spec in May
 2016</a>
-&ldquo;due to lack of implementer interest&rdquo;.  Consequently the examples
-above are, strictly speaking, illegal.  This is because the <code>style</code>
-element can now only reside inside the <code>head</code> element.  In practice
-however, all popular browsers allow <code>style</code> elements outside the
+&ldquo;due to lack of implementer interest&rdquo;.  But the <a href="https://www.w3.org/TR/2017/WD-html52-20170718/document-metadata.html#the-style-element">HTML 5.2 Working
+Draft</a>
+(July 2017) allows style tags &ldquo;In the body, where flow content is
+expected.&rdquo; and as of Febuary 2018 the <a href="http://validator.w3.org/nu/">Nu W3C
+validator</a> no longer treats style tags in
+the body as an error.</p>
+<p>In practice all popular browsers allow <code>style</code> elements outside the
 <code>head</code> element (the styles from these elements are applied globally
 and the <code>scoped</code> attribute is ignored).</p>
-<p>The examples below generate <code>style</code> elements located outside the
-<code>head</code> element and although they work perfectly they do not pass
-HTML5 validator checks. Prior to Rimu version 9 these examples
-used the <code>style</code> element <code>scoped</code> attribute.</p>
 <p>See also:</p>
 <ul><li><a href="http://stackoverflow.com/questions/28633038/what-is-the-current-state-of-the-scoped-attribute-for-the-style-element-in-htm">What is the current state of the &ldquo;scoped&rdquo; attribute for the style
   element in
@@ -1938,60 +1936,6 @@ window.onclick = toggleToc
 ..</code></pre>
 <p>To enable only macro expansion drop the <code>-macros</code> option
 (c.f. <a href="#general-purpose-macro-processor">General purpose macro processor</a>).</p>
-<h2 id="macro-expression-values">Macro Expression values</h2>
-<p><a href="reference.html#macro-definitions">Macro definition</a> <em>Expression values</em>
-are enclosed by backtick characters and contain JavaScript code. The
-code is executed by the JavaScript
-<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval">eval()</a>
-function and the result becomes the assigned macro value.</p>
-<p>Here are some examples using <em>Expression values</em> (the <code>{date}</code>,
-<code>{time}</code> and <code>{sum}</code> definitions are taken from the <a href="https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.rmu">example
-<code>.rimurc</code> file</a>).</p>
-<h4 id="examples-19">Examples</h4>
-<table class="example bordered">
-<tr>
-<td class="example-header" style="width:10%;">
-<span class="edit-icon no-print" title="Edit example" onclick="editExample('macro-expressions-example')">&#x270e;</span>
-Rimu Markup</td>
-<td>
-<pre id="macro-expressions-example-source" class="example-source no-highlight"><code>// Date/time.
-{date} = `new Date().toDateString()`
-{time} = `new Date().toTimeString()`
-// Add up to 9 numbers.
-{sum} = '(parseFloat('$1:0$') + parseFloat('$2:0$') + parseFloat('$3:0$') +
-        + parseFloat('$4:0$') + parseFloat('$5:0$') + parseFloat('$6:0$') +
-        + parseFloat('$7:0$') + parseFloat('$8:0$') + parseFloat('$9:0$'))'
-
-{hms} = `'{time}'.split(' ')[0]`
-**Time**: {hms}
-
-**Date**: {date}
-
-{radius} = '6371'
-{circumference} = `Math.round(2 * Math.PI * {radius}).toLocaleString()`
-**Circumference**: {circumference} Km
-
-{toc-width} = '300px'
-{content-margin} = `{sum| 40px | {toc-width} | 1} + 'px'`
-**Content margin**: {content-margin}
-</code></pre>
-<textarea id="macro-expressions-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('macro-expressions-example')"></textarea>
-</td>
-</tr>
-<tr><td class="example-header" style="width:10%;">
-HTML
-<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('macro-expressions-example')">&#x2b82;</span>
-Preview
-</td>
-<td>
-<div id="macro-expressions-example-errors" class="example-errors"></div>
-<div id="macro-expressions-example-rendered" class="example-rendered">
-<p><strong>Time</strong>: 20:11:29</p>
-<p><strong>Date</strong>: Mon Nov 27 2017</p>
-<p><strong>Circumference</strong>: 40,030 Km</p>
-<p><strong>Content margin</strong>: 341px</p>
-</div>
-</td></tr></table>
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>
