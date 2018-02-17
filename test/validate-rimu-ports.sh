@@ -34,7 +34,7 @@ for f in *; do
     diff $f $KT/src/main/resources/org/rimumarkup/$f
 done
 
-# Build and test all rimuc executables.
+# Build and test all ports.
 cd $JS
 jake test
 cd $GO
@@ -42,7 +42,7 @@ make
 cd $KT
 ./gradlew --console plain test installDist
 
-# Compile Rimu documentation with all 3 ports and compare.
+# Compile Rimu documentation with all ports and compare.
 for doc in reference tips changelog; do
     ARGS='--no-rimurc --theme legend --custom-toc --header-links --layout sequel --lang en --title "Rimu Reference" --highlightjs --prepend "{generate-examples}='"'yes'"'"  ./src/examples/example-rimurc.rmu ./doc/doc-header.rmu'
     GO_DOC=/tmp/$doc-go.html
