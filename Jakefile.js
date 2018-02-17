@@ -128,7 +128,7 @@ desc(`Run tests.`)
 task('default', ['test'])
 
 desc(`build, lint and test rimu and tools, build gh-pages, validate HTML. Use vers=x.y.z argument to set a new version number.`)
-task('build', ['test', 'lint', 'version', 'build-gh-pages'])
+task('build', ['test', 'lint', 'version', 'build-gh-pages', 'validate-html'])
 
 desc(`Update version number, tag and push to Github and npm. Use vers=x.y.z argument to set a new version number. Finally, rebuild and publish docs website.`)
 task('release', ['build', 'tag', 'publish', 'release-gh-pages'])
@@ -165,7 +165,7 @@ task('build-rimuc', {async: true}, function () {
 })
 
 desc(`Generate HTML documentation`)
-task('build-docs', ['build-rimu', 'build-gallery', 'validate-html'], {async: true}, function () {
+task('build-docs', ['build-rimu', 'build-gallery'], {async: true}, function () {
   let commands = DOCS.map(doc =>
     RIMUC_EXE +
     ' --no-rimurc --theme legend --custom-toc --header-links' +
