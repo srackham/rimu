@@ -26,7 +26,9 @@ let RIMUC_EXE = 'node ' + RIMUC_JS
 
 let DOCS = [
   {
-    src: 'README.md', dst: 'doc/index.html', title: 'Rimu Markup',
+    src: 'README.md',
+    dst: 'doc/index.html',
+    title: 'Rimu Markup',
     rimucOptions: ''
   },
   {
@@ -42,7 +44,9 @@ let DOCS = [
     rimucOptions: '--highlightjs --prepend "{generate-examples}=\'yes\'"'
   },
   {
-    src: 'doc/tips.rmu', dst: 'doc/tips.html', title: 'Rimu Tips',
+    src: 'doc/tips.rmu',
+    dst: 'doc/tips.html',
+    title: 'Rimu Tips',
     rimucOptions: '--highlightjs --mathjax --prepend "{generate-examples}=\'yes\'"'
   },
   {
@@ -134,7 +138,8 @@ task('lint', {async: true}, function () {
   let commands = []
     .concat(RIMU_SRC.concat([RIMUC_TS, RIMU_TSD]).map(file => 'tslint ' + file))
     .concat(TESTS.map(file => 'jshint ' + file))
-    .concat(['jsonlint --quiet package.json'])
+// TODO: Disable jsonlint until the nomnom bug is fixed (see https://github.com/zaach/jsonlint/issues/103).
+//    .concat(['jsonlint --quiet package.json'])
   exec(commands, complete)
 })
 
