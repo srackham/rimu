@@ -23,14 +23,16 @@ and Markdown.
   * A [Go port](https://github.com/srackham/go-rimu/).
 
 
-## Learn more
-Read the documentation and experiment with Rimu in the [Rimu
-Playground](http://srackham.github.io/rimu/rimuplayground.html) or open the
-`rimuplayground.html` file locally in your browser.
+## Quick start
+Try the Rimu library in your browser using the NPM Runkit:
 
-See the Rimu [Change Log](http://srackham.github.io/rimu/changelog.html) for
-the latest changes.
-
+1. Open the [Rimu NPM Runkit page](https://npm.runkit.com/rimu) in your browser.
+2. Paste in this code then press the _Run_ button.
+```
+var rimu = require("rimu")
+var html = rimu.render('Hello *Rimu*!', {safeMode:1})
+```
+This will display the following output: `"<p>Hello <em>Rimu</em>!</p>"`
 
 ## Installing Rimu
 Install Rimu as a Node.js module (includes the `rimu` library and the
@@ -68,20 +70,13 @@ To build Rimu and the Rimu documentation from source:
         jake build
 
 
-## Using the Rimu library
-- First read the [Rimu
-  API](http://srackham.github.io/rimu/reference.html#api)
-  documentation.
-- A minimal TypeScript example
-  [minimal-example.ts](https://github.com/srackham/rimu/blob/master/src/examples/minimal-example.ts).
-- Rimu includes the
-  [rimuc](http://srackham.github.io/rimu/reference.html#rimuc-command)
-  command-line tool  and the [Rimu
-  Playground](http://srackham.github.io/rimu/rimuplayground.html) --
-  examples of using Rimu in Node.js and in the browser respectively.
-- A simple [Chrome browser
-  extension](https://github.com/srackham/rimu-chrome-extension.git)
-  for rendering Rimu Markup files directly in the browser.
+## Learn more
+Read the documentation and experiment with Rimu in the [Rimu
+Playground](http://srackham.github.io/rimu/rimuplayground.html) or open the
+`rimuplayground.html` file locally in your browser.
+
+See the Rimu [Change Log](http://srackham.github.io/rimu/changelog.html) for
+the latest changes.
 
 
 ## Browser compatibility
