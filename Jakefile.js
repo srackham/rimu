@@ -29,7 +29,7 @@ let DOCS = [
     src: 'README.md',
     dst: 'doc/index.html',
     title: 'Rimu Markup',
-    rimucOptions: ''
+    rimucOptions: '--highlightjs'
   },
   {
     src: 'doc/changelog.rmu',
