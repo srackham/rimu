@@ -774,8 +774,8 @@ Use the <code>reset</code> option to restore the default state.</p>
 <h4 id="javascript">JavaScript</h4>
 <p>Node.js example (assumes Rimu has been previously installed from
 <a href="https://npmjs.org/package/rimu">npm</a>):</p>
-<pre class="javascript no-highlight"><code>var Rimu = require('rimu');
-var html= Rimu.render('Hello *Rimu*!', {safeMode:1});</code></pre>
+<pre class="javascript no-highlight"><code>var rimu = require('rimu');
+var html= rimu.render('Hello *Rimu*!', {safeMode:1});</code></pre>
 <p>HTML script tag example (the compiled and minified <code>rimu.min.js</code> library
 can be found in the installed Rimu npm package <code>./rimu/lib</code> folder):</p>
 <pre class="xml no-highlight"><code>&lt;script src="rimu.min.js"&gt;&lt;/script&gt;
@@ -1949,7 +1949,10 @@ common to all platforms:</p>
   compatible subset then use <code>.md</code> to signal your intent.</li></ul>
 </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <script>
 window.onload = function() {
   document.getElementById('sidebar').appendChild(document.getElementById('toc')); // Ensure custom TOC is child of sidebar.
