@@ -24,15 +24,15 @@ and Markdown.
 
 
 ## Quick start
-Try the Rimu library in your browser using the NPM Runkit:
+To try the Rimu library in your browser:
 
 1. Open the [Rimu NPM Runkit page](https://npm.runkit.com/rimu) in your browser.
 2. Paste in this code then press the _Run_ button.
-```
+``` javascript
 var rimu = require("rimu")
 var html = rimu.render('Hello *Rimu*!', {safeMode:1})
 ```
-This will display the following output: `"<p>Hello <em>Rimu</em>!</p>"`
+This will output `"<p>Hello <em>Rimu</em>!</p>"`.
 
 ## Installing Rimu
 Install Rimu as a Node.js module (includes the `rimu` library and the
