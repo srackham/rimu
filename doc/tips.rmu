@@ -271,7 +271,7 @@ syntax file highlights custom syntax definitions from the [example
 
 ## Entering non-keyboard characters
 Characters that are unavailable on your keyboard can be entered as
-[HTML character entities](http://dev.w3.org/html5/html-author/charref)
+[HTML character entities](https://dev.w3.org/html5/html-author/charref)
 e.g. enter `&micro;` to display &micro;. The [example .rimurc
 file](#example-rimurc) includes replacements for common use-cases such
 as em dash, ellipsis and quotation characters.
