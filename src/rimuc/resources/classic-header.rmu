@@ -131,18 +131,18 @@
   Layout independent styles
 */
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    white-space: inherit;
-    box-sizing: border-box;
-  }
-  body {
+  :root {
     font-size: 16px;
     line-height: 20px;
     color: {--text-color};
     background-color: {--primary-background};
     font-family: {--sans-font};
+  }
+  * {
+    margin: 0;
+    padding: 0;
+    white-space: inherit;
+    box-sizing: border-box;
   }
   h1, h2, h3, h4, h5, h6 {
     margin: 10px 0;
