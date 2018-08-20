@@ -6,7 +6,8 @@
 </div>
 </div>
 
-{--highlightjs!}{--highlightjs-scripts}
+{--highlightjs=}.+skip
+{--highlightjs-scripts}
 
 {--mathjax!}{--mathjax-scripts}
 
