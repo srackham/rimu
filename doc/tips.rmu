@@ -535,6 +535,23 @@ This line is included {foo!\d+} if the value of foo is not a number.
 
 Use [Comments]({reference}#comments) to unconditionally exclude text.
 
+Be careful when mixing conditional and simple macros on the same line, for
+example:
+
+``
+{foo!}{multi-line-macro}
+``
+
+Because the simple macro is expanded before the conditional macro only the
+first line of the expanded `\{multi-line-macro}` will be subject to `\{foo!}`
+exclusion. Use the `+skip` block option attribute to exclude the entire
+`\{multi-line-macro}`, for example:
+
+``
+{foo=}.+skip
+{multi-line-macro}
+``
+
 
 ## Tables
 Create tables using _Block HTML elements_ (Rimu has no dedicated
@@ -607,7 +624,6 @@ syntax was a deliberate design decision:
 See also [Use macros to create tables](#use-macros-to-create-tables).
 
 
-.use-macros-to-create-tables
 ## Use macros to create tables
 Creating tables with raw HTML is repetitive, time consuming and
 difficult to read.
