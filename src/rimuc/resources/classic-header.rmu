@@ -6,8 +6,6 @@
   Default values for styling themes and content options.
 */
 
-{--highlightjs?} = ''
-{--mathjax?} = ''
 {--section-numbers?} = ''
 {--lang?} = ''
 {--title?} = '&nbsp;'
@@ -22,6 +20,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">'
 // Additional <head> child elements.
 {--head?} = ''
+
+{--highlightjs?} = ''
+{--highlightjs-css} = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">'
+{--highlightjs-scripts} = '<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>'
+
+{--mathjax?} = ''
+{--mathjax-scripts} = '<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>'
 
 // Classic layout specific.
 {--dropdown-toc?} = ''
@@ -124,7 +130,7 @@
 <head>
 {--meta}
 <title>{--title}</title>
-{--highlightjs!}<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+{--highlightjs!}{--highlightjs-css}
 
 
 /*

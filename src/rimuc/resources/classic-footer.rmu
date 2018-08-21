@@ -5,9 +5,10 @@
 // Close article div.
 </div>
 
-{--highlightjs!}<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>
+{--highlightjs=}.+skip
+{--highlightjs-scripts}
 
-{--mathjax!}<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+{--mathjax!}{--mathjax-scripts}
 
 .+skip
 {--no-toc=}.-skip
