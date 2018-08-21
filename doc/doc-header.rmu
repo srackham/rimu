@@ -127,7 +127,7 @@ function replaceSpecialChars(s) {
 
 // Clickable icon button to edit the example.
 {example-edit-icon} = '<span class="edit-icon no-print" title="Edit example" onclick="editExample('$1')">&#x270e;</span>'
-{example-preview-icon} = '<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('$1')">&#x2b82;</span>'
+{example-preview-icon} = '<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('$1')">&#x2b04;</span>'
 
 // Macro to generate Rimu markup and rendered example (stacked horizontally).
 // $1 = name of example content macro.
