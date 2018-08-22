@@ -44,11 +44,3 @@
 __ = '<u>|</u>'
 // Left and right double-quote characters.
 " = '&ldquo;|&rdquo;'
-
-
-/*
-  Highlight.js
-*/
-// Turn off auto-hightlighting.
-|code| = '<pre class="no-highlight"><code>|</code></pre>'
-|indented| = '<pre class="no-highlight"><code>|</code></pre>'

@@ -75,7 +75,7 @@
     "description": "rimuc --highlightjs",
     "args": "--highlightjs",
     "input": "",
-    "expectedOutput": "<script>hljs.initHighlightingOnLoad();</script>",
+    "expectedOutput": "hljs.configure({languages: []});",
     "predicate": "contains",
     "layouts": true
   },
