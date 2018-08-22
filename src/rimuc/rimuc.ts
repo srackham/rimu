@@ -41,6 +41,7 @@ OPTIONS
 
     'classic': Desktop-centric layout.
     'flex':    Flexbox mobile layout (experimental).
+    'plain':   Unstyled HTML layout.
     'sequel':  Responsive cross-device layout.
 
     If only one source file is specified and the --output
@@ -324,7 +325,7 @@ for (let infile of files) {
   let source = ''
   if (infile.startsWith(RESOURCE_TAG)) {
     infile = infile.substr(RESOURCE_TAG.length)
-    if (['classic', 'flex', 'sequel', 'v8'].indexOf(layout) >= 0) {
+    if (['classic', 'flex', 'sequel', 'plain', 'v8'].indexOf(layout) >= 0) {
       source = readResourceFile(infile)
     }
     else {

@@ -1,0 +1,20 @@
+/*
+  Used by rimuc `--layout plain` option.
+*/
+
+{--lang?} = ''
+{--title?} = 'Title'
+{--meta?} = '<meta charset="UTF-8">'
+// Additional <head> element children.
+{--head?} = ''
+
+<!DOCTYPE html>
+{--lang=}<html>
+{--lang!}<html lang="{--lang}">
+<head>
+{--meta}
+<title>{--title}</title>
+
+{--head}
+</head>
+<body>

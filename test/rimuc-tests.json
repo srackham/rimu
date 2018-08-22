@@ -277,7 +277,6 @@
     "predicate": "equals"
   },
   {
-    "unsupported": "go,kt",
     "description": "rimuc imported layout",
     "args": "--layout plain",
     "input": "foobar",

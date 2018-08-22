@@ -87,6 +87,7 @@ OPTIONS
 
     'classic': Desktop-centric layout.
     'flex':    Flexbox mobile layout (experimental).
+    'plain':   Unstyled HTML layout.
     'sequel':  Responsive cross-device layout.
 
     If only one source file is specified and the --output
@@ -254,6 +255,10 @@ devices.
 
   - Set the `--top-bar` macro to a non-blank value to place the
     navigation bar along the top of the document.
+
+plain:: Unstyled HTML layout.
+
+  -  Does not support any layout classes or layout options.
 
 v8:: Deprecated Rimu version 8 layout.
 

@@ -37,7 +37,6 @@
     "jshint": "^2.9.5",
     "jsonlint": "^1.6.2",
     "raw-loader": "^0.5.1",
-    "rimu-plain-layout": "^1.0.1",
     "shelljs": "^0.8.1",
     "tape": "^4.8.0",
     "ts-loader": "^3.4.0",
