@@ -118,15 +118,6 @@ if x == 1:
 // Don't allow editing because syntax highlighting occurs at page load time.
 {generate-rendered-example-1|highlightjs-example||no-edit}
 
-Set the `no-highlight` class to disable syntax highlighting for a code
-block.  Adding the `no-highlight` class to all code blocks using
-_Delimited Block Definitions_ turns off highlighting unless the
-language class is explicitly set. The [example .rimurc
-file]({example-rimurc}) does this with these custom definitions:
-
-  |code| = '<pre class="no-highlight"><code>|</code></pre>'
-  |indented| = '<pre class="no-highlight"><code>|</code></pre>'
-
 
 .#markdown-compatible
 ## Syntax shared with Markdown

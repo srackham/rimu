@@ -1257,10 +1257,10 @@ Definition syntax:
 - `macros`, `spans` and `specials` block options are not applied to
   Division blocks, Quote blocks or Lists.
 
-The following example generates Code blocks with a `no-highlight`
+The following example generates Code blocks with a `code-block`
 class attribute:
 
-  |code| = '<pre><code class="no-highlight">|</code></pre>'
+  |code| = '<pre><code class="code-block">|</code></pre>'
 
 The following example disables _Macro Invocation_, _Quote_ and
 _Replacement_ processing in Paragraphs:
