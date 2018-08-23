@@ -153,12 +153,12 @@ desc(`Compile and bundle rimu.js and rimu.min.js libraries and generate .map fil
 task('build-rimu', [RIMU_LIB])
 
 file(RIMU_LIB, RIMU_SRC, {async: true}, function () {
-  exec('webpack --config ./src/rimu/webpack.config.js', complete)
+  exec('webpack --mode production --config ./src/rimu/webpack.config.js', complete)
 })
 
 desc(`Compile rimuc to JavaScript executable and generate .map file.`)
 task('build-rimuc', {async: true}, function () {
-  exec('webpack --config ./src/rimuc/webpack.config.js', function () {
+  exec('webpack --mode production --config ./src/rimuc/webpack.config.js', function () {
     shelljs.chmod('+x', RIMUC_JS)
     complete()
   })

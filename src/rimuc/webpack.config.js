@@ -1,7 +1,7 @@
 // Builds rimuc.js Nodejs executable and rimuc.js.map source map file.
 
-let path = require('path');
-let webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   devtool: 'source-map',
