@@ -147,6 +147,9 @@ OPTIONS
     --prepend "{--theme}='THEME'"
     --prepend "{--title}='TITLE'"
 
+  --version
+    Print version number.
+
 LAYOUT OPTIONS
   The following options are available when the --layout option
   specifies a built-in layout:
