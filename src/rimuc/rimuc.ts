@@ -7,6 +7,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as rimu from 'rimu'
 
+const VERSION = '11.1.0'
 const MANPAGE = `NAME
   rimuc - convert Rimu source to HTML
 
@@ -95,6 +96,9 @@ OPTIONS
     --prepend "{--section-numbers}='true'"
     --prepend "{--theme}='THEME'"
     --prepend "{--title}='TITLE'"
+
+  --version
+    Print version number.
 
 LAYOUT OPTIONS
   The following options are available when the --layout option
@@ -210,6 +214,10 @@ outer:
       case '--help':
       case '-h':
         console.log('\n' + MANPAGE)
+        process.exit()
+        break
+      case '--version':
+        console.log(VERSION)
         process.exit()
         break
       case '--lint': // Deprecated in Rimu 10.0.0
