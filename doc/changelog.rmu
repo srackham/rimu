@@ -5,6 +5,18 @@ See the various Github commit logs for a full list of changes:
 [Kotlin]({github-kt}/commits/).
 
 
+## Version 11.1.0 (2018-09-01)
+- Add builtin `plain` [rimuc]({reference}#rimuc-command) layout to all Rimu
+  ports. Previously the `plain` layout was only available from the JavaScript
+  port using the now deprecated _Imported Layouts_ feature.
+- Added `--version` option to Rimu CLI command to print Rimu version number.
+- Fixed the documentation _HTML/Preview_ icon and an error in the [Tables
+  examples]({tips}#tables).
+- Minor refactoring to `rimuc` layouts.
+
+No new features have been added to the Rimu markup language.
+
+
 ## Version 11.0.0 (2018-02-17)
 This release sees tight convergence and the simultaneous release of
 all three Rimu implementations:
