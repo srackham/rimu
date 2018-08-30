@@ -42,12 +42,17 @@ See the [API documentation](#api).
 
 
 .#rimuc-command
-## `rimuc` command
+## Rimu CLI command
+Rimu includes a command-line tool that converts Rimu markup to HTML. There are
+three functionally identical implementations: _rimuc_ (JavaScript
+implementation), _rimukt_ (Kotlin implementation) and _rimugo_ (Go
+implementation).
 
-_rimuc_ is a lightweight Node.js command-line tool that converts Rimu
-markup  to HTML. _rimuc_ has options to generate stand-alone styled
-HTML documents, either from Rimu Markup or [from Markdown or any
-text-to-HTML markup]({tips}#rimuc-html).
+In the documentation the name _rimuc_ refers to all three implementations
+(unless stated otherwise).
+
+_rimuc_ has options to generate stand-alone styled HTML documents, either from
+Rimu Markup or [from Markdown or any text-to-HTML markup]({tips}#rimuc-html).
 
 Run `rimuc --help` to view the `rimuc` manpage:
 
