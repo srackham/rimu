@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # This script is used to verify all 3 Rimu ports (JS, Go, Kotlin) are congruent.
-# If any discrepencies are detetected it exits immediately.
+# If any discrepencies are detected it exits immediately.
 # Run this script before publishing a new Rimu release.
 #
 # - Tests and builds all three Rimu ports.
