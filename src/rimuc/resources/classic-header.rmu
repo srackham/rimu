@@ -249,7 +249,7 @@ hljs.initHighlightingOnLoad();
   .light-background {
     background-color: {--code-background};
     border: none;
-    white-space: pre;
+    white-space: pre-wrap;
   }
   *:not(pre) > code {
     white-space: nowrap;

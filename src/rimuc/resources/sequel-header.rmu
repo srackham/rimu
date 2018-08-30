@@ -226,7 +226,7 @@ hljs.initHighlightingOnLoad();
   .light-background {
     background-color: {--code-background};
     border: none;
-    white-space: pre;
+    white-space: pre-wrap;
   }
 {--!} So hyphenated words like `--word-wrap` are not broken (there is no CSS property that will break on white space only).
   *:not(pre) > code {
