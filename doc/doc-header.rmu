@@ -128,9 +128,12 @@ function replaceSpecialChars(s) {
 }
 </script>
 
-// Clickable icon button to edit the example.
-{example-edit-icon} = '<span class="edit-icon no-print" title="Edit example" onclick="editExample('$1')">&#x270e;</span>'
-{example-preview-icon} = '<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('$1')">&#x2b04;</span>'
+// Clickable icon buttons to edit and preview the example.
+{example-edit-glyph} = '&#x270e;'
+{example-edit-button} = '<span class="edit-icon no-print" title="Edit example" onclick="editExample('$1')">{example-edit-glyph}</span>'
+
+{example-preview-glyph} = '&#x2b04;'
+{example-preview-button} = '<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('$1')">{example-preview-glyph}</span>'
 
 // Macro to generate Rimu markup and rendered example (stacked horizontally).
 // $1 = name of example content macro.
@@ -142,11 +145,11 @@ function replaceSpecialChars(s) {
 <table class="example bordered">
 <tr>
 <td class="example-header">
-{--=$3}{example-edit-icon|$1}
+{--=$3}{example-edit-button|$1}
 Rimu Markup</td>
 <td class="example-header">
 HTML
-{--=$3}{example-preview-icon|$1}
+{--=$3}{example-preview-button|$1}
 Preview
 </td>
 </tr>
@@ -180,7 +183,7 @@ Preview
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
-{--=$3}{example-edit-icon|$1}
+{--=$3}{example-edit-button|$1}
 Rimu Markup</td>
 <td>
 
@@ -193,7 +196,7 @@ Rimu Markup</td>
 </tr>
 <tr><td class="example-header" style="width:10%;">
 HTML
-{--=$3}{example-preview-icon|$1}
+{--=$3}{example-preview-button|$1}
 Preview
 </td>
 <td>

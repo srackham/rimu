@@ -73,7 +73,7 @@ assertions. The list item processing code has been rewritten.
 
 
 ## Version 10.3.1 (2017-11-13)
-- _HTML &#x2b82; Preview_ toggle command added to Rimu documentation live-edit
+- _HTML/Preview_ toggle command added to Rimu documentation live-edit
   examples.
 - Rimu documentation live-edit examples now display Rimu diagnostic messages.
 - Rimu Playground displays all diagnostic messages, not just the most recent

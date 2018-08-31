@@ -30,7 +30,7 @@ To try the Rimu library in your browser:
 2. Paste in this code then press the _Run_ button.
 ``` javascript
 var rimu = require("rimu")
-var html = rimu.render('Hello *Rimu*!', {safeMode:1})
+var html = rimu.render('Hello *Rimu*!')
 ```
 This will output `"<p>Hello <em>Rimu</em>!</p>"`.
 

@@ -25,9 +25,9 @@ There are three functionally identical Rimu implementations:
 
 ### Learning
 - Experiment with Rimu in the [Rimu Playground]({playground}).
-- Click the _Edit icon_ &#x270e; in the examples below to enable live
-  editing of the Rimu source; click the _Preview icon_ &#x2b82; to
-  toogle output between _HTML_ and _Preview_.
+- Click the _Edit icon_ {example-edit-glyph} in the examples below to enable live editing of
+  the Rimu source; click the _Preview icon_&nbsp;{example-preview-glyph} to toogle output
+  between _HTML_ and _Preview_.
 - Read [Rimu Tips]({tips}).
 
 ### Example applications
@@ -42,7 +42,7 @@ See the [API documentation](#api).
 
 
 .#rimuc-command
-## Rimu CLI command
+## CLI command
 Rimu includes a command-line tool that converts Rimu markup to HTML. There are
 three functionally identical implementations: _rimuc_ (JavaScript
 implementation), _rimukt_ (Kotlin implementation) and _rimugo_ (Go
@@ -373,7 +373,7 @@ The `source` argument is a string containing Rimu markup. The return
 value is a string containing the resultant HTML.
 The optional `options` argument controls rendering behaviour.
 
-The `render()` API is stateful: Macros and custom element definitions
+The `render()` API is stateful: macros and custom element definitions
 are retained across API calls along with API options.
 Use the `reset` option to restore the default state.
 
@@ -385,7 +385,7 @@ Node.js example (assumes Rimu has been previously installed from
 .javascript
 ``
 var rimu = require('rimu');
-var html= rimu.render('Hello *Rimu*!', {safeMode:1});
+var html= rimu.render('Hello *Rimu*!', {reset:true, safeMode:2});
 ``
 
 HTML script tag example (the compiled and minified `rimu.min.js` library
@@ -405,7 +405,7 @@ import org.rimumarkup.RenderOptions
 import org.rimumarkup.render
 
 fun main(args: Array<String>) {
-    println(render("Hello *Rimu*!", RenderOptions()))
+    println(render("Hello *Rimu*!", RenderOptions(reset = true, safeMode = 2))
 }
 ``
 
@@ -420,7 +420,7 @@ import (
 )
 
 func main() {
-    fmt.Println(rimu.Render("*Hello Rimu*!", rimu.RenderOptions{}))
+    fmt.Println(rimu.Render("*Hello Rimu*!", rimu.RenderOptions{Reset: true, SafeMode: 2}))
 }
 ```
 
@@ -429,7 +429,6 @@ func main() {
 The `options` argument is a JavaScript object with zero or more of the
 following properties:
 
-.dl-horizontal
 `safeMode`::
 This option has a number value that controls how Rimu renders embedded
 HTML and how Rimu definition and option elements will be processed:
