@@ -135,6 +135,13 @@
     "predicate": "startsWith"
   },
   {
+    "description": "rimuc --version",
+    "args": "--version",
+    "input": "",
+    "expectedOutput": "11.1.0\n",
+    "predicate": "equals"
+  },
+  {
     "description": "HTML DOCTYPE",
     "args": "",
     "input": "",
