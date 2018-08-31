@@ -4,9 +4,12 @@
 # If any discrepencies are detected it exits immediately.
 # Run this script before publishing a new Rimu release.
 #
+# NOTE: Assumes the JS port contains the latest versions of common test fixture
+#       and resource files. If Go or Kotlin ports contain latest versions they
+#       should be copied to the JS project before running this script.
+#
+# - Copies common test fixtures and resource files from JS project to Go and Kotlin projects.
 # - Tests and builds all three Rimu ports.
-# - Checks that common test files are in sync.
-# - Checks that common resource files are in sync.
 # - Compiles the Rimu documentation with all three ports and checks they are identical.
 #
 
@@ -17,21 +20,20 @@ GO=$HOME/local/projects/go/src/github.com/srackham/go-rimu
 JS=$HOME/local/projects/rimu
 KT=$HOME/local/projects/rimu-kt
 
-# Check that common test files are in sync.
-diff $GO/rimu/testdata/rimu-tests.json $JS/test/rimu-tests.json
-diff $GO/rimugo/testdata/rimuc-tests.json $JS/test/rimuc-tests.json
+# Copy test fixtures and example rimurc file.
+cp $JS/test/rimu-tests.json $GO/rimu/testdata/rimu-tests.json
+cp $JS/test/rimuc-tests.json $GO/rimugo/testdata/rimuc-tests.json
+cp $JS/src/examples/example-rimurc.rmu $GO/rimugo/testdata/example-rimurc.rmu
 
-diff $GO/rimu/testdata/rimu-tests.json $KT/src/test/resources/rimu-tests.json
-diff $GO/rimugo/testdata/rimuc-tests.json $KT/src/test/resources/rimuc-tests.json
+cp $JS/test/rimu-tests.json $KT/src/test/resources/rimu-tests.json
+cp $JS/test/rimuc-tests.json $KT/src/test/resources/rimuc-tests.json
+cp $JS/src/examples/example-rimurc.rmu $KT/src/test/fixtures/example-rimurc.rmu
 
-diff $JS/src/examples/example-rimurc.rmu $GO/rimugo/testdata/example-rimurc.rmu
-diff $JS/src/examples/example-rimurc.rmu $KT/src/test/fixtures/example-rimurc.rmu
-
-# Check that common resource files are in sync.
+# Copy resource files.
 cd $JS/src/rimuc/resources
 for f in *; do
-    diff $f $GO/rimugo/resources/$f
-    diff $f $KT/src/main/resources/org/rimumarkup/$f
+    cp $f $GO/rimugo/resources/$f
+    cp $f $KT/src/main/resources/org/rimumarkup/$f
 done
 
 # Build and test all ports.
