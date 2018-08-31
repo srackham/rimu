@@ -6,18 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <title>Rimu Change Log</title>
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    white-space: inherit;
-    box-sizing: border-box;
-  }
-  body {
+  :root {
     font-size: 16px;
     line-height: 20px;
     color: #333333;
     background-color: white;
     font-family: Helvetica, Arial, sans-serif;
+  }
+  * {
+    margin: 0;
+    padding: 0;
+    white-space: inherit;
+    box-sizing: border-box;
   }
   h1, h2, h3, h4, h5, h6 {
     margin: 10px 0;
@@ -113,7 +113,7 @@
   .light-background {
     background-color: #f8f8f8;
     border: none;
-    white-space: pre;
+    white-space: pre-wrap;
   }
   *:not(pre) > code {
     white-space: nowrap;
@@ -339,17 +339,17 @@
   @media not screen and (min-width: 1px) and (max-width: 800px) {
     #sidebar {
       opacity: 1;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.2s ease;
     }
     body.hide-toc #sidebar {
       width: 0;
       opacity: 0;
     }
     #main {
-      transition: margin-left 0.3s ease;
+      transition: margin-left 0.2s ease;
     }
     body.hide-toc #main {
-      transition: margin-left 0.3s ease;
+      transition: margin-left 0.2s ease;
     }
   }
   @media screen and (min-width: 1px) and (max-width: 800px) {
@@ -417,6 +417,11 @@
 <p>See the various Github commit logs for a full list of changes:
 <a href="https://github.com/srackham/rimu/commits/">JavaScript</a>, <a href="https://github.com/srackham/go-rimu/commits/">Go</a>,
 <a href="https://github.com/srackham/rimu-kt/commits/">Kotlin</a>.</p>
+<h2 id="version-11-1-0-2018-09-01">Version 11.1.0 (2018-09-01)</h2>
+<ul><li>Add builtin <code>plain</code> <a href="reference.html#rimuc-command">rimuc</a> layout to all Rimu
+  ports. Previously the <code>plain</code> layout was only available from the JavaScript
+  port using the now deprecated <em>Imported Layouts</em> feature.</li><li>Added <code>--version</code> option to Rimu CLI command to print Rimu version number.</li><li>Fixed the documentation <em>HTML/Preview</em> icon and an error in the <a href="tips.html#tables">Tables
+  examples</a>.</li><li>Minor refactoring to <code>rimuc</code> layouts.</li></ul><p>No new features have been added to the Rimu markup language.</p>
 <h2 id="version-11-0-0-2018-02-17">Version 11.0.0 (2018-02-17)</h2>
 <p>This release sees tight convergence and the simultaneous release of
 all three Rimu implementations:</p>
@@ -447,7 +452,7 @@ assertions. The list item processing code has been rewritten.</p>
   list are applied to the next list item or attached list item
   element.  This facilitates <a href="tips.html#styling-list-items">styling and linking within
   lists</a>.</li></ul><h2 id="version-10-3-1-2017-11-13">Version 10.3.1 (2017-11-13)</h2>
-<ul><li><em>HTML &#x2b82; Preview</em> toggle command added to Rimu documentation live-edit
+<ul><li><em>HTML/Preview</em> toggle command added to Rimu documentation live-edit
   examples.</li><li>Rimu documentation live-edit examples now display Rimu diagnostic messages.</li><li>Rimu Playground displays all diagnostic messages, not just the most recent
   one.</li><li><em>Line Macro</em> errors no longer generate duplicate <code>undefined macro</code> errors.</li></ul><h2 id="version-10-3-0-2017-11-01">Version 10.3.0 (2017-11-01)</h2>
 <ul><li>Added <a href="reference.html#rimuc-command">rimuc</a> command <code>--pass</code> option which passes the stdin input verbatim
@@ -567,7 +572,7 @@ diagnostic messages from the Rimu library.</p>
   Explorer 11 and older).</li><li><strong>BREAKING CHANGE</strong>: If a <a href="reference.html#division-block">Division
   Block</a> has no HTML attributes the
   <code>&lt;div&gt;</code> and <code>&lt;/div&gt;</code> tags are not emitted.  Use this work-around if
-  you want backward compatibility:<pre class="no-highlight"><code>// Redefine Division block so it always has at least one
+  you want backward compatibility:<pre><code>// Redefine Division block so it always has at least one
 // attribute to ensure the div tags are always emitted.
 |division| = '&lt;div class="dummy"&gt;|&lt;/div&gt;'</code></pre>
 </li><li><strong>BREAKING CHANGE</strong>: The rimuc <code>--styled</code> option no longer uses
@@ -602,7 +607,7 @@ diagnostic messages from the Rimu library.</p>
    of the document window (not the title header).</li><li>Bug fixes.</li></ul><h2 id="version-7-3-0-2016-04-15">Version 7.3.0 (2016-04-15)</h2>
 <ul><li>The <code>rimuc</code> command now supports <a href="tips.html#themes">named themes</a> with
   the new <code>--theme</code> option.  The following example styles the output
-  using the built-in <em>graystone</em> theme:<pre class="no-highlight"><code>rimuc --styled --theme graystone document.rmu</code></pre>
+  using the built-in <em>graystone</em> theme:<pre><code>rimuc --styled --theme graystone document.rmu</code></pre>
 </li></ul><h2 id="version-7-2-1-2016-04-12">Version 7.2.1 (2016-04-12)</h2>
 <ul><li>Documentation updates.</li><li>Bug fixes.</li></ul><h2 id="version-7-2-0-2016-04-06">Version 7.2.0 (2016-04-06)</h2>
 <ul><li>Added <code>safeMode</code> bit-mask 8 (add 8 to <code>safeMode</code>) to unconditionally
@@ -631,7 +636,7 @@ diagnostic messages from the Rimu library.</p>
   packages</a>
   feature. The upshot being that Rimu's TypeScript declarations are loaded
   automatically from the <em>rimu</em> npm package when you import the Rimu
-  library from a TypeScript source file:<pre class="no-highlight"><code>// Automatically loads node_modules/rimu/bin/rimu.d.ts
+  library from a TypeScript source file:<pre><code>// Automatically loads node_modules/rimu/bin/rimu.d.ts
 import Rimu = require('rimu')</code></pre>
 </li><li>Use Webpack to minify the Rimu library &mdash; this reduced the minified
   <code>rimu.min.js</code> to 18.7KB (previously was 28.2KB).</li><li>Upgrade all build tools to latest versions.</li></ul><h2 id="version-6-1-0-2015-08-19">Version 6.1.0 (2015-08-19)</h2>
@@ -681,12 +686,12 @@ suppress these warnings escape the macro invocation with a backslash).</p>
 <p>Added <code>--title TITLE</code>, <code>--highlightjs</code>, <code>--mathjax</code>, <code>--toc</code>, <code>--section-numbers</code>
 styling macro shortcut options to <code>rimuc</code>. The preceding example can now be
 shortened to:</p>
-<pre class="no-highlight"><code>rimuc --styled --toc README.md</code></pre>
+<pre><code>rimuc --styled --toc README.md</code></pre>
 <h2 id="version-5-2-0-2015-06-20">Version 5.2.0 (2015-06-20)</h2>
 <p>The <code>rimuc</code> command can now generate a table of contents: If the <code>--toc</code> macro is defined
 and is not blank then the <code>rimuc</code> command <code>--styled</code> option generates a table of contents.
 For example:</p>
-<pre class="no-highlight"><code>rimuc --styled --prepend "{--toc}='yes'" README.md</code></pre>
+<pre><code>rimuc --styled --prepend "{--toc}='yes'" README.md</code></pre>
 <p>Top-level <code>h1</code>, <code>h2</code> and <code>h3</code> HTML tags contribute to the table of contents.</p>
 <h2 id="version-5-1-0-2015-06-13">Version 5.1.0 (2015-06-13)</h2>
 <p>New features:</p>
@@ -694,7 +699,7 @@ For example:</p>
   will be injected into the block's opening HTML tag (this is
   an alternative to using a <em>Block Attributes</em> element and was
   added primarily for compatibility with Github Flavored Markdown's code block highlighting).
-  For example:<pre class="no-highlight"><code>``` javascript
+  For example:<pre><code>``` javascript
 if (message) {
   console.error('Error: ' + message);
 }
@@ -736,20 +741,17 @@ compatibility. It also includes some breaking changes.</p>
   be dropped). backtick rationale:<ol><li>Consistency: aligned with use of backtick to quote inline code.</li><li>Familarity: looks like a Github Flavored Markdown fenced code block.</li></ol></li></ul><h2 id="version-3-0-2013-10-28">Version 3.0 (2013-10-28)</h2>
 <ul><li>Added <em>Delimited Block</em> definitions.</li><li>Enhanced and refined Macros.</li><li>Many other enhancements, additions and documentation updates.</li><li><em>Indented Paragraphs</em> and <em>Code Blocks</em> no longer expand macro
   invocations by default. To reinstate old behavior use these delimited
-  block definitions:<pre class="no-highlight"><code>|code| = '+macros'
+  block definitions:<pre><code>|code| = '+macros'
 |indented| = '+macros'</code></pre>
 </li><li><em>Indented Paragraph</em> emits same code as <em>Code Block</em>. To reinstate
-  old behavior use this delimited block definition:<pre class="no-highlight"><code>|indented| = '&lt;pre&gt;|&lt;/pre&gt;'</code></pre>
+  old behavior use this delimited block definition:<pre><code>|indented| = '&lt;pre&gt;|&lt;/pre&gt;'</code></pre>
 </li><li>Dropped the deprecated <em>+</em> line-break, use the newer backslash
   line-break. To reinstate the old <em>+</em> line-break use this replacement
-  definition:<pre class="no-highlight"><code>/[\\ ]\+(\n|$)/g = '&lt;br&gt;$1'</code></pre>
+  definition:<pre><code>/[\\ ]\+(\n|$)/g = '&lt;br&gt;$1'</code></pre>
 </li></ul><h2 id="version-2-2013-07-26">Version 2 (2013-07-26)</h2>
 <ul><li>Added Quote and Replacements definitions.</li><li>A number of other enhancements, additions and documentation updates.</li></ul>
 </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
 <script>
 window.onload = function() {
   document.getElementById('sidebar').appendChild(document.getElementById('toc')); // Ensure custom TOC is child of sidebar.

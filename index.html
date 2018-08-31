@@ -7,18 +7,18 @@
 <title>Rimu Markup</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    white-space: inherit;
-    box-sizing: border-box;
-  }
-  body {
+  :root {
     font-size: 16px;
     line-height: 20px;
     color: #333333;
     background-color: white;
     font-family: Helvetica, Arial, sans-serif;
+  }
+  * {
+    margin: 0;
+    padding: 0;
+    white-space: inherit;
+    box-sizing: border-box;
   }
   h1, h2, h3, h4, h5, h6 {
     margin: 10px 0;
@@ -115,7 +115,7 @@
   .light-background {
     background-color: #f8f8f8;
     border: none;
-    white-space: pre;
+    white-space: pre-wrap;
   }
   *:not(pre) > code {
     white-space: nowrap;
@@ -341,17 +341,17 @@
   @media not screen and (min-width: 1px) and (max-width: 800px) {
     #sidebar {
       opacity: 1;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.2s ease;
     }
     body.hide-toc #sidebar {
       width: 0;
       opacity: 0;
     }
     #main {
-      transition: margin-left 0.3s ease;
+      transition: margin-left 0.2s ease;
     }
     body.hide-toc #main {
-      transition: margin-left 0.3s ease;
+      transition: margin-left 0.2s ease;
     }
   }
   @media screen and (min-width: 1px) and (max-width: 800px) {
@@ -425,24 +425,24 @@ and Markdown.</p>
     Single JavaScript file (less than 22KB minified) that can be dropped
     onto a Web page or used as a Node module.</li><li>A <a href="https://github.com/srackham/rimu-kt/">Kotlin port</a> for the JVM platform.</li><li>A <a href="https://github.com/srackham/go-rimu/">Go port</a>.</li></ul></li></ul><h2 id="quick-start">Quick start</h2>
 <p>To try the Rimu library in your browser:</p>
-<ol><li>Open the <a href="https://npm.runkit.com/rimu">Rimu NPM Runkit page</a> in your browser.</li><li>Paste in this code then press the <em>Run</em> button.<pre class="javascript no-highlight"><code>var rimu = require("rimu")
-var html = rimu.render('Hello *Rimu*!', {safeMode:1})</code></pre>
+<ol><li>Open the <a href="https://npm.runkit.com/rimu">Rimu NPM Runkit page</a> in your browser.</li><li>Paste in this code then press the <em>Run</em> button.<pre class="javascript"><code>var rimu = require("rimu")
+var html = rimu.render('Hello *Rimu*!')</code></pre>
 </li></ol><p>This will output <code>"&lt;p&gt;Hello &lt;em&gt;Rimu&lt;/em&gt;!&lt;/p&gt;"</code>.</p>
 <h2 id="installing-rimu">Installing Rimu</h2>
 <p>Install Rimu as a Node.js module (includes the <code>rimu</code> library and the
 <code>rimuc</code> command-line tool):</p>
-<pre class="no-highlight"><code>sudo npm install -g rimu</code></pre>
+<pre><code>sudo npm install -g rimu</code></pre>
 <p>Run a simple test from the command prompt to check <code>rimuc</code> is working:</p>
-<pre class="no-highlight"><code>echo 'Hello *Rimu*!' | rimuc</code></pre>
+<pre><code>echo 'Hello *Rimu*!' | rimuc</code></pre>
 <p>This should output:</p>
-<pre class="no-highlight"><code>&lt;p&gt;Hello &lt;em&gt;Rimu&lt;/em&gt;!&lt;/p&gt;</code></pre>
+<pre><code>&lt;p&gt;Hello &lt;em&gt;Rimu&lt;/em&gt;!&lt;/p&gt;</code></pre>
 <h2 id="building-rimu">Building Rimu</h2>
 <p>To build Rimu and the Rimu documentation from source:</p>
-<ol><li>Install the Git repository from <a href="https://github.com/srackham/rimu">Github</a>.<pre class="no-highlight"><code>git clone git@github.com:srackham/rimu.git</code></pre>
-</li><li>Install gh-pages sub-repository:<pre class="no-highlight"><code>cd rimu
+<ol><li>Install the Git repository from <a href="https://github.com/srackham/rimu">Github</a>.<pre><code>git clone git@github.com:srackham/rimu.git</code></pre>
+</li><li>Install gh-pages sub-repository:<pre><code>cd rimu
 git clone git@github.com:srackham/rimu.git -b gh-pages gh-pages</code></pre>
-</li><li>Install dependencies:<pre class="no-highlight"><code>npm install</code></pre>
-</li><li>Build Rimu:<pre class="no-highlight"><code>jake build</code></pre>
+</li><li>Install dependencies:<pre><code>npm install</code></pre>
+</li><li>Build Rimu:<pre><code>jake build</code></pre>
 </li></ol><h2 id="learn-more">Learn more</h2>
 <p>Read the documentation and experiment with Rimu in the <a href="http://srackham.github.io/rimu/rimuplayground.html">Rimu
 Playground</a> or open the
@@ -457,7 +457,10 @@ JavaScript library works with IE11, Edge, Firefox, Chrome and Android.</p>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
+<script>
+hljs.configure({languages: []});
+hljs.initHighlightingOnLoad();
+</script>
 <script>
 window.onload = function() {
   document.getElementById('sidebar').appendChild(document.getElementById('toc')); // Ensure custom TOC is child of sidebar.
