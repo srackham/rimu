@@ -16,7 +16,7 @@
 set -eux
 
 # Project directories.
-GO=$HOME/local/projects/go/src/github.com/srackham/go-rimu
+GO=$HOME/local/projects/go-rimu
 JS=$HOME/local/projects/rimu
 KT=$HOME/local/projects/rimu-kt
 
