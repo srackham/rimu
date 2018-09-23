@@ -13,8 +13,7 @@ if exists("b:current_syntax")
 endif
 
 syn clear
-syn sync fromstart
-syn sync linebreaks=100
+syn sync minlines=100
 
 syn keyword rimuTodo TODO FIXME XXX ZZZ DEPRECATED
 
@@ -25,7 +24,7 @@ syn match rimuSpanLineBreak / \\$/
 syn match rimuSpanEntity /\\\@<!&[#a-zA-Z]\w\{-1,};/
 syn match rimuSpanURL /\\\@<!<\S\+\(|\_.\{-}\)\?>/ contains=rimuURLParams
 syn match rimuURLParams /|\_[^>]*/ contained contains=rimuSpanQuote.*
-syn match rimuSpanURL /[\\]\@<!!\?\[\_.\{-}](\S\{-1,})/ contains=rimuURLText
+syn match rimuSpanURL /[\\]\@<!!\?\[\(\n\|[^[]\)\{-}](\S\{-1,})/ contains=rimuURLText
 syn match rimuURLText /\[\@<=\_.\{-}]\@=/ contained containedin=rimuSpanURL contains=rimuSpanQuote.*
 syn match rimuSpanHTML /\\\@<!<[!\/]\?[a-zA-Z-]\+\(\_s\_.\{-}\|\)>/
 syn match rimuMacroInvocation /\\\@<!{[0-9A-Za-z_-]\+\([?!=|]\_.\{-}\)\?}/ contains=rimuDefinitionParams containedin=ALLBUT,rimuComment,rimuCodeBlock,rimuIndentedParagraph
