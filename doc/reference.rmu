@@ -408,6 +408,7 @@ fun main(args: Array<String>) {
     println(render("Hello *Rimu*!", RenderOptions(reset = true, safeMode = 2))
 }
 ``
+See the [rimu-kt README]({github-kt}).
 
 #### Go
 ``` go
@@ -416,14 +417,14 @@ package main
 import (
     "fmt"
 
-    "github.com/srackham/go-rimu/rimu"
+    "github.com/srackham/go-rimu/v11/rimu"
 )
 
 func main() {
     fmt.Println(rimu.Render("*Hello Rimu*!", rimu.RenderOptions{Reset: true, SafeMode: 2}))
 }
 ```
-
+See the [go-rimu README]({github-go}).
 
 ### API options
 The `options` argument is a JavaScript object with zero or more of the
