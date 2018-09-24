@@ -797,18 +797,20 @@ import org.rimumarkup.render
 fun main(args: Array&lt;String&gt;) {
     println(render("Hello *Rimu*!", RenderOptions(reset = true, safeMode = 2))
 }</code></pre>
+<p>See the <a href="https://github.com/srackham/rimu-kt">rimu-kt README</a>.</p>
 <h4 id="go">Go</h4>
 <pre class="go"><code>package main
 
 import (
     "fmt"
 
-    "github.com/srackham/go-rimu/rimu"
+    "github.com/srackham/go-rimu/v11/rimu"
 )
 
 func main() {
     fmt.Println(rimu.Render("*Hello Rimu*!", rimu.RenderOptions{Reset: true, SafeMode: 2}))
 }</code></pre>
+<p>See the <a href="https://github.com/srackham/go-rimu">go-rimu README</a>.</p>
 <h3 id="api-options">API options</h3>
 <p>The <code>options</code> argument is a JavaScript object with zero or more of the
 following properties:</p>
