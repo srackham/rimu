@@ -12,6 +12,8 @@ if exists("b:current_syntax")
   finish
 endif
 
+set maxmempattern=2000000
+
 syn clear
 syn sync linebreaks=100
 syn sync minlines=100
