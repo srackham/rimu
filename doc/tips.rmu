@@ -341,9 +341,7 @@ The `scoped` attribute was [removed from the HTML5 spec in May
 "due to lack of implementer interest".  But the [HTML 5.2 Working
 Draft](https://www.w3.org/TR/2017/WD-html52-20170718/document-metadata.html#the-style-element)
 (July 2017) allows style tags "In the body, where flow content is
-expected." and as of Febuary 2018 the [Nu W3C
-validator](http://validator.w3.org/nu/) no longer treats style tags in
-the body as an error.
+expected."
 
 In practice all popular browsers allow `style` elements outside the
 `head` element (the styles from these elements are applied globally
@@ -622,7 +620,31 @@ difficult to read.
 Parametrized macros can be used to generate row oriented tables:
 
 .-macros
-{table-macro-example} = '{person} = '<table style="margin-bottom:0.3em"><tr>
+{table-macro-example} = '<table style="border-spacing:0.6em; border-collapse:separate">
+
+{row} = '<tr>
+<td style="width:25%">$$1</td>
+<td style="width:20%">$$2</td>
+<td style="width:20%">$$3</td>
+<td style="width:35%">$$4</td>
+</tr>
+'\
+
+{row|**Command** |**Should be named** |**Applied to** |**Description**}
+
+{row|Discard Snapshot (_Ctrl+Shift+D_) |Merge with Parent |Snapshot |Merges the snapshot file into the parent snapshot or disk image file and then deletes the now redundant snapshot file.}
+
+{row|Revert to Current Snapshot (_Ctrl+Shift+R_) | |Current State |Deletes the current state returning the VM state to the most recent snapshot.}
+
+{row|Discard Current Snapshot and State (_Ctrl+Shift+B_) |Delete Current Snapshot and State |Current State |Deletes the current state and the most recent snapshot returning the VM state to that of the penultimate snapshot. Use this command to delete snapshots.}
+
+</table>
+'
+
+{generate-rendered-example-2|table-macro-example|Table macro example 1}
+
+.-macros
+{table-macro-example-2} = '{person} = '<table style="margin-bottom:0.3em"><tr>
 <td style="width:40%">$$1</td>
 <td style="width:20%">$$2</td>
 <td>$$3</td></tr></table>
@@ -636,9 +658,11 @@ Parametrized macros can be used to generate row oriented tables:
 {person| Peg Legge   | **30** | Female}
 '
 
-{generate-rendered-example-2|table-macro-example|Row oriented tables}
+{generate-rendered-example-2|table-macro-example-2|Table macro example 2}
 
-- _Block HTML elements_ must be terminated with a blank line.
+- _Block HTML elements_ must be followed by a blank line.
+- The macro invocations emit HTML (block) elements and must be contained on a
+  single line otherwise they will be processed as paragraphs.
 - Double-dollar macro parameters are necessary because text formatting
   is not expanded and special characters are not escaped inside [Block
   HTML elements]({reference}#block-html-elements).

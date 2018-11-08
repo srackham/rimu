@@ -1137,8 +1137,11 @@ _______________________________________________________
 
 Notes:
 
-1. The `![alt](url)` syntax is Markdown compatible. To maintain
-   Markdown compatibility it is always processed as an inline element.
+1. The `![alt](url)` syntax is Markdown compatible. To maintain Markdown
+   compatibility it is always processed as an inline element i.e. a standalone
+   image will be enclosed within an HTML paragraph element. Use a standalone
+   HTML `img` element if you want an image to be rendered as a block element
+   (without enclosing paragraph tags).
 
 {images-example} = 'An image can be rendered as a block element:
 
