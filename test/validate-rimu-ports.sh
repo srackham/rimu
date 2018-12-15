@@ -46,15 +46,15 @@ cd $KT
 
 # Compile Rimu documentation with all ports and compare.
 for doc in reference tips changelog; do
-    ARGS='--no-rimurc --theme legend --custom-toc --header-links --layout sequel --lang en --title "Rimu Reference" --highlightjs --prepend "{generate-examples}='"'yes'"'"  ./src/examples/example-rimurc.rmu ./doc/doc-header.rmu'
+    ARGS='--no-rimurc --theme legend --custom-toc --header-links --layout sequel --lang en --title "Rimu Reference" --highlightjs --prepend "{generate-examples}='"'yes'"'"  ./src/examples/example-rimurc.rmu ./docs/doc-header.rmu'
     GO_DOC=/tmp/$doc-go.html
     JS_DOC=/tmp/$doc-js.html
     KT_DOC=/tmp/$doc-kt.html
 
     cd $JS
-    eval node bin/rimuc.js --output $JS_DOC $ARGS ./doc/$doc.rmu
-    eval rimugo --output $GO_DOC $ARGS ./doc/$doc.rmu
-    eval $KT/build/install/rimu-kt/bin/rimukt --output $KT_DOC $ARGS ./doc/$doc.rmu
+    eval node bin/rimuc.js --output $JS_DOC $ARGS ./docs/$doc.rmu
+    eval rimugo --output $GO_DOC $ARGS ./docs/$doc.rmu
+    eval $KT/build/install/rimu-kt/bin/rimukt --output $KT_DOC $ARGS ./docs/$doc.rmu
 
     diff $JS_DOC $GO_DOC
     diff $JS_DOC $KT_DOC

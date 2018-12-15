@@ -19,7 +19,7 @@ let RIMU_LIB_MIN = 'lib/rimu.min.js'
 let RIMU_SRC = shelljs.ls('src/rimu/*.ts')
 let RIMU_TSD = 'typings/rimu.d.ts'
 let TESTS = shelljs.ls('test/*.js')
-let GH_PAGES_DIR = 'gh-pages/'
+let DOCS_DIR = 'docs/'
 let RIMUC_JS = 'bin/rimuc.js'
 let RIMUC_TS = 'src/rimuc/rimuc.ts'
 let RIMUC_EXE = 'node ' + RIMUC_JS
@@ -27,37 +27,37 @@ let RIMUC_EXE = 'node ' + RIMUC_JS
 let DOCS = [
   {
     src: 'README.md',
-    dst: 'doc/index.html',
+    dst: DOCS_DIR + 'index.html',
     title: 'Rimu Markup',
     rimucOptions: '--highlightjs'
   },
   {
-    src: 'doc/changelog.rmu',
-    dst: 'doc/changelog.html',
+    src: DOCS_DIR + 'changelog.rmu',
+    dst: DOCS_DIR + 'changelog.html',
     title: 'Rimu Change Log',
     rimucOptions: ''
   },
   {
-    src: 'doc/reference.rmu',
-    dst: 'doc/reference.html',
+    src: DOCS_DIR + 'reference.rmu',
+    dst: DOCS_DIR + 'reference.html',
     title: 'Rimu Reference',
     rimucOptions: '--highlightjs --prepend "{generate-examples}=\'yes\'"'
   },
   {
-    src: 'doc/tips.rmu',
-    dst: 'doc/tips.html',
+    src: DOCS_DIR + 'tips.rmu',
+    dst: DOCS_DIR + 'tips.html',
     title: 'Rimu Tips',
     rimucOptions: '--highlightjs --mathjax --prepend "{generate-examples}=\'yes\'"'
   },
   {
-    src: 'doc/rimuplayground.rmu',
-    dst: 'doc/rimuplayground.html',
+    src: DOCS_DIR + 'rimuplayground.rmu',
+    dst: DOCS_DIR + 'rimuplayground.html',
     title: 'Rimu Playground',
     rimucOptions: '--prepend "{generate-examples}=\'yes\'"'
   },
   {
-    src: 'doc/gallery.rmu',
-    dst: 'doc/gallery.html',
+    src: DOCS_DIR + 'gallery.rmu',
+    dst: DOCS_DIR + 'gallery.html',
     title: 'Rimu layout and themes gallery',
     rimucOptions: ''
   }
@@ -127,11 +127,11 @@ function exec(commands, callback, options = {}) {
 desc(`Run tests.`)
 task('default', ['test'])
 
-desc(`build, lint and test rimu and tools, build gh-pages, validate HTML. Use vers=x.y.z argument to set a new version number.`)
-task('build', ['test', 'lint', 'version', 'build-gh-pages', 'validate-html'])
+desc(`build, lint and test rimu and tools, build documentation, validate HTML. Use vers=x.y.z argument to set a new version number.`)
+task('build', ['test', 'lint', 'version', 'build-docs', 'validate-html'])
 
 desc(`Update version number, tag and push to Github and npm. Use vers=x.y.z argument to set a new version number. Finally, rebuild and publish docs website.`)
-task('release', ['build', 'tag', 'publish', 'release-gh-pages'])
+task('release', ['build', 'tag', 'publish'])
 
 desc(`Lint TypeScript, Javascript and JSON files.`)
 task('lint', {async: true}, function () {
@@ -164,7 +164,7 @@ task('build-rimuc', {async: true}, function () {
   })
 })
 
-desc(`Generate HTML documentation`)
+desc(`Generate documentation`)
 task('build-docs', ['build-rimu', 'build-gallery'], {async: true}, function () {
   let commands = DOCS.map(doc =>
     RIMUC_EXE +
@@ -174,8 +174,9 @@ task('build-docs', ['build-rimu', 'build-gallery'], {async: true}, function () {
     ' --lang en' +
     ' --title "' + doc.title + '"' +
     ' ' + doc.rimucOptions + ' ' +
-    ' ./src/examples/example-rimurc.rmu ./doc/doc-header.rmu ' + doc.src
+    ' ./src/examples/example-rimurc.rmu ' + DOCS_DIR + 'doc-header.rmu ' + doc.src
   )
+  shelljs.cp('-f', RIMU_LIB_MIN, DOCS_DIR)
   exec(commands, complete)
 })
 
@@ -218,17 +219,17 @@ task('build-gallery', ['build-rimu'], {async: true}, function () {
       ' --custom-toc' +
       ' --no-rimurc' +
       ' ' + options +
-      ' --output ./doc/' + outfile +
+      ' --output ' + DOCS_DIR + outfile +
       ' --prepend "{gallery-options}=\'' + options.replace(/(["{])/g, '\\$1') + '\'"' +
       ' ./src/examples/example-rimurc.rmu' +
-      ' ./doc/doc-header.rmu' +
-      ' ./doc/gallery-example-template.rmu'
+      ' ' + DOCS_DIR + 'doc-header.rmu' +
+      ' ' + DOCS_DIR + 'gallery-example-template.rmu'
     commands.push(command)
   })
   exec(commands, complete)
 })
 
-desc(`Generate gallery index Rimu markup for doc/gallery.rmu`)
+desc('Generate gallery index Rimu markup for ' + DOCS_DIR + 'gallery.rmu')
 task('gallery-markup', function () {
   forEachGalleryDocument(function (options, outfile, layout, theme) {
       let link = '[`' + options.replace(/{/g, '\\{') + '`](' + outfile + ')'
@@ -287,35 +288,4 @@ task('push', ['test'], {async: true}, function () {
 desc(`Publish to npm.`)
 task('publish-npm', {async: true}, ['test', 'build-rimu'], function () {
   exec('npm publish', complete)
-})
-
-desc(`Rebuild and validate documentation then commit and publish to GitHub Pages`)
-task('release-gh-pages', ['build-gh-pages', 'commit-gh-pages', 'push-gh-pages'])
-
-desc(`Generate documentation and copy to local gh-pages repo`)
-task('build-gh-pages', ['build-rimu', 'build-docs'], function () {
-  shelljs.cp('-f', HTML.concat(RIMU_LIB_MIN), GH_PAGES_DIR)
-  shelljs.cp('-f', 'doc/*-example.html', GH_PAGES_DIR)
-})
-
-desc(`Commit changes to local gh-pages repo. Use msg='commit message' to set a custom commit message.`)
-task('commit-gh-pages', ['test'], {async: true}, function () {
-  let msg = process.env.msg
-  if (!msg) {
-    msg = 'rebuilt project website'
-  }
-  shelljs.cd(GH_PAGES_DIR)
-  exec('git commit -a -m "' + msg + '"', function () {
-    shelljs.cd('..')
-    complete()
-  })
-})
-
-desc(`Push gh-pages commits to Github.`)
-task('push-gh-pages', ['test'], {async: true}, function () {
-  shelljs.cd(GH_PAGES_DIR)
-  exec('git push origin gh-pages', function () {
-    shelljs.cd('..')
-    complete()
-  })
 })

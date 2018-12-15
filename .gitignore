@@ -4,7 +4,6 @@ bin/
 .npmrc
 .vscode/
 gitignore/
-gh-pages/
+gh-pages.OLD/
 lib/
 node_modules/
-doc/*.html

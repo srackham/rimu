@@ -56,16 +56,12 @@ To build Rimu and the Rimu documentation from source:
 
         git clone git@github.com:srackham/rimu.git
 
-2. Install gh-pages sub-repository:
+2. Install dependencies:
 
         cd rimu
-        git clone git@github.com:srackham/rimu.git -b gh-pages gh-pages
-
-3. Install dependencies:
-
         npm install
 
-4. Build Rimu:
+3. Build Rimu:
 
         jake build
 

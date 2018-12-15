@@ -1,0 +1,2083 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<title>Rimu Tips</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+<style>
+  :root {
+    font-size: 16px;
+    line-height: 20px;
+    color: #333333;
+    background-color: white;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  * {
+    margin: 0;
+    padding: 0;
+    white-space: inherit;
+    box-sizing: border-box;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    margin: 10px 0;
+    color: #34495e;
+  }
+  h1 { font-size: 2.2rem; line-height: 40px;}
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.2rem; }
+  h4 { font-size: 1.1rem; }
+  h5 { font-size: 1.0rem; }
+  h6 { font-size: 0.9rem; }
+  h2, h3, h4, h5, h6 {
+    line-height: normal;
+    margin-top: 1.0rem;
+    margin-bottom: 0.2rem;
+  }
+  h2 {
+    margin-top: 1.5rem;
+    border-bottom: 1px solid #dddddd;
+  }
+  img {
+    max-width: 100%;
+  }
+  table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+  }
+  td, th {
+    text-align: left;
+    vertical-align: top;
+  }
+  table.bordered > tbody > tr > th,
+  table.bordered > tbody > tr > td {
+    border: 1px solid #dddddd;
+  }
+  a, a:hover {
+    color: #428bca;
+  }
+  a {
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  p, pre, li, dt, dd, blockquote p {
+    line-height: 1.45;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  ul, ol {
+    padding: 0;
+    margin: 0 0 10px 25px;
+  }
+  dt {
+    margin-bottom: 0;
+    font-style: italic;
+  }
+  dd {
+    margin-left: 1.0rem;
+    margin-top: 0;
+  }
+  blockquote {
+    padding: 0 0 0 15px;
+    border: none;
+    border-left: 5px solid #eeeeee;
+    font-family: Georgia, Times, serif;
+    width: 80%;
+    margin: 1.5em 0;
+    color: #383838;
+  }
+  .cite {
+    color: #777;
+    padding: 5px 0;
+  }
+  .cite::before {
+    content: "\2014 \2009";
+  }
+  code {
+    font-family: Consolas, "Andale Mono", Monaco, monospace;
+    font-size: 90%;
+    background-color: #f8f8f8;
+  }
+  .hljs { background-color: #f8f8f8; }
+  pre {
+    font-family: Consolas, "Andale Mono", Monaco, monospace;
+    line-height: normal;
+    white-space: pre-wrap;
+    background-color: #f8f8f8;
+    border: 1px solid #dddddd;
+    border-radius: 0;
+    padding: 6px;
+  }
+  .light-background {
+    background-color: #f8f8f8;
+    border: none;
+    white-space: pre-wrap;
+  }
+  *:not(pre) > code {
+    white-space: nowrap;
+  }
+  .dl-horizontal > dd {
+    margin-top: 1.0rem;
+  }
+  pre > code {
+    background-color: inherit;
+    padding: 0;
+  }
+  pre span {
+    opacity: 1 !important;
+  }
+  .verse {
+    margin: 1.5em 20px;
+  }
+  div.verse p, p.verse {
+    font-family: Georgia, Times, serif;
+    white-space: pre-wrap;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  .sidebar {
+    border: 1px solid #dddddd;
+    border-radius: 0;
+    background: #ffffee;
+    padding: 10px;
+    margin: 1.5em 0;
+  }
+  div.sidebar *:first-child {
+    margin-top: 0.2rem;
+  }
+  .page-break {
+    page-break-before: always;
+  }
+  .no-page-break {
+    page-break-inside: avoid;
+  }
+  .align-left {
+    text-align: left;
+  }
+  .align-center {
+    text-align: center;
+  }
+  .align-right {
+    text-align: right;
+  }
+  .preserve-breaks {
+    white-space: pre;
+  }
+  .line-breaks {
+    white-space: pre-wrap;
+  }
+  .dl-horizontal:before, .dl-horizontal:after {
+    display: table;
+    content: "";
+    line-height: 0;
+  }
+  .dl-horizontal:after {
+    clear: both;
+  }
+  .dl-horizontal > dt {
+    float: left;
+    clear: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+    margin-top: 1.0rem;
+    width: 25%;
+  }
+  .dl-horizontal > dd {
+    margin-left: 25%;
+    padding-left: 1.0rem;
+  }
+  dl {
+    counter-reset: dl-counter;
+  }
+  dl > dt {
+    counter-increment: dl-counter;
+  }
+  ol {
+    counter-reset: ol-counter;
+  }
+  ol > li {
+    counter-increment: ol-counter;
+  }
+  ul {
+    counter-reset: ul-counter;
+  }
+  ul > li {
+    counter-increment: ul-counter;
+  }
+  .dl-counter:before {
+    content: counter(dl-counter) " ";
+  }
+  .ol-counter:before {
+    content: counter(ol-counter) " ";
+  }
+  .ul-counter:before {
+    content: counter(ul-counter) " ";
+  }
+  .dl-numbered > dt:before {
+    content: counter(dl-counter) ". ";
+  }
+  @media print {
+    .no-print, .no-print * {
+      display: none !important;
+    }
+    a:hover {
+      text-decoration: none !important;
+    }
+  }
+</style>
+<style>
+  #toc h2 {
+    font-size: 125%;
+    padding-left: 1rem;
+    margin-top:1.0rem;
+    margin-left: 0;
+  }
+  #toc .h1 {
+    font-size: 110%;
+    font-weight: bold;
+    padding-left: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.4rem;
+  }
+  #toc .h2 {
+    padding-left: 1rem;
+    margin-top: 0.4rem;
+  }
+  #toc .h3 {
+    padding-left: 2.5rem;
+    font-size: 90%;
+  }
+  #toc div[class^="h"]:nth-child(even) {
+    background-color: #f8f8f8;
+  }
+  #auto-toc {
+    width: 100%;
+  }
+  #toc a, #toc a:hover {
+    color: #34495e;
+  }
+</style>
+<style>
+  .header-link {
+    text-decoration: none;
+    color: lightgray;
+    visibility: hidden;
+  }
+  .header-link:hover {
+    text-decoration: none;
+    color: gray;
+  }
+  .header-link::before {
+    content: " \00b6";
+  }
+  h2:hover > .header-link, h3:hover > .header-link {
+    visibility: visible;
+  }
+  @media print {
+    .header-link {
+      display: none !important;
+    }
+  }
+</style>
+<style>
+  #main {
+    z-index: 1;
+    min-height: 100%;
+    max-width: 55rem;
+    margin-left: 0;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  #article {
+    padding-top: 1px;
+  }
+</style>
+<style>
+  #main {
+    margin-left: 340px;
+  }
+  #nav {
+    z-index: 3;
+    position: fixed;
+    left: 0;
+    height: 100%;
+    width: 40px;
+    background-color: #34495e;
+    color: white;
+  }
+  #sidebar {
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    margin-left: 40px;
+    width: 300px;
+    overflow: auto;
+    border-right: 1px solid #ccc;
+    background: #eee;
+  }
+  body.hide-toc #sidebar {
+    width: 0;
+  }
+  body.hide-toc #main {
+    margin-left: 40px;
+  }
+  #toc-button {
+    cursor: pointer;
+    color: white;
+    font-size: 48px;
+    line-height: 40px;
+    font-family: Arial, sans-serif;
+    display: inline-block;
+    padding-left: 5px;
+  }
+  @media not screen and (min-width: 1px) and (max-width: 800px) {
+    #sidebar {
+      opacity: 1;
+      transition: opacity 0.2s ease;
+    }
+    body.hide-toc #sidebar {
+      width: 0;
+      opacity: 0;
+    }
+    #main {
+      transition: margin-left 0.2s ease;
+    }
+    body.hide-toc #main {
+      transition: margin-left 0.2s ease;
+    }
+  }
+  @media screen and (min-width: 1px) and (max-width: 800px) {
+    body:not(.hide-toc) {
+      overflow: hidden;
+    }
+    body:not(.hide-toc) #sidebar {
+      width: 100%;
+    }
+    #main {
+      margin-left: 40px;
+    }
+    body:not(.hide-toc) #main {
+      visibility: hidden;
+    }
+    #toc {
+      margin-right: 40px;
+    }
+  }
+</style>
+<style>
+  @media screen and (min-width: 1px) and (max-width: 800px) {
+    body {
+      font-size: 20px;
+    }
+    #main {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    * {
+      overflow-wrap: break-word;
+    }
+  }
+</style>
+<style>
+  @media print {
+    #main {
+      margin-left: 0;
+    }
+  }
+</style>
+</head>
+<body>
+<div id="nav" class="no-print">
+    <span id="toc-button">&#8801;</span>
+</div>
+<div id="sidebar" class="no-print">
+</div>
+<div id="main">
+<div id="article">
+<style>
+.edit-source {
+  font-family: Consolas, "Andale Mono", Monaco, monospace;
+  font-size: 90%;
+  line-height: normal;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
+  border: none;
+  outline: none;
+  padding: 0.5rem;
+  width: 100%;
+  background-color: #ffffee;
+  box-shadow: 0 0 10px #9ecaed;
+  box-sizing: border-box;
+}
+.edit-icon, .preview-icon {
+  color: gray;
+  cursor: pointer;
+}
+.example td {
+  margin: 0;
+  padding: 0;
+}
+.example-header {
+  font-weight: bold;
+  color: #34495e;
+  padding: 0.5em !important;
+}
+.example-source, .example-rendered, .example-errors {
+  border: none;
+  background-color: inherit;
+  margin: 0;
+  padding: 0.5rem;
+}
+.example-source > code {
+  padding: 0;
+}
+.example-html, .example-errors {
+  font-family: Consolas, "Andale Mono", Monaco, monospace;
+  font-size: 90%;
+  white-space: pre-wrap;
+}
+.example-html {
+  background-color: #f8f8f8;
+}
+.example-errors {
+  display: none;
+  color: #d61123;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  font-weight: bold;
+}
+</style>
+<script src="rimu.min.js"></script>
+<script>
+function editExample(name) {
+  var source = document.getElementById(name + '-source');
+  if (source.style.display === 'none') {
+    return;
+  }
+  var edit = document.getElementById(name + '-edit');
+  edit.value = source.textContent;
+  edit.style.height = (edit.parentNode.offsetHeight - 1) + 'px';
+  edit.style.display = 'block';
+  source.style.display = 'none';
+}
+function renderExample(name) {
+  var edit = document.getElementById(name + '-edit');
+  var rendered = document.getElementById(name + '-rendered');
+  var source = document.getElementById(name + '-source');
+  var errors = document.getElementById(name + '-errors');
+  var src = (edit.style.display === 'none') ? source.textContent : edit.value;
+  var messages = '';
+  var html = Rimu.render(src, {
+    reset: true,
+    callback: function(message) {
+      messages += message.type + ': ' + message.text.split(':', 2).join(':') + '\n';
+    }
+  });
+  if (rendered.classList.contains('example-html')) {
+    rendered.innerHTML = replaceSpecialChars(html);
+  }
+  else {
+    rendered.innerHTML = html;
+  }
+  if (messages) {
+    errors.style.display = 'block';
+    errors.innerHTML = replaceSpecialChars(messages.trim());
+  }
+  else {
+    errors.style.display = 'none';
+  }
+  if (edit.style.display !== 'none') {
+    edit.style.height = (edit.parentNode.offsetHeight - 1) + 'px';
+  }
+}
+function toggleExample(name) {
+  var rendered = document.getElementById(name + '-rendered');
+  rendered.classList.toggle('example-html');
+  renderExample(name);
+}
+function replaceSpecialChars(s) {
+  return s.replace(/&/g, '&amp;')
+    .replace(/>/g, '&gt;')
+    .replace(/</g, '&lt;')
+}
+</script>
+<div id="toc" class="no-print">
+  <h2>Links</h2>
+  <div class="h2"><a href="index.html">Rimu Home</a></div>
+  <div class="h2"><a href="rimuplayground.html">Rimu Playground</a></div>
+  <div class="h2"><a href="reference.html">Rimu Reference</a></div>
+  <div class="h2"><a href="tips.html">Rimu Tips</a></div>
+  <div class="h2"><a href="gallery.html">Rimu Gallery</a></div>
+  <div class="h2"><a href="changelog.html">Change Log</a></div>
+  <div class="h2"><a href="https://github.com/srackham/rimu">Github</a></div>
+  <div class="h2"><a href="https://npmjs.org/package/rimu">npm</a></div>
+  <h2>Table of Contents</h2>
+  <div id="auto-toc"></div>
+</div>
+<h1 id="rimu-tips">Rimu Tips</h1>
+<p><b>TIP</b>: Click the <em>Edit icon</em> &#x270e; in the examples below to enable live
+editing of the Rimu source; click the <em>Preview icon</em>&nbsp;&#x2b04; to
+toogle output between <em>HTML</em> and <em>Preview</em>.</p>
+<h2 id="html-is-valid-rimu">HTML is valid Rimu</h2>
+<p>You are free to mix any valid HTML into a Rimu document &mdash; no
+special syntax is required (in this sense Rimu can be thought of as an
+HTML superset). Just remember that included HTML is only processed if
+<code>safeMode</code> is zero.</p>
+<h2 id="converting-rimu-to-pdf">Converting Rimu to PDF</h2>
+<p>First convert Rimu markup to HTML using the <a href="reference.html#rimuc-command">rimuc</a> tool and then
+convert the HTML to PDF.  Here are a few options for converting HTML
+to PDF:</p>
+<ol><li>Use Libre Office Writer or Microsoft Word to open the HTML document
+  then export it to a PDF file.</li><li>Use a command-line application such as
+  <a href="https://wkhtmltopdf.org/">wkhtmltopdf</a> to convert HTML to PDF.</li><li>Google's Chrome web browser has an option to print HTML to a PDF
+  file.</li></ol><h2 id="using-rimu-macros">Using Rimu Macros</h2>
+<p>Macros provide a simple, consistent mechanism for extending the Rimu
+markup vocabulary.</p>
+<h4 id="examples">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header" style="width:10%;">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('macros-example')">&#x270e;</span>
+Rimu Markup</td>
+<td>
+<pre class="example-source nohighlight" id="macros-example-source"><code>// Define some macros.
+{info} = '&lt;span style="color:white;
+                       background-color:#006699;
+                       padding:2px 4px;
+                       border-radius:3px;
+                       font-weight:bold;"&gt;$1&lt;/span&gt;'
+{heads-up} = '{info|Heads up!}'
+{note} = '{info|Note} &lt;mark&gt;$1&lt;/mark&gt;'
+{rimu-playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'
+{sidebar} = '#### $1
+."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'
+
+// Use the macros.
+{sidebar|Fun with Macros}
+..
+{heads-up} See the {rimu-playground} for documentation and hands-on
+experimentation.
+
+{note|This document is not yet finished.}
+..</code></pre>
+<textarea id="macros-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('macros-example')"></textarea>
+</td>
+</tr>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('macros-example')">&#x2b04;</span>
+Preview
+</td>
+<td>
+<div id="macros-example-errors" class="example-errors"></div>
+<div id="macros-example-rendered" class="example-rendered">
+<h4 id="fun-with-macros">Fun with Macros</h4>
+<div style="padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"><p><span style="color:white;
+                       background-color:#006699;
+                       padding:2px 4px;
+                       border-radius:3px;
+                       font-weight:bold;">Heads up!</span> See the <a href="http://srackham.github.io/rimu/rimuplayground.html">Rimu Playground</a> for documentation and hands-on
+experimentation.</p>
+<p><span style="color:white;
+                       background-color:#006699;
+                       padding:2px 4px;
+                       border-radius:3px;
+                       font-weight:bold;">Note</span> <mark>This document is not yet finished.</mark></p></div>
+</div>
+</td></tr></table>
+<ul><li>The <code>{sidebar}</code> macro shows how you can inject CSS styles into a
+  <em>Division Block</em> (you can also use use <a href="#scoped-css">HTML &lt;style&gt;
+  elements</a> to style the output).</li><li>Note how macro definitions can span multiple lines and can contain
+  any valid Rimu markup (including HTML and blank lines).</li></ul><p>See also:</p>
+<ul><li><a href="#use-macros-to-create-tables">Use macros to create tables</a>.</li><li><a href="#macro-meta-programming">Macro meta-programming</a>.</li><li><a href="#macro-tips">Macro tips</a>.</li><li><a href="#general-purpose-macro-processor">General purpose macro processor</a>.</li></ul><h2 id="intra-document-links">Intra-document Links</h2>
+<p>To link to another place within a document:</p>
+<ol><li>Create an ID for the element you want to link to using the Rimu
+  <em>Block Attribute</em> element.</li><li>Link to it using a fragment identifier URL.</li></ol><h4 id="examples-2">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('document-links-example')">&#x270e;</span>
+Rimu Markup</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('document-links-example')">&#x2b04;</span>
+Preview
+</td>
+</tr>
+<tr>
+<td style="width:50%;">
+<pre class="example-source nohighlight" id="document-links-example-source"><code>.#link-target
+This paragraph has ID `link-target`.
+
+[This link](#link-target) takes you to
+the above paragraph.
+
+&lt;#link-target|Same link&gt; using alternative
+Rimu URL syntax.</code></pre>
+<textarea id="document-links-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('document-links-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="document-links-example-errors" class="example-errors"></div>
+<div id="document-links-example-rendered" class="example-rendered">
+<p id="link-target">This paragraph has ID <code>link-target</code>.</p>
+<p><a href="#link-target">This link</a> takes you to
+the above paragraph.</p>
+<p><a href="#link-target">Same link</a> using alternative
+Rimu URL syntax.</p>
+</div>
+</td></tr></table>
+<h2 id="syntax-highlighting">Source code syntax highlighting</h2>
+<p>The <a href="reference.html#rimuc-command">rimuc</a> command can highlight code in Rimu <em>Code Blocks</em> and
+<em>Indented Paragraphs</em> using the
+<a href="https://github.com/isagalaev/highlight.js">Highlight.js</a> syntax
+highlighter.  To include <em>Highlight.js</em> support use the <a href="reference.html#rimuc-command">rimuc</a>
+command <code>--highlightjs</code> option with the <code>--layout</code> option.</p>
+<p>Set the language you want to highlight by injecting the language CSS
+class name into the code block.  Here are two examples, the first uses
+Github Flavored Markdown style syntax, the second uses Rimu's <em>Block
+Attributes</em> element:</p>
+<h4 id="examples-3">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header">
+Rimu Markup</td>
+<td class="example-header">
+HTML
+Preview
+</td>
+</tr>
+<tr>
+<td style="width:50%;">
+<pre class="example-source nohighlight" id="highlightjs-example-source"><code>Some JavaScript code:
+
+``` javascript
+if (message) {
+  console.error('Error: ' + message);
+}
+```
+
+Some Python code:
+
+.python
+``
+x = 1
+if x == 1:
+    print "x is 1."
+``</code></pre>
+<textarea id="highlightjs-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('highlightjs-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="highlightjs-example-errors" class="example-errors"></div>
+<div id="highlightjs-example-rendered" class="example-rendered">
+<p>Some JavaScript code:</p>
+<pre class="javascript"><code>if (message) {
+  console.error('Error: ' + message);
+}</code></pre>
+<p>Some Python code:</p>
+<pre class="python"><code>x = 1
+if x == 1:
+    print "x is 1."</code></pre>
+</div>
+</td></tr></table>
+<h2 id="markdown-compatible">Syntax shared with Markdown</h2>
+<p>The following subset of <em>Rimu</em> elements is compatible with Markdown:</p>
+<dl><dt>Headers</dt><dd>Headers using <code>#</code> character header prefixes.</dd><dt>Code blocks</dt><dd><ul><li>Indented paragraphs indented with at least four spaces render like
+  Markdown code blocks.</li><li>Rimu Fenced Code blocks with three or more backticks are compatible
+  with <a href="https://help.github.com/articles/github-flavored-markdown/">GitHub Flavored
+  Markdown</a>
+  <em>Fenced Blocks</em>.</li></ul></dd><dt>Quote paragraphs</dt><dd>Paragraphs starting with a <code>&gt;</code> character are
+rendered like Markdown Blockquotes.</dd><dt>Text formatting</dt><dd><ul><li><code>_emphasis_</code>, <code>*emphasis*</code>, <code>__bold__</code>, <code>**bold**</code>,
+  <code>`code`</code> , <code>``code``</code> quoting.</li><li><code>~~strikethrough~~</code> quotes (GitHub Flavored Markdown behaviour).</li><li>Underscores within words rendered verbatim and are not treated as
+  underscore emphasis quotes (Github Flavored Markdown behaviour).</li></ul></dd><dt>Lists</dt><dd><ul><li>Bullet lists with <code>-</code>, <code>+</code>  and <code>*</code> list item prefixes.</li><li>Numbered lists with explicit numbering.</li></ul></dd><dt>URLs and Email addresses</dt><dd><code>[caption](url)</code>, <code>&lt;url&gt;</code> and <code>&lt;email&gt;</code>
+syntaxes plus Github Flavored Markdown <em>URL autolinking</em>.</dd><dt>Images</dt><dd><code>![alt](url)</code> syntax.</dd></dl><p>The Rimu <em>README</em> uses this subset for compatibility with <em>GitHub</em> and
+<em>npmjs.org</em> README formats.</p>
+<h2 id="rimuc-html">Processing HTML and Markdown with the <code>rimuc</code> command</h2>
+<p><a href="reference.html#rimuc-command">rimuc</a> passes files with a <code>.html</code> extension directly to the output,
+similarly the standard input is passed directly to the output if the
+<code>--pass</code> option is specified.</p>
+<p>When it comes to processing Markdown there are two options:</p>
+<ol><li>If your Markdown file is compatible with the <a href="#markdown-compatible">Rimu Markdown
+   subset</a> then you don't have to do anything,
+   <a href="reference.html#rimuc-command">rimuc</a> will process it just like any other Rimu source file.</li><li>Otherwise convert the Markdown (or, for that matter, any other
+   text-to-HTML markup) to HTML before processing it using <a href="reference.html#rimuc-command">rimuc</a>.
+   For example:<pre><code>  markdown mydoc.md &gt; mydoc.html &amp;&amp; rimuc --layout sequel mydoc.html
+
+  cat mydoc.md | markdown | rimuc --layout sequel --pass &gt; mydoc.html</code></pre>
+<p>The first example works because <a href="reference.html#rimuc-command">rimuc</a> passes the contents of input
+files with a <code>.html</code> extension directly to the output. The second
+example works because the <a href="reference.html#rimuc-command">rimuc</a> <code>--pass</code> option passes the standard
+input verbatim to the output.</p>
+</li></ol><h2 id="converting-rimu-to-markdown">Converting Rimu to Markdown</h2>
+<p>You can use the online
+<a href="https://domchristie.github.io/to-markdown/">to-markdown</a> website to
+convert arbitrary Rimu source to pure Markdown:</p>
+<ol><li>First convert Rimu to raw HTML using the
+  <a href="reference.html#rimuc-command">rimuc</a> command e.g.<pre><code>rimuc mydoc.rmu &gt; mydoc.html</code></pre>
+</li><li>Then open the HTML file in a text editor and copy and paste the
+  contents into the
+  <a href="https://domchristie.github.io/to-markdown/">to-markdown</a> HTML box.</li></ol><h2 id="escaping-rimu-syntax">Escaping Rimu syntax</h2>
+<p>If you have text that you don't want interpreted as a Rimu
+element then you can render it literally (escape it) by prefixing the
+element with a backslash character.</p>
+<h4 id="examples-4">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('escaped-elements-example')">&#x270e;</span>
+Rimu Markup</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('escaped-elements-example')">&#x2b04;</span>
+Preview
+</td>
+</tr>
+<tr>
+<td style="width:50%;">
+<pre class="example-source nohighlight" id="escaped-elements-example-source"><code>\_escaped quote_
+
+**escaped closing\** quote**
+
+``backticks in `code quote```
+
+\# Escaped header.</code></pre>
+<textarea id="escaped-elements-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('escaped-elements-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="escaped-elements-example-errors" class="example-errors"></div>
+<div id="escaped-elements-example-rendered" class="example-rendered">
+<p>_escaped quote_</p>
+<p><strong>escaped closing** quote</strong></p>
+<p><code>backticks in `code quote`</code></p>
+<p># Escaped header.</p>
+</div>
+</td></tr></table>
+<p><b>NOTE</b>: The text inside <em>code</em> quotes is always rendered verbatim &mdash; to
+include backtick characters in code quotes use double-backtick quotes.</p>
+<h2 id="passing-macro-values-into-rimu-documents">Passing macro values into Rimu documents</h2>
+<p>You can do this by prepending text containing macro definitions to
+Rimu source before rendering the source. The <a href="reference.html#rimuc-command">rimuc</a> command has a
+<code>--prepend</code> option that can be used to do this.</p>
+<p>Alternatively you could also put macro definitions in a
+separate file and specify it as the first Rimu source file in the
+<a href="reference.html#rimuc-command">rimuc</a> command.</p>
+<p>The following example sets the <a href="reference.html#rimuc-command">rimuc</a> <code>--title</code> macro value, this
+sets the HTML <em>title</em> in the <code>kotlin-notes.html</code> output document:</p>
+<pre><code>rimuc --layout sequel --prepend "{--title}='Kotlin Notes'" kotlin-notes.rmu</code></pre>
+<p><a href="reference.html#rimuc-command">rimuc</a> has a <code>--title</code> shortcut command-line option for this common
+use-case:</p>
+<pre><code>rimuc --layout sequel --title "Kotlin Notes" kotlin-notes.rmu</code></pre>
+<p>Other macro shortcut options can be found in the <a href="reference.html#rimuc-command">rimuc</a>
+documentation.</p>
+<h2 id="the-rimu-markup-looks-correct-but-the-generated-html-is-wrong">The Rimu markup looks correct but the generated HTML is wrong</h2>
+<p>Using an editor with Rimu syntax highlighting support (see previous
+topic) makes it much easier to spot syntax errors.  Rimu includes a
+Vim editor syntax highlighter, see the <a href="http://srackham.github.io/rimu/reference.html#vim-syntax-file">Vim syntax
+file</a>
+section in the <a href="http://srackham.github.io/rimu/reference.html">Rimu
+Reference</a> for details.</p>
+<h2 id="extending-the-vim-syntax-highlighter">Extending the Vim syntax highlighter</h2>
+<p>If you've added custom replacements and quotes you can highlight them
+in Vim by creating a custom <code>~/.vim/after/syntax/rimu.vim</code> syntax file
+(Vim loads files from the <code>after</code> directory after loading normal
+syntax files).  The distributed example
+<a href="https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.vim">~/.vim/after/syntax/rimu.vim</a>
+syntax file highlights custom syntax definitions from the <a href="https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.rmu">example
+.rimurc file</a>.</p>
+<h2 id="entering-non-keyboard-characters">Entering non-keyboard characters</h2>
+<p>Characters that are unavailable on your keyboard can be entered as
+<a href="https://dev.w3.org/html5/html-author/charref">HTML character entities</a>
+e.g. enter <code>&amp;micro;</code> to display &micro;. The <a href="#example-rimurc">example .rimurc
+file</a> includes replacements for common use-cases such
+as em dash, ellipsis and quotation characters.</p>
+<h2 id="defs-warning">Use Replacement and Quote definitions sparingly</h2>
+<p>Adding new Replacement and Quote definitions changes the Rimu syntax
+which can produce unexpected results. It can also make your Rimu
+source non-portable and less readable.</p>
+<h2 id="example-rimurc">Example .rimurc file</h2>
+<p>The Rimu distribution includes an <a href="https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.rmu">example .rimurc
+file</a> containing useful macros, quotes and
+replacement definitions.</p>
+<p>It is important to note that these niceties have been defined in
+Rimu Markup &mdash; Rimu has been extended using Rimu. No plugins
+or special configuration file syntax were necessary.</p>
+<h4 id="examples-5">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header">
+Rimu Markup</td>
+<td class="example-header">
+HTML
+Preview
+</td>
+</tr>
+<tr>
+<td style="width:50%;">
+<pre class="example-source nohighlight" id="rimurc-examples-source"><code>Turn &lt;- left then right -&gt;
+
+Copyright (C) 2015 -- trademarked(TM).
+
+"Left and right double-quotes".
+
+The 3{sup|rd} H{sub|2}O molecule...
+
+IMPORTANT: Admonition.
+
+TODO 10 examples +-2</code></pre>
+<textarea id="rimurc-examples-edit" class="edit-source" style="display:none" onkeyup="renderExample('rimurc-examples')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="rimurc-examples-errors" class="example-errors"></div>
+<div id="rimurc-examples-rendered" class="example-rendered">
+<p>Turn &leftarrow; left then right &rightarrow;</p>
+<p>Copyright &copy; 2015 &mdash; trademarked&trade;.</p>
+<p>&ldquo;Left and right double-quotes&rdquo;.</p>
+<p>The 3<sup>rd</sup> H<sub>2</sub>O molecule&hellip;</p>
+<p><b>IMPORTANT</b>: Admonition.</p>
+<p><b style="color: red; background-color: yellow;">TODO</b> 10 examples &plusmn;2</p>
+</div>
+</td></tr></table>
+<h2 id="scoped-css">Including CSS in Rimu documents</h2>
+<p>You can include custom CSS styles in the body of a Rimu document using
+an HTML <code>style</code> element. Here are three use-cases:</p>
+<ol><li>Change existing styling. The following example changes the color of
+  all headers to red:<pre><code>&lt;style&gt;
+  h1, h2, h3, h4, h5, h6 {
+    color: red;
+  }
+&lt;/style&gt;</code></pre>
+</li><li>Add a new block style. The following example puts a green border
+  around blocks with the <code>green-border</code> class:<pre><code>&lt;style&gt;
+  .green-border {
+    border: 5px solid green;
+  }
+&lt;/style&gt;
+
+.green-border
+Green is the color of envy.</code></pre>
+</li><li>Create new <a href="#themes">themes</a> and tweak existing themes.</li></ol><p><b>IMPORTANT</b>: The <code>style</code> element must not contain any blank lines because
+Rimu HTML block elements are terminated with a blank line</p>
+<div class="sidebar"><h4 id="scoped-styling-removed-from-html5-spec-12-may-2016">Scoped styling removed from HTML5 spec 12-May-2016</h4>
+<p>The <code>scoped</code> attribute was <a href="https://github.com/whatwg/html/commit/c2a3b2a2e3db49c14b486a5e99acf7d10cfe8443">removed from the HTML5 spec in May
+2016</a>
+&ldquo;due to lack of implementer interest&rdquo;.  But the <a href="https://www.w3.org/TR/2017/WD-html52-20170718/document-metadata.html#the-style-element">HTML 5.2 Working
+Draft</a>
+(July 2017) allows style tags &ldquo;In the body, where flow content is
+expected.&rdquo;</p>
+<p>In practice all popular browsers allow <code>style</code> elements outside the
+<code>head</code> element (the styles from these elements are applied globally
+and the <code>scoped</code> attribute is ignored).</p>
+<p>See also:</p>
+<ul><li><a href="http://stackoverflow.com/questions/28633038/what-is-the-current-state-of-the-scoped-attribute-for-the-style-element-in-htm">What is the current state of the &ldquo;scoped&rdquo; attribute for the style
+  element in
+  HTML5?</a><blockquote><p>The primary goal of HTML5 was to formally specify the behavior that
+browsers have had implemented basically &ldquo;forever&rdquo; regardless of
+previous HTML specs. You've always been able to use a <code>&lt;style&gt;</code> tag
+anywhere within an HTML document, so with HTML5 you will still be able
+to. This will not change.</p></blockquote>
+</li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style">MDN
+  &lt;style&gt;</a>.</li><li><a href="http://stackoverflow.com/a/16844668/1136455">Using &lt;style&gt; tags in the &lt;body&gt; with other
+  HTML</a>.</li></ul></div>
+<h2 id="themes">Themes</h2>
+<p>A <a href="reference.html#themes">theme</a> is a layout styling variation.  The
+<code>--layouts</code> option supports a number of <a href="reference.html#built-in-layouts">built-in
+themes</a>. You can create your own themes
+by including <a href="#scoped-css">custom CSS style elements</a>.</p>
+<p>Here is an example theme named <em>redheads</em>:</p>
+<pre><code>{--theme!.*\bredheads\b.*}.+skip
+&lt;style&gt;
+  h1, h2, h3, h4, h5, h6 {
+    color: red;
+  }
+&lt;/style&gt;</code></pre>
+<p>The HTML <code>style</code> element will be included in the output when the
+<code>--theme</code> macro value includes the word <code>redheads</code>, for example:</p>
+<pre><code>rimuc --layout sequel --theme redheads document.rmu</code></pre>
+<p>You can combine themes by specifying more than one theme, for example:</p>
+<pre><code>rimuc --layout sequel --theme "graystone redheads" document.rmu</code></pre>
+<p>If you specify multiple themes their CSS styles will cascade in the
+order they are processed in the Rimu source documents.</p>
+<h2 id="verse-and-sidebar-styles">Verse and sidebar styles</h2>
+<p>The <a href="reference.html#rimuc-command">rimuc</a> command <code>--layout</code> option includes <em>verse</em> and <em>sidebar</em>
+CSS styles for poetry and highlighted passages of text.</p>
+<h4 id="examples-6">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('verse-and-sidebar-example')">&#x270e;</span>
+Rimu Markup</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('verse-and-sidebar-example')">&#x2b04;</span>
+Preview
+</td>
+</tr>
+<tr>
+<td style="width:50%;">
+<pre class="example-source nohighlight" id="verse-and-sidebar-example-source"><code>Verse styled paragraph:
+
+.verse
+Neque a massa.
+Porttitor consectetuer commodo.
+
+Verse styled Division Block:
+
+.verse
+..
+#### Lorum Ipsum
+Neque a massa.
+Porttitor consectetuer commodo.
+
+Nunc mauris tempor.
+Pede mauris sed.
+Scelerisque feugiat massa alias.
+..
+
+Sidebar styled paragraph:
+
+.sidebar
+Neque a massa.
+Porttitor consectetuer commodo.
+
+Sidebar styled Division Block:
+
+.sidebar
+..
+#### Lorum Ipsum
+Neque a massa.
+Porttitor consectetuer commodo.
+
+Nunc mauris tempor.
+Pede mauris sed.
+Scelerisque feugiat massa alias.
+..</code></pre>
+<textarea id="verse-and-sidebar-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('verse-and-sidebar-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="verse-and-sidebar-example-errors" class="example-errors"></div>
+<div id="verse-and-sidebar-example-rendered" class="example-rendered">
+<p>Verse styled paragraph:</p>
+<p class="verse">Neque a massa.
+Porttitor consectetuer commodo.</p>
+<p>Verse styled Division Block:</p>
+<div class="verse"><h4 id="lorum-ipsum">Lorum Ipsum</h4>
+<p>Neque a massa.
+Porttitor consectetuer commodo.</p>
+<p>Nunc mauris tempor.
+Pede mauris sed.
+Scelerisque feugiat massa alias.</p></div>
+<p>Sidebar styled paragraph:</p>
+<p class="sidebar">Neque a massa.
+Porttitor consectetuer commodo.</p>
+<p>Sidebar styled Division Block:</p>
+<div class="sidebar"><h4 id="lorum-ipsum-2">Lorum Ipsum</h4>
+<p>Neque a massa.
+Porttitor consectetuer commodo.</p>
+<p>Nunc mauris tempor.
+Pede mauris sed.
+Scelerisque feugiat massa alias.</p></div>
+</div>
+</td></tr></table>
+<h2 id="using-macro-replacement-and-quote-definitions-in-safe-mode">Using Macro, Replacement and Quote definitions in Safe Mode</h2>
+<p><em>Macro</em>, <em>Replacement</em> and <em>Quote</em> definitions are not processed in
+Safe Mode. To apply Macro, Replacement or Quote definitions to Rimu
+markup that is processed in Safe Mode you need to load the definitions
+with a separate API call, for example:</p>
+<pre class="javascript"><code>Rimu.render(trusted_rimu_definitions, {safeMode: 0});
+var html = Rimu.render(untrusted_rimu_markup, {safeMode: 5});</code></pre>
+<h2 id="mathematical-formulae">Mathematical formulae</h2>
+<p>The <a href="reference.html#rimuc-command">rimuc</a> command supports <a href="http://www.mathjax.org/">MathJax</a> LaTeX
+and MathML mathematical formulas.  To include <em>MathJax</em> support use
+the <a href="reference.html#rimuc-command">rimuc</a> command <code>--mathjax</code> option with the <code>--layout</code> option.</p>
+<h4 id="examples-7">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header" style="width:10%;">
+Rimu Markup</td>
+<td>
+<pre class="example-source nohighlight" id="mathjax-example-source"><code>.-macros
+A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\)
+
+A LaTeX block formula:
+
+.-macros
+\[\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\]
+
+A MathML inline formula:
+&lt;math&gt;
+  &lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mrow&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;msup&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;/mrow&gt;
+&lt;/math&gt;
+
+A MathML block formula:
+
+&lt;math display="block"&gt;
+  &lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mrow&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;msup&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;/mrow&gt;
+&lt;/math&gt;</code></pre>
+<textarea id="mathjax-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('mathjax-example')"></textarea>
+</td>
+</tr>
+<tr><td class="example-header" style="width:10%;">
+HTML
+Preview
+</td>
+<td>
+<div id="mathjax-example-errors" class="example-errors"></div>
+<div id="mathjax-example-rendered" class="example-rendered">
+<p>A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\)</p>
+<p>A LaTeX block formula:</p>
+<p>\[\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\]</p>
+<p>A MathML inline formula:
+<math>
+  <mi>E</mi><mo>=</mo><mrow><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow>
+</math></p>
+<p>A MathML block formula:</p>
+<math display="block">
+  <mi>E</mi><mo>=</mo><mrow><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow>
+</math>
+</div>
+</td></tr></table>
+<ul><li>Macro expansion has been disabled in LaTeX formulas to stop <code>{i=0}</code>
+  and <code>{2}</code> in the LaTeX formualae from being mistaken for Rimu macro
+  invocations.</li></ul><p>See the <a href="http://docs.mathjax.org/en/latest/">latest MathJax
+documentation</a> to learn how to use
+MathJax.</p>
+<h2 id="conditional-inclusion">Conditional Inclusion</h2>
+<p>Macro invocations can be used to conditionally include and exclude
+Rimu source text. Here are some examples:</p>
+<pre><code>// Include script if `foo` value is non-blank.
+{foo!}&lt;script src="bar-min.js"&gt;&lt;/script&gt;
+
+// Skip paragraph if `foo` is blank.
+{foo=}.+skip
+Display this paragraph if macro `foo` is non-blank.
+
+// Conditional inclusion of arbitrary blocks of Rimu source.
+// Include some CSS if both `foo` and `bar` are non-blank.
+// Works because a Division Block does not emit div tags if they
+// have no HTML attributes.
+{foo=}.+skip
+{bar=}.+skip
+..
+&lt;style&gt;
+  * { margin: 0; padding: 0; }
+&lt;/style&gt;
+..
+
+// Inline examples.
+This line is included {foo=} if the value of foo is blank.
+This line is included {foo!} if the value of foo is not blank.
+This line is included {foo=one} if the value of foo is 'one'.
+This line is included {foo=two} if the value of foo is 'two'.
+This line is included {foo!\d+} if the value of foo is not a number.</code></pre>
+<p>Use <a href="reference.html#comments">Comments</a> to unconditionally exclude text.</p>
+<p>Be careful when mixing conditional and simple macros on the same line, for
+example:</p>
+<pre><code>{foo!}{multi-line-macro}</code></pre>
+<p>Because the simple macro is expanded before the conditional macro only the
+first line of the expanded <code>{multi-line-macro}</code> will be subject to <code>{foo!}</code>
+exclusion. Use the <code>+skip</code> block option attribute to exclude the entire
+<code>{multi-line-macro}</code>, for example:</p>
+<pre><code>{foo=}.+skip
+{multi-line-macro}</code></pre>
+<h2 id="tables">Tables</h2>
+<p>Create tables using <em>Block HTML elements</em> (Rimu has no dedicated
+syntax for tables <a href="#use-macros-to-create-tables">but you can use macros to simplify table
+creation</a>).</p>
+<p><b>NOTE</b>: HTML blocks must start at the left margin and end with a blank
+line.</p>
+<p>The <a href="reference.html#rimuc-command">rimuc</a> <code>--layout</code> option includes the <code>bordered</code> CSS class for
+styling bordered tables.</p>
+<h4 id="examples-8">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header" style="width:10%;">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('tables-example')">&#x270e;</span>
+Rimu Markup</td>
+<td>
+<pre class="example-source nohighlight" id="tables-example-source"><code>&lt;table class="bordered"&gt;&lt;tr&gt;
+&lt;td style="width: 50%; padding: 6px;"&gt;
+
+.text-info
+**Lorem ipsum dolor**. Sit amet venenatis. Erat nulla arcu. Lorem luctus
+sem. Mauris vitae ipsum. Donec dui ac ridiculus quisque proin.
+Lobortis lacus vestibulum sem.
+
+##### Normal paragraph
+Lorem ipsum dolor. Sit `amet venenatis`. Erat nulla arcu. Lorem luctus
+sem. _Mauris vitae_ ipsum. Donec dui ac ridiculus quisque proin.
+Lobortis lacus vestibulum sem.
+
+##### Indented paragraph
+  Neque a massa. Porttitor consectetuer commodo. Nunc nulla tempor
+  tempor enim ornare. Mi nam id. Ornare mauris tempor. Pede mauris
+  sed.  Scelerisque feugiat massa alias.
+
+&lt;/td&gt;
+&lt;td style="width: 50%; padding: 6px;"&gt;
+
+- Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu
+- lorem dolor fusce nec.
+  * Sit pretium quisque in wisi lobortis.
+  * Ac curabitur elementum.
+    ** Platea ad diam arcu vitae fermentum.
+       1. Eu lorem nulla.
+       2. In suspendisse at dapibus nostra est.
+          .. Montes adipiscing sodales.
+    ** Pellentesque nibh sit.
+
+- Augue et dui malesuada purus.
+
+  If a list item is followed
+  by an indented paragraph the
+  indented paragraph is
+  included in the list item.
+
+&lt;/td&gt;
+&lt;/tr&gt;&lt;/table&gt;</code></pre>
+<textarea id="tables-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('tables-example')"></textarea>
+</td>
+</tr>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('tables-example')">&#x2b04;</span>
+Preview
+</td>
+<td>
+<div id="tables-example-errors" class="example-errors"></div>
+<div id="tables-example-rendered" class="example-rendered">
+<table class="bordered"><tr>
+<td style="width: 50%; padding: 6px;">
+<p class="text-info"><strong>Lorem ipsum dolor</strong>. Sit amet venenatis. Erat nulla arcu. Lorem luctus
+sem. Mauris vitae ipsum. Donec dui ac ridiculus quisque proin.
+Lobortis lacus vestibulum sem.</p>
+<h5 id="normal-paragraph">Normal paragraph</h5>
+<p>Lorem ipsum dolor. Sit <code>amet venenatis</code>. Erat nulla arcu. Lorem luctus
+sem. <em>Mauris vitae</em> ipsum. Donec dui ac ridiculus quisque proin.
+Lobortis lacus vestibulum sem.</p>
+<h5 id="indented-paragraph">Indented paragraph</h5>
+<pre><code>Neque a massa. Porttitor consectetuer commodo. Nunc nulla tempor
+tempor enim ornare. Mi nam id. Ornare mauris tempor. Pede mauris
+sed.  Scelerisque feugiat massa alias.</code></pre>
+</td>
+<td style="width: 50%; padding: 6px;">
+<ul><li>Lorem ipsum dolor sit amet dis quisque maecenas in tristique arcu</li><li>lorem dolor fusce nec.<ul><li>Sit pretium quisque in wisi lobortis.</li><li>Ac curabitur elementum.<ul><li>Platea ad diam arcu vitae fermentum.<ol><li>Eu lorem nulla.</li><li>In suspendisse at dapibus nostra est.<ol><li>Montes adipiscing sodales.</li></ol></li></ol></li><li>Pellentesque nibh sit.</li></ul></li></ul></li><li>Augue et dui malesuada purus.<pre><code>If a list item is followed
+by an indented paragraph the
+indented paragraph is
+included in the list item.</code></pre>
+</li></ul></td>
+</tr></table>
+</div>
+</td></tr></table>
+<p>The use of inline HTML for tables instead of a Rimu-specific table
+syntax was a deliberate design decision:</p>
+<ul><li>A large number of formatting options (e.g. for headers and footers;
+  cell widths, heights, alignment and spans) are required to
+  accommodate all but the simplest of tables. This makes for a complex
+  and noisy syntax &mdash; precisely what we're trying to avoid.</li><li>Coming up with a syntax that is both recognizably tabular and easily
+  written is difficult &mdash; imagine trying to write the above example in
+  a way that maintains the side-by-side cell layout.</li><li>At first blush tables come across as a hugely useful feature, but
+  most documentation makes surprising little use of tables.</li></ul><p>See also <a href="#use-macros-to-create-tables">Use macros to create tables</a>.</p>
+<h2 id="use-macros-to-create-tables">Use macros to create tables</h2>
+<p>Creating tables with raw HTML is repetitive, time consuming and
+difficult to read.</p>
+<p>Parametrized macros can be used to generate row oriented tables:</p>
+<h4 id="table-macro-example-1">Table macro example 1</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header" style="width:10%;">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('table-macro-example')">&#x270e;</span>
+Rimu Markup</td>
+<td>
+<pre class="example-source nohighlight" id="table-macro-example-source"><code>&lt;table style="border-spacing:0.6em; border-collapse:separate"&gt;
+
+{row} = '&lt;tr&gt;
+&lt;td style="width:25%"&gt;$$1&lt;/td&gt;
+&lt;td style="width:20%"&gt;$$2&lt;/td&gt;
+&lt;td style="width:20%"&gt;$$3&lt;/td&gt;
+&lt;td style="width:35%"&gt;$$4&lt;/td&gt;
+&lt;/tr&gt;
+'
+
+{row|**Command** |**Should be named** |**Applied to** |**Description**}
+
+{row|Discard Snapshot (_Ctrl+Shift+D_) |Merge with Parent |Snapshot |Merges the snapshot file into the parent snapshot or disk image file and then deletes the now redundant snapshot file.}
+
+{row|Revert to Current Snapshot (_Ctrl+Shift+R_) | |Current State |Deletes the current state returning the VM state to the most recent snapshot.}
+
+{row|Discard Current Snapshot and State (_Ctrl+Shift+B_) |Delete Current Snapshot and State |Current State |Deletes the current state and the most recent snapshot returning the VM state to that of the penultimate snapshot. Use this command to delete snapshots.}
+
+&lt;/table&gt;
+</code></pre>
+<textarea id="table-macro-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('table-macro-example')"></textarea>
+</td>
+</tr>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('table-macro-example')">&#x2b04;</span>
+Preview
+</td>
+<td>
+<div id="table-macro-example-errors" class="example-errors"></div>
+<div id="table-macro-example-rendered" class="example-rendered">
+<table style="border-spacing:0.6em; border-collapse:separate">
+<tr>
+<td style="width:25%"><strong>Command</strong> </td>
+<td style="width:20%"><strong>Should be named</strong> </td>
+<td style="width:20%"><strong>Applied to</strong> </td>
+<td style="width:35%"><strong>Description</strong></td>
+</tr>
+<tr>
+<td style="width:25%">Discard Snapshot (<em>Ctrl+Shift+D</em>) </td>
+<td style="width:20%">Merge with Parent </td>
+<td style="width:20%">Snapshot </td>
+<td style="width:35%">Merges the snapshot file into the parent snapshot or disk image file and then deletes the now redundant snapshot file.</td>
+</tr>
+<tr>
+<td style="width:25%">Revert to Current Snapshot (<em>Ctrl+Shift+R</em>) </td>
+<td style="width:20%"> </td>
+<td style="width:20%">Current State </td>
+<td style="width:35%">Deletes the current state returning the VM state to the most recent snapshot.</td>
+</tr>
+<tr>
+<td style="width:25%">Discard Current Snapshot and State (<em>Ctrl+Shift+B</em>) </td>
+<td style="width:20%">Delete Current Snapshot and State </td>
+<td style="width:20%">Current State </td>
+<td style="width:35%">Deletes the current state and the most recent snapshot returning the VM state to that of the penultimate snapshot. Use this command to delete snapshots.</td>
+</tr>
+</table>
+</div>
+</td></tr></table>
+<h4 id="table-macro-example-2">Table macro example 2</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header" style="width:10%;">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('table-macro-example-2')">&#x270e;</span>
+Rimu Markup</td>
+<td>
+<pre class="example-source nohighlight" id="table-macro-example-2-source"><code>{person} = '&lt;table style="margin-bottom:0.3em"&gt;&lt;tr&gt;
+&lt;td style="width:40%"&gt;$$1&lt;/td&gt;
+&lt;td style="width:20%"&gt;$$2&lt;/td&gt;
+&lt;td&gt;$$3&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+'
+
+.bordered "font-weight:bold; color:#527bbd"
+{person| Name        | Age    | Gender}
+{person| Joe Bloggs  | 25     | Male}
+{person| _Jim Smith_ | 31     | Male}
+."color:red"
+{person| Peg Legge   | **30** | Female}
+</code></pre>
+<textarea id="table-macro-example-2-edit" class="edit-source" style="display:none" onkeyup="renderExample('table-macro-example-2')"></textarea>
+</td>
+</tr>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('table-macro-example-2')">&#x2b04;</span>
+Preview
+</td>
+<td>
+<div id="table-macro-example-2-errors" class="example-errors"></div>
+<div id="table-macro-example-2-rendered" class="example-rendered">
+<table class="bordered" style="margin-bottom:0.3em; font-weight:bold; color:#527bbd"><tr>
+<td style="width:40%"> Name        </td>
+<td style="width:20%"> Age    </td>
+<td> Gender</td></tr></table>
+<table style="margin-bottom:0.3em"><tr>
+<td style="width:40%"> Joe Bloggs  </td>
+<td style="width:20%"> 25     </td>
+<td> Male</td></tr></table>
+<table style="margin-bottom:0.3em"><tr>
+<td style="width:40%"> <em>Jim Smith</em> </td>
+<td style="width:20%"> 31     </td>
+<td> Male</td></tr></table>
+<table style="margin-bottom:0.3em; color:red"><tr>
+<td style="width:40%"> Peg Legge   </td>
+<td style="width:20%"> <strong>30</strong> </td>
+<td> Female</td></tr></table>
+</div>
+</td></tr></table>
+<ul><li><em>Block HTML elements</em> must be followed by a blank line.</li><li>The macro invocations emit HTML (block) elements and must be contained on a
+  single line otherwise they will be processed as paragraphs.</li><li>Double-dollar macro parameters are necessary because text formatting
+  is not expanded and special characters are not escaped inside <a href="reference.html#block-html-elements">Block
+  HTML elements</a>.</li></ul><p>Macros can also be used to simplify columnar text layouts:</p>
+<h4 id="columnar-text-layouts">Columnar text layouts</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header" style="width:10%;">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('columnar-text-example')">&#x270e;</span>
+Rimu Markup</td>
+<td>
+<pre class="example-source nohighlight" id="columnar-text-example-source"><code>// Each macro generates an HTML block which together generate a single table.
+{column1} = '&lt;table&gt;&lt;tr&gt;&lt;td style="width:33%;padding:0.5em;"&gt;
+'
+{column2} = '&lt;/td&gt;&lt;td style="width:33%;padding:0.5em;"&gt;
+'
+{column3} = '&lt;/td&gt;&lt;td style="width:33%;padding:0.5em;"&gt;
+'
+{end}     = '&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+'
+
+{column1}
+#### Column One
+Rutrum imperdiet vitae vitae a suscipit semper potenti magna.
+
+Proin id justo vestibulum rutrum neque consequat in nam morbi orci at.
+
+  Feugiat habitant donec. Sem tincidunt arcu pellentesque suscipit
+  accumsan.
+
+{column2}
+#### Column Two
+Proin id Ante praesent scelerisque ligula vivamus in.
+
+Amet neque ut enim molestiae est. Dictumst magna orci magnis donec
+lectus lectus at sapien.
+
+&gt; Vivamus et metus. In a ut. Enim in lorem.
+
+{column3}
+#### Column Three
+Quibusdam suspendisse volutpat.
+
+Pellentesque nunc lectus tellus cursus fusce.
+
+.sidebar
+Tincidunt proin lorem. Mi vel ut. Duis ipsum nam eget vitae ut
+consequat quisque duis mollis magna arcu.
+
+{end}
+</code></pre>
+<textarea id="columnar-text-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('columnar-text-example')"></textarea>
+</td>
+</tr>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('columnar-text-example')">&#x2b04;</span>
+Preview
+</td>
+<td>
+<div id="columnar-text-example-errors" class="example-errors"></div>
+<div id="columnar-text-example-rendered" class="example-rendered">
+<table><tr><td style="width:33%;padding:0.5em;">
+<h4 id="column-one">Column One</h4>
+<p>Rutrum imperdiet vitae vitae a suscipit semper potenti magna.</p>
+<p>Proin id justo vestibulum rutrum neque consequat in nam morbi orci at.</p>
+<pre><code>Feugiat habitant donec. Sem tincidunt arcu pellentesque suscipit
+accumsan.</code></pre>
+</td><td style="width:33%;padding:0.5em;">
+<h4 id="column-two">Column Two</h4>
+<p>Proin id Ante praesent scelerisque ligula vivamus in.</p>
+<p>Amet neque ut enim molestiae est. Dictumst magna orci magnis donec
+lectus lectus at sapien.</p>
+<blockquote><p> Vivamus et metus. In a ut. Enim in lorem.</p></blockquote>
+</td><td style="width:33%;padding:0.5em;">
+<h4 id="column-three">Column Three</h4>
+<p>Quibusdam suspendisse volutpat.</p>
+<p>Pellentesque nunc lectus tellus cursus fusce.</p>
+<p class="sidebar">Tincidunt proin lorem. Mi vel ut. Duis ipsum nam eget vitae ut
+consequat quisque duis mollis magna arcu.</p>
+</td></tr></table>
+</div>
+</td></tr></table>
+<h2 id="macro-meta-programming">Macro meta-programming</h2>
+<p>You can define macros which, when invoked, generate other macros. A
+good example of this is the generation of document section headers,
+links and table of contents entries from a section identifier and
+title.</p>
+<h4 id="examples-9">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header" style="width:10%;">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('meta-macros-example')">&#x270e;</span>
+Rimu Markup</td>
+<td>
+<pre class="example-source nohighlight" id="meta-macros-example-source"><code>// toc macro generates section TOC entry, link macro and header macro.
+// $1 = section ID, $2 = section title.
+{toc} = '{$1} = '&lt;#$1|$2&gt;' \
+{$1-header} = '.#$1
+## $2' \
+{$1}
+'
+
+#### Table of Contents
+{toc|section1|Section One}
+{toc|section2|Section Two}
+
+{section1-header}
+Link to {section2}.
+
+{section2-header}
+Link to {section1}.</code></pre>
+<textarea id="meta-macros-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('meta-macros-example')"></textarea>
+</td>
+</tr>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('meta-macros-example')">&#x2b04;</span>
+Preview
+</td>
+<td>
+<div id="meta-macros-example-errors" class="example-errors"></div>
+<div id="meta-macros-example-rendered" class="example-rendered">
+<h4 id="table-of-contents">Table of Contents</h4>
+<p><a href="#section1">Section One</a></p>
+<p><a href="#section2">Section Two</a></p>
+<h2 id="section1">Section One</h2>
+<p>Link to <a href="#section2">Section Two</a>.</p>
+<h2 id="section2">Section Two</h2>
+<p>Link to <a href="#section1">Section One</a>.</p>
+</div>
+</td></tr></table>
+<p><b>NOTE</b>: The backslash character is used to continue macro definition
+lines that end with a single-quote.</p>
+<h2 id="macro-tips">Macro tips</h2>
+<ul><li>Use the <code>&amp;vert;</code> character entity to display a <code>|</code> character inside
+  a macro parameter value.</li><li>Closing block delimiters must be explicit and cannot be sourced from
+  a macro invocation (because Rimu elements are recognized before
+  macro expansion).</li><li>A macro invocation can be rendered verbatim in a code block by
+  disabling macro expansion. For example:<pre><code>.-macros
+``
+{example-42}
+``</code></pre>
+</li><li>Macro definition elements cannot be prefixed with an Inclusion/Exclusion
+  macro (see <a href="#conditional-inclusion">Conditional Inclusion</a>).</li><li>Macro invocations in macro definition values are expanded when the
+  macro is declared, not when it is invoked. You can defer evaluation
+  until the macro is invoked by escaping macro invocations or (in the
+  case of multi-line definitions) by using the <code>-macros</code> <em>Block
+  Attributes</em> option. For example this Rimu markup:<pre><code>{m1} = 'foo'
+{m2} = '{m1} \{m1}'
+{m2}
+
+{m1} = 'bar'
+{m2}</code></pre>
+<p>Generates:</p>
+<pre><code>&lt;p&gt;foo foo&lt;/p&gt;
+&lt;p&gt;foo bar&lt;/p&gt;</code></pre>
+</li></ul><h2 id="list-item-counters">List item counters</h2>
+<p>In addition to the <em>verse</em> and <em>sidebar</em> CSS styles the  <a href="reference.html#rimuc-command">rimuc</a> tool
+<code>--layout</code> option also includes CSS classes for counting list items
+and for numbering labeled list items.</p>
+<h4 id="examples-10">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('list-item-counters-example')">&#x270e;</span>
+Rimu Markup</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('list-item-counters-example')">&#x2b04;</span>
+Preview
+</td>
+</tr>
+<tr>
+<td style="width:50%;">
+<pre class="example-source nohighlight" id="list-item-counters-example-source"><code>#### Numbered labeled list
+.dl-numbered
+One:: Item one.
+Two:: Item two.
+Three:: Item three.
+
+.dl-counter
+labeled list items.
+
+#### Counted unordered list
+- Item one.
+- Item two.
+- Item three.
+- Item four.
+
+.ul-counter
+unordered list items.
+
+#### Counted ordered list
+. Item one.
+. Item two.
+
+.ol-counter
+ordered list items.</code></pre>
+<textarea id="list-item-counters-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('list-item-counters-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="list-item-counters-example-errors" class="example-errors"></div>
+<div id="list-item-counters-example-rendered" class="example-rendered">
+<h4 id="numbered-labeled-list">Numbered labeled list</h4>
+<dl class="dl-numbered"><dt>One</dt><dd>Item one.</dd><dt>Two</dt><dd>Item two.</dd><dt>Three</dt><dd>Item three.</dd></dl><p class="dl-counter">labeled list items.</p>
+<h4 id="counted-unordered-list">Counted unordered list</h4>
+<ul><li>Item one.</li><li>Item two.</li><li>Item three.</li><li>Item four.</li></ul><p class="ul-counter">unordered list items.</p>
+<h4 id="counted-ordered-list">Counted ordered list</h4>
+<ol><li>Item one.</li><li>Item two.</li></ol><p class="ol-counter">ordered list items.</p>
+</div>
+</td></tr></table>
+<h2 id="append-arbitrary-elements-to-list-items">Append arbitrary elements to list items</h2>
+<p>An attached <em>Division Block</em> can be used to group and append arbitrary
+block elements to a list item.</p>
+<h4 id="examples-11">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('composite-list-item-example')">&#x270e;</span>
+Rimu Markup</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('composite-list-item-example')">&#x2b04;</span>
+Preview
+</td>
+</tr>
+<tr>
+<td style="width:50%;">
+<pre class="example-source nohighlight" id="composite-list-item-example-source"><code>- First list item.
+..
+Include a paragraph in the list item.
+
+&gt; And a Quoted paragraph.
+..
+- Second list item.</code></pre>
+<textarea id="composite-list-item-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('composite-list-item-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="composite-list-item-example-errors" class="example-errors"></div>
+<div id="composite-list-item-example-rendered" class="example-rendered">
+<ul><li>First list item.<p>Include a paragraph in the list item.</p>
+<blockquote><p> And a Quoted paragraph.</p></blockquote>
+</li><li>Second list item.</li></ul></div>
+</td></tr></table>
+<p>This works because if a <a href="reference.html#fenced-blocks">Fenced Block</a>
+immediately follows a list item without any intervening blank lines it
+will be rendered with the list item.</p>
+<h2 id="styling-list-items">Applying Block Attributes to list item elements</h2>
+<p><a href="reference.html#block-attributes">Block Attribute</a> elements within a list
+are applied to the next list item or attached list item element. This
+facilitates styling and linking within <a href="reference.html#lists">lists</a>.</p>
+<h4 id="examples-12">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('list-item-block-attributes-example')">&#x270e;</span>
+Rimu Markup</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('list-item-block-attributes-example')">&#x2b04;</span>
+Preview
+</td>
+</tr>
+<tr>
+<td style="width:50%;">
+<pre class="example-source nohighlight" id="list-item-block-attributes-example-source"><code>1. List item with attached green
+   sidebar styled Division block.
+.sidebar "color:green"
+..
+Urna aliquam pid, pulvinar augue ut
+aenean enim cum lectus sed.
+..
+
+."color:orange"
+2. List item with nested labled list.
+
+.#labeled-list
+    One:: Item one.
+."color:red"
+    Two:: Item two.
+
+.#third-list-item
+3. List item with attached bold Indented
+   paragraph.
+
+."font-weight:bold"
+   Duis in tincidunt rhoncus nascetur
+   lacus!
+
+[Link to third list item](#third-list-item).
+
+[Link to labeled list](#labeled-list).</code></pre>
+<textarea id="list-item-block-attributes-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('list-item-block-attributes-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="list-item-block-attributes-example-errors" class="example-errors"></div>
+<div id="list-item-block-attributes-example-rendered" class="example-rendered">
+<ol><li>List item with attached green
+   sidebar styled Division block.<div class="sidebar" style="color:green"><p>Urna aliquam pid, pulvinar augue ut
+aenean enim cum lectus sed.</p></div>
+</li><li style="color:orange">List item with nested labled list.<dl id="labeled-list"><dt>One</dt><dd>Item one.</dd><dt style="color:red">Two</dt><dd>Item two.</dd></dl></li><li id="third-list-item">List item with attached bold Indented
+   paragraph.<pre style="font-weight:bold"><code>Duis in tincidunt rhoncus nascetur
+lacus!</code></pre>
+</li></ol><p><a href="#third-list-item">Link to third list item</a>.</p>
+<p><a href="#labeled-list">Link to labeled list</a>.</p>
+</div>
+</td></tr></table>
+<h2 id="section-numbering">Section numbering</h2>
+<p>Use the <a href="reference.html#rimuc-command">rimuc</a> <code>--section-numbers</code> option with the <code>--layout</code> option
+to number top level <em>h2</em> and <em>h3</em> sub-sections. For example:</p>
+<pre><code>rimuc --layout sequel --section-numbers mydoc.rmu</code></pre>
+<p>The  <a href="reference.html#rimuc-command">rimuc</a> <code>--section-numbers</code> option is a shortcut for
+<code>--prepend {--section-numbers} = 'yes'</code>.</p>
+<h2 id="nested-fenced-blocks">Nested Fenced Blocks</h2>
+<p><a href="reference.html#fenced-blocks">Fenced blocks</a> of the same type can be
+nested by using differing numbers of delimiter characters to
+distinguish between them.</p>
+<h4 id="examples-13">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('nested-fenced-blocks-example')">&#x270e;</span>
+Rimu Markup</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('nested-fenced-blocks-example')">&#x2b04;</span>
+Preview
+</td>
+</tr>
+<tr>
+<td style="width:50%;">
+<pre class="example-source nohighlight" id="nested-fenced-blocks-example-source"><code>""
+Urna aliquam pid, pulvinar augue ut
+aenean enim cum lectus sed, duis odio
+lectus, augue non egestas amet? Magna
+lectus?
+
+"""
+Enim ultricies odio rhoncus ultrices,
+adipiscing in dictumst in, enim integer
+vel mauris placerat in phasellus magna.
+"""
+
+Duis in tincidunt rhoncus nascetur
+lacus!
+""</code></pre>
+<textarea id="nested-fenced-blocks-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('nested-fenced-blocks-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="nested-fenced-blocks-example-errors" class="example-errors"></div>
+<div id="nested-fenced-blocks-example-rendered" class="example-rendered">
+<blockquote><p>Urna aliquam pid, pulvinar augue ut
+aenean enim cum lectus sed, duis odio
+lectus, augue non egestas amet? Magna
+lectus?</p>
+<blockquote><p>Enim ultricies odio rhoncus ultrices,
+adipiscing in dictumst in, enim integer
+vel mauris placerat in phasellus magna.</p></blockquote>
+<p>Duis in tincidunt rhoncus nascetur
+lacus!</p></blockquote>
+</div>
+</td></tr></table>
+<h2 id="list-termination">List termination</h2>
+<p>List termination can be forced by following the list by two or more blank
+lines. This comes in handy if you want to follow one list immediately by
+another or if you want to separate an Indented paragraph from a
+preceding list.</p>
+<h2 id="syntax-surprises">Syntax surprises</h2>
+<p>Here are some situations that generate unexpected results.</p>
+<h3 id="nested-list-item-ambiguity">Nested list item ambiguity</h3>
+<p>For readability Rimu list items can be optionally indented.  If an
+Indented paragraph looks like a list item it will be rendered as a
+list item (because Lists take precedence over Indented paragraphs).
+To render an indented list item as an Indented paragraph change it to
+a fenced code block.</p>
+<h4 id="examples-14">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('list-ambiguity-example')">&#x270e;</span>
+Rimu Markup</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('list-ambiguity-example')">&#x2b04;</span>
+Preview
+</td>
+</tr>
+<tr>
+<td style="width:50%;">
+<pre class="example-source nohighlight" id="list-ambiguity-example-source"><code>- List item.
+
+  * Rendered as nested list item.
+
+- List item.
+``
+* Rendered as code block.
+``</code></pre>
+<textarea id="list-ambiguity-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('list-ambiguity-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="list-ambiguity-example-errors" class="example-errors"></div>
+<div id="list-ambiguity-example-rendered" class="example-rendered">
+<ul><li>List item.<ul><li>Rendered as nested list item.</li></ul></li><li>List item.<pre><code>* Rendered as code block.</code></pre>
+</li></ul></div>
+</td></tr></table>
+<h3 id="urls">URLs</h3>
+<ul><li>To include a <code>[</code> character in a Markdown URL or image captions, use
+  a <code>&amp;#91;</code> entity instead of the <code>[</code> character.<p>The caption in the following example displays as <code>the [Main] section</code>
+(if the <code>[</code> character were used the caption would be <code>Main] section</code>):</p>
+<pre><code>[the &amp;#91;Main] section](#main)</code></pre>
+</li><li>To include a <code>)</code> character in a Markdown URL , use
+  a <code>&amp;#41;</code> entity instead of the <code>)</code> character. For example:<pre><code>[wolves](#the_wolf_(lupus&amp;#41;)</code></pre>
+</li><li>To include a <code>&gt;</code> character in a Rimu URL or image captions, use a
+  <code>&amp;gt;</code> entity instead of the <code>&gt;</code> character.<p>The caption in the following example displays as <code>&lt;Header&gt;</code>
+(if the <code>&gt;</code> character were used the caption would be <code>&lt;Header</code>):</p>
+<pre><code>&lt;#header|&lt;Header&amp;gt;&gt;</code></pre>
+</li></ul><h3 id="braces-in-macro-patterns">Braces in macro patterns</h3>
+<p>You need to escape closing brace characters in Inclusion and Exclusion
+macro patterns. For example:</p>
+<pre><code>{foo=x{2\}}</code></pre>
+<p>Escaping the brace serves two purposes: It excludes <code>{2}</code> from being
+seen as a Simple macro invocation and it stops the brace character
+from being seen as the Inclusion macro's closing brace</p>
+<h2 id="controlling-line-breaks">Controlling line breaks</h2>
+<p>There are three ways to preserve line breaks:</p>
+<ol><li>Terminate lines with a Rimu line break (a space followed by a
+  backslash character).</li><li>Terminate lines with an HTML break element (<code>&lt;br&gt;</code>).</li><li>Apply the <code>preserve-breaks</code> class to a Rimu block element and
+  compile with the <code>rimuc</code> command <a href="reference.html#layout-option"><code>--layout</code>
+  option</a>.</li></ol><h4 id="examples-15">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('line-breaks-example')">&#x270e;</span>
+Rimu Markup</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('line-breaks-example')">&#x2b04;</span>
+Preview
+</td>
+</tr>
+<tr>
+<td style="width:50%;">
+<pre class="example-source nohighlight" id="line-breaks-example-source"><code>Urna aliquam pid \
+Aenean enim cum sed &lt;br&gt;
+Augue non egestas amet?
+
+.preserve-breaks
+Urna aliquam pid
+Aenean enim cum sed
+Augue non egestas amet?
+</code></pre>
+<textarea id="line-breaks-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('line-breaks-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="line-breaks-example-errors" class="example-errors"></div>
+<div id="line-breaks-example-rendered" class="example-rendered">
+<p>Urna aliquam pid<br>
+Aenean enim cum sed <br>
+Augue non egestas amet?</p>
+<p class="preserve-breaks">Urna aliquam pid
+Aenean enim cum sed
+Augue non egestas amet?</p>
+</div>
+</td></tr></table>
+<h2 id="controlling-printer-page-breaks">Controlling printer page breaks</h2>
+<p>The <a href="reference.html#rimuc-command">rimuc</a> tool <code>--layout</code> option includes <code>page-break</code> and
+<code>no-page-break</code> CSS classes which apply <code>page-break-before:always</code> and
+<code>page-break-inside:avoid</code> properties respectively:</p>
+<pre><code>.sidebar no-page-break
+..
+Page breaks are avoided inside
+this sidebar.
+..
+
+.page-break
+### A header that starts on a new page</code></pre>
+<h2 id="controlling-text-alignment">Controlling text alignment</h2>
+<p>The <a href="reference.html#rimuc-command">rimuc</a> tool <code>--layout</code> option includes <code>align-left</code>,
+<code>align-center</code> and <code>align-right</code> CSS classes to apply the CSS
+<code>text-align</code> property.  Use them to control the horizontal alignment
+of flowed inline elements (e.g. text, inline images):</p>
+<h4 id="examples-16">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('text-alignment-example-2')">&#x270e;</span>
+Rimu Markup</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('text-alignment-example-2')">&#x2b04;</span>
+Preview
+</td>
+</tr>
+<tr>
+<td style="width:50%;">
+<pre class="example-source nohighlight" id="text-alignment-example-2-source"><code>.align-left
+Enim odio ultrices
+
+.align-center
+Enim odio ultrices
+
+.align-right
+Enim odio ultrices</code></pre>
+<textarea id="text-alignment-example-2-edit" class="edit-source" style="display:none" onkeyup="renderExample('text-alignment-example-2')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="text-alignment-example-2-errors" class="example-errors"></div>
+<div id="text-alignment-example-2-rendered" class="example-rendered">
+<p class="align-left">Enim odio ultrices</p>
+<p class="align-center">Enim odio ultrices</p>
+<p class="align-right">Enim odio ultrices</p>
+</div>
+</td></tr></table>
+<h2 id="citing-quotes-and-verses">Citing quotes and verses</h2>
+<p>The <a href="reference.html#rimuc-command">rimuc</a> command <code>--layout</code> option includes the CSS <em>cite</em> class
+for attributing quotes and verses. For example:</p>
+<h4 id="examples-17">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('citation-example')">&#x270e;</span>
+Rimu Markup</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('citation-example')">&#x2b04;</span>
+Preview
+</td>
+</tr>
+<tr>
+<td style="width:50%;">
+<pre class="example-source nohighlight" id="citation-example-source"><code>Quotation:
+
+""
+Enim ultricies odio rhoncus ultrices,
+porttitor augue a amet, pulvinar
+adipiscing in dictumst in, enim integer
+vel mauris placerat in phasellus magna.
+Nisi! Amet.
+
+.cite
+Anonymous
+""
+
+Verse:
+
+.verse
+..
+Urna aliquam pid
+Aenean enim cum sed
+Augue non egestas amet?
+
+.cite
+A. N. Mouse
+..</code></pre>
+<textarea id="citation-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('citation-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="citation-example-errors" class="example-errors"></div>
+<div id="citation-example-rendered" class="example-rendered">
+<p>Quotation:</p>
+<blockquote><p>Enim ultricies odio rhoncus ultrices,
+porttitor augue a amet, pulvinar
+adipiscing in dictumst in, enim integer
+vel mauris placerat in phasellus magna.
+Nisi! Amet.</p>
+<p class="cite">Anonymous</p></blockquote>
+<p>Verse:</p>
+<div class="verse"><p>Urna aliquam pid
+Aenean enim cum sed
+Augue non egestas amet?</p>
+<p class="cite">A. N. Mouse</p></div>
+</div>
+</td></tr></table>
+<h2 id="an-example-letter">An example letter</h2>
+<p>Here's an example of a personal letter:</p>
+<h4 id="examples-18">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header" style="width:10%;">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('letter-example')">&#x270e;</span>
+Rimu Markup</td>
+<td>
+<pre class="example-source nohighlight" id="letter-example-source"><code>."font-family:serif; font-size:12pt;"
+..
+
+."margin-left:75%"
+...
+24 Milky Way \
+Skyhome 1234 \
+
+17th June 2016
+...
+
+."margin-bottom:1.5em"
+Mr. A. N. Mouse \
+P.O. Box 42     \
+Riverbank 3120
+
+."margin-bottom:1.2em"
+Dear Andrew
+
+Mattis pellentesque in lundium lectus penatibus turpis enim enim in,
+mid velit. Eu lundium. Lundium! Porttitor! Porttitor purus lacus et
+odio nisi amet in magna penatibus odio amet?
+
+In urna rhoncus! Nec scelerisque enim in turpis pid, phasellus cras,
+rhoncus, egestas aliquet lundium! Lundium auctor vel natoque enim.
+
+."margin-top:2em"
+Yours sincerely \
+Joe Jetson
+..
+</code></pre>
+<textarea id="letter-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('letter-example')"></textarea>
+</td>
+</tr>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('letter-example')">&#x2b04;</span>
+Preview
+</td>
+<td>
+<div id="letter-example-errors" class="example-errors"></div>
+<div id="letter-example-rendered" class="example-rendered">
+<div style="font-family:serif; font-size:12pt;"><div style="margin-left:75%"><p>24 Milky Way<br>
+Skyhome 1234<br></p>
+<p>17th June 2016</p></div>
+<p style="margin-bottom:1.5em">Mr. A. N. Mouse<br>
+P.O. Box 42    <br>
+Riverbank 3120</p>
+<p style="margin-bottom:1.2em">Dear Andrew</p>
+<p>Mattis pellentesque in lundium lectus penatibus turpis enim enim in,
+mid velit. Eu lundium. Lundium! Porttitor! Porttitor purus lacus et
+odio nisi amet in magna penatibus odio amet?</p>
+<p>In urna rhoncus! Nec scelerisque enim in turpis pid, phasellus cras,
+rhoncus, egestas aliquet lundium! Lundium auctor vel natoque enim.</p>
+<p style="margin-top:2em">Yours sincerely<br>
+Joe Jetson</p></div>
+</div>
+</td></tr></table>
+<ul><li>The font parameters are set by enclosing the entire contents in a
+  Division Block.</li><li>If you want to control the print margins put something like this at
+  the start of the document:<pre><code>&lt;style&gt;
+@page
+{ margin: 25mm 25mm 25mm 25mm; }
+&lt;/style&gt;</code></pre>
+</li></ul><h2 id="automatically-recompile-and-display-rimu-source">Automatically recompile and display Rimu source</h2>
+<p>To automatically recompile Rimu source to HTML and refresh the webpage
+in the Chrome browser use <a href="http://entrproject.org/">entr(1)</a> to
+recompile, for example:</p>
+<pre><code>ls README.md | entr rimuc -s README.md</code></pre>
+<p>Then use the Chrome
+<a href="https://chrome.google.com/webstore/detail/livepage/pilnojpmdoofaelbinaeodfpjheijkbh">LivePage</a>
+extension to auto-refresh the file after it is recompiled.</p>
+<h2 id="general-purpose-macro-processor">General purpose macro processor</h2>
+<p>You can use Rimu as a general purpose macro text processor. This is
+achieved by enveloping the text to be processed in a <em>Division Block</em>.
+For example:</p>
+<pre><code>// Macro definitions.
+{sans-font} = 'Arial, Helvetica, sans-serif'
+{primary-color} = '#527bbd'
+{primary-background} = 'white'
+{text-color} = '#333333'
+
+// Only expand macros.
+.+macros -specials -spans -container
+..
+body {
+  font-family: {sans-font};
+  font-size: 14px;
+  line-height: 20px;
+  color: {text-color};
+  background-color: {primary-background};
+  margin: 1em;
+  max-width: 50em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 10px 0;
+  color: {primary-color};
+}
+..</code></pre>
+<ul><li>Use <code>rimuc</code> to expand the macros, for example:<pre><code>rimuc --output main.css main.rmu</code></pre>
+</li><li>This technique can be combined with <em>conditional macro expansion</em> and all the other
+  Rimu <em>macro features</em>.</li></ul><h2 id="passing-arbitrary-text-to-the-output">Passing arbitrary text to the output</h2>
+<p>To pass arbitrary blocks of text directly to the output disable all
+processing options. For example:</p>
+<pre><code>// Disable all processing inside Division Block.
+.-macros -spans -specials -container
+..
+function toggleToc() {
+    document.getElementById("toc").classList.toggle('toc-visible');
+}
+
+window.onclick = toggleToc
+..</code></pre>
+<p>To enable only macro expansion drop the <code>-macros</code> option
+(c.f. <a href="#general-purpose-macro-processor">General purpose macro processor</a>).</p>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
+<script>
+hljs.configure({languages: []});
+hljs.initHighlightingOnLoad();
+</script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+window.onload = function() {
+  document.getElementById('sidebar').appendChild(document.getElementById('toc')); // Ensure custom TOC is child of sidebar.
+  var headings = [].slice.call(document.body.querySelectorAll('#article > h1, #article > h2, #article > h3'));
+  headings.forEach(function(heading) {
+    setHeaderLink(heading);
+    appendTocEntry(heading);
+  });
+  if (isSmallScreen()) {
+    toggleToc();  // Hide TOC.
+  }
+}
+</script>
+<script>
+function setHeaderLink(heading) {
+  var id = heading.getAttribute('id');
+  if (id) {
+    var link = document.createElement('a');
+    link.classList.add('header-link');
+    link.setAttribute('href', '#' + id);
+    heading.appendChild(link);
+  }
+}
+</script>
+<script>
+function appendTocEntry(heading) {
+  var id = heading.getAttribute('id');
+  if (heading.classList.contains('no-auto-toc')) {
+    return;
+  }
+  var container = document.getElementById('auto-toc');
+  if (container === null) {
+    return;
+  }
+  var tocLink = document.createElement('a');
+  tocLink.setAttribute('href', '#' + id);
+  tocLink.textContent = heading.textContent;
+  var tocEntry = document.createElement('div');
+  tocEntry.setAttribute('class', heading.tagName.toLowerCase());
+  tocEntry.appendChild(tocLink);
+  container.appendChild(tocEntry);
+}
+</script>
+<script>
+  document.onclick = function (event) {
+    if (event.target.matches('#toc-button') || event.target.matches('#toc a') && isSmallScreen()) {
+      toggleToc();
+    }
+  }
+  function toggleToc() {
+    document.body.classList.toggle('hide-toc');
+  }
+  function isSmallScreen() {
+    return window.matchMedia('(min-width: 1px) and (max-width: 800px)').matches;
+  }
+  // matches() polyfill for old browsers.
+  if (!Element.prototype.matches) {
+    var p = Element.prototype;
+    if (p.webkitMatchesSelector) // Chrome <34, SF<7.1, iOS<8
+      p.matches = p.webkitMatchesSelector;
+    if (p.msMatchesSelector) // IE9/10/11 & Edge
+      p.matches = p.msMatchesSelector;
+    if (p.mozMatchesSelector) // FF<34
+      p.matches = p.mozMatchesSelector;
+  }
+</script>
+</body>
+</html>
