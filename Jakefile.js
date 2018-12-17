@@ -138,8 +138,7 @@ task('lint', {async: true}, function () {
   let commands = []
     .concat(RIMU_SRC.concat([RIMUC_TS, RIMU_TSD]).map(file => 'tslint ' + file))
     .concat(TESTS.map(file => 'jshint ' + file))
-// TODO: Disable jsonlint until the nomnom bug is fixed (see https://github.com/zaach/jsonlint/issues/103).
-//    .concat(['jsonlint --quiet package.json'])
+    .concat(['jsonlint --quiet package.json'])
   exec(commands, complete)
 })
 
