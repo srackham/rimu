@@ -176,8 +176,10 @@ task('build-docs', ['build-rimu', 'build-gallery'], {async: true}, function () {
     ' ' + doc.rimucOptions + ' ' +
     ' ./src/examples/example-rimurc.rmu ' + DOCS_DIR + 'doc-header.rmu ' + doc.src
   )
-  shelljs.cp('-f', RIMU_LIB_MIN, DOCS_DIR)
-  exec(commands, complete)
+  exec(commands, function () {
+    shelljs.cp('-f', RIMU_LIB_MIN, DOCS_DIR)
+    complete()
+  })
 })
 
 function forEachGalleryDocument(documentCallback, layoutCallback, themeCallback) {
@@ -245,9 +247,11 @@ task('gallery-markup', function () {
 
 desc(`Validate HTML documents.`)
 task('validate-html', {async: true}, function () {
-  let commands = HTML.map(file => 'html-validator --verbose --format=text --file=' + file)
-  // 2018-11-09: Disable validation. The Nu W3C validator is once again treating style tags in the body as an error.
-  // exec(commands, complete, {executeAll: true})
+  let commands = HTML
+    // 2018-11-09: Skip files with style tags in the body as Nu W3C validator treats style tags in the body as an error.
+    .filter(file => ! ['reference','tips','rimuplayground'].map(file => DOCS_DIR+file+'.html').includes(file))
+    .map(file => 'html-validator --verbose --format=text --file=' + file)
+  exec(commands, complete, {executeAll: true})
 })
 
 desc(`Display or update the project version number. Use vers=x.y.z argument to set a new version number.`)
