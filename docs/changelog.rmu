@@ -5,6 +5,14 @@ See the various Github commit logs for a full list of changes:
 [Kotlin]({github-kt}/commits/).
 
 
+## Version 11.1.1 (2018-12-17)
+- Changed Github documentation publication method from _gh-pages branch_ to
+  _master branch /docs folder_.
+- Vim syntax highlighter tweaks.
+
+No new features have been added to the Rimu markup language.
+
+
 ## Version 11.1.0 (2018-09-01)
 - Add builtin `plain` [rimuc]({reference}#rimuc-command) layout to all Rimu
   ports. Previously the `plain` layout was only available from the JavaScript
