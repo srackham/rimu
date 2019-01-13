@@ -1105,7 +1105,6 @@ Rimu Markup</td>
 <pre class="example-source nohighlight" id="tables-example-source"><code>&lt;table class="bordered"&gt;&lt;tr&gt;
 &lt;td style="width: 50%; padding: 6px;"&gt;
 
-.text-info
 **Lorem ipsum dolor**. Sit amet venenatis. Erat nulla arcu. Lorem luctus
 sem. Mauris vitae ipsum. Donec dui ac ridiculus quisque proin.
 Lobortis lacus vestibulum sem.
@@ -1155,7 +1154,7 @@ Preview
 <div id="tables-example-rendered" class="example-rendered">
 <table class="bordered"><tr>
 <td style="width: 50%; padding: 6px;">
-<p class="text-info"><strong>Lorem ipsum dolor</strong>. Sit amet venenatis. Erat nulla arcu. Lorem luctus
+<p><strong>Lorem ipsum dolor</strong>. Sit amet venenatis. Erat nulla arcu. Lorem luctus
 sem. Mauris vitae ipsum. Donec dui ac ridiculus quisque proin.
 Lobortis lacus vestibulum sem.</p>
 <h5 id="normal-paragraph">Normal paragraph</h5>
@@ -1206,7 +1205,8 @@ Rimu Markup</td>
 &lt;/tr&gt;
 '
 
-{row|**Command** |**Should be named** |**Applied to** |**Description**}
+."font-weight:bold"
+{row|Command |Should be named |Applied to |Description}
 
 {row|Discard Snapshot (_Ctrl+Shift+D_) |Merge with Parent |Snapshot |Merges the snapshot file into the parent snapshot or disk image file and then deletes the now redundant snapshot file.}
 
@@ -1228,11 +1228,11 @@ Preview
 <div id="table-macro-example-errors" class="example-errors"></div>
 <div id="table-macro-example-rendered" class="example-rendered">
 <table style="border-spacing:0.6em; border-collapse:separate">
-<tr>
-<td style="width:25%"><strong>Command</strong> </td>
-<td style="width:20%"><strong>Should be named</strong> </td>
-<td style="width:20%"><strong>Applied to</strong> </td>
-<td style="width:35%"><strong>Description</strong></td>
+<tr style="font-weight:bold">
+<td style="width:25%">Command </td>
+<td style="width:20%">Should be named </td>
+<td style="width:20%">Applied to </td>
+<td style="width:35%">Description</td>
 </tr>
 <tr>
 <td style="width:25%">Discard Snapshot (<em>Ctrl+Shift+D</em>) </td>

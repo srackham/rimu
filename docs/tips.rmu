@@ -557,7 +557,6 @@ styling bordered tables.
 {tables-example} = '<table class="bordered"><tr>
 <td style="width: 50%; padding: 6px;">
 
-.text-info
 **Lorem ipsum dolor**. Sit amet venenatis. Erat nulla arcu. Lorem luctus
 sem. Mauris vitae ipsum. Donec dui ac ridiculus quisque proin.
 Lobortis lacus vestibulum sem.
@@ -630,7 +629,8 @@ Parametrized macros can be used to generate row oriented tables:
 </tr>
 '\
 
-{row|**Command** |**Should be named** |**Applied to** |**Description**}
+."font-weight:bold"
+{row|Command |Should be named |Applied to |Description}
 
 {row|Discard Snapshot (_Ctrl+Shift+D_) |Merge with Parent |Snapshot |Merges the snapshot file into the parent snapshot or disk image file and then deletes the now redundant snapshot file.}
 
