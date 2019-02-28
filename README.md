@@ -40,7 +40,8 @@ Install Rimu as a Node.js module (includes the `rimu` library and the
 
         sudo npm install -g rimu
 
-Run a simple test from the command prompt to check `rimuc` is working:
+Run a simple test from the command prompt to check the `rimuc` CLI command is
+working:
 
         echo 'Hello *Rimu*!' | rimuc
 
