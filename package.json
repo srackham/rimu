@@ -34,18 +34,18 @@
     "@types/node": "^11.9.5",
     "faucet": "^0.0.1",
     "html-validator-cli": "^5.0.0",
-    "jake": "^8.0.19",
-    "jshint": "^2.10.1",
+    "jake": "^8.1.1",
+    "jshint": "^2.10.2",
     "jsonlint": "^1.6.3",
     "raw-loader": "^1.0.0",
     "shelljs": "^0.8.3",
     "tape": "^4.10.1",
-    "ts-loader": "^5.3.3",
-    "tslint": "^5.13.0",
-    "typescript": "^3.3.3333",
-    "uglify-js": "^3.4.9",
+    "ts-loader": "^5.4.5",
+    "tslint": "^5.16.0",
+    "typescript": "^3.4.5",
+    "uglify-js": "^3.5.12",
     "uglifyjs-webpack-plugin": "^2.1.2",
-    "webpack": "^4.29.5",
-    "webpack-cli": "^3.2.3"
+    "webpack": "^4.31.0",
+    "webpack-cli": "^3.3.2"
   }
 }
