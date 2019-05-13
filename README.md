@@ -17,7 +17,7 @@ and Markdown.
 - Ported to three language platforms:
   * The canonical [JavaScript version](https://github.com/srackham/rimu)
     written in TypeScript with no dependencies.
-    Single JavaScript file (less than 22KB minified) that can be dropped
+    Single JavaScript file (less than 23KB minified) that can be dropped
     onto a Web page or used as a Node module.
   * A [Kotlin port](https://github.com/srackham/rimu-kt/) for the JVM platform.
   * A [Go port](https://github.com/srackham/go-rimu/).
