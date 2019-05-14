@@ -169,10 +169,8 @@ function die(message: string): void {
   process.exit(1)
 }
 
-declare const require: (filename: string) => any
-
 function readResourceFile(name: string): string {
-  return require(`./resources/${name}`)
+  return require(`./resources/${name}`).default
 }
 
 function importLayoutFile(name: string): string {
