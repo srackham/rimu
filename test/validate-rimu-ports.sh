@@ -1,5 +1,8 @@
 #!/bin/bash
 #
+# USAGE
+#    validate-rimu-ports.sh [--update-fixtures]
+#
 # This script is used to verify all 3 Rimu ports (JS, Go, Kotlin) are congruent.
 # If any discrepencies are detected it exits immediately.
 # Run this script before publishing a new Rimu release.
@@ -8,7 +11,8 @@
 #       and resource files. If Go or Kotlin ports contain latest versions they
 #       should be copied to the JS project before running this script.
 #
-# - Copies common test fixtures and resource files from JS project to Go and Kotlin projects.
+# - If invoked with --update-fixtures argument it copies common test fixtures and resource
+#   files from JS project to Go and Kotlin projects.
 # - Tests and builds all three Rimu ports.
 # - Compiles the Rimu documentation with all three ports and checks they are identical.
 #
@@ -21,13 +25,29 @@ JS=$HOME/local/projects/rimu
 KT=$HOME/local/projects/rimu-kt
 
 # Copy test fixtures and example rimurc file.
-cp $JS/test/rimu-tests.json $GO/rimu/testdata/rimu-tests.json
-cp $JS/test/rimuc-tests.json $GO/rimugo/testdata/rimuc-tests.json
-cp $JS/src/examples/example-rimurc.rmu $GO/rimugo/testdata/example-rimurc.rmu
+if [ "${1:-}" = "--update-fixtures" ]; then
+    cp $JS/test/rimu-tests.json $GO/rimu/testdata/rimu-tests.json
+    cp $JS/test/rimuc-tests.json $GO/rimugo/testdata/rimuc-tests.json
+    cp $JS/src/examples/example-rimurc.rmu $GO/rimugo/testdata/example-rimurc.rmu
 
-cp $JS/test/rimu-tests.json $KT/src/test/resources/rimu-tests.json
-cp $JS/test/rimuc-tests.json $KT/src/test/resources/rimuc-tests.json
-cp $JS/src/examples/example-rimurc.rmu $KT/src/test/fixtures/example-rimurc.rmu
+    cp $JS/test/rimu-tests.json $KT/src/test/resources/rimu-tests.json
+    cp $JS/test/rimuc-tests.json $KT/src/test/resources/rimuc-tests.json
+    cp $JS/src/examples/example-rimurc.rmu $KT/src/test/fixtures/example-rimurc.rmu
+fi
+
+# Proceed only if all fixtures are identical.
+err=0
+diff $JS/test/rimu-tests.json $GO/rimu/testdata/rimu-tests.json || err=1
+diff $JS/test/rimuc-tests.json $GO/rimugo/testdata/rimuc-tests.json || err=1
+diff $JS/src/examples/example-rimurc.rmu $GO/rimugo/testdata/example-rimurc.rmu || err=1
+
+diff $JS/test/rimu-tests.json $KT/src/test/resources/rimu-tests.json || err=1
+diff $JS/test/rimuc-tests.json $KT/src/test/resources/rimuc-tests.json || err=1
+diff $JS/src/examples/example-rimurc.rmu $KT/src/test/fixtures/example-rimurc.rmu || err=1
+
+if [ $err = 1 ]; then
+    exit 1
+fi
 
 # Copy resource files.
 cd $JS/src/rimuc/resources
