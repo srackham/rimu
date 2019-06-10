@@ -220,6 +220,7 @@ Preview
 
 // Documentation links.
 {rimuc} = '[rimuc]({reference}#rimuc-command)'
+{hindsite} = '[hindsite](https://srackham.github.io/hindsite/)'
 
 // External Web pages.
 {github} = 'https://github.com/srackham/rimu'

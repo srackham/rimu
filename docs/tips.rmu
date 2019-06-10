@@ -1183,3 +1183,9 @@ window.onclick = toggleToc
 To enable only macro expansion drop the `-macros` option
 (c.f. [General purpose macro processor](#general-purpose-macro-processor)).
 
+
+## Building websites with Rimu
+Take a look at {hindsite} if you want to build websites from Rimu source.
+
+{hindsite} is a fast, lightweight static website generator. It builds static
+websites from Rimu or Markdown source documents.
