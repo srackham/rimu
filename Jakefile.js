@@ -165,6 +165,7 @@ task('build-rimuc', {async: true}, function () {
 
 desc(`Generate documentation`)
 task('build-docs', ['build-rimu', 'build-gallery'], {async: true}, function () {
+  shelljs.cp('-f', RIMU_LIB_MIN, DOCS_DIR)
   let commands = DOCS.map(doc =>
     RIMUC_EXE +
     ' --no-rimurc --theme legend --custom-toc --header-links' +
@@ -175,10 +176,7 @@ task('build-docs', ['build-rimu', 'build-gallery'], {async: true}, function () {
     ' ' + doc.rimucOptions + ' ' +
     ' ./src/examples/example-rimurc.rmu ' + DOCS_DIR + 'doc-header.rmu ' + doc.src
   )
-  exec(commands, function () {
-    shelljs.cp('-f', RIMU_LIB_MIN, DOCS_DIR)
-    complete()
-  })
+  exec(commands, complete)
 })
 
 function forEachGalleryDocument(documentCallback, layoutCallback, themeCallback) {
