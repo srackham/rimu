@@ -349,11 +349,11 @@ function classInjectionFilter(match: string[]): string {
 
 // contentFilter for multi-line macro definitions.
 function macroDefContentFilter(text: string, match: string[], expansionOptions: Utils.ExpansionOptions): string {
-  let quote = match[0][match[0].length - match[1].length - 1]                            // The leading macro value quote character.
-  let name = (match[0].match(/^{([\w\-]+\??)}/) as RegExpMatchArray)[1]           // Extract macro name from opening delimiter.
+  let quote = match[0][match[0].length - match[1].length - 1]                 // The leading macro value quote character.
+  let name = (match[0].match(/^{([\w\-]+\??)}/) as RegExpMatchArray)[1]       // Extract macro name from opening delimiter.
   text = text.replace(RegExp('(' + quote + ') *\\\\\\n', 'g'), '$1\n')        // Unescape line-continuations.
   text = text.replace(RegExp('(' + quote + ' *[\\\\]+)\\\\\\n', 'g'), '$1\n') // Unescape escaped line-continuations.
-  text = Utils.replaceInline(text, expansionOptions)                                     // Expand macro invocations.
+  text = Utils.replaceInline(text, expansionOptions)                          // Expand macro invocations.
   Macros.setValue(name, text, quote)
   return ''
 }
