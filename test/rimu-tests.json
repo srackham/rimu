@@ -2663,7 +2663,7 @@
   },
   {
     "description": "filter out reserved characters",
-    "input": "\u0000\u0001\u0003",
+    "input": "\u0000\u0001\u0002",
     "expectedOutput": "",
     "expectedCallback": "",
     "options": {

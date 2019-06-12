@@ -91,7 +91,7 @@ function fragQuote(fragment: Fragment): Fragment[] {
   if (!def.spans) {
     // Spans are disabled so render the quoted text verbatim.
     quoted = Utils.replaceSpecialChars(quoted)
-    quoted = quoted.replace(/\u0000/g, '\u0001')   // Substitute verbatim replacement placeholder.
+    quoted = quoted.replace(/\u0000/g, '\u0001')   // Flag replacements as verbatim.
     result.push({text: quoted, done: true})
   }
   else {
@@ -107,7 +107,9 @@ function fragQuote(fragment: Fragment): Fragment[] {
 // Stores placeholder replacement fragments saved by `preReplacements()` and restored by `postReplacements()`.
 let savedReplacements: Fragment[]
 
-// Return text with replacements replaced with placeholders (see `postReplacements()`).
+// Return text with replacements replaced with a placeholder character (see `postReplacements()`):
+// '\u0000' is placeholder for expanded replacement text.
+// '\u0001' is placeholder for unexpanded replacement text (replacements that occur within quotes are rendered verbatim).
 function preReplacements(text: string): string {
   savedReplacements = []
   let fragments = fragReplacements([{text: text, done: false}])

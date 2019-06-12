@@ -154,7 +154,7 @@ export function render(text: string, silent: boolean = false): string {
           if (params[0] === '!') {
             skip = !skip
           }
-          return skip ? '\u0003' : '' // Flag line for deletion.
+          return skip ? '\u0002' : '' // Flag line for deletion.
         default:
           Options.errorCallback('illegal macro syntax: ' + match[0])
           return ''
@@ -162,9 +162,9 @@ export function render(text: string, silent: boolean = false): string {
     })
   })
   // Delete lines flagged by Inclusion/Exclusion macros.
-  if (result.indexOf('\u0003') !== -1) {
+  if (result.indexOf('\u0002') !== -1) {
     result = result.split('\n')
-      .filter(line => line.indexOf('\u0003') === -1)
+      .filter(line => line.indexOf('\u0002') === -1)
       .join('\n')
   }
   return result
