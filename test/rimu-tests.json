@@ -1376,25 +1376,16 @@
   {
     "description": "reordered macro parameters",
     "input": "{v1}='foo'\n{v2}='bar'\n{v3}='$2$1'\n{v3|{v2}|{v1}}",
-    "expectedOutput": "<p>barfoo</p>",
+    "expectedOutput": "<p>foobar</p>",
     "expectedCallback": "",
     "options": {
       "reset": true
     }
   },
   {
-    "description": "repeated macro parameter limitation (output should be '<p>foofoo</p>')",
+    "description": "repeated macro parameters",
     "input": "{v1}='foo'\n{v2}='$1$1'\n{v2|{v1}}",
-    "expectedOutput": "<p>foo</p>",
-    "expectedCallback": "error: repeated macro parameters: {v2|{v1}}",
-    "options": {
-      "reset": true
-    }
-  },
-  {
-    "description": "fails if macros \\u0002 placeholder is \\u0001 (conflicts with spans use of \\u0001",
-    "input": "{v}='$$1'\n{v|{v}}",
-    "expectedOutput": "<p>$$1</p>",
+    "expectedOutput": "<p>foofoo</p>",
     "expectedCallback": "",
     "options": {
       "reset": true
@@ -1716,6 +1707,15 @@
     }
   },
   {
+    "description": "simple meta-macro",
+    "input": ".-macros\n{v} = '{v1} = 'foobar'\\\n{v1}'\n{v}",
+    "expectedOutput": "<p>foobar</p>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
     "description": "Recursively defined macro in Line Macro context should not loop infinitely",
     "input": "{x}='\\{x}'\n{x}",
     "expectedOutput": "<p>{x}</p>",
@@ -1942,6 +1942,15 @@
   {
     "description": "escaped macro invocations in macro values",
     "input": "{v}='\\{--!}foo\nbar'\n.+macros\n``\n{v}\n``",
+    "expectedOutput": "<pre><code>bar</code></pre>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "double-escaped macro invocations in macro values",
+    "input": "{v}='\\\\{--!}foo\nbar'\n.+macros\n``\n{v}\n``",
     "expectedOutput": "<pre><code>{--!}foo\nbar</code></pre>",
     "expectedCallback": "",
     "options": {
@@ -2654,7 +2663,7 @@
   },
   {
     "description": "filter out reserved characters",
-    "input": "\u0000\u0001\u0002\u0003",
+    "input": "\u0000\u0001\u0003",
     "expectedOutput": "",
     "expectedCallback": "",
     "options": {

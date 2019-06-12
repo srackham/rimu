@@ -79,7 +79,6 @@ export function setValue(name: string, value: string, quote: string): void {
 export function render(text: string, silent: boolean = false): string {
   const MATCH_COMPLEX = /\\?{([\w\-]+)([!=|?](?:|[^]*?[^\\]))}/g; // Parametrized, Inclusion and Exclusion invocations.
   const MATCH_SIMPLE = /\\?{([\w\-]+)()}/g;                       // Simple macro invocation.
-  const saved_simple: string[] = []
   let result = text;
   [MATCH_SIMPLE, MATCH_COMPLEX].forEach(find => {
     result = result.replace(find, function (match: string, ...submatches: string[]): string {
@@ -102,8 +101,7 @@ export function render(text: string, silent: boolean = false): string {
         return match
       }
       if (find === MATCH_SIMPLE) {
-          saved_simple.push(value)
-          return '\u0002' // Placeholder to forestall further expansion of Simple macros.
+          return value
 			}
       params = params.replace(/\\}/g, '}')   // Unescape escaped } characters.
       switch (params[0]) {
@@ -162,16 +160,6 @@ export function render(text: string, silent: boolean = false): string {
           return ''
       }
     })
-  })
-  // Restore expanded Simple values.
-  result = result.replace(/\u0002/g, function (): string {
-    if (saved_simple.length === 0) {
-			// This should not happen but there is a limitation: repeated macro substitution parameters
-			// ($1, $2...) cannot contain simple macro invocations.
-			Options.errorCallback('repeated macro parameters: ' + text)
-			return ''
-		}
-    return saved_simple.shift()!
   })
   // Delete lines flagged by Inclusion/Exclusion macros.
   if (result.indexOf('\u0003') !== -1) {

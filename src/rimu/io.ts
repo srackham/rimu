@@ -5,7 +5,6 @@ export class Reader {
   constructor(text: string) {
     text = text.replace('\u0000', ' ') // Used internally by spans package.
     text = text.replace('\u0001', ' ') // Used internally by spans package.
-    text = text.replace('\u0002', ' ') // Used internally by macros package.
     text = text.replace('\u0003', ' ') // Used internally by macros package.
     // Split lines on newline boundaries.
     // http://stackoverflow.com/questions/1155678/javascript-string-newline-character
