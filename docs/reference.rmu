@@ -655,13 +655,13 @@ for inline comments:
   macro has no formal parameters).
 
 {macro-comments-example} = 'Lorem ipsum dolor sit amet sapien.
-\{--!} THIS LINE IS EXCLUDED.
+\\{--!} THIS LINE IS EXCLUDED.
 Imperdiet pellentesque minim.
 
-Lorem ipsum \{--|THIS TEXT IS EXCLUDED} dolor sit amet sapien.
-Imperdiet pellentesque minim. \{--|THIS TEXT IS EXCLUDED}
+Lorem ipsum \\{--|THIS TEXT IS EXCLUDED} dolor sit amet sapien.
+Imperdiet pellentesque minim. \\{--|THIS TEXT IS EXCLUDED}
 
-Lorem ipsum dolor sit \{--|THIS TECHNIQUE CAN BE USED
+Lorem ipsum dolor sit \\{--|THIS TECHNIQUE CAN BE USED
 TO EXCLUDE TEXT THAT SPANS MULTIPLE LINES
 STARTING AND ENDING ANYWHERE} amet sapien.
 Imperdiet pellentesque minim.'

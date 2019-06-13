@@ -35,19 +35,19 @@ markup vocabulary.
                        padding:2px 4px;
                        border-radius:3px;
                        font-weight:bold;">$1</span>'\
-{heads-up} = '{info|Heads up!}'\
-{note} = '{info|Note} <mark>$1</mark>'\
+{heads-up} = '\{info|Heads up!}'\
+{note} = '\{info|Note} <mark>$1</mark>'\
 {rimu-playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'\
 {sidebar} = '#### $1
 ."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'\
 
 // Use the macros.
-{sidebar|Fun with Macros}
+\{sidebar|Fun with Macros}
 ..
 {heads-up} See the {rimu-playground} for documentation and hands-on
 experimentation.
 
-{note|This document is not yet finished.}
+\{note|This document is not yet finished.}
 ..'
 
 {generate-rendered-example-2|macros-example}
@@ -291,7 +291,7 @@ Copyright (C) 2015 -- trademarked(TM).
 
 "Left and right double-quotes".
 
-The 3\{sup|rd} H\{sub|2}O molecule...
+The 3\\{sup|rd} H\\{sub|2}O molecule...
 
 IMPORTANT: Admonition.
 
@@ -460,12 +460,12 @@ the {rimuc} command `--mathjax` option with the `--layout` option.
 
 .-macros
 {mathjax-example} = '.-macros
-A LaTeX inline formula: \(\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\)
+A LaTeX inline formula: \(\sum_\{i=0}^n i^2 = \frac{n^2+n}m{2}\)
 
 A LaTeX block formula:
 
 .-macros
-\[\sum_{i=0}^n i^2 = \frac{n^2+n}m{2}\]
+\[\sum_\{i=0}^n i^2 = \frac{n^2+n}m{2}\]
 
 A MathML inline formula:
 <math>
@@ -630,13 +630,13 @@ Parametrized macros can be used to generate row oriented tables:
 '\
 
 ."font-weight:bold"
-{row|Command |Should be named |Applied to |Description}
+\{row|Command |Should be named |Applied to |Description}
 
-{row|Discard Snapshot (_Ctrl+Shift+D_) |Merge with Parent |Snapshot |Merges the snapshot file into the parent snapshot or disk image file and then deletes the now redundant snapshot file.}
+\{row|Discard Snapshot (_Ctrl+Shift+D_) |Merge with Parent |Snapshot |Merges the snapshot file into the parent snapshot or disk image file and then deletes the now redundant snapshot file.}
 
-{row|Revert to Current Snapshot (_Ctrl+Shift+R_) | |Current State |Deletes the current state returning the VM state to the most recent snapshot.}
+\{row|Revert to Current Snapshot (_Ctrl+Shift+R_) | |Current State |Deletes the current state returning the VM state to the most recent snapshot.}
 
-{row|Discard Current Snapshot and State (_Ctrl+Shift+B_) |Delete Current Snapshot and State |Current State |Deletes the current state and the most recent snapshot returning the VM state to that of the penultimate snapshot. Use this command to delete snapshots.}
+\{row|Discard Current Snapshot and State (_Ctrl+Shift+B_) |Delete Current Snapshot and State |Current State |Deletes the current state and the most recent snapshot returning the VM state to that of the penultimate snapshot. Use this command to delete snapshots.}
 
 </table>
 '
@@ -651,11 +651,11 @@ Parametrized macros can be used to generate row oriented tables:
 '\
 
 .bordered "font-weight:bold; color:#527bbd"
-{person| Name        | Age    | Gender}
-{person| Joe Bloggs  | 25     | Male}
-{person| _Jim Smith_ | 31     | Male}
+\{person| Name        | Age    | Gender}
+\{person| Joe Bloggs  | 25     | Male}
+\{person| _Jim Smith_ | 31     | Male}
 ."color:red"
-{person| Peg Legge   | **30** | Female}
+\{person| Peg Legge   | **30** | Female}
 '
 
 {generate-rendered-example-2|table-macro-example-2|Table macro example 2}
@@ -730,8 +730,8 @@ title.
 '\
 
 #### Table of Contents
-{toc|section1|Section One}
-{toc|section2|Section Two}
+\{toc|section1|Section One}
+\{toc|section2|Section Two}
 
 {section1-header}
 Link to {section2}.
