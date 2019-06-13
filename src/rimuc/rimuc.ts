@@ -174,6 +174,7 @@ function readResourceFile(name: string): string {
 }
 
 function importLayoutFile(name: string): string {
+  // DEPRECATED as of 11.0.0.
   // Attempt to read header or footer file from external module `rimu-<layout-name>-layout`.
   // Extract layout name and header/footer from the file `name`.
   let match = name.match(/^(.+?)-(header|footer).rmu$/)!

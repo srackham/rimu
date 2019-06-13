@@ -40,6 +40,7 @@ const DEFAULT_DEFS: Definition[] = [
     contentFilter: macroDefContentFilter
   },
   // Multi-line macro expression value definition.
+  // DEPRECATED as of 11.0.0.
   {
     openMatch: Macros.EXPRESSION_DEF_OPEN,    // $1 is first line of macro.
     closeMatch: Macros.EXPRESSION_DEF_CLOSE,
