@@ -1309,21 +1309,21 @@ Definition syntax:
 - A macro definition must start at the left margin.
 - A macro name consists of one or more alphanumeric, underscore or
   dash characters.
-- Macro values are enclosed by single-quote characters and can extend
-  over multiple lines.
 - _Simple_ macro definitions are processed unconditionally;
   _Existential_ macro definitions are only processed if the macro has
   not been defined.
-- Macro values can contain macro invocations. They are expanded when
-  the definition is processed (not when it is invoked).
-- Macro values can extend over multiple lines.
-- Macro values can be escaped with a leading backslash character
-  prefix.
-- Macro definition lines  can be continued to the next line by
-  appending a backslash character to the end of the line.
+- Macro values are enclosed by single-quote characters and can extend
+  over multiple lines.
+- Single-quotes at the end of a line can be escaped by appending a backslash
+  character to the end of the line.
+- Macro values can contain macro invocations:
+  * The macro invocations are expanded when the definition is processed (not
+    when it is invoked).
+  * Escaped macro invocations will be unescaped when the definition is
+    processed, consequently they need to double-escaped if you want them to be
+    escaped when the macro definition is invoked.
 - Macro expansion can be disabled in multi-line macro definitions
-  using a preceding [Block Attributes](#block-attributes) `-macros`
-  option.
+  using a [Block Attributes](#block-attributes) `-macros` option.
 - `$1`, `$2`... and `$$1`, `$$2`... are parameter names, they are
   replaced with parameter values in _Parametrized_ macro invocations.
 

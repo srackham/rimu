@@ -970,6 +970,16 @@ Escaping the brace serves two purposes: It excludes `\{2}` from being
 seen as a Simple macro invocation and it stops the brace character
 from being seen as the Inclusion macro's closing brace
 
+### Escaped macro definitions
+Macro definitions can be escaped by prefixing <code>\&#8203;&#92;</code>
+(zero-width space character followed by backslash character). Simply prefixing a
+backslash is insufficent because the unescaped definition will be mismatched
+downstream.
+
+{escaped-macro-definition-example} = '&#8203;\\{macro} = 'escaped definition''
+
+{generate-rendered-example-1|escaped-macro-definition-example}
+
 
 ## Controlling line breaks
 There are three ways to preserve line breaks:

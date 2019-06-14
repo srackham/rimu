@@ -1846,15 +1846,15 @@ name.</p>
 <pre class="light-background"><code>{macro-name} = 'macro-value'         Simple macro definition
 {macro-name?} = 'macro-value'        Existential macro definition</code></pre>
 <ul><li>A macro definition must start at the left margin.</li><li>A macro name consists of one or more alphanumeric, underscore or
-  dash characters.</li><li>Macro values are enclosed by single-quote characters and can extend
-  over multiple lines.</li><li><em>Simple</em> macro definitions are processed unconditionally;
+  dash characters.</li><li><em>Simple</em> macro definitions are processed unconditionally;
   <em>Existential</em> macro definitions are only processed if the macro has
-  not been defined.</li><li>Macro values can contain macro invocations. They are expanded when
-  the definition is processed (not when it is invoked).</li><li>Macro values can extend over multiple lines.</li><li>Macro values can be escaped with a leading backslash character
-  prefix.</li><li>Macro definition lines  can be continued to the next line by
-  appending a backslash character to the end of the line.</li><li>Macro expansion can be disabled in multi-line macro definitions
-  using a preceding <a href="#block-attributes">Block Attributes</a> <code>-macros</code>
-  option.</li><li><code>$1</code>, <code>$2</code>&hellip; and <code>$$1</code>, <code>$$2</code>&hellip; are parameter names, they are
+  not been defined.</li><li>Macro values are enclosed by single-quote characters and can extend
+  over multiple lines.</li><li>Single-quotes at the end of a line can be escaped by appending a backslash
+  character to the end of the line.</li><li>Macro values can contain macro invocations:<ul><li>The macro invocations are expanded when the definition is processed (not
+    when it is invoked).</li><li>Escaped macro invocations will be unescaped when the definition is
+    processed, consequently they need to double-escaped if you want them to be
+    escaped when the macro definition is invoked.</li></ul></li><li>Macro expansion can be disabled in multi-line macro definitions
+  using a <a href="#block-attributes">Block Attributes</a> <code>-macros</code> option.</li><li><code>$1</code>, <code>$2</code>&hellip; and <code>$$1</code>, <code>$$2</code>&hellip; are parameter names, they are
   replaced with parameter values in <em>Parametrized</em> macro invocations.</li></ul><h3 id="macro-invocations">Macro invocations</h3>
 <p>Invocation syntax:</p>
 <pre class="light-background"><code>{macro-name}                      Simple macro invocation

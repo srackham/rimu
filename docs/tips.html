@@ -1728,12 +1728,40 @@ macro patterns. For example:</p>
 <p>Escaping the brace serves two purposes: It excludes <code>{2}</code> from being
 seen as a Simple macro invocation and it stops the brace character
 from being seen as the Inclusion macro's closing brace</p>
+<h3 id="escaped-macro-definitions">Escaped macro definitions</h3>
+<p>Macro definitions can be escaped by prefixing <code>&amp;#8203;&#92;</code>
+(zero-width space character followed by backslash character). Simply prefixing a
+backslash is insufficent because the unescaped definition will be mismatched
+downstream.</p>
+<h4 id="examples-15">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('escaped-macro-definition-example')">&#x270e;</span>
+Rimu Markup</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('escaped-macro-definition-example')">&#x2b04;</span>
+Preview
+</td>
+</tr>
+<tr>
+<td style="width:50%;">
+<pre class="example-source nohighlight" id="escaped-macro-definition-example-source"><code>&amp;#8203;\{macro} = 'escaped definition'</code></pre>
+<textarea id="escaped-macro-definition-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('escaped-macro-definition-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="escaped-macro-definition-example-errors" class="example-errors"></div>
+<div id="escaped-macro-definition-example-rendered" class="example-rendered">
+<p>&#8203;{macro} = 'escaped definition'</p>
+</div>
+</td></tr></table>
 <h2 id="controlling-line-breaks">Controlling line breaks</h2>
 <p>There are three ways to preserve line breaks:</p>
 <ol><li>Terminate lines with a Rimu line break (a space followed by a
   backslash character).</li><li>Terminate lines with an HTML break element (<code>&lt;br&gt;</code>).</li><li>Apply the <code>preserve-breaks</code> class to a Rimu block element and
   compile with the <code>rimuc</code> command <a href="reference.html#layout-option"><code>--layout</code>
-  option</a>.</li></ol><h4 id="examples-15">Examples</h4>
+  option</a>.</li></ol><h4 id="examples-16">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1786,7 +1814,7 @@ this sidebar.
 <code>align-center</code> and <code>align-right</code> CSS classes to apply the CSS
 <code>text-align</code> property.  Use them to control the horizontal alignment
 of flowed inline elements (e.g. text, inline images):</p>
-<h4 id="examples-16">Examples</h4>
+<h4 id="examples-17">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1821,7 +1849,7 @@ Enim odio ultrices</code></pre>
 <h2 id="citing-quotes-and-verses">Citing quotes and verses</h2>
 <p>The <a href="reference.html#rimuc-command">rimuc</a> command <code>--layout</code> option includes the CSS <em>cite</em> class
 for attributing quotes and verses. For example:</p>
-<h4 id="examples-17">Examples</h4>
+<h4 id="examples-18">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1880,7 +1908,7 @@ Augue non egestas amet?</p>
 </td></tr></table>
 <h2 id="an-example-letter">An example letter</h2>
 <p>Here's an example of a personal letter:</p>
-<h4 id="examples-18">Examples</h4>
+<h4 id="examples-19">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
