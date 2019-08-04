@@ -20,11 +20,11 @@
 set -eux
 
 # Project directories.
-GO=$HOME/local/projects/go-rimu
+GO=$HOME/local/projects/rimu-go
 JS=$HOME/local/projects/rimu
 KT=$HOME/local/projects/rimu-kt
 
-# Copy test fixtures and example rimurc file.
+# Copy test fixtures, resources and example rimurc file.
 if [ "${1:-}" = "--update-fixtures" ]; then
     cp $JS/test/rimu-tests.json $GO/rimu/testdata/rimu-tests.json
     cp $JS/test/rimuc-tests.json $GO/rimugo/testdata/rimuc-tests.json
@@ -33,9 +33,15 @@ if [ "${1:-}" = "--update-fixtures" ]; then
     cp $JS/test/rimu-tests.json $KT/src/test/resources/rimu-tests.json
     cp $JS/test/rimuc-tests.json $KT/src/test/resources/rimuc-tests.json
     cp $JS/src/examples/example-rimurc.rmu $KT/src/test/fixtures/example-rimurc.rmu
+
+    cd $JS/src/rimuc/resources
+    for f in *; do
+        cp $f $GO/rimugo/resources/$f
+        cp $f $KT/src/main/resources/org/rimumarkup/$f
+    done
 fi
 
-# Proceed only if all fixtures are identical.
+# Proceed only if all test fixtures and resource files are identical.
 err=0
 diff $JS/test/rimu-tests.json $GO/rimu/testdata/rimu-tests.json || err=1
 diff $JS/test/rimuc-tests.json $GO/rimugo/testdata/rimuc-tests.json || err=1
@@ -45,16 +51,15 @@ diff $JS/test/rimu-tests.json $KT/src/test/resources/rimu-tests.json || err=1
 diff $JS/test/rimuc-tests.json $KT/src/test/resources/rimuc-tests.json || err=1
 diff $JS/src/examples/example-rimurc.rmu $KT/src/test/fixtures/example-rimurc.rmu || err=1
 
+cd $JS/src/rimuc/resources
+for f in *; do
+    diff $f $GO/rimugo/resources/$f || err=1
+    diff $f $KT/src/main/resources/org/rimumarkup/$f || err=1
+done
+
 if [ $err = 1 ]; then
     exit 1
 fi
-
-# Copy resource files.
-cd $JS/src/rimuc/resources
-for f in *; do
-    cp $f $GO/rimugo/resources/$f
-    cp $f $KT/src/main/resources/org/rimumarkup/$f
-done
 
 # Build and test all ports.
 cd $JS
