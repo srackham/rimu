@@ -263,8 +263,9 @@ task('version', {async: true}, function () {
       fail('Invalid version number: ' + version + '\n')
     }
     shelljs.sed('-i', /(\s*"version"\s*:\s*)"\d+\.\d+\.\d+"/, `$1"${version}"`, 'package.json')
+    shelljs.sed('-i', /(const VERSION = )'\d+\.\d+\.\d+'/, `$1'${version}'`, './src/rimuc/rimuc.ts')
     pkg.version = version
-    exec('git commit -m "Bump version number." package.json', complete)
+    exec('git commit --all -m "Bump version number."', complete)
   }
 })
 
