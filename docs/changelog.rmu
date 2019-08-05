@@ -5,6 +5,20 @@ See the various Github commit logs for a full list of changes:
 [Kotlin]({github-kt}/commits/).
 
 
+## Version 11.1.3 (2019-08-05)
+- **FIXED**: Removed parameterized macro expansion limitation viz. a simple
+  macro invocation passed in a macro parameter was previously only be expanded
+  once (attempts to expand it more than once resulted in the `repeated macro
+  parameters` error).
+
+- **FIXED**: Simple macro invocations passed in macro parameters were expanded
+  in parameter order instead of parameter name order.
+
+A consequence of the above changes is that escaped macro invocations will be
+unescaped when the definition is processed, so they now need to double-escaped
+if you want them to still be escaped when the macro definition is invoked.
+
+
 ## Version 11.1.1 (2018-12-17)
 - Changed Github documentation publication method from _gh-pages branch_ to
   _master branch /docs folder_.
