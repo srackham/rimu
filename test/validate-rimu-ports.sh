@@ -20,7 +20,7 @@
 set -eux
 
 # Project directories.
-GO=$HOME/local/projects/rimu-go
+GO=$HOME/local/projects/go-rimu
 JS=$HOME/local/projects/rimu
 KT=$HOME/local/projects/rimu-kt
 
