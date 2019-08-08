@@ -67,6 +67,7 @@ respect to malformed inputs.
 
 This is a recommended upgrade.
 
+.no-auto-toc
 ### rimu-kt specific
 - The Rimu CLI command has been renamed to `rimukt` (was previously
   `rimuc` which clashed with the Rimu JS port).
