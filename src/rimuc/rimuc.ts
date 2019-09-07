@@ -50,6 +50,9 @@ OPTIONS
     same-named file with an .html extension.
     This option enables --header-ids.
 
+  -s, --styled
+    Style output using default layout (shortcut for '--layout sequel --no-toc').
+
   -o, --output OUTFILE
     Write output to file OUTFILE instead of stdout.
     If OUTFILE is a hyphen '-' write to stdout.
@@ -257,13 +260,6 @@ outer:
       case '--htmlReplacement': // Deprecated in Rimu 7.1.0.
         html_replacement = process.argv.shift()
         break
-      case '--styled': // Deprecated in Rimu 10.0.0
-      case '-s':
-        prepend += '{--header-ids}=\'true\'\n'
-        if (layout === '') {
-          layout = 'classic'
-        }
-        break
       // Styling macro definitions shortcut options.
       case '--highlightjs':
       case '--mathjax':
@@ -288,6 +284,12 @@ outer:
           die('missing --layout')
         }
         prepend += '{--header-ids}=\'true\'\n'
+        break
+      case '--styled':
+      case '-s':
+        prepend += '{--header-ids}=\'true\'\n'
+        prepend += '{--no-toc}=\'true\'\n'
+        layout = 'sequel'
         break
       default:
         process.argv.unshift(arg); // argv contains source file names.
