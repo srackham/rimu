@@ -51,7 +51,8 @@ OPTIONS
     This option enables --header-ids.
 
   -s, --styled
-    Style output using default layout (shortcut for '--layout sequel --no-toc').
+    Style output using default layout.
+    Shortcut for '--layout sequel --header-ids --no-toc'
 
   -o, --output OUTFILE
     Write output to file OUTFILE instead of stdout.
