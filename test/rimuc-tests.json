@@ -291,6 +291,30 @@
     "predicate": "equals"
   },
   {
+    "description": "rimuc --styled has no TOC",
+    "args": "--styled",
+    "input": "",
+    "expectedOutput": "<div id=\"toc\"",
+    "predicate": "!contains",
+    "layouts": true
+  },
+  {
+    "description": "rimuc --styled has CSS",
+    "args": "--styled",
+    "input": "",
+    "expectedOutput": "<style>",
+    "predicate": "contains",
+    "layouts": true
+  },
+  {
+    "description": "rimuc --styled has header IDs",
+    "args": "--styled",
+    "input": "# Header",
+    "expectedOutput": "<h1 id=\"header\">Header</h1>",
+    "predicate": "contains",
+    "layouts": true
+  },
+  {
     "description": "rimuc empty input file",
     "args": "./test/fixtures/empty-file.rmu",
     "input": "",
