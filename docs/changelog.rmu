@@ -5,6 +5,11 @@ See the various Github commit logs for a full list of changes:
 [Kotlin]({github-kt}/commits/).
 
 
+## Version 11.1.4 (2019-11-20)
+- Restored deprecated [rimuc]({reference}#rimuc-command) `--styled` option
+  (a shortcut for `--layout sequel --no-toc`).
+
+
 ## Version 11.1.3 (2019-08-05)
 - **FIXED**: Removed parameterized macro expansion limitation viz. a simple
   macro invocation passed in a macro parameter was previously only be expanded
