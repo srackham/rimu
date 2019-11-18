@@ -5,7 +5,7 @@ See the various Github commit logs for a full list of changes:
 [Kotlin]({github-kt}/commits/).
 
 
-## Version 11.1.4 (2019-11-20)
+## Version 11.1.4 (2019-11-18)
 - Restored deprecated [rimuc]({reference}#rimuc-command) `--styled` option
   (a shortcut for `--layout sequel --no-toc`).
 
