@@ -40,10 +40,17 @@ export function getSafeMode(): number {
   return safeMode
 }
 
+// Return true if Macro Definitions are ignored.
+export function skipMacroDefs(): boolean {
+  /* tslint:disable:no-bitwise */
+  return safeMode !== 0 && (safeMode & 0x8) === 0
+  /* tslint:enable:no-bitwise */
+}
+
 // Return true if Block Attribute elements are ignored.
 export function skipBlockAttributes(): boolean {
   /* tslint:disable:no-bitwise */
-  return safeMode !== 0 && !!(safeMode & 0x4)
+  return (safeMode & 0x4) !== 0
   /* tslint:enable:no-bitwise */
 }
 
@@ -120,7 +127,7 @@ export function htmlSafeModeFilter(html: string): string {
 
 export function errorCallback(message: string): void {
   if (callback) {
-    callback({type: 'error', text: message})
+    callback({ type: 'error', text: message })
   }
 }
 

@@ -42,8 +42,7 @@ export function getValue(name: string): string | null {
 // If the name ends with '?' then don't set the macro if it already exists.
 // `quote` is a single character: ' if a literal value, ` if an expression value.
 export function setValue(name: string, value: string, quote: string): void {
-  // TODO: Implement this as Options.skipMacroDefs() c.f. rimu-kt
-  if (Options.getSafeMode() !== 0 && !(Options.getSafeMode() & 0x8)) {  // tslint:disable-line no-bitwise
+  if (Options.skipMacroDefs()) {
     return  // Skip if a safe mode is set.
   }
   let existential = false;
