@@ -23,6 +23,7 @@ set -eux
 GO=$HOME/local/projects/go-rimu
 JS=$HOME/local/projects/rimu
 KT=$HOME/local/projects/rimu-kt
+DART=$HOME/local/projects/rimu-dart
 
 # Copy test fixtures, resources and example rimurc file.
 if [ "${1:-}" = "--update-fixtures" ]; then
@@ -34,10 +35,15 @@ if [ "${1:-}" = "--update-fixtures" ]; then
     cp $JS/test/rimuc-tests.json $KT/src/test/resources/rimuc-tests.json
     cp $JS/src/examples/example-rimurc.rmu $KT/src/test/fixtures/example-rimurc.rmu
 
+    cp $JS/test/rimu-tests.json $DART/test/rimu-tests.json
+    cp $JS/test/rimuc-tests.json $DART/test/rimuc-tests.json
+    cp $JS/src/examples/example-rimurc.rmu $DART/test/fixtures/example-rimurc.rmu
+
     cd $JS/src/rimuc/resources
     for f in *; do
         cp $f $GO/rimugo/resources/$f
         cp $f $KT/src/main/resources/org/rimumarkup/$f
+        cp $f $DART/lib/resources/$f
     done
 fi
 
@@ -51,10 +57,15 @@ diff $JS/test/rimu-tests.json $KT/src/test/resources/rimu-tests.json || err=1
 diff $JS/test/rimuc-tests.json $KT/src/test/resources/rimuc-tests.json || err=1
 diff $JS/src/examples/example-rimurc.rmu $KT/src/test/fixtures/example-rimurc.rmu || err=1
 
+diff $JS/test/rimu-tests.json $DART/test/rimu-tests.json || err=1
+diff $JS/test/rimuc-tests.json $DART/test/rimuc-tests.json || err=1
+diff $JS/src/examples/example-rimurc.rmu $DART/test/fixtures/example-rimurc.rmu || err=1
+
 cd $JS/src/rimuc/resources
 for f in *; do
     diff $f $GO/rimugo/resources/$f || err=1
     diff $f $KT/src/main/resources/org/rimumarkup/$f || err=1
+    diff $f $DART/lib/resources/$f || err=1
 done
 
 if [ $err = 1 ]; then
@@ -64,10 +75,15 @@ fi
 # Build and test all ports.
 cd $JS
 jake test
+
 cd $GO
 make
+
 cd $KT
 ./gradlew --console plain test installDist
+
+cd $DART
+make
 
 # Compile Rimu documentation with all ports and compare.
 for doc in reference tips changelog; do
@@ -75,12 +91,15 @@ for doc in reference tips changelog; do
     GO_DOC=/tmp/$doc-go.html
     JS_DOC=/tmp/$doc-js.html
     KT_DOC=/tmp/$doc-kt.html
+    DART_DOC=/tmp/$doc-dart.html
 
     cd $JS
     eval node bin/rimuc.js --output $JS_DOC $ARGS ./docs/$doc.rmu
     eval rimugo --output $GO_DOC $ARGS ./docs/$doc.rmu
     eval $KT/build/install/rimu-kt/bin/rimukt --output $KT_DOC $ARGS ./docs/$doc.rmu
+    eval $DART/build/rimuc --output $DART_DOC $ARGS ./docs/$doc.rmu
 
     diff $JS_DOC $GO_DOC
     diff $JS_DOC $KT_DOC
+    diff $JS_DOC $DART_DOC
 done
