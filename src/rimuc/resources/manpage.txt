@@ -1,0 +1,154 @@
+NAME
+  rimuc - convert Rimu source to HTML
+
+SYNOPSIS
+  rimuc [OPTIONS...] [FILES...]
+
+DESCRIPTION
+  Reads Rimu source markup from stdin, converts them to HTML
+  then writes the HTML to stdout. If FILES are specified
+  the Rimu source is read from FILES. The contents of files
+  with an .html extension are passed directly to the output.
+  An input file named '-' is read from stdin.
+
+  If a file named .rimurc exists in the user's home directory
+  then its contents is processed (with --safe-mode 0).
+  This behavior can be disabled with the --no-rimurc option.
+
+  Inputs are processed in the following order: .rimurc file,
+  --prepend-file options, --prepend options, FILES...
+
+OPTIONS
+  -h, --help
+    Display help message.
+
+  --html-replacement TEXT
+    Embedded HTML is replaced by TEXT when --safe-mode is set to 2.
+    Defaults to '<mark>replaced HTML</mark>'.
+
+  --layout LAYOUT
+    Generate a styled HTML document. rimuc includes the
+    following built-in document layouts:
+
+    'classic': Desktop-centric layout.
+    'flex':    Flexbox mobile layout (experimental).
+    'plain':   Unstyled HTML layout.
+    'sequel':  Responsive cross-device layout.
+
+    If only one source file is specified and the --output
+    option is not specified then the output is written to a
+    same-named file with an .html extension.
+    This option enables --header-ids.
+
+  -s, --styled
+    Style output using default layout.
+    Shortcut for '--layout sequel --header-ids --no-toc'
+
+  -o, --output OUTFILE
+    Write output to file OUTFILE instead of stdout.
+    If OUTFILE is a hyphen '-' write to stdout.
+
+  --pass
+    Pass the stdin input verbatim to the output.
+
+  -p, --prepend SOURCE
+    Process the SOURCE text before all other inputs.
+    Rendered with --safe-mode 0.
+
+  --prepend-file PREPEND_FILE
+    Process the PREPEND_FILE contents immediately after --prepend
+    and .rimurc processing.
+    Rendered with --safe-mode 0.
+
+  --no-rimurc
+    Do not process .rimurc from the user's home directory.
+
+  --safe-mode NUMBER
+    Non-zero safe modes ignore: Definition elements; API option elements;
+    HTML attributes in Block Attributes elements.
+    Also specifies how to process HTML elements:
+
+    --safe-mode 0 renders HTML (default).
+    --safe-mode 1 ignores HTML.
+    --safe-mode 2 replaces HTML with --html-replacement option value.
+    --safe-mode 3 renders HTML as text.
+
+    Add 4 to --safe-mode to ignore Block Attribute elements.
+    Add 8 to --safe-mode to allow Macro Definitions.
+
+  --theme THEME, --lang LANG, --title TITLE, --highlightjs, --mathjax,
+  --no-toc, --custom-toc, --section-numbers, --header-ids, --header-links
+    Shortcuts for the following prepended macro definitions:
+
+    --prepend "{--custom-toc}='true'"
+    --prepend "{--header-ids}='true'"
+    --prepend "{--header-links}='true'"
+    --prepend "{--highlightjs}='true'"
+    --prepend "{--lang}='LANG'"
+    --prepend "{--mathjax}='true'"
+    --prepend "{--no-toc}='true'"
+    --prepend "{--section-numbers}='true'"
+    --prepend "{--theme}='THEME'"
+    --prepend "{--title}='TITLE'"
+
+  --version
+    Print version number.
+
+LAYOUT OPTIONS
+  The following options are available when the --layout option
+  specifies a built-in layout:
+
+  Option             Description
+  _______________________________________________________________
+  --custom-toc       Set to a non-blank value if a custom table
+                     of contents is used.
+  --header-links     Set to a non-blank value to generate h2 and
+                     h3 header header links.
+  --highlightjs      Set to non-blank value to enable syntax
+                     highlighting with Highlight.js.
+  --lang             HTML document language attribute value.
+  --mathjax          Set to a non-blank value to enable MathJax.
+  --no-toc           Set to a non-blank value to suppress table of
+                     contents generation.
+  --section-numbers  Apply h2 and h3 section numbering.
+  --theme            Styling theme. Theme names:
+                     'legend', 'graystone', 'vintage'.
+  --title            HTML document title.
+  _______________________________________________________________
+  These options are translated by rimuc to corresponding layout
+  macro definitions using the --prepend option.
+
+LAYOUT CLASSES
+  The following CSS classes are available for use in Rimu Block
+  Attributes elements when the --layout option specifies a
+  built-in layout:
+
+  CSS class        Description
+  ______________________________________________________________
+  align-center     Text alignment center.
+  align-left       Text alignment left.
+  align-right      Text alignment right.
+  bordered         Adds table borders.
+  cite             Quote and verse attribution.
+  dl-horizontal    Format labeled lists horizontally.
+  dl-numbered      Number labeled list items.
+  dl-counter       Prepend dl item counter to element content.
+  ol-counter       Prepend ol item counter to element content.
+  ul-counter       Prepend ul item counter to element content.
+  no-auto-toc      Exclude heading from table of contents.
+  no-page-break    Avoid page break inside the element.
+  no-print         Do not print.
+  page-break       Force page break before the element.
+  preserve-breaks  Honor line breaks in source text.
+  sidebar          Sidebar format (paragraphs, division blocks).
+  verse            Verse format (paragraphs, division blocks).
+  ______________________________________________________________
+
+PREDEFINED MACROS
+  Macro name         Description
+  _______________________________________________________________
+  --                 Blank macro (empty string).
+                     The Blank macro cannot be redefined.
+  --header-ids       Set to a non-blank value to generate h1, h2
+                     and h3 header id attributes.
+  _______________________________________________________________
