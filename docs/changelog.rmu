@@ -1,9 +1,19 @@
-# Rimu Markup Change Log
+# Rimu Change Log
 
-See the various Github commit logs for a full list of changes:
-[JavaScript]({github-js}/commits/), [Go]({github-go}/commits/),
-[Kotlin]({github-kt}/commits/).
+Rimu has been ported from [TypeScript]({github-js}) to [Go]({github-go}),
+[Kotlin]({github-kt}) and [Dart]({pubdev-rimu}) languages. This is the
+TypeScript port's change log.
 
+- All ports use [semantic version numbers](https://semver.org/).
+
+- The patch version numbers are port specific.
+
+- Changes that are not port-specific will normally be propagated to the next
+  release of the other Rimu ports but there is no implied equivalence of the
+  patch version numbers across the various ports.
+
+- Ports with the same major and minor version numbers are functionally
+  identical.
 
 ## Version 11.1.4 (2019-11-18)
 - Restored deprecated [rimuc]({reference}#rimuc-command) `--styled` option

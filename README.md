@@ -3,24 +3,34 @@
 Rimu is a readable-text to HTML markup language inspired by AsciiDoc
 and Markdown.
 
+At its core Rimu is a simple readable-text markup similar in scope to
+Markdown, but with two additional areas of functionality (both built
+into the Rimu markup syntax):
 
-## Features summary
 - Markup generation can be customized and extended.
-- Includes a simple, flexible macro language.
-- HTML attribute injection and parametrized macros.
-- Accepts raw HTML (a la Markdown).
-- A subset of the Rimu syntax is [Markdown
+- Rimu includes a simple, flexible macro language.
+- A subset of Rimu syntax is [Markdown
   compatible](http://srackham.github.io/rimu/tips.html#markdown-compatible).
-- One-function API.
-- Playground GUI, Vim syntax highlighter and a unit test suite.
-- MIT license.
-- Ported to three language platforms:
-  * The canonical [JavaScript version](https://github.com/srackham/rimu)
-    written in TypeScript with no dependencies.
-    Single JavaScript file (less than 23KB minified) that can be dropped
-    onto a Web page or used as a Node module.
-  * A [Kotlin port](https://github.com/srackham/rimu-kt/) for the JVM platform.
-  * A [Go port](https://github.com/srackham/go-rimu/).
+- The generated HTML is compatible with all modern browsers.
+
+There are four functionally identical Rimu implementations:
+
+- The canonical [JavaScript version](https://github.com/srackham/rimu) written
+  in TypeScript.
+- A [Kotlin port](https://github.com/srackham/rimu-kt/) for the JVM platform.
+- A [Go port](https://github.com/srackham/go-rimu/).
+- A [Dart port](https://pub.dev/packages/rimu).
+
+
+## Learn more
+Read the documentation and experiment with Rimu in the [Rimu
+Playground](http://srackham.github.io/rimu/rimuplayground.html) or open the
+`rimuplayground.html` file locally in your browser.
+
+See the Rimu [Change Log](http://srackham.github.io/rimu/changelog.html) for
+the latest changes.
+
+**NOTE**: The remainder of this document is specific to the JavaScript port.
 
 
 ## Quick start
@@ -65,17 +75,3 @@ To build Rimu and the Rimu documentation from source:
 3. Build Rimu:
 
         jake build
-
-
-## Learn more
-Read the documentation and experiment with Rimu in the [Rimu
-Playground](http://srackham.github.io/rimu/rimuplayground.html) or open the
-`rimuplayground.html` file locally in your browser.
-
-See the Rimu [Change Log](http://srackham.github.io/rimu/changelog.html) for
-the latest changes.
-
-
-## Browser compatibility
-The generated HTML is compatible with all Web browsers. The Rimu
-JavaScript library works with IE11, Edge, Firefox, Chrome and Android.
