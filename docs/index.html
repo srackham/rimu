@@ -418,12 +418,20 @@
 <h1 id="rimu-markup">Rimu Markup</h1>
 <p>Rimu is a readable-text to HTML markup language inspired by AsciiDoc
 and Markdown.</p>
-<h2 id="features-summary">Features summary</h2>
-<ul><li>Markup generation can be customized and extended.</li><li>Includes a simple, flexible macro language.</li><li>HTML attribute injection and parametrized macros.</li><li>Accepts raw HTML (a la Markdown).</li><li>A subset of the Rimu syntax is <a href="http://srackham.github.io/rimu/tips.html#markdown-compatible">Markdown
-  compatible</a>.</li><li>One-function API.</li><li>Playground GUI, Vim syntax highlighter and a unit test suite.</li><li>MIT license.</li><li>Ported to three language platforms:<ul><li>The canonical <a href="https://github.com/srackham/rimu">JavaScript version</a>
-    written in TypeScript with no dependencies.
-    Single JavaScript file (less than 23KB minified) that can be dropped
-    onto a Web page or used as a Node module.</li><li>A <a href="https://github.com/srackham/rimu-kt/">Kotlin port</a> for the JVM platform.</li><li>A <a href="https://github.com/srackham/go-rimu/">Go port</a>.</li></ul></li></ul><h2 id="quick-start">Quick start</h2>
+<p>At its core Rimu is a simple readable-text markup similar in scope to
+Markdown, but with two additional areas of functionality (both built
+into the Rimu markup syntax):</p>
+<ul><li>Markup generation can be customized and extended.</li><li>Rimu includes a simple, flexible macro language.</li><li>A subset of Rimu syntax is <a href="http://srackham.github.io/rimu/tips.html#markdown-compatible">Markdown
+  compatible</a>.</li><li>The generated HTML is compatible with all modern browsers.</li></ul><p>There are four functionally identical Rimu implementations:</p>
+<ul><li>The canonical <a href="https://github.com/srackham/rimu">JavaScript version</a> written
+  in TypeScript.</li><li>A <a href="https://github.com/srackham/rimu-kt/">Kotlin port</a> for the JVM platform.</li><li>A <a href="https://github.com/srackham/go-rimu/">Go port</a>.</li><li>A <a href="https://pub.dev/packages/rimu">Dart port</a>.</li></ul><h2 id="learn-more">Learn more</h2>
+<p>Read the documentation and experiment with Rimu in the <a href="http://srackham.github.io/rimu/rimuplayground.html">Rimu
+Playground</a> or open the
+<code>rimuplayground.html</code> file locally in your browser.</p>
+<p>See the Rimu <a href="http://srackham.github.io/rimu/changelog.html">Change Log</a> for
+the latest changes.</p>
+<p><strong>NOTE</strong>: The remainder of this document is specific to the JavaScript port.</p>
+<h2 id="quick-start">Quick start</h2>
 <p>To try the Rimu library in your browser:</p>
 <ol><li>Open the <a href="https://npm.runkit.com/rimu">Rimu NPM Runkit page</a> in your browser.</li><li>Paste in this code then press the <em>Run</em> button.<pre class="javascript"><code>var rimu = require("rimu")
 var html = rimu.render('Hello *Rimu*!')</code></pre>
@@ -442,21 +450,13 @@ working:</p>
 <ol><li>Install the Git repository from <a href="https://github.com/srackham/rimu">Github</a>.<pre><code>git clone git@github.com:srackham/rimu.git</code></pre>
 </li><li>Install dependencies:<pre><code>cd rimu
 npm install</code></pre>
-</li><li>Build Rimu:<pre><code>jake build</code></pre>
-</li></ol><h2 id="learn-more">Learn more</h2>
-<p>Read the documentation and experiment with Rimu in the <a href="http://srackham.github.io/rimu/rimuplayground.html">Rimu
-Playground</a> or open the
-<code>rimuplayground.html</code> file locally in your browser.</p>
-<p>See the Rimu <a href="http://srackham.github.io/rimu/changelog.html">Change Log</a> for
-the latest changes.</p>
-<h2 id="browser-compatibility">Browser compatibility</h2>
-<p>The generated HTML is compatible with all Web browsers. The Rimu
-JavaScript library works with IE11, Edge, Firefox, Chrome and Android.</p>
+</li><li>Build Rimu:<pre><code>jake build</code></pre></li></ol>
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/dart.min.js"></script>
 <script>
 hljs.configure({languages: []});
 hljs.initHighlightingOnLoad();

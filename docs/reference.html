@@ -530,9 +530,9 @@ and Markdown.</p>
 Markdown, but with two additional areas of functionality (both built
 into the Rimu markup syntax):</p>
 <ul><li>Markup generation can be customized and extended.</li><li>Rimu includes a simple, flexible macro language.</li><li>A subset of Rimu syntax is <a href="tips.html#markdown-compatible">Markdown
-  compatible</a>.</li><li>The generated HTML is compatible with all modern browsers.</li></ul><p>There are three functionally identical Rimu implementations:</p>
+  compatible</a>.</li><li>The generated HTML is compatible with all modern browsers.</li></ul><p>There are four functionally identical Rimu implementations:</p>
 <ul><li>The canonical <a href="https://github.com/srackham/rimu">JavaScript version (written in
-  TypeScript)</a>.</li><li>The <a href="https://github.com/srackham/rimu-kt">Kotlin port</a>.</li><li>The <a href="https://github.com/srackham/go-rimu">Go language port</a>.</li></ul><h2 id="resources">Resources</h2>
+  TypeScript)</a>.</li><li>A <a href="https://github.com/srackham/rimu-kt">Kotlin port</a>.</li><li>A <a href="https://github.com/srackham/go-rimu">Go language port</a>.</li><li>A <a href="https://pub.dev/packages/rimu">Dart port</a>.</li></ul><h2 id="resources">Resources</h2>
 <h3 id="learning">Learning</h3>
 <ul><li>Experiment with Rimu in the <a href="rimuplayground.html">Rimu Playground</a>.</li><li>Click the <em>Edit icon</em> &#x270e; in the examples below to enable live editing of
   the Rimu source; click the <em>Preview icon</em>&nbsp;&#x2b04; to toogle output
@@ -544,10 +544,10 @@ into the Rimu markup syntax):</p>
   extension</a>
   for rendering Rimu Markup files directly in the browser.</li></ul><h2 id="rimuc-command">CLI command</h2>
 <p>Rimu includes a command-line tool that converts Rimu markup to HTML. There are
-three functionally identical implementations: <em>rimuc</em> (JavaScript
-implementation), <em>rimukt</em> (Kotlin implementation) and <em>rimugo</em> (Go
-implementation).</p>
-<p>In the documentation the name <em>rimuc</em> refers to all three implementations
+four functionally identical implementations: <em>rimuc</em> (JavaScript
+implementation), <em>rimukt</em> (Kotlin implementation), <em>rimugo</em> (Go implementation)
+and <em>rimuc</em> (Dart implementation).</p>
+<p>In the documentation the name <em>rimuc</em> refers to all four implementations
 (unless stated otherwise).</p>
 <p><em>rimuc</em> has options to generate stand-alone styled HTML documents, either from
 Rimu Markup or <a href="tips.html#rimuc-html">from Markdown or any text-to-HTML markup</a>.</p>
@@ -787,7 +787,7 @@ Use the <code>reset</code> option to restore the default state.</p>
 <p>Node.js example (assumes Rimu has been previously installed from
 <a href="https://npmjs.org/package/rimu">npm</a>):</p>
 <pre class="javascript"><code>var rimu = require('rimu');
-var html= rimu.render('Hello *Rimu*!', {reset:true, safeMode:2});</code></pre>
+var html= rimu.render('Hello *Rimu*!');</code></pre>
 <p>HTML script tag example (the compiled and minified <code>rimu.min.js</code> library
 can be found in the installed Rimu npm package <code>./rimu/lib</code> folder):</p>
 <pre class="xml"><code>&lt;script src="rimu.min.js"&gt;&lt;/script&gt;
@@ -799,9 +799,9 @@ can be found in the installed Rimu npm package <code>./rimu/lib</code> folder):<
 import org.rimumarkup.render
 
 fun main(args: Array&lt;String&gt;) {
-    println(render("Hello *Rimu*!", RenderOptions(reset = true, safeMode = 2))
+    println(render("Hello *Rimu*!", RenderOptions(reset = true))
 }</code></pre>
-<p>See the <a href="https://github.com/srackham/rimu-kt">rimu-kt README</a>.</p>
+<p>See the <a href="https://github.com/srackham/rimu-kt">Kotlin README</a>.</p>
 <h4 id="go">Go</h4>
 <pre class="go"><code>package main
 
@@ -812,9 +812,16 @@ import (
 )
 
 func main() {
-    fmt.Println(rimu.Render("*Hello Rimu*!", rimu.RenderOptions{Reset: true, SafeMode: 2}))
+    fmt.Println(rimu.Render("*Hello Rimu*!", rimu.RenderOptions{Reset: true}))
 }</code></pre>
-<p>See the <a href="https://github.com/srackham/go-rimu">go-rimu README</a>.</p>
+<p>See the <a href="https://github.com/srackham/go-rimu">Go README</a>.</p>
+<h4 id="dart">Dart</h4>
+<pre class="dart"><code>import 'package:rimu/rimu.dart';
+
+main(List&lt;String&gt; arguments) {
+  print(render('Hello *Rimu*!', RenderOptions(reset: true)));
+}</code></pre>
+<p>See the <a href="https://pub.dev/packages/rimu">Dart README</a>.</p>
 <h3 id="api-options">API options</h3>
 <p>The <code>options</code> argument is a JavaScript object with zero or more of the
 following properties:</p>
@@ -1969,6 +1976,7 @@ common to all platforms:</p>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/dart.min.js"></script>
 <script>
 hljs.configure({languages: []});
 hljs.initHighlightingOnLoad();
