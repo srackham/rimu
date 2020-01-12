@@ -530,9 +530,9 @@ and Markdown.</p>
 Markdown, but with two additional areas of functionality (both built
 into the Rimu markup syntax):</p>
 <ul><li>Markup generation can be customized and extended.</li><li>Rimu includes a simple, flexible macro language.</li><li>A subset of Rimu syntax is <a href="tips.html#markdown-compatible">Markdown
-  compatible</a>.</li><li>The generated HTML is compatible with all modern browsers.</li></ul><p>There are four functionally identical Rimu implementations:</p>
+  compatible</a>.</li><li>The generated HTML is compatible with all modern browsers.</li></ul><p>There are five functionally identical Rimu implementations:</p>
 <ul><li>The canonical <a href="https://github.com/srackham/rimu">JavaScript version (written in
-  TypeScript)</a>.</li><li>A <a href="https://github.com/srackham/rimu-kt">Kotlin port</a>.</li><li>A <a href="https://github.com/srackham/go-rimu">Go language port</a>.</li><li>A <a href="https://pub.dev/packages/rimu">Dart port</a>.</li></ul><h2 id="resources">Resources</h2>
+  TypeScript)</a>.</li><li>A <a href="https://github.com/srackham/rimu-kt">Kotlin port</a>.</li><li>A <a href="https://github.com/srackham/go-rimu">Go language port</a>.</li><li>A <a href="https://pub.dev/packages/rimu">Dart port</a>.</li><li>A <a href="https://pypi.org/project/rimu/">Python port</a>.</li></ul><h2 id="resources">Resources</h2>
 <h3 id="learning">Learning</h3>
 <ul><li>Experiment with Rimu in the <a href="rimuplayground.html">Rimu Playground</a>.</li><li>Click the <em>Edit icon</em> &#x270e; in the examples below to enable live editing of
   the Rimu source; click the <em>Preview icon</em>&nbsp;&#x2b04; to toogle output
@@ -545,8 +545,8 @@ into the Rimu markup syntax):</p>
   for rendering Rimu Markup files directly in the browser.</li></ul><h2 id="rimuc-command">CLI command</h2>
 <p>Rimu includes a command-line tool that converts Rimu markup to HTML. There are
 four functionally identical implementations: <em>rimuc</em> (JavaScript
-implementation), <em>rimukt</em> (Kotlin implementation), <em>rimugo</em> (Go implementation)
-and <em>rimuc</em> (Dart implementation).</p>
+implementation), <em>rimukt</em> (Kotlin implementation), <em>rimugo</em> (Go implementation),
+<em>rimuc</em> (Dart implementation) and <em>rimupy</em> (Python implementation).</p>
 <p>In the documentation the name <em>rimuc</em> refers to all four implementations
 (unless stated otherwise).</p>
 <p><em>rimuc</em> has options to generate stand-alone styled HTML documents, either from
@@ -569,8 +569,9 @@ DESCRIPTION
   then its contents is processed (with --safe-mode 0).
   This behavior can be disabled with the --no-rimurc option.
 
-  Inputs are processed in the following order: .rimurc file,
-  --prepend-file options, --prepend options, FILES...
+  Inputs are processed in the following order: .rimurc file then
+  --prepend-file option files then --prepend option source and
+  finally FILES...
 
 OPTIONS
   -h, --help
@@ -606,13 +607,14 @@ OPTIONS
     Pass the stdin input verbatim to the output.
 
   -p, --prepend SOURCE
-    Process the SOURCE text before all other inputs.
-    Rendered with --safe-mode 0.
+    Process the Rimu SOURCE text (immediately after --prepend-file
+    option files). Rendered with --safe-mode 0. This option can be
+    specified multiple times.
 
   --prepend-file PREPEND_FILE
-    Process the PREPEND_FILE contents immediately after --prepend
-    and .rimurc processing.
-    Rendered with --safe-mode 0.
+    Process the PREPEND_FILE contents (immediately after .rimurc file).
+    Rendered with --safe-mode 0. This option can be specified
+    multiple times.
 
   --no-rimurc
     Do not process .rimurc from the user's home directory.
@@ -822,6 +824,11 @@ main(List&lt;String&gt; arguments) {
   print(render('Hello *Rimu*!', RenderOptions(reset: true)));
 }</code></pre>
 <p>See the <a href="https://pub.dev/packages/rimu">Dart README</a>.</p>
+<h4 id="python">Python</h4>
+<pre class="python"><code>import rimu
+
+print(rimu.render('*Hello World*!'))</code></pre>
+<p>See the <a href="https://pypi.org/project/rimu/">Python README</a>.</p>
 <h3 id="api-options">API options</h3>
 <p>The <code>options</code> argument is a JavaScript object with zero or more of the
 following properties:</p>
