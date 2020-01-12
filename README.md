@@ -13,13 +13,14 @@ into the Rimu markup syntax):
   compatible](http://srackham.github.io/rimu/tips.html#markdown-compatible).
 - The generated HTML is compatible with all modern browsers.
 
-There are four functionally identical Rimu implementations:
+There are five functionally identical Rimu implementations:
 
 - The canonical [JavaScript version](https://github.com/srackham/rimu) written
   in TypeScript.
 - A [Kotlin port](https://github.com/srackham/rimu-kt/) for the JVM platform.
 - A [Go port](https://github.com/srackham/go-rimu/).
 - A [Dart port](https://pub.dev/packages/rimu).
+- A [Python port](https://pypi.org/project/rimu/).
 
 
 ## Learn more

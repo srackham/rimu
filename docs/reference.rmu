@@ -13,13 +13,14 @@ into the Rimu markup syntax):
   compatible]({tips}#markdown-compatible).
 - The generated HTML is compatible with all modern browsers.
 
-There are four functionally identical Rimu implementations:
+There are five functionally identical Rimu implementations:
 
 - The canonical [JavaScript version (written in
   TypeScript)]({github-js}).
 - A [Kotlin port]({github-kt}).
 - A [Go language port]({github-go}).
 - A [Dart port]({pubdev-rimu}).
+- A [Python port]({pypi-rimu}).
 
 
 ## Resources
@@ -46,8 +47,8 @@ See the [API documentation](#api).
 ## CLI command
 Rimu includes a command-line tool that converts Rimu markup to HTML. There are
 four functionally identical implementations: _rimuc_ (JavaScript
-implementation), _rimukt_ (Kotlin implementation), _rimugo_ (Go implementation)
-and _rimuc_ (Dart implementation).
+implementation), _rimukt_ (Kotlin implementation), _rimugo_ (Go implementation),
+_rimuc_ (Dart implementation) and _rimupy_ (Python implementation).
 
 In the documentation the name _rimuc_ refers to all four implementations
 (unless stated otherwise).
@@ -76,8 +77,9 @@ DESCRIPTION
   then its contents is processed (with --safe-mode 0).
   This behavior can be disabled with the --no-rimurc option.
 
-  Inputs are processed in the following order: .rimurc file,
-  --prepend-file options, --prepend options, FILES...
+  Inputs are processed in the following order: .rimurc file then
+  --prepend-file option files then --prepend option source and
+  finally FILES...
 
 OPTIONS
   -h, --help
@@ -113,13 +115,14 @@ OPTIONS
     Pass the stdin input verbatim to the output.
 
   -p, --prepend SOURCE
-    Process the SOURCE text before all other inputs.
-    Rendered with --safe-mode 0.
+    Process the Rimu SOURCE text (immediately after --prepend-file
+    option files). Rendered with --safe-mode 0. This option can be
+    specified multiple times.
 
   --prepend-file PREPEND_FILE
-    Process the PREPEND_FILE contents immediately after --prepend
-    and .rimurc processing.
-    Rendered with --safe-mode 0.
+    Process the PREPEND_FILE contents (immediately after .rimurc file).
+    Rendered with --safe-mode 0. This option can be specified
+    multiple times.
 
   --no-rimurc
     Do not process .rimurc from the user's home directory.
@@ -438,6 +441,14 @@ main(List<String> arguments) {
 }
 ```
 See the [Dart README]({pubdev-rimu}).
+
+#### Python
+``` python
+import rimu
+
+print(rimu.render('*Hello World*!'))
+```
+See the [Python README]({pypi-rimu}).
 
 ### API options
 The `options` argument is a JavaScript object with zero or more of the

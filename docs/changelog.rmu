@@ -1,8 +1,8 @@
 # Rimu Change Log
 
 Rimu has been ported from [TypeScript]({github-js}) to [Go]({github-go}),
-[Kotlin]({github-kt}) and [Dart]({pubdev-rimu}) languages. This is the
-TypeScript port's change log.
+[Kotlin]({github-kt}), [Dart]({pubdev-rimu}) and [Python]({pypi-rimu})
+languages. This is the TypeScript port's change log.
 
 - All ports use [semantic version numbers](https://semver.org/).
 
