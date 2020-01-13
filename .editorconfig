@@ -9,7 +9,7 @@ indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true
 
-[*.ts]
+[*.{js,ts}]
 indent_size = 2
 
 # The indent size used in the `package.json` file cannot be changed
