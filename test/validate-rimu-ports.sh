@@ -123,7 +123,7 @@ PY_TIME=0
 DOC_LINES=$(cat $JS/docs/{reference,tips,changelog}.rmu | wc -l)
 
 for doc in reference tips changelog; do
-    ARGS='--no-rimurc --theme legend --custom-toc --header-links --layout sequel --lang en --title "Rimu Reference" --highlightjs --prepend "{generate-examples}='"'yes'"'"  ./src/examples/example-rimurc.rmu ./docs/doc-header.rmu'
+    ARGS='--no-rimurc --theme legend --custom-toc --header-links --layout sequel --lang en --title "Rimu Reference" --highlightjs --prepend "{generate-examples}='"'yes'"'"  ./src/examples/example-rimurc.rmu ./docs/manpage.rmu ./docs/doc-header.rmu'
     GO_DOC=/tmp/$doc-go.html
     JS_DOC=/tmp/$doc-js.html
     KT_DOC=/tmp/$doc-kt.html

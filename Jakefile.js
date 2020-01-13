@@ -23,6 +23,8 @@ let DOCS_DIR = 'docs/'
 let RIMUC_JS = 'bin/rimuc.js'
 let RIMUC_TS = 'src/rimuc/rimuc.ts'
 let RIMUC_EXE = 'node ' + RIMUC_JS
+let MANPAGE_RMU = DOCS_DIR + 'manpage.rmu'
+let MANPAGE_TXT = 'src/rimuc/resources/manpage.txt'
 
 let DOCS = [
   {
@@ -41,7 +43,7 @@ let DOCS = [
     src: DOCS_DIR + 'reference.rmu',
     dst: DOCS_DIR + 'reference.html',
     title: 'Rimu Reference',
-    rimucOptions: '--highlightjs --prepend "{generate-examples}=\'yes\'"'
+    rimucOptions: '--highlightjs --prepend "{generate-examples}=\'yes\'" --prepend-file ' + MANPAGE_RMU
   },
   {
     src: DOCS_DIR + 'tips.rmu',
@@ -134,7 +136,7 @@ desc(`Update version number, tag and push to Github and npm. Use vers=x.y.z argu
 task('release', ['build', 'tag', 'publish'])
 
 desc(`Lint TypeScript, Javascript and JSON files.`)
-task('lint', {async: true}, function () {
+task('lint', { async: true }, function () {
   let commands = []
     .concat(RIMU_SRC.concat([RIMUC_TS, RIMU_TSD]).map(file => 'tslint ' + file))
     .concat(TESTS.map(file => 'jshint ' + file))
@@ -143,7 +145,7 @@ task('lint', {async: true}, function () {
 })
 
 desc(`Run tests (rebuild if necessary).`)
-task('test', ['build-rimu', 'build-rimuc'], {async: true}, function () {
+task('test', ['build-rimu', 'build-rimuc'], { async: true }, function () {
   let commands = TESTS.map(file => 'tape ' + file + ' | faucet')
   exec(commands, complete)
 })
@@ -151,20 +153,31 @@ task('test', ['build-rimu', 'build-rimuc'], {async: true}, function () {
 desc(`Compile and bundle rimu.js and rimu.min.js libraries and generate .map files.`)
 task('build-rimu', [RIMU_LIB])
 
-file(RIMU_LIB, RIMU_SRC, {async: true}, function () {
+file(RIMU_LIB, RIMU_SRC, { async: true }, function () {
   exec('webpack --mode production --config ./src/rimu/webpack.config.js', complete)
 })
 
 desc(`Compile rimuc to JavaScript executable and generate .map file.`)
-task('build-rimuc', {async: true}, function () {
+task('build-rimuc', { async: true }, function () {
   exec('webpack --mode production --config ./src/rimuc/webpack.config.js', function () {
     shelljs.chmod('+x', RIMUC_JS)
     complete()
   })
 })
 
+desc(`Generate manpage.rmu`)
+file(MANPAGE_RMU, MANPAGE_TXT, { async: true }, function () {
+  let manpage = "// Generated automatically by JakeFile.js, do not edit.\n"
+  manpage += ".-macros\n{manpage} = '\n``\n"
+  manpage += shelljs.sed(/^(.*)'$/, "$1'\\", MANPAGE_TXT) // Escape trailing apostrophes.
+  manpage += "\n``\n'\n"
+  manpage = new shelljs.ShellString(manpage)
+  manpage.to(MANPAGE_RMU)
+  complete()
+})
+
 desc(`Generate documentation`)
-task('build-docs', ['build-rimu', 'build-gallery'], {async: true}, function () {
+task('build-docs', [MANPAGE_RMU, 'build-rimu', 'build-gallery'], { async: true }, function () {
   shelljs.cp('-f', RIMU_LIB_MIN, DOCS_DIR)
   let commands = DOCS.map(doc =>
     RIMUC_EXE +
@@ -210,7 +223,7 @@ function forEachGalleryDocument(documentCallback, layoutCallback, themeCallback)
 }
 
 desc(`Generate gallery documentation examples`)
-task('build-gallery', ['build-rimu'], {async: true}, function () {
+task('build-gallery', ['build-rimu'], { async: true }, function () {
   let commands = [];
   forEachGalleryDocument(function (options, outfile, layout, theme) {
     let command =
@@ -243,19 +256,19 @@ task('gallery-markup', function () {
 })
 
 desc(`Validate HTML documents.`)
-task('validate-html', {async: true}, function () {
+task('validate-html', { async: true }, function () {
   let commands = HTML
     // 2018-11-09: Skip files with style tags in the body as Nu W3C validator treats style tags in the body as an error.
-    .filter(file => ! ['reference','tips','rimuplayground'].map(file => DOCS_DIR+file+'.html').includes(file))
+    .filter(file => !['reference', 'tips', 'rimuplayground'].map(file => DOCS_DIR + file + '.html').includes(file))
     .map(file => 'html-validator --verbose --format=text --file=' + file)
-  exec(commands, complete, {executeAll: true})
+  exec(commands, complete, { executeAll: true })
 })
 
-desc(`Display or update the project version number. Use vers=x.y.z argument to set a new version number.`)
-task('version', {async: true}, function () {
+desc(`Display or update the project version number.Use vers = x.y.z argument to set a new version number.`)
+task('version', { async: true }, function () {
   let version = process.env.vers
   if (!version) {
-    console.log(`version: ${pkg.version}`)
+    console.log(`version: ${ pkg.version } `)
     complete()
   }
   else {
@@ -269,25 +282,25 @@ task('version', {async: true}, function () {
   }
 })
 
-desc(`Create tag ${pkg.version}`)
-task('tag', ['test'], {async: true}, function () {
+desc(`Create tag ${ pkg.version } `)
+task('tag', ['test'], { async: true }, function () {
   exec('git tag -a -m "Tag ' + pkg.version + '" ' + pkg.version, complete)
 })
 
 desc(`Commit changes to local Git repo.`)
-task('commit', ['test'], {async: true}, function () {
-  jake.exec('git commit -a', {interactive: true}, complete)
+task('commit', ['test'], { async: true }, function () {
+  jake.exec('git commit -a', { interactive: true }, complete)
 })
 
 desc(`Push to Github and publish to npm.`)
 task('publish', ['push', 'publish-npm'])
 
 desc(`Push local commits to Github.`)
-task('push', ['test'], {async: true}, function () {
+task('push', ['test'], { async: true }, function () {
   exec('git push -u --tags origin master', complete)
 })
 
 desc(`Publish to npm.`)
-task('publish-npm', {async: true}, ['test', 'build-rimu'], function () {
+task('publish-npm', { async: true }, ['test', 'build-rimu'], function () {
   exec('npm publish', complete)
 })
