@@ -43,341 +43,6 @@ See the [API documentation](#api).
   for rendering Rimu Markup files directly in the browser.
 
 
-.#rimuc-command
-## CLI command
-Rimu includes a command-line tool that converts Rimu markup to HTML. There are
-four functionally identical implementations: _rimuc_ (JavaScript
-implementation), _rimukt_ (Kotlin implementation), _rimugo_ (Go implementation),
-_rimuc_ (Dart implementation) and _rimupy_ (Python implementation).
-
-In the documentation the name _rimuc_ refers to all four implementations
-(unless stated otherwise).
-
-_rimuc_ has options to generate stand-alone styled HTML documents, either from
-Rimu Markup or [from Markdown or any text-to-HTML markup]({tips}#rimuc-html).
-
-Run `rimuc --help` to view the `rimuc` manpage:
-
-.light-background
-{manpage}
-
-### Example usage
-
-1. Use _rimuc_ as a filter:
-
-  echo 'Hello *Rimu*!' | rimuc
-
-2. Generate a styled HTML document with a table of contents and code
-   syntax highlighting: options:
-
-  rimuc --layout sequel --highlightjs reference.rmu
-
-3. Prefix a custom macro definition:
-
-  rimuc --prepend "{annotations}='yes'" showcase.rmu
-
-4. Compile multiple source files to single output file:
-
-  rimuc -o book.html frontmatter.rmu chapter*.rmu backmatter.rmu
-
-### `--layout` option
-The `--layout` option is used to generate styled HTML documents.  It
-does this by enveloping the compiled output in a layout specific HTML
-header and footer.
-
-`rimuc` comes with [built-in layouts](#built-in-layouts).
-
-All features enabled by the `--layout` option are implemented with
-Rimu markup in the header and footer files.  The `--layout` option
-concatenates the input with built-in header and footer files.  For
-example, the following two commands are functionally identical:
-
-``
-rimuc --layout sequel sites.rmu
-rimuc --output sites.html sequel-header.rmu sites.rmu sequel-footer.rmu
-``
-
-### Built-in Layouts
-You can choose from the following built-in layouts:
-
-sequel:: Responsive cross-device layout designed to render nicely on
-desktops, laptops, tablets and phones. This website uses the _sequel_
-layout.
-
-classic:: Desktop-centric layout.
-
-  - Set the `--dropdown-toc` macro to a non-blank value to place the
-    table of contents in a popup.
-
-flex:: Experimental flexbox layout. It currently works best on mobile
-devices.
-
-  - Set the `--top-bar` macro to a non-blank value to place the
-    navigation bar along the top of the document.
-
-plain:: Unstyled HTML layout.
-
-  -  Does not support any layout classes or layout options.
-
-v8:: Deprecated Rimu version 8 layout.
-
-Examples of the built-in layouts can be viewed in the [Rimu
-Gallery]({gallery}).
-
-The built-in layouts:
-
-- Create a stand-alone HTML5 document.
-- Optionally generate a [table of contents](#toc-generation).
-- Include CSS styles for verses, sidebars, text alignment,
-  page break control and section numbering (see `rimuc --help` command
-  and examples in [Rimu Tips]({tips})).
-- Generate unique [header id](#header-id-generation) attributes.
-- If the `--highlightjs` macro is non-blank
-  [Highlightjs]({tips}#syntax-highlighting) is included.
-- If the `--mathjax` macro is non-blank
-  [MathJax]({tips}#mathematical-formulae) is included.
-- Support named [themes]({tips}#themes).
-
-A number of built-in layout styles are set by header file macro values
-that can be overridden. For example:
-
-  rimuc --layout sequel --prepend "{--primary-color}='#0cc'" sites.rmu
-
-You can view full list of layout macros in the corresponding built-in
-layout [header file]({github}/tree/master/src/rimuc/resources).
-
-### Themes
-A theme is a layout styling variation.  Named themes are specified
-using the `--theme` option.  The built-in layouts implement _legend_,
-_graystone_ and _vintage_ themes.
-
-Examples of the built-in layout themes can be viewed in the [Rimu
-Gallery]({gallery}).
-
-The `--theme` option value sets the `--theme` macro which the layout
-header then uses to [conditionally
-include]({tips}#conditional-inclusion) HTML `style` elements.
-
-.#toc-generation
-### Table of contents generation
-Built-in layouts automatically include a table of contents in the
-generated HTML document.
-
-- The table of contents is synthesised from top level `h1`, `h2` and
-  `h3` HTML header elements.
-- You can suppress the table of contents generation using the
-  `--no-toc` option.
-- The `--custom-toc` option allows the user to include a [custom
-  TOC](#custom-table-of-contents).
-- Use the `no-auto-toc` CSS class attribute to exclude a section
-  header from the table of contents, for example:
-
-  .no-auto-toc
-  ## This header does not appear in the TOC
-
-### Custom table of contents
-The `--custom-toc` option is used in conjunction with built-in
-layouts. The `--custom-toc` option inhibits the generation of an HTML
-TOC container and it is up to the user to include a custom HTML TOC
-container in the Rimu markup. This allows you to customise the
-location, style and content of the TOC:
-
-- The TOC container must be an HTML element with `id="toc"`.
-- If the document contains an element with `id="auto-toc"` then it
-  will be loaded with the auto-generated TOC entries, if this element
-  is omitted TOC entries will be skipped.
-
-If `--custom-toc` is not specified the following TOC container is
-inserted in the output document:
-
-``
-<div id="toc">
-  <div id="auto-toc"></div>
-</div>
-``
-
-/*
-### Imported Layouts
-`rimuc` supports third-party externally sourced layouts. When the
-`--layout <layout-name>` option is specified `rimuc` searches for a
-built-in layout with the same name. If it is not found then an attempt
-is made to import a nodejs module named like
-`rimu-<layout-name>-layout`.  The imported module contains two
-attributes, `header` and `footer`, which return the Rimu header markup
-and footer markup respectively.
-
-For example, take a look at the [Rimu _plain_
-Layout](https://github.com/srackham/rimu-plain-layout.git).
-
-Consult the imported layout's documentation for supported layout
-options.
-*/
-
-
-.#api
-## API
-Rimu has just one API for translating Rimu markup to HTML:
-
-  render(source [, options])
-
-The `source` argument is a string containing Rimu markup. The return
-value is a string containing the resultant HTML.
-The optional `options` argument controls rendering behaviour.
-
-The `render()` API is stateful: macros and custom element definitions
-are retained across API calls along with API options.
-Use the `reset` option to restore the default state.
-
-### Example usage
-#### JavaScript
-Node.js example (assumes Rimu has been previously installed from
-[npm]({npm})):
-
-``` javascript
-var rimu = require('rimu');
-var html= rimu.render('Hello *Rimu*!');
-```
-
-HTML script tag example (the compiled and minified `rimu.min.js` library
-can be found in the installed Rimu npm package `./rimu/lib` folder):
-
-``` xml
-<script src="rimu.min.js"></script>
-<script>
-  console.log(Rimu.render('Hello *Rimu*!', {reset:true, safeMode:2}));
-</script>
-```
-
-#### Kotlin
-``` kotlin
-import org.rimumarkup.RenderOptions
-import org.rimumarkup.render
-
-fun main(args: Array<String>) {
-    println(render("Hello *Rimu*!", RenderOptions(reset = true))
-}
-```
-See the [Kotlin README]({github-kt}).
-
-#### Go
-``` go
-package main
-
-import (
-    "fmt"
-
-    "github.com/srackham/go-rimu/v11/rimu"
-)
-
-func main() {
-    fmt.Println(rimu.Render("*Hello Rimu*!", rimu.RenderOptions{Reset: true}))
-}
-```
-See the [Go README]({github-go}).
-
-#### Dart
-``` dart
-import 'package:rimu/rimu.dart';
-
-main(List<String> arguments) {
-  print(render('Hello *Rimu*!', RenderOptions(reset: true)));
-}
-```
-See the [Dart README]({pubdev-rimu}).
-
-#### Python
-``` python
-import rimu
-
-print(rimu.render('*Hello World*!'))
-```
-See the [Python README]({pypi-rimu}).
-
-### API options
-The `options` argument is a JavaScript object with zero or more of the
-following properties:
-
-`safeMode`::
-This option has a number value that controls how Rimu renders embedded
-HTML and how Rimu definition and option elements will be processed:
-..
-.light-background
-``
-0 => Render HTML (default behavior).
-1 => Ignore HTML.
-2 => Replace HTML with the 'htmlReplacement' option string.
-3 => Render HTML as text.
-
-Add 4 to safeMode to ignore Block Attribute elements.
-Add 8 to safeMode to allow Macro Definitions.
-``
-
-- If `safeMode` is zero all Rimu elements will be processed.
-- If `safeMode` is non-zero the following Rimu elements are ignored:
-  * Rimu definition elements (_Delimited Block_, _Macro_, _Quote_
-    and _Replacement_ definitions).
-  * _API Option_ elements.
-  * HTML attributes in _Block Attribute_ elements.
-- Add 4 to `safeMode` to ignore _Block Attribute_ elements completely,
-  this ensures HTML element IDs cannot be created and that CSS classes
-  or properties cannot be used explicitly.
-- Add 8 to `safeMode` to allow Macro Definitions. Allowing Macro
-  Definitions is not intrinsically unsafe because their safety or
-  otherwise is solely determined by the safety of their constituent
-  elements.
-- For example, a `safeMode` value of 13 (1+4+8) skips HTML elements,
-  allows macro definitions but skips all other Rimu definition
-  elements along with API option elements.
-- Once a non-zero `safeMode` has been set then it can only be reset by
-  a `render()` API call with a `safeMode:0` or a `reset:true` option.
-..
-
-`htmlReplacement`::
-A string that replaces embedded HTML when
-`safeMode` is set to `2`. Defaults to `<mark>replaced HTML</mark>`.
-
-`callback`::
-`callback` is a function that handles diagnostic events emitted by the
-`render()` API.  The `callback` function `message` argument is an object
-with a `type` property (`'error'`, `'warning'` or `'info'`) and a
-`text` property (a string containing the diagnostic message). Example
-usage:
-..
-`` javascript
-var html = Rimu.render('Hello *Rimu*!', {
-  callback: function(message) {
-    console.log(message.type + ': ' + message.text);
-  }
-});
-``
-..
-
-`reset`::
-This boolean option causes the render API to be set to its default
-state (default option values; default Quotes, Replacements and
-Delimited Block definitions; predefined macro definitions only; no
-callback). The `reset` option is processed before other options.
-
-### API Option elements
-API options can be set in the Rimu source using a [Line
-Block](#line-blocks) element with the following syntax:
-
-  .option-name = 'option-value'
-
-- `option-name` is `safeMode`, `htmlReplacement` or `reset`.
-- The `option-value` is a valid option value.
-- Macro invocations in `option-value` are expanded.
-- An API Option element must start at the left margin and must not
-  extend beyond the end of the line.
-- The option is applied to Rimu markup that follows the option element.
-- API Option elements are not processed if the `safeMode` is non-zero.
-
-For example, the following API Option element ensures all subsequent
-raw HTML is not passed to the output:
-
-  .safeMode = '1'
-
-
 ## Documents
 A Rimu document consists of a sequence of zero or more [Block
 elements](#block-elements).
@@ -424,7 +89,7 @@ Rimu markup elements are categorized as follows:
                         [Normal Paragraph](#normal-paragraph)
                         [Quote Paragraph](#quote-paragraph)
         [Line Blocks](#line-blocks)
-                [API Option](#api-option-elements)
+                [API Option](#api-option-element)
                 [Block Attributes](#block-attributes)
                 [Block Image](#images)
                 [Element Definitions](#taxonomy)
@@ -1100,7 +765,7 @@ Definition syntax:
 
   |block-name| = '<open-tags>|<close-tags> block-options'
 
-- `block-name` is is one of the folowing [Delimited
+- `block-name` is is one of the following [Delimited
   Block](#delimited-blocks) names:
 ..
 [`code`](#code-block), \
@@ -1336,6 +1001,371 @@ For example a header with the title `The End!` will be assigned an
 `id` attribute value `the-end`
 
 
+## API Option element
+[API options](#api-options) can be set in the Rimu source using a [Line
+Block](#line-blocks) element with the following syntax:
+
+  .option-name = 'option-value'
+
+- `option-name` is `safeMode`, `htmlReplacement` or `reset`.
+- The `option-value` is a valid option value.
+- Macro invocations in `option-value` are expanded.
+- An API Option element must start at the left margin and must not
+  extend beyond the end of the line.
+- The option is applied to Rimu markup that follows the option element.
+- API Option elements are not processed if the `safeMode` is non-zero.
+
+For example, the following API Option element ensures all subsequent
+raw HTML is not passed to the output:
+
+  .safeMode = '1'
+
+
+.#rimuc-command
+## CLI command
+Rimu includes a command-line tool that converts Rimu markup to HTML. There are
+four functionally identical implementations: _rimuc_ (JavaScript
+implementation), _rimukt_ (Kotlin implementation), _rimugo_ (Go implementation),
+_rimuc_ (Dart implementation) and _rimupy_ (Python implementation).
+
+In the documentation the name _rimuc_ refers to all four implementations
+(unless stated otherwise).
+
+_rimuc_ has options to generate stand-alone styled HTML documents, either from
+Rimu Markup or [from Markdown or any text-to-HTML markup]({tips}#rimuc-html).
+
+Run `rimuc --help` to view the `rimuc` manpage:
+
+.light-background
+{manpage}
+
+### Example usage
+
+1. Use _rimuc_ as a filter:
+
+  echo 'Hello *Rimu*!' | rimuc
+
+2. Generate a styled HTML document with a table of contents and code
+   syntax highlighting: options:
+
+  rimuc --layout sequel --highlightjs reference.rmu
+
+3. Prefix a custom macro definition:
+
+  rimuc --prepend "{annotations}='yes'" showcase.rmu
+
+4. Compile multiple source files to single output file:
+
+  rimuc -o book.html frontmatter.rmu chapter*.rmu backmatter.rmu
+
+### `--layout` option
+The `--layout` option is used to generate styled HTML documents.  It
+does this by enveloping the compiled output in a layout specific HTML
+header and footer.
+
+`rimuc` comes with [built-in layouts](#built-in-layouts).
+
+All features enabled by the `--layout` option are implemented with
+Rimu markup in the header and footer files.  The `--layout` option
+concatenates the input with built-in header and footer files.  For
+example, the following two commands are functionally identical:
+
+``
+rimuc --layout sequel sites.rmu
+rimuc --output sites.html sequel-header.rmu sites.rmu sequel-footer.rmu
+``
+
+### Built-in Layouts
+You can choose from the following built-in layouts:
+
+sequel:: Responsive cross-device layout designed to render nicely on
+desktops, laptops, tablets and phones. This website uses the _sequel_
+layout.
+
+classic:: Desktop-centric layout.
+
+  - Set the `--dropdown-toc` macro to a non-blank value to place the
+    table of contents in a popup.
+
+flex:: Experimental flexbox layout. It currently works best on mobile
+devices.
+
+  - Set the `--top-bar` macro to a non-blank value to place the
+    navigation bar along the top of the document.
+
+plain:: Unstyled HTML layout.
+
+  -  Does not support any layout classes or layout options.
+
+v8:: Deprecated Rimu version 8 layout.
+
+Examples of the built-in layouts can be viewed in the [Rimu
+Gallery]({gallery}).
+
+The built-in layouts:
+
+- Create a stand-alone HTML5 document.
+- Optionally generate a [table of contents](#toc-generation).
+- Include CSS styles for verses, sidebars, text alignment,
+  page break control and section numbering (see `rimuc --help` command
+  and examples in [Rimu Tips]({tips})).
+- Generate unique [header id](#header-id-generation) attributes.
+- If the `--highlightjs` macro is non-blank
+  [Highlightjs]({tips}#syntax-highlighting) is included.
+- If the `--mathjax` macro is non-blank
+  [MathJax]({tips}#mathematical-formulae) is included.
+- Support named [themes]({tips}#themes).
+
+A number of built-in layout styles are set by header file macro values
+that can be overridden. For example:
+
+  rimuc --layout sequel --prepend "{--primary-color}='#0cc'" sites.rmu
+
+You can view full list of layout macros in the corresponding built-in
+layout [header file]({github}/tree/master/src/rimuc/resources).
+
+### Themes
+A theme is a layout styling variation.  Named themes are specified
+using the `--theme` option.  The built-in layouts implement _legend_,
+_graystone_ and _vintage_ themes.
+
+Examples of the built-in layout themes can be viewed in the [Rimu
+Gallery]({gallery}).
+
+The `--theme` option value sets the `--theme` macro which the layout
+header then uses to [conditionally
+include]({tips}#conditional-inclusion) HTML `style` elements.
+
+.#toc-generation
+### Table of contents generation
+Built-in layouts automatically include a table of contents in the
+generated HTML document.
+
+- The table of contents is synthesised from top level `h1`, `h2` and
+  `h3` HTML header elements.
+- You can suppress the table of contents generation using the
+  `--no-toc` option.
+- The `--custom-toc` option allows the user to include a [custom
+  TOC](#custom-table-of-contents).
+- Use the `no-auto-toc` CSS class attribute to exclude a section
+  header from the table of contents, for example:
+
+  .no-auto-toc
+  ## This header does not appear in the TOC
+
+### Custom table of contents
+The `--custom-toc` option is used in conjunction with built-in
+layouts. The `--custom-toc` option inhibits the generation of an HTML
+TOC container and it is up to the user to include a custom HTML TOC
+container in the Rimu markup. This allows you to customise the
+location, style and content of the TOC:
+
+- The TOC container must be an HTML element with `id="toc"`.
+- If the document contains an element with `id="auto-toc"` then it
+  will be loaded with the auto-generated TOC entries, if this element
+  is omitted TOC entries will be skipped.
+
+If `--custom-toc` is not specified the following TOC container is
+inserted in the output document:
+
+``
+<div id="toc">
+  <div id="auto-toc"></div>
+</div>
+``
+
+/*
+### Imported Layouts
+`rimuc` supports third-party externally sourced layouts. When the
+`--layout <layout-name>` option is specified `rimuc` searches for a
+built-in layout with the same name. If it is not found then an attempt
+is made to import a nodejs module named like
+`rimu-<layout-name>-layout`.  The imported module contains two
+attributes, `header` and `footer`, which return the Rimu header markup
+and footer markup respectively.
+
+For example, take a look at the [Rimu _plain_
+Layout](https://github.com/srackham/rimu-plain-layout.git).
+
+Consult the imported layout's documentation for supported layout
+options.
+*/
+
+
+.#api
+## API
+Rimu has just one API for translating Rimu markup to HTML:
+
+  render(source [, options])
+
+The `source` argument is a string containing Rimu markup. The return
+value is a string containing the resultant HTML.
+The optional `options` argument controls rendering behaviour.
+
+The `render()` API is stateful: macros and custom element definitions
+are retained across API calls along with API options.
+Use the `reset` option to restore the default state.
+
+### Example usage
+#### JavaScript
+Node.js example (assumes Rimu has been previously installed from
+[npm]({npm})):
+
+``` javascript
+var rimu = require('rimu');
+var html= rimu.render('Hello *Rimu*!');
+```
+
+HTML script tag example (the compiled and minified `rimu.min.js` library
+can be found in the installed Rimu npm package `./rimu/lib` folder):
+
+``` xml
+<script src="rimu.min.js"></script>
+<script>
+  console.log(Rimu.render('Hello *Rimu*!', {reset:true, safeMode:2}));
+</script>
+```
+
+#### Kotlin
+``` kotlin
+import org.rimumarkup.RenderOptions
+import org.rimumarkup.render
+
+fun main(args: Array<String>) {
+    println(render("Hello *Rimu*!", RenderOptions(reset = true))
+}
+```
+See the [Kotlin README]({github-kt}).
+
+#### Go
+``` go
+package main
+
+import (
+    "fmt"
+
+    "github.com/srackham/go-rimu/v11/rimu"
+)
+
+func main() {
+    fmt.Println(rimu.Render("*Hello Rimu*!", rimu.RenderOptions{Reset: true}))
+}
+```
+See the [Go README]({github-go}).
+
+#### Dart
+``` dart
+import 'package:rimu/rimu.dart';
+
+main(List<String> arguments) {
+  print(render('Hello *Rimu*!', RenderOptions(reset: true)));
+}
+```
+See the [Dart README]({pubdev-rimu}).
+
+#### Python
+``` python
+import rimu
+
+print(rimu.render('*Hello World*!', rimu.RenderOptions(reset=True)))
+```
+See the [Python README]({pypi-rimu}).
+
+### API options
+The API `options` argument is an object with zero or more of the
+following properties:
+
+`safeMode`::
+..
+This option has a number value that controls how Rimu renders embedded
+HTML and how Rimu definition and option elements will be processed:
+
+.light-background
+``
+0 => Render HTML (default behavior).
+1 => Ignore HTML.
+2 => Replace HTML with the 'htmlReplacement' option string.
+3 => Render HTML as text.
+
+Add 4 to safeMode to ignore Block Attribute elements.
+Add 8 to safeMode to allow Macro Definitions.
+``
+
+- If `safeMode` is zero all Rimu elements will be processed.
+- If `safeMode` is non-zero the following Rimu elements are ignored:
+  * Rimu definition elements (_Delimited Block_, _Macro_, _Quote_
+    and _Replacement_ definitions).
+  * _API Option_ elements.
+  * HTML attributes in _Block Attribute_ elements.
+- Add 4 to `safeMode` to ignore _Block Attribute_ elements completely,
+  this ensures HTML element IDs cannot be created and that CSS classes
+  or properties cannot be used explicitly.
+- Add 8 to `safeMode` to allow Macro Definitions. Allowing Macro
+  Definitions is not intrinsically unsafe because their safety or
+  otherwise is solely determined by the safety of their constituent
+  elements.
+- For example, a `safeMode` value of 13 (1+4+8) skips HTML elements,
+  allows macro definitions but skips all other Rimu definition
+  elements along with API option elements.
+- Once a non-zero `safeMode` has been set then it can only be reset by
+  a `render()` API call with a `safeMode:0` or a `reset:true` option.
+..
+
+`htmlReplacement`::
+A string that replaces embedded HTML when `safeMode` is set to `2`.
+Defaults to `<mark>replaced HTML</mark>`.
+
+`callback`::
+..
+`callback` is a function that handles diagnostic events emitted by the
+`render()` API.  The `callback` function is passed a single `message` argument.
+The `message` argument is an object with a `type` property (`'error'`,
+`'warning'` or `'info'`) and a `text` property (a string containing the
+diagnostic message). Callback examples:
+
+`` javascript
+// JavaScript and TypeScript.
+function callback(message) {
+    console.log(message.type + ': ' + message.text);
+}
+
+var html = Rimu.render('Hello *Rimu*!', {callback: callback});
+``
+
+`` python
+# Python.
+def callback(message):
+    print(f'{message.type}: {message.text}')
+
+html = rimu.render('Hello *Rimu*!', rimu.RenderOptions(callback=callback))
+``
+
+`` dart
+// Dart.
+callback(CallbackMessage message) {
+  print('${message.type}: ${message.text}');
+}
+
+var html = render('Hello *Rimu*!', RenderOptions(callback: callback));
+``
+
+`` kotlin
+// Kotlin.
+fun callback(message: CallbackMessage) {
+    println("${message.type}: ${message.text}")
+}
+
+var html = render("Hello *Rimu*!", RenderOptions(callback = callback))
+``
+..
+
+`reset`::
+This boolean option causes the render API to be set to its default
+state (default option values; default Quotes, Replacements and
+Delimited Block definitions; predefined macro definitions only; no
+callback). The `reset` option is processed before other options.
+
+
 .#vim-syntax-file
 ## Vim syntax file
 The Rimu distribution includes a
@@ -1361,11 +1391,12 @@ potential source of cross-platform incompatibility.  To avoid
 cross-platform incompatibility use regular expression syntax that is
 common to all platforms:
 
-- [JavaScript regular
-  expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions).
-- [Java regular
+- JavaScript, TypeScript and Dart use [ECMA-262 regular
+  expressions](http://ecma-international.org/ecma-262/5.1/#sec-15.10).
+- [Java and Kotlin regular
   expressions](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html).
 - [Go regular expressions](https://github.com/google/re2/wiki/Syntax).
+- [Python regular expressions](https://docs.python.org/3/library/re.html).
 
 Guidelines:
 
