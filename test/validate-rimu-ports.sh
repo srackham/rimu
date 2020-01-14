@@ -120,7 +120,7 @@ KT_TIME=0
 DART_TIME=0
 PY_TIME=0
 
-DOC_LINES=$(cat $JS/docs/{reference,tips,changelog}.rmu | wc -l)
+DOC_LINES=$(cat $JS/docs/{doc-header,reference,tips,changelog,manpage}.rmu $JS/src/examples/example-rimurc.rmu | wc -l)
 
 for doc in reference tips changelog; do
     ARGS='--no-rimurc --theme legend --custom-toc --header-links --layout sequel --lang en --title "Rimu Reference" --highlightjs --prepend "{generate-examples}='"'yes'"'"  ./src/examples/example-rimurc.rmu ./docs/manpage.rmu ./docs/doc-header.rmu'
