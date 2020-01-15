@@ -1382,8 +1382,8 @@ to your taste delete them from the end of the file.
 
 
 ## Regular Expressions
-Regular expressions can be embedded in [replacements](#TODO)
-definitions and [inclusion/exclusion macro](#TODO) invocations.
+Regular expressions can be embedded in [replacements](#replacement-definition)
+definitions and [inclusion/exclusion macro](#macro-invocations) invocations.
 
 The language specific regular expression engine is used. This means
 that platform differences between regular expression syntax is a
