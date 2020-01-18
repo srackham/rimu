@@ -25,7 +25,7 @@ interface Fragment {
 export function render(source: string): string {
   let result: string
   result = preReplacements(source)
-  let fragments: Fragment[] = [{text: result, done: false}]
+  let fragments: Fragment[] = [{ text: result, done: false }]
   fragments = fragQuotes(fragments)
   fragSpecials(fragments)
   result = defrag(fragments)
@@ -86,21 +86,21 @@ function fragQuote(fragment: Fragment): Fragment[] {
   let before = match.input.slice(0, match.index)
   let quoted = match[2]
   let after = match.input.slice(quotesRe.lastIndex)
-  result.push({text: before, done: false})
-  result.push({text: def.openTag, done: true})
+  result.push({ text: before, done: false })
+  result.push({ text: def.openTag, done: true })
   if (!def.spans) {
     // Spans are disabled so render the quoted text verbatim.
     quoted = Utils.replaceSpecialChars(quoted)
     quoted = quoted.replace(/\u0000/g, '\u0001')   // Flag replacements as verbatim.
-    result.push({text: quoted, done: true})
+    result.push({ text: quoted, done: true })
   }
   else {
     // Recursively process the quoted text.
-    result.push.apply(result, fragQuote({text: quoted, done: false}))
+    result.push.apply(result, fragQuote({ text: quoted, done: false }))
   }
-  result.push({text: def.closeTag, done: true})
+  result.push({ text: def.closeTag, done: true })
   // Recursively process the following text.
-  result.push.apply(result, fragQuote({text: after, done: false}))
+  result.push.apply(result, fragQuote({ text: after, done: false }))
   return result
 }
 
@@ -112,7 +112,7 @@ let savedReplacements: Fragment[]
 // '\u0001' is placeholder for unexpanded replacement text (replacements that occur within quotes are rendered verbatim).
 function preReplacements(text: string): string {
   savedReplacements = []
-  let fragments = fragReplacements([{text: text, done: false}])
+  let fragments = fragReplacements([{ text: text, done: false }])
   // Reassemble text with replacement placeholders.
   return fragments.reduce((result, fragment) => {
     if (fragment.done) {
@@ -167,7 +167,7 @@ function fragReplacement(fragment: Fragment, def: Replacements.Definition): Frag
   //       lastIndex properties are read before the recursive call.
   let before: string = match.input.slice(0, match.index)
   let after: string = match.input.slice(replacementRe.lastIndex)
-  result.push({text: before, done: false})
+  result.push({ text: before, done: false })
   let replacement: string
   if (match[0][0] === '\\') {
     // Remove leading backslash.
@@ -181,9 +181,9 @@ function fragReplacement(fragment: Fragment, def: Replacements.Definition): Frag
       replacement = def.filter(match)
     }
   }
-  result.push({text: replacement, done: true, verbatim: match[0]})
+  result.push({ text: replacement, done: true, verbatim: match[0] })
   // Recursively process the remaining text.
-  result.push.apply(result, fragReplacement({text: after, done: false}, def))
+  result.push.apply(result, fragReplacement({ text: after, done: false }, def))
   return result
 }
 

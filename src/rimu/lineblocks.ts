@@ -1,4 +1,3 @@
-import {BlockAttributes} from './utils'
 import * as DelimitedBlocks from './delimitedblocks'
 import * as Io from './io'
 import * as Macros from './macros'
@@ -6,6 +5,7 @@ import * as Options from './options'
 import * as Quotes from './quotes'
 import * as Replacements from './replacements'
 import * as Utils from './utils'
+import { BlockAttributes } from './utils'
 
 export interface Definition {
   match: RegExp
@@ -55,7 +55,7 @@ let defs: Definition[] = [
       if (Options.isSafeModeNz()) {
         return ''   // Skip if a safe mode is set.
       }
-      match[2] = Utils.replaceInline(match[2], {macros: true})
+      match[2] = Utils.replaceInline(match[2], { macros: true })
       DelimitedBlocks.setDefinition(match[1], match[2])
       return ''
     }
@@ -70,8 +70,8 @@ let defs: Definition[] = [
       }
       Quotes.setDefinition({
         quote: match[1],
-        openTag: Utils.replaceInline(match[2], {macros: true}),
-        closeTag: Utils.replaceInline(match[4], {macros: true}),
+        openTag: Utils.replaceInline(match[2], { macros: true }),
+        closeTag: Utils.replaceInline(match[4], { macros: true }),
         spans: match[3] === '|'
       })
       return ''
@@ -88,7 +88,7 @@ let defs: Definition[] = [
       let pattern = match[1]
       let flags = match[2]
       let replacement = match[3]
-      replacement = Utils.replaceInline(replacement, {macros: true})
+      replacement = Utils.replaceInline(replacement, { macros: true })
       Replacements.setDefinition(pattern, flags, replacement)
       return ''
     }
@@ -101,7 +101,7 @@ let defs: Definition[] = [
       let name = match[1]
       let quote = match[2]
       let value = match[3]
-      value = Utils.replaceInline(value, {macros: true})
+      value = Utils.replaceInline(value, { macros: true })
       Macros.setValue(name, value, quote)
       return ''
     }
@@ -116,7 +116,7 @@ let defs: Definition[] = [
       if (Macros.getValue('--header-ids') && BlockAttributes.id === '') {
         BlockAttributes.id = BlockAttributes.slugify(match[2])
       }
-      return Utils.replaceMatch(match, this.replacement, {macros: true})
+      return Utils.replaceMatch(match, this.replacement, { macros: true })
     }
   },
   // Block image: <image:src|alt>
@@ -143,7 +143,7 @@ let defs: Definition[] = [
       }
       else {
         // Default (non-filter) replacement processing.
-        return Utils.replaceMatch(match, this.replacement, {macros: true})
+        return Utils.replaceMatch(match, this.replacement, { macros: true })
       }
     }
   },
@@ -162,7 +162,7 @@ let defs: Definition[] = [
     match: /^\\?\.(\w+)\s*=\s*'(.*)'$/,
     filter: function (match: RegExpExecArray): string {
       if (!Options.isSafeModeNz()) {
-        let value = Utils.replaceInline(match[2], {macros: true})
+        let value = Utils.replaceInline(match[2], { macros: true })
         Options.setOption(match[1], value)
       }
       return ''
@@ -188,7 +188,7 @@ export function render(reader: Io.Reader, writer: Io.Writer, allowed: string[] =
       }
       let text: string
       if (!def.filter) {
-        text = def.replacement ? Utils.replaceMatch(match, def.replacement, {macros: true}) : ''
+        text = def.replacement ? Utils.replaceMatch(match, def.replacement, { macros: true }) : ''
       }
       else {
         text = def.filter(match, reader)

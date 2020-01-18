@@ -57,91 +57,91 @@ let prepend = ''
 let outfile: string | undefined
 let arg: string | undefined
 outer:
-  while (!!(arg = process.argv.shift())) {
-    switch (arg) {
-      case '--help':
-      case '-h':
-        console.log('\n' + readResourceFile('manpage.txt'))
-        process.exit()
-        break
-      case '--version':
-        console.log(VERSION)
-        process.exit()
-        break
-      case '--lint': // Deprecated in Rimu 10.0.0
-      case '-l':
-        break
-      case '--output':
-      case '-o':
-        outfile = process.argv.shift()
-        if (!outfile) {
-          die('missing --output file name')
-        }
-        break
-      case '--pass':
-        pass = true
-        break
-      case '--prepend':
-      case '-p':
-        prepend += process.argv.shift() + '\n'
-        break
-      case '--prepend-file':
-        let prepend_file = process.argv.shift()
-        if (!prepend_file) {
-          die('missing --prepend-file file name')
-        }
-        prepend_files.push(prepend_file!)
-        break
-      case '--no-rimurc':
-        no_rimurc = true
-        break
-      case '--safe-mode':
-      case '--safeMode':  // Deprecated in Rimu 7.1.0.
-        safe_mode = parseInt(process.argv.shift() || '99', 10)
-        if (safe_mode < 0 || safe_mode > 15) {
-          die('illegal --safe-mode option value')
-        }
-        break
-      case '--html-replacement':
-      case '--htmlReplacement': // Deprecated in Rimu 7.1.0.
-        html_replacement = process.argv.shift()
-        break
-      // Styling macro definitions shortcut options.
-      case '--highlightjs':
-      case '--mathjax':
-      case '--section-numbers':
-      case '--theme':
-      case '--title':
-      case '--lang':
-      case '--toc': // Deprecated in Rimu 8.0.0
-      case '--no-toc':
-      case '--sidebar-toc': // Deprecated in Rimu 10.0.0
-      case '--dropdown-toc': // Deprecated in Rimu 10.0.0
-      case '--custom-toc':
-      case '--header-ids':
-      case '--header-links':
-        let macro_value = ['--lang', '--title', '--theme'].indexOf(arg) > -1 ? process.argv.shift() : 'true'
-        prepend += '{' + arg + '}=\'' + macro_value + '\'\n'
-        break
-      case '--layout':
-      case '--styled-name': // Deprecated in Rimu 10.0.0
-        layout = process.argv.shift() || ''
-        if (!layout) {
-          die('missing --layout')
-        }
-        prepend += '{--header-ids}=\'true\'\n'
-        break
-      case '--styled':
-      case '-s':
-        prepend += '{--header-ids}=\'true\'\n'
-        prepend += '{--no-toc}=\'true\'\n'
-        layout = 'sequel'
-        break
-      default:
-        process.argv.unshift(arg); // argv contains source file names.
-        break outer
-    }
+while (!!(arg = process.argv.shift())) {
+  switch (arg) {
+    case '--help':
+    case '-h':
+      console.log('\n' + readResourceFile('manpage.txt'))
+      process.exit()
+      break
+    case '--version':
+      console.log(VERSION)
+      process.exit()
+      break
+    case '--lint': // Deprecated in Rimu 10.0.0
+    case '-l':
+      break
+    case '--output':
+    case '-o':
+      outfile = process.argv.shift()
+      if (!outfile) {
+        die('missing --output file name')
+      }
+      break
+    case '--pass':
+      pass = true
+      break
+    case '--prepend':
+    case '-p':
+      prepend += process.argv.shift() + '\n'
+      break
+    case '--prepend-file':
+      let prepend_file = process.argv.shift()
+      if (!prepend_file) {
+        die('missing --prepend-file file name')
+      }
+      prepend_files.push(prepend_file!)
+      break
+    case '--no-rimurc':
+      no_rimurc = true
+      break
+    case '--safe-mode':
+    case '--safeMode':  // Deprecated in Rimu 7.1.0.
+      safe_mode = parseInt(process.argv.shift() || '99', 10)
+      if (safe_mode < 0 || safe_mode > 15) {
+        die('illegal --safe-mode option value')
+      }
+      break
+    case '--html-replacement':
+    case '--htmlReplacement': // Deprecated in Rimu 7.1.0.
+      html_replacement = process.argv.shift()
+      break
+    // Styling macro definitions shortcut options.
+    case '--highlightjs':
+    case '--mathjax':
+    case '--section-numbers':
+    case '--theme':
+    case '--title':
+    case '--lang':
+    case '--toc': // Deprecated in Rimu 8.0.0
+    case '--no-toc':
+    case '--sidebar-toc': // Deprecated in Rimu 10.0.0
+    case '--dropdown-toc': // Deprecated in Rimu 10.0.0
+    case '--custom-toc':
+    case '--header-ids':
+    case '--header-links':
+      let macro_value = ['--lang', '--title', '--theme'].indexOf(arg) > -1 ? process.argv.shift() : 'true'
+      prepend += '{' + arg + '}=\'' + macro_value + '\'\n'
+      break
+    case '--layout':
+    case '--styled-name': // Deprecated in Rimu 10.0.0
+      layout = process.argv.shift() || ''
+      if (!layout) {
+        die('missing --layout')
+      }
+      prepend += '{--header-ids}=\'true\'\n'
+      break
+    case '--styled':
+    case '-s':
+      prepend += '{--header-ids}=\'true\'\n'
+      prepend += '{--no-toc}=\'true\'\n'
+      layout = 'sequel'
+      break
+    default:
+      process.argv.unshift(arg); // argv contains source file names.
+      break outer
   }
+}
 // process.argv contains the list of source files.
 let files = process.argv
 if (files.length === 0) {

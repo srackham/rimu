@@ -23,8 +23,8 @@ export let defs: Macro[] = []
 export function init(): void {
   // Initialize predefined macros.
   defs = [
-    {name: '--', value: ''},
-    {name: '--header-ids', value: ''}
+    { name: '--', value: '' },
+    { name: '--header-ids', value: '' }
   ]
 }
 
@@ -70,7 +70,7 @@ export function setValue(name: string, value: string, quote: string): void {
       return
     }
   }
-  defs.push({name: name, value: value})
+  defs.push({ name: name, value: value })
 }
 
 // Render macro invocations in text string.
@@ -100,8 +100,8 @@ export function render(text: string, silent: boolean = false): string {
         return match
       }
       if (find === MATCH_SIMPLE) {
-          return value
-			}
+        return value
+      }
       params = params.replace(/\\}/g, '}')   // Unescape escaped } characters.
       switch (params[0]) {
         case '|': // Parametrized macro.

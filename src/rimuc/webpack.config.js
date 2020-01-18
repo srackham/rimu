@@ -23,12 +23,12 @@ module.exports = {
     extensions: ['.ts'],
   },
   plugins: [
-    new webpack.BannerPlugin({banner: '#!/usr/bin/env node', raw: true}),
+    new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
   ],
   module: {
     rules: [
-      {test: /\.tsx?$/, loader: 'ts-loader'},
-      {test: /\/resources\/.*\.(rmu|txt)$/, loader: 'raw-loader'},
+      { test: /\.tsx?$/, loader: 'ts-loader' },
+      { test: /\/resources\/.*\.(rmu|txt)$/, loader: 'raw-loader' },
     ]
   }
 };

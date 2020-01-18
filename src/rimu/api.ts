@@ -1,4 +1,3 @@
-import {BlockAttributes} from './utils'
 import * as DelimitedBlocks from './delimitedblocks'
 import * as Io from './io'
 import * as LineBlocks from './lineblocks'
@@ -7,6 +6,7 @@ import * as Macros from './macros'
 import * as Options from './options'
 import * as Quotes from './quotes'
 import * as Replacements from './replacements'
+import { BlockAttributes } from './utils'
 
 export function render(source: string): string {
   let reader = new Io.Reader(source)

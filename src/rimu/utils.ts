@@ -32,8 +32,8 @@ export function replaceSpecialChars(s: string): string {
 // from `match`. If pattern starts with one '$' character add specials to `expansionOptions`,
 // if it starts with two '$' characters add spans to `expansionOptions`.
 export function replaceMatch(match: RegExpExecArray,
-                             replacement: string,
-                             expansionOptions: ExpansionOptions = {}): string {
+  replacement: string,
+  expansionOptions: ExpansionOptions = {}): string {
   return replacement.replace(/(\${1,2})(\d)/g, function (): string {
     // Replace $1, $2 ... with corresponding match groups.
     if (arguments[1] === '$$') {
@@ -108,7 +108,7 @@ export namespace BlockAttributes {
     // Parse Block Attributes.
     // class names = $1, id = $2, css-properties = $3, html-attributes = $4, block-options = $5
     let text = match[0]
-    text = replaceInline(text, {macros: true})
+    text = replaceInline(text, { macros: true })
     let m = /^\\?\.((?:\s*[a-zA-Z][\w\-]*)+)*(?:\s*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(?:"(.+?)")?(?:\s*)?(\[.+])?(?:\s*)?([+-][ \w+-]+)?$/.exec(text)
     if (!m) {
       return false

@@ -1,9 +1,9 @@
 import * as DelimitedBlocks from './delimitedblocks'
-import * as LineBlocks from './lineblocks'
 import * as Io from './io'
+import * as LineBlocks from './lineblocks'
 import * as Options from './options'
 import * as Utils from './utils'
-import {BlockAttributes} from './utils';
+import { BlockAttributes } from './utils'
 
 interface Definition {
   match: RegExp
@@ -94,7 +94,7 @@ function renderListItem(item: ItemInfo, reader: Io.Reader, writer: Io.Writer): I
   let text: string
   if (match.length === 4) { // 3 match groups => definition list.
     writer.write(BlockAttributes.inject(def.termOpenTag as string))
-    text = Utils.replaceInline(match[1], {macros: true, spans: true})
+    text = Utils.replaceInline(match[1], { macros: true, spans: true })
     writer.write(text)
     writer.write(def.termCloseTag as string)
     writer.write(def.itemOpenTag)
@@ -156,7 +156,7 @@ function renderListItem(item: ItemInfo, reader: Io.Reader, writer: Io.Writer): I
   }
   // Write item text.
   text = item_lines.toString().trim()
-  text = Utils.replaceInline(text, {macros: true, spans: true})
+  text = Utils.replaceInline(text, { macros: true, spans: true })
   writer.write(text)
   // Write attachment and child list.
   writer.buffer = writer.buffer.concat(attached_lines.buffer)

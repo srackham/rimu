@@ -1,9 +1,9 @@
 import * as Api from './api'
-import {BlockAttributes} from './utils'
-import * as Utils from './utils'
-import * as Options from './options'
 import * as Io from './io'
 import * as Macros from './macros'
+import * as Options from './options'
+import * as Utils from './utils'
+import { BlockAttributes } from './utils'
 
 /* tslint:disable:max-line-length */
 const MATCH_INLINE_TAG = /^(a|abbr|acronym|address|b|bdi|bdo|big|blockquote|br|cite|code|del|dfn|em|i|img|ins|kbd|mark|q|s|samp|small|span|strike|strong|sub|sup|time|tt|u|var|wbr)$/i

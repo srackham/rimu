@@ -154,6 +154,6 @@ export function setDefinition(regexp: string, flags: string, replacement: string
     }
   }
   // Append new definition to end of defs list (custom definitons have lower precedence).
-  defs.push({match: new RegExp(regexp, flags), replacement: replacement})
+  defs.push({ match: new RegExp(regexp, flags), replacement: replacement })
 }
 
