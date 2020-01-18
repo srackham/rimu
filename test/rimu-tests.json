@@ -2601,7 +2601,7 @@
   {
     "description": "Block Attributes applied labelled list terms",
     "input": ".#id1\nOne:: Item one.\n\n.#id2\n.class\nTwo:: Item two.",
-    "expectedOutput": "<dl id=\"id1\"><dt>One</dt><dd>Item one.</dd><dt class=\"class\" id=\"id2\">Two</dt><dd>Item two.</dd></dl>",
+    "expectedOutput": "<dl id=\"id1\"><dt>One</dt><dd>Item one.</dd><dt class=\"class\" id=\"id2\">Two</dt><dd class=\"class\">Item two.</dd></dl>",
     "expectedCallback": "",
     "options": {
       "reset": true

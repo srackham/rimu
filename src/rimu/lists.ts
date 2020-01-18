@@ -93,15 +93,13 @@ function renderListItem(item: ItemInfo, reader: Io.Reader, writer: Io.Writer): I
   let match = item.match
   let text: string
   if (match.length === 4) { // 3 match groups => definition list.
-    writer.write(BlockAttributes.inject(def.termOpenTag as string))
+    writer.write(BlockAttributes.inject(def.termOpenTag as string, false))
+    BlockAttributes.id = '' // Only applied to term tag.
     text = Utils.replaceInline(match[1], { macros: true, spans: true })
     writer.write(text)
     writer.write(def.termCloseTag as string)
-    writer.write(def.itemOpenTag)
   }
-  else {
-    writer.write(BlockAttributes.inject(def.itemOpenTag))
-  }
+  writer.write(BlockAttributes.inject(def.itemOpenTag))
   // Process item text from first line.
   let item_lines = new Io.Writer()
   text = match[match.length - 1]

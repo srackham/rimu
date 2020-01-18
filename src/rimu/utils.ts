@@ -137,7 +137,7 @@ export namespace BlockAttributes {
 
   // Inject HTML attributes from attrs into the opening tag.
   // Consume HTML attributes unless the 'tag' argument is blank.
-  export function inject(tag: string): string {
+  export function inject(tag: string, consume: boolean = true): string {
     if (!tag) {
       return tag
     }
@@ -192,10 +192,12 @@ export namespace BlockAttributes {
       }
     }
     // Consume the attributes.
-    classes = ''
-    id = ''
-    css = ''
-    attributes = ''
+    if (consume) {
+      classes = ''
+      id = ''
+      css = ''
+      attributes = ''
+    }
     return tag
   }
 
