@@ -786,10 +786,16 @@ Generates:
 
 
 ## List item counters
-In addition to the _verse_ and _sidebar_ CSS styles the  {rimuc} tool
-`--layout` option also includes CSS classes for counting list items
-and for numbering labeled list items.
+In addition to the _verse_ and _sidebar_ CSS styles the  {rimuc} tool `--layout`
+option also includes:
 
+- `dl-counter`, `ol-counter` and `ul-counter` CSS classes for
+  counting labeled, numbered and bullet list items.
+- `\{--dl-counter}`, `\{--ol-counter}` and `\{--ul-counter}`
+  counter macros.
+- The `dl-numbered` CSS class for numbering labeled list items.
+
+.-macros
 {list-item-counters-example} = '#### Numbered labeled list
 .dl-numbered
 One:: Item one.
@@ -805,15 +811,13 @@ labeled list items.
 - Item three.
 - Item four.
 
-.ul-counter
-unordered list items.
+There are {--ul-counter} unordered list items.
 
 #### Counted ordered list
 . Item one.
 . Item two.
 
-.ol-counter
-ordered list items.'
+There are {--ol-counter} ordered list items.'
 
 {generate-rendered-example-1|list-item-counters-example}
 
@@ -859,7 +863,7 @@ aenean enim cum lectus sed.
 ."color:red"
     Two:: Item two.
 
-.#third-list-item
+.#third-list-item "color:blue"
 3. List item with attached bold Indented
    paragraph.
 
@@ -871,7 +875,14 @@ aenean enim cum lectus sed.
 
 [Link to labeled list](#labeled-list).'
 
+// Turn off highlightjs auto-hightlighting completely because the `hljs` class
+// overrides list item 3 indented paragraph CSS in the following example.
+|indented| = '<pre class="nohighlight"><code>|</code></pre>'
+
 {generate-rendered-example-1|list-item-block-attributes-example}
+
+// Restore defaults.
+|indented| = '<pre><code>|</code></pre>'
 
 
 ## Section numbering
