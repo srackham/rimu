@@ -118,7 +118,7 @@ if ! stringContains "$*" --skip-tests; then
     make clean build install
 
     cd $DENO
-    make
+    make install
 fi
 
 # Compile Rimu documentation with all ports and compare.
@@ -176,11 +176,11 @@ for doc in reference tips changelog; do
     eval rimupy --output $PY_DOC $ARGS ./docs/$doc.rmu
     PY_TIME=$(duration $PY_TIME)
 
+    # The rimudeno CLI wrapper adds an extra shell invocation and is slower so we time the raw `deno` command.
     start
     eval deno --allow-env --allow-read --allow-write $DENO/src/rimuc.ts --output $DENO_DOC $ARGS ./docs/$doc.rmu
-    # Deno install bash wrapper adds an extra shell invocation.
-    # eval rimudeno --output $DENO_DOC $ARGS ./docs/$doc.rmu
     DENO_TIME=$(duration $DENO_TIME)
+    eval rimudeno --output $DENO_DOC $ARGS ./docs/$doc.rmu
 
     diff $JS_DOC $GO_DOC
     diff $JS_DOC $KT_DOC
