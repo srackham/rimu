@@ -2468,7 +2468,7 @@
     }
   },
   {
-    "unsupported": "go,kt,dart",
+    "unsupported": "go,kt,dart,py",
     "description": "line block macro expression value definition",
     "input": "{foo} = `(parseInt(40) + parseInt(2)) + 'px'`\n{foo}",
     "expectedOutput": "<p>42px</p>",
@@ -2478,7 +2478,7 @@
     }
   },
   {
-    "unsupported": "go,kt,dart",
+    "unsupported": "go,kt,dart,py",
     "description": "multi-line macro expression value definition",
     "input": "{foo} = `(parseInt(40) + parseInt(2)) \n+ 'px'`\n{foo}",
     "expectedOutput": "<p>42px</p>",
@@ -2488,7 +2488,7 @@
     }
   },
   {
-    "unsupported": "go,kt,dart",
+    "unsupported": "go,kt,dart,py",
     "description": "delimited block macro expression line continuation",
     "input": "{foo} = `(parseInt(40) + parseInt(2)) + ` \\\npx``\n{foo}",
     "expectedOutput": "<p>42\npx</p>",
@@ -2498,7 +2498,7 @@
     }
   },
   {
-    "unsupported": "go,kt,dart",
+    "unsupported": "go,kt,dart,py",
     "description": "delimited block macro expression escaped line continuation",
     "input": "{foo} = `(parseInt(40) + parseInt(2)) + ` \\\\\npx``\n{foo}",
     "expectedOutput": "<p>42 px</p>",
@@ -2508,7 +2508,7 @@
     }
   },
   {
-    "unsupported": "go,kt,dart",
+    "unsupported": "go,kt,dart,py",
     "description": "illegal macro expression",
     "input": "{foo} = `1 + x`",
     "expectedOutput": "",
