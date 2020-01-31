@@ -1462,10 +1462,11 @@ lines that end with a single-quote.</p>
 <pre><code>&lt;p&gt;foo foo&lt;/p&gt;
 &lt;p&gt;foo bar&lt;/p&gt;</code></pre>
 </li></ul><h2 id="list-item-counters">List item counters</h2>
-<p>In addition to the <em>verse</em> and <em>sidebar</em> CSS styles the  <a href="reference.html#rimuc-command">rimuc</a> tool
-<code>--layout</code> option also includes CSS classes for counting list items
-and for numbering labeled list items.</p>
-<h4 id="examples-10">Examples</h4>
+<p>In addition to the <em>verse</em> and <em>sidebar</em> CSS styles the  <a href="reference.html#rimuc-command">rimuc</a> tool <code>--layout</code>
+option also includes:</p>
+<ul><li><code>dl-counter</code>, <code>ol-counter</code> and <code>ul-counter</code> CSS classes for
+  counting labeled, numbered and bullet list items.</li><li><code>{--dl-counter}</code>, <code>{--ol-counter}</code> and <code>{--ul-counter}</code>
+  counter macros.</li><li>The <code>dl-numbered</code> CSS class for numbering labeled list items.</li></ul><h4 id="examples-10">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1494,15 +1495,13 @@ labeled list items.
 - Item three.
 - Item four.
 
-.ul-counter
-unordered list items.
+There are {--ul-counter} unordered list items.
 
 #### Counted ordered list
 . Item one.
 . Item two.
 
-.ol-counter
-ordered list items.</code></pre>
+There are {--ol-counter} ordered list items.</code></pre>
 <textarea id="list-item-counters-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('list-item-counters-example')"></textarea>
 </td>
 <td style="width:50%;">
@@ -1511,9 +1510,9 @@ ordered list items.</code></pre>
 <h4 id="numbered-labeled-list">Numbered labeled list</h4>
 <dl class="dl-numbered"><dt>One</dt><dd>Item one.</dd><dt>Two</dt><dd>Item two.</dd><dt>Three</dt><dd>Item three.</dd></dl><p class="dl-counter">labeled list items.</p>
 <h4 id="counted-unordered-list">Counted unordered list</h4>
-<ul><li>Item one.</li><li>Item two.</li><li>Item three.</li><li>Item four.</li></ul><p class="ul-counter">unordered list items.</p>
+<ul><li>Item one.</li><li>Item two.</li><li>Item three.</li><li>Item four.</li></ul><p>There are <span class="ul-counter"></span> unordered list items.</p>
 <h4 id="counted-ordered-list">Counted ordered list</h4>
-<ol><li>Item one.</li><li>Item two.</li></ol><p class="ol-counter">ordered list items.</p>
+<ol><li>Item one.</li><li>Item two.</li></ol><p>There are <span class="ol-counter"></span> ordered list items.</p>
 </div>
 </td></tr></table>
 <h2 id="append-arbitrary-elements-to-list-items">Append arbitrary elements to list items</h2>
@@ -1586,7 +1585,7 @@ aenean enim cum lectus sed.
 ."color:red"
     Two:: Item two.
 
-.#third-list-item
+.#third-list-item "color:blue"
 3. List item with attached bold Indented
    paragraph.
 
@@ -1605,8 +1604,8 @@ aenean enim cum lectus sed.
 <ol><li>List item with attached green
    sidebar styled Division block.<div class="sidebar" style="color:green"><p>Urna aliquam pid, pulvinar augue ut
 aenean enim cum lectus sed.</p></div>
-</li><li style="color:orange">List item with nested labled list.<dl id="labeled-list"><dt>One</dt><dd>Item one.</dd><dt style="color:red">Two</dt><dd>Item two.</dd></dl></li><li id="third-list-item">List item with attached bold Indented
-   paragraph.<pre style="font-weight:bold"><code>Duis in tincidunt rhoncus nascetur
+</li><li style="color:orange">List item with nested labled list.<dl id="labeled-list"><dt>One</dt><dd>Item one.</dd><dt style="color:red">Two</dt><dd style="color:red">Item two.</dd></dl></li><li id="third-list-item" style="color:blue">List item with attached bold Indented
+   paragraph.<pre style="font-weight:bold" class="nohighlight"><code>Duis in tincidunt rhoncus nascetur
 lacus!</code></pre>
 </li></ol><p><a href="#third-list-item">Link to third list item</a>.</p>
 <p><a href="#labeled-list">Link to labeled list</a>.</p>
