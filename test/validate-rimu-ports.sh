@@ -173,14 +173,14 @@ for doc in reference tips changelog; do
     DART_TIME=$(duration $DART_TIME)
 
     start
-    eval rimupy --output $PY_DOC $ARGS ./docs/$doc.rmu
+    eval $PY/.venv/bin/rimupy --output $PY_DOC $ARGS ./docs/$doc.rmu
     PY_TIME=$(duration $PY_TIME)
 
     # The rimudeno CLI wrapper adds an extra shell invocation and is slower so we time the raw `deno` command.
     start
     eval deno --allow-env --allow-read --allow-write $DENO/src/rimuc.ts --output $DENO_DOC $ARGS ./docs/$doc.rmu
     DENO_TIME=$(duration $DENO_TIME)
-    eval rimudeno --output $DENO_DOC $ARGS ./docs/$doc.rmu
+    eval $HOME/.deno/bin/rimudeno --output $DENO_DOC $ARGS ./docs/$doc.rmu
 
     diff $JS_DOC $GO_DOC
     diff $JS_DOC $KT_DOC
