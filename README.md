@@ -12,17 +12,9 @@ into the Rimu markup syntax):
 - A subset of Rimu syntax is [Markdown
   compatible](http://srackham.github.io/rimu/tips.html#markdown-compatible).
 - The generated HTML is compatible with all modern browsers.
-- Rimu has been ported to a number of languages and runtime environments.
-
-Here is a list of functionally identical Rimu implementations:
-
-- The canonical [JavaScript version](https://github.com/srackham/rimu) written
-  in TypeScript for Node.js and browser runtime environments.
-- A [Kotlin port](https://github.com/srackham/rimu-kt/) for the JVM platform.
-- A [Go port](https://github.com/srackham/go-rimu/).
-- A [Dart port](https://pub.dev/packages/rimu).
-- A [Python port](https://pypi.org/project/rimu/).
-- A [port to the Deno runtime](https://github.com/srackham/rimu-deno).
+- A number of [Rimu
+  implementations](http://srackham.github.io/rimu/reference.html#rimu-implementations)
+  are available for various languages and runtime environments.
 
 
 ## Learn more

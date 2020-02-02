@@ -9,18 +9,10 @@ into the Rimu markup syntax):
 
 - Markup generation can be customized and extended.
 - Rimu includes a simple, flexible macro language.
-- A subset of Rimu syntax is [Markdown
-  compatible]({tips}#markdown-compatible).
+- A subset of Rimu syntax is [Markdown compatible]({tips}#markdown-compatible).
 - The generated HTML is compatible with all modern browsers.
-
-There are five functionally identical Rimu implementations:
-
-- The canonical [JavaScript version (written in
-  TypeScript)]({github-js}).
-- A [Kotlin port]({github-kt}).
-- A [Go language port]({github-go}).
-- A [Dart port]({pubdev-rimu}).
-- A [Python port]({pypi-rimu}).
+- [Rimu implementations](#rimu-implementations) are available for various
+  languages and runtime environments.
 
 
 ## Resources
@@ -1271,6 +1263,14 @@ print(rimu.render('*Hello World*!', rimu.RenderOptions(reset=True)))
 ```
 See the [Python README]({pypi-rimu}).
 
+#### Deno runtime
+``` javascript
+import * as rimu from "https://raw.github.com/srackham/rimu-deno/master/src/rimu.ts";
+
+console.log(rimu.render("Hello *Rimu*!"));
+```
+See the [Rimu Deno README]({github-deno}).
+
 ### API options
 The API `options` argument is an object with zero or more of the
 following properties:
@@ -1405,6 +1405,28 @@ Guidelines:
 - No backreferences (`\1, \2, ...`).
 - Use only the `i` flag in replacement definitions.
 - No embedded flags.
+
+
+## Rimu implementations
+Here is a list of Rimu implementations:
+
+- The canonical [JavaScript version]({github-js}) written
+  in TypeScript for Node.js and browser runtime environments.
+- A [Kotlin port]({github-kt}) for the JVM platform.
+- A [Go language port]({github-go}).
+- A [Dart port]({pubdev-rimu}).
+- A [Python port]({pypi-rimu}).
+- A [port to the Deno runtime]({github-deno}).
+
+### Version numbering
+
+- All implementations use [semantic version numbers](https://semver.org/).
+- Implementations with the same major and minor version numbers are functionally
+  identical.
+- The patch version numbers are port specific.
+- Changes to one implementation will normally be propagated to the next release
+  of other Rimu implementations but there is no implied equivalence of the
+  patch version numbers across the various ports.
 
 
 ## Other

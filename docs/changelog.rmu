@@ -1,19 +1,14 @@
 # Rimu Change Log
 
-Rimu has been ported from [TypeScript]({github-js}) to [Go]({github-go}),
-[Kotlin]({github-kt}), [Dart]({pubdev-rimu}) and [Python]({pypi-rimu})
-languages. This is the TypeScript port's change log.
+This is the Rimu TypeScript implementation change log (see also [other Rimu
+implementations]({reference}#rimu-implementations)).
 
-- All ports use [semantic version numbers](https://semver.org/).
-
-- The patch version numbers are port specific.
-
-- Changes that are not port-specific will normally be propagated to the next
-  release of the other Rimu ports but there is no implied equivalence of the
-  patch version numbers across the various ports.
-
-- Ports with the same major and minor version numbers are functionally
-  identical.
+## Version 11.1.5 (2020-02-02)
+- Implementand document `{--dl-counter}`, `{--ol-counter}`, `{--ul-counter}`
+  layout macros.
+- Ports validation script updated to support Dart, Python and Deno ports.
+- Removed from `rimuc` the previously deprecated _Imported Layouts_ feature.
+- Minor code refactoring and documentation updates.
 
 ## Version 11.1.4 (2019-11-18)
 - Restored deprecated [rimuc]({reference}#rimuc-command) `--styled` option

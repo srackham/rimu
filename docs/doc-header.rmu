@@ -229,6 +229,7 @@ Preview
 {github-go} = 'https://github.com/srackham/go-rimu'
 {github-kt} = 'https://github.com/srackham/rimu-kt'
 {github-dart} = 'https://github.com/srackham/rimu-dart'
+{github-deno} = 'https://github.com/srackham/rimu-deno'
 {pubdev-rimu} = 'https://pub.dev/packages/rimu'
 {github-py} = 'https://github.com/srackham/rimu-py'
 {pypi-rimu} = 'https://pypi.org/project/rimu/'
