@@ -6,6 +6,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import * as rimu from 'rimu'
+import { resources } from './resources'
 
 const VERSION = '11.1.4'
 const STDIN = '/dev/stdin'
@@ -19,26 +20,12 @@ function die(message: string): void {
 }
 
 function readResourceFile(name: string): string {
-  return require(`./resources/${name}`).default
-}
-
-function importLayoutFile(name: string): string {
-  // DEPRECATED as of 11.0.0.
-  // Attempt to read header or footer file from external module `rimu-<layout-name>-layout`.
-  // Extract layout name and header/footer from the file `name`.
-  let match = name.match(/^(.+?)-(header|footer).rmu$/)!
-  let result = ''
-  try {
-    // Kludge to force Webpack to ignore the dynamic require().
-    result = eval(`require('rimu-${match[1]}-layout')['${match[2]}']`) // tslint:disable-line no-eval
+  // return readFileStrSync(`./src/resources/${name}`)
+  if (!(name in resources)) {
+    die(`missing resource: ${name}`)
   }
-  catch {
-    die(`missing --layout: ${match[1]}`)
-  }
-  if (result === undefined) {
-    die(`--layout ${match[1]}: missing ${match[2]}`)
-  }
-  return result
+  // Restore all backticks.
+  return resources[name].split('\\x60').join('`')
 }
 
 let safe_mode = 0
@@ -180,12 +167,7 @@ for (let infile of files) {
   let source = ''
   if (infile.startsWith(RESOURCE_TAG)) {
     infile = infile.substr(RESOURCE_TAG.length)
-    if (['classic', 'flex', 'sequel', 'plain', 'v8'].indexOf(layout) >= 0) {
-      source = readResourceFile(infile)
-    }
-    else {
-      source = importLayoutFile(infile)
-    }
+    source = readResourceFile(infile)
     options.safeMode = 0  // Resources are trusted.
   }
   else if (infile === PREPEND) {

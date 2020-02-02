@@ -25,6 +25,9 @@ let RIMUC_TS = 'src/rimuc/rimuc.ts'
 let RIMUC_EXE = 'node ' + RIMUC_JS
 let MANPAGE_RMU = DOCS_DIR + 'manpage.rmu'
 let MANPAGE_TXT = 'src/rimuc/resources/manpage.txt'
+let RESOURCES_SRC = 'src/rimuc/resources.ts'
+let RESOURCE_FILES = shelljs.ls('src/rimuc/resources/*')
+
 
 let DOCS = [
   {
@@ -158,7 +161,7 @@ file(RIMU_LIB, RIMU_SRC, { async: true }, function () {
 })
 
 desc(`Compile rimuc to JavaScript executable and generate .map file.`)
-task('build-rimuc', { async: true }, function () {
+task('build-rimuc', [RESOURCES_SRC], { async: true }, function () {
   exec('webpack --mode production --config ./src/rimuc/webpack.config.js', function () {
     shelljs.chmod('+x', RIMUC_JS)
     complete()
@@ -166,14 +169,27 @@ task('build-rimuc', { async: true }, function () {
 })
 
 desc(`Generate manpage.rmu`)
-file(MANPAGE_RMU, MANPAGE_TXT, { async: true }, function () {
+file(MANPAGE_RMU, MANPAGE_TXT, function () {
   let manpage = "// Generated automatically by JakeFile.js, do not edit.\n"
   manpage += ".-macros\n{manpage} = '\n``\n"
   manpage += shelljs.sed(/^(.*)'$/, "$1'\\", MANPAGE_TXT) // Escape trailing apostrophes.
   manpage += "\n``\n'\n"
   manpage = new shelljs.ShellString(manpage)
   manpage.to(MANPAGE_RMU)
-  complete()
+})
+
+desc(`Generate resources.ts`)
+file(RESOURCES_SRC, RESOURCE_FILES, function () {
+  let res = "// Generated automatically by JakeFile.js, do not edit.\n"
+  res += "export let resources: { [name: string]: string } = {\n"
+  RESOURCE_FILES.forEach(f => {
+    res += `  '${f.replace(/^.*[\\\/]/, '')}': String.raw\``
+    res += shelljs.sed(/`/g, "\\x60", f) // Escape backticks (unescaped at runtime).
+    res += "`,\n"
+  })
+  res += "};\n"
+  res = new shelljs.ShellString(res)
+  res.to(RESOURCES_SRC)
 })
 
 desc(`Generate documentation`)
