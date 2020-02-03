@@ -210,7 +210,7 @@ task('build-docs', [MANPAGE_RMU, 'build-rimu', 'build-gallery'], { async: true }
 
 function forEachGalleryDocument(documentCallback, layoutCallback, themeCallback) {
   ['sequel', 'classic', 'flex', 'plain'].forEach(function (layout) {
-    if (layoutCallback) layoutCallback(layout);
+    if (layoutCallback) layoutCallback(layout)
     if (layout === 'plain') {
       documentCallback('--layout plain --no-toc', 'plain-example.html')
       return
@@ -218,15 +218,15 @@ function forEachGalleryDocument(documentCallback, layoutCallback, themeCallback)
     ['legend', 'vintage', 'graystone'].forEach(function (theme) {
       if (themeCallback) themeCallback(layout, theme);
       ['', 'dropdown-toc', 'no-toc'].forEach(function (variant) {
-        let option = variant;
+        let option = variant
         switch (variant) {
           case 'dropdown-toc':
             if (layout !== 'classic') return
-            else option = '--prepend "{--dropdown-toc}=\'yes\'"';
-            break;
+            else option = '--prepend "{--dropdown-toc}=\'yes\'"'
+            break
           case 'no-toc':
-            option = '--no-toc';
-            break;
+            option = '--no-toc'
+            break
         }
         let options = '--layout ' + layout + ' --theme ' + theme + ' ' + option
         options = options.trim()
@@ -240,7 +240,7 @@ function forEachGalleryDocument(documentCallback, layoutCallback, themeCallback)
 
 desc(`Generate gallery documentation examples`)
 task('build-gallery', ['build-rimu'], { async: true }, function () {
-  let commands = [];
+  let commands = []
   forEachGalleryDocument(function (options, outfile, layout, theme) {
     let command =
       RIMUC_EXE +
@@ -260,14 +260,14 @@ task('build-gallery', ['build-rimu'], { async: true }, function () {
 desc('Generate gallery index Rimu markup for ' + DOCS_DIR + 'gallery.rmu')
 task('gallery-markup', function () {
   forEachGalleryDocument(function (options, outfile, layout, theme) {
-      let link = '[`' + options.replace(/{/g, '\\{') + '`](' + outfile + ')'
-      console.log('- ' + link)
-    },
+    let link = '[`' + options.replace(/{/g, '\\{') + '`](' + outfile + ')'
+    console.log('- ' + link)
+  },
     function (layout) {
-      console.log('\n\n## ' + layout + ' layout');
+      console.log('\n\n## ' + layout + ' layout')
     },
     function (layout, theme) {
-      console.log('\n### ' + theme + ' theme');
+      console.log('\n### ' + theme + ' theme')
     })
 })
 
@@ -284,7 +284,7 @@ desc(`Display or update the project version number.Use vers = x.y.z argument to 
 task('version', { async: true }, function () {
   let version = process.env.vers
   if (!version) {
-    console.log(`version: ${ pkg.version } `)
+    console.log(`version: ${pkg.version} `)
     complete()
   }
   else {
@@ -298,7 +298,7 @@ task('version', { async: true }, function () {
   }
 })
 
-desc(`Create tag ${ pkg.version } `)
+desc(`Create tag ${pkg.version} `)
 task('tag', ['test'], { async: true }, function () {
   exec('git tag -a -m "Tag ' + pkg.version + '" ' + pkg.version, complete)
 })
