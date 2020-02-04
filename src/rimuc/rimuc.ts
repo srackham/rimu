@@ -8,7 +8,7 @@ import * as path from 'path'
 import * as rimu from 'rimu'
 import { resources } from './resources'
 
-const VERSION = '11.1.4'
+const VERSION = '11.1.5'
 const STDIN = '/dev/stdin'
 const HOME_DIR = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']
 const RIMURC = path.resolve(HOME_DIR || '', '.rimurc')
