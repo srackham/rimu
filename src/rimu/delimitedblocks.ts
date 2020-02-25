@@ -337,7 +337,7 @@ function delimiterTextFilter(match: string[]): string {
 
 // delimiterFilter for code, division and quote blocks.
 // Inject $2 into block class attribute, set close delimiter to $1.
-function classInjectionFilter(match: string[]): string {
+function classInjectionFilter(this: Definition, match: string[]): string {
   if (match[2]) {
     let p1: string
     if ((p1 = match[2].trim())) {

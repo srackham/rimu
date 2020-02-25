@@ -39,7 +39,7 @@ let defs: Definition[] = [
         return false
       }
       // Insert the macro value into the reader just ahead of the cursor.
-      let spliceArgs = [reader.pos + 1, 0, ...value.split('\n')]
+      let spliceArgs: [number, number, ...any[]] = [reader.pos + 1, 0, ...value.split("\n")];
       Array.prototype.splice.apply(reader.lines, spliceArgs)
       return true
     },
@@ -116,7 +116,7 @@ let defs: Definition[] = [
       if (Macros.getValue('--header-ids') && BlockAttributes.id === '') {
         BlockAttributes.id = BlockAttributes.slugify(match[2])
       }
-      return Utils.replaceMatch(match, this.replacement, { macros: true })
+      return Utils.replaceMatch(match, this.replacement as string, { macros: true })
     }
   },
   // Block image: <image:src|alt>
@@ -143,7 +143,7 @@ let defs: Definition[] = [
       }
       else {
         // Default (non-filter) replacement processing.
-        return Utils.replaceMatch(match, this.replacement, { macros: true })
+        return Utils.replaceMatch(match, this.replacement as string, { macros: true })
       }
     }
   },
