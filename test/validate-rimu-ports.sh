@@ -102,7 +102,7 @@ fi
 if ! stringContains "$*" --skip-tests; then
     echo "Running tests..."
     cd $JS
-    jake test
+    drake test
 
     cd $GO
     make
@@ -118,7 +118,7 @@ if ! stringContains "$*" --skip-tests; then
     make clean build install
 
     cd $DENO
-    make install
+    drake install
 fi
 
 # Compile Rimu documentation with all ports and compare.

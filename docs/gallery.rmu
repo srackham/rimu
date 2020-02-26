@@ -57,5 +57,5 @@ See [Built-in layouts]({reference}#built-in-layouts) for more information.
 
 
 ## plain layout
-- [`--layout plain`](plain-example.html)
+- [`--layout plain --no-toc`](plain-example.html)
 
