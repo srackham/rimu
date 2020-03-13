@@ -438,13 +438,20 @@ var html = rimu.render('Hello *Rimu*!')</code></pre>
 </li></ol><p>This will output <code>"&lt;p&gt;Hello &lt;em&gt;Rimu&lt;/em&gt;!&lt;/p&gt;"</code>.</p>
 <h2 id="installing-rimu">Installing Rimu</h2>
 <p>Install Rimu as a Node.js module (includes the <code>rimu</code> library and the
-<code>rimuc</code> command-line tool):</p>
+<code>rimuc</code> command-line tool).</p>
+<h3 id="linux-macos">Linux, macOS</h3>
 <pre><code>sudo npm install -g rimu</code></pre>
-<p>Run a simple test from the command prompt to check the <code>rimuc</code> CLI command is
+<p>Run a test from the command prompt to check the <code>rimuc</code> CLI command is
 working:</p>
-<pre><code>echo 'Hello *Rimu*!' | rimuc</code></pre>
-<p>This should output:</p>
-<pre><code>&lt;p&gt;Hello &lt;em&gt;Rimu&lt;/em&gt;!&lt;/p&gt;</code></pre>
+<pre><code>$ echo 'Hello *Rimu*!' | rimuc
+&lt;p&gt;Hello &lt;em&gt;Rimu&lt;/em&gt;!&lt;/p&gt;</code></pre>
+<h3 id="windows">Windows</h3>
+<pre><code>npm install -g rimu
+npm link</code></pre>
+<p>Run a test from the command prompt to check the <code>rimuc</code> CLI command is
+working:</p>
+<pre><code>&gt; echo "Hello *Rimu*!" | rimuc.cmd
+&lt;p&gt;Hello &lt;em&gt;Rimu&lt;/em&gt;!&lt;/p&gt;</code></pre>
 <h2 id="building-rimu">Building Rimu</h2>
 <p>To build Rimu and the Rimu documentation from source:</p>
 <ol><li>Install the Git repository from <a href="https://github.com/srackham/rimu">Github</a>.<pre><code>git clone git@github.com:srackham/rimu.git</code></pre>

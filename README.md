@@ -41,17 +41,25 @@ This will output `"<p>Hello <em>Rimu</em>!</p>"`.
 
 ## Installing Rimu
 Install Rimu as a Node.js module (includes the `rimu` library and the
-`rimuc` command-line tool):
+`rimuc` command-line tool).
 
+### Linux, macOS
         sudo npm install -g rimu
 
-Run a simple test from the command prompt to check the `rimuc` CLI command is
+Run a test from the command prompt to check the `rimuc` CLI command is
 working:
 
-        echo 'Hello *Rimu*!' | rimuc
+        $ echo 'Hello *Rimu*!' | rimuc
+        <p>Hello <em>Rimu</em>!</p>
 
-This should output:
+### Windows
+        npm install -g rimu
+        npm link
 
+Run a test from the command prompt to check the `rimuc` CLI command is
+working:
+
+        > echo "Hello *Rimu*!" | rimuc.cmd
         <p>Hello <em>Rimu</em>!</p>
 
 

@@ -17,6 +17,9 @@ into the Rimu markup syntax):
 
 ## Resources
 
+### Installation
+See [Rimu README]({homepage}) for installation instructions.
+
 ### Learning
 - Experiment with Rimu in the [Rimu Playground]({playground}).
 - Click the _Edit icon_ {example-edit-glyph} in the examples below to enable live editing of
