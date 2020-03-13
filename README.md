@@ -64,11 +64,12 @@ working:
 
 
 ## Building Rimu
+### Linux, macOS
 To build Rimu and the Rimu documentation from source:
 
 1. Install the Git repository from [Github](https://github.com/srackham/rimu).
 
-        git clone git@github.com:srackham/rimu.git
+        git clone https://github.com/srackham/rimu.git
 
 2. Install dependencies:
 
