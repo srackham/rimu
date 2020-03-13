@@ -173,15 +173,22 @@ for (let infile of files) {
   else if (infile === PREPEND) {
     source = prepend
     options.safeMode = 0  // --prepend options are trusted.
-  }
-  else {
-    if (!fs.existsSync(infile)) {
-      die('source file does not exist: ' + infile)
-    }
-    try {
-      source = fs.readFileSync(infile).toString()
-    } catch (e) {
-      die('source file permission denied: ' + infile)
+  } else {
+    if (infile === STDIN) {
+      try {
+        source = fs.readFileSync(0, "utf-8")
+      } catch (e) {
+        die(`error reading stdin: ${e.message}`)
+      }
+    } else {
+      if (!fs.existsSync(infile)) {
+        die("source file does not exist: " + infile)
+      }
+      try {
+        source = fs.readFileSync(infile).toString()
+      } catch (e) {
+        die("source file permission denied: " + infile)
+      }
     }
     // Prepended and ~/.rimurc files are trusted.
     options.safeMode = (prepend_files.indexOf(infile) > -1) ? 0 : safe_mode
