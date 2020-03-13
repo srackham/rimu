@@ -3,6 +3,7 @@ bin/
 .idea/
 .npmrc
 .vscode/
-gitignore/
+tmp/
+TODO.md
 lib/
 node_modules/
