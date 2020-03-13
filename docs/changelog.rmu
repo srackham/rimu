@@ -3,12 +3,19 @@
 This is the Rimu TypeScript implementation change log (see also [other Rimu
 implementations]({reference}#rimu-implementations)).
 
+## Version 11.1.6 (2020-03-14)
+- **FIXED**: `rimuc` command now reads stdin on Windows.
+- Ported `Jakefile.js` to `Drakefile.ts` for use with the
+  [Drake](https://github.com/srackham/drake) build tool.
+
+
 ## Version 11.1.5 (2020-02-02)
 - Implementand document `{--dl-counter}`, `{--ol-counter}`, `{--ul-counter}`
   layout macros.
 - Ports validation script updated to support Dart, Python and Deno ports.
 - Removed from `rimuc` the previously deprecated _Imported Layouts_ feature.
 - Minor code refactoring and documentation updates.
+
 
 ## Version 11.1.4 (2019-11-18)
 - Restored deprecated [rimuc]({reference}#rimuc-command) `--styled` option
