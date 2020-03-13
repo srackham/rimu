@@ -1,7 +1,22 @@
 /*
  * Drakefile for Rimu Markup (http://github.com/srackham/rimu).
  */
-import { abort, desc, env, glob, quote, readFile, run, sh, task, updateFile, writeFile } from "file:///home/srackham/local/projects/drake/mod.ts"
+
+/* tslint:disable: typedef */
+
+// import { abort, desc, env, glob, readFile, run, sh, task, updateFile, writeFile } from "https://raw.github.com/srackham/drake/master/mod.ts"
+import {
+  abort,
+  desc,
+  env,
+  glob,
+  readFile,
+  run,
+  sh,
+  task,
+  updateFile,
+  writeFile
+} from "file:///home/srackham/local/projects/drake/mod.ts";
 
 env["--default-task"] = "test";
 
@@ -85,13 +100,12 @@ desc("Lint TypeScript, Javascript and JSON files.");
 task("lint", [], async function() {
   const commands = ([] as string[])
     .concat(
-      RIMU_SRC.concat([RIMUC_TS, RIMU_TSD]).map(
-        file => `tslint ${file} >/dev/null 2>&1`
+      RIMU_SRC.concat([RIMUC_TS, RIMU_TSD]).map(file =>
+        `tslint ${file} >/dev/null 2>&1`
       )
     )
     .concat(TESTS.map(file => "jshint " + file))
     .concat(["jsonlint --quiet package.json"]);
-  console.log(commands);
   await sh(commands);
 });
 
@@ -150,15 +164,17 @@ task(
   [MANPAGE_RMU, "build-rimu", "build-gallery"],
   async function() {
     await sh(`cp -f ${RIMU_LIB_MIN} ${DOCS_DIR}`);
-    const commands = DOCS.map(doc => RIMUC_EXE +
-      " --no-rimurc --theme legend --custom-toc --header-links" +
-      " --layout sequel" +
-      ' --output "' + doc.dst + '"' +
-      " --lang en" +
-      ' --title "' + doc.title + '"' +
-      " " + doc.rimucOptions + " " +
-      " ./src/examples/example-rimurc.rmu " + DOCS_DIR + "doc-header.rmu " +
-      doc.src);
+    const commands = DOCS.map(doc =>
+      RIMUC_EXE +
+        " --no-rimurc --theme legend --custom-toc --header-links" +
+        " --layout sequel" +
+        ' --output "' + doc.dst + '"' +
+        " --lang en" +
+        ' --title "' + doc.title + '"' +
+        " " + doc.rimucOptions + " " +
+        " ./src/examples/example-rimurc.rmu " + DOCS_DIR + "doc-header.rmu " +
+        doc.src
+    );
     await sh(commands);
   }
 );
@@ -244,7 +260,7 @@ See [Built-in layouts]({reference}#built-in-layouts) for more information.`;
       text += "\n\n### " + theme + " theme";
     }
   );
-  text += "\n\n"
+  text += "\n\n";
   writeFile(GALLERY_INDEX_SRC, text);
 });
 
@@ -252,9 +268,9 @@ desc("Validate HTML documents.");
 task("validate-html", [], async function() {
   const commands = HTML
     .// 2018-11-09: Skip files with style tags in the body as Nu W3C validator treats style tags in the body as an error.
-    filter(
-      file => !["reference", "tips", "rimuplayground"].map(
-        file => `${DOCS_DIR}${file}.html`
+    filter(file =>
+      !["reference", "tips", "rimuplayground"].map(file =>
+        `${DOCS_DIR}${file}.html`
       ).includes(file)
     )
     .map(file => `html-validator --verbose --format=text --file=${file}`);
@@ -320,9 +336,9 @@ task("publish-npm", ["test", "build-rimu"], async function() {
   await sh("npm publish");
 });
 
-desc("Format source files");
-task("fmt", [], async function() {
-  await sh(`deno fmt ${quote(RIMU_SRC)}`);
-});
+// desc("Format source files");
+// task("fmt", [], async function() {
+//   await sh(`deno fmt ${quote(glob("Drakefile.ts", "src/**/*.ts"))}`);
+// });
 
 run();
