@@ -114,8 +114,7 @@ task("lint", [], async function() {
 
 desc("Run tests (rebuild if necessary).");
 task("test", ["build-rimu", "build-rimuc"], async function() {
-  const commands = TESTS.map(file => `tape ${file} | faucet`);
-  await sh(commands);
+  await sh("deno test -A test/");
 });
 
 desc("Compile and bundle rimu.js and rimu.min.js libraries.map files.");

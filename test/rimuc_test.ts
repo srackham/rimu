@@ -57,7 +57,7 @@ Deno.test(
   async function rimucTest(): Promise<void> {
     // Execute tests specified in JSON file.
     const data = readFile("./test/rimuc-tests.json");
-    const tests = JSON.parse(data) as RimucTest[];
+    const tests: RimucTest[] = JSON.parse(data);
     for (const test of tests) {
       if (test.layouts) {
         // Run the test on built-in layouts.
