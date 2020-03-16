@@ -10,15 +10,18 @@ import {
   desc,
   env,
   glob,
+  quote,
   readFile,
   run,
   sh,
   task,
   updateFile,
   writeFile
-} from "file:///home/srackham/local/projects/drake/mod.ts";
+} from "https://raw.github.com/srackham/drake/master/mod.ts";
 
 env["--default-task"] = "test";
+
+const isWindows = Deno.build.os === "win";
 
 /* Inputs and outputs */
 
@@ -125,7 +128,10 @@ task(RIMU_LIB, RIMU_SRC, async function() {
 desc("Compile rimuc to JavaScript executable and generate .map file.");
 task("build-rimuc", [RESOURCES_SRC], async function() {
   await sh("webpack --mode production --config ./src/rimuc/webpack.config.js");
-  await sh(`chmod +x ${RIMUC_JS}`);
+  if (!isWindows) {
+    // TODO: Is this necessary?
+    await sh(`chmod +x ${RIMUC_JS}`);
+  }
 });
 
 desc("Generate manpage.rmu");
@@ -336,9 +342,10 @@ task("publish-npm", ["test", "build-rimu"], async function() {
   await sh("npm publish");
 });
 
-// desc("Format source files");
-// task("fmt", [], async function() {
-//   await sh(`deno fmt ${quote(glob("Drakefile.ts", "src/**/*.ts"))}`);
-// });
+desc("Format source files");
+task("fmt", [], async function() {
+  // await sh(`deno fmt ${quote(glob("Drakefile.ts", "src/**/*.ts", "test/*.ts"))}`);
+  await sh(`deno fmt ${quote(glob("Drakefile.ts", "test/*.ts"))}`);
+});
 
 run();
