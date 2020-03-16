@@ -1,0 +1,75 @@
+import {
+  assert,
+  assertEquals,
+  assertNotEquals
+} from "https://deno.land/std@v0.36.0/testing/asserts.ts";
+import {
+  readFile,
+  shCapture
+} from "https://raw.github.com/srackham/drake/master/mod.ts";
+
+type RimucTest = {
+  description: string;
+  args: string;
+  input: string;
+  expectedOutput: string;
+  exitCode?: number;
+  predicate: string;
+  layouts?: boolean;
+};
+
+async function runTest(test: RimucTest): Promise<void> {
+  const { code, output, error } = await shCapture(
+    `node ./bin/rimuc.js --no-rimurc ${test.args ?? ""}`,
+    { input: test.input }
+  );
+  const out = output + error;
+  switch (test.predicate) {
+    case "equals":
+      assertEquals(out, test.expectedOutput, test.description);
+      break;
+    case "!equals":
+      assertNotEquals(out, test.expectedOutput, test.description);
+      break;
+    case "contains":
+      assert(out.indexOf(test.expectedOutput) >= 0, test.description);
+      break;
+    case "!contains":
+      assert(out.indexOf(test.expectedOutput) === -1, test.description);
+      break;
+    case "startsWith":
+      assert(out.startsWith(test.expectedOutput), test.description);
+      break;
+    case "exitCode":
+      assertEquals(out, test.expectedOutput, test.description);
+      assert(code === test.exitCode, test.description);
+      break;
+    default:
+      assert(
+        false,
+        test.description + ": illegal predicate: " + test.predicate
+      );
+      break;
+  }
+}
+
+Deno.test(
+  async function rimucTest(): Promise<void> {
+    // Execute tests specified in JSON file.
+    const data = readFile("./test/rimuc-tests.json");
+    const tests = JSON.parse(data) as RimucTest[];
+    for (const test of tests) {
+      if (test.layouts) {
+        // Run the test on built-in layouts.
+        for (const layout of ["classic", "flex", "sequel"]) {
+          let t = { ...test };
+          t.args = "--layout " + layout + " " + test.args;
+          t.description = layout + " layout: " + test.description;
+          await runTest(t);
+        }
+      } else {
+        await runTest(test);
+      }
+    }
+  }
+);
