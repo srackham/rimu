@@ -452,13 +452,17 @@ npm link</code></pre>
 working:</p>
 <pre><code>&gt; echo "Hello *Rimu*!" | rimuc.cmd
 &lt;p&gt;Hello &lt;em&gt;Rimu&lt;/em&gt;!&lt;/p&gt;</code></pre>
-<h2 id="building-rimu">Building Rimu</h2>
-<h3 id="linux-macos-2">Linux, macOS</h3>
-<p>To build Rimu and the Rimu documentation from source:</p>
+<h2 id="building-rimu-and-the-rimu-documentation">Building Rimu and the Rimu documentation</h2>
 <ol><li>Install the Git repository from <a href="https://github.com/srackham/rimu">Github</a>.<pre><code>git clone https://github.com/srackham/rimu.git</code></pre>
 </li><li>Install dependencies:<pre><code>cd rimu
 npm install</code></pre>
-</li><li>Build Rimu:<pre><code>jake build</code></pre></li></ol>
+</li><li>Build Rimu using either Jake or Drake (NOTE 1):<pre><code>jake build     # Linux, macOS.
+drake build    # Linux, macOS, Windows (NOTE 1)</code></pre>
+</li></ol><p><strong>NOTE 1</strong>:
+Rimu is moving to the <a href="https://github.com/srackham/drake">Drake</a> project builder
+and includes a platform independent drakefile. Drake should build Rimu on all
+platforms but may be unstable (the rapidly evolving <a href="https://deno.land/">Deno</a>
+runtime is currently an alpha release).</p>
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>

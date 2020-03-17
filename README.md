@@ -63,10 +63,7 @@ working:
         <p>Hello <em>Rimu</em>!</p>
 
 
-## Building Rimu
-### Linux, macOS
-To build Rimu and the Rimu documentation from source:
-
+## Building Rimu and the Rimu documentation
 1. Install the Git repository from [Github](https://github.com/srackham/rimu).
 
         git clone https://github.com/srackham/rimu.git
@@ -76,6 +73,13 @@ To build Rimu and the Rimu documentation from source:
         cd rimu
         npm install
 
-3. Build Rimu:
+3. Build Rimu using either Jake or Drake (NOTE 1):
 
-        jake build
+        jake build     # Linux, macOS.
+        drake build    # Linux, macOS, Windows (NOTE 1)
+
+**NOTE 1**:
+Rimu is moving to the [Drake](https://github.com/srackham/drake) project builder
+and includes a platform independent drakefile. Drake should build Rimu on all
+platforms but may be unstable (the rapidly evolving [Deno](https://deno.land/)
+runtime is currently an alpha release).

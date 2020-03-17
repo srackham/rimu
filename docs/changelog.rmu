@@ -3,6 +3,13 @@
 This is the Rimu TypeScript implementation change log (see also [other Rimu
 implementations]({reference}#rimu-implementations)).
 
+## Version 11.1.7 (2020-03-17)
+- **FIXED**: `rimuc` on Windows: piping a zero length input to `rimuc` raised an
+  EOF error.
+- Ported tests from JS to Deno TypeScript for use in `Drakefile.ts`.
+- Drakefile is now Windows compatible.
+
+
 ## Version 11.1.6 (2020-03-14)
 - **FIXED**: `rimuc` command now reads stdin on Windows.
 - Ported `Jakefile.js` to `Drakefile.ts` for use with the
