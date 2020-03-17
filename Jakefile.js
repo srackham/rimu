@@ -239,7 +239,7 @@ function forEachGalleryDocument(documentCallback, layoutCallback, themeCallback)
 }
 
 desc(`Generate gallery documentation examples`)
-task('build-gallery', ['build-rimu'], { async: true }, function () {
+task('build-gallery', ['build-rimu', "build-rimuc"], { async: true }, function () {
   let commands = []
   forEachGalleryDocument(function (options, outfile, layout, theme) {
     let command =
