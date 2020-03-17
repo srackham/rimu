@@ -34,8 +34,8 @@ To try the Rimu library in your browser:
 1. Open the [Rimu NPM Runkit page](https://npm.runkit.com/rimu) in your browser.
 2. Paste in this code then press the _Run_ button.
 ``` javascript
-var rimu = require("rimu")
-var html = rimu.render('Hello *Rimu*!')
+const rimu = require("rimu")
+const html = rimu.render('Hello *Rimu*!')
 ```
 This will output `"<p>Hello <em>Rimu</em>!</p>"`.
 
