@@ -7,3 +7,4 @@ tmp/
 TODO.md
 lib/
 node_modules/
+deno.d.ts
