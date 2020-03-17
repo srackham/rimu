@@ -5,6 +5,7 @@
 /* tslint:disable: typedef */
 
 // import { abort, desc, env, glob, readFile, run, sh, task, updateFile, writeFile } from "https://raw.github.com/srackham/drake/master/mod.ts"
+import * as path from "https://deno.land/std@v0.36.0/path/mod.ts";
 import {
   abort,
   desc,
@@ -103,13 +104,11 @@ desc("Lint TypeScript, Javascript and JSON files.");
 task("lint", [], async function() {
   const commands = ([] as string[])
     .concat(
-      RIMU_SRC.concat([RIMUC_TS, RIMU_TSD]).map(file =>
-        `tslint ${file} >/dev/null 2>&1`
-      )
+      RIMU_SRC.concat([RIMUC_TS, RIMU_TSD]).map(file => `tslint ${file}`)
     )
     .concat(TESTS.map(file => "jshint " + file))
     .concat(["jsonlint --quiet package.json"]);
-  await sh(commands);
+  await sh(commands, { stdout: "null", stderr: "null" });
 });
 
 desc("Run tests (rebuild if necessary).");
@@ -168,7 +167,10 @@ task(
   "build-docs",
   [MANPAGE_RMU, "build-rimu", "build-gallery"],
   async function() {
-    await sh(`cp -f ${RIMU_LIB_MIN} ${DOCS_DIR}`);
+    await Deno.copyFile(
+      RIMU_LIB_MIN,
+      path.join(DOCS_DIR, path.basename(RIMU_LIB_MIN))
+    );
     const commands = DOCS.map(doc =>
       RIMUC_EXE +
         " --no-rimurc --theme legend --custom-toc --header-links" +
@@ -220,28 +222,32 @@ function forEachGalleryDocument(
 }
 
 desc("Generate gallery documentation examples");
-task("build-gallery", ["build-rimu", "gallery-index"], async function() {
-  let commands: any[] = [];
-  forEachGalleryDocument(
-    function(options: any, outfile: any, _: any, __: any) {
-      let command = RIMUC_EXE +
-        " --custom-toc" +
-        " --no-rimurc" +
-        " " + options +
-        " --output " + DOCS_DIR + outfile +
-        " --prepend \"{gallery-options}='" +
-        options.replace(/(["{])/g, "\\$1") +
-        "'\"" +
-        " ./src/examples/example-rimurc.rmu" +
-        " " + DOCS_DIR + "doc-header.rmu" +
-        " " + DOCS_DIR + "gallery-example-template.rmu";
-      commands.push(command);
-    },
-    null,
-    null
-  );
-  await sh(commands);
-});
+task(
+  "build-gallery",
+  ["build-rimu", "build-rimuc", "gallery-index"],
+  async function() {
+    let commands: any[] = [];
+    forEachGalleryDocument(
+      function(options: any, outfile: any, _: any, __: any) {
+        let command = RIMUC_EXE +
+          " --custom-toc" +
+          " --no-rimurc" +
+          " " + options +
+          " --output " + DOCS_DIR + outfile +
+          " --prepend \"{gallery-options}='" +
+          options.replace(/(["{])/g, "\\$1") +
+          "'\"" +
+          " ./src/examples/example-rimurc.rmu" +
+          " " + DOCS_DIR + "doc-header.rmu" +
+          " " + DOCS_DIR + "gallery-example-template.rmu";
+        commands.push(command);
+      },
+      null,
+      null
+    );
+    await sh(commands);
+  }
+);
 
 desc("Generate gallery index Rimu markup " + GALLERY_INDEX_SRC);
 task("gallery-index", [], function() {
