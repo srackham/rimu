@@ -178,7 +178,9 @@ for (let infile of files) {
       try {
         source = fs.readFileSync(0, "utf-8")
       } catch (e) {
-        die(`error reading stdin: ${e.message}`)
+        if (e.code !== "EOF") { // EOF error thrown on Windows if stdin is empty.
+          die(`error reading stdin: ${e.message}`)
+        }
       }
     } else {
       if (!fs.existsSync(infile)) {
