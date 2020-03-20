@@ -5,21 +5,27 @@
  formatted libraries.
  */
 
-import * as Api from './api'
-import * as Options from './options'
+import * as Api from "./api";
+import * as Options from "./options";
 
-export { CallbackFunction, CallbackMessage, RenderOptions as Options } from './options'
+export {
+  CallbackFunction,
+  CallbackMessage,
+  RenderOptions as Options
+} from "./options";
 
 /*
   The single public API which translates Rimu Markup to HTML:
 
     render(source [, options])
  */
-export function render(source: string, opts: Options.RenderOptions = {}): string {
-  Options.updateOptions(opts)
-  return Api.render(source)
+export function render(
+  source: string,
+  opts: Options.RenderOptions = {}
+): string {
+  Options.updateOptions(opts);
+  return Api.render(source);
 }
 
 // Load-time initialization.
-Api.init()
-
+Api.init();

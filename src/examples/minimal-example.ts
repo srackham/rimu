@@ -7,7 +7,6 @@
 
  */
 
-import * as rimu from 'rimu'
+import * as rimu from "rimu";
 
-console.log(rimu.render('Hello *Rimu*!', { safeMode: 1 }))
-
+console.log(rimu.render("Hello *Rimu*!", { safeMode: 1 }));

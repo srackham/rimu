@@ -335,8 +335,9 @@ task("publish-npm", ["test", "build-rimu"], async function() {
 
 desc("Format source files");
 task("fmt", [], async function() {
-  // await sh(`deno fmt ${quote(glob("Drakefile.ts", "src/**/*.ts", "test/*.ts"))}`);
-  await sh(`deno fmt ${quote(glob("Drakefile.ts", "test/*.ts"))}`);
+  await sh(
+    `deno fmt ${quote(glob("Drakefile.ts", "src/**/*.ts", "test/*.ts"))}`
+  );
 });
 
 run();
