@@ -132,20 +132,11 @@ function exec(commands, callback, options = {}) {
 desc(`Run tests.`)
 task('default', ['test'])
 
-desc(`build, lint and test rimu and tools, build documentation, validate HTML. Use vers=x.y.z argument to set a new version number.`)
-task('build', ['test', 'lint', 'version', 'build-docs', 'validate-html'])
+desc(`build, test rimu, build documentation, validate HTML.`)
+task('build', ['test', 'version', 'build-docs', 'validate-html'])
 
 desc(`Update version number, tag and push to Github and npm. Use vers=x.y.z argument to set a new version number. Finally, rebuild and publish docs website.`)
 task('release', ['build', 'tag', 'publish'])
-
-desc(`Lint TypeScript, Javascript and JSON files.`)
-task('lint', { async: true }, function () {
-  let commands = []
-    .concat(RIMU_SRC.concat([RIMUC_TS, RIMU_TSD]).map(file => 'tslint ' + file))
-    .concat(TESTS.map(file => 'jshint ' + file))
-    .concat(['jsonlint --quiet package.json'])
-  exec(commands, complete)
-})
 
 desc(`Run tests (rebuild if necessary).`)
 task('test', ['build-rimu', 'build-rimuc'], { async: true }, function () {
