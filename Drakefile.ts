@@ -25,12 +25,12 @@ const isWindows = Deno.build.os === "win";
 /* Inputs and outputs */
 
 const PKG_FILE = "package.json";
-const RIMU_LIB = "lib/rimu.js";
-const RIMU_LIB_MIN = "lib/rimu.min.js";
-const RIMU_SRC = glob("src/rimu/*.ts");
-const DOCS_DIR = "docs/";
+const RIMU_JS = "lib/rimu.js";
+const RIMU_MIN_JS = "lib/rimu.min.js";
 const RIMUC_JS = "bin/rimuc.js";
 const RIMUC_EXE = "node " + RIMUC_JS;
+const RIMU_SRC = glob("src/rimu/*.ts");
+const DOCS_DIR = "docs/";
 const MANPAGE_RMU = DOCS_DIR + "manpage.rmu";
 const MANPAGE_TXT = "src/rimuc/resources/manpage.txt";
 const RESOURCES_SRC = "src/rimuc/resources.ts";
@@ -106,20 +106,27 @@ task("test", ["build-rimu", "build-rimuc", "deno-build"], async function() {
 });
 
 desc("Compile and bundle rimu.js and rimu.min.js libraries.map files.");
-task("build-rimu", [RIMU_LIB]);
+task("build-rimu", [RIMU_JS]);
 
-task(RIMU_LIB, RIMU_SRC, async function() {
+task(RIMU_JS, [...RIMU_SRC, "src/rimu/webpack.config.js"], async function() {
   await sh("webpack --mode production --config ./src/rimu/webpack.config.js");
 });
 
 desc("Compile rimuc to JavaScript executable and generate .map file.");
-task("build-rimuc", [RESOURCES_SRC], async function() {
-  await sh("webpack --mode production --config ./src/rimuc/webpack.config.js");
-  if (!isWindows) {
-    // TODO: Is this necessary?
-    await sh(`chmod +x ${RIMUC_JS}`);
+task("build-rimuc", [RIMUC_JS]);
+task(
+  RIMUC_JS,
+  [...RIMU_SRC, RESOURCES_SRC, "src/rimuc/webpack.config.js"],
+  async function() {
+    await sh(
+      "webpack --mode production --config ./src/rimuc/webpack.config.js"
+    );
+    if (!isWindows) {
+      // TODO: Is this necessary?
+      await sh(`chmod +x ${RIMUC_JS}`);
+    }
   }
-});
+);
 
 desc("Generate manpage.rmu");
 task(MANPAGE_RMU, [MANPAGE_TXT], function() {
@@ -165,8 +172,8 @@ task(
   [MANPAGE_RMU, "build-rimu", "build-gallery"],
   async function() {
     await Deno.copyFile(
-      RIMU_LIB_MIN,
-      path.join(DOCS_DIR, path.basename(RIMU_LIB_MIN))
+      RIMU_MIN_JS,
+      path.join(DOCS_DIR, path.basename(RIMU_MIN_JS))
     );
     const commands = DOCS.map(doc =>
       RIMUC_EXE +
