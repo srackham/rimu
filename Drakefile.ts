@@ -8,6 +8,7 @@ import {
   desc,
   env,
   glob,
+  log,
   quote,
   readFile,
   run,
@@ -27,11 +28,8 @@ const PKG_FILE = "package.json";
 const RIMU_LIB = "lib/rimu.js";
 const RIMU_LIB_MIN = "lib/rimu.min.js";
 const RIMU_SRC = glob("src/rimu/*.ts");
-const RIMU_TSD = "typings/rimu.d.ts";
-const TESTS = glob("test/*-tests.js");
 const DOCS_DIR = "docs/";
 const RIMUC_JS = "bin/rimuc.js";
-const RIMUC_TS = "src/rimuc/rimuc.ts";
 const RIMUC_EXE = "node " + RIMUC_JS;
 const MANPAGE_RMU = DOCS_DIR + "manpage.rmu";
 const MANPAGE_TXT = "src/rimuc/resources/manpage.txt";
@@ -39,6 +37,8 @@ const RESOURCES_SRC = "src/rimuc/resources.ts";
 const RESOURCE_FILES = glob("src/rimuc/resources/*");
 const GALLERY_INDEX_SRC = DOCS_DIR + "gallery.rmu";
 const GALLERY_INDEX_DST = DOCS_DIR + "gallery.html";
+const DENO_RIMUC_TS = "src/deno/rimuc.ts";
+const DENO_RESOURCES_SRC = "src/deno/resources.ts";
 
 const DOCS = [
   {
@@ -90,7 +90,10 @@ const HTML = DOCS.map(doc => doc.dst);
 desc(
   "build, test rimu, build documentation, validate HTML."
 );
-task("build", ["test", "version", "build-docs", "validate-html"]);
+task(
+  "build",
+  ["test", "version", "deno-build", "build-docs", "validate-html"]
+);
 
 desc(
   "Update version number, tag and push to Github and npm. Use vers=x.y.z argument to set a new version number. Finally, rebuild and publish docs website."
@@ -98,7 +101,7 @@ desc(
 task("release", ["build", "tag", "publish"]);
 
 desc("Run tests (rebuild if necessary).");
-task("test", ["build-rimu", "build-rimuc"], async function() {
+task("test", ["build-rimu", "build-rimuc", "deno-build"], async function() {
   await sh("deno test -A test/");
 });
 
@@ -134,18 +137,26 @@ ${readFile(MANPAGE_TXT).replace(/^(.*)'$/gm, "$1'\\")}
   );
 });
 
-desc("Generate resources.ts");
-task(RESOURCES_SRC, RESOURCE_FILES, function() {
-  let res = `// Generated automatically by DrakeFile.ts, do not edit.
-export let resources: { [name: string]: string } = {
-`;
-  RESOURCE_FILES.forEach(f => {
-    res += `  '${f.replace(/^.*[\\\/]/, "")}': String.raw\``;
-    res += readFile(f).replace(/`/g, "\\x60"); // Escape backticks (unescaped at runtime).
-    res += "`,\n";
-  });
-  res += "};\n";
-  writeFile(RESOURCES_SRC, res);
+desc("Build resources.ts containing rimuc resource files");
+task(RESOURCES_SRC, RESOURCE_FILES, async function() {
+  log(`Building resources ${RESOURCES_SRC}`);
+  let text = "// Generated automatically from resource files. Do not edit.\n";
+  text += "export let resources: { [name: string]: string } = {";
+  for (const f of RESOURCE_FILES) {
+    text += `  '${path.basename(f)}': `;
+    let data = readFile(f);
+    data = data.replace(/\\/g, "\\x5C"); // Escape backslash (unescaped at runtime).
+    data = data.replace(/`/g, "\\x60"); //  Escape backticks (unescaped at runtime).
+    text += `String.raw\`${data}\`,\n`;
+  }
+  text += "};";
+  writeFile(RESOURCES_SRC, text);
+  await sh(`deno fmt "${RESOURCES_SRC}"`);
+});
+
+desc("Copy resources.ts to Deno source directory");
+task(DENO_RESOURCES_SRC, [RESOURCES_SRC], function() {
+  Deno.copyFileSync(RESOURCES_SRC, DENO_RESOURCES_SRC);
 });
 
 desc("Generate documentation");
@@ -337,6 +348,32 @@ desc("Format source files");
 task("fmt", [], async function() {
   await sh(
     `deno fmt ${quote(glob("Drakefile.ts", "src/**/*.ts", "test/*.ts"))}`
+  );
+});
+
+desc(
+  "Copy Rimu source and add .ts extension to import and export statements for Deno"
+);
+task("deno-build", ["src/deno/api.ts"]);
+task("src/deno/api.ts", [...RIMU_SRC, DENO_RESOURCES_SRC], function() {
+  for (const f of RIMU_SRC) {
+    let text = readFile(f);
+    text = text.replace(
+      /^((import|export).*from ".*)";/gm,
+      '$1.ts";'
+    );
+    text = text.replace(
+      /^(} from ".*)";/gm,
+      '$1.ts";'
+    );
+    writeFile(path.join("src/deno", path.basename(f)), text);
+  }
+});
+
+desc("Install executable wrapper for rimudeno CLI");
+task("deno-install", ["deno-build", "test"], async function() {
+  await sh(
+    `deno install -f --allow-env --allow-read --allow-write rimudeno "${DENO_RIMUC_TS}"`
   );
 });
 

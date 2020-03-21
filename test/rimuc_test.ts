@@ -19,11 +19,23 @@ type RimucTest = {
 };
 
 async function runTest(test: RimucTest): Promise<void> {
-  const { code, output, error } = await shCapture(
+  let shout = await shCapture(
     `node ./bin/rimuc.js --no-rimurc ${test.args ?? ""}`,
     { input: test.input }
   );
-  const out = output + error;
+  testShOut(shout, test);
+  shout = await shCapture(
+    `deno --allow-env --allow-read src/deno/rimuc.ts ${test.args ?? ""}`,
+    { input: test.input }
+  );
+  testShOut(shout, test);
+}
+
+function testShOut(
+  shout: { code: number | undefined; output: string; error: string },
+  test: RimucTest
+): void {
+  const out = shout.output + shout.error;
   switch (test.predicate) {
     case "equals":
       assertEquals(out, test.expectedOutput, test.description);
@@ -42,14 +54,13 @@ async function runTest(test: RimucTest): Promise<void> {
       break;
     case "exitCode":
       assertEquals(out, test.expectedOutput, test.description);
-      assert(code === test.exitCode, test.description);
+      assert(shout.code === test.exitCode, test.description);
       break;
     default:
       assert(
         false,
         test.description + ": illegal predicate: " + test.predicate
       );
-      break;
   }
 }
 
@@ -61,8 +72,8 @@ Deno.test(
     for (const test of tests) {
       if (test.layouts) {
         // Run the test on built-in layouts.
+        const t = { ...test }; // TODO: Necessary?
         for (const layout of ["classic", "flex", "sequel"]) {
-          let t = { ...test };
           t.args = "--layout " + layout + " " + test.args;
           t.description = layout + " layout: " + test.description;
           await runTest(t);

@@ -30,7 +30,7 @@ JS=$HOME/local/projects/rimu
 KT=$HOME/local/projects/rimu-kt
 DART=$HOME/local/projects/rimu-dart
 PY=$HOME/local/projects/rimu-py
-DENO=$HOME/local/projects/rimu-deno
+DENO=$JS
 
 # Return 0 exitcode if $2 wholly contained in $1.
 stringContains() {
@@ -118,7 +118,7 @@ if ! stringContains "$*" --skip-tests; then
     make clean build install
 
     cd $DENO
-    drake install
+    drake deno-install
 fi
 
 # Compile Rimu documentation with all ports and compare.
@@ -178,7 +178,7 @@ for doc in reference tips changelog; do
 
     # The rimudeno CLI wrapper adds an extra shell invocation and is slower so we time the raw `deno` command.
     start
-    eval deno --allow-env --allow-read --allow-write $DENO/src/rimuc.ts --output $DENO_DOC $ARGS ./docs/$doc.rmu
+    eval deno --allow-env --allow-read --allow-write $DENO/src/deno/rimuc.ts --output $DENO_DOC $ARGS ./docs/$doc.rmu
     DENO_TIME=$(duration $DENO_TIME)
     eval $HOME/.deno/bin/rimudeno --output $DENO_DOC $ARGS ./docs/$doc.rmu
 
