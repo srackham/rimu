@@ -2,6 +2,7 @@
  * Drakefile for Rimu Markup (http://github.com/srackham/rimu).
  */
 
+// } from "file:///home/srackham/local/projects/drake/mod.ts";
 import * as path from "https://deno.land/std@v0.36.0/path/mod.ts";
 import {
   abort,
@@ -88,7 +89,7 @@ const HTML = DOCS.map(doc => doc.dst);
  */
 
 desc(
-  "build, test rimu, build documentation, validate HTML."
+  "build, test rimu, build documentation, validate HTML"
 );
 task(
   "build",
@@ -96,23 +97,23 @@ task(
 );
 
 desc(
-  "Update version number, tag and push to Github and npm. Use vers=x.y.z argument to set a new version number. Finally, rebuild and publish docs website."
+  "Update version number, tag and push to Github and npm. Use vers=x.y.z argument to set a new version number. Finally, rebuild and publish docs website"
 );
 task("release", ["build", "tag", "publish"]);
 
-desc("Run tests (rebuild if necessary).");
+desc("Run tests (rebuild if necessary)");
 task("test", ["build-rimu", "build-rimuc", "deno-build"], async function() {
   await sh("deno test -A test/");
 });
 
-desc("Compile and bundle rimu.js and rimu.min.js libraries.map files.");
+desc("Compile and bundle rimu.js and rimu.min.js libraries.map files");
 task("build-rimu", [RIMU_JS]);
 
 task(RIMU_JS, [...RIMU_SRC, "src/rimu/webpack.config.js"], async function() {
   await sh("webpack --mode production --config ./src/rimu/webpack.config.js");
 });
 
-desc("Compile rimuc to JavaScript executable and generate .map file.");
+desc("Compile rimuc to JavaScript executable and generate .map file");
 task("build-rimuc", [RIMUC_JS]);
 task(
   RIMUC_JS,
@@ -128,7 +129,7 @@ task(
   }
 );
 
-desc("Generate manpage.rmu");
+// Generate manpage.rmu
 task(MANPAGE_RMU, [MANPAGE_TXT], function() {
   // Trailing apostrophes are escaped in MANPAGE_TXT.
   writeFile(
@@ -144,7 +145,7 @@ ${readFile(MANPAGE_TXT).replace(/^(.*)'$/gm, "$1'\\")}
   );
 });
 
-desc("Build resources.ts containing rimuc resource files");
+// Build resources.ts containing rimuc resource files.
 task(RESOURCES_SRC, RESOURCE_FILES, async function() {
   log(`Building resources ${RESOURCES_SRC}`);
   let text = "// Generated automatically from resource files. Do not edit.\n";
@@ -161,7 +162,7 @@ task(RESOURCES_SRC, RESOURCE_FILES, async function() {
   await sh(`deno fmt "${RESOURCES_SRC}"`);
 });
 
-desc("Copy resources.ts to Deno source directory");
+// Copy resources.ts to Deno source directory.
 task(DENO_RESOURCES_SRC, [RESOURCES_SRC], function() {
   Deno.copyFileSync(RESOURCES_SRC, DENO_RESOURCES_SRC);
 });
@@ -225,7 +226,7 @@ function forEachGalleryDocument(
   });
 }
 
-desc("Generate gallery documentation examples");
+// Generate gallery documentation examples.
 task(
   "build-gallery",
   ["build-rimu", "build-rimuc", "gallery-index"],
@@ -253,7 +254,7 @@ task(
   }
 );
 
-desc("Generate gallery index Rimu markup " + GALLERY_INDEX_SRC);
+// Generate gallery index Rimu markup.
 task("gallery-index", [], function() {
   let text = `# Rimu Gallery
 
@@ -279,7 +280,7 @@ See [Built-in layouts]({reference}#built-in-layouts) for more information.`;
   writeFile(GALLERY_INDEX_SRC, text);
 });
 
-desc("Validate HTML documents.");
+desc("Validate HTML documents");
 task("validate-html", [], async function() {
   const commands = HTML
     .// 2018-11-09: Skip files with style tags in the body as Nu W3C validator treats style tags in the body as an error.
@@ -326,19 +327,19 @@ task("version", [], async function() {
   }
 });
 
-desc("Create Git version tag using version number from package.json.");
+desc("Create Git version tag using version number from package.json");
 task("tag", ["test"], async function() {
   const vers = getPackageVers();
   console.log(`tag: ${vers}`);
   await sh(`git tag -a -m "Tag ${vers}" ${vers}`);
 });
 
-desc("Commit changes to local Git repo.");
+desc("Commit changes to local Git repo");
 task("commit", ["test"], async function() {
   await sh("git commit -a");
 });
 
-desc("Push to Github and publish to npm.");
+desc("Push to Github and publish to npm");
 task("publish", ["push", "publish-npm"]);
 
 desc("Push changes to Github");
