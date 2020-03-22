@@ -5,7 +5,8 @@ import {
 } from "https://deno.land/std@v0.36.0/testing/asserts.ts";
 import {
   readFile,
-  shCapture
+  shCapture,
+  ShOutput
 } from "https://raw.github.com/srackham/drake/master/mod.ts";
 
 type RimucTest = {
@@ -32,7 +33,7 @@ async function runTest(test: RimucTest): Promise<void> {
 }
 
 function testShOut(
-  shout: { code: number | undefined; output: string; error: string },
+  shout: ShOutput,
   test: RimucTest
 ): void {
   const out = shout.output + shout.error;
