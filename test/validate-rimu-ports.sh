@@ -118,7 +118,7 @@ if ! stringContains "$*" --skip-tests; then
     make clean build install
 
     cd $DENO
-    drake deno-install
+    drake install-deno
 fi
 
 # Compile Rimu documentation with all ports and compare.

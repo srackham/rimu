@@ -17,9 +17,8 @@ import {
   writeFile
 } from "file:///home/srackham/local/projects/drake/mod.ts";
 import * as path from "https://deno.land/std@v0.36.0/path/mod.ts";
-// } from "https://raw.github.com/srackham/drake/master/mod.ts";
 
-env["--default-task"] = "test";
+env["--default-task"] = "build";
 
 const isWindows = Deno.build.os === "win";
 
@@ -32,7 +31,7 @@ const RIMUC_JS = "bin/rimuc.js";
 const RIMUC_EXE = "node " + RIMUC_JS;
 const RIMU_SRC = glob("src/rimu/*.ts");
 const DOCS_INDEX = "docs/index.html";
-const DOCS_SRC = glob("docs/*.rmu", "src/**/*.rmu");
+const DOCS_SRC = glob("README.md", "docs/*.rmu", "src/**/*.rmu");
 const MANPAGE_RMU = "docs/manpage.rmu";
 const MANPAGE_TXT = "src/rimuc/resources/manpage.txt";
 const RESOURCES_SRC = "src/rimuc/resources.ts";
@@ -89,32 +88,17 @@ const HTML = DOCS.map(doc => doc.dst);
  Tasks
  */
 
-desc(
-  "build, test rimu, build documentation, validate HTML"
-);
-task(
-  "build",
-  ["test", "version", "build-deno", "build-docs", "validate-html"]
-);
+desc("build and test rimu, rimuc CLI for Deno and Nodejs and documentation");
+task("build", ["build-rimu", "build-rimuc", "build-deno", "build-docs"]);
 
-desc(
-  "Update version number, tag and push to Github and npm. Use vers=x.y.z argument to set a new version number. Finally, rebuild and publish docs website"
-);
-task("release", ["build", "tag", "publish"]);
-
-desc("Run tests (rebuild if necessary)");
-task("test", ["build-rimu", "build-rimuc", "build-deno"], async function() {
-  await sh("deno test -A test/");
-});
-
-desc("Compile and bundle rimu.js and rimu.min.js libraries.map files");
+desc("Compile, bundle and test rimu.js and rimu.min.js UMD library modules");
 task("build-rimu", [RIMU_JS]);
-
 task(RIMU_JS, [...RIMU_SRC, "src/rimu/webpack.config.js"], async function() {
   await sh("webpack --mode production --config ./src/rimu/webpack.config.js");
+  await sh("deno test -A test/rimu_test.ts");
 });
 
-desc("Compile rimuc to JavaScript executable and generate .map file");
+desc("Compile and test rimuc to JavaScript executable");
 task("build-rimuc", [RIMUC_JS]);
 task(
   RIMUC_JS,
@@ -127,8 +111,47 @@ task(
       // TODO: Is this necessary?
       await sh(`chmod +x ${RIMUC_JS}`);
     }
+    await sh(
+      "deno test -A test/rimuc_test.ts",
+      { env: { RIMU_BUILD_TARGET: "node" } }
+    );
   }
 );
+
+desc(
+  "Compile and test Rimu Deno code in src/deno/"
+);
+task("build-deno", ["src/deno/api.ts"]);
+task("src/deno/api.ts", [...RIMU_SRC, DENO_RESOURCES_SRC], async function() {
+  for (const f of RIMU_SRC) {
+    let text = readFile(f);
+    text = text.replace(
+      /^((import|export).*from ".*)";/gm,
+      '$1.ts";'
+    );
+    text = text.replace(
+      /^(} from ".*)";/gm,
+      '$1.ts";'
+    );
+    writeFile(path.join("src/deno", path.basename(f)), text);
+  }
+  await sh(
+    "deno test -A test/rimuc_test.ts",
+    { env: { RIMU_BUILD_TARGET: "deno" } }
+  );
+});
+
+desc("Install executable wrapper for rimudeno CLI");
+task("install-deno", ["build-deno"], async function() {
+  await sh(
+    `deno install -f --allow-env --allow-read --allow-write rimudeno "${DENO_RIMUC_TS}"`
+  );
+});
+
+desc("Run all rimu and rimuc tests");
+task("test", [], async function() {
+  await sh("deno test -A test/");
+});
 
 // Generate manpage.rmu
 task(MANPAGE_RMU, [MANPAGE_TXT], function() {
@@ -168,7 +191,7 @@ task(DENO_RESOURCES_SRC, [RESOURCES_SRC], function() {
   Deno.copyFileSync(RESOURCES_SRC, DENO_RESOURCES_SRC);
 });
 
-desc("Generate documentation");
+desc("Generate and validate documentation");
 task("build-docs", [DOCS_INDEX]);
 task(
   DOCS_INDEX,
@@ -191,6 +214,7 @@ task(
         doc.src
     );
     await sh(commands);
+    await validate_docs();
   }
 );
 
@@ -281,7 +305,7 @@ See [Built-in layouts]({reference}#built-in-layouts) for more information.`;
 }
 
 // Validate HTML documents.
-task("validate-html", [], async function() {
+async function validate_docs() {
   const commands = HTML
     .// 2018-11-09: Skip files with style tags in the body as Nu W3C validator treats style tags in the body as an error.
     filter(file =>
@@ -290,7 +314,7 @@ task("validate-html", [], async function() {
     )
     .map(file => `html-validator --verbose --format=text --file=${file}`);
   await sh(commands);
-});
+}
 
 function getPackageVers(): string {
   const match = readFile(PKG_FILE).match(/^\s*"version": "(\d+\.\d+\.\d+)"/m);
@@ -346,7 +370,7 @@ task("push", ["test"], async function() {
   await sh("git push -u --tags origin master");
 });
 
-desc("Publish to npm.");
+desc("Publish to npm");
 task("publish-npm", ["test", "build-rimu"], async function() {
   await sh("npm publish");
 });
@@ -355,32 +379,6 @@ desc("Format source files");
 task("fmt", [], async function() {
   await sh(
     `deno fmt ${quote(glob("Drakefile.ts", "src/**/*.ts", "test/*.ts"))}`
-  );
-});
-
-desc(
-  "Copy Rimu source and add .ts extension to import and export statements for Deno"
-);
-task("build-deno", ["src/deno/api.ts"]);
-task("src/deno/api.ts", [...RIMU_SRC, DENO_RESOURCES_SRC], function() {
-  for (const f of RIMU_SRC) {
-    let text = readFile(f);
-    text = text.replace(
-      /^((import|export).*from ".*)";/gm,
-      '$1.ts";'
-    );
-    text = text.replace(
-      /^(} from ".*)";/gm,
-      '$1.ts";'
-    );
-    writeFile(path.join("src/deno", path.basename(f)), text);
-  }
-});
-
-desc("Install executable wrapper for rimudeno CLI");
-task("install-deno", ["build-deno", "test"], async function() {
-  await sh(
-    `deno install -f --allow-env --allow-read --allow-write rimudeno "${DENO_RIMUC_TS}"`
   );
 });
 
