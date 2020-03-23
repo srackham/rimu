@@ -19,17 +19,27 @@ type RimucTest = {
   layouts?: boolean;
 };
 
-async function runTest(test: RimucTest): Promise<void> {
-  let shout = await shCapture(
-    `node ./bin/rimuc.js --no-rimurc ${test.args ?? ""}`,
-    { input: test.input }
-  );
-  testShOut(shout, test);
-  shout = await shCapture(
-    `deno --allow-env --allow-read src/deno/rimuc.ts ${test.args ?? ""}`,
-    { input: test.input }
-  );
-  testShOut(shout, test);
+type BuiltTarget = "deno" | "node" | undefined;
+
+async function runTest(test: RimucTest, buildTarget: BuiltTarget): Promise<
+  void
+> {
+  let shout: ShOutput;
+  if (!buildTarget || buildTarget === "node") {
+    shout = await shCapture(
+      `node ./bin/rimuc.js --no-rimurc ${test.args ?? ""}`,
+      { input: test.input }
+    );
+    testShOut(shout, test);
+  }
+  if (!buildTarget || buildTarget === "deno") {
+    shout = await shCapture(
+      `deno --allow-env --allow-read src/deno/rimuc.ts --no-rimurc ${test
+        .args ?? ""}`,
+      { input: test.input }
+    );
+    testShOut(shout, test);
+  }
 }
 
 function testShOut(
@@ -60,27 +70,31 @@ function testShOut(
     default:
       assert(
         false,
-        test.description + ": illegal predicate: " + test.predicate
+        `${test.description}: illegal predicate: ${test.predicate}`
       );
   }
 }
 
 Deno.test(
   async function rimucTest(): Promise<void> {
+    const buildTarget: BuiltTarget = Deno.env(
+      "RIMU_BUILD_TARGET"
+    ) as BuiltTarget;
+    console.log(`platform: ${buildTarget ?? "deno, node"}`);
     // Execute tests specified in JSON file.
     const data = readFile("./test/rimuc-tests.json");
     const tests: RimucTest[] = JSON.parse(data);
     for (const test of tests) {
       if (test.layouts) {
         // Run the test on built-in layouts.
-        const t = { ...test }; // TODO: Necessary?
+        const t = { ...test };
         for (const layout of ["classic", "flex", "sequel"]) {
-          t.args = "--layout " + layout + " " + test.args;
-          t.description = layout + " layout: " + test.description;
-          await runTest(t);
+          t.args = `--layout ${layout} ${test.args}`;
+          t.description = `${layout} layout: ${test.description}`;
+          await runTest(t, buildTarget);
         }
       } else {
-        await runTest(test);
+        await runTest(test, buildTarget);
       }
     }
   }
