@@ -16,7 +16,7 @@ import {
   updateFile,
   writeFile
 } from "file:///home/srackham/local/projects/drake/mod.ts";
-import * as path from "https://deno.land/std@v0.36.0/path/mod.ts";
+import * as path from "https://deno.land/std@v0.37.1/path/mod.ts";
 
 env["--default-task"] = "build";
 
@@ -307,8 +307,8 @@ See [Built-in layouts]({reference}#built-in-layouts) for more information.`;
 // Validate HTML documents.
 async function validate_docs() {
   const commands = HTML
-    .// 2018-11-09: Skip files with style tags in the body as Nu W3C validator treats style tags in the body as an error.
-    filter(file =>
+    // 2018-11-09: Skip files with style tags in the body as Nu W3C validator treats style tags in the body as an error.
+    .filter(file =>
       !["reference", "tips", "rimuplayground"].map(file => `docs/${file}.html`)
         .includes(file)
     )
