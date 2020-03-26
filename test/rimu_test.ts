@@ -1,10 +1,14 @@
-import { readFile } from "file:///home/srackham/local/projects/drake/mod.ts";
 import { createRequire } from "https://deno.land/std@v0.37.1/node/module.ts";
 import {
   assert,
   assertEquals
 } from "https://deno.land/std@v0.37.1/testing/asserts.ts";
-// import { readFile } from "https://raw.github.com/srackham/drake/master/mod.ts";
+import {
+  env,
+  readFile
+} from "https://raw.github.com/srackham/drake/master/mod.ts";
+
+env["--abort-exits"] = false;
 
 interface RenderOptions {
   safeMode?: number;

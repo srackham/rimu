@@ -1,14 +1,14 @@
 import {
-  readFile,
-  shCapture,
-  ShOutput
-} from "file:///home/srackham/local/projects/drake/mod.ts";
-import {
   assert,
   assertEquals,
   assertNotEquals
 } from "https://deno.land/std@v0.37.1/testing/asserts.ts";
-// } from "https://raw.github.com/srackham/drake/master/mod.ts";
+import {
+  env,
+  readFile,
+  shCapture,
+  ShOutput
+} from "https://raw.github.com/srackham/drake/master/mod.ts";
 
 type RimucTest = {
   description: string;
@@ -19,6 +19,8 @@ type RimucTest = {
   predicate: string;
   layouts?: boolean;
 };
+
+env["--abort-exits"] = false;
 
 type BuiltTarget = "deno" | "node" | undefined;
 
