@@ -2,6 +2,7 @@
  * Drakefile for Rimu Markup (http://github.com/srackham/rimu).
  */
 
+import * as path from "https://deno.land/std@v0.37.1/path/mod.ts";
 import {
   abort,
   desc,
@@ -15,8 +16,7 @@ import {
   task,
   updateFile,
   writeFile
-} from "file:///home/srackham/local/projects/drake/mod.ts";
-import * as path from "https://deno.land/std@v0.37.1/path/mod.ts";
+} from "https://raw.github.com/srackham/drake/master/mod.ts";
 
 env["--default-task"] = "build";
 
@@ -108,8 +108,7 @@ task(
       "webpack --mode production --config ./src/rimuc/webpack.config.js"
     );
     if (!isWindows) {
-      // TODO: Is this necessary?
-      await sh(`chmod +x ${RIMUC_JS}`);
+      Deno.chmodSync(RIMUC_JS, 0o755);
     }
     await sh(
       "deno test -A test/rimuc_test.ts",
@@ -148,7 +147,7 @@ task("install-deno", ["build-deno"], async function() {
   );
 });
 
-desc("Run all rimu and rimuc tests");
+desc("Run all rimu and rimuc CLI tests");
 task("test", [], async function() {
   await sh("deno test -A test/");
 });
