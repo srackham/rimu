@@ -54,7 +54,6 @@ working:
 
 ### Windows
         npm install -g rimu
-        npm link
 
 Run a test from the command prompt to check the `rimuc` CLI command is
 working:

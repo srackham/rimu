@@ -606,6 +606,8 @@ syntax was a deliberate design decision:
 - Coming up with a syntax that is both recognizably tabular and easily
   written is difficult -- imagine trying to write the above example in
   a way that maintains the side-by-side cell layout.
+- Editing tabular layouts is unwieldy -- text editors are designed to
+  edit line-oriented text.
 - At first blush tables come across as a hugely useful feature, but
   most documentation makes surprising little use of tables.
 
