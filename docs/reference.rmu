@@ -1117,7 +1117,7 @@ that can be overridden. For example:
   rimuc --layout sequel --prepend "{--primary-color}='#0cc'" sites.rmu
 
 You can view full list of layout macros in the corresponding built-in
-layout [header file]({github}/tree/master/src/rimuc/resources).
+layout [header file]({github-rimu}/tree/master/src/rimuc/resources).
 
 ### Themes
 A theme is a layout styling variation.  Named themes are specified
@@ -1202,24 +1202,20 @@ are retained across API calls along with API options.
 Use the `reset` option to restore the default state.
 
 ### Example usage
-#### JavaScript
-Node.js example (assumes Rimu has been previously installed from
-[npm]({npm})):
-
+#### Node.js
 ``` javascript
 var rimu = require('rimu');
 var html= rimu.render('Hello *Rimu*!');
 ```
+See [Rimu README]({github-rimu}).
 
-HTML script tag example (the compiled and minified `rimu.min.js` library
-can be found in the installed Rimu npm package `./rimu/lib` folder):
+#### Deno runtime
+``` javascript
+import * as rimu from "https://raw.github.com/srackham/rimu/master/mod.ts";
 
-``` xml
-<script src="rimu.min.js"></script>
-<script>
-  console.log(Rimu.render('Hello *Rimu*!', {reset:true, safeMode:2}));
-</script>
+console.log(rimu.render("Hello *Rimu*!"));
 ```
+See [Rimu README]({github-rimu}).
 
 #### Kotlin
 ``` kotlin
@@ -1266,13 +1262,17 @@ print(rimu.render('*Hello World*!', rimu.RenderOptions(reset=True)))
 ```
 See the [Python README]({pypi-rimu}).
 
-#### Deno runtime
-``` javascript
-import * as rimu from "https://raw.github.com/srackham/rimu-deno/master/src/rimu.ts";
+#### Browser
+To use Rimu in an HTML Web page include the bundled and minimized
+`rimu.min.js` file from the `./lib` directory in your Web page, for
+example:
 
-console.log(rimu.render("Hello *Rimu*!"));
+``` html
+<script src="rimu.min.js"></script>
+<script>
+    alert(Rimu.render("Hello *Rimu*!"));
+</script>
 ```
-See the [Rimu Deno README]({github-deno}).
 
 ### API options
 The API `options` argument is an object with zero or more of the
@@ -1413,13 +1413,12 @@ Guidelines:
 ## Rimu implementations
 Here is a list of Rimu implementations:
 
-- The canonical [JavaScript version]({github-js}) written
-  in TypeScript for Node.js and browser runtime environments.
+- The canonical [TypeScript version]({github-ts})
+  for Deno, Node.js and browser runtime environments.
 - A [Kotlin port]({github-kt}) for the JVM platform.
 - A [Go language port]({github-go}).
 - A [Dart port]({pubdev-rimu}).
 - A [Python port]({pypi-rimu}).
-- A [port to the Deno runtime]({github-deno}).
 
 ### Version numbering
 

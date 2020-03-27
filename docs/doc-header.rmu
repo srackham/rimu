@@ -224,16 +224,15 @@ Preview
 {hindsite} = '[hindsite](https://srackham.github.io/hindsite/)'
 
 // External Web pages.
-{github} = 'https://github.com/srackham/rimu'
-{github-js} = '{github}'
+{github-rimu} = 'https://github.com/srackham/rimu'
+{github-ts} = '{github-rimu}'
 {github-go} = 'https://github.com/srackham/go-rimu'
 {github-kt} = 'https://github.com/srackham/rimu-kt'
 {github-dart} = 'https://github.com/srackham/rimu-dart'
-{github-deno} = 'https://github.com/srackham/rimu-deno'
 {pubdev-rimu} = 'https://pub.dev/packages/rimu'
 {github-py} = 'https://github.com/srackham/rimu-py'
 {pypi-rimu} = 'https://pypi.org/project/rimu/'
-{npm} = 'https://npmjs.org/package/rimu'
+{npm-rimu} = 'https://npmjs.org/package/rimu'
 {example-rimurc} = 'https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.rmu'
 
 // Custom table of contents.
@@ -246,8 +245,8 @@ Preview
   <div class="h2"><a href="{tips}">Rimu Tips</a></div>
   <div class="h2"><a href="{gallery}">Rimu Gallery</a></div>
   <div class="h2"><a href="{changelog}">Change Log</a></div>
-  <div class="h2"><a href="{github}">Github</a></div>
-  <div class="h2"><a href="{npm}">npm</a></div>
+  <div class="h2"><a href="{github-rimu}">Github</a></div>
+  <div class="h2"><a href="{npm-rimu}">npm</a></div>
   <h2>Table of Contents</h2>
   <div id="auto-toc"></div>
 </div>
