@@ -28,7 +28,8 @@ const PKG_FILE = "package.json";
 const RIMU_JS = "lib/rimu.js";
 const RIMU_MIN_JS = "lib/rimu.min.js";
 const RIMUC_JS = "bin/rimuc.js";
-const RIMUC_EXE = "node " + RIMUC_JS;
+const DENO_RIMUC_TS = "src/deno/rimuc.ts";
+const RIMUC_EXE = "deno -A " + DENO_RIMUC_TS;
 const RIMU_SRC = glob("src/rimu/*.ts");
 const DOCS_INDEX = "docs/index.html";
 const DOCS_SRC = glob("README.md", "docs/*.rmu", "src/**/*.rmu");
@@ -36,10 +37,9 @@ const MANPAGE_RMU = "docs/manpage.rmu";
 const MANPAGE_TXT = "src/rimuc/resources/manpage.txt";
 const RESOURCES_SRC = "src/rimuc/resources.ts";
 const RESOURCE_FILES = glob("src/rimuc/resources/*");
+const DENO_RESOURCES_SRC = "src/deno/resources.ts";
 const GALLERY_INDEX_SRC = "docs/gallery.rmu";
 const GALLERY_INDEX_DST = "docs/gallery.html";
-const DENO_RIMUC_TS = "src/deno/rimuc.ts";
-const DENO_RESOURCES_SRC = "src/deno/resources.ts";
 
 const DOCS = [
   {
