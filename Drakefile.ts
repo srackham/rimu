@@ -134,6 +134,7 @@ task("src/deno/api.ts", [...RIMU_SRC, DENO_RESOURCES_SRC], async function() {
     );
     writeFile(path.join("src/deno", path.basename(f)), text);
   }
+  await sh(`deno fetch ${this.name} ${DENO_RESOURCES_SRC}`); // Compile Deno sources.
   await sh(
     "deno test -A test/rimuc_test.ts",
     { env: { RIMU_BUILD_TARGET: "deno" } }
