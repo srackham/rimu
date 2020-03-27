@@ -324,7 +324,7 @@ function getPackageVers(): string {
 }
 
 desc(
-  "Display or update the project version number e.g. 'drake version', 'drake version vers=1.0.0'"
+  "Display or update the project version number. Set 'vers' to update version e.g. vers=1.0.0"
 );
 task("version", [], async function() {
   const vers = env.vers;
@@ -377,7 +377,7 @@ task("publish-npm", ["test", "build-rimu"], async function() {
 desc("Format source files");
 task("fmt", [], async function() {
   await sh(
-    `deno fmt ${quote(glob("Drakefile.ts", "src/**/*.ts", "test/*.ts"))}`
+    `deno fmt ${quote(glob("*.ts", "src/**/*.ts", "test/*.ts"))}`
   );
 });
 
