@@ -3,6 +3,14 @@
 This is the Rimu TypeScript implementation change log (see also [other Rimu
 implementations]({reference}#rimu-implementations)).
 
+## Version 11.1.8 (2020-04-30)
+This release includes the Deno port and updates the build scripts and build
+tools but makes no changes Rimu markup behaviour.
+
+- Merged with the Deno port so there is now just one TypeScript code base.
+- Replaced the Jake.js build tool with [Drake](https://github.com/srackham/drake).
+
+
 ## Version 11.1.7 (2020-03-17)
 - **FIXED**: `rimuc` on Windows: piping a zero length input to `rimuc` raised an
   EOF error.
@@ -68,7 +76,7 @@ This release sees tight convergence and the simultaneous release of
 all three Rimu implementations:
 
 - The canonical [JavaScript version (written in
-  TypeScript)]({github-js}).
+  TypeScript)]({github-ts}).
 - The [Kotlin port]({github-kt}).
 - The [Go language port]({github-go}).
 
@@ -208,13 +216,13 @@ diagnostic messages from the Rimu library.
   built-in themes, you can view layout and theme examples in the new
   [Rimu Gallery]({gallery}). Layouts and themes are implemented purely
   with Rimu markup, you can view the [sources on
-  Github]({github}/tree/master/src/rimuc/resources).
+  Github]({github-rimu}/tree/master/src/rimuc/resources).
 
 - `rimuc` layouts have been refactored:
 
   * Layout macros now use [reserved
     names]({reference}#reserved-macro-names).
-  * [Layout header files]({github}/tree/master/src/rimuc/resources)
+  * [Layout header files]({github-rimu}/tree/master/src/rimuc/resources)
     expose a consistent set of layout and theme macros that can be
     [user customized]({reference}#layout-customization).
   * They now import the latest versions of MathJax and HighlightJS.
