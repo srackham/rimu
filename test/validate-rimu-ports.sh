@@ -25,12 +25,11 @@ set -eu
 # set -x
 
 # Project directories.
+TS=$HOME/local/projects/rimu
 GO=$HOME/local/projects/go-rimu
-JS=$HOME/local/projects/rimu
 KT=$HOME/local/projects/rimu-kt
 DART=$HOME/local/projects/rimu-dart
 PY=$HOME/local/projects/rimu-py
-DENO=$JS
 
 # Return 0 exitcode if $2 wholly contained in $1.
 stringContains() {
@@ -40,23 +39,23 @@ stringContains() {
 # Copy test fixtures, resources and example rimurc file.
 if stringContains "$*" --update-fixtures; then
     echo "Updating test fixtures and resources..."
-    cp $JS/test/rimu-tests.json $GO/rimu/testdata/rimu-tests.json
-    cp $JS/test/rimuc-tests.json $GO/rimugo/testdata/rimuc-tests.json
-    cp $JS/src/examples/example-rimurc.rmu $GO/rimugo/testdata/example-rimurc.rmu
+    cp $TS/test/rimu-tests.json $GO/rimu/testdata/rimu-tests.json
+    cp $TS/test/rimuc-tests.json $GO/rimugo/testdata/rimuc-tests.json
+    cp $TS/src/examples/example-rimurc.rmu $GO/rimugo/testdata/example-rimurc.rmu
 
-    cp $JS/test/rimu-tests.json $KT/src/test/resources/rimu-tests.json
-    cp $JS/test/rimuc-tests.json $KT/src/test/resources/rimuc-tests.json
-    cp $JS/src/examples/example-rimurc.rmu $KT/src/test/fixtures/example-rimurc.rmu
+    cp $TS/test/rimu-tests.json $KT/src/test/resources/rimu-tests.json
+    cp $TS/test/rimuc-tests.json $KT/src/test/resources/rimuc-tests.json
+    cp $TS/src/examples/example-rimurc.rmu $KT/src/test/fixtures/example-rimurc.rmu
 
-    cp $JS/test/rimu-tests.json $DART/test/rimu-tests.json
-    cp $JS/test/rimuc-tests.json $DART/test/rimuc-tests.json
-    cp $JS/src/examples/example-rimurc.rmu $DART/test/fixtures/example-rimurc.rmu
+    cp $TS/test/rimu-tests.json $DART/test/rimu-tests.json
+    cp $TS/test/rimuc-tests.json $DART/test/rimuc-tests.json
+    cp $TS/src/examples/example-rimurc.rmu $DART/test/fixtures/example-rimurc.rmu
 
-    cp $JS/test/rimu-tests.json $PY/tests/rimu-tests.json
-    cp $JS/test/rimuc-tests.json $PY/tests/rimuc-tests.json
-    cp $JS/src/examples/example-rimurc.rmu $PY/tests/fixtures/example-rimurc.rmu
+    cp $TS/test/rimu-tests.json $PY/tests/rimu-tests.json
+    cp $TS/test/rimuc-tests.json $PY/tests/rimuc-tests.json
+    cp $TS/src/examples/example-rimurc.rmu $PY/tests/fixtures/example-rimurc.rmu
 
-    cd $JS/src/rimuc/resources
+    cd $TS/src/rimuc/resources
     for f in *; do
         cp $f $GO/rimugo/resources/$f
         cp $f $KT/src/main/resources/org/rimumarkup/$f
@@ -69,23 +68,23 @@ fi
 if ! stringContains "$*" --skip-fixtures; then
     echo "Checking test fixtures and resources are up to date..."
     err=0
-    diff $JS/test/rimu-tests.json $GO/rimu/testdata/rimu-tests.json || err=1
-    diff $JS/test/rimuc-tests.json $GO/rimugo/testdata/rimuc-tests.json || err=1
-    diff $JS/src/examples/example-rimurc.rmu $GO/rimugo/testdata/example-rimurc.rmu || err=1
+    diff $TS/test/rimu-tests.json $GO/rimu/testdata/rimu-tests.json || err=1
+    diff $TS/test/rimuc-tests.json $GO/rimugo/testdata/rimuc-tests.json || err=1
+    diff $TS/src/examples/example-rimurc.rmu $GO/rimugo/testdata/example-rimurc.rmu || err=1
 
-    diff $JS/test/rimu-tests.json $KT/src/test/resources/rimu-tests.json || err=1
-    diff $JS/test/rimuc-tests.json $KT/src/test/resources/rimuc-tests.json || err=1
-    diff $JS/src/examples/example-rimurc.rmu $KT/src/test/fixtures/example-rimurc.rmu || err=1
+    diff $TS/test/rimu-tests.json $KT/src/test/resources/rimu-tests.json || err=1
+    diff $TS/test/rimuc-tests.json $KT/src/test/resources/rimuc-tests.json || err=1
+    diff $TS/src/examples/example-rimurc.rmu $KT/src/test/fixtures/example-rimurc.rmu || err=1
 
-    diff $JS/test/rimu-tests.json $DART/test/rimu-tests.json || err=1
-    diff $JS/test/rimuc-tests.json $DART/test/rimuc-tests.json || err=1
-    diff $JS/src/examples/example-rimurc.rmu $DART/test/fixtures/example-rimurc.rmu || err=1
+    diff $TS/test/rimu-tests.json $DART/test/rimu-tests.json || err=1
+    diff $TS/test/rimuc-tests.json $DART/test/rimuc-tests.json || err=1
+    diff $TS/src/examples/example-rimurc.rmu $DART/test/fixtures/example-rimurc.rmu || err=1
 
-    diff $JS/test/rimu-tests.json $PY/tests/rimu-tests.json || err=1
-    diff $JS/test/rimuc-tests.json $PY/tests/rimuc-tests.json || err=1
-    diff $JS/src/examples/example-rimurc.rmu $PY/tests/fixtures/example-rimurc.rmu || err=1
+    diff $TS/test/rimu-tests.json $PY/tests/rimu-tests.json || err=1
+    diff $TS/test/rimuc-tests.json $PY/tests/rimuc-tests.json || err=1
+    diff $TS/src/examples/example-rimurc.rmu $PY/tests/fixtures/example-rimurc.rmu || err=1
 
-    cd $JS/src/rimuc/resources
+    cd $TS/src/rimuc/resources
     for f in *; do
         diff $f $GO/rimugo/resources/$f || err=1
         diff $f $KT/src/main/resources/org/rimumarkup/$f || err=1
@@ -101,8 +100,8 @@ fi
 # Build and test all ports.
 if ! stringContains "$*" --skip-tests; then
     echo "Running tests..."
-    cd $JS
-    drake test
+    cd $TS
+    deno -A Drakefile.ts test
 
     cd $GO
     make
@@ -117,8 +116,8 @@ if ! stringContains "$*" --skip-tests; then
     source .venv/bin/activate
     make clean build install
 
-    cd $DENO
-    drake install-deno
+    cd $TS
+    deno -A Drakefile.ts install-deno
 fi
 
 # Compile Rimu documentation with all ports and compare.
@@ -141,7 +140,7 @@ DART_TIME=0
 PY_TIME=0
 DENO_TIME=0
 
-DOC_LINES=$(cat $JS/docs/{doc-header,reference,tips,changelog,manpage}.rmu $JS/src/examples/example-rimurc.rmu | wc -l)
+DOC_LINES=$(cat $TS/docs/{doc-header,reference,tips,changelog,manpage}.rmu $TS/src/examples/example-rimurc.rmu | wc -l)
 
 echo "Compiling and comparing documentation..."
 for doc in reference tips changelog; do
@@ -153,7 +152,7 @@ for doc in reference tips changelog; do
     PY_DOC=/tmp/$doc-python.html
     DENO_DOC=/tmp/$doc-deno.html
 
-    cd $JS
+    cd $TS
 
 
     start
@@ -178,7 +177,7 @@ for doc in reference tips changelog; do
 
     # The rimudeno CLI wrapper adds an extra shell invocation and is slower so we time the raw `deno` command.
     start
-    eval deno --allow-env --allow-read --allow-write $DENO/src/deno/rimuc.ts --output $DENO_DOC $ARGS ./docs/$doc.rmu
+    eval deno --allow-env --allow-read --allow-write $TS/src/deno/rimuc.ts --output $DENO_DOC $ARGS ./docs/$doc.rmu
     DENO_TIME=$(duration $DENO_TIME)
     eval $HOME/.deno/bin/rimudeno --output $DENO_DOC $ARGS ./docs/$doc.rmu
 
