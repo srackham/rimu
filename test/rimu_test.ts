@@ -64,9 +64,18 @@ Deno.test(
         };
       }
       let rendered = rimu.render(test.input, test.options);
-      assertEquals(rendered, test.expectedOutput, test.description);
+      assertEquals(
+        rendered,
+        test.expectedOutput,
+        `${test.description}: actual: "${rendered}": expected: "${test.expectedOutput}"`
+      );
       if (test.expectedCallback !== "") {
-        assertEquals(msg.trim(), test.expectedCallback, test.description);
+        assertEquals(
+          msg.trim(),
+          test.expectedCallback,
+          `${test.description}: actual: "${msg
+            .trimEnd()}": expected: "${test.expectedCallback}"`
+        );
       }
     }
   }

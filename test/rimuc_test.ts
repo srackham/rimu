@@ -50,25 +50,28 @@ function testShOut(
   test: RimucTest
 ): void {
   const out = shout.output + shout.error;
+  const msg = `${test.description}: ${JSON.stringify(test)}: ${JSON.stringify(
+    shout
+  )}`;
   switch (test.predicate) {
     case "equals":
-      assertEquals(out, test.expectedOutput, test.description);
+      assertEquals(out, test.expectedOutput, msg);
       break;
     case "!equals":
-      assertNotEquals(out, test.expectedOutput, test.description);
+      assertNotEquals(out, test.expectedOutput, msg);
       break;
     case "contains":
-      assert(out.indexOf(test.expectedOutput) >= 0, test.description);
+      assert(out.indexOf(test.expectedOutput) >= 0, msg);
       break;
     case "!contains":
-      assert(out.indexOf(test.expectedOutput) === -1, test.description);
+      assert(out.indexOf(test.expectedOutput) === -1, msg);
       break;
     case "startsWith":
-      assert(out.startsWith(test.expectedOutput), test.description);
+      assert(out.startsWith(test.expectedOutput), msg);
       break;
     case "exitCode":
-      assertEquals(out, test.expectedOutput, test.description);
-      assert(shout.code === test.exitCode, test.description);
+      assertEquals(out, test.expectedOutput, msg);
+      assert(shout.code === test.exitCode, msg);
       break;
     default:
       assert(
