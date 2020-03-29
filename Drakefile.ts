@@ -2,7 +2,6 @@
  * Drakefile for Rimu Markup (http://github.com/srackham/rimu).
  */
 
-import * as path from "https://deno.land/std@v0.37.1/path/mod.ts";
 import {
   abort,
   desc,
@@ -16,9 +15,10 @@ import {
   task,
   updateFile,
   writeFile
-} from "https://raw.github.com/srackham/drake/master/mod.ts";
+} from "file:///home/srackham/local/projects/drake/mod.ts";
+import * as path from "https://deno.land/std@v0.37.1/path/mod.ts";
 
-env["--default-task"] = "build";
+env("--default-task", "build");
 
 const isWindows = Deno.build.os === "win";
 
@@ -328,7 +328,7 @@ desc(
   "Display or update the project version number. Set 'vers' to update version e.g. vers=1.0.0"
 );
 task("version", [], async function() {
-  const vers = env.vers;
+  const vers = env("vers");
   if (!vers) {
     console.log(`version: ${getPackageVers()}`);
   } else {
@@ -345,7 +345,7 @@ task("version", [], async function() {
       /(const VERSION = )'\d+\.\d+\.\d+'/,
       `$1'${vers}'`
     );
-    env.vers = vers;
+    env("vers", vers);
     await sh('git commit --all -m "Bump version number."');
   }
 });

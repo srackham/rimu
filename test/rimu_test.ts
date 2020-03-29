@@ -8,7 +8,7 @@ import {
   readFile
 } from "https://raw.github.com/srackham/drake/master/mod.ts";
 
-env["--abort-exits"] = false;
+env("--abort-exits", false);
 
 interface RenderOptions {
   safeMode?: number;

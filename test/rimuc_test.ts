@@ -20,7 +20,7 @@ type RimucTest = {
   layouts?: boolean;
 };
 
-env["--abort-exits"] = false;
+env("--abort-exits", false);
 
 type BuiltTarget = "deno" | "node" | undefined;
 
