@@ -2617,5 +2617,5 @@ window.onclick = function(event) {
 </div>
 
 <div id="contents">
-`
+`,
 };
