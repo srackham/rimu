@@ -16,7 +16,7 @@ import {
   updateFile,
   writeFile
 } from "file:///home/srackham/local/projects/drake/mod.ts";
-import * as path from "https://deno.land/std@v0.37.1/path/mod.ts";
+import * as path from "https://deno.land/std@v0.38.0/path/mod.ts";
 
 env("--default-task", "build");
 
@@ -46,13 +46,13 @@ const DOCS = [
     src: "README.md",
     dst: "docs/index.html",
     title: "Rimu Markup",
-    rimucOptions: "--highlightjs"
+    rimucOptions: "--highlightjs",
   },
   {
     src: "docs/changelog.rmu",
     dst: "docs/changelog.html",
     title: "Rimu Change Log",
-    rimucOptions: ""
+    rimucOptions: "",
   },
   {
     src: "docs/reference.rmu",
@@ -60,29 +60,29 @@ const DOCS = [
     title: "Rimu Reference",
     rimucOptions:
       "--highlightjs --prepend \"{generate-examples}='yes'\" --prepend-file " +
-        MANPAGE_RMU
+        MANPAGE_RMU,
   },
   {
     src: "docs/tips.rmu",
     dst: "docs/tips.html",
     title: "Rimu Tips",
     rimucOptions:
-      "--highlightjs --mathjax --prepend \"{generate-examples}='yes'\""
+      "--highlightjs --mathjax --prepend \"{generate-examples}='yes'\"",
   },
   {
     src: "docs/rimuplayground.rmu",
     dst: "docs/rimuplayground.html",
     title: "Rimu Playground",
-    rimucOptions: "--prepend \"{generate-examples}='yes'\""
+    rimucOptions: "--prepend \"{generate-examples}='yes'\"",
   },
   {
     src: GALLERY_INDEX_SRC,
     dst: GALLERY_INDEX_DST,
     title: "Rimu layout and themes gallery",
-    rimucOptions: ""
-  }
+    rimucOptions: "",
+  },
 ];
-const HTML = DOCS.map(doc => doc.dst);
+const HTML = DOCS.map((doc) => doc.dst);
 
 /*
  Tasks
@@ -93,7 +93,7 @@ task("build", ["build-rimu", "build-rimuc", "build-deno", "build-docs"]);
 
 desc("Compile, bundle and test rimu.js and rimu.min.js UMD library modules");
 task("build-rimu", [RIMU_JS]);
-task(RIMU_JS, [...RIMU_SRC, "src/rimu/webpack.config.js"], async function() {
+task(RIMU_JS, [...RIMU_SRC, "src/rimu/webpack.config.js"], async function () {
   await sh("webpack --mode production --config ./src/rimu/webpack.config.js");
   await sh("deno test -A test/rimu_test.ts");
 });
@@ -103,58 +103,58 @@ task("build-rimuc", [RIMUC_JS]);
 task(
   RIMUC_JS,
   [RIMU_JS, RESOURCES_SRC, "src/rimuc/webpack.config.js"],
-  async function() {
+  async function () {
     await sh(
-      "webpack --mode production --config ./src/rimuc/webpack.config.js"
+      "webpack --mode production --config ./src/rimuc/webpack.config.js",
     );
     if (!isWindows) {
       Deno.chmodSync(RIMUC_JS, 0o755);
     }
     await sh(
       "deno test -A test/rimuc_test.ts",
-      { env: { RIMU_BUILD_TARGET: "node" } }
+      { env: { RIMU_BUILD_TARGET: "node" } },
     );
-  }
+  },
 );
 
 desc(
-  "Compile and test Rimu Deno code in src/deno/"
+  "Compile and test Rimu Deno code in src/deno/",
 );
 task("build-deno", ["src/deno/api.ts"]);
-task("src/deno/api.ts", [...RIMU_SRC, DENO_RESOURCES_SRC], async function() {
+task("src/deno/api.ts", [...RIMU_SRC, DENO_RESOURCES_SRC], async function () {
   for (const f of RIMU_SRC) {
     let text = readFile(f);
     text = text.replace(
       /^((import|export).*from ".*)";/gm,
-      '$1.ts";'
+      '$1.ts";',
     );
     text = text.replace(
       /^(} from ".*)";/gm,
-      '$1.ts";'
+      '$1.ts";',
     );
     writeFile(path.join("src/deno", path.basename(f)), text);
   }
   await sh(`deno fetch ${this.name} ${DENO_RESOURCES_SRC}`); // Compile Deno sources.
   await sh(
     "deno test -A test/rimuc_test.ts",
-    { env: { RIMU_BUILD_TARGET: "deno" } }
+    { env: { RIMU_BUILD_TARGET: "deno" } },
   );
 });
 
 desc("Install executable wrapper for rimudeno CLI");
-task("install-deno", ["build-deno"], async function() {
+task("install-deno", ["build-deno"], async function () {
   await sh(
-    `deno install -f --allow-env --allow-read --allow-write rimudeno "${DENO_RIMUC_TS}"`
+    `deno install -f --allow-env --allow-read --allow-write rimudeno "${DENO_RIMUC_TS}"`,
   );
 });
 
 desc("Run all rimu and rimuc CLI tests");
-task("test", [], async function() {
+task("test", [], async function () {
   await sh("deno test -A test/");
 });
 
 // Generate manpage.rmu
-task(MANPAGE_RMU, [MANPAGE_TXT], function() {
+task(MANPAGE_RMU, [MANPAGE_TXT], function () {
   // Trailing apostrophes are escaped in MANPAGE_TXT.
   writeFile(
     MANPAGE_RMU,
@@ -165,12 +165,12 @@ task(MANPAGE_RMU, [MANPAGE_TXT], function() {
 ${readFile(MANPAGE_TXT).replace(/^(.*)'$/gm, "$1'\\")}
 \`\`
 '
-`
+`,
   );
 });
 
 // Build resources.ts containing rimuc resource files.
-task(RESOURCES_SRC, RESOURCE_FILES, async function() {
+task(RESOURCES_SRC, RESOURCE_FILES, async function () {
   log(`Building resources ${RESOURCES_SRC}`);
   let text = "// Generated automatically from resource files. Do not edit.\n";
   text += "export let resources: { [name: string]: string } = {";
@@ -187,7 +187,7 @@ task(RESOURCES_SRC, RESOURCE_FILES, async function() {
 });
 
 // Copy resources.ts to Deno source directory.
-task(DENO_RESOURCES_SRC, [RESOURCES_SRC], function() {
+task(DENO_RESOURCES_SRC, [RESOURCES_SRC], function () {
   Deno.copyFileSync(RESOURCES_SRC, DENO_RESOURCES_SRC);
 });
 
@@ -196,13 +196,13 @@ task("build-docs", [DOCS_INDEX]);
 task(
   DOCS_INDEX,
   [MANPAGE_RMU, ...DOCS_SRC, GALLERY_INDEX_DST, "build-rimu"],
-  async function() {
+  async function () {
     await Deno.copyFile(
       RIMU_MIN_JS,
-      `docs/${path.basename(RIMU_MIN_JS)}`
+      `docs/${path.basename(RIMU_MIN_JS)}`,
     );
     // console.log(this.prereqs);
-    const commands = DOCS.map(doc =>
+    const commands = DOCS.map((doc) =>
       RIMUC_EXE +
         " --no-rimurc --theme legend --custom-toc --header-links" +
         " --layout sequel" +
@@ -215,15 +215,15 @@ task(
     );
     await sh(commands);
     await validate_docs();
-  }
+  },
 );
 
 // Generate gallery documentation examples.
-task(GALLERY_INDEX_DST, ["build-rimuc", ...DOCS_SRC], async function() {
+task(GALLERY_INDEX_DST, ["build-rimuc", ...DOCS_SRC], async function () {
   gallery_index();
   let commands: any[] = [];
   forEachGalleryDocument(
-    function(options: any, outfile: any, _: any, __: any) {
+    function (options: any, outfile: any, _: any, __: any) {
       let command = RIMUC_EXE +
         " --custom-toc" +
         " --no-rimurc" +
@@ -238,7 +238,7 @@ task(GALLERY_INDEX_DST, ["build-rimuc", ...DOCS_SRC], async function() {
       commands.push(command);
     },
     null,
-    null
+    null,
   );
   await sh(commands);
 });
@@ -246,17 +246,17 @@ task(GALLERY_INDEX_DST, ["build-rimuc", ...DOCS_SRC], async function() {
 function forEachGalleryDocument(
   documentCallback: any,
   layoutCallback: any,
-  themeCallback: any
+  themeCallback: any,
 ) {
-  ["sequel", "classic", "flex", "plain"].forEach(function(layout) {
+  ["sequel", "classic", "flex", "plain"].forEach(function (layout) {
     if (layoutCallback) layoutCallback(layout);
     if (layout === "plain") {
       documentCallback("--layout plain --no-toc", "plain-example.html");
       return;
     }
-    ["legend", "vintage", "graystone"].forEach(function(theme) {
+    ["legend", "vintage", "graystone"].forEach(function (theme) {
       if (themeCallback) themeCallback(layout, theme);
-      ["", "dropdown-toc", "no-toc"].forEach(function(variant) {
+      ["", "dropdown-toc", "no-toc"].forEach(function (variant) {
         let option = variant;
         switch (variant) {
           case "dropdown-toc":
@@ -289,16 +289,16 @@ Click the options links to view the generated documents.
 
 See [Built-in layouts]({reference}#built-in-layouts) for more information.`;
   forEachGalleryDocument(
-    function(options: any, outfile: any, _: any, __: any) {
+    function (options: any, outfile: any, _: any, __: any) {
       const link = "[`" + options.replace(/{/g, "\\{") + "`](" + outfile + ")";
       text += "\n- " + link;
     },
-    function(layout: any) {
+    function (layout: any) {
       text += "\n\n\n## " + layout + " layout";
     },
-    function(_: any, theme: any) {
+    function (_: any, theme: any) {
       text += "\n\n### " + theme + " theme";
-    }
+    },
   );
   text += "\n\n";
   writeFile(GALLERY_INDEX_SRC, text);
@@ -308,11 +308,13 @@ See [Built-in layouts]({reference}#built-in-layouts) for more information.`;
 async function validate_docs() {
   const commands = HTML
     // 2018-11-09: Skip files with style tags in the body as Nu W3C validator treats style tags in the body as an error.
-    .filter(file =>
-      !["reference", "tips", "rimuplayground"].map(file => `docs/${file}.html`)
+    .filter((file) =>
+      !["reference", "tips", "rimuplayground"].map((file) =>
+        `docs/${file}.html`
+      )
         .includes(file)
     )
-    .map(file => `html-validator --verbose --format=text --file=${file}`);
+    .map((file) => `html-validator --verbose --format=text --file=${file}`);
   await sh(commands);
 }
 
@@ -325,9 +327,9 @@ function getPackageVers(): string {
 }
 
 desc(
-  "Display or update the project version number. Set 'vers' to update version e.g. vers=1.0.0"
+  "Display or update the project version number. Set 'vers' to update version e.g. vers=1.0.0",
 );
-task("version", [], async function() {
+task("version", [], async function () {
   const vers = env("vers");
   if (!vers) {
     console.log(`version: ${getPackageVers()}`);
@@ -338,12 +340,12 @@ task("version", [], async function() {
     updateFile(
       "package.json",
       /(\s*"version"\s*:\s*)"\d+\.\d+\.\d+"/,
-      `$1"${vers}"`
+      `$1"${vers}"`,
     );
     updateFile(
       "./src/rimuc/rimuc.ts",
       /(const VERSION = )'\d+\.\d+\.\d+'/,
-      `$1'${vers}'`
+      `$1'${vers}'`,
     );
     env("vers", vers);
     await sh('git commit --all -m "Bump version number."');
@@ -351,14 +353,14 @@ task("version", [], async function() {
 });
 
 desc("Create Git version tag using version number from package.json");
-task("tag", ["test"], async function() {
+task("tag", ["test"], async function () {
   const vers = getPackageVers();
   console.log(`tag: ${vers}`);
   await sh(`git tag -a -m "Tag ${vers}" ${vers}`);
 });
 
 desc("Commit changes to local Git repo");
-task("commit", ["test"], async function() {
+task("commit", ["test"], async function () {
   await sh("git commit -a");
 });
 
@@ -366,19 +368,19 @@ desc("Push to Github and publish to npm");
 task("publish", ["push", "publish-npm"]);
 
 desc("Push changes to Github");
-task("push", ["test"], async function() {
+task("push", ["test"], async function () {
   await sh("git push -u --tags origin master");
 });
 
 desc("Publish to npm");
-task("publish-npm", ["test", "build-rimu"], async function() {
+task("publish-npm", ["test", "build-rimu"], async function () {
   await sh("npm publish");
 });
 
 desc("Format source files");
-task("fmt", [], async function() {
+task("fmt", [], async function () {
   await sh(
-    `deno fmt ${quote(glob("*.ts", "src/**/*.ts", "test/*.ts"))}`
+    `deno fmt ${quote(glob("*.ts", "src/**/*.ts", "test/*.ts"))}`,
   );
 });
 

@@ -1,12 +1,13 @@
-import { createRequire } from "https://deno.land/std@v0.37.1/node/module.ts";
-import {
-  assert,
-  assertEquals
-} from "https://deno.land/std@v0.37.1/testing/asserts.ts";
 import {
   env,
   readFile
-} from "https://raw.github.com/srackham/drake/master/mod.ts";
+} from "file:///home/srackham/local/projects/drake/mod.ts";
+import { createRequire } from "https://deno.land/std@v0.38.0/node/module.ts";
+import {
+  assert,
+  assertEquals
+} from "https://deno.land/std@v0.38.0/testing/asserts.ts";
+// } from "https://raw.github.com/srackham/drake/master/mod.ts";
 
 env("--abort-exits", false);
 
@@ -44,9 +45,9 @@ Deno.test(
   function rimuApiTest(): void {
     assert(
       rimu.render.constructor === Function,
-      "Rimu.render is a function"
+      "Rimu.render is a function",
     );
-  }
+  },
 );
 
 Deno.test(
@@ -59,7 +60,7 @@ Deno.test(
       if (test.expectedCallback === "") {
         test.options.callback = catchLint;
       } else {
-        test.options.callback = function(message: CallbackMessage): void {
+        test.options.callback = function (message: CallbackMessage): void {
           msg += message.type + ": " + message.text + "\n";
         };
       }
@@ -67,16 +68,16 @@ Deno.test(
       assertEquals(
         rendered,
         test.expectedOutput,
-        `${test.description}: actual: "${rendered}": expected: "${test.expectedOutput}"`
+        `${test.description}: actual: "${rendered}": expected: "${test.expectedOutput}"`,
       );
       if (test.expectedCallback !== "") {
         assertEquals(
           msg.trim(),
           test.expectedCallback,
           `${test.description}: actual: "${msg
-            .trimEnd()}": expected: "${test.expectedCallback}"`
+            .trimEnd()}": expected: "${test.expectedCallback}"`,
         );
       }
     }
-  }
+  },
 );

@@ -6,8 +6,8 @@ import {
   existsSync,
   readFileStrSync,
   writeFileStrSync
-} from "https://deno.land/std@v0.37.1/fs/mod.ts";
-import { resolve } from "https://deno.land/std@v0.37.1/path/mod.ts";
+} from "https://deno.land/std@v0.38.0/fs/mod.ts";
+import { resolve } from "https://deno.land/std@v0.38.0/path/mod.ts";
 import { resources } from "./resources.ts";
 import * as rimu from "./rimu.ts";
 
@@ -208,7 +208,7 @@ for (let infile of files) {
   let ext = infile.split(".").pop();
   // Skip .html and pass-through inputs.
   if (!(ext === "html" || (pass && infile === STDIN))) {
-    options.callback = function(message): void {
+    options.callback = function (message): void {
       let msg = message.type + ": " + infile + ": " + message.text;
       if (msg.length > 120) {
         msg = msg.slice(0, 117) + "...";

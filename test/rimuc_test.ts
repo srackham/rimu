@@ -1,14 +1,15 @@
 import {
-  assert,
-  assertEquals,
-  assertNotEquals
-} from "https://deno.land/std@v0.37.1/testing/asserts.ts";
-import {
   env,
   readFile,
   shCapture,
   ShOutput
-} from "https://raw.github.com/srackham/drake/master/mod.ts";
+} from "file:///home/srackham/local/projects/drake/mod.ts";
+import {
+  assert,
+  assertEquals,
+  assertNotEquals
+} from "https://deno.land/std@v0.38.0/testing/asserts.ts";
+// } from "https://raw.github.com/srackham/drake/master/mod.ts";
 
 type RimucTest = {
   description: string;
@@ -31,7 +32,7 @@ async function runTest(test: RimucTest, buildTarget: BuiltTarget): Promise<
   if (!buildTarget || buildTarget === "node") {
     shout = await shCapture(
       `node ./bin/rimuc.js --no-rimurc ${test.args ?? ""}`,
-      { input: test.input }
+      { input: test.input, stderr: "piped" },
     );
     testShOut(shout, test);
   }
@@ -39,7 +40,7 @@ async function runTest(test: RimucTest, buildTarget: BuiltTarget): Promise<
     shout = await shCapture(
       `deno --allow-env --allow-read src/deno/rimuc.ts --no-rimurc ${test
         .args ?? ""}`,
-      { input: test.input }
+      { input: test.input, stderr: "piped" },
     );
     testShOut(shout, test);
   }
@@ -47,11 +48,11 @@ async function runTest(test: RimucTest, buildTarget: BuiltTarget): Promise<
 
 function testShOut(
   shout: ShOutput,
-  test: RimucTest
+  test: RimucTest,
 ): void {
   const out = shout.output + shout.error;
   const msg = `${test.description}: ${JSON.stringify(test)}: ${JSON.stringify(
-    shout
+    shout,
   )}`;
   switch (test.predicate) {
     case "equals":
@@ -76,7 +77,7 @@ function testShOut(
     default:
       assert(
         false,
-        `${test.description}: illegal predicate: ${test.predicate}`
+        `${test.description}: illegal predicate: ${test.predicate}`,
       );
   }
 }
@@ -84,7 +85,7 @@ function testShOut(
 Deno.test(
   async function rimucTest(): Promise<void> {
     const buildTarget: BuiltTarget = Deno.env(
-      "RIMU_BUILD_TARGET"
+      "RIMU_BUILD_TARGET",
     ) as BuiltTarget;
     console.log(`platform: ${buildTarget ?? "deno, node"}`);
     // Execute tests specified in JSON file.
@@ -103,5 +104,5 @@ Deno.test(
         await runTest(test, buildTarget);
       }
     }
-  }
+  },
 );
