@@ -191,7 +191,7 @@ done
 set +x
 echo
 echo "DOCUMENTATION GENERATION EXECUTION TIMES ($DOC_LINES lines of Rimu markup)"
-echo "Nodejs:     $(seconds $JS_TIME)"
+echo "Node:       $(seconds $JS_TIME)"
 echo "Deno:       $(seconds $DENO_TIME)"
 echo "Go:         $(seconds $GO_TIME)"
 echo "Kotlin:     $(seconds $KT_TIME)"
