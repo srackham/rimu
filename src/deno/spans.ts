@@ -41,13 +41,13 @@ function defrag(fragments: Fragment[]): string {
 function fragQuotes(fragments: Fragment[]): Fragment[] {
   let result: Fragment[];
   result = [];
-  fragments.forEach(fragment => {
+  fragments.forEach((fragment) => {
     result.push.apply(result, fragQuote(fragment));
   });
   // Strip backlash from escaped quotes in non-done fragments.
   result
-    .filter(fragment => !fragment.done)
-    .forEach(fragment => fragment.text = Quotes.unescape(fragment.text));
+    .filter((fragment) => !fragment.done)
+    .forEach((fragment) => fragment.text = Quotes.unescape(fragment.text));
   return result;
 }
 
@@ -125,7 +125,7 @@ function preReplacements(text: string): string {
 
 // Replace replacements placeholders with replacements text from savedReplacements[].
 function postReplacements(text: string): string {
-  return text.replace(/[\u0000\u0001]/g, function(match): string {
+  return text.replace(/[\u0000\u0001]/g, function (match): string {
     let fragment = savedReplacements.shift() as Fragment;
     return (match === "\u0000")
       ? fragment.text
@@ -136,9 +136,9 @@ function postReplacements(text: string): string {
 // Fragment replacements in all fragments and return resulting fragments array.
 function fragReplacements(fragments: Fragment[]): Fragment[] {
   let result: Fragment[];
-  Replacements.defs.forEach(def => {
+  Replacements.defs.forEach((def) => {
     result = [];
-    fragments.forEach(fragment => {
+    fragments.forEach((fragment) => {
       result.push.apply(result, fragReplacement(fragment, def));
     });
     fragments = result;
@@ -150,7 +150,7 @@ function fragReplacements(fragments: Fragment[]): Fragment[] {
 // Return resulting fragments array.
 function fragReplacement(
   fragment: Fragment,
-  def: Replacements.Definition
+  def: Replacements.Definition,
 ): Fragment[] {
   if (fragment.done) {
     return [fragment];
@@ -186,7 +186,7 @@ function fragReplacement(
   // Recursively process the remaining text.
   result.push.apply(
     result,
-    fragReplacement({ text: after, done: false }, def)
+    fragReplacement({ text: after, done: false }, def),
   );
   return result;
 }
@@ -194,8 +194,8 @@ function fragReplacement(
 function fragSpecials(fragments: Fragment[]): void {
   // Replace special characters in all non-done fragments.
   fragments
-    .filter(fragment => !fragment.done)
-    .forEach(fragment =>
+    .filter((fragment) => !fragment.done)
+    .forEach((fragment) =>
       fragment.text = Utils.replaceSpecialChars(fragment.text)
     );
 }

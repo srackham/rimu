@@ -15,44 +15,44 @@ const DEFAULT_DEFS: Definition[] = [
     quote: "**",
     openTag: "<strong>",
     closeTag: "</strong>",
-    spans: true
+    spans: true,
   },
   {
     quote: "*",
     openTag: "<em>",
     closeTag: "</em>",
-    spans: true
+    spans: true,
   },
   {
     quote: "__",
     openTag: "<strong>",
     closeTag: "</strong>",
-    spans: true
+    spans: true,
   },
   {
     quote: "_",
     openTag: "<em>",
     closeTag: "</em>",
-    spans: true
+    spans: true,
   },
   {
     quote: "``",
     openTag: "<code>",
     closeTag: "</code>",
-    spans: false
+    spans: false,
   },
   {
     quote: "`",
     openTag: "<code>",
     closeTag: "</code>",
-    spans: false
+    spans: false,
   },
   {
     quote: "~~",
     openTag: "<del>",
     closeTag: "</del>",
-    spans: true
-  }
+    spans: true,
+  },
 ];
 
 export let quotesRe: RegExp // Searches for quoted text.
@@ -62,20 +62,20 @@ let unescapeRe: RegExp // Searches for escaped quotes.
 
 // Reset definitions to defaults.
 export function init(): void {
-  defs = DEFAULT_DEFS.map(def => Utils.copy(def));
+  defs = DEFAULT_DEFS.map((def) => Utils.copy(def));
   initializeRegExps();
 }
 
 // Synthesise re's to find and unescape quotes.
 export function initializeRegExps(): void {
-  let quotes = defs.map(def => Utils.escapeRegExp(def.quote));
+  let quotes = defs.map((def) => Utils.escapeRegExp(def.quote));
   // $1 is quote character(s), $2 is quoted text.
   // Quoted text cannot begin or end with whitespace.
   // Quoted can span multiple lines.
   // Quoted text cannot end with a backslash.
   quotesRe = RegExp(
     "\\\\?(" + quotes.join("|") + ")([^\\s\\\\]|\\S[\\s\\S]*?[^\\s\\\\])\\1",
-    "g"
+    "g",
   );
   // $1 is quote character(s).
   unescapeRe = RegExp("\\\\(" + quotes.join("|") + ")", "g");
@@ -83,7 +83,7 @@ export function initializeRegExps(): void {
 
 // Return the quote definition corresponding to 'quote' character, return undefined if not found.
 export function getDefinition(quote: string): Definition {
-  return defs.filter(def => def.quote === quote)[0];
+  return defs.filter((def) => def.quote === quote)[0];
 }
 
 // Strip backslashes from quote characters.

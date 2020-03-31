@@ -24,7 +24,7 @@ export function init(): void {
   // Initialize predefined macros.
   defs = [
     { name: "--", value: "" },
-    { name: "--header-ids", value: "" }
+    { name: "--header-ids", value: "" },
   ];
 }
 
@@ -52,7 +52,7 @@ export function setValue(name: string, value: string, quote: string): void {
   }
   if (name === "--" && value !== "") {
     Options.errorCallback(
-      "the predefined blank '--' macro cannot be redefined"
+      "the predefined blank '--' macro cannot be redefined",
     );
     return;
   }
@@ -61,7 +61,7 @@ export function setValue(name: string, value: string, quote: string): void {
       value = eval(value); // tslint:disable-line no-eval
     } catch (e) {
       Options.errorCallback(
-        `illegal macro expression: ${e.message}: ${value}`
+        `illegal macro expression: ${e.message}: ${value}`,
       );
     }
   }
@@ -82,10 +82,10 @@ export function render(text: string, silent: boolean = false): string {
   const MATCH_COMPLEX = /\\?{([\w\-]+)([!=|?](?:|[^]*?[^\\]))}/g; // Parametrized, Inclusion and Exclusion invocations.
   const MATCH_SIMPLE = /\\?{([\w\-]+)()}/g; // Simple macro invocation.
   let result = text;
-  [MATCH_SIMPLE, MATCH_COMPLEX].forEach(find => {
+  [MATCH_SIMPLE, MATCH_COMPLEX].forEach((find) => {
     result = result.replace(
       find,
-      function(match: string, ...submatches: string[]): string {
+      function (match: string, ...submatches: string[]): string {
         if (match[0] === "\\") {
           return match.slice(1);
         }
@@ -94,7 +94,7 @@ export function render(text: string, silent: boolean = false): string {
         if (params[0] === "?") { // DEPRECATED: Existential macro invocation.
           if (!silent) {
             Options.errorCallback(
-              "existential macro invocations are deprecated: " + match
+              "existential macro invocations are deprecated: " + match,
             );
           }
           return match;
@@ -120,12 +120,12 @@ export function render(text: string, silent: boolean = false): string {
             const PARAM_RE = /\\?(\$\$?)(\d+)(\\?:(|[^]*?[^\\])\$)?/g;
             value = (value || "").replace(
               PARAM_RE,
-              function(
+              function (
                 match: string,
                 p1: string,
                 p2: string,
                 p3: string | undefined,
-                p4: string
+                p4: string,
               ): string {
                 if (match[0] === "\\") { // Unescape escaped macro parameters.
                   return match.slice(1);
@@ -149,7 +149,7 @@ export function render(text: string, silent: boolean = false): string {
                   param = Spans.render(param);
                 }
                 return param;
-              }
+              },
             );
             return value;
           case "!": // Exclusion macro.
@@ -161,7 +161,7 @@ export function render(text: string, silent: boolean = false): string {
             } catch {
               if (!silent) {
                 Options.errorCallback(
-                  "illegal macro regular expression: " + pattern + ": " + text
+                  "illegal macro regular expression: " + pattern + ": " + text,
                 );
               }
               return match;
@@ -174,13 +174,13 @@ export function render(text: string, silent: boolean = false): string {
             Options.errorCallback("illegal macro syntax: " + match[0]);
             return "";
         }
-      }
+      },
     );
   });
   // Delete lines flagged by Inclusion/Exclusion macros.
   if (result.indexOf("\u0002") !== -1) {
     result = result.split("\n")
-      .filter(line => line.indexOf("\u0002") === -1)
+      .filter((line) => line.indexOf("\u0002") === -1)
       .join("\n");
   }
   return result;

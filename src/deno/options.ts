@@ -97,7 +97,7 @@ export function updateOptions(options: RenderOptions): void {
   if ("safeMode" in options) setSafeMode(options.safeMode);
   if ("htmlReplacement" in options) {
     setHtmlReplacement(
-      options.htmlReplacement
+      options.htmlReplacement,
     );
   }
 }

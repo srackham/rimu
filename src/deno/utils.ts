@@ -34,9 +34,9 @@ export function replaceSpecialChars(s: string): string {
 export function replaceMatch(
   match: RegExpExecArray,
   replacement: string,
-  expansionOptions: ExpansionOptions = {}
+  expansionOptions: ExpansionOptions = {},
 ): string {
-  return replacement.replace(/(\${1,2})(\d)/g, function(): string {
+  return replacement.replace(/(\${1,2})(\d)/g, function (): string {
     // Replace $1, $2 ... with corresponding match groups.
     if (arguments[1] === "$$") {
       expansionOptions.spans = true;
@@ -74,7 +74,7 @@ export function merge(target: any, source: any): void {
 // Replace the inline elements specified in options in text and return the result.
 export function replaceInline(
   text: string,
-  expansionOptions: ExpansionOptions
+  expansionOptions: ExpansionOptions,
 ): string {
   if (expansionOptions.macros) {
     text = Macros.render(text);
@@ -179,11 +179,11 @@ export namespace BlockAttributes {
         // Inject CSS styles into first existing style attribute in first tag.
         tag = tag.replace(
           re,
-          function(match: string, p1: string, p2: string): string {
+          function (match: string, p1: string, p2: string): string {
             p2 = p2.trim();
             if (p2 && p2.substr(-1) !== ";") p2 += ";";
             return `${p1}${p2} ${css}"`;
-          }
+          },
         );
       } else {
         attrs += ` style="${css}"`;

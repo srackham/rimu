@@ -32,7 +32,7 @@ let defs: Definition[] = [
     listOpenTag: "<ul>",
     listCloseTag: "</ul>",
     itemOpenTag: "<li>",
-    itemCloseTag: "</li>"
+    itemCloseTag: "</li>",
   },
   // Ordered lists.
   // $1 is list ID $2 is item text.
@@ -41,7 +41,7 @@ let defs: Definition[] = [
     listOpenTag: "<ol>",
     listCloseTag: "</ol>",
     itemOpenTag: "<li>",
-    itemCloseTag: "</li>"
+    itemCloseTag: "</li>",
   },
   // Definition lists.
   // $1 is term, $2 is list ID, $3 is definition.
@@ -52,8 +52,8 @@ let defs: Definition[] = [
     itemOpenTag: "<dd>",
     itemCloseTag: "</dd>",
     termOpenTag: "<dt>",
-    termCloseTag: "</dt>"
-  }
+    termCloseTag: "</dt>",
+  },
 ];
 
 let ids: string[] // Stack of open list IDs.
@@ -75,7 +75,7 @@ export function render(reader: Io.Reader, writer: Io.Writer): boolean {
 function renderList(
   item: ItemInfo,
   reader: Io.Reader,
-  writer: Io.Writer
+  writer: Io.Writer,
 ): ItemInfo | null {
   ids.push(item.id);
   writer.write(BlockAttributes.inject(item.def.listOpenTag));
@@ -96,7 +96,7 @@ function renderList(
 function renderListItem(
   item: ItemInfo,
   reader: Io.Reader,
-  writer: Io.Writer
+  writer: Io.Writer,
 ): ItemInfo | null {
   let def = item.def;
   let match = item.match;
@@ -146,7 +146,7 @@ function renderListItem(
         DelimitedBlocks.render(
           reader,
           attached_lines,
-          ["comment", "code", "division", "html", "quote"]
+          ["comment", "code", "division", "html", "quote"],
         )
       ) {
         attached_done = true;
@@ -161,7 +161,7 @@ function renderListItem(
         DelimitedBlocks.render(
           reader,
           attached_lines,
-          ["indented", "quote-paragraph"]
+          ["indented", "quote-paragraph"],
         )
       ) {
         attached_done = true;

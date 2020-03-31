@@ -21,7 +21,7 @@ export {
  */
 export function render(
   source: string,
-  opts: Options.RenderOptions = {}
+  opts: Options.RenderOptions = {},
 ): string {
   Options.updateOptions(opts);
   return Api.render(source);

@@ -22,7 +22,7 @@ export interface Definition {
   contentFilter?: (
     text: string,
     match: string[],
-    expansionOptions: Utils.ExpansionOptions
+    expansionOptions: Utils.ExpansionOptions,
   ) => string;
   expansionOptions: Utils.ExpansionOptions;
 }
@@ -40,10 +40,10 @@ const DEFAULT_DEFS: Definition[] = [
     openTag: "",
     closeTag: "",
     expansionOptions: {
-      macros: true
+      macros: true,
     },
     delimiterFilter: delimiterTextFilter,
-    contentFilter: macroDefContentFilter
+    contentFilter: macroDefContentFilter,
   },
   // Multi-line macro expression value definition.
   // DEPRECATED as of 11.0.0.
@@ -53,10 +53,10 @@ const DEFAULT_DEFS: Definition[] = [
     openTag: "",
     closeTag: "",
     expansionOptions: {
-      macros: true
+      macros: true,
     },
     delimiterFilter: delimiterTextFilter,
-    contentFilter: macroDefContentFilter
+    contentFilter: macroDefContentFilter,
   },
   // Comment block.
   {
@@ -67,8 +67,8 @@ const DEFAULT_DEFS: Definition[] = [
     closeTag: "",
     expansionOptions: {
       skip: true,
-      specials: true // Fall-back if skip is disabled.
-    }
+      specials: true, // Fall-back if skip is disabled.
+    },
   },
   // Division block.
   {
@@ -78,9 +78,9 @@ const DEFAULT_DEFS: Definition[] = [
     closeTag: "</div>",
     expansionOptions: {
       container: true,
-      specials: true // Fall-back if container is disabled.
+      specials: true, // Fall-back if container is disabled.
     },
-    delimiterFilter: classInjectionFilter
+    delimiterFilter: classInjectionFilter,
   },
   // Quote block.
   {
@@ -90,9 +90,9 @@ const DEFAULT_DEFS: Definition[] = [
     closeTag: "</blockquote>",
     expansionOptions: {
       container: true,
-      specials: true // Fall-back if container is disabled.
+      specials: true, // Fall-back if container is disabled.
     },
-    delimiterFilter: classInjectionFilter
+    delimiterFilter: classInjectionFilter,
   },
   // Code block.
   {
@@ -102,13 +102,13 @@ const DEFAULT_DEFS: Definition[] = [
     closeTag: "</code></pre>",
     expansionOptions: {
       macros: false,
-      specials: true
+      specials: true,
     },
-    verify: function(match: RegExpMatchArray): boolean {
+    verify: function (match: RegExpMatchArray): boolean {
       // The deprecated '-' delimiter does not support appended class names.
       return !(match[1][0] === "-" && match[2].trim() !== "");
     },
-    delimiterFilter: classInjectionFilter
+    delimiterFilter: classInjectionFilter,
   },
   // HTML block.
   {
@@ -122,9 +122,9 @@ const DEFAULT_DEFS: Definition[] = [
     openTag: "",
     closeTag: "",
     expansionOptions: {
-      macros: true
+      macros: true,
     },
-    verify: function(match: RegExpMatchArray): boolean {
+    verify: function (match: RegExpMatchArray): boolean {
       // Return false if the HTML tag is an inline (non-block) HTML tag.
       if (match[2]) { // Matched alphanumeric tag name.
         return !MATCH_INLINE_TAG.test(match[2]);
@@ -133,7 +133,7 @@ const DEFAULT_DEFS: Definition[] = [
       }
     },
     delimiterFilter: delimiterTextFilter,
-    contentFilter: Options.htmlSafeModeFilter
+    contentFilter: Options.htmlSafeModeFilter,
   },
   // Indented paragraph.
   {
@@ -144,21 +144,21 @@ const DEFAULT_DEFS: Definition[] = [
     closeTag: "</code></pre>",
     expansionOptions: {
       macros: false,
-      specials: true
+      specials: true,
     },
     delimiterFilter: delimiterTextFilter,
-    contentFilter: function(text: string): string {
+    contentFilter: function (text: string): string {
       // Strip indent from start of each line.
       let first_indent = text.search(/\S/);
       return text.split("\n")
-        .map(line => {
+        .map((line) => {
           // Strip first line indent width or up to first non-space character.
           let indent = line.search(/\S|$/);
           if (indent > first_indent) indent = first_indent;
           return line.slice(indent);
         })
         .join("\n");
-    }
+    },
   },
   // Quote paragraph.
   {
@@ -170,19 +170,19 @@ const DEFAULT_DEFS: Definition[] = [
     expansionOptions: {
       macros: true,
       spans: true,
-      specials: true // Fall-back if spans is disabled.
+      specials: true, // Fall-back if spans is disabled.
     },
     delimiterFilter: delimiterTextFilter,
-    contentFilter: function(text: string): string {
+    contentFilter: function (text: string): string {
       // Strip leading > from start of each line and unescape escaped leading >.
       return text.split("\n")
-        .map(line =>
+        .map((line) =>
           line
             .replace(/^>/, "")
             .replace(/^\\>/, ">")
         )
         .join("\n");
-    }
+    },
   },
   // Paragraph (lowest priority, cannot be escaped).
   {
@@ -194,15 +194,15 @@ const DEFAULT_DEFS: Definition[] = [
     expansionOptions: {
       macros: true,
       spans: true,
-      specials: true // Fall-back if spans is disabled.
+      specials: true, // Fall-back if spans is disabled.
     },
-    delimiterFilter: delimiterTextFilter
-  }
+    delimiterFilter: delimiterTextFilter,
+  },
 ];
 
 // Reset definitions to defaults.
 export function init(): void {
-  defs = DEFAULT_DEFS.map(def => Utils.copy(def));
+  defs = DEFAULT_DEFS.map((def) => Utils.copy(def));
   // Copy definition object fields.
   defs.forEach((def, i) =>
     def.expansionOptions = Utils.copy(DEFAULT_DEFS[i].expansionOptions)
@@ -214,7 +214,7 @@ export function init(): void {
 export function render(
   reader: Io.Reader,
   writer: Io.Writer,
-  allowed: string[] = []
+  allowed: string[] = [],
 ): boolean {
   if (reader.eof()) Options.panic("premature eof");
   for (let def of defs) {
@@ -258,7 +258,7 @@ export function render(
         spans: false,
         specials: false,
         container: false,
-        skip: false
+        skip: false,
       };
       Utils.merge(expansionOptions, def.expansionOptions);
       Utils.merge(expansionOptions, BlockAttributes.options);
@@ -304,13 +304,13 @@ export function render(
 
 // Return block definition or undefined if not found.
 export function getDefinition(name: string): Definition {
-  return defs.filter(def => def.name === name)[0];
+  return defs.filter((def) => def.name === name)[0];
 }
 
 // Parse block-options string into blockOptions.
 export function setBlockOptions(
   blockOptions: Utils.ExpansionOptions,
-  optionsString: string
+  optionsString: string,
 ): void {
   if (optionsString) {
     let opts = optionsString.trim().split(/\s+/);
@@ -335,16 +335,16 @@ export function setDefinition(name: string, value: string): void {
   if (!def) {
     Options.errorCallback(
       "illegal delimited block name: " + name + ": |" + name + "|='" + value +
-        "'"
+        "'",
     );
     return;
   }
   let match = value.trim().match(
-    /^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/
+    /^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/,
   );
   if (match === null) {
     Options.errorCallback(
-      "illegal delimited block definition: |" + name + "|='" + value + "'"
+      "illegal delimited block definition: |" + name + "|='" + value + "'",
     );
     return;
   }
@@ -379,7 +379,7 @@ function classInjectionFilter(this: Definition, match: string[]): string {
 function macroDefContentFilter(
   text: string,
   match: string[],
-  expansionOptions: Utils.ExpansionOptions
+  expansionOptions: Utils.ExpansionOptions,
 ): string {
   let quote = match[0][match[0].length - match[1].length - 1]; // The leading macro value quote character.
   let name = (match[0].match(/^{([\w\-]+\??)}/) as RegExpMatchArray)[1]; // Extract macro name from opening delimiter.

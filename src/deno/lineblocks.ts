@@ -20,13 +20,13 @@ let defs: Definition[] = [
 
   // Comment line.
   {
-    match: /^\\?\/{2}(.*)$/
+    match: /^\\?\/{2}(.*)$/,
   },
   // Expand lines prefixed with a macro invocation prior to all other processing.
   // macro name = $1, macro value = $2
   {
     match: Macros.MATCH_LINE,
-    verify: function(match: RegExpExecArray, reader: Io.Reader): boolean {
+    verify: function (match: RegExpExecArray, reader: Io.Reader): boolean {
       if (
         Macros.LITERAL_DEF_OPEN.test(match[0]) ||
         Macros.EXPRESSION_DEF_OPEN.test(match[0])
@@ -48,33 +48,33 @@ let defs: Definition[] = [
       let spliceArgs: [number, number, ...any[]] = [
         reader.pos + 1,
         0,
-        ...value.split("\n")
+        ...value.split("\n"),
       ];
       Array.prototype.splice.apply(reader.lines, spliceArgs);
       return true;
     },
-    filter: function(match: RegExpExecArray, reader: Io.Reader): string {
+    filter: function (match: RegExpExecArray, reader: Io.Reader): string {
       return ""; // Already processed in the `verify` function.
-    }
+    },
   },
   // Delimited Block definition.
   // name = $1, definition = $2
   {
     match: /^\\?\|([\w\-]+)\|\s*=\s*'(.*)'$/,
-    filter: function(match: RegExpExecArray): string {
+    filter: function (match: RegExpExecArray): string {
       if (Options.isSafeModeNz()) {
         return ""; // Skip if a safe mode is set.
       }
       match[2] = Utils.replaceInline(match[2], { macros: true });
       DelimitedBlocks.setDefinition(match[1], match[2]);
       return "";
-    }
+    },
   },
   // Quote definition.
   // quote = $1, openTag = $2, separator = $3, closeTag = $4
   {
     match: /^(\S{1,2})\s*=\s*'([^|]*)(\|{1,2})(.*)'$/,
-    filter: function(match: RegExpExecArray): string {
+    filter: function (match: RegExpExecArray): string {
       if (Options.isSafeModeNz()) {
         return ""; // Skip if a safe mode is set.
       }
@@ -82,16 +82,16 @@ let defs: Definition[] = [
         quote: match[1],
         openTag: Utils.replaceInline(match[2], { macros: true }),
         closeTag: Utils.replaceInline(match[4], { macros: true }),
-        spans: match[3] === "|"
+        spans: match[3] === "|",
       });
       return "";
-    }
+    },
   },
   // Replacement definition.
   // pattern = $1, flags = $2, replacement = $3
   {
     match: /^\\?\/(.+)\/([igm]*)\s*=\s*'(.*)'$/,
-    filter: function(match: RegExpExecArray): string {
+    filter: function (match: RegExpExecArray): string {
       if (Options.isSafeModeNz()) {
         return ""; // Skip if a safe mode is set.
       }
@@ -101,27 +101,27 @@ let defs: Definition[] = [
       replacement = Utils.replaceInline(replacement, { macros: true });
       Replacements.setDefinition(pattern, flags, replacement);
       return "";
-    }
+    },
   },
   // Macro definition.
   // name = $1, value = $2
   {
     match: Macros.LINE_DEF,
-    filter: function(match: RegExpExecArray): string {
+    filter: function (match: RegExpExecArray): string {
       let name = match[1];
       let quote = match[2];
       let value = match[3];
       value = Utils.replaceInline(value, { macros: true });
       Macros.setValue(name, value, quote);
       return "";
-    }
+    },
   },
   // Headers.
   // $1 is ID, $2 is header text.
   {
     match: /^\\?([#=]{1,6})\s+(.+?)(?:\s+\1)?$/,
     replacement: "<h$1>$$2</h$1>",
-    filter: function(match: RegExpExecArray): string {
+    filter: function (match: RegExpExecArray): string {
       match[1] = match[1].length.toString(); // Replace $1 with header number.
       if (Macros.getValue("--header-ids") && BlockAttributes.id === "") {
         BlockAttributes.id = BlockAttributes.slugify(match[2]);
@@ -129,21 +129,21 @@ let defs: Definition[] = [
       return Utils.replaceMatch(
         match,
         this.replacement as string,
-        { macros: true }
+        { macros: true },
       );
-    }
+    },
   },
   // Block image: <image:src|alt>
   // src = $1, alt = $2
   {
     match: /^\\?<image:([^\s|]+)\|([^]+?)>$/,
-    replacement: '<img src="$1" alt="$2">'
+    replacement: '<img src="$1" alt="$2">',
   },
   // Block image: <image:src>
   // src = $1, alt = $1
   {
     match: /^\\?<image:([^\s|]+?)>$/,
-    replacement: '<img src="$1" alt="$1">'
+    replacement: '<img src="$1" alt="$1">',
   },
   // DEPRECATED as of 3.4.0.
   // Block anchor: <<#id>>
@@ -151,7 +151,7 @@ let defs: Definition[] = [
   {
     match: /^\\?<<#([a-zA-Z][\w\-]*)>>$/,
     replacement: '<div id="$1"></div>',
-    filter: function(match: RegExpExecArray, reader?: Io.Reader): string {
+    filter: function (match: RegExpExecArray, reader?: Io.Reader): string {
       if (Options.skipBlockAttributes()) {
         return "";
       } else {
@@ -159,32 +159,32 @@ let defs: Definition[] = [
         return Utils.replaceMatch(
           match,
           this.replacement as string,
-          { macros: true }
+          { macros: true },
         );
       }
-    }
+    },
   },
   // Block Attributes.
   // Syntax: .class-names #id [html-attributes] block-options
   {
     name: "attributes",
     match: /^\\?\.[a-zA-Z#"\[+-].*$/, // A loose match because Block Attributes can contain macro references.
-    verify: function(match: RegExpExecArray): boolean {
+    verify: function (match: RegExpExecArray): boolean {
       return BlockAttributes.parse(match);
-    }
+    },
   },
   // API Option.
   // name = $1, value = $2
   {
     match: /^\\?\.(\w+)\s*=\s*'(.*)'$/,
-    filter: function(match: RegExpExecArray): string {
+    filter: function (match: RegExpExecArray): string {
       if (!Options.isSafeModeNz()) {
         let value = Utils.replaceInline(match[2], { macros: true });
         Options.setOption(match[1], value);
       }
       return "";
-    }
-  }
+    },
+  },
 ];
 
 // If the next element in the reader is a valid line block render it
@@ -192,7 +192,7 @@ let defs: Definition[] = [
 export function render(
   reader: Io.Reader,
   writer: Io.Writer,
-  allowed: string[] = []
+  allowed: string[] = [],
 ): boolean {
   if (reader.eof()) Options.panic("premature eof");
   for (let def of defs) {

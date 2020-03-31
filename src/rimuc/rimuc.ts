@@ -204,7 +204,7 @@ for (let infile of files) {
   let ext = infile.split(".").pop();
   // Skip .html and pass-through inputs.
   if (!(ext === "html" || (pass && infile === STDIN))) {
-    options.callback = function(message): void {
+    options.callback = function (message): void {
       let msg = message.type + ": " + infile + ": " + message.text;
       if (msg.length > 120) {
         msg = msg.slice(0, 117) + "...";
