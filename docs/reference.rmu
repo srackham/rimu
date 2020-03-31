@@ -1209,7 +1209,7 @@ var html= rimu.render('Hello *Rimu*!');
 ```
 See [Rimu README]({github-rimu}).
 
-#### Deno runtime
+#### Deno
 ``` javascript
 import * as rimu from "https://raw.github.com/srackham/rimu/master/mod.ts";
 
