@@ -42,6 +42,7 @@ const html = rimu.render('Hello *Rimu*!')
 This will output `"<p>Hello <em>Rimu</em>!</p>"`.
 
 ## Installing Rimu
+.no-auto-toc
 ### Node.js
 Use `npm` to install the Node.js Rimu library module and the `rimuc`
 CLI:
@@ -57,6 +58,7 @@ This should print:
 
     <p>Hello <em>Rimu</em>!</p>
 
+.no-auto-toc
 ### Deno
 Deno modules don't need explicit installation just import the module
 URL, for example:
@@ -73,6 +75,7 @@ example, the following example creates the CLI executable named
 
     deno install rimudeno -A https://raw.github.com/srackham/rimu/master/src/deno/rimuc.ts
 
+.no-auto-toc
 ### Browser
 To use Rimu in an HTML Web page include the bundled and minimized
 `rimu.min.js` file from the `./lib` directory in your Web page, for
