@@ -3,12 +3,15 @@
 This is the Rimu TypeScript implementation change log (see also [other Rimu
 implementations]({reference}#rimu-implementations)).
 
-## Version 11.1.8 (2020-04-31)
-This release includes Rimu for the Deno runtime and updates the build scripts
-and build tools but makes no changes Rimu markup behaviour.
+## Version 11.1.8 (2020-04-02)
+This release includes Rimu for the Deno runtime and updates the build scripts,
+build tools and tests but makes no changes to Rimu markup.
 
-- Merged with the Deno port so there is now just one TypeScript code base.
+- Merged the Deno port so there is now just one TypeScript code base.
 - Replaced the Jake.js build tool with [Drake](https://github.com/srackham/drake).
+  Rewrote the build script to be platform independent in TypeScript (`Drakefile.ts`).
+- All tests have been rewritten in TypeScript and are now platform independent
+  (the code base is now 100% TypeScript).
 
 
 ## Version 11.1.7 (2020-03-17)
