@@ -9,6 +9,7 @@ import {
   env,
   glob,
   log,
+  outOfDate,
   quote,
   readFile,
   run,
@@ -30,7 +31,7 @@ const RIMU_MIN_JS = "lib/rimu.min.js";
 const RIMUC_JS = "bin/rimuc.js";
 const DENO_RIMUC_TS = "src/deno/rimuc.ts";
 const RIMUC_EXE = "deno -A " + DENO_RIMUC_TS;
-const RIMU_SRC = glob("src/rimu/*.ts");
+const RIMU_TS_SRC = glob("src/rimu/*.ts");
 const DOCS_INDEX = "docs/index.html";
 const DOCS_SRC = glob("README.md", "docs/*.rmu", "src/**/*.rmu");
 const MANPAGE_RMU = "docs/manpage.rmu";
@@ -93,10 +94,14 @@ task("build", ["build-rimu", "build-rimuc", "build-deno", "build-docs"]);
 
 desc("Compile, bundle and test rimu.js and rimu.min.js UMD library modules");
 task("build-rimu", [RIMU_JS]);
-task(RIMU_JS, [...RIMU_SRC, "src/rimu/webpack.config.js"], async function () {
-  await sh("webpack --mode production --config ./src/rimu/webpack.config.js");
-  await sh("deno test -A test/rimu_test.ts");
-});
+task(
+  RIMU_JS,
+  [...RIMU_TS_SRC, "src/rimu/webpack.config.js"],
+  async function () {
+    await sh("webpack --mode production --config ./src/rimu/webpack.config.js");
+    await sh("deno test -A test/rimu_test.ts");
+  },
+);
 
 desc("Compile and test rimuc to JavaScript executable");
 task("build-rimuc", [RIMUC_JS]);
@@ -120,10 +125,16 @@ task(
 desc(
   "Compile and test Rimu Deno code in src/deno/",
 );
-task("build-deno", ["src/deno/api.ts"]);
-task("src/deno/api.ts", [...RIMU_SRC, DENO_RESOURCES_SRC], async function () {
-  for (const f of RIMU_SRC) {
-    let text = readFile(f);
+task("build-deno", [DENO_RESOURCES_SRC], async function () {
+  let updated = false;
+  // Deno TypeScript module names must be specified with a .ts extension. Add a
+  // .ts extension to TypeScript module names and copy to Deno source directory.
+  for (const prereq of RIMU_TS_SRC) {
+    const target = path.join("src/deno", path.basename(prereq));
+    if (!env("--always-make") && !outOfDate(target, [prereq])) {
+      continue;
+    }
+    let text = readFile(prereq);
     text = text.replace(
       /^((import|export).*from ".*)";/gm,
       '$1.ts";',
@@ -132,13 +143,19 @@ task("src/deno/api.ts", [...RIMU_SRC, DENO_RESOURCES_SRC], async function () {
       /^(} from ".*)";/gm,
       '$1.ts";',
     );
-    writeFile(path.join("src/deno", path.basename(f)), text);
+    writeFile(target, text);
+    log(`updated "${target}"`);
+    updated = true;
   }
-  await sh(`deno fetch ${this.name} ${DENO_RESOURCES_SRC}`); // Compile Deno sources.
-  await sh(
-    "deno test -A test/rimuc_test.ts",
-    { env: { RIMU_BUILD_TARGET: "deno" } },
-  );
+  if (updated) {
+    await sh(`deno fetch ${quote(glob("src/deno/*.ts"))}`); // Compile Deno source.
+    await sh(
+      "deno test -A test/rimuc_test.ts",
+      { env: { RIMU_BUILD_TARGET: "deno" } },
+    );
+  } else {
+    log("(up to date)");
+  }
 });
 
 desc("Install executable wrapper for rimudeno CLI");
