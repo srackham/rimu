@@ -439,7 +439,7 @@ Node.js, Deno and browser platforms.</p>
 const html = rimu.render('Hello *Rimu*!')</code></pre>
 </li></ol><p>This will output <code>"&lt;p&gt;Hello &lt;em&gt;Rimu&lt;/em&gt;!&lt;/p&gt;"</code>.</p>
 <h2 id="installing-rimu">Installing Rimu</h2>
-<h3 id="node-js">Node.js</h3>
+<p><strong>Node.js</strong></p>
 <p>Use <code>npm</code> to install the Node.js Rimu library module and the <code>rimuc</code>
 CLI:</p>
 <pre><code>npm install -g rimu</code></pre>
@@ -448,7 +448,7 @@ working:</p>
 <pre><code>echo "Hello *Rimu*!" | rimuc</code></pre>
 <p>This should print:</p>
 <pre><code>&lt;p&gt;Hello &lt;em&gt;Rimu&lt;/em&gt;!&lt;/p&gt;</code></pre>
-<h3 id="deno">Deno</h3>
+<p><strong>Deno</strong></p>
 <p>Deno modules don't need explicit installation just import the module
 URL, for example:</p>
 <pre class="javascript"><code>import * as rimu from "https://raw.github.com/srackham/rimu/master/mod.ts";
@@ -458,7 +458,7 @@ console.log(rimu.render("Hello *Rimu*!"));</code></pre>
 example, the following example creates the CLI executable named
 <code>rimudeno</code> in <code>$HOME/.deno/bin/rimudeno</code>:</p>
 <pre><code>deno install rimudeno -A https://raw.github.com/srackham/rimu/master/src/deno/rimuc.ts</code></pre>
-<h3 id="browser">Browser</h3>
+<p><strong>Browser</strong></p>
 <p>To use Rimu in an HTML Web page include the bundled and minimized
 <code>rimu.min.js</code> file from the <code>./lib</code> directory in your Web page, for
 example:</p>
