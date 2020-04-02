@@ -348,11 +348,15 @@ desc(
 );
 task("version", [], async function () {
   const vers = env("vers");
+  const currentVers = getPackageVers();
   if (!vers) {
-    console.log(`version: ${getPackageVers()}`);
+    console.log(`version: ${currentVers}`);
   } else {
     if (!vers.match(/^\d+\.\d+\.\d+$/)) {
       abort(`invalid version number: ${vers}`);
+    }
+    if (vers === currentVers) {
+      abort(`current version is ${vers}`);
     }
     updateFile(
       "package.json",
@@ -361,11 +365,16 @@ task("version", [], async function () {
     );
     updateFile(
       "./src/rimuc/rimuc.ts",
-      /(const VERSION = )'\d+\.\d+\.\d+'/,
+      /(const VERSION = )"\d+\.\d+\.\d+"/,
+      `$1'${vers}'`,
+    );
+    updateFile(
+      "./src/deno/rimuc.ts",
+      /(const VERSION = )"\d+\.\d+\.\d+"/,
       `$1'${vers}'`,
     );
     env("vers", vers);
-    await sh('git commit --all -m "Bump version number."');
+    // await sh('git commit --all -m "Bump version number."');
   }
 });
 
