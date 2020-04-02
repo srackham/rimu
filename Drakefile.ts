@@ -25,22 +25,23 @@ const isWindows = Deno.build.os === "win";
 
 /* Inputs and outputs */
 
-const PKG_FILE = "package.json";
-const RIMU_JS = "lib/rimu.js";
-const RIMU_MIN_JS = "lib/rimu.min.js";
-const RIMUC_JS = "bin/rimuc.js";
+const DENO_RESOURCES_SRC = "src/deno/resources.ts";
 const DENO_RIMUC_TS = "src/deno/rimuc.ts";
-const RIMUC_EXE = "deno -A " + DENO_RIMUC_TS;
-const RIMU_TS_SRC = glob("src/rimu/*.ts");
 const DOCS_INDEX = "docs/index.html";
 const DOCS_SRC = glob("README.md", "docs/*.rmu", "src/**/*.rmu");
+const GALLERY_INDEX_DST = "docs/gallery.html";
+const GALLERY_INDEX_SRC = "docs/gallery.rmu";
 const MANPAGE_RMU = "docs/manpage.rmu";
 const MANPAGE_TXT = "src/rimuc/resources/manpage.txt";
-const RESOURCES_SRC = "src/rimuc/resources.ts";
+const PKG_FILE = "package.json";
 const RESOURCE_FILES = glob("src/rimuc/resources/*");
-const DENO_RESOURCES_SRC = "src/deno/resources.ts";
-const GALLERY_INDEX_SRC = "docs/gallery.rmu";
-const GALLERY_INDEX_DST = "docs/gallery.html";
+const RESOURCES_SRC = "src/rimuc/resources.ts";
+const RIMUC_EXE = "deno -A " + DENO_RIMUC_TS;
+const RIMUC_JS = "bin/rimuc.js";
+const RIMUC_TS_SRC = "src/rimuc/rimuc.ts";
+const RIMU_JS = "lib/rimu.js";
+const RIMU_MIN_JS = "lib/rimu.min.js";
+const RIMU_TS_SRC = glob("src/rimu/*.ts");
 
 const DOCS = [
   {
@@ -107,7 +108,7 @@ desc("Compile and test rimuc to JavaScript executable");
 task("build-rimuc", [RIMUC_JS]);
 task(
   RIMUC_JS,
-  [RIMU_JS, RESOURCES_SRC, "src/rimuc/webpack.config.js"],
+  [RIMUC_TS_SRC, RIMU_JS, RESOURCES_SRC, "src/rimuc/webpack.config.js"],
   async function () {
     await sh(
       "webpack --mode production --config ./src/rimuc/webpack.config.js",
