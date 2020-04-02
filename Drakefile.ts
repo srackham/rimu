@@ -99,7 +99,7 @@ task(
   RIMU_JS,
   [...RIMU_TS_SRC, "src/rimu/webpack.config.js"],
   async function () {
-    await sh("webpack --mode production --config ./src/rimu/webpack.config.js");
+    await sh("webpack --mode production --config src/rimu/webpack.config.js");
     await sh("deno test -A test/rimu_test.ts");
   },
 );
@@ -111,7 +111,7 @@ task(
   [RIMUC_TS_SRC, RIMU_JS, RESOURCES_SRC, "src/rimuc/webpack.config.js"],
   async function () {
     await sh(
-      "webpack --mode production --config ./src/rimuc/webpack.config.js",
+      "webpack --mode production --config src/rimuc/webpack.config.js",
     );
     if (!isWindows) {
       Deno.chmodSync(RIMUC_JS, 0o755);
@@ -228,7 +228,7 @@ task(
         " --lang en" +
         ' --title "' + doc.title + '"' +
         " " + doc.rimucOptions + " " +
-        " ./src/examples/example-rimurc.rmu " + "docs/doc-header.rmu " +
+        " src/examples/example-rimurc.rmu " + "docs/doc-header.rmu " +
         doc.src
     );
     await sh(commands);
@@ -250,7 +250,7 @@ task(GALLERY_INDEX_DST, ["build-rimuc", ...DOCS_SRC], async function () {
         " --prepend \"{gallery-options}='" +
         options.replace(/(["{])/g, "\\$1") +
         "'\"" +
-        " ./src/examples/example-rimurc.rmu" +
+        " src/examples/example-rimurc.rmu" +
         " " + "docs/doc-header.rmu" +
         " " + "docs/gallery-example-template.rmu";
       commands.push(command);
@@ -359,23 +359,35 @@ task("version", [], async function () {
     if (vers === currentVers) {
       abort(`current version is ${vers}`);
     }
-    updateFile(
-      "package.json",
-      /(\s*"version"\s*:\s*)"\d+\.\d+\.\d+"/,
-      `$1"${vers}"`,
-    );
-    updateFile(
-      "./src/rimuc/rimuc.ts",
-      /(const VERSION = )"\d+\.\d+\.\d+"/,
-      `$1'${vers}'`,
-    );
-    updateFile(
-      "./src/deno/rimuc.ts",
-      /(const VERSION = )"\d+\.\d+\.\d+"/,
-      `$1'${vers}'`,
-    );
+    if (
+      !updateFile(
+        "package.json",
+        /(\s*"version"\s*:\s*)"\d+\.\d+\.\d+"/,
+        `$1"${vers}"`,
+      )
+    ) {
+      abort("version number not updated: package.json");
+    }
+    if (
+      !updateFile(
+        "src/rimuc/rimuc.ts",
+        /(const VERSION = )"\d+\.\d+\.\d+"/,
+        `$1'${vers}'`,
+      )
+    ) {
+      abort("version number not updated: src/rimuc/rimuc.ts");
+    }
+    if (
+      !updateFile(
+        "src/deno/rimuc.ts",
+        /(const VERSION = )"\d+\.\d+\.\d+"/,
+        `$1'${vers}'`,
+      )
+    ) {
+      abort("version number not updated: src/deno/rimuc.ts");
+    }
     env("vers", vers);
-    // await sh('git commit --all -m "Bump version number."');
+    await sh('git commit --all -m "Bump version number."');
   }
 });
 
