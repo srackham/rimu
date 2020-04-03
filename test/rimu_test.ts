@@ -1,8 +1,8 @@
-import { createRequire } from "https://deno.land/std@v0.38.0/node/module.ts";
+import { createRequire } from "https://deno.land/std@v0.39.0/node/module.ts";
 import {
   assert,
   assertEquals
-} from "https://deno.land/std@v0.38.0/testing/asserts.ts";
+} from "https://deno.land/std@v0.39.0/testing/asserts.ts";
 import {
   env,
   readFile
