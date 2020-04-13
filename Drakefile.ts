@@ -2,7 +2,7 @@
  * Drakefile for Rimu Markup (http://github.com/srackham/rimu).
  */
 
-import * as path from "https://deno.land/std@v0.39.0/path/mod.ts";
+import * as path from "https://deno.land/std@v0.40.0/path/mod.ts";
 import {
   abort,
   desc,
@@ -16,7 +16,7 @@ import {
   sh,
   task,
   updateFile,
-  writeFile
+  writeFile,
 } from "https://raw.github.com/srackham/drake/master/mod.ts";
 
 env("--default-task", "build");
@@ -62,7 +62,7 @@ const DOCS = [
     title: "Rimu Reference",
     rimucOptions:
       "--highlightjs --prepend \"{generate-examples}='yes'\" --prepend-file " +
-        MANPAGE_RMU,
+      MANPAGE_RMU,
   },
   {
     src: "docs/tips.rmu",
@@ -222,14 +222,14 @@ task(
     // console.log(this.prereqs);
     const commands = DOCS.map((doc) =>
       RIMUC_EXE +
-        " --no-rimurc --theme legend --custom-toc --header-links" +
-        " --layout sequel" +
-        ' --output "' + doc.dst + '"' +
-        " --lang en" +
-        ' --title "' + doc.title + '"' +
-        " " + doc.rimucOptions + " " +
-        " src/examples/example-rimurc.rmu " + "docs/doc-header.rmu " +
-        doc.src
+      " --no-rimurc --theme legend --custom-toc --header-links" +
+      " --layout sequel" +
+      ' --output "' + doc.dst + '"' +
+      " --lang en" +
+      ' --title "' + doc.title + '"' +
+      " " + doc.rimucOptions + " " +
+      " src/examples/example-rimurc.rmu " + "docs/doc-header.rmu " +
+      doc.src
     );
     await sh(commands);
     await validate_docs();

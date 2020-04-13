@@ -11,7 +11,7 @@ import * as Options from "./options.ts";
 export {
   CallbackFunction,
   CallbackMessage,
-  RenderOptions as Options
+  RenderOptions as Options,
 } from "./options.ts";
 
 /*

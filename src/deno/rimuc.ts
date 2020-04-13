@@ -5,9 +5,9 @@
 import {
   existsSync,
   readFileStrSync,
-  writeFileStrSync
-} from "https://deno.land/std@v0.39.0/fs/mod.ts";
-import { resolve } from "https://deno.land/std@v0.39.0/path/mod.ts";
+  writeFileStrSync,
+} from "https://deno.land/std@v0.40.0/fs/mod.ts";
+import { resolve } from "https://deno.land/std@v0.40.0/path/mod.ts";
 import { resources } from "./resources.ts";
 import * as rimu from "./rimu.ts";
 

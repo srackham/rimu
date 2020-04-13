@@ -1,13 +1,13 @@
 import {
   assert,
   assertEquals,
-  assertNotEquals
-} from "https://deno.land/std@v0.39.0/testing/asserts.ts";
+  assertNotEquals,
+} from "https://deno.land/std@v0.40.0/testing/asserts.ts";
 import {
   env,
   readFile,
   shCapture,
-  ShOutput
+  ShOutput,
 } from "https://raw.github.com/srackham/drake/master/mod.ts";
 
 type RimucTest = {

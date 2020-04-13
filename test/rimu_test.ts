@@ -1,11 +1,11 @@
-import { createRequire } from "https://deno.land/std@v0.39.0/node/module.ts";
+import { createRequire } from "https://deno.land/std@v0.40.0/node/module.ts";
 import {
   assert,
-  assertEquals
-} from "https://deno.land/std@v0.39.0/testing/asserts.ts";
+  assertEquals,
+} from "https://deno.land/std@v0.40.0/testing/asserts.ts";
 import {
   env,
-  readFile
+  readFile,
 } from "https://raw.github.com/srackham/drake/master/mod.ts";
 
 env("--abort-exits", false);
