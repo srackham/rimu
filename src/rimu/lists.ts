@@ -175,7 +175,7 @@ function renderListItem(
   text = Utils.replaceInline(text, { macros: true, spans: true });
   writer.write(text);
   // Write attachment and child list.
-  writer.buffer = writer.buffer.concat(attached_lines.buffer);
+  writer.buffer = [...writer.buffer, ...attached_lines.buffer];
   // Close list item.
   writer.write(def.itemCloseTag);
   return next_item;

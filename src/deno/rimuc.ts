@@ -165,7 +165,7 @@ if (!no_rimurc && existsSync(RIMURC)) {
 if (prepend !== "") {
   prepend_files.push(PREPEND);
 }
-files = prepend_files.concat(files);
+files = [...prepend_files, ...files];
 // Convert Rimu source files to HTML.
 let output = "";
 let errors = 0;
