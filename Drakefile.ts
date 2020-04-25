@@ -2,7 +2,7 @@
  * Drakefile for Rimu Markup (http://github.com/srackham/rimu).
  */
 
-import * as path from "https://deno.land/std@v0.40.0/path/mod.ts";
+import * as path from "https://deno.land/std@v0.41.0/path/mod.ts";
 import {
   abort,
   desc,
@@ -17,7 +17,7 @@ import {
   task,
   updateFile,
   writeFile,
-} from "https://raw.github.com/srackham/drake/master/mod.ts";
+} from "https://raw.github.com/srackham/drake/v0.41.0/mod.ts";
 
 env("--default-task", "build");
 
@@ -149,7 +149,7 @@ task("build-deno", [DENO_RESOURCES_SRC], async function () {
     updated = true;
   }
   if (updated) {
-    await sh(`deno fetch ${quote(glob("src/deno/*.ts"))}`); // Compile Deno source.
+    await sh(`deno cache ${quote(glob("src/deno/*.ts"))}`); // Compile Deno source.
     await sh(
       "deno test -A test/rimuc_test.ts",
       { env: { RIMU_BUILD_TARGET: "deno" } },

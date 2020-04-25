@@ -6,8 +6,8 @@ import {
   existsSync,
   readFileStrSync,
   writeFileStrSync,
-} from "https://deno.land/std@v0.40.0/fs/mod.ts";
-import { resolve } from "https://deno.land/std@v0.40.0/path/mod.ts";
+} from "https://deno.land/std@v0.41.0/fs/mod.ts";
+import { resolve } from "https://deno.land/std@v0.41.0/path/mod.ts";
 import { resources } from "./resources.ts";
 import * as rimu from "./rimu.ts";
 
@@ -188,7 +188,7 @@ for (let infile of files) {
   } else {
     if (infile === STDIN) {
       try {
-        source = new TextDecoder().decode(Deno.readAllSync(Deno.stdin));
+        source = new TextDecoder().decode(await Deno.readAll(Deno.stdin));
       } catch (e) {
         die(`error reading stdin: ${e.message}`);
       }
