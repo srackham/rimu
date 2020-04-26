@@ -37,7 +37,7 @@ async function runTest(test: RimucTest, buildTarget: BuiltTarget): Promise<
   }
   if (!buildTarget || buildTarget === "deno") {
     shout = await shCapture(
-      `deno --allow-env --allow-read src/deno/rimuc.ts --no-rimurc ${test
+      `deno --allow-env --allow-read --quiet src/deno/rimuc.ts --no-rimurc ${test
         .args ?? ""}`,
       { input: test.input, stderr: "piped" },
     );
