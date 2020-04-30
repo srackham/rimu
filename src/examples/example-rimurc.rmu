@@ -21,6 +21,9 @@
 /\\?\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
 /^\\?(NOTES?|IMPORTANT|WARNINGS?|TIPS?):/ = '<b>$1</b>:'
 
+// Horizontal rule (3 or more underscore, asterisk or hyphen characters).
+/^(_{3,}|\*{3,}|-{3,})$/ = '<hr>'
+
 
 /*
   Macros
@@ -32,15 +35,11 @@
 {sup} = '<sup>$1</sup>'
 {sub} = '<sub>$1</sub>'
 
-// DEPRECATED
-// Bootstrap2 icons e.g. {icon|trash}.
-// See http://getbootstrap.com/components/#glyphicons
-{icon} = '<span class="icon-$1"></span>'
 
 /*
   Quotes
 */
-// Double-underline (overrides built-in strong quote).
+// Underline (overrides built-in strong quote).
 __ = '<u>|</u>'
 // Left and right double-quote characters.
 " = '&ldquo;|&rdquo;'
