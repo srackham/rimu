@@ -2,14 +2,12 @@
  * Drakefile for Rimu Markup (http://github.com/srackham/rimu).
  */
 
-import * as path from "https://deno.land/std@v0.41.0/path/mod.ts";
 import {
   abort,
   desc,
   env,
   glob,
   log,
-  outOfDate,
   quote,
   readFile,
   run,
@@ -17,7 +15,9 @@ import {
   task,
   updateFile,
   writeFile,
-} from "https://raw.github.com/srackham/drake/v0.41.0/mod.ts";
+} from "file:///home/srackham/local/projects/drake/mod.ts";
+import * as path from "https://deno.land/std@v0.41.0/path/mod.ts";
+// } from "https://raw.github.com/srackham/drake/v0.41.0/mod.ts";
 
 env("--default-task", "build");
 
@@ -25,8 +25,6 @@ const isWindows = Deno.build.os === "win";
 
 /* Inputs and outputs */
 
-const DENO_RESOURCES_SRC = "src/deno/resources.ts";
-const DENO_RIMUC_TS = "src/deno/rimuc.ts";
 const DOCS_INDEX = "docs/index.html";
 const DOCS_SRC = glob("README.md", "docs/*.rmu", "src/**/*.rmu");
 const GALLERY_INDEX_DST = "docs/gallery.html";
@@ -36,12 +34,17 @@ const MANPAGE_TXT = "src/rimuc/resources/manpage.txt";
 const PKG_FILE = "package.json";
 const RESOURCE_FILES = glob("src/rimuc/resources/*");
 const RESOURCES_SRC = "src/rimuc/resources.ts";
-const RIMUC_EXE = "deno -A " + DENO_RIMUC_TS;
 const RIMUC_JS = "bin/rimuc.js";
 const RIMUC_TS_SRC = "src/rimuc/rimuc.ts";
 const RIMU_JS = "lib/rimu.js";
 const RIMU_MIN_JS = "lib/rimu.min.js";
 const RIMU_TS_SRC = glob("src/rimu/*.ts");
+const DENO_TS_SRC = RIMU_TS_SRC.map((f) =>
+  path.join("src/deno", path.basename(f))
+);
+const DENO_RESOURCES_SRC = "src/deno/resources.ts";
+const DENO_RIMUC_TS = "src/deno/rimuc.ts";
+const RIMUC_EXE = "deno -A " + DENO_RIMUC_TS;
 
 const DOCS = [
   {
@@ -123,19 +126,12 @@ task(
   },
 );
 
-desc(
-  "Compile and test Rimu Deno code in src/deno/",
-);
-task("build-deno", [DENO_RESOURCES_SRC], async function () {
-  let updated = false;
-  // Deno TypeScript module names must be specified with a .ts extension. Add a
-  // .ts extension to TypeScript module names and copy to Deno source directory.
-  for (const prereq of RIMU_TS_SRC) {
-    const target = path.join("src/deno", path.basename(prereq));
-    if (!env("--always-make") && !outOfDate(target, [prereq])) {
-      continue;
-    }
-    let text = readFile(prereq);
+// Create tasks for Deno source files.
+// Deno TypeScript module names must be specified with a .ts extension. Add a
+// .ts extension to TypeScript module names and copy to Deno source directory.
+for (const i in DENO_TS_SRC) {
+  task(DENO_TS_SRC[i], [RIMU_TS_SRC[i]], function () {
+    let text = readFile(this.prereqs[0]);
     text = text.replace(
       /^((import|export).*from ".*)";/gm,
       '$1.ts";',
@@ -144,20 +140,15 @@ task("build-deno", [DENO_RESOURCES_SRC], async function () {
       /^(} from ".*)";/gm,
       '$1.ts";',
     );
-    writeFile(target, text);
-    log(`updated "${target}"`);
-    updated = true;
-  }
-  if (updated) {
-    await sh(`deno cache ${quote(glob("src/deno/*.ts"))}`); // Compile Deno source.
-    await sh(
-      "deno test -A test/rimuc_test.ts",
-      { env: { RIMU_BUILD_TARGET: "deno" } },
-    );
-  } else {
-    log("(up to date)");
-  }
-});
+    writeFile(this.name, text);
+    log(`updated "${this.name}"`);
+  });
+}
+
+desc(
+  "Build Rimu Deno code in src/deno/",
+);
+task("build-deno", [DENO_RESOURCES_SRC, ...DENO_TS_SRC]);
 
 desc("Install executable wrapper for rimudeno CLI");
 task("install-deno", ["build-deno"], async function () {
@@ -213,13 +204,19 @@ desc("Generate and validate documentation");
 task("build-docs", [DOCS_INDEX]);
 task(
   DOCS_INDEX,
-  [MANPAGE_RMU, ...DOCS_SRC, GALLERY_INDEX_DST, "build-rimu"],
+  [
+    MANPAGE_RMU,
+    ...DOCS_SRC,
+    GALLERY_INDEX_DST,
+    RIMUC_JS,
+    DENO_RIMUC_TS,
+    ...DENO_TS_SRC,
+  ],
   async function () {
     await Deno.copyFile(
       RIMU_MIN_JS,
       `docs/${path.basename(RIMU_MIN_JS)}`,
     );
-    // console.log(this.prereqs);
     const commands = DOCS.map((doc) =>
       RIMUC_EXE +
       " --no-rimurc --theme legend --custom-toc --header-links" +
@@ -237,7 +234,7 @@ task(
 );
 
 // Generate gallery documentation examples.
-task(GALLERY_INDEX_DST, ["build-rimuc", ...DOCS_SRC], async function () {
+task(GALLERY_INDEX_DST, DOCS_SRC, async function () {
   gallery_index();
   let commands: any[] = [];
   forEachGalleryDocument(
