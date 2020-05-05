@@ -289,15 +289,25 @@ or special configuration file syntax were necessary.
 
 Copyright (C) 2015 -- trademarked(TM).
 
-"Left and right double-quotes".
+"Left and right double-quotes". `Non-breaking code quotes`.
+
+~~Strikethrough~~ and __underlining__.
 
 The 3\\{sup|rd} H\\{sub|2}O molecule...
 
 **********************
 
-IMPORTANT: Admonition.
+Markdown style horizontal rules.
 
 **********************
+
+IMPORTANT: Admonition.
+
+NOTE: Admonition.
+
+TIP: Admonition.
+
+WARNING: Admonition.
 
 TODO 10 examples +-2'
 

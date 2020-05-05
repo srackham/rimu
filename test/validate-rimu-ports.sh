@@ -101,7 +101,7 @@ fi
 if ! stringContains "$*" --skip-tests; then
     echo "Running tests..."
     cd $TS
-    deno -A Drakefile.ts test
+    deno run -A --unstable Drakefile.ts test
 
     cd $GO
     make
@@ -117,7 +117,7 @@ if ! stringContains "$*" --skip-tests; then
     make clean build install
 
     cd $TS
-    deno -A Drakefile.ts install-deno
+    deno run -A --unstable Drakefile.ts install-deno
 fi
 
 # Compile Rimu documentation with all ports and compare.
@@ -177,7 +177,7 @@ for doc in reference tips changelog; do
 
     # The rimudeno CLI wrapper adds an extra shell invocation and is slower so we time the raw `deno` command.
     start
-    eval deno --allow-env --allow-read --allow-write $TS/src/deno/rimuc.ts --output $DENO_DOC $ARGS ./docs/$doc.rmu
+    eval deno run -A $TS/src/deno/rimuc.ts --output $DENO_DOC $ARGS ./docs/$doc.rmu
     DENO_TIME=$(duration $DENO_TIME)
     eval $HOME/.deno/bin/rimudeno --output $DENO_DOC $ARGS ./docs/$doc.rmu
 

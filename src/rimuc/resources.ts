@@ -1827,7 +1827,7 @@ hljs.initHighlightingOnLoad();
     border: none;
     white-space: pre-wrap;
   }
-{--!} So hyphenated words like \x60--word-wrap\x60 are not broken (there is no CSS property that will break on white space only).
+{--!} Do not break hyphenated words or white space inside code quotes.
   *:not(pre) > code {
     white-space: nowrap;
   }

@@ -43,3 +43,5 @@
 __ = '<u>|</u>'
 // Left and right double-quote characters.
 " = '&ldquo;|&rdquo;'
+// Don't break code quotes.
+//` = '<code style="white-space: nowrap">|</code>'

@@ -8,8 +8,8 @@ import {
   assert,
   assertEquals,
   assertNotEquals,
-} from "https://deno.land/std@v0.42.0/testing/asserts.ts";
-// } from "https://raw.github.com/srackham/drake/v0.42.0/mod.ts";
+} from "https://deno.land/std@v1.0.0-rc1/testing/asserts.ts";
+// } from "https://raw.github.com/srackham/drake/v1.0.0-rc1/mod.ts";
 
 type RimucTest = {
   description: string;
@@ -38,7 +38,7 @@ async function runTest(test: RimucTest, buildTarget: BuiltTarget): Promise<
   }
   if (!buildTarget || buildTarget === "deno") {
     shout = await shCapture(
-      `deno --allow-env --allow-read --quiet src/deno/rimuc.ts --no-rimurc ${test
+      `deno run -A --unstable --quiet src/deno/rimuc.ts --no-rimurc ${test
         .args ?? ""}`,
       { input: test.input, stderr: "piped" },
     );

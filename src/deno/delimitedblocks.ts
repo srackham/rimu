@@ -235,9 +235,7 @@ export function render(
         continue;
       }
       // Process opening delimiter.
-      let delimiterText = def.delimiterFilter
-        ? def.delimiterFilter(match)
-        : "";
+      let delimiterText = def.delimiterFilter ? def.delimiterFilter(match) : "";
       // Read block content into lines.
       let lines: string[] = [];
       if (delimiterText) {
