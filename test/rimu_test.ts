@@ -1,12 +1,13 @@
-import { createRequire } from "https://deno.land/std@v0.41.0/node/module.ts";
-import {
-  assert,
-  assertEquals,
-} from "https://deno.land/std@v0.41.0/testing/asserts.ts";
 import {
   env,
   readFile,
-} from "https://raw.github.com/srackham/drake/v0.41.0/mod.ts";
+} from "file:///home/srackham/local/projects/drake/mod.ts";
+import { createRequire } from "https://deno.land/std@v0.42.0/node/module.ts";
+import {
+  assert,
+  assertEquals,
+} from "https://deno.land/std@v0.42.0/testing/asserts.ts";
+// } from "https://raw.github.com/srackham/drake/v0.42.0/mod.ts";
 
 env("--abort-exits", false);
 
@@ -40,43 +41,38 @@ function catchLint(message: CallbackMessage): never { // Should never be called.
   throw new Error();
 }
 
-Deno.test(
-  function rimuApiTest(): void {
-    assert(
-      rimu.render.constructor === Function,
-      "Rimu.render is a function",
-    );
-  },
-);
+Deno.test("rimuApiTest", function (): void {
+  assert(
+    rimu.render.constructor === Function,
+    "Rimu.render is a function",
+  );
+});
 
-Deno.test(
-  function rimuTest(): void {
-    // Execute tests specified in JSON file.
-    const data = readFile("./test/rimu-tests.json");
-    const tests: RimuTest[] = JSON.parse(data);
-    for (const test of tests) {
-      let msg = "";
-      if (test.expectedCallback === "") {
-        test.options.callback = catchLint;
-      } else {
-        test.options.callback = function (message: CallbackMessage): void {
-          msg += message.type + ": " + message.text + "\n";
-        };
-      }
-      let rendered = rimu.render(test.input, test.options);
-      assertEquals(
-        rendered,
-        test.expectedOutput,
-        `${test.description}: actual: "${rendered}": expected: "${test.expectedOutput}"`,
-      );
-      if (test.expectedCallback !== "") {
-        assertEquals(
-          msg.trim(),
-          test.expectedCallback,
-          `${test.description}: actual: "${msg
-            .trimEnd()}": expected: "${test.expectedCallback}"`,
-        );
-      }
+Deno.test("rimuTest", function (): void {
+  // Execute tests specified in JSON file.
+  const data = readFile("./test/rimu-tests.json");
+  const tests: RimuTest[] = JSON.parse(data);
+  for (const test of tests) {
+    let msg = "";
+    if (test.expectedCallback === "") {
+      test.options.callback = catchLint;
+    } else {
+      test.options.callback = function (message: CallbackMessage): void {
+        msg += message.type + ": " + message.text + "\n";
+      };
     }
-  },
-);
+    let rendered = rimu.render(test.input, test.options);
+    assertEquals(
+      rendered,
+      test.expectedOutput,
+      `${test.description}: actual: "${rendered}": expected: "${test.expectedOutput}"`,
+    );
+    if (test.expectedCallback !== "") {
+      assertEquals(
+        msg.trim(),
+        test.expectedCallback,
+        `${test.description}: actual: "${msg.trimEnd()}": expected: "${test.expectedCallback}"`,
+      );
+    }
+  }
+});

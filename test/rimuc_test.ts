@@ -1,14 +1,15 @@
 import {
-  assert,
-  assertEquals,
-  assertNotEquals,
-} from "https://deno.land/std@v0.41.0/testing/asserts.ts";
-import {
   env,
   readFile,
   shCapture,
   ShOutput,
-} from "https://raw.github.com/srackham/drake/v0.41.0/mod.ts";
+} from "file:///home/srackham/local/projects/drake/mod.ts";
+import {
+  assert,
+  assertEquals,
+  assertNotEquals,
+} from "https://deno.land/std@v0.42.0/testing/asserts.ts";
+// } from "https://raw.github.com/srackham/drake/v0.42.0/mod.ts";
 
 type RimucTest = {
   description: string;
@@ -50,9 +51,11 @@ function testShOut(
   test: RimucTest,
 ): void {
   const out = shout.output + shout.error;
-  const msg = `${test.description}: ${JSON.stringify(test)}: ${JSON.stringify(
-    shout,
-  )}`;
+  const msg = `${test.description}: ${JSON.stringify(test)}: ${
+    JSON.stringify(
+      shout,
+    )
+  }`;
   switch (test.predicate) {
     case "equals":
       assertEquals(out, test.expectedOutput, msg);
@@ -81,27 +84,25 @@ function testShOut(
   }
 }
 
-Deno.test(
-  async function rimucTest(): Promise<void> {
-    const buildTarget: BuiltTarget = Deno.env(
-      "RIMU_BUILD_TARGET",
-    ) as BuiltTarget;
-    console.log(`platform: ${buildTarget ?? "deno, node"}`);
-    // Execute tests specified in JSON file.
-    const data = readFile("./test/rimuc-tests.json");
-    const tests: RimucTest[] = JSON.parse(data);
-    for (const test of tests) {
-      if (test.layouts) {
-        // Run the test on built-in layouts.
-        const t = { ...test };
-        for (const layout of ["classic", "flex", "sequel"]) {
-          t.args = `--layout ${layout} ${test.args}`;
-          t.description = `${layout} layout: ${test.description}`;
-          await runTest(t, buildTarget);
-        }
-      } else {
-        await runTest(test, buildTarget);
+Deno.test("rimucTest", async function (): Promise<void> {
+  const buildTarget: BuiltTarget = Deno.env.get(
+    "RIMU_BUILD_TARGET",
+  ) as BuiltTarget;
+  console.log(`platform: ${buildTarget ?? "deno, node"}`);
+  // Execute tests specified in JSON file.
+  const data = readFile("./test/rimuc-tests.json");
+  const tests: RimucTest[] = JSON.parse(data);
+  for (const test of tests) {
+    if (test.layouts) {
+      // Run the test on built-in layouts.
+      const t = { ...test };
+      for (const layout of ["classic", "flex", "sequel"]) {
+        t.args = `--layout ${layout} ${test.args}`;
+        t.description = `${layout} layout: ${test.description}`;
+        await runTest(t, buildTarget);
       }
+    } else {
+      await runTest(test, buildTarget);
     }
-  },
-);
+  }
+});

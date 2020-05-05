@@ -16,12 +16,12 @@ import {
   updateFile,
   writeFile,
 } from "file:///home/srackham/local/projects/drake/mod.ts";
-import * as path from "https://deno.land/std@v0.41.0/path/mod.ts";
-// } from "https://raw.github.com/srackham/drake/v0.41.0/mod.ts";
+import * as path from "https://deno.land/std@v0.42.0/path/mod.ts";
+// } from "https://raw.github.com/srackham/drake/v0.42.0/mod.ts";
 
 env("--default-task", "build");
 
-const isWindows = Deno.build.os === "win";
+const isWindows = Deno.build.os === "windows";
 
 /* Inputs and outputs */
 
@@ -44,7 +44,7 @@ const DENO_TS_SRC = RIMU_TS_SRC.map((f) =>
 );
 const DENO_RESOURCES_SRC = "src/deno/resources.ts";
 const DENO_RIMUC_TS = "src/deno/rimuc.ts";
-const RIMUC_EXE = "deno -A " + DENO_RIMUC_TS;
+const RIMUC_EXE = "deno run -A --unstable" + DENO_RIMUC_TS;
 
 const DOCS = [
   {
