@@ -2,11 +2,11 @@ import {
   env,
   readFile,
 } from "file:///home/srackham/local/projects/drake/mod.ts";
-import { createRequire } from "https://deno.land/std@v1.0.0-rc1/node/module.ts";
+import { createRequire } from "https://raw.githubusercontent.com/denoland/deno/v1.0.0-rc2/std/node/module.ts";
 import {
   assert,
   assertEquals,
-} from "https://deno.land/std@v1.0.0-rc1/testing/asserts.ts";
+} from "https://raw.githubusercontent.com/denoland/deno/v1.0.0-rc2/std/testing/asserts.ts";
 // } from "https://raw.github.com/srackham/drake/v1.0.0-rc1/mod.ts";
 
 env("--abort-exits", false);

@@ -3,6 +3,7 @@ bin/
 .idea/
 .npmrc
 .vscode/
+.drake.cache.json
 tmp/
 TODO.md
 lib/

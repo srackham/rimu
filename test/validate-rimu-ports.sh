@@ -101,7 +101,7 @@ fi
 if ! stringContains "$*" --skip-tests; then
     echo "Running tests..."
     cd $TS
-    deno run -A --unstable Drakefile.ts test
+    deno run -A Drakefile.ts test
 
     cd $GO
     make
@@ -117,7 +117,7 @@ if ! stringContains "$*" --skip-tests; then
     make clean build install
 
     cd $TS
-    deno run -A --unstable Drakefile.ts install-deno
+    deno run -A Drakefile.ts install-deno
 fi
 
 # Compile Rimu documentation with all ports and compare.
