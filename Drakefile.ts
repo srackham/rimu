@@ -16,7 +16,7 @@ import {
   updateFile,
   writeFile,
 } from "file:///home/srackham/local/projects/drake/mod.ts";
-import * as path from "https://deno.land/std@v1.0.0-rc1/path/mod.ts";
+import * as path from "https://raw.githubusercontent.com/denoland/deno/v1.0.0-rc2/std/path/mod.ts";
 // } from "https://raw.github.com/srackham/drake/v1.0.0-rc1/mod.ts";
 
 env("--default-task", "build");
@@ -25,10 +25,10 @@ const isWindows = Deno.build.os === "windows";
 
 /* Inputs and outputs */
 
-const DOCS_INDEX = "docs/index.html";
-const DOCS_SRC = glob("README.md", "docs/*.rmu", "src/**/*.rmu");
 const GALLERY_INDEX_DST = "docs/gallery.html";
 const GALLERY_INDEX_SRC = "docs/gallery.rmu";
+const DOCS_INDEX = "docs/index.html";
+const DOCS_SRC = glob("README.md", "docs/*.rmu", "src/**/*.rmu");
 const MANPAGE_RMU = "docs/manpage.rmu";
 const MANPAGE_TXT = "src/rimuc/resources/manpage.txt";
 const PKG_FILE = "package.json";
@@ -102,7 +102,9 @@ task(
   RIMU_JS,
   [...RIMU_TS_SRC, "src/rimu/webpack.config.js"],
   async function () {
-    await sh("webpack --mode production --config src/rimu/webpack.config.js");
+    await sh(
+      "webpack --silent --mode production --config src/rimu/webpack.config.js",
+    );
     await sh("deno test -A --unstable test/rimu_test.ts");
   },
 );
@@ -114,7 +116,7 @@ task(
   [RIMUC_TS_SRC, RIMU_JS, RESOURCES_SRC, "src/rimuc/webpack.config.js"],
   async function () {
     await sh(
-      "webpack --mode production --config src/rimuc/webpack.config.js",
+      "webpack --silent --mode production --config src/rimuc/webpack.config.js",
     );
     if (!isWindows) {
       Deno.chmodSync(RIMUC_JS, 0o755);
@@ -234,29 +236,40 @@ task(
 );
 
 // Generate gallery documentation examples.
-task(GALLERY_INDEX_DST, DOCS_SRC, async function () {
-  gallery_index();
-  let commands: any[] = [];
-  forEachGalleryDocument(
-    function (options: any, outfile: any, _: any, __: any) {
-      let command = RIMUC_EXE +
-        " --custom-toc" +
-        " --no-rimurc" +
-        " " + options +
-        " --output docs/" + outfile +
-        " --prepend \"{gallery-options}='" +
-        options.replace(/(["{])/g, "\\$1") +
-        "'\"" +
-        " src/examples/example-rimurc.rmu" +
-        " " + "docs/doc-header.rmu" +
-        " " + "docs/gallery-example-template.rmu";
-      commands.push(command);
-    },
-    null,
-    null,
-  );
-  await sh(commands);
-});
+task(
+  GALLERY_INDEX_SRC,
+  [
+    RIMUC_JS,
+    DENO_RIMUC_TS,
+    ...DENO_TS_SRC,
+    "src/examples/example-rimurc.rmu",
+    "docs/doc-header.rmu",
+    "docs/gallery-example-template.rmu",
+  ],
+  async function () {
+    gallery_index();
+    let commands: any[] = [];
+    forEachGalleryDocument(
+      function (options: any, outfile: any, _: any, __: any) {
+        let command = RIMUC_EXE +
+          " --custom-toc" +
+          " --no-rimurc" +
+          " " + options +
+          " --output docs/" + outfile +
+          " --prepend \"{gallery-options}='" +
+          options.replace(/(["{])/g, "\\$1") +
+          "'\"" +
+          " src/examples/example-rimurc.rmu" +
+          " " + "docs/doc-header.rmu" +
+          " " + "docs/gallery-example-template.rmu";
+        commands.push(command);
+      },
+      null,
+      null,
+    );
+    await sh(commands);
+  },
+);
 
 function forEachGalleryDocument(
   documentCallback: any,
