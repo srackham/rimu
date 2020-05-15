@@ -6,7 +6,7 @@ import {
   readFile,
   shCapture,
   ShOutput,
-} from "../deps.ts";
+} from "./deps.ts";
 
 type RimucTest = {
   description: string;

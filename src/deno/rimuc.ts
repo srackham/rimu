@@ -2,12 +2,7 @@
   Command-lne app to convert Rimu source to HTML.
 */
 
-import {
-  existsSync,
-  path,
-  readFileStrSync,
-  writeFileStrSync,
-} from "../../deps.ts";
+import { existsSync, path, readFileStrSync, writeFileStrSync } from "./deps.ts";
 import { resources } from "./resources.ts";
 import * as rimu from "./rimu.ts";
 

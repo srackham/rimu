@@ -21,7 +21,6 @@ function die(message: string): void {
 }
 
 function readResourceFile(name: string): string {
-  // return readFileStrSync(`./src/resources/${name}`)
   if (!(name in resources)) {
     die(`missing resource: ${name}`);
   }

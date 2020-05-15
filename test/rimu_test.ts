@@ -1,4 +1,4 @@
-import { assert, assertEquals, createRequire, env, readFile } from "../deps.ts";
+import { assert, assertEquals, createRequire, env, readFile } from "./deps.ts";
 
 env("--abort-exits", false);
 
