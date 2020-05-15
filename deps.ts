@@ -1,16 +1,3 @@
-export {
-  abort,
-  env,
-  glob,
-  log,
-  quote,
-  readFile,
-  sh,
-  shCapture,
-  ShOutput,
-  updateFile,
-  writeFile,
-} from "file:///home/srackham/local/projects/drake/lib/utils.ts";
 export { existsSync } from "https://deno.land/std@v0.51.0/fs/exists.ts";
 export { readFileStrSync } from "https://deno.land/std@v0.51.0/fs/read_file_str.ts";
 export { walkSync } from "https://deno.land/std@v0.51.0/fs/walk.ts";
@@ -25,3 +12,16 @@ export {
   assertThrows,
   assertThrowsAsync,
 } from "https://deno.land/std@v0.51.0/testing/asserts.ts";
+export {
+  abort,
+  env,
+  glob,
+  log,
+  quote,
+  readFile,
+  sh,
+  shCapture,
+  ShOutput,
+  updateFile,
+  writeFile,
+} from "https://deno.land/x/drake@v1.0.0/lib/utils.ts";
