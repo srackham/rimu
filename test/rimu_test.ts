@@ -1,13 +1,4 @@
-import {
-  env,
-  readFile,
-} from "file:///home/srackham/local/projects/drake/mod.ts";
-import { createRequire } from "https://raw.githubusercontent.com/denoland/deno/v1.0.0-rc2/std/node/module.ts";
-import {
-  assert,
-  assertEquals,
-} from "https://raw.githubusercontent.com/denoland/deno/v1.0.0-rc2/std/testing/asserts.ts";
-// } from "https://raw.github.com/srackham/drake/v1.0.0-rc1/mod.ts";
+import { assert, assertEquals, createRequire, env, readFile } from "../deps.ts";
 
 env("--abort-exits", false);
 

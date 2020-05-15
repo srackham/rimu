@@ -4,10 +4,10 @@
 
 import {
   existsSync,
+  path,
   readFileStrSync,
   writeFileStrSync,
-} from "https://raw.githubusercontent.com/denoland/deno/v1.0.0-rc2/std/fs/mod.ts";
-import { resolve } from "https://raw.githubusercontent.com/denoland/deno/v1.0.0-rc2/std/path/mod.ts";
+} from "../../deps.ts";
 import { resources } from "./resources.ts";
 import * as rimu from "./rimu.ts";
 
@@ -16,7 +16,7 @@ const STDIN = "/dev/stdin";
 const HOME_DIR = Deno.env.get(
   Deno.build.os === "windows" ? "USERPROFILE" : "HOME",
 );
-const RIMURC = resolve(HOME_DIR || "", ".rimurc");
+const RIMURC = path.resolve(HOME_DIR || "", ".rimurc");
 
 /*
  * Helpers.

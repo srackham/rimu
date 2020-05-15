@@ -16,8 +16,7 @@ import {
   updateFile,
   writeFile,
 } from "file:///home/srackham/local/projects/drake/mod.ts";
-import * as path from "https://raw.githubusercontent.com/denoland/deno/v1.0.0-rc2/std/path/mod.ts";
-// } from "https://raw.github.com/srackham/drake/v1.0.0-rc1/mod.ts";
+import * as path from "https://deno.land/std@v0.51.0/path/mod.ts";
 
 env("--default-task", "build");
 
@@ -44,7 +43,7 @@ const DENO_TS_SRC = RIMU_TS_SRC.map((f) =>
 );
 const DENO_RESOURCES_SRC = "src/deno/resources.ts";
 const DENO_RIMUC_TS = "src/deno/rimuc.ts";
-const RIMUC_EXE = "deno run -A " + DENO_RIMUC_TS;
+const RIMUC_EXE = "deno run -A --unstable " + DENO_RIMUC_TS;
 
 const DOCS = [
   {
@@ -105,7 +104,7 @@ task(
     await sh(
       "webpack --silent --mode production --config src/rimu/webpack.config.js",
     );
-    await sh("deno test -A test/rimu_test.ts");
+    await sh("deno test -A --unstable test/rimu_test.ts");
   },
 );
 
@@ -122,7 +121,7 @@ task(
       Deno.chmodSync(RIMUC_JS, 0o755);
     }
     await sh(
-      "deno test -A test/rimuc_test.ts",
+      "deno test -A --unstable test/rimuc_test.ts",
       { env: { RIMU_BUILD_TARGET: "node" } },
     );
   },
@@ -155,13 +154,13 @@ task("build-deno", [DENO_RESOURCES_SRC, ...DENO_TS_SRC]);
 desc("Install executable wrapper for rimudeno CLI");
 task("install-deno", ["build-deno"], async function () {
   await sh(
-    `deno install -A --force --name rimudeno "${DENO_RIMUC_TS}"`,
+    `deno install -A --unstable --force --name rimudeno "${DENO_RIMUC_TS}"`,
   );
 });
 
 desc("Run all rimu and rimuc CLI tests");
 task("test", [], async function () {
-  await sh("deno test -A test/");
+  await sh("deno test -A --unstable test/");
 });
 
 // Generate manpage.rmu
