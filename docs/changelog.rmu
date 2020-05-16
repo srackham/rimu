@@ -3,6 +3,10 @@
 This is the Rimu TypeScript implementation change log (see also [other Rimu
 implementations]({reference}#rimu-implementations)).
 
+## Version 11.1.9 (2020-05-16)
+Updates for Deno 1.0.0 and Drake 1.0.0 build tool.
+
+
 ## Version 11.1.8 (2020-04-02)
 This release includes Rimu for the Deno runtime and updates the build scripts,
 build tools and tests but makes no changes to Rimu markup.
