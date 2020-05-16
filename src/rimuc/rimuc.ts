@@ -8,7 +8,7 @@ import * as path from "path";
 import * as rimu from "rimu";
 import { resources } from "./resources";
 
-const VERSION = "11.1.8";
+const VERSION = '11.1.9';
 const STDIN = "/dev/stdin";
 const HOME_DIR =
   process.env[(process.platform === "win32") ? "USERPROFILE" : "HOME"];
