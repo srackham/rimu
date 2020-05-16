@@ -1,4 +1,4 @@
-export { createRequire } from "https://deno.land/std@v0.51.0/node/module.ts";
+export { createRequire /* Unstable API */ } from "https://deno.land/std@v0.51.0/node/module.ts";
 export {
   assert,
   assertEquals,
@@ -7,7 +7,6 @@ export {
 export {
   env,
   readFile,
-  sh,
   shCapture,
   ShOutput,
 } from "https://deno.land/x/drake@v1.0.0/lib/utils.ts";

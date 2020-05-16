@@ -43,7 +43,7 @@ const DENO_TS_SRC = RIMU_TS_SRC.map((f) =>
 );
 const DENO_RESOURCES_SRC = "src/deno/resources.ts";
 const DENO_RIMUC_TS = "src/deno/rimuc.ts";
-const RIMUC_EXE = "deno run -A --unstable " + DENO_RIMUC_TS;
+const RIMUC_EXE = "deno run -A " + DENO_RIMUC_TS;
 
 const DOCS = [
   {
@@ -154,7 +154,7 @@ task("build-deno", [DENO_RESOURCES_SRC, ...DENO_TS_SRC]);
 desc("Install executable wrapper for rimudeno CLI");
 task("install-deno", ["build-deno"], async function () {
   await sh(
-    `deno install -A --unstable --force --name rimudeno "${DENO_RIMUC_TS}"`,
+    `deno install -A --force --name rimudeno "${DENO_RIMUC_TS}"`,
   );
 });
 
