@@ -451,13 +451,13 @@ working:</p>
 <p><strong>Deno</strong></p>
 <p>Deno modules don't need explicit installation just import the module
 URL, for example:</p>
-<pre class="javascript"><code>import * as rimu from "https://raw.github.com/srackham/rimu/master/mod.ts";
+<pre class="javascript"><code>import * as rimu from "https://deno.land/x/rimu/mod.ts";
 
 console.log(rimu.render("Hello *Rimu*!"));</code></pre>
 <p>Use the Deno <code>install</code> command to install the Rimu CLI executable. For
 example, the following example creates the CLI executable named
 <code>rimudeno</code> in <code>$HOME/.deno/bin/rimudeno</code>:</p>
-<pre><code>deno install rimudeno -A https://raw.github.com/srackham/rimu/master/src/deno/rimuc.ts</code></pre>
+<pre><code>deno install -A --name rimudeno https://deno.land/x/rimu/src/deno/rimuc.ts</code></pre>
 <p><strong>Browser</strong></p>
 <p>To use Rimu in an HTML Web page include the bundled and minimized
 <code>rimu.min.js</code> file from the <code>./lib</code> directory in your Web page, for
@@ -474,7 +474,7 @@ example:</p>
 npm install</code></pre>
 </li><li>Use the <a href="https://github.com/srackham/drake">Drake</a> task runner
    module to build Rimu library modules and CLIs for Deno and Node.js
-   platforms:<pre><code>deno -A Drakefile.ts build</code></pre></li></ol>
+   platforms:<pre><code>deno run -A Drakefile.ts build</code></pre></li></ol>
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
