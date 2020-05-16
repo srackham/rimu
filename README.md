@@ -64,7 +64,7 @@ Deno modules don't need explicit installation just import the module
 URL, for example:
 
 ``` javascript
-import * as rimu from "https://raw.github.com/srackham/rimu/master/mod.ts";
+import * as rimu from "https://deno.land/x/rimu/mod.ts";
 
 console.log(rimu.render("Hello *Rimu*!"));
 ```
@@ -73,7 +73,7 @@ Use the Deno `install` command to install the Rimu CLI executable. For
 example, the following example creates the CLI executable named
 `rimudeno` in `$HOME/.deno/bin/rimudeno`:
 
-    deno install rimudeno -A https://raw.github.com/srackham/rimu/master/src/deno/rimuc.ts
+    deno install -A --name rimudeno https://deno.land/x/rimu/src/deno/rimuc.ts
 
 **Browser**
 
@@ -106,4 +106,4 @@ To build Rimu you need to have [Deno](https://deno.land/) and
    module to build Rimu library modules and CLIs for Deno and Node.js
    platforms:
 
-        deno -A Drakefile.ts build
+        deno run -A Drakefile.ts build
