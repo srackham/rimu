@@ -16,7 +16,8 @@ import {
   task,
   updateFile,
   writeFile,
-} from "https://deno.land/x/drake@v1.0.0/mod.ts";
+} from "../drake/mod.ts";
+// } from "https://deno.land/x/drake@v1.0.0/mod.ts";
 
 env("--default-task", "build");
 
@@ -43,7 +44,9 @@ const DENO_TS_SRC = RIMU_TS_SRC.map((f) =>
 );
 const DENO_RESOURCES_SRC = "src/deno/resources.ts";
 const DENO_RIMUC_TS = "src/deno/rimuc.ts";
-const RIMUC_EXE = "deno run -A " + DENO_RIMUC_TS;
+const RIMUC_EXE = `deno run -A ${DENO_RIMUC_TS}`;
+const DENO_TEST = `deno test -A --unstable ${env("--debug") ? "" : "--quiet"}`;
+const WEBPACK = `webpack ${env("--debug") ? "" : "--silent"} --mode production`;
 
 const DOCS = [
   {
@@ -101,10 +104,8 @@ task(
   RIMU_JS,
   [...RIMU_TS_SRC, "src/rimu/webpack.config.js"],
   async function () {
-    await sh(
-      "webpack --silent --mode production --config src/rimu/webpack.config.js",
-    );
-    await sh("deno test -A --unstable test/rimu_test.ts");
+    await sh(`${WEBPACK} --config src/rimu/webpack.config.js`);
+    await sh(`${DENO_TEST} test/rimu_test.ts`);
   },
 );
 
@@ -114,14 +115,12 @@ task(
   RIMUC_JS,
   [RIMUC_TS_SRC, RIMU_JS, RESOURCES_SRC, "src/rimuc/webpack.config.js"],
   async function () {
-    await sh(
-      "webpack --silent --mode production --config src/rimuc/webpack.config.js",
-    );
+    await sh(`${WEBPACK} --config src/rimuc/webpack.config.js`);
     if (!isWindows) {
       Deno.chmodSync(RIMUC_JS, 0o755);
     }
     await sh(
-      "deno test -A --unstable test/rimuc_test.ts",
+      `${DENO_TEST} test/rimuc_test.ts`,
       { env: { RIMU_BUILD_TARGET: "node" } },
     );
   },
@@ -142,7 +141,6 @@ for (const i in DENO_TS_SRC) {
       '$1.ts";',
     );
     writeFile(this.name, text);
-    log(`updated "${this.name}"`);
   });
 }
 
@@ -160,7 +158,7 @@ task("install-deno", ["build-deno"], async function () {
 
 desc("Run all rimu and rimuc CLI tests");
 task("test", [], async function () {
-  await sh("deno test -A --unstable test/");
+  await sh(`${DENO_TEST} test/`);
 });
 
 // Generate manpage.rmu
@@ -342,8 +340,15 @@ async function validate_docs() {
         .includes(file)
     )
     .map((file) => `html-validator --verbose --format=text --file=${file}`);
-  await sh(commands);
+  await sh(commands, { stdout: env("--debug") ? "inherit" : "null" });
 }
+
+desc(
+  "Validate HTML documentation",
+);
+task("validate-docs", [], async function () {
+  await validate_docs();
+});
 
 function getPackageVers(): string {
   const match = readFile(PKG_FILE).match(/^\s*"version": "(\d+\.\d+\.\d+)"/m);
@@ -379,21 +384,21 @@ task("version", [], async function () {
     }
     if (
       !updateFile(
-        "src/rimuc/rimuc.ts",
+        RIMUC_TS_SRC,
         /(const VERSION = )"\d+\.\d+\.\d+"/,
-        `$1'${vers}'`,
+        `$1"${vers}"`,
       )
     ) {
-      abort("version number not updated: src/rimuc/rimuc.ts");
+      abort(`version number not updated: ${RIMUC_TS_SRC}`);
     }
     if (
       !updateFile(
-        "src/deno/rimuc.ts",
+        DENO_RIMUC_TS,
         /(const VERSION = )"\d+\.\d+\.\d+"/,
-        `$1'${vers}'`,
+        `$1"${vers}"`,
       )
     ) {
-      abort("version number not updated: src/deno/rimuc.ts");
+      abort(`version number not updated: ${DENO_RIMUC_TS}`);
     }
     env("vers", vers);
     await sh('git commit --all -m "Bump version number."');
