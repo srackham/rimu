@@ -69,9 +69,9 @@ import * as rimu from "https://deno.land/x/rimu/mod.ts";
 console.log(rimu.render("Hello *Rimu*!"));
 ```
 
-Use the Deno `install` command to install the Rimu CLI executable. For
-example, the following example creates the CLI executable named
-`rimudeno` in `$HOME/.deno/bin/rimudeno`:
+Use the Deno `install` command to install the Rimu CLI executable.
+The following example creates the CLI executable named `rimudeno`
+in `$HOME/.deno/bin/rimudeno`:
 
     deno install -A --name rimudeno https://deno.land/x/rimu/src/deno/rimuc.ts
 
