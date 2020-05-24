@@ -74,8 +74,8 @@ hljs.initHighlightingOnLoad();
 
 // Examples handlers.
 {generate-examples=}.+skip
-<script src="rimu.min.js"></script>
-<script>
+<script type="module">
+import * as rimu from "./rimu.esm.js";
 function editExample(name) {
   var source = document.getElementById(name + '-source');
   if (source.style.display === 'none') {
@@ -87,6 +87,7 @@ function editExample(name) {
   edit.style.display = 'block';
   source.style.display = 'none';
 }
+window.editExample = editExample;
 function renderExample(name) {
   var edit = document.getElementById(name + '-edit');
   var rendered = document.getElementById(name + '-rendered');
@@ -94,7 +95,7 @@ function renderExample(name) {
   var errors = document.getElementById(name + '-errors');
   var src = (edit.style.display === 'none') ? source.textContent : edit.value;
   var messages = '';
-  var html = Rimu.render(src, {
+  var html = rimu.render(src, {
     reset: true,
     callback: function(message) {
       messages += message.type + ': ' + message.text.split(':', 2).join(':') + '\n';
@@ -117,11 +118,13 @@ function renderExample(name) {
     edit.style.height = (edit.parentNode.offsetHeight - 1) + 'px';
   }
 }
+window.renderExample = renderExample;
 function toggleExample(name) {
   var rendered = document.getElementById(name + '-rendered');
   rendered.classList.toggle('example-html');
   renderExample(name);
 }
+window.toggleExample = toggleExample;
 function replaceSpecialChars(s) {
   return s.replace(/&/g, '&amp;')
     .replace(/>/g, '&gt;')

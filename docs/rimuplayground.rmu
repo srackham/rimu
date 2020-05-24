@@ -59,7 +59,8 @@ Diagnostic messages:
 ``
 
 
-<script>
+<script type="module">
+import * as rimu from "./rimu.esm.js";
 function escapeSpecialChars(s) {
   return s.replace(/&/g, '&amp;')
           .replace(/>/g, '&gt;')
@@ -69,6 +70,7 @@ function showHide(id) {
   var el = document.getElementById(id);
   el.style.display = el.style.display === 'none' ? '' : 'none';
 }
+window.showHide = showHide;
 function convert() {
   var source = document.getElementById('playground-edit').value;
   var htmlElement = document.getElementById('playground-html');
@@ -76,7 +78,7 @@ function convert() {
   var diagnosticsElement = document.getElementById('playground-diagnostics');
   var messages = '';
   diagnosticsElement.innerHTML = ''
-  var htmlRaw = Rimu.render(source, {
+  var htmlRaw = rimu.render(source, {
     reset: true,
     callback: function(message) {
       messages += message.type + ': ' + message.text + '\n';
@@ -92,5 +94,6 @@ function convert() {
     diagnosticsElement.style.display = 'none';
   }
 }
+window.convert = convert;
 convert();
 </script>
