@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Execute rimuc.js (located in same directory as this script).
+node "$(dirname $(readlink -f "$0"))/rimuc.js" "$@"
