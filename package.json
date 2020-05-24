@@ -1,7 +1,7 @@
 {
   "name": "rimu",
   "author": "Stuart Rackham <srackham@gmail.com>",
-  "version": "11.1.9",
+  "version": "11.1.10",
   "description": "Readable text to HTML markup language",
   "keywords": [
     "rimu",
@@ -13,19 +13,18 @@
   "engines": {
     "node": ">=0.8"
   },
-  "main": "lib/rimu.js",
+  "main": "lib/cjs/rimu.js",
+  "types": "lib/cjs/rimu.d.ts",
+  "module": "lib/esm/rimu.js",
   "bin": {
-    "rimuc": "bin/rimuc.js"
+    "rimuc": "lib/cjs/rimuc.js"
   },
   "files": [
     "LICENSE",
     "README.md",
-    "lib/rimu.js",
-    "lib/rimu.min.js",
-    "bin/rimuc.js",
-    "typings/rimu.d.ts"
+    "lib/cjs",
+    "lib/esm"
   ],
-  "typings": "typings/rimu.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/srackham/rimu.git"
@@ -33,13 +32,8 @@
   "devDependencies": {
     "@types/node": "^13.9.5",
     "html-validator-cli": "^7.0.0",
-    "raw-loader": "^4.0.0",
-    "ts-loader": "^6.2.2",
-    "typescript": "^3.8.3",
-    "uglify-js": "^3.8.1",
-    "uglifyjs-webpack-plugin": "^2.2.0",
-    "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11"
+    "terser": "^4.7.0",
+    "typescript": "^3.8.3"
   },
   "dependencies": {}
 }

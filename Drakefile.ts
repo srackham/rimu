@@ -3,20 +3,7 @@
  */
 
 import * as path from "https://deno.land/std@v0.51.0/path/mod.ts";
-import {
-  abort,
-  desc,
-  env,
-  glob,
-  log,
-  quote,
-  readFile,
-  run,
-  sh,
-  task,
-  updateFile,
-  writeFile,
-} from "../drake/mod.ts";
+import { abort, desc, env, glob, quote, readFile, run, sh, task, updateFile, writeFile } from "../drake/mod.ts";
 // } from "https://deno.land/x/drake@v1.0.0/mod.ts";
 
 env("--default-task", "build");
@@ -30,23 +17,19 @@ const GALLERY_INDEX_SRC = "docs/gallery.rmu";
 const DOCS_INDEX = "docs/index.html";
 const DOCS_SRC = glob("README.md", "docs/*.rmu", "src/**/*.rmu");
 const MANPAGE_RMU = "docs/manpage.rmu";
-const MANPAGE_TXT = "src/rimuc/resources/manpage.txt";
+const MANPAGE_TXT = "src/node/resources/manpage.txt";
 const PKG_FILE = "package.json";
-const RESOURCE_FILES = glob("src/rimuc/resources/*");
-const RESOURCES_SRC = "src/rimuc/resources.ts";
-const RIMUC_JS = "bin/rimuc.js";
-const RIMUC_TS_SRC = "src/rimuc/rimuc.ts";
-const RIMU_JS = "lib/rimu.js";
-const RIMU_MIN_JS = "lib/rimu.min.js";
-const RIMU_TS_SRC = glob("src/rimu/*.ts");
-const DENO_TS_SRC = RIMU_TS_SRC.map((f) =>
-  path.join("src/deno", path.basename(f))
-);
-const DENO_RESOURCES_SRC = "src/deno/resources.ts";
+const RESOURCE_FILES = glob("src/node/resources/*");
+const NODE_RESOURCES_TS = "src/node/resources.ts";
+const NODE_RIMUC_TS = "src/node/rimuc.ts";
+const NODE_RIMUC_BIN = "lib/cjs/rimuc.js";
+const NODE_TS_SRC = glob("src/node/*.ts");
+const DENO_TS_SRC = glob("src/deno/*.ts");
+const DENO_RIMU_TS = "src/deno/rimu.ts";
 const DENO_RIMUC_TS = "src/deno/rimuc.ts";
+const WEB_RIMU_JS = "lib/web/rimu.esm.js";
 const RIMUC_EXE = `deno run -A ${DENO_RIMUC_TS}`;
-const DENO_TEST = `deno test -A --unstable ${env("--debug") ? "" : "--quiet"}`;
-const WEBPACK = `webpack ${env("--debug") ? "" : "--silent"} --mode production`;
+const TEST_EXE = `deno test -A --unstable ${env("--debug") ? "" : "--quiet"}`;
 
 const DOCS = [
   {
@@ -95,42 +78,33 @@ const HTML = DOCS.map((doc) => doc.dst);
  Tasks
  */
 
-desc("build and test rimu, rimuc CLI for Deno and Nodejs and documentation");
-task("build", ["build-rimu", "build-rimuc", "build-deno", "build-docs"]);
+desc("build and test Rimu modules and CLIs for Deno and Nodejs; build Rimu documentation");
+task("build", ["build-node", "build-deno", "build-web", "build-docs"]);
 
-desc("Compile, bundle and test rimu.js and rimu.min.js UMD library modules");
-task("build-rimu", [RIMU_JS]);
+desc("Compile Rimu for NodeJs");
+task("build-node", [NODE_RIMUC_BIN]);
 task(
-  RIMU_JS,
-  [...RIMU_TS_SRC, "src/rimu/webpack.config.js"],
+  NODE_RIMUC_BIN,
+  [...NODE_TS_SRC],
   async function () {
-    await sh(`${WEBPACK} --config src/rimu/webpack.config.js`);
-    await sh(`${DENO_TEST} test/rimu_test.ts`);
-  },
-);
-
-desc("Compile and test rimuc to JavaScript executable");
-task("build-rimuc", [RIMUC_JS]);
-task(
-  RIMUC_JS,
-  [RIMUC_TS_SRC, RIMU_JS, RESOURCES_SRC, "src/rimuc/webpack.config.js"],
-  async function () {
-    await sh(`${WEBPACK} --config src/rimuc/webpack.config.js`);
+    await sh([`tsc -p tsconfig.json`, `tsc -p tsconfig-cjs.json`]);
+    const src = readFile(NODE_RIMUC_BIN);
+    writeFile(NODE_RIMUC_BIN, `#!/usr/bin/env node\n${src}`);
     if (!isWindows) {
-      Deno.chmodSync(RIMUC_JS, 0o755);
+      Deno.chmodSync(NODE_RIMUC_BIN, 0o755);
     }
-    await sh(
-      `${DENO_TEST} test/rimuc_test.ts`,
-      { env: { RIMU_BUILD_TARGET: "node" } },
-    );
   },
 );
 
 // Create tasks for Deno source files.
 // Deno TypeScript module names must be specified with a .ts extension. Add a
 // .ts extension to TypeScript module names and copy to Deno source directory.
-for (const i in DENO_TS_SRC) {
-  task(DENO_TS_SRC[i], [RIMU_TS_SRC[i]], function () {
+for (const prereq of NODE_TS_SRC) {
+  const target = path.join("src/deno", path.basename(prereq));
+  if (target === DENO_RIMUC_TS) {
+    continue; // Skip rimuc.ts
+  }
+  task(target, [prereq], function () {
     let text = readFile(this.prereqs[0]);
     text = text.replace(
       /^((import|export).*from ".*)";/gm,
@@ -145,9 +119,17 @@ for (const i in DENO_TS_SRC) {
 }
 
 desc(
-  "Build Rimu Deno code in src/deno/",
+  "Update Rimu Deno code",
 );
-task("build-deno", [DENO_RESOURCES_SRC, ...DENO_TS_SRC]);
+task("build-deno", [...DENO_TS_SRC]);
+
+desc(
+  "Bundle Rimu native Web ES module",
+);
+task("build-web", [WEB_RIMU_JS]);
+task(WEB_RIMU_JS, [...DENO_TS_SRC], async function () {
+  await sh(`deno bundle ${DENO_RIMU_TS} ${WEB_RIMU_JS}`);
+});
 
 desc("Install executable wrapper for rimudeno CLI");
 task("install-deno", ["build-deno"], async function () {
@@ -156,9 +138,9 @@ task("install-deno", ["build-deno"], async function () {
   );
 });
 
-desc("Run all rimu and rimuc CLI tests");
+desc("Run rimu and rimuc CLI tests on Deno and NodeJS");
 task("test", [], async function () {
-  await sh(`${DENO_TEST} test/`);
+  await sh(`${TEST_EXE} test/`);
 });
 
 // Generate manpage.rmu
@@ -178,8 +160,7 @@ ${readFile(MANPAGE_TXT).replace(/^(.*)'$/gm, "$1'\\")}
 });
 
 // Build resources.ts containing rimuc resource files.
-task(RESOURCES_SRC, RESOURCE_FILES, async function () {
-  log(`Building resources ${RESOURCES_SRC}`);
+task(NODE_RESOURCES_TS, RESOURCE_FILES, async function () {
   let text = "// Generated automatically from resource files. Do not edit.\n";
   text += "export let resources: { [name: string]: string } = {";
   for (const f of RESOURCE_FILES) {
@@ -190,13 +171,8 @@ task(RESOURCES_SRC, RESOURCE_FILES, async function () {
     text += `String.raw\`${data}\`,\n`;
   }
   text += "};";
-  writeFile(RESOURCES_SRC, text);
-  await sh(`deno fmt "${RESOURCES_SRC}"`);
-});
-
-// Copy resources.ts to Deno source directory.
-task(DENO_RESOURCES_SRC, [RESOURCES_SRC], function () {
-  Deno.copyFileSync(RESOURCES_SRC, DENO_RESOURCES_SRC);
+  writeFile(NODE_RESOURCES_TS, text);
+  await sh(`deno fmt "${NODE_RESOURCES_TS}"`, { stdout: "null" });
 });
 
 desc("Generate and validate documentation");
@@ -207,14 +183,12 @@ task(
     MANPAGE_RMU,
     ...DOCS_SRC,
     GALLERY_INDEX_DST,
-    RIMUC_JS,
-    DENO_RIMUC_TS,
     ...DENO_TS_SRC,
   ],
   async function () {
     await Deno.copyFile(
-      RIMU_MIN_JS,
-      `docs/${path.basename(RIMU_MIN_JS)}`,
+      WEB_RIMU_JS,
+      `docs/${path.basename(WEB_RIMU_JS)}`,
     );
     const commands = DOCS.map((doc) =>
       RIMUC_EXE +
@@ -236,8 +210,6 @@ task(
 task(
   GALLERY_INDEX_SRC,
   [
-    RIMUC_JS,
-    DENO_RIMUC_TS,
     ...DENO_TS_SRC,
     "src/examples/example-rimurc.rmu",
     "docs/doc-header.rmu",
@@ -384,12 +356,12 @@ task("version", [], async function () {
     }
     if (
       !updateFile(
-        RIMUC_TS_SRC,
+        NODE_RIMUC_TS,
         /(const VERSION = )"\d+\.\d+\.\d+"/,
         `$1"${vers}"`,
       )
     ) {
-      abort(`version number not updated: ${RIMUC_TS_SRC}`);
+      abort(`version number not updated: ${NODE_RIMUC_TS}`);
     }
     if (
       !updateFile(
@@ -426,11 +398,11 @@ task("push", ["test"], async function () {
 });
 
 desc("Publish to npm");
-task("publish-npm", ["test", "build-rimu"], async function () {
+task("publish-npm", ["test", "build-node"], async function () {
   await sh("npm publish");
 });
 
-desc("Format source files");
+desc("Format source files with Deno");
 task("fmt", [], async function () {
   await sh(
     `deno fmt ${quote(glob("*.ts", "src/**/*.ts", "test/*.ts"))}`,

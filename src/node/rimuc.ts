@@ -5,7 +5,7 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import * as rimu from "rimu";
+import * as rimu from "./rimu";
 import { resources } from "./resources";
 
 const VERSION = "11.1.9";
