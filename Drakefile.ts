@@ -41,7 +41,7 @@ const DENO_RIMU_TS = "src/deno/rimu.ts";
 const DENO_RIMUC_TS = "src/deno/rimuc.ts";
 const WEB_RIMU_JS = "lib/web/rimu.esm.js";
 const RIMUC_EXE = `deno run -A ${DENO_RIMUC_TS}`;
-const TEST_EXE = `deno test -A --unstable`;
+const TEST_EXE = `deno test -A`;
 
 const DOCS = [
   {

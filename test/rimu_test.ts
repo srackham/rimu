@@ -1,4 +1,5 @@
-import { assert, assertEquals, createRequire, env, readFile } from "./deps.ts";
+import * as rimu from "../mod.ts";
+import { assert, assertEquals, env, readFile } from "./deps.ts";
 
 env("--abort-exits", false);
 
@@ -15,9 +16,6 @@ interface CallbackMessage {
 }
 
 type CallbackFunction = (message: CallbackMessage) => void;
-
-const require_ = createRequire(import.meta.url);
-const rimu = require_("../lib/rimu.js");
 
 type RimuTest = {
   description: string;
