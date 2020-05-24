@@ -55,7 +55,7 @@ if stringContains "$*" --update-fixtures; then
     cp $TS/test/rimuc-tests.json $PY/tests/rimuc-tests.json
     cp $TS/examples/example-rimurc.rmu $PY/tests/fixtures/example-rimurc.rmu
 
-    cd $TS/src/rimuc/resources
+    cd $TS/src/node/resources
     for f in *; do
         cp $f $GO/rimugo/resources/$f
         cp $f $KT/src/main/resources/org/rimumarkup/$f
@@ -84,7 +84,7 @@ if ! stringContains "$*" --skip-fixtures; then
     diff $TS/test/rimuc-tests.json $PY/tests/rimuc-tests.json || err=1
     diff $TS/examples/example-rimurc.rmu $PY/tests/fixtures/example-rimurc.rmu || err=1
 
-    cd $TS/src/rimuc/resources
+    cd $TS/src/node/resources
     for f in *; do
         diff $f $GO/rimugo/resources/$f || err=1
         diff $f $KT/src/main/resources/org/rimumarkup/$f || err=1

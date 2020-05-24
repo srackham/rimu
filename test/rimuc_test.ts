@@ -1,12 +1,4 @@
-import {
-  assert,
-  assertEquals,
-  assertNotEquals,
-  env,
-  readFile,
-  shCapture,
-  ShOutput,
-} from "./deps.ts";
+import { assert, assertEquals, assertNotEquals, env, existsSync, readFile, shCapture, ShOutput } from "./deps.ts";
 
 type RimucTest = {
   description: string;
@@ -52,7 +44,7 @@ function testShOut(
     JSON.stringify(
       shout,
     )
-  }`;
+    }`;
   switch (test.predicate) {
     case "equals":
       assertEquals(out, test.expectedOutput, msg);
@@ -90,6 +82,10 @@ Deno.test("rimucTest", async function (): Promise<void> {
   const data = readFile("./test/rimuc-tests.json");
   const tests: RimucTest[] = JSON.parse(data);
   for (const test of tests) {
+    // TODO: Remove this kludge after other ports have moved examples directory and edited rimuc-tests.json.
+    if (test.args === "--prepend-file ./src/examples/example-rimurc.rmu" && existsSync("./examples/example-rimurc.rmu")) {
+      test.args = "--prepend-file ./examples/example-rimurc.rmu";
+    }
     if (test.layouts) {
       // Run the test on built-in layouts.
       const t = { ...test };
