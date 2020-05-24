@@ -10,9 +10,6 @@
     "markdown"
   ],
   "license": "MIT",
-  "engines": {
-    "node": ">=0.8"
-  },
   "main": "lib/cjs/rimu.js",
   "types": "lib/cjs/rimu.d.ts",
   "module": "lib/esm/rimu.js",

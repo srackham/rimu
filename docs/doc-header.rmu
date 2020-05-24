@@ -236,7 +236,7 @@ Preview
 {github-py} = 'https://github.com/srackham/rimu-py'
 {pypi-rimu} = 'https://pypi.org/project/rimu/'
 {npm-rimu} = 'https://npmjs.org/package/rimu'
-{example-rimurc} = 'https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.rmu'
+{example-rimurc} = 'https://github.com/srackham/rimu/blob/master/examples/example-rimurc.rmu'
 
 // Custom table of contents.
 {--no-toc!}.+skip

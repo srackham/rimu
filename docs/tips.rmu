@@ -255,7 +255,7 @@ If you've added custom replacements and quotes you can highlight them
 in Vim by creating a custom `~/.vim/after/syntax/rimu.vim` syntax file
 (Vim loads files from the `after` directory after loading normal
 syntax files).  The distributed example
-[~/.vim/after/syntax/rimu.vim](https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.vim)
+[~/.vim/after/syntax/rimu.vim](https://github.com/srackham/rimu/blob/master/examples/example-rimurc.vim)
 syntax file highlights custom syntax definitions from the [example
 .rimurc file]({example-rimurc}).
 

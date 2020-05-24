@@ -41,19 +41,19 @@ if stringContains "$*" --update-fixtures; then
     echo "Updating test fixtures and resources..."
     cp $TS/test/rimu-tests.json $GO/rimu/testdata/rimu-tests.json
     cp $TS/test/rimuc-tests.json $GO/rimugo/testdata/rimuc-tests.json
-    cp $TS/src/examples/example-rimurc.rmu $GO/rimugo/testdata/example-rimurc.rmu
+    cp $TS/examples/example-rimurc.rmu $GO/rimugo/testdata/example-rimurc.rmu
 
     cp $TS/test/rimu-tests.json $KT/src/test/resources/rimu-tests.json
     cp $TS/test/rimuc-tests.json $KT/src/test/resources/rimuc-tests.json
-    cp $TS/src/examples/example-rimurc.rmu $KT/src/test/fixtures/example-rimurc.rmu
+    cp $TS/examples/example-rimurc.rmu $KT/src/test/fixtures/example-rimurc.rmu
 
     cp $TS/test/rimu-tests.json $DART/test/rimu-tests.json
     cp $TS/test/rimuc-tests.json $DART/test/rimuc-tests.json
-    cp $TS/src/examples/example-rimurc.rmu $DART/test/fixtures/example-rimurc.rmu
+    cp $TS/examples/example-rimurc.rmu $DART/test/fixtures/example-rimurc.rmu
 
     cp $TS/test/rimu-tests.json $PY/tests/rimu-tests.json
     cp $TS/test/rimuc-tests.json $PY/tests/rimuc-tests.json
-    cp $TS/src/examples/example-rimurc.rmu $PY/tests/fixtures/example-rimurc.rmu
+    cp $TS/examples/example-rimurc.rmu $PY/tests/fixtures/example-rimurc.rmu
 
     cd $TS/src/rimuc/resources
     for f in *; do
@@ -70,19 +70,19 @@ if ! stringContains "$*" --skip-fixtures; then
     err=0
     diff $TS/test/rimu-tests.json $GO/rimu/testdata/rimu-tests.json || err=1
     diff $TS/test/rimuc-tests.json $GO/rimugo/testdata/rimuc-tests.json || err=1
-    diff $TS/src/examples/example-rimurc.rmu $GO/rimugo/testdata/example-rimurc.rmu || err=1
+    diff $TS/examples/example-rimurc.rmu $GO/rimugo/testdata/example-rimurc.rmu || err=1
 
     diff $TS/test/rimu-tests.json $KT/src/test/resources/rimu-tests.json || err=1
     diff $TS/test/rimuc-tests.json $KT/src/test/resources/rimuc-tests.json || err=1
-    diff $TS/src/examples/example-rimurc.rmu $KT/src/test/fixtures/example-rimurc.rmu || err=1
+    diff $TS/examples/example-rimurc.rmu $KT/src/test/fixtures/example-rimurc.rmu || err=1
 
     diff $TS/test/rimu-tests.json $DART/test/rimu-tests.json || err=1
     diff $TS/test/rimuc-tests.json $DART/test/rimuc-tests.json || err=1
-    diff $TS/src/examples/example-rimurc.rmu $DART/test/fixtures/example-rimurc.rmu || err=1
+    diff $TS/examples/example-rimurc.rmu $DART/test/fixtures/example-rimurc.rmu || err=1
 
     diff $TS/test/rimu-tests.json $PY/tests/rimu-tests.json || err=1
     diff $TS/test/rimuc-tests.json $PY/tests/rimuc-tests.json || err=1
-    diff $TS/src/examples/example-rimurc.rmu $PY/tests/fixtures/example-rimurc.rmu || err=1
+    diff $TS/examples/example-rimurc.rmu $PY/tests/fixtures/example-rimurc.rmu || err=1
 
     cd $TS/src/rimuc/resources
     for f in *; do
@@ -140,11 +140,11 @@ DART_TIME=0
 PY_TIME=0
 DENO_TIME=0
 
-DOC_LINES=$(cat $TS/docs/{doc-header,reference,tips,changelog,manpage}.rmu $TS/src/examples/example-rimurc.rmu | wc -l)
+DOC_LINES=$(cat $TS/docs/{doc-header,reference,tips,changelog,manpage}.rmu $TS/examples/example-rimurc.rmu | wc -l)
 
 echo "Compiling and comparing documentation..."
 for doc in reference tips changelog; do
-    ARGS='--no-rimurc --theme legend --custom-toc --header-links --layout sequel --lang en --title "Rimu Reference" --highlightjs --prepend "{generate-examples}='"'yes'"'"  ./src/examples/example-rimurc.rmu ./docs/manpage.rmu ./docs/doc-header.rmu'
+    ARGS='--no-rimurc --theme legend --custom-toc --header-links --layout sequel --lang en --title "Rimu Reference" --highlightjs --prepend "{generate-examples}='"'yes'"'"  ./examples/example-rimurc.rmu ./docs/manpage.rmu ./docs/doc-header.rmu'
     GO_DOC=/tmp/$doc-go.html
     JS_DOC=/tmp/$doc-js.html
     KT_DOC=/tmp/$doc-kt.html

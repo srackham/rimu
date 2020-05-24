@@ -29,7 +29,7 @@ const DENO_RIMU_TS = "src/deno/rimu.ts";
 const DENO_RIMUC_TS = "src/deno/rimuc.ts";
 const WEB_RIMU_JS = "lib/web/rimu.esm.js";
 const RIMUC_EXE = `deno run -A ${DENO_RIMUC_TS}`;
-const TEST_EXE = `deno test -A --unstable ${env("--debug") ? "" : "--quiet"}`;
+const TEST_EXE = `deno test -A --unstable`;
 
 const DOCS = [
   {
@@ -198,7 +198,7 @@ task(
       " --lang en" +
       ' --title "' + doc.title + '"' +
       " " + doc.rimucOptions + " " +
-      " src/examples/example-rimurc.rmu " + "docs/doc-header.rmu " +
+      " examples/example-rimurc.rmu " + "docs/doc-header.rmu " +
       doc.src
     );
     await sh(commands);
@@ -211,7 +211,7 @@ task(
   GALLERY_INDEX_SRC,
   [
     ...DENO_TS_SRC,
-    "src/examples/example-rimurc.rmu",
+    "examples/example-rimurc.rmu",
     "docs/doc-header.rmu",
     "docs/gallery-example-template.rmu",
   ],
@@ -228,7 +228,7 @@ task(
           " --prepend \"{gallery-options}='" +
           options.replace(/(["{])/g, "\\$1") +
           "'\"" +
-          " src/examples/example-rimurc.rmu" +
+          " examples/example-rimurc.rmu" +
           " " + "docs/doc-header.rmu" +
           " " + "docs/gallery-example-template.rmu";
         commands.push(command);

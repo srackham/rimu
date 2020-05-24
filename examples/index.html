@@ -8,9 +8,9 @@
 </head>
 
 <body>
-    <script src="rimu.min.js"></script>
-    <script>
-        alert(Rimu.render("Hello *Rimu*!"));
+    <script type="module">
+        import * as rimu from "./rimu.esm.js";
+        alert(rimu.render("Hello *Rimu*!"));
     </script>
 </body>
 
