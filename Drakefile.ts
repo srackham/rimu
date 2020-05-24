@@ -3,7 +3,19 @@
  */
 
 import * as path from "https://deno.land/std@v0.51.0/path/mod.ts";
-import { abort, desc, env, glob, quote, readFile, run, sh, task, updateFile, writeFile } from "../drake/mod.ts";
+import {
+  abort,
+  desc,
+  env,
+  glob,
+  quote,
+  readFile,
+  run,
+  sh,
+  task,
+  updateFile,
+  writeFile,
+} from "../drake/mod.ts";
 // } from "https://deno.land/x/drake@v1.0.0/mod.ts";
 
 env("--default-task", "build");
@@ -78,7 +90,9 @@ const HTML = DOCS.map((doc) => doc.dst);
  Tasks
  */
 
-desc("build and test Rimu modules and CLIs for Deno and Nodejs; build Rimu documentation");
+desc(
+  "build and test Rimu modules and CLIs for Deno and Nodejs; build Rimu documentation",
+);
 task("build", ["build-node", "build-deno", "build-web", "build-docs"]);
 
 desc("Compile Rimu for NodeJs");
@@ -99,11 +113,8 @@ task(
 // Create tasks for Deno source files.
 // Deno TypeScript module names must be specified with a .ts extension. Add a
 // .ts extension to TypeScript module names and copy to Deno source directory.
-for (const prereq of NODE_TS_SRC) {
+for (const prereq of glob("src/node/!(rimuc).ts")) {
   const target = path.join("src/deno", path.basename(prereq));
-  if (target === DENO_RIMUC_TS) {
-    continue; // Skip rimuc.ts
-  }
   task(target, [prereq], function () {
     let text = readFile(this.prereqs[0]);
     text = text.replace(
