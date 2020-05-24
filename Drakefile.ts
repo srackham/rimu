@@ -99,7 +99,7 @@ desc("Compile Rimu for NodeJs");
 task("build-node", [NODE_RIMUC_BIN]);
 task(
   NODE_RIMUC_BIN,
-  [...NODE_TS_SRC],
+  NODE_TS_SRC,
   async function () {
     await sh([`tsc -p tsconfig.json`, `tsc -p tsconfig-cjs.json`]);
     const src = readFile(NODE_RIMUC_BIN);
@@ -130,15 +130,15 @@ for (const prereq of glob("src/node/!(rimuc).ts")) {
 }
 
 desc(
-  "Update Rimu Deno code",
+  "Copy shared node source modules and add .ts extensions",
 );
-task("build-deno", [...DENO_TS_SRC]);
+task("build-deno", glob("src/deno/!(deps|rimuc).ts"));
 
 desc(
   "Bundle Rimu native Web ES module",
 );
 task("build-web", [WEB_RIMU_JS]);
-task(WEB_RIMU_JS, [...DENO_TS_SRC], async function () {
+task(WEB_RIMU_JS, DENO_TS_SRC, async function () {
   await sh(`deno bundle ${DENO_RIMU_TS} ${WEB_RIMU_JS}`);
 });
 
@@ -316,11 +316,9 @@ See [Built-in layouts]({reference}#built-in-layouts) for more information.`;
 async function validate_docs() {
   const commands = HTML
     // 2018-11-09: Skip files with style tags in the body as Nu W3C validator treats style tags in the body as an error.
-    .filter((file) =>
-      !["reference", "tips", "rimuplayground"].map((file) =>
-        `docs/${file}.html`
-      )
-        .includes(file)
+    .filter((f) =>
+      !["reference", "tips", "rimuplayground"].map((f) => `docs/${f}.html`)
+        .includes(f)
     )
     .map((file) => `html-validator --verbose --format=text --file=${file}`);
   await sh(commands, { stdout: env("--debug") ? "inherit" : "null" });
