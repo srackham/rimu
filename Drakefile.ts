@@ -135,11 +135,14 @@ desc(
 task("build-deno", glob("src/deno/!(deps|rimuc).ts"));
 
 desc(
-  "Bundle Rimu native Web ES module",
+  "Bundle and minimise Rimu native Web ES module",
 );
 task("build-web", [WEB_RIMU_JS]);
 task(WEB_RIMU_JS, DENO_TS_SRC, async function () {
-  await sh(`deno bundle ${DENO_RIMU_TS} ${WEB_RIMU_JS}`);
+  try {
+    Deno.mkdirSync("lib/web");
+  } catch {}
+  await sh(`deno bundle ${DENO_RIMU_TS} | terser --output ${WEB_RIMU_JS}`);
 });
 
 desc("Install executable wrapper for rimudeno CLI");
