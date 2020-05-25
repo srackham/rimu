@@ -6,7 +6,7 @@ import { existsSync, path, readFileStrSync, writeFileStrSync } from "./deps.ts";
 import { resources } from "./resources.ts";
 import * as rimu from "./rimu.ts";
 
-const VERSION = "11.1.9";
+const VERSION = "11.1.10";
 const STDIN = "/dev/stdin";
 const HOME_DIR = Deno.env.get(
   Deno.build.os === "windows" ? "USERPROFILE" : "HOME",
