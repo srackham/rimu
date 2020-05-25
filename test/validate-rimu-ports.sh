@@ -156,7 +156,7 @@ for doc in reference tips changelog; do
 
 
     start
-    eval node bin/rimuc.js --output $JS_DOC $ARGS ./docs/$doc.rmu
+    eval node lib/cjs/rimuc.js --output $JS_DOC $ARGS ./docs/$doc.rmu
     JS_TIME=$(duration $JS_TIME)
 
     start
