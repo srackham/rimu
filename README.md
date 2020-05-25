@@ -110,3 +110,7 @@ To build Rimu you need to have [Deno](https://deno.land/) and
    platforms:
 
         deno run -A Drakefile.ts build
+
+**NOTE**: If a one-off `rimuc.ts` build error occurs rerun the build command
+(the error is benign and seems to be related to circular compilation
+references).
