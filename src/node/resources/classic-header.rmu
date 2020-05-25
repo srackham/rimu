@@ -188,7 +188,7 @@ hljs.initHighlightingOnLoad();
     text-align: left;
     vertical-align: top;
   }
-  {--!} tbody necessary because: http://stackoverflow.com/questions/7490364/why-do-browsers-still-inject-tbody-in-html5
+  {--!} tbody necessary because: https://stackoverflow.com/questions/7490364/why-do-browsers-still-inject-tbody-in-html5
   table.bordered > tbody > tr > th,
   table.bordered > tbody > tr > td {
     border: 1px solid {--border-color};

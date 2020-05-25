@@ -1375,14 +1375,14 @@ Preview
 <td style="width:50%;">
 <pre class="example-source nohighlight" id="images-example-source"><code>An image can be rendered as a block element:
 
-&lt;image:http://www.w3.org/Icons/w3c_home.png|W3C logo&gt;
+&lt;image:https://www.w3.org/Icons/w3c_home.png|W3C logo&gt;
 
 Centered using [rimuc](#rimuc-command) `--layout` option CSS class:
 
 .align-center
-![W3C logo](http://www.w3.org/Icons/w3c_home.png)
+![W3C logo](https://www.w3.org/Icons/w3c_home.png)
 
-Or an image can be &lt;image:http://www.w3.org/Icons/w3c_home.png&gt; an
+Or an image can be &lt;image:https://www.w3.org/Icons/w3c_home.png&gt; an
 inline element.</code></pre>
 <textarea id="images-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('images-example')"></textarea>
 </td>
@@ -1390,10 +1390,10 @@ inline element.</code></pre>
 <div id="images-example-errors" class="example-errors"></div>
 <div id="images-example-rendered" class="example-rendered">
 <p>An image can be rendered as a block element:</p>
-<img src="http://www.w3.org/Icons/w3c_home.png" alt="W3C logo">
+<img src="https://www.w3.org/Icons/w3c_home.png" alt="W3C logo">
 <p>Centered using <a href="#rimuc-command">rimuc</a> <code>--layout</code> option CSS class:</p>
-<p class="align-center"><img src="http://www.w3.org/Icons/w3c_home.png" alt="W3C logo"></p>
-<p>Or an image can be <img src="http://www.w3.org/Icons/w3c_home.png" alt="http://www.w3.org/Icons/w3c_home.png"> an
+<p class="align-center"><img src="https://www.w3.org/Icons/w3c_home.png" alt="W3C logo"></p>
+<p>Or an image can be <img src="https://www.w3.org/Icons/w3c_home.png" alt="https://www.w3.org/Icons/w3c_home.png"> an
 inline element.</p>
 </div>
 </td></tr></table>
@@ -1992,7 +1992,7 @@ that platform differences between regular expression syntax is a
 potential source of cross-platform incompatibility.  To avoid
 cross-platform incompatibility use regular expression syntax that is
 common to all platforms:</p>
-<ul><li>JavaScript, TypeScript and Dart use <a href="http://ecma-international.org/ecma-262/5.1/#sec-15.10">ECMA-262 regular
+<ul><li>JavaScript, TypeScript and Dart use <a href="https://ecma-international.org/ecma-262/5.1/#sec-15.10">ECMA-262 regular
   expressions</a>.</li><li><a href="https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html">Java and Kotlin regular
   expressions</a>.</li><li><a href="https://github.com/google/re2/wiki/Syntax">Go regular expressions</a>.</li><li><a href="https://docs.python.org/3/library/re.html">Python regular expressions</a>.</li></ul><p>Guidelines:</p>
 <ul><li>No named groups.</li><li>No look-ahead or look-behind groups.</li><li>No backreferences (<code>\1, \2, ...</code>).</li><li>Use only the <code>i</code> flag in replacement definitions.</li><li>No embedded flags.</li></ul><h2 id="rimu-implementations">Rimu implementations</h2>

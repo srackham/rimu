@@ -28,8 +28,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta charset="UTF-8">
   <title>{--title}</title>
-  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
-  <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
+  <link rel="stylesheet" href="https://yandex.st/highlightjs/7.3/styles/default.min.css">
 
 <style>
   /* Bootstrap tweaks. */

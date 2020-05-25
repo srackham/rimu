@@ -277,7 +277,7 @@ hljs.initHighlightingOnLoad();
     text-align: left;
     vertical-align: top;
   }
-  {--!} tbody necessary because: http://stackoverflow.com/questions/7490364/why-do-browsers-still-inject-tbody-in-html5
+  {--!} tbody necessary because: https://stackoverflow.com/questions/7490364/why-do-browsers-still-inject-tbody-in-html5
   table.bordered > tbody > tr > th,
   table.bordered > tbody > tr > td {
     border: 1px solid {--border-color};
@@ -899,7 +899,7 @@ hljs.initHighlightingOnLoad();
     text-align: left;
     vertical-align: top;
   }
-  {--!} tbody necessary because: http://stackoverflow.com/questions/7490364/why-do-browsers-still-inject-tbody-in-html5
+  {--!} tbody necessary because: https://stackoverflow.com/questions/7490364/why-do-browsers-still-inject-tbody-in-html5
   table.bordered > tbody > tr > th,
   table.bordered > tbody > tr > td {
     border: 1px solid {--border-color};
@@ -1180,7 +1180,7 @@ hljs.initHighlightingOnLoad();
 </style>
 
 // TOC specific styles.
-// Flexbox layout inspired by http://codepen.io/VinSpee/pen/zxBJVO
+// Flexbox layout inspired by https://codepen.io/VinSpee/pen/zxBJVO
 {--no-toc!}.+skip
 <style>
   html, body {
@@ -1759,7 +1759,7 @@ hljs.initHighlightingOnLoad();
     text-align: left;
     vertical-align: top;
   }
-  {--!} tbody necessary because: http://stackoverflow.com/questions/7490364/why-do-browsers-still-inject-tbody-in-html5
+  {--!} tbody necessary because: https://stackoverflow.com/questions/7490364/why-do-browsers-still-inject-tbody-in-html5
   table.bordered > tbody > tr > th,
   table.bordered > tbody > tr > td {
     border: 1px solid {--border-color};
@@ -2195,7 +2195,7 @@ hljs.initHighlightingOnLoad();
 // Close contents div.
 </div>
 
-{--highlightjs!}<script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>
+{--highlightjs!}<script src="https://yandex.st/highlightjs/7.3/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script>
 
 {--mathjax!}<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
@@ -2310,8 +2310,8 @@ window.onclick = function(event) {
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta charset="UTF-8">
   <title>{--title}</title>
-  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
-  <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
+  <link rel="stylesheet" href="https://yandex.st/highlightjs/7.3/styles/default.min.css">
 
 <style>
   /* Bootstrap tweaks. */

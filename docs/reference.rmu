@@ -672,14 +672,14 @@ Notes:
 
 {images-example} = 'An image can be rendered as a block element:
 
-<image:http://www.w3.org/Icons/w3c_home.png|W3C logo>
+<image:https://www.w3.org/Icons/w3c_home.png|W3C logo>
 
 Centered using [rimuc](#rimuc-command) `--layout` option CSS class:
 
 .align-center
-![W3C logo](http://www.w3.org/Icons/w3c_home.png)
+![W3C logo](https://www.w3.org/Icons/w3c_home.png)
 
-Or an image can be <image:http://www.w3.org/Icons/w3c_home.png> an
+Or an image can be <image:https://www.w3.org/Icons/w3c_home.png> an
 inline element.'
 
 {generate-rendered-example-1|images-example}
@@ -1383,7 +1383,7 @@ cross-platform incompatibility use regular expression syntax that is
 common to all platforms:
 
 - JavaScript, TypeScript and Dart use [ECMA-262 regular
-  expressions](http://ecma-international.org/ecma-262/5.1/#sec-15.10).
+  expressions](https://ecma-international.org/ecma-262/5.1/#sec-15.10).
 - [Java and Kotlin regular
   expressions](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html).
 - [Go regular expressions](https://github.com/google/re2/wiki/Syntax).

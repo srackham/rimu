@@ -37,7 +37,7 @@ markup vocabulary.
                        font-weight:bold;">$1</span>'\
 {heads-up} = '\{info|Heads up!}'\
 {note} = '\{info|Note} <mark>$1</mark>'\
-{rimu-playground} = '[Rimu Playground](http://srackham.github.io/rimu/rimuplayground.html)'\
+{rimu-playground} = '[Rimu Playground](https://srackham.github.io/rimu/rimuplayground.html)'\
 {sidebar} = '#### $1
 ."padding-left: 10px; border-left: 4px solid silver; margin-bottom: 1em;"'\
 
@@ -245,9 +245,9 @@ documentation.
 Using an editor with Rimu syntax highlighting support (see previous
 topic) makes it much easier to spot syntax errors.  Rimu includes a
 Vim editor syntax highlighter, see the [Vim syntax
-file](http://srackham.github.io/rimu/reference.html#vim-syntax-file)
+file](https://srackham.github.io/rimu/reference.html#vim-syntax-file)
 section in the [Rimu
-Reference](http://srackham.github.io/rimu/reference.html) for details.
+Reference](https://srackham.github.io/rimu/reference.html) for details.
 
 
 ## Extending the Vim syntax highlighter
@@ -365,7 +365,7 @@ See also:
 
 - [What is the current state of the "scoped" attribute for the style
   element in
-  HTML5?](http://stackoverflow.com/questions/28633038/what-is-the-current-state-of-the-scoped-attribute-for-the-style-element-in-htm)
+  HTML5?](https://stackoverflow.com/questions/28633038/what-is-the-current-state-of-the-scoped-attribute-for-the-style-element-in-htm)
 ""
 The primary goal of HTML5 was to formally specify the behavior that
 browsers have had implemented basically "forever" regardless of
@@ -376,7 +376,7 @@ to. This will not change.
 - [MDN
   \<style>](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/style).
 - [Using \<style> tags in the \<body> with other
-  HTML](http://stackoverflow.com/a/16844668/1136455).
+  HTML](https://stackoverflow.com/a/16844668/1136455).
 ..
 
 
@@ -468,7 +468,7 @@ var html = Rimu.render(untrusted_rimu_markup, {safeMode: 5});
 
 
 ## Mathematical formulae
-The {rimuc} command supports [MathJax](http://www.mathjax.org/) LaTeX
+The {rimuc} command supports [MathJax](https://www.mathjax.org/) LaTeX
 and MathML mathematical formulas.  To include _MathJax_ support use
 the {rimuc} command `--mathjax` option with the `--layout` option.
 
@@ -499,7 +499,7 @@ A MathML block formula:
   invocations.
 
 See the [latest MathJax
-documentation](http://docs.mathjax.org/en/latest/) to learn how to use
+documentation](https://docs.mathjax.org/en/latest/) to learn how to use
 MathJax.
 
 

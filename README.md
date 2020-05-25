@@ -10,19 +10,19 @@ into the Rimu markup syntax):
 - Markup generation can be customized and extended.
 - Rimu includes a simple, flexible macro language.
 - A subset of Rimu syntax is [Markdown
-  compatible](http://srackham.github.io/rimu/tips.html#markdown-compatible).
+  compatible](https://srackham.github.io/rimu/tips.html#markdown-compatible).
 - The generated HTML is compatible with all modern browsers.
 - A number of [Rimu
-  implementations](http://srackham.github.io/rimu/reference.html#rimu-implementations)
+  implementations](https://srackham.github.io/rimu/reference.html#rimu-implementations)
   are available for various languages and runtime environments.
 
 
 ## Learn more
 Read the documentation and experiment with Rimu in the [Rimu
-Playground](http://srackham.github.io/rimu/rimuplayground.html) or open the
+Playground](https://srackham.github.io/rimu/rimuplayground.html) or open the
 `rimuplayground.html` file locally in your browser.
 
-See the Rimu [Change Log](http://srackham.github.io/rimu/changelog.html) for
+See the Rimu [Change Log](https://srackham.github.io/rimu/changelog.html) for
 the latest changes.
 
 **NOTE**: The remainder of this document is specific to the
