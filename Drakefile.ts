@@ -54,7 +54,7 @@ const DOCS = [
     src: "docs/changelog.rmu",
     dst: "docs/changelog.html",
     title: "Rimu Change Log",
-    rimucOptions: "",
+    rimucOptions: "--highlightjs",
   },
   {
     src: "docs/reference.rmu",

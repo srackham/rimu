@@ -31,9 +31,9 @@ Node.js, Deno and browser platforms.
 
 
 ## Quick start
-To try the Rimu library in your browser:
+Try the Rimu library in the npm Runkit page:
 
-1. Open the [Rimu NPM Runkit page](https://npm.runkit.com/rimu) in your browser.
+1. Open the [Rimu npm Runkit page](https://npm.runkit.com/rimu) in your browser.
 2. Paste in this code then press the _Run_ button.
 ``` javascript
 const rimu = require("rimu")
@@ -41,7 +41,7 @@ const html = rimu.render('Hello *Rimu*!')
 ```
 This will output `"<p>Hello <em>Rimu</em>!</p>"`.
 
-## Installing Rimu
+## Installing and using Rimu
 **Node.js**
 
 Use `npm` to install the Node.js Rimu library module and the `rimuc`
@@ -77,16 +77,19 @@ in `$HOME/.deno/bin/rimudeno`:
 
 **Browser**
 
-To use Rimu in an HTML Web page include the bundled and minimized
-`rimu.min.js` file from the `./lib` directory in your Web page, for
-example:
+Rimu includes a browser loadable ES module. For example:
 
 ``` html
-<script src="rimu.min.js"></script>
-<script>
-    alert(Rimu.render("Hello *Rimu*!"));
+<script type="module">
+    import * as rimu from "./rimu.esm.js";
+    alert(rimu.render("Hello *Rimu*!"));
 </script>
 ```
+The distributed
+[rimu.esm.js](https://github.com/srackham/rimu/blob/master/docs/rimu.esm.js) ES
+module file was bundled by [Deno](https://deno.land/) and minimized with
+[terser](https://github.com/terser/terser). See the `build-web` task in the
+[Rimu Drakefile](https://github.com/srackham/rimu/blob/master/Drakefile.ts)).
 
 
 ## Building Rimu and the Rimu documentation

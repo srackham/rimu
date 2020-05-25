@@ -3,6 +3,32 @@
 This is the Rimu TypeScript implementation change log (see also [other Rimu
 implementations]({reference}#rimu-implementations)).
 
+## Version 11.1.10 (2020-05-27)
+This release makes no additions or changes to Rimu markup, consequently it has
+been assigned a patch number increment. Nevertheless the patch version number
+belies the magnitude of changes accompanying this release.
+
+The toolchain has been simplified. Webpack is no longer used and the number of
+Node.js dev dependencies has more than halved.
+
+ES modules are supported natively  in the browser. For example:
+
+``` html
+<script type="module">
+    import * as rimu from "./rimu.esm.js";
+    alert(rimu.render("Hello *Rimu*!"));
+</script>
+```
+The distributed
+[rimu.esm.js](https://github.com/srackham/rimu/blob/master/docs/rimu.esm.js) ES
+module file was bundled by [Deno](https://deno.land/) and minimized with
+[terser](https://github.com/terser/terser). See the `build-web` task in the
+[Rimu Drakefile](https://github.com/srackham/rimu/blob/master/Drakefile.ts)).
+
+Deno is used extensively to run tests, build the distribution and bundle the
+browser ES module.
+
+
 ## Version 11.1.9 (2020-05-16)
 Updates for Deno 1.0.0 and Drake 1.0.0 build tool.
 

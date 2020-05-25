@@ -1262,18 +1262,6 @@ print(rimu.render('*Hello World*!', rimu.RenderOptions(reset=True)))
 ```
 See the [Python README]({pypi-rimu}).
 
-#### Browser
-To use Rimu in an HTML Web page include the bundled and minimized
-`rimu.min.js` file from the `./lib` directory in your Web page, for
-example:
-
-``` html
-<script src="rimu.min.js"></script>
-<script>
-    alert(Rimu.render("Hello *Rimu*!"));
-</script>
-```
-
 ### API options
 The API `options` argument is an object with zero or more of the
 following properties:

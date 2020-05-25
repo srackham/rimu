@@ -1149,18 +1149,6 @@ Joe Jetson
 ``
 
 
-## Automatically recompile and display Rimu source
-To automatically recompile Rimu source to HTML and refresh the webpage
-in the Chrome browser use [entr(1)](http://entrproject.org/) to
-recompile, for example:
-
-  ls README.md | entr rimuc -s README.md
-
-Then use the Chrome
-[LivePage](https://chrome.google.com/webstore/detail/livepage/pilnojpmdoofaelbinaeodfpjheijkbh)
-extension to auto-refresh the file after it is recompiled.
-
-
 ## General purpose macro processor
 You can use Rimu as a general purpose macro text processor. This is
 achieved by enveloping the text to be processed in a _Division Block_.
