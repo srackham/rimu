@@ -456,8 +456,8 @@
   font-weight: bold;
 }
 </style>
-<script src="rimu.min.js"></script>
-<script>
+<script type="module">
+import * as rimu from "./rimu.esm.js";
 function editExample(name) {
   var source = document.getElementById(name + '-source');
   if (source.style.display === 'none') {
@@ -469,6 +469,7 @@ function editExample(name) {
   edit.style.display = 'block';
   source.style.display = 'none';
 }
+window.editExample = editExample;
 function renderExample(name) {
   var edit = document.getElementById(name + '-edit');
   var rendered = document.getElementById(name + '-rendered');
@@ -476,7 +477,7 @@ function renderExample(name) {
   var errors = document.getElementById(name + '-errors');
   var src = (edit.style.display === 'none') ? source.textContent : edit.value;
   var messages = '';
-  var html = Rimu.render(src, {
+  var html = rimu.render(src, {
     reset: true,
     callback: function(message) {
       messages += message.type + ': ' + message.text.split(':', 2).join(':') + '\n';
@@ -499,11 +500,13 @@ function renderExample(name) {
     edit.style.height = (edit.parentNode.offsetHeight - 1) + 'px';
   }
 }
+window.renderExample = renderExample;
 function toggleExample(name) {
   var rendered = document.getElementById(name + '-rendered');
   rendered.classList.toggle('example-html');
   renderExample(name);
 }
+window.toggleExample = toggleExample;
 function replaceSpecialChars(s) {
   return s.replace(/&/g, '&amp;')
     .replace(/>/g, '&gt;')
@@ -1917,14 +1920,6 @@ main(List&lt;String&gt; arguments) {
 
 print(rimu.render('*Hello World*!', rimu.RenderOptions(reset=True)))</code></pre>
 <p>See the <a href="https://pypi.org/project/rimu/">Python README</a>.</p>
-<h4 id="browser">Browser</h4>
-<p>To use Rimu in an HTML Web page include the bundled and minimized
-<code>rimu.min.js</code> file from the <code>./lib</code> directory in your Web page, for
-example:</p>
-<pre class="html"><code>&lt;script src="rimu.min.js"&gt;&lt;/script&gt;
-&lt;script&gt;
-    alert(Rimu.render("Hello *Rimu*!"));
-&lt;/script&gt;</code></pre>
 <h3 id="api-options">API options</h3>
 <p>The API <code>options</code> argument is an object with zero or more of the
 following properties:</p>

@@ -434,11 +434,11 @@ the latest changes.</p>
 <a href="https://github.com/srackham/rimu">TypeScript implementation</a> for
 Node.js, Deno and browser platforms.</p>
 <h2 id="quick-start">Quick start</h2>
-<p>To try the Rimu library in your browser:</p>
-<ol><li>Open the <a href="https://npm.runkit.com/rimu">Rimu NPM Runkit page</a> in your browser.</li><li>Paste in this code then press the <em>Run</em> button.<pre class="javascript"><code>const rimu = require("rimu")
+<p>Try the Rimu library in the npm Runkit page:</p>
+<ol><li>Open the <a href="https://npm.runkit.com/rimu">Rimu npm Runkit page</a> in your browser.</li><li>Paste in this code then press the <em>Run</em> button.<pre class="javascript"><code>const rimu = require("rimu")
 const html = rimu.render('Hello *Rimu*!')</code></pre>
 </li></ol><p>This will output <code>"&lt;p&gt;Hello &lt;em&gt;Rimu&lt;/em&gt;!&lt;/p&gt;"</code>.</p>
-<h2 id="installing-rimu">Installing Rimu</h2>
+<h2 id="installing-and-using-rimu">Installing and using Rimu</h2>
 <p><strong>Node.js</strong></p>
 <p>Use <code>npm</code> to install the Node.js Rimu library module and the <code>rimuc</code>
 CLI:</p>
@@ -459,13 +459,16 @@ The following example creates the CLI executable named <code>rimudeno</code>
 in <code>$HOME/.deno/bin/rimudeno</code>:</p>
 <pre><code>deno install -A --name rimudeno https://deno.land/x/rimu/src/deno/rimuc.ts</code></pre>
 <p><strong>Browser</strong></p>
-<p>To use Rimu in an HTML Web page include the bundled and minimized
-<code>rimu.min.js</code> file from the <code>./lib</code> directory in your Web page, for
-example:</p>
-<pre class="html"><code>&lt;script src="rimu.min.js"&gt;&lt;/script&gt;
-&lt;script&gt;
-    alert(Rimu.render("Hello *Rimu*!"));
+<p>Rimu includes a browser loadable ES module. For example:</p>
+<pre class="html"><code>&lt;script type="module"&gt;
+    import * as rimu from "./rimu.esm.js";
+    alert(rimu.render("Hello *Rimu*!"));
 &lt;/script&gt;</code></pre>
+<p>The distributed
+<a href="https://github.com/srackham/rimu/blob/master/docs/rimu.esm.js">rimu.esm.js</a> ES
+module file was bundled by <a href="https://deno.land/">Deno</a> and minimized with
+<a href="https://github.com/terser/terser">terser</a>. See the <code>build-web</code> task in the
+<a href="https://github.com/srackham/rimu/blob/master/Drakefile.ts">Rimu Drakefile</a>).</p>
 <h2 id="building-rimu-and-the-rimu-documentation">Building Rimu and the Rimu documentation</h2>
 <p>To build Rimu you need to have <a href="https://deno.land/">Deno</a> and
 <a href="https://nodejs.org/">Node.js</a> installed.</p>

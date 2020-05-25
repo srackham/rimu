@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <title>Rimu Change Log</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
 <style>
   :root {
     font-size: 16px;
@@ -101,6 +102,7 @@
     font-size: 90%;
     background-color: #f8f8f8;
   }
+  .hljs { background-color: #f8f8f8; }
   pre {
     font-family: Consolas, "Andale Mono", Monaco, monospace;
     line-height: normal;
@@ -416,6 +418,24 @@
 <h1 id="rimu-change-log">Rimu Change Log</h1>
 <p>This is the Rimu TypeScript implementation change log (see also <a href="reference.html#rimu-implementations">other Rimu
 implementations</a>).</p>
+<h2 id="version-11-1-10-2020-05-26">Version 11.1.10 (2020-05-26)</h2>
+<p>This release makes no additions or changes to Rimu markup, consequently it has
+been assigned a patch number increment. Nevertheless the patch version number
+belies the magnitude of changes accompanying this release.</p>
+<p>The toolchain has been simplified. Webpack is no longer used and the number of
+Node.js dev dependencies has more than halved.</p>
+<p>ES modules are supported natively  in the browser. For example:</p>
+<pre class="html"><code>&lt;script type="module"&gt;
+    import * as rimu from "./rimu.esm.js";
+    alert(rimu.render("Hello *Rimu*!"));
+&lt;/script&gt;</code></pre>
+<p>The distributed
+<a href="https://github.com/srackham/rimu/blob/master/docs/rimu.esm.js">rimu.esm.js</a> ES
+module file was bundled by <a href="https://deno.land/">Deno</a> and minimized with
+<a href="https://github.com/terser/terser">terser</a>. See the <code>build-web</code> task in the
+<a href="https://github.com/srackham/rimu/blob/master/Drakefile.ts">Rimu Drakefile</a>).</p>
+<p>Deno is used extensively to run tests, build the distribution and bundle the
+browser ES library module.</p>
 <h2 id="version-11-1-9-2020-05-16">Version 11.1.9 (2020-05-16)</h2>
 <p>Updates for Deno 1.0.0 and Drake 1.0.0 build tool.</p>
 <h2 id="version-11-1-8-2020-04-02">Version 11.1.8 (2020-04-02)</h2>
@@ -777,6 +797,14 @@ compatibility. It also includes some breaking changes.</p>
 <ul><li>Added Quote and Replacements definitions.</li><li>A number of other enhancements, additions and documentation updates.</li></ul>
 </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/dart.min.js"></script>
+<script>
+hljs.configure({languages: []});
+hljs.initHighlightingOnLoad();
+</script>
 <script>
 window.onload = function() {
   document.getElementById('sidebar').appendChild(document.getElementById('toc')); // Ensure custom TOC is child of sidebar.

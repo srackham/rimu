@@ -454,8 +454,8 @@
   font-weight: bold;
 }
 </style>
-<script src="rimu.min.js"></script>
-<script>
+<script type="module">
+import * as rimu from "./rimu.esm.js";
 function editExample(name) {
   var source = document.getElementById(name + '-source');
   if (source.style.display === 'none') {
@@ -467,6 +467,7 @@ function editExample(name) {
   edit.style.display = 'block';
   source.style.display = 'none';
 }
+window.editExample = editExample;
 function renderExample(name) {
   var edit = document.getElementById(name + '-edit');
   var rendered = document.getElementById(name + '-rendered');
@@ -474,7 +475,7 @@ function renderExample(name) {
   var errors = document.getElementById(name + '-errors');
   var src = (edit.style.display === 'none') ? source.textContent : edit.value;
   var messages = '';
-  var html = Rimu.render(src, {
+  var html = rimu.render(src, {
     reset: true,
     callback: function(message) {
       messages += message.type + ': ' + message.text.split(':', 2).join(':') + '\n';
@@ -497,11 +498,13 @@ function renderExample(name) {
     edit.style.height = (edit.parentNode.offsetHeight - 1) + 'px';
   }
 }
+window.renderExample = renderExample;
 function toggleExample(name) {
   var rendered = document.getElementById(name + '-rendered');
   rendered.classList.toggle('example-html');
   renderExample(name);
 }
+window.toggleExample = toggleExample;
 function replaceSpecialChars(s) {
   return s.replace(/&/g, '&amp;')
     .replace(/>/g, '&gt;')
@@ -549,7 +552,8 @@ Code block.
 <div id="playground-preview" style="border: 1px solid #dddddd; margin-top: 0.5rem; padding: 4px; box-shadow: 0 0 10px #9ecaed;"></div>
 <h2 id="showhide-playground-html-html-markup"><span onclick="showHide('playground-html')" title="Show/Hide" style="cursor: pointer;">&#9660;</span> HTML markup</h2>
 <pre id="playground-html" style="margin-top: 0.5rem; box-shadow: 0 0 10px #9ecaed;"><code></code></pre>
-<script>
+<script type="module">
+import * as rimu from "./rimu.esm.js";
 function escapeSpecialChars(s) {
   return s.replace(/&/g, '&amp;')
           .replace(/>/g, '&gt;')
@@ -559,6 +563,7 @@ function showHide(id) {
   var el = document.getElementById(id);
   el.style.display = el.style.display === 'none' ? '' : 'none';
 }
+window.showHide = showHide;
 function convert() {
   var source = document.getElementById('playground-edit').value;
   var htmlElement = document.getElementById('playground-html');
@@ -566,7 +571,7 @@ function convert() {
   var diagnosticsElement = document.getElementById('playground-diagnostics');
   var messages = '';
   diagnosticsElement.innerHTML = ''
-  var htmlRaw = Rimu.render(source, {
+  var htmlRaw = rimu.render(source, {
     reset: true,
     callback: function(message) {
       messages += message.type + ': ' + message.text + '\n';
@@ -582,6 +587,7 @@ function convert() {
     diagnosticsElement.style.display = 'none';
   }
 }
+window.convert = convert;
 convert();
 </script>
 </div>

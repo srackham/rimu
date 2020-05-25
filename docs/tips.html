@@ -456,8 +456,8 @@
   font-weight: bold;
 }
 </style>
-<script src="rimu.min.js"></script>
-<script>
+<script type="module">
+import * as rimu from "./rimu.esm.js";
 function editExample(name) {
   var source = document.getElementById(name + '-source');
   if (source.style.display === 'none') {
@@ -469,6 +469,7 @@ function editExample(name) {
   edit.style.display = 'block';
   source.style.display = 'none';
 }
+window.editExample = editExample;
 function renderExample(name) {
   var edit = document.getElementById(name + '-edit');
   var rendered = document.getElementById(name + '-rendered');
@@ -476,7 +477,7 @@ function renderExample(name) {
   var errors = document.getElementById(name + '-errors');
   var src = (edit.style.display === 'none') ? source.textContent : edit.value;
   var messages = '';
-  var html = Rimu.render(src, {
+  var html = rimu.render(src, {
     reset: true,
     callback: function(message) {
       messages += message.type + ': ' + message.text.split(':', 2).join(':') + '\n';
@@ -499,11 +500,13 @@ function renderExample(name) {
     edit.style.height = (edit.parentNode.offsetHeight - 1) + 'px';
   }
 }
+window.renderExample = renderExample;
 function toggleExample(name) {
   var rendered = document.getElementById(name + '-rendered');
   rendered.classList.toggle('example-html');
   renderExample(name);
 }
+window.toggleExample = toggleExample;
 function replaceSpecialChars(s) {
   return s.replace(/&/g, '&amp;')
     .replace(/>/g, '&gt;')
@@ -789,8 +792,8 @@ Reference</a> for details.</p>
 in Vim by creating a custom <code>~/.vim/after/syntax/rimu.vim</code> syntax file
 (Vim loads files from the <code>after</code> directory after loading normal
 syntax files).  The distributed example
-<a href="https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.vim">~/.vim/after/syntax/rimu.vim</a>
-syntax file highlights custom syntax definitions from the <a href="https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.rmu">example
+<a href="https://github.com/srackham/rimu/blob/master/examples/example-rimurc.vim">~/.vim/after/syntax/rimu.vim</a>
+syntax file highlights custom syntax definitions from the <a href="https://github.com/srackham/rimu/blob/master/examples/example-rimurc.rmu">example
 .rimurc file</a>.</p>
 <h2 id="entering-non-keyboard-characters">Entering non-keyboard characters</h2>
 <p>Characters that are unavailable on your keyboard can be entered as
@@ -803,7 +806,7 @@ as em dash, ellipsis and quotation characters.</p>
 which can produce unexpected results. It can also make your Rimu
 source non-portable and less readable.</p>
 <h2 id="example-rimurc">Example .rimurc file</h2>
-<p>The Rimu distribution includes an <a href="https://github.com/srackham/rimu/blob/master/src/examples/example-rimurc.rmu">example .rimurc
+<p>The Rimu distribution includes an <a href="https://github.com/srackham/rimu/blob/master/examples/example-rimurc.rmu">example .rimurc
 file</a> containing useful macros, quotes and
 replacement definitions.</p>
 <p>It is important to note that these niceties have been defined in
@@ -2000,15 +2003,7 @@ Joe Jetson</p></div>
 @page
 { margin: 25mm 25mm 25mm 25mm; }
 &lt;/style&gt;</code></pre>
-</li></ul><h2 id="automatically-recompile-and-display-rimu-source">Automatically recompile and display Rimu source</h2>
-<p>To automatically recompile Rimu source to HTML and refresh the webpage
-in the Chrome browser use <a href="http://entrproject.org/">entr(1)</a> to
-recompile, for example:</p>
-<pre><code>ls README.md | entr rimuc -s README.md</code></pre>
-<p>Then use the Chrome
-<a href="https://chrome.google.com/webstore/detail/livepage/pilnojpmdoofaelbinaeodfpjheijkbh">LivePage</a>
-extension to auto-refresh the file after it is recompiled.</p>
-<h2 id="general-purpose-macro-processor">General purpose macro processor</h2>
+</li></ul><h2 id="general-purpose-macro-processor">General purpose macro processor</h2>
 <p>You can use Rimu as a general purpose macro text processor. This is
 achieved by enveloping the text to be processed in a <em>Division Block</em>.
 For example:</p>
