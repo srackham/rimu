@@ -3,19 +3,7 @@
  */
 
 import * as path from "https://deno.land/std@v0.52.0/path/mod.ts";
-import {
-  abort,
-  desc,
-  env,
-  glob,
-  quote,
-  readFile,
-  run,
-  sh,
-  task,
-  updateFile,
-  writeFile,
-} from "https://deno.land/x/drake@v1.1.1/mod.ts";
+import { abort, desc, env, glob, quote, readFile, run, sh, task, updateFile, writeFile } from "https://deno.land/x/drake@v1.1.1/mod.ts";
 
 env("--default-task", "build");
 
@@ -101,6 +89,11 @@ task(
   NODE_TS_SRC,
   async function () {
     await sh([`tsc -p tsconfig.json`, `tsc -p tsconfig-cjs.json`]);
+    // Add .js extension to ES module path names.
+    // See https://stackoverflow.com/questions/45932526/how-to-make-typescript-output-valid-es6-module-import-statements
+    for (const f of glob("lib/esm/*.js")) {
+      addModulePathExt(f, f, ".js");
+    }
     const src = readFile(NODE_RIMUC_BIN);
     writeFile(NODE_RIMUC_BIN, `#!/usr/bin/env node\n${src}`);
     if (!isWindows) {
@@ -109,22 +102,30 @@ task(
   },
 );
 
+// Add a file extension to TypeScript/JavaScript import/export module paths.
+function addModulePathExt(
+  inFile: string,
+  outFile: string,
+  ext: string,
+): void {
+  let text = readFile(inFile);
+  text = text.replace(
+    /^((import|export).*from ".*)";/gm,
+    `$1${ext}";`,
+  );
+  text = text.replace(
+    /^(} from ".*)";/gm,
+    `$1${ext}";`,
+  );
+  writeFile(outFile, text);
+}
+
 // Create tasks for Deno source files.
-// Deno TypeScript module names must be specified with a .ts extension. Add a
-// .ts extension to TypeScript module names and copy to Deno source directory.
+// Add a.ts extension to TypeScript module paths and copy to Deno source directory.
 for (const prereq of glob("src/node/!(rimuc).ts")) {
   const target = path.join("src/deno", path.basename(prereq));
   task(target, [prereq], function () {
-    let text = readFile(this.prereqs[0]);
-    text = text.replace(
-      /^((import|export).*from ".*)";/gm,
-      '$1.ts";',
-    );
-    text = text.replace(
-      /^(} from ".*)";/gm,
-      '$1.ts";',
-    );
-    writeFile(this.name, text);
+    addModulePathExt(this.prereqs[0], this.name, ".ts");
   });
 }
 
@@ -140,7 +141,7 @@ task("build-web", [WEB_RIMU_JS]);
 task(WEB_RIMU_JS, DENO_TS_SRC, async function () {
   try {
     Deno.mkdirSync("lib/web");
-  } catch {}
+  } catch { }
   await sh(`deno bundle ${DENO_RIMU_TS} | terser --output ${WEB_RIMU_JS}`);
 });
 
