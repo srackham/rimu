@@ -19,8 +19,7 @@
   "files": [
     "LICENSE",
     "README.md",
-    "lib/cjs",
-    "lib/esm"
+    "lib/"
   ],
   "repository": {
     "type": "git",
