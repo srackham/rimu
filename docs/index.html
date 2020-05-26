@@ -459,16 +459,16 @@ The following example creates the CLI executable named <code>rimudeno</code>
 in <code>$HOME/.deno/bin/rimudeno</code>:</p>
 <pre><code>deno install -A --name rimudeno https://deno.land/x/rimu/src/deno/rimuc.ts</code></pre>
 <p><strong>Browser</strong></p>
-<p>Rimu includes a browser loadable ES module. For example:</p>
+<p>Rimu builds JavaScript ES module files in the <code>./lib/esm</code> directory along with a
+bundled version <code>./lib/web/rimu.esm.js</code>. The <code>rimu.esm.js</code> ES module file was
+bundled by <a href="https://deno.land/">Deno</a> and minimized with
+<a href="https://github.com/terser/terser">terser</a> (see the <code>build-web</code> task in the
+<a href="https://github.com/srackham/rimu/blob/master/Drakefile.ts">Rimu Drakefile</a>).
+Example usage:</p>
 <pre class="html"><code>&lt;script type="module"&gt;
     import * as rimu from "./rimu.esm.js";
     alert(rimu.render("Hello *Rimu*!"));
 &lt;/script&gt;</code></pre>
-<p>The distributed
-<a href="https://github.com/srackham/rimu/blob/master/docs/rimu.esm.js">rimu.esm.js</a> ES
-module file was bundled by <a href="https://deno.land/">Deno</a> and minimized with
-<a href="https://github.com/terser/terser">terser</a>. See the <code>build-web</code> task in the
-<a href="https://github.com/srackham/rimu/blob/master/Drakefile.ts">Rimu Drakefile</a>).</p>
 <h2 id="building-rimu-and-the-rimu-documentation">Building Rimu and the Rimu documentation</h2>
 <p>To build Rimu you need to have <a href="https://deno.land/">Deno</a> and
 <a href="https://nodejs.org/">Node.js</a> installed.</p>
