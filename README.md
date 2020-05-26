@@ -77,7 +77,12 @@ in `$HOME/.deno/bin/rimudeno`:
 
 **Browser**
 
-Rimu includes a browser loadable ES module. For example:
+Rimu builds JavaScript ES module files in the `./lib/esm` directory along with a
+bundled version `./lib/web/rimu.esm.js`. The `rimu.esm.js` ES module file was
+bundled by [Deno](https://deno.land/) and minimized with
+[terser](https://github.com/terser/terser) (see the `build-web` task in the
+[Rimu Drakefile](https://github.com/srackham/rimu/blob/master/Drakefile.ts)).
+Example usage:
 
 ``` html
 <script type="module">
@@ -85,11 +90,6 @@ Rimu includes a browser loadable ES module. For example:
     alert(rimu.render("Hello *Rimu*!"));
 </script>
 ```
-The distributed
-[rimu.esm.js](https://github.com/srackham/rimu/blob/master/docs/rimu.esm.js) ES
-module file was bundled by [Deno](https://deno.land/) and minimized with
-[terser](https://github.com/terser/terser). See the `build-web` task in the
-[Rimu Drakefile](https://github.com/srackham/rimu/blob/master/Drakefile.ts)).
 
 
 ## Building Rimu and the Rimu documentation

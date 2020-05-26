@@ -3,7 +3,19 @@
  */
 
 import * as path from "https://deno.land/std@v0.52.0/path/mod.ts";
-import { abort, desc, env, glob, quote, readFile, run, sh, task, updateFile, writeFile } from "https://deno.land/x/drake@v1.1.1/mod.ts";
+import {
+  abort,
+  desc,
+  env,
+  glob,
+  quote,
+  readFile,
+  run,
+  sh,
+  task,
+  updateFile,
+  writeFile,
+} from "https://deno.land/x/drake@v1.1.1/mod.ts";
 
 env("--default-task", "build");
 
@@ -141,7 +153,7 @@ task("build-web", [WEB_RIMU_JS]);
 task(WEB_RIMU_JS, DENO_TS_SRC, async function () {
   try {
     Deno.mkdirSync("lib/web");
-  } catch { }
+  } catch {}
   await sh(`deno bundle ${DENO_RIMU_TS} | terser --output ${WEB_RIMU_JS}`);
 });
 
