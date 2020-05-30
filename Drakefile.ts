@@ -2,7 +2,6 @@
  * Drakefile for Rimu Markup (http://github.com/srackham/rimu).
  */
 
-import * as path from "https://deno.land/std@v0.52.0/path/mod.ts";
 import {
   abort,
   desc,
@@ -15,7 +14,9 @@ import {
   task,
   updateFile,
   writeFile,
-} from "https://deno.land/x/drake@v1.1.1/mod.ts";
+} from "file:///home/srackham/local/projects/drake/mod.ts";
+import * as path from "https://deno.land/std@v0.54.0/path/mod.ts";
+// } from "https://deno.land/x/drake@v1.1.1/mod.ts";
 
 env("--default-task", "build");
 
@@ -206,7 +207,6 @@ task("build-docs", [DOCS_INDEX]);
 task(
   DOCS_INDEX,
   [
-    MANPAGE_RMU,
     ...DOCS_SRC,
     GALLERY_INDEX_DST,
     ...DENO_TS_SRC,
