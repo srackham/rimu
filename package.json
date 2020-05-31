@@ -10,6 +10,7 @@
     "markdown"
   ],
   "license": "MIT",
+  "homepage": "https://srackham.github.io/rimu/",
   "main": "lib/cjs/rimu.js",
   "types": "lib/cjs/rimu.d.ts",
   "module": "lib/esm/rimu.js",
@@ -26,10 +27,11 @@
     "url": "https://github.com/srackham/rimu.git"
   },
   "devDependencies": {
-    "@types/node": "^13.9.5",
+    "@types/node": "^14.0.6",
     "html-validator-cli": "^7.0.0",
+    "rollup": "^2.12.0",
     "terser": "^4.7.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.3"
   },
   "dependencies": {}
 }
