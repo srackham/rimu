@@ -2,11 +2,14 @@
  * Drakefile for Rimu Markup (http://github.com/srackham/rimu).
  */
 
+// } from "file:///home/srackham/local/projects/drake/mod.ts";
+import * as path from "https://deno.land/std@v0.56.0/path/mod.ts";
 import {
   abort,
   desc,
   env,
   glob,
+  makeDir,
   quote,
   readFile,
   run,
@@ -14,9 +17,7 @@ import {
   task,
   updateFile,
   writeFile,
-} from "file:///home/srackham/local/projects/drake/mod.ts";
-import * as path from "https://deno.land/std@v0.54.0/path/mod.ts";
-// } from "https://deno.land/x/drake@v1.1.1/mod.ts";
+} from "https://deno.land/x/drake@v1.2.2/mod.ts";
 
 env("--default-task", "build");
 
@@ -24,6 +25,7 @@ const isWindows = Deno.build.os === "windows";
 
 /* Inputs and outputs */
 
+const ALL_TS_SRC = glob("*.ts", "src/**/*.ts", "test/*.ts");
 const GALLERY_INDEX_DST = "docs/gallery.html";
 const GALLERY_INDEX_SRC = "docs/gallery.rmu";
 const DOCS_INDEX = "docs/index.html";
@@ -93,7 +95,7 @@ const HTML = DOCS.map((doc) => doc.dst);
 desc(
   "build and test Rimu modules and CLIs for Deno and Nodejs; build Rimu documentation",
 );
-task("build", ["build-node", "build-deno", "build-web", "build-docs"]);
+task("build", ["fmt", "build-node", "build-deno", "build-web", "build-docs"]);
 
 desc("Compile Rimu for NodeJs");
 task("build-node", [NODE_RIMUC_BIN]);
@@ -152,9 +154,7 @@ desc(
 );
 task("build-web", [WEB_RIMU_JS]);
 task(WEB_RIMU_JS, DENO_TS_SRC, async function () {
-  try {
-    Deno.mkdirSync("lib/web");
-  } catch {}
+  makeDir("lib/web");
   await sh(`deno bundle ${DENO_RIMU_TS} | terser --output ${WEB_RIMU_JS}`);
 });
 
@@ -166,7 +166,7 @@ task("install-deno", ["build-deno"], async function () {
 });
 
 desc("Run rimu and rimuc CLI tests on Deno and NodeJS");
-task("test", [], async function () {
+task("test", ["fmt"], async function () {
   await sh(`${TEST_EXE} test/`);
 });
 
@@ -429,7 +429,7 @@ task("publish-npm", ["test", "build-node"], async function () {
 desc("Format source files with Deno");
 task("fmt", [], async function () {
   await sh(
-    `deno fmt ${quote(glob("*.ts", "src/**/*.ts", "test/*.ts"))}`,
+    `deno fmt ${quote(ALL_TS_SRC)}`,
   );
 });
 
