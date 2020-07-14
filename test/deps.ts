@@ -8,5 +8,5 @@ export {
   assert,
   assertEquals,
   assertNotEquals,
-} from "https://deno.land/std@v0.60.0/testing/asserts.ts";
+} from "https://deno.land/std@v0.61.0/testing/asserts.ts";
 // } from "https://deno.land/x/drake@v1.2.3/lib.ts";
