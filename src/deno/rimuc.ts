@@ -2,7 +2,7 @@
   Command-lne app to convert Rimu source to HTML.
 */
 
-import { existsSync, path, readFileStrSync, writeFileStrSync } from "./deps.ts";
+import { existsSync, path } from "./deps.ts";
 import { resources } from "./resources.ts";
 import * as rimu from "./rimu.ts";
 
@@ -194,7 +194,7 @@ for (let infile of files) {
         die("source file does not exist: " + infile);
       }
       try {
-        source = readFileStrSync(infile);
+        source = Deno.readTextFileSync(infile);
       } catch (e) {
         die("source file permission denied: " + infile);
       }
@@ -226,7 +226,7 @@ output = output.trim();
 if (!outfile || outfile === "-") {
   Deno.stdout.writeSync(new TextEncoder().encode(output));
 } else {
-  writeFileStrSync(outfile, output);
+  Deno.writeTextFileSync(outfile, output);
 }
 if (errors) {
   Deno.exit(1);
