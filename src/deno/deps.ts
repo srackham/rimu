@@ -1,2 +1,2 @@
-export { existsSync } from "https://deno.land/std@0.67.0/fs/exists.ts";
-export * as path from "https://deno.land/std@0.67.0/path/mod.ts";
+export { existsSync } from "https://deno.land/std@0.68.0/fs/exists.ts";
+export * as path from "https://deno.land/std@0.68.0/path/mod.ts";

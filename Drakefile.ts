@@ -16,7 +16,7 @@ import {
   updateFile,
   writeFile,
 } from "file:///home/srackham/local/projects/drake/mod.ts";
-import * as path from "https://deno.land/std@0.67.0/path/mod.ts";
+import * as path from "https://deno.land/std@0.68.0/path/mod.ts";
 // } from "https://deno.land/x/drake@v1.2.3/mod.ts";
 
 env("--default-task", "build");
