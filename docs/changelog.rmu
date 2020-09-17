@@ -3,6 +3,11 @@
 This is the Rimu TypeScript implementation change log (see also [other Rimu
 implementations]({reference}#rimu-implementations)).
 
+## Version 11.1.12 (2020-09-17)
+- Upgrade to Drake 1.4.0.
+- Pinned Deno libs to std@v0.69.0.
+
+
 ## Version 11.1.11 (2020-05-26)
 **FIX**: Added missing `.js` extensions in ES module paths in the npm
 distribution.
