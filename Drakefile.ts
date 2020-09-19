@@ -198,7 +198,7 @@ task(NODE_RESOURCES_TS, RESOURCE_FILES, async function () {
   }
   text += "};";
   writeFile(NODE_RESOURCES_TS, text);
-  await sh(`deno fmt "${NODE_RESOURCES_TS}"`, { stdout: "null" });
+  await sh(`deno fmt --quiet "${NODE_RESOURCES_TS}"`, { stdout: "null" });
 });
 
 desc("Generate and validate documentation");
@@ -428,7 +428,7 @@ task("publish-npm", ["test", "build-node"], async function () {
 desc("Format source files with Deno");
 task("fmt", [], async function () {
   await sh(
-    `deno fmt ${quote(ALL_TS_SRC)}`,
+    `deno fmt --quiet ${quote(ALL_TS_SRC)}`,
   );
 });
 
