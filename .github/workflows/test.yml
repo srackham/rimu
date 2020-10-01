@@ -26,6 +26,7 @@ jobs:
           deno-version: ${{ matrix.deno-version }}
       - run: |
           npm install
+          echo "./node_modules/.bin" >> $GITHUB_PATH
           # deno cache -r src/deno/rimuc.ts
           deno run -A Drakefile.ts build
           deno run -A Drakefile.ts test
