@@ -200,7 +200,7 @@ task(NODE_RESOURCES_TS, RESOURCE_FILES, async function () {
   await sh(`deno fmt --quiet "${NODE_RESOURCES_TS}"`, { stdout: "null" });
 });
 
-desc("Generate and validate documentation");
+desc("Generate documentation");
 task("build-docs", [DOCS_INDEX]);
 task(
   DOCS_INDEX,
@@ -226,7 +226,6 @@ task(
       doc.src
     );
     await sh(commands);
-    await validate_docs();
   },
 );
 
@@ -415,7 +414,7 @@ desc("Push to Github and publish to npm");
 task("publish", ["push", "publish-npm"]);
 
 desc("Push changes to Github");
-task("push", ["test"], async function () {
+task("push", ["test", "validate-docs"], async function () {
   await sh("git push -u --tags origin master");
 });
 
