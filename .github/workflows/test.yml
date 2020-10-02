@@ -25,7 +25,7 @@ jobs:
         with:
           deno-version: ${{ matrix.deno-version }}
       - name: Set system environment variables
-      - run: |
+        run: |
           echo "./node_modules/.bin" >> $GITHUB_PATH
       - run: |
           npm install
