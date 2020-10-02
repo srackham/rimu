@@ -27,7 +27,8 @@ jobs:
       - name: Set system environment variables
         run: |
           echo "./node_modules/.bin" >> $GITHUB_PATH
-      - run: |
+      - name: Build and test rimu
+        run: |
           npm install
           deno cache -r src/deno/rimuc.ts
           deno run -A Drakefile.ts build
