@@ -19,6 +19,8 @@ import {
 } from "https://deno.land/x/drake@v1.4.2/mod.ts";
 // } from "../drake/mod.ts";
 
+console.log(`PATH in Drakefile: ${Deno.env.get("PATH")}`);
+
 const isWindows = Deno.build.os === "windows";
 
 /* Inputs and outputs */
