@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        deno-version: [1.4.2]
+        deno-version: [1.4.4]
         node-version: [14.x]
         os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
@@ -27,7 +27,7 @@ jobs:
       - name: Set system environment variables
         run: |
           echo "./node_modules/.bin" >> $GITHUB_PATH
-      - name: Build and test rimu
+      - name: Run tests
         run: |
           npm install
           deno cache -r src/deno/rimuc.ts
