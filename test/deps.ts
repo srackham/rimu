@@ -9,5 +9,5 @@ export {
   readFile,
   shCapture,
   ShOutput,
-} from "https://deno.land/x/drake@v1.4.2/lib.ts";
-export { env } from "https://deno.land/x/drake@v1.4.2/mod.ts";
+} from "https://deno.land/x/drake@v1.4.3/lib.ts";
+export { env } from "https://deno.land/x/drake@v1.4.3/mod.ts";

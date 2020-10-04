@@ -16,7 +16,7 @@ import {
   task,
   updateFile,
   writeFile,
-} from "https://deno.land/x/drake@v1.4.2/mod.ts";
+} from "https://deno.land/x/drake@v1.4.3/mod.ts";
 // } from "../drake/mod.ts";
 
 const isWindows = Deno.build.os === "windows";
