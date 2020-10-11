@@ -78,7 +78,7 @@ export function setValue(name: string, value: string, quote: string): void {
 
 // Render macro invocations in text string.
 // Render Simple invocations first, followed by Parametized, Inclusion and Exclusion invocations.
-export function render(text: string, silent: boolean = false): string {
+export function render(text: string, silent = false): string {
   const MATCH_COMPLEX = /\\?{([\w\-]+)([!=|?](?:|[^]*?[^\\]))}/g; // Parametrized, Inclusion and Exclusion invocations.
   const MATCH_SIMPLE = /\\?{([\w\-]+)()}/g; // Simple macro invocation.
   let result = text;
@@ -111,6 +111,7 @@ export function render(text: string, silent: boolean = false): string {
         }
         params = params.replace(/\\}/g, "}"); // Unescape escaped } characters.
         switch (params[0]) {
+          // deno-lint-ignore no-case-declarations
           case "|": // Parametrized macro.
             let paramsList = params.slice(1).split("|");
             // Substitute macro parameters.
@@ -153,6 +154,7 @@ export function render(text: string, silent: boolean = false): string {
             );
             return value;
           case "!": // Exclusion macro.
+          // deno-lint-ignore no-case-declarations
           case "=": // Inclusion macro.
             let pattern = params.slice(1);
             let skip = false;

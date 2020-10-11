@@ -1,3 +1,5 @@
+// deno-lint-ignore-file no-explicit-any
+
 import * as DelimitedBlocks from "./delimitedblocks";
 import * as Macros from "./macros";
 import * as Options from "./options";
@@ -57,7 +59,7 @@ export function replaceMatch(
 export function copy(source: any): any {
   let result: any = {};
   for (let key in source) {
-    if (source.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(source, key)) {
       result[key] = source[key];
     }
   }
@@ -89,6 +91,7 @@ export function replaceInline(
 }
 
 // Global Block Attributes state (namespace "singleton", see http://stackoverflow.com/a/30174360).
+// deno-lint-ignore no-namespace
 export namespace BlockAttributes {
   export let classes: string // Space separated HTML class names.
   ;
@@ -147,7 +150,7 @@ export namespace BlockAttributes {
 
   // Inject HTML attributes from attrs into the opening tag.
   // Consume HTML attributes unless the 'tag' argument is blank.
-  export function inject(tag: string, consume: boolean = true): string {
+  export function inject(tag: string, consume = true): string {
     if (!tag) {
       return tag;
     }

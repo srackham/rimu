@@ -46,7 +46,7 @@ let outfile: string | undefined;
 let arg: string | undefined;
 let argv = [...Deno.args];
 outer:
-while (!!(arg = argv.shift())) {
+while ((arg = argv.shift())) {
   switch (arg) {
     case "--": // Ignore this option (see https://github.com/denoland/deno/issues/3795).
       break;
@@ -76,6 +76,7 @@ while (!!(arg = argv.shift())) {
     case "-p":
       prepend += argv.shift() + "\n";
       break;
+    // deno-lint-ignore no-case-declarations
     case "--prepend-file":
       let prepend_file = argv.shift();
       if (!prepend_file) {
@@ -110,6 +111,7 @@ while (!!(arg = argv.shift())) {
     case "--dropdown-toc": // Deprecated in Rimu 10.0.0
     case "--custom-toc":
     case "--header-ids":
+    // deno-lint-ignore no-case-declarations
     case "--header-links":
       let macro_value = ["--lang", "--title", "--theme"].indexOf(arg) > -1
         ? argv.shift()

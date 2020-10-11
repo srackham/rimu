@@ -91,6 +91,7 @@ function fragQuote(fragment: Fragment): Fragment[] {
   if (!def.spans) {
     // Spans are disabled so render the quoted text verbatim.
     quoted = Utils.replaceSpecialChars(quoted);
+    // deno-lint-ignore no-control-regex
     quoted = quoted.replace(/\u0000/g, "\u0001"); // Flag replacements as verbatim.
     result.push({ text: quoted, done: true });
   } else {
@@ -125,6 +126,7 @@ function preReplacements(text: string): string {
 
 // Replace replacements placeholders with replacements text from savedReplacements[].
 function postReplacements(text: string): string {
+  // deno-lint-ignore no-control-regex
   return text.replace(/[\u0000\u0001]/g, function (match): string {
     let fragment = savedReplacements.shift() as Fragment;
     return (match === "\u0000")

@@ -103,7 +103,9 @@ export function updateOptions(options: RenderOptions): void {
 }
 
 // Set named option value.
+// deno-lint-ignore no-explicit-any
 export function setOption(name: string, value: any): void {
+  // deno-lint-ignore no-explicit-any
   let option: any = {};
   option[name] = value;
   updateOptions(option);

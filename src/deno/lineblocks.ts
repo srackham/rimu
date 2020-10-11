@@ -45,6 +45,7 @@ let defs: Definition[] = [
         return false;
       }
       // Insert the macro value into the reader just ahead of the cursor.
+      // deno-lint-ignore no-explicit-any
       let spliceArgs: [number, number, ...any[]] = [
         reader.pos + 1,
         0,
