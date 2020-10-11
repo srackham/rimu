@@ -278,11 +278,12 @@ task(
 );
 
 // Transform base command-line quoting PowerShell quoting.
-function toPowerShellQuotes(cmd: String): string {
-  return cmd.replaceAll("'", "''")
-    .replaceAll('\\"', "\u0000")
-    .replaceAll('"', "'")
-    .replaceAll("\u0000", '"');
+function toPowerShellQuotes(cmd: string): string {
+  return cmd.replace(/'/g, "''")
+    .replace(/\\"/g, "\u0000")
+    .replace(/"/g, "'")
+    // deno-lint-ignore no-control-regex
+    .replace(/\u0000/g, '"');
 }
 
 function forEachGalleryDocument(
