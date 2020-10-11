@@ -104,12 +104,13 @@ To build Rimu you need to have [Deno](https://deno.land/) and
 
         cd rimu
         npm install
+        deno cache src/deno/rimuc.ts
 
 3. Use the [Drake](https://github.com/srackham/drake) task runner
-   module to build Rimu library modules and CLIs for Deno and Node.js
+   module to build and test Rimu library modules and CLIs for Deno and Node.js
    platforms:
 
-        deno run -A Drakefile.ts build
+        deno run -A Drakefile.ts build test
 
 **NOTE**: If a one-off `rimuc.ts` build error occurs rerun the build command
 (the error is benign and seems to be related to circular compilation
