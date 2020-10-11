@@ -221,7 +221,8 @@ task(
       WEB_RIMU_JS,
       `docs/${path.basename(WEB_RIMU_JS)}`,
     );
-    const commands = DOCS.map((doc) =>
+    let commands: any[] = [];
+    commands = DOCS.map((doc) =>
       RIMUC_EXE +
       " --no-rimurc --theme legend --custom-toc --header-links" +
       " --layout sequel" +
@@ -232,6 +233,9 @@ task(
       " examples/example-rimurc.rmu " + "docs/doc-header.rmu " +
       doc.src
     );
+    if (isWindows) {
+      commands = commands.map((cmd) => toPowerShellQuotes(cmd));
+    }
     await sh(commands);
   },
 );
@@ -266,9 +270,20 @@ task(
       null,
       null,
     );
+    if (isWindows) {
+      commands = commands.map((cmd) => toPowerShellQuotes(cmd));
+    }
     await sh(commands);
   },
 );
+
+// Transform base command-line quoting PowerShell quoting.
+function toPowerShellQuotes(cmd: String): string {
+  return cmd.replaceAll("'", "''")
+    .replaceAll('\\"', "\u0000")
+    .replaceAll('"', "'")
+    .replaceAll("\u0000", '"');
+}
 
 function forEachGalleryDocument(
   documentCallback: any,
