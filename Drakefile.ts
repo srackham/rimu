@@ -44,6 +44,8 @@ const DENO_RIMUC_TS = "src/deno/rimuc.ts";
 const WEB_RIMU_JS = "lib/web/rimu.esm.js";
 const RIMUC_EXE = `deno run -A ${DENO_RIMUC_TS}`;
 const TEST_EXE = `deno test -A`;
+const TSC_EXE = "./node_modules/.bin/tsc";
+const TERSER_EXE = "./node_modules/.bin/terser";
 
 const DOCS = [
   {
@@ -103,7 +105,9 @@ task(
   NODE_RIMUC_BIN,
   NODE_TS_SRC,
   async function () {
-    await sh([`tsc -p tsconfig.json`, `tsc -p tsconfig-cjs.json`]);
+    await sh(
+      [`${TSC_EXE} -p tsconfig.json`, `${TSC_EXE} -p tsconfig-cjs.json`],
+    );
     // Add .js extension to ES module path names.
     // See https://stackoverflow.com/questions/45932526/how-to-make-typescript-output-valid-es6-module-import-statements
     for (const f of glob("lib/esm/*.js")) {
@@ -156,7 +160,7 @@ task("build-web", [WEB_RIMU_JS]);
 task(WEB_RIMU_JS, DENO_TS_SRC, async function () {
   makeDir("lib/web");
   await sh(`deno bundle ${DENO_RIMU_TS} ${WEB_RIMU_JS}`);
-  await sh(`terser ${WEB_RIMU_JS} --output ${WEB_RIMU_JS}`);
+  await sh(`${TERSER_EXE} ${WEB_RIMU_JS} --output ${WEB_RIMU_JS}`);
 });
 
 desc("Install executable wrapper for rimudeno CLI");
