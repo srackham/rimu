@@ -17,7 +17,7 @@ import {
   sh,
   task,
   updateFile,
-  writeFile
+  writeFile,
 } from "https://deno.land/x/drake@v1.4.3/mod.ts";
 // } from "../drake/mod.ts";
 
@@ -155,7 +155,8 @@ desc(
 task("build-web", [WEB_RIMU_JS]);
 task(WEB_RIMU_JS, DENO_TS_SRC, async function () {
   makeDir("lib/web");
-  await sh(`deno bundle ${DENO_RIMU_TS} | terser --output ${WEB_RIMU_JS}`);
+  await sh(`deno bundle ${DENO_RIMU_TS} ${WEB_RIMU_JS}`);
+  await sh(`terser ${WEB_RIMU_JS} --output ${WEB_RIMU_JS}`);
 });
 
 desc("Install executable wrapper for rimudeno CLI");
