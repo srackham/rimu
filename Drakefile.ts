@@ -1,3 +1,5 @@
+// deno-lint-ignore-file no-explicit-any
+
 /*
  * Drakefile for Rimu Markup (http://github.com/srackham/rimu).
  */
@@ -15,7 +17,7 @@ import {
   sh,
   task,
   updateFile,
-  writeFile,
+  writeFile
 } from "https://deno.land/x/drake@v1.4.3/mod.ts";
 // } from "../drake/mod.ts";
 
@@ -164,7 +166,7 @@ task("install-deno", ["build-deno"], async function () {
 });
 
 desc("Run rimu and rimuc CLI tests on Deno and NodeJS");
-task("test", ["fmt"], async function () {
+task("test", ["lint", "fmt"], async function () {
   await sh(`${TEST_EXE} test/`);
 });
 
@@ -428,6 +430,11 @@ task("fmt", [], async function () {
   await sh(
     `deno fmt --quiet ${quote(ALL_TS_SRC)}`,
   );
+});
+
+desc("Lint source files");
+task("lint", [], async function () {
+  await sh(`deno lint --unstable src/deno/ test/ Drakefile.ts`);
 });
 
 run();
