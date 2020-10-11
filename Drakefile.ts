@@ -95,11 +95,11 @@ const HTML = DOCS.map((doc) => doc.dst);
  */
 
 desc(
-  "build and test Rimu modules and CLIs for Deno and Nodejs; build Rimu documentation",
+  "build and test Rimu modules and CLIs for Deno and Node.js; build Rimu documentation",
 );
 task("build", ["fmt", "build-node", "build-deno", "build-web", "build-docs"]);
 
-desc("Compile Rimu for NodeJs");
+desc("Compile Rimu for Node.js");
 task("build-node", [NODE_RIMUC_BIN]);
 task(
   NODE_RIMUC_BIN,
@@ -277,7 +277,9 @@ task(
   },
 );
 
-// Transform base command-line quoting PowerShell quoting.
+// Transform bash command-line quoting to PowerShell quoting.
+// e.g.    "--prepend \"{--dropdown-toc}='yes'\""
+// returns '--prepend "{--dropdown-toc}=''yes''"'
 function toPowerShellQuotes(cmd: string): string {
   return cmd.replace(/'/g, "''")
     .replace(/\\"/g, "\u0000")

@@ -1174,7 +1174,7 @@ inserted in the output document:
 `rimuc` supports third-party externally sourced layouts. When the
 `--layout <layout-name>` option is specified `rimuc` searches for a
 built-in layout with the same name. If it is not found then an attempt
-is made to import a nodejs module named like
+is made to import a Node.js module named like
 `rimu-<layout-name>-layout`.  The imported module contains two
 attributes, `header` and `footer`, which return the Rimu header markup
 and footer markup respectively.
