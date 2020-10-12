@@ -4,7 +4,7 @@
  * Drakefile for Rimu Markup (http://github.com/srackham/rimu).
  */
 
-import * as path from "https://deno.land/std@0.73.0/path/mod.ts";
+import * as path from "https://deno.land/std@0.74.0/path/mod.ts";
 import {
   abort,
   desc,
