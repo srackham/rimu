@@ -135,7 +135,7 @@ export function setDefinition(
   if (!/g/.test(flags)) {
     flags += "g";
   }
-  for (let def of defs) {
+  for (const def of defs) {
     if (def.match.source === regexp) {
       // Update existing definition.
       // Flag properties are read-only so have to create new RegExp.

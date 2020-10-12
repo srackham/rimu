@@ -39,7 +39,7 @@ export class Reader {
   // Return null if an EOF is encountered.
   // Exit with the reader pointing to the line following the match.
   readTo(find: RegExp): string[] | null {
-    let result: string[] = [];
+    const result: string[] = [];
     let match: string[] | null = null;
     while (!this.eof()) {
       match = this.cursor.match(find);

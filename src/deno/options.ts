@@ -55,7 +55,7 @@ export function skipBlockAttributes(): boolean {
 }
 
 function setSafeMode(value: number | string | undefined): void {
-  let n = Number(value);
+  const n = Number(value);
   if (isNaN(n) || n < 0 || n > 15) {
     errorCallback("illegal safeMode API option value: " + value);
     return;
@@ -79,7 +79,7 @@ function setReset(value: boolean | string | undefined): void {
 }
 
 export function updateOptions(options: RenderOptions): void {
-  for (let key in options) {
+  for (const key in options) {
     switch (key) {
       case "reset":
       case "safeMode":
@@ -106,7 +106,7 @@ export function updateOptions(options: RenderOptions): void {
 // deno-lint-ignore no-explicit-any
 export function setOption(name: string, value: any): void {
   // deno-lint-ignore no-explicit-any
-  let option: any = {};
+  const option: any = {};
   option[name] = value;
   updateOptions(option);
 }
@@ -137,7 +137,7 @@ export function errorCallback(message: string): void {
 
 // Called when an unexpected program error occurs.
 export function panic(message: string): void {
-  let msg = "panic: " + message;
+  const msg = "panic: " + message;
   console.error(msg);
   errorCallback(msg);
 }

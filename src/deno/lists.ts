@@ -22,7 +22,7 @@ interface ItemInfo {
   id: string; // List ID.
 }
 
-let defs: Definition[] = [
+const defs: Definition[] = [
   // Prefix match with backslash to allow escaping.
 
   // Unordered lists.
@@ -98,8 +98,8 @@ function renderListItem(
   reader: Io.Reader,
   writer: Io.Writer,
 ): ItemInfo | null {
-  let def = item.def;
-  let match = item.match;
+  const def = item.def;
+  const match = item.match;
   let text: string;
   if (match.length === 4) { // 3 match groups => definition list.
     writer.write(BlockAttributes.inject(def.termOpenTag as string, false));
@@ -110,12 +110,12 @@ function renderListItem(
   }
   writer.write(BlockAttributes.inject(def.itemOpenTag));
   // Process item text from first line.
-  let item_lines = new Io.Writer();
+  const item_lines = new Io.Writer();
   text = match[match.length - 1];
   item_lines.write(text + "\n");
   // Process remainder of list item i.e. item text, optional attached block, optional child list.
   reader.next();
-  let attached_lines = new Io.Writer();
+  const attached_lines = new Io.Writer();
   let blank_lines: number;
   let attached_done = false;
   let next_item: ItemInfo | null;
@@ -140,7 +140,7 @@ function renderListItem(
       break; // Multiple attached blocks are not permitted.
     }
     if (blank_lines === 0) {
-      let savedIds = ids;
+      const savedIds = ids;
       ids = [];
       if (
         DelimitedBlocks.render(
@@ -206,10 +206,10 @@ function consumeBlockAttributes(reader: Io.Reader, writer: Io.Writer): number {
 function matchItem(reader: Io.Reader): ItemInfo | null {
   // Check if the line matches a List definition.
   if (reader.eof()) return null;
-  let item = {} as ItemInfo; // ItemInfo factory.
+  const item = {} as ItemInfo; // ItemInfo factory.
   // Check if the line matches a list item.
-  for (let def of defs) {
-    let match = def.match.exec(reader.cursor);
+  for (const def of defs) {
+    const match = def.match.exec(reader.cursor);
     if (match) {
       if (match[0][0] === "\\") {
         reader.cursor = reader.cursor.slice(1); // Drop backslash.

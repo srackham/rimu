@@ -68,7 +68,7 @@ export function init(): void {
 
 // Synthesise re's to find and unescape quotes.
 export function initializeRegExps(): void {
-  let quotes = defs.map((def) => Utils.escapeRegExp(def.quote));
+  const quotes = defs.map((def) => Utils.escapeRegExp(def.quote));
   // $1 is quote character(s), $2 is quoted text.
   // Quoted text cannot begin or end with whitespace.
   // Quoted can span multiple lines.
@@ -93,7 +93,7 @@ export function unescape(s: string): string {
 
 // Update existing or add new quote definition.
 export function setDefinition(def: Definition): void {
-  for (let d of defs) {
+  for (const d of defs) {
     if (d.quote === def.quote) {
       // Update existing definition.
       d.openTag = def.openTag;

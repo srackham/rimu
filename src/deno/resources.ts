@@ -1,5 +1,5 @@
 // Generated automatically from resource files. Do not edit.
-export let resources: { [name: string]: string } = {
+export const resources: { [name: string]: string } = {
   "classic-footer.rmu": String.raw`/*
   Used by rimuc.js --styled option.
 */

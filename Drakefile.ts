@@ -194,7 +194,7 @@ ${readFile(MANPAGE_TXT).replace(/^(.*)'$/gm, "$1'\\")}
 // Build resources.ts containing rimuc resource files.
 task(NODE_RESOURCES_TS, RESOURCE_FILES, async function () {
   let text = "// Generated automatically from resource files. Do not edit.\n";
-  text += "export let resources: { [name: string]: string } = {";
+  text += "export const resources: { [name: string]: string } = {";
   for (const f of RESOURCE_FILES) {
     text += `  '${path.basename(f)}': `;
     let data = readFile(f);
@@ -254,7 +254,7 @@ task(
     let commands: any[] = [];
     forEachGalleryDocument(
       function (options: any, outfile: any, _: any, __: any) {
-        let command = RIMUC_EXE +
+        const command = RIMUC_EXE +
           " --custom-toc" +
           " --no-rimurc" +
           " " + options +

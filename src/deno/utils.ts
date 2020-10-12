@@ -45,8 +45,8 @@ export function replaceMatch(
     } else {
       expansionOptions.specials = true;
     }
-    let i = Number(arguments[2]); // match group number.
-    let result = match[i]; // match group text.
+    const i = Number(arguments[2]); // match group number.
+    const result = match[i]; // match group text.
     if (result === undefined) {
       Options.errorCallback("undefined replacement group: " + arguments[0]);
       return "";
@@ -57,8 +57,8 @@ export function replaceMatch(
 
 // Shallow object clone.
 export function copy(source: any): any {
-  let result: any = {};
-  for (let key in source) {
+  const result: any = {};
+  for (const key in source) {
     if (Object.prototype.hasOwnProperty.call(source, key)) {
       result[key] = source[key];
     }
@@ -68,7 +68,7 @@ export function copy(source: any): any {
 
 // Copy properties in source object to target object.
 export function merge(target: any, source: any): void {
-  for (let key in source) {
+  for (const key in source) {
     target[key] = source[key];
   }
 }

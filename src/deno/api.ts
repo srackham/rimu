@@ -9,8 +9,8 @@ import * as Replacements from "./replacements.ts";
 import { BlockAttributes } from "./utils.ts";
 
 export function render(source: string): string {
-  let reader = new Io.Reader(source);
-  let writer = new Io.Writer();
+  const reader = new Io.Reader(source);
+  const writer = new Io.Writer();
   while (!reader.eof()) {
     reader.skipBlankLines();
     if (reader.eof()) break;

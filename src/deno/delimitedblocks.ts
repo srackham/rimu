@@ -149,7 +149,7 @@ const DEFAULT_DEFS: Definition[] = [
     delimiterFilter: delimiterTextFilter,
     contentFilter: function (text: string): string {
       // Strip indent from start of each line.
-      let first_indent = text.search(/\S/);
+      const first_indent = text.search(/\S/);
       return text.split("\n")
         .map((line) => {
           // Strip first line indent width or up to first non-space character.
@@ -217,13 +217,13 @@ export function render(
   allowed: string[] = [],
 ): boolean {
   if (reader.eof()) Options.panic("premature eof");
-  for (let def of defs) {
+  for (const def of defs) {
     if (
       allowed.length > 0 && allowed.indexOf(def.name ? def.name : "") === -1
     ) {
       continue;
     }
-    let match = reader.cursor.match(def.openMatch);
+    const match = reader.cursor.match(def.openMatch);
     if (match) {
       // Escape non-paragraphs.
       if (match[0][0] === "\\" && def.name !== "paragraph") {
@@ -235,7 +235,9 @@ export function render(
         continue;
       }
       // Process opening delimiter.
-      let delimiterText = def.delimiterFilter ? def.delimiterFilter(match) : "";
+      const delimiterText = def.delimiterFilter
+        ? def.delimiterFilter(match)
+        : "";
       // Read block content into lines.
       let lines: string[] = [];
       if (delimiterText) {
@@ -243,7 +245,7 @@ export function render(
       }
       // Read content up to the closing delimiter.
       reader.next();
-      let content = reader.readTo(def.closeMatch as RegExp);
+      const content = reader.readTo(def.closeMatch as RegExp);
       if (content === null) {
         Options.errorCallback("unterminated delimited block: " + match[0]);
       }
@@ -251,7 +253,7 @@ export function render(
         lines = [...lines, ...content];
       }
       // Calculate block expansion options.
-      let expansionOptions: Utils.ExpansionOptions = {
+      const expansionOptions: Utils.ExpansionOptions = {
         macros: false,
         spans: false,
         specials: false,
@@ -311,8 +313,8 @@ export function setBlockOptions(
   optionsString: string,
 ): void {
   if (optionsString) {
-    let opts = optionsString.trim().split(/\s+/);
-    for (let opt of opts) {
+    const opts = optionsString.trim().split(/\s+/);
+    for (const opt of opts) {
       if (Options.isSafeModeNz() && opt === "-specials") {
         Options.errorCallback("-specials block option not valid in safeMode");
         continue;
@@ -329,7 +331,7 @@ export function setBlockOptions(
 // Update existing named definition.
 // Value syntax: <open-tag>|<close-tag> block-options
 export function setDefinition(name: string, value: string): void {
-  let def = getDefinition(name);
+  const def = getDefinition(name);
   if (!def) {
     Options.errorCallback(
       "illegal delimited block name: " + name + ": |" + name + "|='" + value +
@@ -337,7 +339,7 @@ export function setDefinition(name: string, value: string): void {
     );
     return;
   }
-  let match = value.trim().match(
+  const match = value.trim().match(
     /^(?:(<[a-zA-Z].*>)\|(<[a-zA-Z/].*>))?(?:\s*)?([+-][ \w+-]+)?$/,
   );
   if (match === null) {
@@ -379,8 +381,8 @@ function macroDefContentFilter(
   match: string[],
   expansionOptions: Utils.ExpansionOptions,
 ): string {
-  let quote = match[0][match[0].length - match[1].length - 1]; // The leading macro value quote character.
-  let name = (match[0].match(/^{([\w\-]+\??)}/) as RegExpMatchArray)[1]; // Extract macro name from opening delimiter.
+  const quote = match[0][match[0].length - match[1].length - 1]; // The leading macro value quote character.
+  const name = (match[0].match(/^{([\w\-]+\??)}/) as RegExpMatchArray)[1]; // Extract macro name from opening delimiter.
   text = text.replace(RegExp("(" + quote + ") *\\\\\\n", "g"), "$1\n"); // Unescape line-continuations.
   text = text.replace(RegExp("(" + quote + " *[\\\\]+)\\\\\\n", "g"), "$1\n"); // Unescape escaped line-continuations.
   text = Utils.replaceInline(text, expansionOptions); // Expand macro invocations.

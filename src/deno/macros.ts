@@ -30,7 +30,7 @@ export function init(): void {
 
 // Return named macro value or null if it doesn't exist.
 export function getValue(name: string): string | null {
-  for (let def of defs) {
+  for (const def of defs) {
     if (def.name === name) {
       return def.value;
     }
@@ -65,7 +65,7 @@ export function setValue(name: string, value: string, quote: string): void {
       );
     }
   }
-  for (let def of defs) {
+  for (const def of defs) {
     if (def.name === name) {
       if (!existential) {
         def.value = value;
@@ -89,7 +89,7 @@ export function render(text: string, silent = false): string {
         if (match[0] === "\\") {
           return match.slice(1);
         }
-        let name = submatches[0];
+        const name = submatches[0];
         let params = submatches[1] || "";
         if (params[0] === "?") { // DEPRECATED: Existential macro invocation.
           if (!silent) {
@@ -113,7 +113,7 @@ export function render(text: string, silent = false): string {
         switch (params[0]) {
           // deno-lint-ignore no-case-declarations
           case "|": // Parametrized macro.
-            let paramsList = params.slice(1).split("|");
+            const paramsList = params.slice(1).split("|");
             // Substitute macro parameters.
             // Matches macro definition formal parameters [$]$<param-number>[[\]:<default-param-value>$]
             // [$]$ = 1st match group; <param-number> (1, 2..) = 2nd match group;
@@ -156,7 +156,7 @@ export function render(text: string, silent = false): string {
           case "!": // Exclusion macro.
           // deno-lint-ignore no-case-declarations
           case "=": // Inclusion macro.
-            let pattern = params.slice(1);
+            const pattern = params.slice(1);
             let skip = false;
             try {
               skip = !RegExp("^" + pattern + "$").test(value || "");

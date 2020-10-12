@@ -37,14 +37,14 @@ let safe_mode = 0;
 let html_replacement: string | undefined;
 let layout = "";
 let no_rimurc = false;
-let prepend_files: string[] = [];
+const prepend_files: string[] = [];
 let pass = false;
 
 // Parse command-line options.
 let prepend = "";
 let outfile: string | undefined;
 let arg: string | undefined;
-let argv = [...Deno.args];
+const argv = [...Deno.args];
 outer:
 while ((arg = argv.shift())) {
   switch (arg) {
@@ -78,7 +78,7 @@ while ((arg = argv.shift())) {
       break;
     // deno-lint-ignore no-case-declarations
     case "--prepend-file":
-      let prepend_file = argv.shift();
+      const prepend_file = argv.shift();
       if (!prepend_file) {
         die("missing --prepend-file file name");
       }
@@ -113,7 +113,7 @@ while ((arg = argv.shift())) {
     case "--header-ids":
     // deno-lint-ignore no-case-declarations
     case "--header-links":
-      let macro_value = ["--lang", "--title", "--theme"].indexOf(arg) > -1
+      const macro_value = ["--lang", "--title", "--theme"].indexOf(arg) > -1
         ? argv.shift()
         : "true";
       prepend += "{" + arg + "}='" + macro_value + "'\n";
@@ -168,7 +168,7 @@ files = [...prepend_files, ...files];
 // Convert Rimu source files to HTML.
 let output = "";
 let errors = 0;
-let options: rimu.Options = {};
+const options: rimu.Options = {};
 if (html_replacement !== undefined) {
   options.htmlReplacement = html_replacement;
 }
@@ -204,7 +204,7 @@ for (let infile of files) {
     // Prepended and ~/.rimurc files are trusted.
     options.safeMode = prepend_files.indexOf(infile) > -1 ? 0 : safe_mode;
   }
-  let ext = infile.split(".").pop();
+  const ext = infile.split(".").pop();
   // Skip .html and pass-through inputs.
   if (!(ext === "html" || (pass && infile === STDIN))) {
     options.callback = function (message): void {

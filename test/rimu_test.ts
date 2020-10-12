@@ -50,7 +50,7 @@ Deno.test("rimuTest", function (): void {
         msg += message.type + ": " + message.text + "\n";
       };
     }
-    let rendered = rimu.render(test.input, test.options);
+    const rendered = rimu.render(test.input, test.options);
     assertEquals(
       rendered,
       test.expectedOutput,

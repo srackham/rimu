@@ -39,8 +39,7 @@ function defrag(fragments: Fragment[]): string {
 
 // Fragment quotes in all fragments and return resulting fragments array.
 function fragQuotes(fragments: Fragment[]): Fragment[] {
-  let result: Fragment[];
-  result = [];
+  const result: Fragment[] = [];
   fragments.forEach((fragment) => {
     result.push.apply(result, fragQuote(fragment));
   });
@@ -56,7 +55,7 @@ function fragQuote(fragment: Fragment): Fragment[] {
   if (fragment.done) {
     return [fragment];
   }
-  let quotesRe = Quotes.quotesRe;
+  const quotesRe = Quotes.quotesRe;
   let match: RegExpExecArray | null;
   quotesRe.lastIndex = 0;
   while (true) {
@@ -72,20 +71,20 @@ function fragQuote(fragment: Fragment): Fragment[] {
     }
     break;
   }
-  let result: Fragment[] = [];
+  const result: Fragment[] = [];
   // Arrive here if we have a matched quote.
   // The quote splits the input fragment into 5 or more output fragments:
   // Text before the quote, left quote tag, quoted text, right quote tag and text after the quote.
-  let def = Quotes.getDefinition(match[1]);
+  const def = Quotes.getDefinition(match[1]);
   // Check for same closing quote one character further to the right.
   while (fragment.text[quotesRe.lastIndex] === match[1][0]) {
     // Move to closing quote one character to right.
     match[2] += match[1][0];
     quotesRe.lastIndex += 1;
   }
-  let before = match.input.slice(0, match.index);
+  const before = match.input.slice(0, match.index);
   let quoted = match[2];
-  let after = match.input.slice(quotesRe.lastIndex);
+  const after = match.input.slice(quotesRe.lastIndex);
   result.push({ text: before, done: false });
   result.push({ text: def.openTag, done: true });
   if (!def.spans) {
@@ -112,7 +111,7 @@ let savedReplacements: Fragment[];
 // '\u0001' is placeholder for unexpanded replacement text (replacements that occur within quotes are rendered verbatim).
 function preReplacements(text: string): string {
   savedReplacements = [];
-  let fragments = fragReplacements([{ text: text, done: false }]);
+  const fragments = fragReplacements([{ text: text, done: false }]);
   // Reassemble text with replacement placeholders.
   return fragments.reduce((result, fragment) => {
     if (fragment.done) {
@@ -128,7 +127,7 @@ function preReplacements(text: string): string {
 function postReplacements(text: string): string {
   // deno-lint-ignore no-control-regex
   return text.replace(/[\u0000\u0001]/g, function (match): string {
-    let fragment = savedReplacements.shift() as Fragment;
+    const fragment = savedReplacements.shift() as Fragment;
     return (match === "\u0000")
       ? fragment.text
       : Utils.replaceSpecialChars(fragment.verbatim as string);
@@ -138,7 +137,7 @@ function postReplacements(text: string): string {
 // Fragment replacements in all fragments and return resulting fragments array.
 function fragReplacements(fragments: Fragment[]): Fragment[] {
   let result: Fragment[];
-  Replacements.defs.forEach((def) => {
+  Replacements.defs.forEach((def: Replacements.Definition) => {
     result = [];
     fragments.forEach((fragment) => {
       result.push.apply(result, fragReplacement(fragment, def));
@@ -157,21 +156,20 @@ function fragReplacement(
   if (fragment.done) {
     return [fragment];
   }
-  let replacementRe = def.match;
-  let match: RegExpExecArray | null;
+  const replacementRe = def.match;
   replacementRe.lastIndex = 0;
-  match = replacementRe.exec(fragment.text);
+  const match: RegExpExecArray | null = replacementRe.exec(fragment.text);
   if (!match) {
     return [fragment];
   }
-  let result: Fragment[] = [];
+  const result: Fragment[] = [];
   // Arrive here if we have a matched replacement.
   // The replacement splits the input fragment into 3 output fragments:
   // Text before the replacement, replaced text and text after the replacement.
   // NOTE: Because this function is called recursively must ensure mutable index and
   //       lastIndex properties are read before the recursive call.
-  let before: string = match.input.slice(0, match.index);
-  let after: string = match.input.slice(replacementRe.lastIndex);
+  const before: string = match.input.slice(0, match.index);
+  const after: string = match.input.slice(replacementRe.lastIndex);
   result.push({ text: before, done: false });
   let replacement: string;
   if (match[0][0] === "\\") {

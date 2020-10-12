@@ -15,7 +15,7 @@ export interface Definition {
   filter?: (match: RegExpExecArray, reader: Io.Reader) => string;
 }
 
-let defs: Definition[] = [
+const defs: Definition[] = [
   // Prefix match with backslash to allow escaping.
 
   // Comment line.
@@ -35,7 +35,7 @@ let defs: Definition[] = [
         return false;
       }
       // Silent because any macro expansion errors will be subsequently addressed downstream.
-      let value = Macros.render(match[0], true);
+      const value = Macros.render(match[0], true);
       if (
         value.substr(0, match[0].length) === match[0] ||
         value.indexOf("\n" + match[0]) >= 0
@@ -46,7 +46,7 @@ let defs: Definition[] = [
       }
       // Insert the macro value into the reader just ahead of the cursor.
       // deno-lint-ignore no-explicit-any
-      let spliceArgs: [number, number, ...any[]] = [
+      const spliceArgs: [number, number, ...any[]] = [
         reader.pos + 1,
         0,
         ...value.split("\n"),
@@ -96,8 +96,8 @@ let defs: Definition[] = [
       if (Options.isSafeModeNz()) {
         return ""; // Skip if a safe mode is set.
       }
-      let pattern = match[1];
-      let flags = match[2];
+      const pattern = match[1];
+      const flags = match[2];
       let replacement = match[3];
       replacement = Utils.replaceInline(replacement, { macros: true });
       Replacements.setDefinition(pattern, flags, replacement);
@@ -109,8 +109,8 @@ let defs: Definition[] = [
   {
     match: Macros.LINE_DEF,
     filter: function (match: RegExpExecArray): string {
-      let name = match[1];
-      let quote = match[2];
+      const name = match[1];
+      const quote = match[2];
       let value = match[3];
       value = Utils.replaceInline(value, { macros: true });
       Macros.setValue(name, value, quote);
@@ -180,7 +180,7 @@ let defs: Definition[] = [
     match: /^\\?\.(\w+)\s*=\s*'(.*)'$/,
     filter: function (match: RegExpExecArray): string {
       if (!Options.isSafeModeNz()) {
-        let value = Utils.replaceInline(match[2], { macros: true });
+        const value = Utils.replaceInline(match[2], { macros: true });
         Options.setOption(match[1], value);
       }
       return "";
@@ -196,13 +196,13 @@ export function render(
   allowed: string[] = [],
 ): boolean {
   if (reader.eof()) Options.panic("premature eof");
-  for (let def of defs) {
+  for (const def of defs) {
     if (
       allowed.length > 0 && allowed.indexOf(def.name ? def.name : "") === -1
     ) {
       continue;
     }
-    let match = def.match.exec(reader.cursor);
+    const match = def.match.exec(reader.cursor);
     if (match) {
       if (match[0][0] === "\\") {
         // Drop backslash escape and continue.
