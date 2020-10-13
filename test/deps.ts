@@ -8,4 +8,4 @@ export {
   readFile,
   shCapture,
   ShOutput,
-} from "https://deno.land/x/drake@v1.4.3/lib.ts";
+} from "https://deno.land/x/drake@v1.4.4/lib.ts";
