@@ -31,197 +31,139 @@ import { existsSync } from "https://deno.land/std@0.74.0/fs/exists.ts";
 import * as path from "https://deno.land/std@0.74.0/path/mod.ts";
 import {
   abort,
+  env,
   glob,
-  log,
   readFile,
   sh,
 } from "https://deno.land/x/drake@v1.4.4/lib.ts";
 
 const isWindows = Deno.build.os === "windows";
 
-type PortName = "ts" | "go" | "kt" | "dart" | "py";
+type PortId = "ts" | "go" | "kt" | "dart" | "py" | "deno";
 
 interface Port {
-  name: PortName;
-  dir: string;
+  projectDir: string;
+  fixtures: string[];
+  resourcesDir: string;
+  testCmd: string;
+  rimucExe: string;
 }
-// Project directories.
-const RIMU_TS = "../rimu";
-const RIMU_GO = "../go-rimu";
-const RIMU_KT = "../rimu-kt";
-const RIMU_DART = "../rimu-dart";
-const RIMU_PY = "../rimu-py";
 
-const ports: Array<Port> = [
-  { name: "ts", dir: RIMU_TS },
-  { name: "go", dir: RIMU_GO },
-  { name: "kt", dir: RIMU_KT },
-  { name: "dart", dir: RIMU_DART },
-  { name: "py", dir: RIMU_PY },
-];
+type Ports = {
+  [id in PortId]: Port;
+};
 
-// env("--abort-exits", true);
+const ports: Ports = {
+  "ts": {
+    projectDir: ".",
+    fixtures: [
+      "test/rimu-tests.json",
+      "test/rimuc-tests.json",
+      "examples/example-rimurc.rmu",
+    ],
+    resourcesDir: `src/node/resources`,
+    testCmd: "deno run -A Drakefile.ts test",
+    rimucExe: "node lib/cjs/rimuc.js",
+  },
+  "deno": {
+    projectDir: ".",
+    fixtures: [],
+    resourcesDir: "",
+    testCmd: "",
+    rimucExe: "deno run -A src/deno/rimuc.ts",
+  },
+  "go": {
+    projectDir: "../go-rimu",
+    fixtures: [
+      "rimu/testdata/rimu-tests.json",
+      "rimugo/testdata/rimuc-tests.json",
+      "rimugo/testdata/example-rimurc.rmu",
+    ],
+    resourcesDir: "rimugo/resources",
+    testCmd: "make",
+    rimucExe: "rimugo",
+  },
+  "kt": {
+    projectDir: "../rimu-kt",
+    fixtures: [
+      "src/test/resources/rimu-tests.json",
+      "src/test/resources/rimuc-tests.json",
+      "src/test/fixtures/example-rimurc.rmu",
+    ],
+    resourcesDir: "src/main/resources/org/rimumarkup",
+    testCmd: "./gradlew --console plain test installDist",
+    rimucExe: "build/install/rimu-kt/bin/rimukt",
+  },
+  "dart": {
+    projectDir: "../rimu-dart",
+    fixtures: [
+      "test/rimu-tests.json",
+      "test/rimuc-tests.json",
+      "test/fixtures/example-rimurc.rmu",
+    ],
+    resourcesDir: "lib/resources",
+    testCmd: "make",
+    rimucExe: "build/rimuc",
+  },
+  "py": {
+    projectDir: "../rimu-py",
+    fixtures: [
+      "tests/rimu-tests.json",
+      "tests/rimuc-tests.json",
+      "tests/fixtures/example-rimurc.rmu",
+    ],
+    resourcesDir: "src/rimuc/resources",
+    testCmd: "source .venv/bin/activate; make clean build install",
+    rimucExe: ".venv/bin/rimupy",
+  },
+};
 
-for (const port of ports) {
-  if (!existsSync(port.dir)) {
-    abort(`rimu ${port.name}: missing project directory: ${port.dir}`);
+env("--abort-exits", true);
+
+for (const id of ["ts", "go", "kt", "dart", "py"]) {
+  const port = ports[id as PortId];
+  if (!existsSync(port.projectDir)) {
+    abort(`rimu ${id}: missing project directory: ${port.projectDir}`);
   }
 }
 
-// Copy test fixtures, resources and example rimurc file.
-if (Deno.args.includes("--update-fixtures")) {
-  log("Updating test fixtures and resources...");
-  Deno.copyFileSync(
-    `${RIMU_TS}/test/rimu-tests.json`,
-    `${RIMU_GO}/rimu/testdata/rimu-tests.json`,
-  );
-  Deno.copyFileSync(
-    `${RIMU_TS}/test/rimuc-tests.json`,
-    `${RIMU_GO}/rimugo/testdata/rimuc-tests.json`,
-  );
-  Deno.copyFileSync(
-    `${RIMU_TS}/examples/example-rimurc.rmu`,
-    `${RIMU_GO}/rimugo/testdata/example-rimurc.rmu`,
-  );
+// Copy and validate test fixture and resource files.
+function copyAndCompare(srcFile: string, dstFile: string): void {
+  if (Deno.args.includes("--update-fixtures")) {
+    Deno.copyFileSync(srcFile, dstFile);
+  } else if (!Deno.args.includes("--skip-fixtures")) {
+    if (readFile(srcFile) !== readFile(dstFile)) {
+      abort(`file contents differ: ${srcFile}: ${dstFile}`);
+    }
+  }
+}
 
-  Deno.copyFileSync(
-    `${RIMU_TS}/test/rimu-tests.json`,
-    `${RIMU_KT}/src/test/resources/rimu-tests.json`,
-  );
-  Deno.copyFileSync(
-    `${RIMU_TS}/test/rimuc-tests.json`,
-    `${RIMU_KT}/src/test/resources/rimuc-tests.json`,
-  );
-  Deno.copyFileSync(
-    `${RIMU_TS}/examples/example-rimurc.rmu`,
-    `${RIMU_KT}/src/test/fixtures/example-rimurc.rmu`,
-  );
+const srcPort = ports["ts"];
+for (const id of ["go", "kt", "dart", "py"]) {
+  const dstPort = ports[id as PortId];
 
-  Deno.copyFileSync(
-    `${RIMU_TS}/test/rimu-tests.json`,
-    `${RIMU_DART}/test/rimu-tests.json`,
-  );
-  Deno.copyFileSync(
-    `${RIMU_TS}/test/rimuc-tests.json`,
-    `${RIMU_DART}/test/rimuc-tests.json`,
-  );
-  Deno.copyFileSync(
-    `${RIMU_TS}/examples/example-rimurc.rmu`,
-    `${RIMU_DART}/test/fixtures/example-rimurc.rmu`,
-  );
+  // Copy and compare test fixtures.
+  for (const i in srcPort.fixtures) {
+    const srcFile = path.join(srcPort.projectDir, srcPort.fixtures[i]);
+    const dstFile = path.join(dstPort.projectDir, dstPort.fixtures[i]);
+    copyAndCompare(srcFile, dstFile);
+  }
 
-  Deno.copyFileSync(
-    `${RIMU_TS}/test/rimu-tests.json`,
-    `${RIMU_PY}/tests/rimu-tests.json`,
-  );
-  Deno.copyFileSync(
-    `${RIMU_TS}/test/rimuc-tests.json`,
-    `${RIMU_PY}/tests/rimuc-tests.json`,
-  );
-  Deno.copyFileSync(
-    `${RIMU_TS}/examples/example-rimurc.rmu`,
-    `${RIMU_PY}/tests/fixtures/example-rimurc.rmu`,
-  );
-
-  for (const f of glob("./src/node/resources/*")) {
-    Deno.copyFileSync(f, `${RIMU_GO}/rimugo/resources/${path.basename(f)}`);
-    Deno.copyFileSync(
-      f,
-      `${RIMU_KT}/src/main/resources/org/rimumarkup/${path.basename(f)}`,
+  // Copy and compare resources.
+  for (const srcFile of glob(`${srcPort.resourcesDir}/*`)) {
+    const dstFile = path.join(
+      dstPort.projectDir,
+      dstPort.resourcesDir,
+      path.basename(srcFile),
     );
-    Deno.copyFileSync(f, `${RIMU_DART}/lib/resources/${path.basename(f)}`);
-    Deno.copyFileSync(f, `${RIMU_PY}/src/rimuc/resources/${path.basename(f)}`);
-  }
-}
-
-// Proceed only if all test fixtures and resource files are identical.
-function compare(source: string, to: string): void {
-  if (readFile(source) !== readFile(to)) {
-    abort(`file contents differ: ${source}: ${to}`);
-  }
-}
-
-if (!Deno.args.includes("--skip-fixtures")) {
-  log("Checking test fixtures and resources are up to date...");
-  compare(
-    `${RIMU_TS}/test/rimu-tests.json`,
-    `${RIMU_GO}/rimu/testdata/rimu-tests.json`,
-  );
-  compare(
-    `${RIMU_TS}/test/rimuc-tests.json`,
-    `${RIMU_GO}/rimugo/testdata/rimuc-tests.json`,
-  );
-  compare(
-    `${RIMU_TS}/examples/example-rimurc.rmu`,
-    `${RIMU_GO}/rimugo/testdata/example-rimurc.rmu`,
-  );
-
-  compare(
-    `${RIMU_TS}/test/rimu-tests.json`,
-    `${RIMU_KT}/src/test/resources/rimu-tests.json`,
-  );
-  compare(
-    `${RIMU_TS}/test/rimuc-tests.json`,
-    `${RIMU_KT}/src/test/resources/rimuc-tests.json`,
-  );
-  compare(
-    `${RIMU_TS}/examples/example-rimurc.rmu`,
-    `${RIMU_KT}/src/test/fixtures/example-rimurc.rmu`,
-  );
-
-  compare(
-    `${RIMU_TS}/test/rimu-tests.json`,
-    `${RIMU_DART}/test/rimu-tests.json`,
-  );
-  compare(
-    `${RIMU_TS}/test/rimuc-tests.json`,
-    `${RIMU_DART}/test/rimuc-tests.json`,
-  );
-  compare(
-    `${RIMU_TS}/examples/example-rimurc.rmu`,
-    `${RIMU_DART}/test/fixtures/example-rimurc.rmu`,
-  );
-
-  compare(
-    `${RIMU_TS}/test/rimu-tests.json`,
-    `${RIMU_PY}/tests/rimu-tests.json`,
-  );
-  compare(
-    `${RIMU_TS}/test/rimuc-tests.json`,
-    `${RIMU_PY}/tests/rimuc-tests.json`,
-  );
-  compare(
-    `${RIMU_TS}/examples/example-rimurc.rmu`,
-    `${RIMU_PY}/tests/fixtures/example-rimurc.rmu`,
-  );
-
-  for (const f of glob("./src/node/resources/*")) {
-    compare(f, `${RIMU_GO}/rimugo/resources/${path.basename(f)}`);
-    compare(
-      f,
-      `${RIMU_KT}/src/main/resources/org/rimumarkup/${path.basename(f)}`,
-    );
-    compare(f, `${RIMU_DART}/lib/resources/${path.basename(f)}`);
-    compare(f, `${RIMU_PY}/src/rimuc/resources/${path.basename(f)}`);
+    copyAndCompare(srcFile, dstFile);
   }
 }
 
 // Build and test all ports.
 if (!Deno.args.includes("--skip-tests")) {
-  log("Running tests...");
-
-  await sh(`deno run -A Drakefile.ts test`, { cwd: `${RIMU_TS}` });
-
-  await sh(`make`, { cwd: `${RIMU_GO}` });
-
-  await sh(`./gradlew --console plain test installDist`, { cwd: `${RIMU_KT}` });
-
-  await sh(`make`, { cwd: `${RIMU_DART}` });
-
-  await sh(
-    `source .venv/bin/activate; make clean build install`,
-    { cwd: `${RIMU_PY}` },
-  );
-
-  await sh(`deno run -A Drakefile.ts install-deno`, { cwd: `${RIMU_TS}` });
+  for (const id of ["ts", "go", "kt", "dart", "py"]) {
+    const port = ports[id as PortId];
+    await sh(port.testCmd, { cwd: port.projectDir });
+  }
 }
