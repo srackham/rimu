@@ -33,6 +33,7 @@ import {
   abort,
   env,
   glob,
+  makeDir,
   readFile,
   sh,
 } from "https://deno.land/x/drake@v1.4.4/lib.ts";
@@ -45,7 +46,7 @@ interface Port {
   projectDir: string;
   fixtures: string[];
   resourcesDir: string;
-  testCmd: string;
+  make: () => void;
   rimucExe: string;
 }
 
@@ -62,16 +63,22 @@ const ports: Ports = {
       "examples/example-rimurc.rmu",
     ],
     resourcesDir: `src/node/resources`,
-    testCmd: "deno run -A Drakefile.ts test",
+    make: async function () {
+      await sh("deno run -A Drakefile.ts test");
+    },
     rimucExe: "node lib/cjs/rimuc.js",
   },
+
   "deno": {
     projectDir: ".",
     fixtures: [],
     resourcesDir: "",
-    testCmd: "",
+    make: function () {
+      sh("deno run -A Drakefile.ts install-deno");
+    },
     rimucExe: "deno run -A src/deno/rimuc.ts",
   },
+
   "go": {
     projectDir: "../go-rimu",
     fixtures: [
@@ -80,9 +87,16 @@ const ports: Ports = {
       "rimugo/testdata/example-rimurc.rmu",
     ],
     resourcesDir: "rimugo/resources",
-    testCmd: "make",
+    make: async function () {
+      Deno.chdir("rimugo");
+      await sh("go-bindata -o bindata.go resources");
+      Deno.chdir("..");
+      await sh("go install ./...");
+      await sh("go test ./...");
+    },
     rimucExe: "rimugo",
   },
+
   "kt": {
     projectDir: "../rimu-kt",
     fixtures: [
@@ -91,9 +105,12 @@ const ports: Ports = {
       "src/test/fixtures/example-rimurc.rmu",
     ],
     resourcesDir: "src/main/resources/org/rimumarkup",
-    testCmd: "./gradlew --console plain test installDist",
+    make: async function () {
+      await sh("./gradlew --console plain test installDist");
+    },
     rimucExe: "build/install/rimu-kt/bin/rimukt",
   },
+
   "dart": {
     projectDir: "../rimu-dart",
     fixtures: [
@@ -102,9 +119,18 @@ const ports: Ports = {
       "test/fixtures/example-rimurc.rmu",
     ],
     resourcesDir: "lib/resources",
-    testCmd: "make",
+    make: async function () {
+      makeDir("build");
+      await sh(
+        `dart2native bin/rimuc.dart -o build/${
+          isWindows ? "rimuc.exe" : "rimuc"
+        }`,
+      );
+      await sh("pub run test test/");
+    },
     rimucExe: "build/rimuc",
   },
+
   "py": {
     projectDir: "../rimu-py",
     fixtures: [
@@ -113,14 +139,19 @@ const ports: Ports = {
       "tests/fixtures/example-rimurc.rmu",
     ],
     resourcesDir: "src/rimuc/resources",
-    testCmd: "source .venv/bin/activate; make clean build install",
+    make: async function () {
+      await sh("source .venv/bin/activate");
+      await sh("source .venv/bin/activate; pylint src tests");
+      await sh("source .venv/bin/activate; mypy src tests");
+      await sh("source .venv/bin/activate; pytest tests");
+    },
     rimucExe: ".venv/bin/rimupy",
   },
 };
 
 env("--abort-exits", true);
 
-for (const id of ["ts", "go", "kt", "dart", "py"]) {
+for (const id of ["ts", "deno", "go", "kt", "dart", "py"]) {
   const port = ports[id as PortId];
   if (!existsSync(port.projectDir)) {
     abort(`rimu ${id}: missing project directory: ${port.projectDir}`);
@@ -162,8 +193,14 @@ for (const id of ["go", "kt", "dart", "py"]) {
 
 // Build and test all ports.
 if (!Deno.args.includes("--skip-tests")) {
-  for (const id of ["ts", "go", "kt", "dart", "py"]) {
+  for (const id of ["ts", "deno", "go", "kt", "dart", "py"]) {
     const port = ports[id as PortId];
-    await sh(port.testCmd, { cwd: port.projectDir });
+    const savedCwd = Deno.cwd();
+    Deno.chdir(port.projectDir);
+    try {
+      await port.make();
+    } finally {
+      Deno.chdir(savedCwd);
+    }
   }
 }
