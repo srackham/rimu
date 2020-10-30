@@ -31,11 +31,11 @@ function readResourceFile(name: string): string {
   return result;
 }
 
-let safe_mode = 0;
-let html_replacement: string | undefined;
+let safeMode = 0;
+let htmlReplacement: string | undefined;
 let layout = "";
-let no_rimurc = false;
-let prepend_files: string[] = [];
+let noRimurc = false;
+let prependFiles: string[] = [];
 let pass = false;
 
 // Skip executable and script paths.
@@ -76,25 +76,25 @@ while (!!(arg = process.argv.shift())) {
       prepend += process.argv.shift() + "\n";
       break;
     case "--prepend-file":
-      let prepend_file = process.argv.shift();
-      if (!prepend_file) {
+      let prependFile = process.argv.shift();
+      if (!prependFile) {
         die("missing --prepend-file file name");
       }
-      prepend_files.push(prepend_file!);
+      prependFiles.push(prependFile!);
       break;
     case "--no-rimurc":
-      no_rimurc = true;
+      noRimurc = true;
       break;
     case "--safe-mode":
     case "--safeMode": // Deprecated in Rimu 7.1.0.
-      safe_mode = parseInt(process.argv.shift() || "99", 10);
-      if (safe_mode < 0 || safe_mode > 15) {
+      safeMode = parseInt(process.argv.shift() || "99", 10);
+      if (safeMode < 0 || safeMode > 15) {
         die("illegal --safe-mode option value");
       }
       break;
     case "--html-replacement":
     case "--htmlReplacement": // Deprecated in Rimu 7.1.0.
-      html_replacement = process.argv.shift();
+      htmlReplacement = process.argv.shift();
       break;
     // Styling macro definitions shortcut options.
     case "--highlightjs":
@@ -110,10 +110,10 @@ while (!!(arg = process.argv.shift())) {
     case "--custom-toc":
     case "--header-ids":
     case "--header-links":
-      let macro_value = ["--lang", "--title", "--theme"].indexOf(arg) > -1
+      let macroValue = ["--lang", "--title", "--theme"].indexOf(arg) > -1
         ? process.argv.shift()
         : "true";
-      prepend += "{" + arg + "}='" + macro_value + "'\n";
+      prepend += "{" + arg + "}='" + macroValue + "'\n";
       break;
     case "--layout":
     case "--styled-name": // Deprecated in Rimu 10.0.0
@@ -152,19 +152,19 @@ if (layout !== "") {
   files.push(`${RESOURCE_TAG}${layout}-footer.rmu`);
 }
 // Prepend $HOME/.rimurc file if it exists.
-if (!no_rimurc && fs.existsSync(RIMURC)) {
-  prepend_files.unshift(RIMURC);
+if (!noRimurc && fs.existsSync(RIMURC)) {
+  prependFiles.unshift(RIMURC);
 }
 if (prepend !== "") {
-  prepend_files.push(PREPEND);
+  prependFiles.push(PREPEND);
 }
-files = [...prepend_files, ...files];
+files = [...prependFiles, ...files];
 // Convert Rimu source files to HTML.
 let output = "";
 let errors = 0;
 let options: rimu.Options = {};
-if (html_replacement !== undefined) {
-  options.htmlReplacement = html_replacement;
+if (htmlReplacement !== undefined) {
+  options.htmlReplacement = htmlReplacement;
 }
 for (let infile of files) {
   if (infile === "-") {
@@ -198,7 +198,7 @@ for (let infile of files) {
       }
     }
     // Prepended and ~/.rimurc files are trusted.
-    options.safeMode = (prepend_files.indexOf(infile) > -1) ? 0 : safe_mode;
+    options.safeMode = (prependFiles.indexOf(infile) > -1) ? 0 : safeMode;
   }
   let ext = infile.split(".").pop();
   // Skip .html and pass-through inputs.

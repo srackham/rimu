@@ -149,12 +149,12 @@ const DEFAULT_DEFS: Definition[] = [
     delimiterFilter: delimiterTextFilter,
     contentFilter: function (text: string): string {
       // Strip indent from start of each line.
-      const first_indent = text.search(/\S/);
+      const firstIndent = text.search(/\S/);
       return text.split("\n")
         .map((line) => {
           // Strip first line indent width or up to first non-space character.
           let indent = line.search(/\S|$/);
-          if (indent > first_indent) indent = first_indent;
+          if (indent > firstIndent) indent = firstIndent;
           return line.slice(indent);
         })
         .join("\n");

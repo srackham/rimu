@@ -61,12 +61,12 @@ let ids: string[] // Stack of open list IDs.
 
 export function render(reader: Io.Reader, writer: Io.Writer): boolean {
   if (reader.eof()) Options.panic("premature eof");
-  let start_item: ItemInfo | null;
-  if (!(start_item = matchItem(reader))) {
+  let startItem: ItemInfo | null;
+  if (!(startItem = matchItem(reader))) {
     return false;
   }
   ids = [];
-  renderList(start_item, reader, writer);
+  renderList(startItem, reader, writer);
   // ids should now be empty.
   if (ids.length !== 0) Options.panic("list stack failure");
   return true;
@@ -79,16 +79,16 @@ function renderList(
 ): ItemInfo | null {
   ids.push(item.id);
   writer.write(BlockAttributes.inject(item.def.listOpenTag));
-  let next_item: ItemInfo | null;
+  let nextItem: ItemInfo | null;
   while (true) {
-    next_item = renderListItem(item, reader, writer);
-    if (!next_item || next_item.id !== item.id) {
+    nextItem = renderListItem(item, reader, writer);
+    if (!nextItem || nextItem.id !== item.id) {
       // End of list or next item belongs to parent list.
       writer.write(item.def.listCloseTag);
       ids.pop();
-      return next_item;
+      return nextItem;
     }
-    item = next_item;
+    item = nextItem;
   }
 }
 
@@ -110,75 +110,75 @@ function renderListItem(
   }
   writer.write(BlockAttributes.inject(def.itemOpenTag));
   // Process item text from first line.
-  const item_lines = new Io.Writer();
+  const itemLines = new Io.Writer();
   text = match[match.length - 1];
-  item_lines.write(text + "\n");
+  itemLines.write(text + "\n");
   // Process remainder of list item i.e. item text, optional attached block, optional child list.
   reader.next();
-  const attached_lines = new Io.Writer();
-  let blank_lines: number;
-  let attached_done = false;
-  let next_item: ItemInfo | null;
+  const attachedLines = new Io.Writer();
+  let blankLines: number;
+  let attachedDone = false;
+  let nextItem: ItemInfo | null;
   while (true) {
-    blank_lines = consumeBlockAttributes(reader, attached_lines);
-    if (blank_lines >= 2 || blank_lines === -1) {
+    blankLines = consumeBlockAttributes(reader, attachedLines);
+    if (blankLines >= 2 || blankLines === -1) {
       // EOF or two or more blank lines terminates list.
-      next_item = null;
+      nextItem = null;
       break;
     }
-    next_item = matchItem(reader);
-    if (next_item) {
-      if (ids.indexOf(next_item.id) !== -1) {
+    nextItem = matchItem(reader);
+    if (nextItem) {
+      if (ids.indexOf(nextItem.id) !== -1) {
         // Next item belongs to current list or a parent list.
       } else {
         // Render child list.
-        next_item = renderList(next_item, reader, attached_lines);
+        nextItem = renderList(nextItem, reader, attachedLines);
       }
       break;
     }
-    if (attached_done) {
+    if (attachedDone) {
       break; // Multiple attached blocks are not permitted.
     }
-    if (blank_lines === 0) {
+    if (blankLines === 0) {
       const savedIds = ids;
       ids = [];
       if (
         DelimitedBlocks.render(
           reader,
-          attached_lines,
+          attachedLines,
           ["comment", "code", "division", "html", "quote"],
         )
       ) {
-        attached_done = true;
+        attachedDone = true;
       } else {
         // Item body line.
-        item_lines.write(reader.cursor + "\n");
+        itemLines.write(reader.cursor + "\n");
         reader.next();
       }
       ids = savedIds;
-    } else if (blank_lines === 1) {
+    } else if (blankLines === 1) {
       if (
         DelimitedBlocks.render(
           reader,
-          attached_lines,
+          attachedLines,
           ["indented", "quote-paragraph"],
         )
       ) {
-        attached_done = true;
+        attachedDone = true;
       } else {
         break;
       }
     }
   }
   // Write item text.
-  text = item_lines.toString().trim();
+  text = itemLines.toString().trim();
   text = Utils.replaceInline(text, { macros: true, spans: true });
   writer.write(text);
   // Write attachment and child list.
-  writer.buffer = [...writer.buffer, ...attached_lines.buffer];
+  writer.buffer = [...writer.buffer, ...attachedLines.buffer];
   // Close list item.
   writer.write(def.itemCloseTag);
-  return next_item;
+  return nextItem;
 }
 
 // Consume blank lines and Block Attributes.

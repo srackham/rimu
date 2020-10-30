@@ -166,13 +166,13 @@ export namespace BlockAttributes {
     }
     if (id) {
       id = id.toLowerCase();
-      let has_id = /^<[^<]*id=".*?"/i.test(tag);
-      if (has_id || ids.indexOf(id) > -1) {
+      let hasId = /^<[^<]*id=".*?"/i.test(tag);
+      if (hasId || ids.indexOf(id) > -1) {
         Options.errorCallback(`duplicate 'id' attribute: ${id}`);
       } else {
         ids.push(id);
       }
-      if (!has_id) {
+      if (!hasId) {
         attrs += ` id="${id}"`;
       }
     }

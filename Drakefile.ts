@@ -249,7 +249,7 @@ task(
     "docs/gallery-example-template.rmu",
   ],
   async function () {
-    gallery_index();
+    galleryIndex();
     let commands: any[] = [];
     forEachGalleryDocument(
       function (options: any, outfile: any, _: any, __: any) {
@@ -323,7 +323,7 @@ function forEachGalleryDocument(
 }
 
 // Generate gallery index Rimu markup.
-function gallery_index() {
+function galleryIndex() {
   let text = `# Rimu Gallery
 
 Here are some examples of styled HTML documents generated using the
@@ -349,7 +349,7 @@ See [Built-in layouts]({reference}#built-in-layouts) for more information.`;
 }
 
 // Validate HTML documents.
-async function validate_docs() {
+async function validateDocs() {
   const commands = HTML
     // 2018-11-09: Skip files with style tags in the body as Nu W3C validator treats style tags in the body as an error.
     .filter((f) =>
@@ -364,7 +364,7 @@ desc(
   "Validate HTML documentation",
 );
 task("validate-docs", [], async function () {
-  await validate_docs();
+  await validateDocs();
 });
 
 function getPackageVers(): string {
