@@ -8,7 +8,7 @@
 import * as Api from "./api.ts";
 import * as Options from "./options.ts";
 
-export {
+export type {
   CallbackFunction,
   CallbackMessage,
   RenderOptions as Options,

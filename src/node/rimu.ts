@@ -8,7 +8,7 @@
 import * as Api from "./api";
 import * as Options from "./options";
 
-export {
+export type {
   CallbackFunction,
   CallbackMessage,
   RenderOptions as Options,

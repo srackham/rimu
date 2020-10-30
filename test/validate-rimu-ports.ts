@@ -27,8 +27,8 @@ OPTIONS
 
 */
 
-import { existsSync } from "https://deno.land/std@0.74.0/fs/exists.ts";
-import * as path from "https://deno.land/std@0.74.0/path/mod.ts";
+import { existsSync } from "https://deno.land/std@0.75.0/fs/exists.ts";
+import * as path from "https://deno.land/std@0.75.0/path/mod.ts";
 import {
   abort,
   env,
