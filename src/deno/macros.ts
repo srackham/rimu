@@ -153,9 +153,10 @@ export function render(text: string, silent = false): string {
               },
             );
             return value;
-          case "!": // Exclusion macro.
+          // Exclusion/inclusion macros.
+          case "!":/* falls through */
           // deno-lint-ignore no-case-declarations
-          case "=": // Inclusion macro.
+          case "=":
             const pattern = params.slice(1);
             let skip = false;
             try {

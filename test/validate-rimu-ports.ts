@@ -27,8 +27,8 @@ OPTIONS
 
 */
 
-import { existsSync } from "https://deno.land/std@0.75.0/fs/exists.ts";
-import * as path from "https://deno.land/std@0.75.0/path/mod.ts";
+import { existsSync } from "https://deno.land/std@0.77.0/fs/exists.ts";
+import * as path from "https://deno.land/std@0.77.0/path/mod.ts";
 import {
   abort,
   env,
@@ -151,6 +151,7 @@ const ports: Ports = {
 
 env("--abort-exits", true);
 
+// Check for project directories for all ports.
 for (const id of ["ts", "deno", "go", "kt", "dart", "py"]) {
   const port = ports[id as PortId];
   if (!existsSync(port.projectDir)) {
@@ -204,3 +205,18 @@ if (!Deno.args.includes("--skip-tests")) {
     }
   }
 }
+
+// TODO
+// // Compile, compare and time documentation.
+// if (!Deno.args.includes("--skip-tests")) {
+//   for (const id of ["ts", "deno", "go", "kt", "dart", "py"]) {
+//     const port = ports[id as PortId];
+//     const savedCwd = Deno.cwd();
+//     Deno.chdir(port.projectDir);
+//     try {
+//       await port.make();
+//     } finally {
+//       Deno.chdir(savedCwd);
+//     }
+//   }
+// }
