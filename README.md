@@ -18,9 +18,9 @@ into the Rimu markup syntax):
 
 
 ## Learn more
-Read the documentation and experiment with Rimu in the [Rimu
-Playground](https://srackham.github.io/rimu/rimuplayground.html) or open the
-`rimuplayground.html` file locally in your browser.
+[Read the documentation](https://srackham.github.io/rimu/) and experiment with Rimu
+in the [Rimu Playground](https://srackham.github.io/rimu/rimuplayground.html) or
+open the `rimuplayground.html` file locally in your browser.
 
 See the Rimu [Change Log](https://srackham.github.io/rimu/changelog.html) for
 the latest changes.
