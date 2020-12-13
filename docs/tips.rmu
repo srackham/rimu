@@ -696,6 +696,28 @@ Macros can also be used to simplify columnar text layouts:
 {end}     = '</td></tr></table>
 '\
 
+## Two column table
+{column1}
+#### Column One
+Rutrum imperdiet vitae vitae a suscipit semper potenti magna.
+
+Proin id justo vestibulum rutrum neque consequat in nam morbi orci at.
+
+  Feugiat habitant donec. Sem tincidunt arcu pellentesque suscipit
+  accumsan.
+
+{column2}
+#### Column Two
+Proin id Ante praesent scelerisque ligula vivamus in.
+
+Amet neque ut enim molestiae est. Dictumst magna orci magnis donec
+lectus lectus at sapien.
+
+> Vivamus et metus. In a ut. Enim in lorem.
+
+{end}
+
+## Three column table
 {column1}
 #### Column One
 Rutrum imperdiet vitae vitae a suscipit semper potenti magna.
