@@ -1,7 +1,20 @@
 #!/usr/bin/env -S deno run --allow-all
 
-/*
+import { existsSync } from "https://deno.land/std@0.84.0/fs/exists.ts";
+import * as path from "https://deno.land/std@0.84.0/path/mod.ts";
+import {
+  abort,
+  env,
+  glob,
+  makeDir,
+  readFile,
+  sh,
+} from "https://deno.land/x/drake@v1.4.6/lib.ts";
 
+env("--abort-exits", true);
+
+if (Deno.args.includes("--help") || Deno.args.includes("-h")) {
+  console.log(`
 NAME
 validate-rimu-ports - verify all Rimu ports are congruent.
 
@@ -18,29 +31,25 @@ This script is used to test and verify all Rimu ports are congruent.
   are detected it exits immediately.
 
 OPTIONS
-- If invoked with `--update-fixtures` argument it copies common test fixtures
+- If invoked with \`--update-fixtures\` argument it copies common test fixtures
   and resource files from the Rimu TypeScript implementation to the other ports.
-- If invoked with `--skip-fixtures` argument the resources and fixtures
+- If invoked with \`--skip-fixtures\` argument the resources and fixtures
   comparison tests are skipped.
-- If invoked with `--skip-tests` argument both the resources and fixtures
+- If invoked with \`--skip-tests\` argument both the resources and fixtures
   comparison and the tests are skipped.
-
-*/
-
-import { existsSync } from "https://deno.land/std@0.84.0/fs/exists.ts";
-import * as path from "https://deno.land/std@0.84.0/path/mod.ts";
-import {
-  abort,
-  env,
-  glob,
-  makeDir,
-  readFile,
-  sh,
-} from "https://deno.land/x/drake@v1.4.6/lib.ts";
+`);
+  Deno.exit();
+}
 
 const isWindows = Deno.build.os === "windows";
 
 type PortId = "ts" | "go" | "kt" | "dart" | "py" | "deno";
+const portIds: PortId[] = ["ts", "deno", "go", "kt", "dart", "py"];
+if (isWindows) {
+  // TODO: Drop this once python build has been ported from Make.
+  console.warn("WARNING: python port is excluded from validation on Windows");
+  portIds.splice(portIds.length - 1, 1);
+}
 
 interface Port {
   projectDir: string;
@@ -149,11 +158,9 @@ const ports: Ports = {
   },
 };
 
-env("--abort-exits", true);
-
 // Check for project directories for all ports.
-for (const id of ["ts", "deno", "go", "kt", "dart", "py"]) {
-  const port = ports[id as PortId];
+for (const id of portIds) {
+  const port = ports[id];
   if (!existsSync(port.projectDir)) {
     abort(`rimu ${id}: missing project directory: ${port.projectDir}`);
   }
@@ -171,8 +178,11 @@ function copyAndCompare(srcFile: string, dstFile: string): void {
 }
 
 const srcPort = ports["ts"];
-for (const id of ["go", "kt", "dart", "py"]) {
-  const dstPort = ports[id as PortId];
+for (const id of portIds) {
+  const dstPort = ports[id];
+  if (id === "ts" || id == "deno") {
+    continue;
+  }
 
   // Copy and compare test fixtures.
   for (const i in srcPort.fixtures) {
@@ -194,7 +204,7 @@ for (const id of ["go", "kt", "dart", "py"]) {
 
 // Build and test all ports.
 if (!Deno.args.includes("--skip-tests")) {
-  for (const id of ["ts", "deno", "go", "kt", "dart", "py"]) {
+  for (const id of portIds) {
     const port = ports[id as PortId];
     const savedCwd = Deno.cwd();
     Deno.chdir(port.projectDir);
@@ -205,18 +215,3 @@ if (!Deno.args.includes("--skip-tests")) {
     }
   }
 }
-
-// TODO
-// // Compile, compare and time documentation.
-// if (!Deno.args.includes("--skip-tests")) {
-//   for (const id of ["ts", "deno", "go", "kt", "dart", "py"]) {
-//     const port = ports[id as PortId];
-//     const savedCwd = Deno.cwd();
-//     Deno.chdir(port.projectDir);
-//     try {
-//       await port.make();
-//     } finally {
-//       Deno.chdir(savedCwd);
-//     }
-//   }
-// }
