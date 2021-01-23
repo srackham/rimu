@@ -13,6 +13,11 @@ import {
 
 env("--abort-exits", true);
 
+const ktDir = "../rimu-kt";
+const goDir = "../go-rimu";
+const dartDir = "../rimu-dart";
+const pyDir = "../rimu-py";
+
 if (Deno.args.includes("--help") || Deno.args.includes("-h")) {
   console.log(`
 NAME
@@ -45,13 +50,8 @@ const isWindows = Deno.build.os === "windows";
 
 type PortId = "ts" | "go" | "kt" | "dart" | "py" | "deno";
 const portIds: PortId[] = ["ts", "deno", "go", "kt", "dart", "py"];
-if (isWindows) {
-  // TODO: Drop this once python build has been ported from Make.
-  console.warn("WARNING: python port is excluded from validation on Windows");
-  portIds.splice(portIds.length - 1, 1);
-}
-
 interface Port {
+  name: string;
   projectDir: string;
   fixtures: string[];
   resourcesDir: string;
@@ -65,6 +65,7 @@ type Ports = {
 
 const ports: Ports = {
   "ts": {
+    name: "TypeScript",
     projectDir: ".",
     fixtures: [
       "test/rimu-tests.json",
@@ -79,6 +80,7 @@ const ports: Ports = {
   },
 
   "deno": {
+    name: "Deno",
     projectDir: ".",
     fixtures: [],
     resourcesDir: "",
@@ -89,7 +91,8 @@ const ports: Ports = {
   },
 
   "go": {
-    projectDir: "../go-rimu",
+    name: "Go",
+    projectDir: goDir,
     fixtures: [
       "rimu/testdata/rimu-tests.json",
       "rimugo/testdata/rimuc-tests.json",
@@ -107,7 +110,8 @@ const ports: Ports = {
   },
 
   "kt": {
-    projectDir: "../rimu-kt",
+    name: "Kotlin",
+    projectDir: ktDir,
     fixtures: [
       "src/test/resources/rimu-tests.json",
       "src/test/resources/rimuc-tests.json",
@@ -117,11 +121,12 @@ const ports: Ports = {
     make: async function () {
       await sh("./gradlew --console plain test installDist");
     },
-    rimucExe: "build/install/rimu-kt/bin/rimukt",
+    rimucExe: path.join(ktDir, "build/install/rimu-kt/bin/rimukt"),
   },
 
   "dart": {
-    projectDir: "../rimu-dart",
+    name: "Dart",
+    projectDir: dartDir,
     fixtures: [
       "test/rimu-tests.json",
       "test/rimuc-tests.json",
@@ -137,11 +142,12 @@ const ports: Ports = {
       );
       await sh("pub run test test/");
     },
-    rimucExe: "build/rimuc",
+    rimucExe: path.join(dartDir, "build/rimuc"),
   },
 
   "py": {
-    projectDir: "../rimu-py",
+    name: "Python",
+    projectDir: pyDir,
     fixtures: [
       "tests/rimu-tests.json",
       "tests/rimuc-tests.json",
@@ -154,15 +160,26 @@ const ports: Ports = {
       await sh("source .venv/bin/activate; mypy src tests");
       await sh("source .venv/bin/activate; pytest tests");
     },
-    rimucExe: ".venv/bin/rimupy",
+    rimucExe: path.join(pyDir, ".venv/bin/rimupy"),
   },
 };
+
+// Don't process Python port on Windows platform.
+// TODO: Drop this once python build has been ported from Make.
+if (isWindows) {
+  console.warn("WARNING: python port is excluded from validation on Windows");
+  portIds.splice(portIds.length - 1, 1);
+}
 
 // Check for project directories for all ports.
 for (const id of portIds) {
   const port = ports[id];
-  if (!existsSync(port.projectDir)) {
-    abort(`rimu ${id}: missing project directory: ${port.projectDir}`);
+  if (
+    !existsSync(port.projectDir) || !Deno.statSync(port.projectDir).isDirectory
+  ) {
+    abort(
+      `rimu ${port.name}: missing project directory is missing or is not a directory: ${port.projectDir}`,
+    );
   }
 }
 
@@ -205,7 +222,7 @@ for (const id of portIds) {
 // Build and test all ports.
 if (!Deno.args.includes("--skip-tests")) {
   for (const id of portIds) {
-    const port = ports[id as PortId];
+    const port = ports[id];
     const savedCwd = Deno.cwd();
     Deno.chdir(port.projectDir);
     try {
@@ -214,4 +231,37 @@ if (!Deno.args.includes("--skip-tests")) {
       Deno.chdir(savedCwd);
     }
   }
+}
+
+// Compile and compare documentation."
+const tmpDir = Deno.makeTempDirSync({ prefix: "rimu-validate-" });
+let srcCount = 0;
+Deno.chdir(ports["ts"].projectDir);
+for (const id of portIds) {
+  const port = ports[id];
+  const startTime = new Date().getTime();
+  for (const doc of ["reference", "tips", "changelog"]) {
+    const srcFile = path.join("docs", `${doc}.rmu`);
+    const dstFile = path.join(tmpDir, `${doc}-${id}.html`);
+    const cmpFile = path.join(tmpDir, `${doc}-ts.html`);
+    const args =
+      `--no-rimurc --theme legend --custom-toc --header-links --layout sequel --lang en --title "Rimu Reference" --highlightjs --prepend "{generate-examples}='yes'"  ./examples/example-rimurc.rmu ./docs/manpage.rmu ./docs/doc-header.rmu`;
+    const cmd = `${port.rimucExe} --output ${dstFile} ${args} ${srcFile}`;
+    await sh(cmd);
+    if (id === "ts") {
+      srcCount += readFile(srcFile).split("\n").length - 1;
+    } else {
+      if (readFile(cmpFile) !== readFile(dstFile)) {
+        abort(`file contents differ: ${cmpFile}: ${dstFile}`);
+      }
+    }
+  }
+  if (id === "ts") {
+    console.log(
+      `Compiling and verifying ${srcCount} lines of Rimu Markup...`,
+    );
+  }
+  console.log(
+    `${port.name.padEnd(12)} ${new Date().getTime() - startTime}ms`,
+  );
 }
