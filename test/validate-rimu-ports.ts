@@ -6,7 +6,7 @@ NAME
 validate-rimu-ports - verify all Rimu ports are congruent.
 
 SYNOPSIS
-validate-rimu-ports.ts [--update-fixtures] [--skip-fixtures] [--skip-tests]
+validate-rimu-ports.ts [--update-fixtures] [--skip-fixtures] [--skip-tests] [--help]
 
 DESCRIPTION
 This script is used to test and verify all Rimu ports are congruent.
@@ -27,8 +27,8 @@ OPTIONS
 
 */
 
-import { existsSync } from "https://deno.land/std@0.83.0/fs/exists.ts";
-import * as path from "https://deno.land/std@0.83.0/path/mod.ts";
+import { existsSync } from "https://deno.land/std@0.84.0/fs/exists.ts";
+import * as path from "https://deno.land/std@0.84.0/path/mod.ts";
 import {
   abort,
   env,
@@ -36,7 +36,7 @@ import {
   makeDir,
   readFile,
   sh,
-} from "https://deno.land/x/drake@v1.4.4/lib.ts";
+} from "https://deno.land/x/drake@v1.4.6/lib.ts";
 
 const isWindows = Deno.build.os === "windows";
 
