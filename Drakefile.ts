@@ -459,4 +459,9 @@ task("lint", [], async function () {
   await sh(`deno lint --unstable src/deno/ test/ Drakefile.ts`);
 });
 
+desc("Build and validate other Rimu ports");
+task("validate-ports", [], async function () {
+  await sh(`deno run -A ./test/validate-rimu-ports.ts`);
+});
+
 run();
