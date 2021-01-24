@@ -75,7 +75,7 @@ hljs.initHighlightingOnLoad();
 // Examples handlers.
 {generate-examples=}.+skip
 <script type="module">
-import * as rimu from "./rimu.esm.js";
+import * as rimu from "./rimu.min.js";
 function editExample(name) {
   var source = document.getElementById(name + '-source');
   if (source.style.display === 'none') {

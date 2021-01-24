@@ -10,7 +10,6 @@ import {
   desc,
   env,
   glob,
-  makeDir,
   quote,
   readFile,
   run,
@@ -41,7 +40,7 @@ const DENO_TS_SRC = glob("src/deno/*.ts");
 const DENO_RIMU_TS = "src/deno/rimu.ts";
 const DENO_RIMUC_TS = "src/deno/rimuc.ts";
 const ESM_RIMU_JS = "lib/esm/rimu.js";
-const WEB_RIMU_JS = "lib/web/rimu.esm.js";
+const MIN_RIMU_JS = "lib/esm/rimu.min.js";
 const RIMUC_EXE = `deno run -A ${DENO_RIMUC_TS}`;
 const TEST_EXE = `deno test -A`;
 const TSC_EXE = "./node_modules/.bin/tsc";
@@ -124,11 +123,10 @@ task(
       Deno.chmodSync(NODE_RIMUC_BIN, 0o755);
     }
     // Bundle and minimise Rimu web browser ES module.
-    makeDir("lib/web");
     await sh(
-      `${ROLLUP_EXE} --format esm  --file ${WEB_RIMU_JS} ${ESM_RIMU_JS}`,
+      `${ROLLUP_EXE} --format esm  --file ${MIN_RIMU_JS} ${ESM_RIMU_JS}`,
     );
-    await sh(`${TERSER_EXE} ${WEB_RIMU_JS} --output ${WEB_RIMU_JS}`);
+    await sh(`${TERSER_EXE} ${MIN_RIMU_JS} --output ${MIN_RIMU_JS}`);
   },
 );
 
@@ -219,8 +217,8 @@ task(
   ],
   async function () {
     await Deno.copyFile(
-      WEB_RIMU_JS,
-      `docs/${path.basename(WEB_RIMU_JS)}`,
+      MIN_RIMU_JS,
+      `docs/${path.basename(MIN_RIMU_JS)}`,
     );
     let commands: any[] = [];
     commands = DOCS.map((doc) =>

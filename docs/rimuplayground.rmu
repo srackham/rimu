@@ -60,7 +60,7 @@ Diagnostic messages:
 
 
 <script type="module">
-import * as rimu from "./rimu.esm.js";
+import * as rimu from "./rimu.min.js";
 function escapeSpecialChars(s) {
   return s.replace(/&/g, '&amp;')
           .replace(/>/g, '&gt;')

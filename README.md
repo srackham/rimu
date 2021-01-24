@@ -78,13 +78,13 @@ in `$HOME/.deno/bin/rimudeno`:
 **Browser**
 
 Rimu builds JavaScript ES module files in the `./lib/esm` directory along with a
-bundled version `./lib/web/rimu.esm.js`. The `rimu.esm.js` ES module file was
+bundled version `./lib/esm/rimu.min.js`. The `rimu.min.js` ES module file was
 bundled by [Rollup](https://github.com/rollup/rollup) and minimized with
 [terser](https://github.com/terser/terser). Example usage:
 
 ``` html
 <script type="module">
-    import * as rimu from "./rimu.esm.js";
+    import * as rimu from "./rimu.min.js";
     alert(rimu.render("Hello *Rimu*!"));
 </script>
 ```
