@@ -79,10 +79,8 @@ in `$HOME/.deno/bin/rimudeno`:
 
 Rimu builds JavaScript ES module files in the `./lib/esm` directory along with a
 bundled version `./lib/web/rimu.esm.js`. The `rimu.esm.js` ES module file was
-bundled by [Deno](https://deno.land/) and minimized with
-[terser](https://github.com/terser/terser) (see the `build-web` task in the
-[Rimu Drakefile](https://github.com/srackham/rimu/blob/master/Drakefile.ts)).
-Example usage:
+bundled by [Rollup](https://github.com/rollup/rollup) and minimized with
+[terser](https://github.com/terser/terser). Example usage:
 
 ``` html
 <script type="module">
@@ -104,7 +102,6 @@ To build Rimu you need to have [Deno](https://deno.land/) and
 
         cd rimu
         npm install
-        deno cache src/deno/rimuc.ts
 
 3. Use the [Drake](https://github.com/srackham/drake) task runner
    module to build and test Rimu library modules and CLIs for Deno and Node.js
