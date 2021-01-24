@@ -460,13 +460,11 @@ in <code>$HOME/.deno/bin/rimudeno</code>:</p>
 <pre><code>deno install -A --name rimudeno https://deno.land/x/rimu@/src/deno/rimuc.ts</code></pre>
 <p><strong>Browser</strong></p>
 <p>Rimu builds JavaScript ES module files in the <code>./lib/esm</code> directory along with a
-bundled version <code>./lib/web/rimu.esm.js</code>. The <code>rimu.esm.js</code> ES module file was
-bundled by <a href="https://deno.land/">Deno</a> and minimized with
-<a href="https://github.com/terser/terser">terser</a> (see the <code>build-web</code> task in the
-<a href="https://github.com/srackham/rimu/blob/master/Drakefile.ts">Rimu Drakefile</a>).
-Example usage:</p>
+bundled version <code>./lib/esm/rimu.min.js</code>. The <code>rimu.min.js</code> ES module file was
+bundled by <a href="https://github.com/rollup/rollup">Rollup</a> and minimized with
+<a href="https://github.com/terser/terser">terser</a>. Example usage:</p>
 <pre class="html"><code>&lt;script type="module"&gt;
-    import * as rimu from "./rimu.esm.js";
+    import * as rimu from "./rimu.min.js";
     alert(rimu.render("Hello *Rimu*!"));
 &lt;/script&gt;</code></pre>
 <h2 id="building-rimu-and-the-rimu-documentation">Building Rimu and the Rimu documentation</h2>
@@ -474,8 +472,7 @@ Example usage:</p>
 <a href="https://nodejs.org/">Node.js</a> installed.</p>
 <ol><li>Install the Git repository from <a href="https://github.com/srackham/rimu">Github</a>.<pre><code>git clone https://github.com/srackham/rimu.git</code></pre>
 </li><li>Install dependencies:<pre><code>cd rimu
-npm install
-deno cache src/deno/rimuc.ts</code></pre>
+npm install</code></pre>
 </li><li>Use the <a href="https://github.com/srackham/drake">Drake</a> task runner
    module to build and test Rimu library modules and CLIs for Deno and Node.js
    platforms:<pre><code>deno run -A Drakefile.ts build test</code></pre></li></ol>

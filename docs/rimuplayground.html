@@ -455,7 +455,7 @@
 }
 </style>
 <script type="module">
-import * as rimu from "./rimu.esm.js";
+import * as rimu from "./rimu.min.js";
 function editExample(name) {
   var source = document.getElementById(name + '-source');
   if (source.style.display === 'none') {
@@ -553,7 +553,7 @@ Code block.
 <h2 id="showhide-playground-html-html-markup"><span onclick="showHide('playground-html')" title="Show/Hide" style="cursor: pointer;">&#9660;</span> HTML markup</h2>
 <pre id="playground-html" style="margin-top: 0.5rem; box-shadow: 0 0 10px #9ecaed;"><code></code></pre>
 <script type="module">
-import * as rimu from "./rimu.esm.js";
+import * as rimu from "./rimu.min.js";
 function escapeSpecialChars(s) {
   return s.replace(/&/g, '&amp;')
           .replace(/>/g, '&gt;')

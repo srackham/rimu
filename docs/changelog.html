@@ -418,9 +418,9 @@
 <h1 id="rimu-change-log">Rimu Change Log</h1>
 <p>This is the Rimu TypeScript implementation change log (see also <a href="reference.html#rimu-implementations">other Rimu
 implementations</a>).</p>
-<h2 id="version-11-1-13-2021-01-24">Version 11.1.13 (2021-01-24)</h2>
-<ul><li>Upgrade to Drake 1.7.0.</li><li>Pinned Deno libs to std@v0.84.0.</li><li>Ported <code>validate-rimu-ports.sh</code> tests to Deno (<code>validate-rimu-ports.ts</code>) and
-  added <code>validate-ports</code> build task.</li></ul><h2 id="version-11-1-12-2020-09-17">Version 11.1.12 (2020-09-17)</h2>
+<h2 id="version-11-1-13-2021-01-25">Version 11.1.13 (2021-01-25)</h2>
+<ul><li>Use <a href="https://github.com/rollup/rollup">Rollup</a> to bundle Rimu browser ES module library.</li><li>Ported <code>validate-rimu-ports.sh</code> tests to Deno (<code>validate-rimu-ports.ts</code>) and
+  added <code>validate-ports</code> build task.</li><li>Upgrade to Drake 1.7.0.</li><li>Pinned Deno libs to std@v0.84.0.</li></ul><h2 id="version-11-1-12-2020-09-17">Version 11.1.12 (2020-09-17)</h2>
 <ul><li>Upgrade to Drake 1.4.0.</li><li>Pinned Deno libs to std@v0.69.0.</li></ul><h2 id="version-11-1-11-2020-05-26">Version 11.1.11 (2020-05-26)</h2>
 <p><strong>FIX</strong>: Added missing <code>.js</code> extensions in ES module paths in the npm
 distribution.</p>
@@ -430,12 +430,7 @@ been assigned a patch number increment. Nevertheless the patch version number
 belies the magnitude of changes accompanying this release.</p>
 <p>The toolchain has been simplified. Webpack is no longer used and the number of
 Node.js dev dependencies has more than halved.</p>
-<p>ES modules are supported natively  in the browser. For example:</p>
-<pre class="html"><code>&lt;script type="module"&gt;
-    import * as rimu from "./rimu.esm.js";
-    alert(rimu.render("Hello *Rimu*!"));
-&lt;/script&gt;</code></pre>
-<p>The distributed
+<p>ES modules are supported natively  in the browser. The distributed
 <a href="https://github.com/srackham/rimu/blob/master/docs/rimu.esm.js">rimu.esm.js</a> ES
 module file was bundled by <a href="https://deno.land/">Deno</a> and minimized with
 <a href="https://github.com/terser/terser">terser</a>. See the <code>build-web</code> task in the
