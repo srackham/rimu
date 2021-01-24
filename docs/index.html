@@ -451,7 +451,7 @@ working:</p>
 <p><strong>Deno</strong></p>
 <p>Deno modules don't need explicit installation just import the module
 URL, for example:</p>
-<pre class="javascript"><code>import * as rimu from "https://deno.land/x/rimu@/mod.ts";
+<pre class="javascript"><code>import * as rimu from "https://deno.land/x/rimu@11.1.13/mod.ts";
 
 console.log(rimu.render("Hello *Rimu*!"));</code></pre>
 <p>Use the Deno <code>install</code> command to install the Rimu CLI executable.
@@ -472,7 +472,8 @@ bundled by <a href="https://github.com/rollup/rollup">Rollup</a> and minimized w
 <a href="https://nodejs.org/">Node.js</a> installed.</p>
 <ol><li>Install the Git repository from <a href="https://github.com/srackham/rimu">Github</a>.<pre><code>git clone https://github.com/srackham/rimu.git</code></pre>
 </li><li>Install dependencies:<pre><code>cd rimu
-npm install</code></pre>
+npm install
+deno cache --reload src/deno/rimuc.ts</code></pre>
 </li><li>Use the <a href="https://github.com/srackham/drake">Drake</a> task runner
    module to build and test Rimu library modules and CLIs for Deno and Node.js
    platforms:<pre><code>deno run -A Drakefile.ts build test</code></pre></li></ol>
