@@ -425,9 +425,9 @@ into the Rimu markup syntax):</p>
   compatible</a>.</li><li>The generated HTML is compatible with all modern browsers.</li><li>A number of <a href="https://srackham.github.io/rimu/reference.html#rimu-implementations">Rimu
   implementations</a>
   are available for various languages and runtime environments.</li></ul><h2 id="learn-more">Learn more</h2>
-<p>Read the documentation and experiment with Rimu in the <a href="https://srackham.github.io/rimu/rimuplayground.html">Rimu
-Playground</a> or open the
-<code>rimuplayground.html</code> file locally in your browser.</p>
+<p><a href="https://srackham.github.io/rimu/">Read the documentation</a> and experiment with Rimu
+in the <a href="https://srackham.github.io/rimu/rimuplayground.html">Rimu Playground</a> or
+open the <code>rimuplayground.html</code> file locally in your browser.</p>
 <p>See the Rimu <a href="https://srackham.github.io/rimu/changelog.html">Change Log</a> for
 the latest changes.</p>
 <p><strong>NOTE</strong>: The remainder of this document is specific to the
@@ -451,13 +451,13 @@ working:</p>
 <p><strong>Deno</strong></p>
 <p>Deno modules don't need explicit installation just import the module
 URL, for example:</p>
-<pre class="javascript"><code>import * as rimu from "https://deno.land/x/rimu@11.1.12/mod.ts";
+<pre class="javascript"><code>import * as rimu from "https://deno.land/x/rimu@/mod.ts";
 
 console.log(rimu.render("Hello *Rimu*!"));</code></pre>
 <p>Use the Deno <code>install</code> command to install the Rimu CLI executable.
 The following example creates the CLI executable named <code>rimudeno</code>
 in <code>$HOME/.deno/bin/rimudeno</code>:</p>
-<pre><code>deno install -A --name rimudeno https://deno.land/x/rimu@11.1.12/src/deno/rimuc.ts</code></pre>
+<pre><code>deno install -A --name rimudeno https://deno.land/x/rimu@/src/deno/rimuc.ts</code></pre>
 <p><strong>Browser</strong></p>
 <p>Rimu builds JavaScript ES module files in the <code>./lib/esm</code> directory along with a
 bundled version <code>./lib/web/rimu.esm.js</code>. The <code>rimu.esm.js</code> ES module file was
@@ -474,13 +474,11 @@ Example usage:</p>
 <a href="https://nodejs.org/">Node.js</a> installed.</p>
 <ol><li>Install the Git repository from <a href="https://github.com/srackham/rimu">Github</a>.<pre><code>git clone https://github.com/srackham/rimu.git</code></pre>
 </li><li>Install dependencies:<pre><code>cd rimu
-npm install</code></pre>
+npm install
+deno cache src/deno/rimuc.ts</code></pre>
 </li><li>Use the <a href="https://github.com/srackham/drake">Drake</a> task runner
-   module to build Rimu library modules and CLIs for Deno and Node.js
-   platforms:<pre><code>deno run -A Drakefile.ts build</code></pre>
-</li></ol><p><strong>NOTE</strong>: If a one-off <code>rimuc.ts</code> build error occurs rerun the build command
-(the error is benign and seems to be related to circular compilation
-references).</p>
+   module to build and test Rimu library modules and CLIs for Deno and Node.js
+   platforms:<pre><code>deno run -A Drakefile.ts build test</code></pre></li></ol>
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
