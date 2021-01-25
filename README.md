@@ -73,7 +73,7 @@ Use the Deno `install` command to install the Rimu CLI executable.
 The following example creates the CLI executable named `rimudeno`
 in `$HOME/.deno/bin/rimudeno`:
 
-    deno install -A --name rimudeno https://deno.land/x/rimu@/src/deno/rimuc.ts
+    deno install -A --name rimudeno https://deno.land/x/rimu@11.1.13/src/deno/rimuc.ts
 
 **Browser**
 
