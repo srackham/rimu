@@ -124,7 +124,7 @@ task(
     }
     // Bundle and minimise Rimu web browser ES module.
     await sh(
-      `${ROLLUP_EXE} --format esm  --file ${MIN_RIMU_JS} ${ESM_RIMU_JS}`,
+      `${ROLLUP_EXE} --silent --format esm  --file ${MIN_RIMU_JS} ${ESM_RIMU_JS}`,
     );
     await sh(`${TERSER_EXE} ${MIN_RIMU_JS} --output ${MIN_RIMU_JS}`);
   },
