@@ -1421,7 +1421,7 @@ OPTIONS
 
 LAYOUT OPTIONS
   The following options are available when the --layout option
-  specifies a built-in layout:
+  is used:
 
   Option             Description
   _______________________________________________________________
@@ -1445,8 +1445,7 @@ LAYOUT OPTIONS
 
 LAYOUT CLASSES
   The following CSS classes are available for use in Rimu Block
-  Attributes elements when the --layout option specifies a
-  built-in layout:
+  Attributes elements when the --layout option is used:
 
   CSS class        Description
   ______________________________________________________________
