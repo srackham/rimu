@@ -54,7 +54,7 @@ const defs: Definition[] = [
       Array.prototype.splice.apply(reader.lines, spliceArgs);
       return true;
     },
-    filter: function (match: RegExpExecArray, reader: Io.Reader): string {
+    filter: function (_match: RegExpExecArray, _reader: Io.Reader): string {
       return ""; // Already processed in the `verify` function.
     },
   },
@@ -152,7 +152,7 @@ const defs: Definition[] = [
   {
     match: /^\\?<<#([a-zA-Z][\w\-]*)>>$/,
     replacement: '<div id="$1"></div>',
-    filter: function (match: RegExpExecArray, reader?: Io.Reader): string {
+    filter: function (match: RegExpExecArray, _reader?: Io.Reader): string {
       if (Options.skipBlockAttributes()) {
         return "";
       } else {

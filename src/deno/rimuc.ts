@@ -2,7 +2,7 @@
   Command-lne app to convert Rimu source to HTML.
 */
 
-import { existsSync, path } from "./deps.ts";
+import { existsSync, path, readAll } from "./deps.ts";
 import { resources } from "./resources.ts";
 import * as rimu from "./rimu.ts";
 
@@ -187,7 +187,7 @@ for (let infile of files) {
   } else {
     if (infile === STDIN) {
       try {
-        source = new TextDecoder().decode(await Deno.readAll(Deno.stdin));
+        source = new TextDecoder().decode(await readAll(Deno.stdin));
       } catch (e) {
         die(`error reading stdin: ${e.message}`);
       }
@@ -197,7 +197,7 @@ for (let infile of files) {
       }
       try {
         source = Deno.readTextFileSync(infile);
-      } catch (e) {
+      } catch {
         die("source file permission denied: " + infile);
       }
     }

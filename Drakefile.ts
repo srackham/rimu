@@ -37,7 +37,6 @@ const NODE_RIMUC_TS = "src/node/rimuc.ts";
 const NODE_RIMUC_BIN = "lib/cjs/rimuc.js";
 const NODE_TS_SRC = glob("src/node/*.ts");
 const DENO_TS_SRC = glob("src/deno/*.ts");
-const DENO_RIMU_TS = "src/deno/rimu.ts";
 const DENO_RIMUC_TS = "src/deno/rimuc.ts";
 const ESM_RIMU_JS = "lib/esm/rimu.js";
 const MIN_RIMU_JS = "lib/esm/rimu.min.js";
