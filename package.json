@@ -1,7 +1,7 @@
 {
   "name": "rimu",
   "author": "Stuart Rackham <srackham@gmail.com>",
-  "version": "11.1.13",
+  "version": "11.1.14",
   "description": "Readable text to HTML markup language",
   "keywords": [
     "rimu",
