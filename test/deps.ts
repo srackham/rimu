@@ -2,7 +2,7 @@ export {
   assert,
   assertEquals,
   assertNotEquals,
-} from "https://deno.land/std@0.95.0/testing/asserts.ts";
+} from "https://deno.land/std@0.97.0/testing/asserts.ts";
 export {
   env,
   readFile,
