@@ -9,7 +9,7 @@ import {
   makeDir,
   readFile,
   sh,
-} from "https://deno.land/x/drake@v1.4.7/lib.ts";
+} from "https://deno.land/x/drake@v1.5.0/lib.ts";
 
 env("--abort-exits", true);
 
@@ -24,14 +24,14 @@ NAME
 validate-rimu-ports - verify all Rimu ports are congruent.
 
 SYNOPSIS
-validate-rimu-ports.ts [--update-fixtures] [--skip-fixtures] [--skip-tests] [--help]
+validate-rimu-ports.ts [--update-fixtures] [--skip-fixtures] [--skip-tests] [--help] [PORTID]
 
 DESCRIPTION
 This script is used to test and verify all Rimu ports are congruent.
 
-- Tests and builds all Rimu ports.
-- Compiles the Rimu documentation with all three ports and checks they are
-  identical.
+- Builds, tests and benchmarks all Rimu ports or just one if the PORTID is specified
+  (\`ts\`, \`deno\`, \`go\`, \`kt\`, \`dart\` or \`py\`)
+- Compiles the Rimu documentation with each port and checks they are identical.
 - If any errors or differences in the common test fixtures and resource files
   are detected it exits immediately.
 
@@ -164,11 +164,26 @@ const ports: Ports = {
   },
 };
 
+if (Deno.args.length > 0) {
+  const port = Deno.args[Deno.args.length - 1] as PortId;
+  if (portIds.includes(port)) {
+    // Populate portIds with "ts" (the canonical implementation) and the command-line port.
+    portIds.length = 0;
+    portIds.push("ts"); // Always process TypeScript
+    if (port !== "ts") {
+      portIds.push(port);
+    }
+  }
+}
+
 // Don't process Python port on Windows platform.
 // TODO: Drop this once python build has been ported from Make.
 if (isWindows) {
-  console.warn("WARNING: python port is excluded from validation on Windows");
-  portIds.splice(portIds.length - 1, 1);
+  const pyIdx = portIds.indexOf("py");
+  if (pyIdx !== -1) {
+    console.warn("WARNING: python port is excluded from validation on Windows");
+    portIds.splice(pyIdx, 1);
+  }
 }
 
 // Check for project directories for all ports.
