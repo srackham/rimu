@@ -94,6 +94,18 @@ const DEFAULT_DEFS: Definition[] = [
     },
     delimiterFilter: classInjectionFilter,
   },
+  // Details block.
+  {
+    name: "details",
+    openMatch: /^\\?(>{2,})\s*(.*)$/, // $1 is delimiter text, $2 is the summary text.
+    openTag: "<details>",
+    closeTag: "</details>",
+    expansionOptions: {
+      container: true,
+      specials: true, // Fall-back if container is disabled.
+    },
+    delimiterFilter: classInjectionFilter,
+  },
   // Code block.
   {
     name: "code",
@@ -365,14 +377,23 @@ function delimiterTextFilter(match: string[]): string {
 // delimiterFilter for code, division and quote blocks.
 // Inject $2 into block class attribute, set close delimiter to $1.
 function classInjectionFilter(this: Definition, match: string[]): string {
+  let result = "";
   if (match[2]) {
-    let p1: string;
-    if ((p1 = match[2].trim())) {
-      BlockAttributes.classes = p1;
+    if (this.name === "details") {
+      const summary = Utils.replaceInline(match[2], {
+        macros: true,
+        spans: true,
+      });
+      result = `<summary>${summary}</summary>\n`;
+    } else {
+      let p1: string;
+      if ((p1 = match[2].trim())) {
+        BlockAttributes.classes = p1;
+      }
     }
   }
   this.closeMatch = RegExp("^" + Utils.escapeRegExp(match[1]) + "$");
-  return "";
+  return result;
 }
 
 // contentFilter for multi-line macro definitions.

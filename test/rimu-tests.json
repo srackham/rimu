@@ -568,6 +568,33 @@
     }
   },
   {
+    "description": "details block with summary",
+    "input": ">> A *Short* Summary\nTo be...\n\nor not to be!\n>>",
+    "expectedOutput": "<details><summary>A <em>Short</em> Summary</summary>\n<p>To be...</p>\n<p>or not to be!</p></details>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "details block with nested summary",
+    "input": ">> A *Short* Summary\nTo be...\n\nor not to be!\n\n>>>Nested\nTo be...\n\nor not to be!\n>>>\n>>",
+    "expectedOutput": "<details><summary>A <em>Short</em> Summary</summary>\n<p>To be...</p>\n<p>or not to be!</p>\n<details><summary>Nested</summary>\n<p>To be...</p>\n<p>or not to be!</p></details></details>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "details block without summary",
+    "input": ">>\nTo be...\n\nor not to be!\n>>",
+    "expectedOutput": "<details><p>To be...</p>\n<p>or not to be!</p></details>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
     "description": "inline HTML tag is not a block",
     "input": "<em>HTML</em>",
     "expectedOutput": "<p><em>HTML</em></p>",
