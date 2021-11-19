@@ -42,7 +42,7 @@ const DEFAULT_DEFS: Definition[] = [
     expansionOptions: {
       macros: true,
     },
-    delimiterFilter: delimiterTextFilter,
+    delimiterFilter: delimiterFilter1,
     contentFilter: macroDefContentFilter,
   },
   // Multi-line macro expression value definition.
@@ -55,7 +55,7 @@ const DEFAULT_DEFS: Definition[] = [
     expansionOptions: {
       macros: true,
     },
-    delimiterFilter: delimiterTextFilter,
+    delimiterFilter: delimiterFilter1,
     contentFilter: macroDefContentFilter,
   },
   // Comment block.
@@ -80,7 +80,7 @@ const DEFAULT_DEFS: Definition[] = [
       container: true,
       specials: true, // Fall-back if container is disabled.
     },
-    delimiterFilter: classInjectionFilter,
+    delimiterFilter: delimiterFilter2,
   },
   // Quote block.
   {
@@ -92,7 +92,7 @@ const DEFAULT_DEFS: Definition[] = [
       container: true,
       specials: true, // Fall-back if container is disabled.
     },
-    delimiterFilter: classInjectionFilter,
+    delimiterFilter: delimiterFilter2,
   },
   // Details block.
   {
@@ -104,7 +104,7 @@ const DEFAULT_DEFS: Definition[] = [
       container: true,
       specials: true, // Fall-back if container is disabled.
     },
-    delimiterFilter: classInjectionFilter,
+    delimiterFilter: delimiterFilter2,
   },
   // Code block.
   {
@@ -120,7 +120,7 @@ const DEFAULT_DEFS: Definition[] = [
       // The deprecated '-' delimiter does not support appended class names.
       return !(match[1][0] === "-" && match[2].trim() !== "");
     },
-    delimiterFilter: classInjectionFilter,
+    delimiterFilter: delimiterFilter2,
   },
   // HTML block.
   {
@@ -144,7 +144,7 @@ const DEFAULT_DEFS: Definition[] = [
         return true; // Matched HTML comment or doctype tag.
       }
     },
-    delimiterFilter: delimiterTextFilter,
+    delimiterFilter: delimiterFilter1,
     contentFilter: Options.htmlSafeModeFilter,
   },
   // Indented paragraph.
@@ -158,7 +158,7 @@ const DEFAULT_DEFS: Definition[] = [
       macros: false,
       specials: true,
     },
-    delimiterFilter: delimiterTextFilter,
+    delimiterFilter: delimiterFilter1,
     contentFilter: function (text: string): string {
       // Strip indent from start of each line.
       const firstIndent = text.search(/\S/);
@@ -184,7 +184,7 @@ const DEFAULT_DEFS: Definition[] = [
       spans: true,
       specials: true, // Fall-back if spans is disabled.
     },
-    delimiterFilter: delimiterTextFilter,
+    delimiterFilter: delimiterFilter1,
     contentFilter: function (text: string): string {
       // Strip leading > from start of each line and unescape escaped leading >.
       return text.split("\n")
@@ -208,7 +208,7 @@ const DEFAULT_DEFS: Definition[] = [
       spans: true,
       specials: true, // Fall-back if spans is disabled.
     },
-    delimiterFilter: delimiterTextFilter,
+    delimiterFilter: delimiterFilter1,
   },
 ];
 
@@ -370,28 +370,30 @@ export function setDefinition(name: string, value: string): void {
 }
 
 // delimiterFilter that returns opening delimiter line text from match group $1.
-function delimiterTextFilter(match: string[]): string {
+function delimiterFilter1(match: string[]): string {
   return match[1];
 }
 
-// delimiterFilter for code, division and quote blocks.
-// Inject $2 into block class attribute, set close delimiter to $1.
-function classInjectionFilter(this: Definition, match: string[]): string {
+// delimiterFilter for code, details, division and quote blocks.
+function delimiterFilter2(this: Definition, match: string[]): string {
   let result = "";
   if (match[2]) {
     if (this.name === "details") {
+      // Generate <summary> element.
       const summary = Utils.replaceInline(match[2], {
         macros: true,
         spans: true,
       });
       result = `<summary>${summary}</summary>\n`;
     } else {
+      // Inject $2 into block class attribute.
       let p1: string;
       if ((p1 = match[2].trim())) {
         BlockAttributes.classes = p1;
       }
     }
   }
+  // Set close delimiter to $1.
   this.closeMatch = RegExp("^" + Utils.escapeRegExp(match[1]) + "$");
   return result;
 }
