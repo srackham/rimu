@@ -75,6 +75,7 @@ Rimu markup elements are categorized as follows:
                 [HTML Block](#html-elements)
                 [Fenced Blocks](#fenced-blocks)
                         [Code Block](#code-block)
+                        [Details Block](#details-block)
                         [Division Block](#division-block)
                         [Quote Block](#quote-block)
                 [Macro Definition](#macro-definitions)
@@ -226,9 +227,9 @@ delimiter characters starting at the left margin.
   of the same type to be nested.
 - The behaviour of individual Fenced Blocks can be customized with a
   preceding [Block Attributes](#block-attributes) element.
-- CSS class names appended to the opening delimiter line will be
-  injected into the block's opening HTML tag (this is an alternative
-  to using a _Block Attributes_ element).
+- CSS class names appended to the opening delimiter line of Code, Division and
+  Quote fenced blocks will be injected into the block's opening HTML tag (this
+  is an alternative to using a _Block Attributes_ element).
 - Fenced Blocks can be escaped by prefixing the opening delimiter with
   a backslash character.
 - You can customize the generated HTML with [Delimited Block
@@ -262,7 +263,6 @@ Anonymous
 The above example uses the [rimuc](#rimuc-command) command `--layout`
 option's CSS _cite_ class to style the Anonymous attribution.
 
-.#division-block
 ### Division Block
 A _Division Block_ is a container for block elements.
 
@@ -282,6 +282,23 @@ Scelerisque feugiat massa alias.
 _Division Blocks_ are useful for appending arbitrary block elements to
 [list items](#lists). They can also be used to [conditionally
 include]({tips}#conditional-inclusion) Rimu source text.
+
+### Details Block
+A _Details Block_ renders enclosed block elements inside an HTML
+[`<details>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details)
+element. Details elements collapse and expand when clicked.
+
+- The Details Block delimiter character is a greater-than sign (`>`).
+- An optional details summary can be included on the opening delimiter
+  line.
+- Set the `open` HTML attribute show the details by default.
+
+{details-block-example} = '.[open]
+>> Lorem Ipsum
+Nunc mauris tempor.
+Scelerisque feugiat massa alias.
+>>'
+{generate-rendered-example-1|details-block-example}
 
 
 ## HTML elements
@@ -765,6 +782,7 @@ Definition syntax:
 ..
 [`code`](#code-block), \
 [`comment`](#comments), \
+[`details`](#details-block), \
 [`division`](#division-block), \
 [`html`](#html-elements), \
 [`indented`](#indented-paragraph), \
@@ -798,7 +816,7 @@ Definition syntax:
   option](#api-options) is non-zero.
 - Macro invocations in the definition are expanded.
 - `macros`, `spans` and `specials` block options are not applied to
-  Division blocks, Quote blocks or Lists.
+  Division, Details or Quote blocks or Lists.
 
 The following example generates Code blocks with a `code-block`
 class attribute:
