@@ -568,9 +568,9 @@
     }
   },
   {
-    "description": "details block with summary",
-    "input": ">> A *Short* Summary\nTo be...\n\nor not to be!\n>>",
-    "expectedOutput": "<details><summary>A <em>Short</em> Summary</summary>\n<p>To be...</p>\n<p>or not to be!</p></details>",
+    "description": "details block with summary and CSS class",
+    "input": ".foo\n>> A *Short* Summary\nTo be...\n\nor not to be!\n>>",
+    "expectedOutput": "<details class=\"foo\"><summary>A <em>Short</em> Summary</summary>\n<p>To be...</p>\n<p>or not to be!</p></details>",
     "expectedCallback": "",
     "options": {
       "reset": true
@@ -586,9 +586,18 @@
     }
   },
   {
-    "description": "details block without summary",
-    "input": ">>\nTo be...\n\nor not to be!\n>>",
-    "expectedOutput": "<details><p>To be...</p>\n<p>or not to be!</p></details>",
+    "description": "open details block without summary",
+    "input": ".[open]\n>>\nTo be...\n\nor not to be!\n>>",
+    "expectedOutput": "<details open><p>To be...</p>\n<p>or not to be!</p></details>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
+    "description": "details block attached to list item",
+    "input": "- Item\n>>\nTo be...\nor not to be!\n>>",
+    "expectedOutput": "<ul><li>Item<details><p>To be...\nor not to be!</p></details></li></ul>",
     "expectedCallback": "",
     "options": {
       "reset": true
