@@ -175,7 +175,7 @@ const DEFAULT_DEFS: Definition[] = [
   // Quote paragraph.
   {
     name: "quote-paragraph",
-    openMatch: /^\\?(>.*)$/, // $1 is first line of block.
+    openMatch: /^\\?(>[^>].*)$/, // $1 is first line of block.
     closeMatch: /^$/, // Blank line or EOF.
     openTag: "<blockquote><p>",
     closeTag: "</p></blockquote>",

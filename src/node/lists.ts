@@ -146,7 +146,7 @@ function renderListItem(
         DelimitedBlocks.render(
           reader,
           attachedLines,
-          ["comment", "code", "division", "html", "quote"],
+          ["comment", "code", "details", "division", "html", "quote"],
         )
       ) {
         attachedDone = true;
