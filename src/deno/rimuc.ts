@@ -2,7 +2,7 @@
   Command-lne app to convert Rimu source to HTML.
 */
 
-import { existsSync, path, readAll } from "./deps.ts";
+import { path, readAll } from "./deps.ts";
 import { resources } from "./resources.ts";
 import * as rimu from "./rimu.ts";
 
@@ -31,6 +31,25 @@ function readResourceFile(name: string): string {
   // Restore all backslashes.
   result = resources[name].split("\\x5C").join("\\");
   return result;
+}
+
+// Synchronous check for regular file.
+function fileExists(filename: string): boolean {
+  try {
+    const file = Deno.openSync(filename, { read: true });
+    try {
+      const fileInfo = Deno.fstatSync(file.rid);
+      return fileInfo.isFile;
+    } finally {
+      file.close;
+    }
+  } catch (err) {
+    if (err.code === "ENOENT") {
+      return false;
+    } else {
+      throw err;
+    }
+  }
 }
 
 let safeMode = 0;
@@ -158,7 +177,7 @@ if (layout !== "") {
   files.push(`${RESOURCE_TAG}${layout}-footer.rmu`);
 }
 // Prepend $HOME/.rimurc file if it exists.
-if (!noRimurc && existsSync(RIMURC)) {
+if (!noRimurc && fileExists(RIMURC)) {
   prependFiles.unshift(RIMURC);
 }
 if (prepend !== "") {
@@ -192,7 +211,7 @@ for (let infile of files) {
         die(`error reading stdin: ${e.message}`);
       }
     } else {
-      if (!existsSync(infile)) {
+      if (!fileExists(infile)) {
         die("source file does not exist: " + infile);
       }
       try {
