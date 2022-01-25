@@ -120,7 +120,7 @@ export namespace BlockAttributes {
     // class names = $1, id = $2, css-properties = $3, html-attributes = $4, block-options = $5
     let text = match[0];
     text = replaceInline(text, { macros: true });
-    let m =
+    const m =
       /^\\?\.((?:\s*[a-zA-Z][\w\-]*)+)*(?:\s*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(?:"(.+?)")?(?:\s*)?(\[.+])?(?:\s*)?([+-][ \w+-]+)?$/
         .exec(text);
     if (!m) {
@@ -156,7 +156,7 @@ export namespace BlockAttributes {
     }
     let attrs = "";
     if (classes) {
-      let re = /^(<[^>]*class=")(.*?)"/i;
+      const re = /^(<[^>]*class=")(.*?)"/i;
       if (re.test(tag)) {
         // Inject class names into first existing class attribute in first tag.
         tag = tag.replace(re, `$1${classes} $2"`);
@@ -166,7 +166,7 @@ export namespace BlockAttributes {
     }
     if (id) {
       id = id.toLowerCase();
-      let hasId = /^<[^<]*id=".*?"/i.test(tag);
+      const hasId = /^<[^<]*id=".*?"/i.test(tag);
       if (hasId || ids.indexOf(id) > -1) {
         Options.errorCallback(`duplicate 'id' attribute: ${id}`);
       } else {
@@ -177,7 +177,7 @@ export namespace BlockAttributes {
       }
     }
     if (css) {
-      let re = /^(<[^>]*style=")(.*?)"/i;
+      const re = /^(<[^>]*style=")(.*?)"/i;
       if (re.test(tag)) {
         // Inject CSS styles into first existing style attribute in first tag.
         tag = tag.replace(
@@ -197,10 +197,10 @@ export namespace BlockAttributes {
     }
     attrs = attrs.trim();
     if (attrs) {
-      let match = tag.match(/^<([a-zA-Z]+|h[1-6])(?=[ >])/);
+      const match = tag.match(/^<([a-zA-Z]+|h[1-6])(?=[ >])/);
       if (match) {
-        let before = tag.slice(0, match[0].length);
-        let after = tag.slice(match[0].length);
+        const before = tag.slice(0, match[0].length);
+        const after = tag.slice(match[0].length);
         tag = before + " " + attrs + after;
       }
     }
