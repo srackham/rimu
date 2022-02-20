@@ -136,11 +136,11 @@ const ports: Ports = {
     make: async function () {
       makeDir("build");
       await sh(
-        `dart2native bin/rimuc.dart -o build/${
+        `dart compile exe -o build/${
           isWindows ? "rimuc.exe" : "rimuc"
-        }`,
+        } bin/rimuc.dart`,
       );
-      await sh("pub run test test/");
+      await sh("dart test test/*.dart");
     },
     rimucExe: path.join(dartDir, "build/rimuc"),
   },
