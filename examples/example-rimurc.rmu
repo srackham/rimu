@@ -24,6 +24,9 @@
 // Horizontal rule (3 or more underscore, asterisk or hyphen characters).
 /^(_{3,}|\*{3,}|-{3,})$/ = '<hr>'
 
+// Keyword comments.
+/\\?@(deprecated|fixme|important|note|todo|warning)\b.*/ = ''
+
 
 /*
   Macros
