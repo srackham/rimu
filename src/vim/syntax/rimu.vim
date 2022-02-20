@@ -18,7 +18,7 @@ syn clear
 syn sync linebreaks=100
 syn sync minlines=100
 
-syn keyword rimuTodo TODO FIXME XXX ZZZ DEPRECATED
+syn keyword rimuTodo TODO FIXME XXX ZZZ DEPRECATED @deprecated @fixme @important @note @todo @warning
 
 syn match rimuParamSeparator /|/ contained containedin=rimuURLParams,rimuDefinitionParams
 syn match rimuParamSeparator /?/ contained containedin=rimuDefinitionParams
