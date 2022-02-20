@@ -27,9 +27,9 @@
     "url": "https://github.com/srackham/rimu.git"
   },
   "devDependencies": {
-    "@types/node": "^17.0.15",
+    "@types/node": "^17.0.18",
     "html-validator-cli": "^7.0.1",
-    "rollup": "^2.67.0",
+    "rollup": "^2.67.3",
     "terser": "^5.10.0",
     "typescript": "^4.5.5"
   },
