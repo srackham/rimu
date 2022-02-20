@@ -36,13 +36,7 @@ function readResourceFile(name: string): string {
 // Synchronous check for regular file.
 function fileExists(filename: string): boolean {
   try {
-    const file = Deno.openSync(filename, { read: true });
-    try {
-      const fileInfo = Deno.fstatSync(file.rid);
-      return fileInfo.isFile;
-    } finally {
-      file.close;
-    }
+    return !!Deno.statSync(filename)?.isFile;
   } catch (err) {
     if (err.code === "ENOENT") {
       return false;
