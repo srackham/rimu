@@ -4,7 +4,7 @@
  * Drakefile for Rimu Markup (http://github.com/srackham/rimu).
  */
 
-import * as path from "https://deno.land/std@0.122.0/path/mod.ts";
+import * as path from "https://deno.land/std@0.123.0/path/mod.ts";
 import {
   abort,
   desc,
@@ -17,7 +17,7 @@ import {
   task,
   updateFile,
   writeFile,
-} from "https://deno.land/x/drake@v1.5.0/mod.ts";
+} from "https://deno.land/x/drake@v1.5.1/mod.ts";
 
 const isWindows = Deno.build.os === "windows";
 

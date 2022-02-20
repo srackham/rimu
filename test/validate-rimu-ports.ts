@@ -9,7 +9,7 @@ import {
   makeDir,
   readFile,
   sh,
-} from "https://deno.land/x/drake@v1.5.0/lib.ts";
+} from "https://deno.land/x/drake@v1.5.1/lib.ts";
 
 env("--abort-exits", true);
 
