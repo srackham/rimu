@@ -75,7 +75,6 @@ Rimu markup elements are categorized as follows:
                 [HTML Block](#html-elements)
                 [Fenced Blocks](#fenced-blocks)
                         [Code Block](#code-block)
-                        [Details Block](#details-block)
                         [Division Block](#division-block)
                         [Quote Block](#quote-block)
                 [Macro Definition](#macro-definitions)
@@ -282,24 +281,6 @@ Scelerisque feugiat massa alias.
 _Division Blocks_ are useful for appending arbitrary block elements to
 [list items](#lists). They can also be used to [conditionally
 include]({tips}#conditional-inclusion) Rimu source text.
-
-### Details Block
-A _Details Block_ renders enclosed block elements inside an HTML
-[`<details>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details)
-element. Details elements hide and show their contents when clicked.
-
-- The Details Block delimiter character is a greater-than sign (`>`).
-- An optional details summary can be included on the opening delimiter
-  line.
-- Set the `open` HTML attribute show the details by default.
-
-{details-block-example} = '.[open]
->> Lorem Ipsum
-Nunc mauris tempor.
-Scelerisque feugiat massa alias.
->>'
-{generate-rendered-example-1|details-block-example}
-
 
 ## HTML elements
 Block and inline HTML elements can be mixed with Rimu markup.
@@ -782,7 +763,6 @@ Definition syntax:
 ..
 [`code`](#code-block), \
 [`comment`](#comments), \
-[`details`](#details-block), \
 [`division`](#division-block), \
 [`html`](#html-elements), \
 [`indented`](#indented-paragraph), \
@@ -816,7 +796,7 @@ Definition syntax:
   option](#api-options) is non-zero.
 - Macro invocations in the definition are expanded.
 - `macros`, `spans` and `specials` block options are not applied to
-  Division, Details or Quote blocks or Lists.
+  Division or Quote blocks or Lists.
 
 The following example generates Code blocks with a `code-block`
 class attribute:

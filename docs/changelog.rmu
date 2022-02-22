@@ -3,14 +3,8 @@
 This is the Rimu TypeScript implementation change log (see also [other Rimu
 implementations]({reference}#rimu-implementations)).
 
-## Version 11.2.0 (2021-??-??)
-- Added _Details_ fenced block. A [Details Block
-  Block]({reference}#details-block) renders enclosed block elements inside an
-  HTML
-  [`<details>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details)
-  element. Details elements collapse and expand when clicked.
-- Added [Keyword comments]({tips}#keyword-comments) tip.
-
+## Version 11.1.15 (2021-??-??)
+TODO
 
 ## Version 11.1.14 (2021-04-23)
 - Upgrade to Drake 1.4.7.
