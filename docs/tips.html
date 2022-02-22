@@ -720,14 +720,12 @@ files with a <code>.html</code> extension directly to the output. The second
 example works because the <a href="reference.html#rimuc-command">rimuc</a> <code>--pass</code> option passes the standard
 input verbatim to the output.</p>
 </li></ol><h2 id="converting-rimu-to-markdown">Converting Rimu to Markdown</h2>
-<p>You can use the online
-<a href="https://domchristie.github.io/to-markdown/">to-markdown</a> website to
-convert arbitrary Rimu source to pure Markdown:</p>
+<p>You can use the online <a href="https://mixmark-io.github.io/turndown/">turndown</a> online
+HTML to Markdown converter to convert arbitrary Rimu source to pure Markdown:</p>
 <ol><li>First convert Rimu to raw HTML using the
   <a href="reference.html#rimuc-command">rimuc</a> command e.g.<pre><code>rimuc mydoc.rmu &gt; mydoc.html</code></pre>
-</li><li>Then open the HTML file in a text editor and copy and paste the
-  contents into the
-  <a href="https://domchristie.github.io/to-markdown/">to-markdown</a> HTML box.</li></ol><h2 id="escaping-rimu-syntax">Escaping Rimu syntax</h2>
+</li><li>Then open the HTML file in a text editor and then copy and paste the
+  contents into <a href="https://mixmark-io.github.io/turndown/">turndown</a>.</li></ol><h2 id="escaping-rimu-syntax">Escaping Rimu syntax</h2>
 <p>If you have text that you don't want interpreted as a Rimu
 element then you can render it literally (escape it) by prefixing the
 element with a backslash character.</p>
@@ -2088,6 +2086,43 @@ window.onclick = toggleToc
 <p>Take a look at <a href="https://srackham.github.io/hindsite/">hindsite</a> if you want to build websites from Rimu source.</p>
 <p><a href="https://srackham.github.io/hindsite/">hindsite</a> is a fast, lightweight static website generator. It builds static
 websites from Rimu or Markdown source documents.</p>
+<h2 id="keyword-comments">Keyword comments</h2>
+<p>It's often useful to categorise comments by a keword e.g. <em>todo</em>, <em>fixme</em>. The
+following Rimu <a href="reference.html#replacement-definition">replacement definition</a>
+implements keyword comments (it's in the <a href="https://github.com/srackham/rimu/blob/master/examples/example-rimurc.rmu">example .rimurc file</a>).</p>
+<pre><code>/\\?@(deprecated|fixme|important|note|todo|warning)\b.*/ = ''</code></pre>
+<ul><li>A keyword comment comprises a keyword plus any text following it on the
+  same line.</li><li>Keyword comments are ommitted from the Rimu HTML output.</li><li>Prefixing the keyword with an <code>@</code> character is simply a convention to minimise
+  ambiguity.</li></ul><h4 id="examples-20">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header">
+Rimu Markup</td>
+<td class="example-header">
+HTML
+Preview
+</td>
+</tr>
+<tr>
+<td style="width:50%;">
+<pre class="example-source nohighlight" id="keyword-comments-example-source"><code>Tincidunt proin lorem @todo Mi vel ut.
+
+@note magna arcu.
+Duis ipsum nam eget vitae ut
+consequat quisque duis mollis
+magna arcu.</code></pre>
+<textarea id="keyword-comments-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('keyword-comments-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="keyword-comments-example-errors" class="example-errors"></div>
+<div id="keyword-comments-example-rendered" class="example-rendered">
+<p>Tincidunt proin lorem </p>
+<p>
+Duis ipsum nam eget vitae ut
+consequat quisque duis mollis
+magna arcu.</p>
+</div>
+</td></tr></table>
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
