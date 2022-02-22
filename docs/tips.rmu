@@ -185,18 +185,16 @@ input verbatim to the output.
 
 
 ## Converting Rimu to Markdown
-You can use the online
-[to-markdown](https://domchristie.github.io/to-markdown/) website to
-convert arbitrary Rimu source to pure Markdown:
+You can use the online [turndown](https://mixmark-io.github.io/turndown/) online
+HTML to Markdown converter to convert arbitrary Rimu source to pure Markdown:
 
 . First convert Rimu to raw HTML using the
   [rimuc](reference.html#rimuc-command) command e.g.
 
   rimuc mydoc.rmu > mydoc.html
 
-. Then open the HTML file in a text editor and copy and paste the
-  contents into the
-  [to-markdown](https://domchristie.github.io/to-markdown/) HTML box.
+. Then open the HTML file in a text editor and then copy and paste the
+  contents into [turndown](https://mixmark-io.github.io/turndown/).
 
 
 ## Escaping Rimu syntax
@@ -1236,3 +1234,25 @@ Take a look at {hindsite} if you want to build websites from Rimu source.
 
 {hindsite} is a fast, lightweight static website generator. It builds static
 websites from Rimu or Markdown source documents.
+
+## Keyword comments
+It's often useful to categorise comments by a keword e.g. _todo_, _fixme_. The
+following Rimu [replacement definition]({reference}#replacement-definition)
+implements keyword comments (it's in the [example .rimurc file]({example-rimurc})).
+
+    /\\?@(deprecated|fixme|important|note|todo|warning)\b.*/ = ''
+
+- A keyword comment comprises a keyword plus any text following it on the
+  same line.
+- Keyword comments are ommitted from the Rimu HTML output.
+- Prefixing the keyword with an `@` character is simply a convention to minimise
+  ambiguity.
+
+{keyword-comments-example} = 'Tincidunt proin lorem @todo Mi vel ut.
+
+@note magna arcu.
+Duis ipsum nam eget vitae ut
+consequat quisque duis mollis
+magna arcu.'
+
+{generate-rendered-example-1|keyword-comments-example||no-edit}

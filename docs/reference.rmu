@@ -286,7 +286,7 @@ include]({tips}#conditional-inclusion) Rimu source text.
 ### Details Block
 A _Details Block_ renders enclosed block elements inside an HTML
 [`<details>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details)
-element. Details elements collapse and expand when clicked.
+element. Details elements hide and show their contents when clicked.
 
 - The Details Block delimiter character is a greater-than sign (`>`).
 - An optional details summary can be included on the opening delimiter

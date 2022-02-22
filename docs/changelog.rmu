@@ -9,6 +9,7 @@ implementations]({reference}#rimu-implementations)).
   HTML
   [`<details>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details)
   element. Details elements collapse and expand when clicked.
+- Added [Keyword comments]({tips}#keyword-comments) tip.
 
 
 ## Version 11.1.14 (2021-04-23)
