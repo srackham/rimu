@@ -3,8 +3,11 @@
 This is the Rimu TypeScript implementation change log (see also [other Rimu
 implementations]({reference}#rimu-implementations)).
 
-## Version 11.1.15 (2021-??-??)
-TODO
+## Version 11.2.0 (2021-??-??)
+- Added [`important`, `note`, `tip` and
+  `warning`]({tips}#important-note-tip-and-warning-styles) admonition classes to
+  [rimuc]({reference}#rimuc-command) styled outputs.
+
 
 ## Version 11.1.14 (2021-04-23)
 - Upgrade to Drake 1.4.7.

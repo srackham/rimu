@@ -147,6 +147,10 @@ LAYOUT CLASSES
   preserve-breaks  Honor line breaks in source text.
   sidebar          Sidebar format (paragraphs, division blocks).
   verse            Verse format (paragraphs, division blocks).
+  important        Admonition (paragraphs, division blocks).
+  note             Admonition (paragraphs, division blocks).
+  tip              Admonition (paragraphs, division blocks).
+  warning          Admonition (paragraphs, division blocks).
   ______________________________________________________________
 
 PREDEFINED MACROS

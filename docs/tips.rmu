@@ -408,40 +408,57 @@ If you specify multiple themes their CSS styles will cascade in the
 order they are processed in the Rimu source documents.
 
 
-## Verse and sidebar styles
-The {rimuc} command `--layout` option includes _verse_ and _sidebar_
-CSS styles for poetry and highlighted passages of text.
+## Admonition, sidebar and verse styles
+The {rimuc} command `--layout` option includes CSS classes for styling
+paragraphs and Division blocks whose content sits outside the main narrative
+flow.
 
-{verse-and-sidebar-example} = 'Verse styled paragraph:
+The CSS class names are injected using the
+[Block Attibutes]({reference}#block-attributes) element or by appending them to
+the opening [block delimiter]({reference}#fenced-blocks).
 
-.verse
+### important, note, tip and warning styles
+The `important`, `note`, `tip` and `warning` styles render messages and
+admonitions. The optional `notitle` style class can be used to hide the
+admonition's title.
+
+{admonition-example} = '.note
+Admonition styled paragraph.
+
+.tip notitle
+Admonition styled paragraph without a title.
+
+..warning
+Admonition styled Division Block.
+
 Neque a massa.
-Porttitor consectetuer commodo.
-
-Verse styled Division Block:
-
-.verse
-..
-#### Lorum Ipsum
-Neque a massa.
-Porttitor consectetuer commodo.
-
 Nunc mauris tempor.
 Pede mauris sed.
 Scelerisque feugiat massa alias.
 ..
 
-Sidebar styled paragraph:
+..important notitle
+Admonition styled Division Block without a title.
 
-.sidebar
 Neque a massa.
-Porttitor consectetuer commodo.
+Nunc mauris tempor.
+Pede mauris sed.
+Scelerisque feugiat massa alias.
+..'
 
-Sidebar styled Division Block:
+{generate-rendered-example-1|admonition-example}
 
-.sidebar
-..
-#### Lorum Ipsum
+### sidebar style
+The `sidebar` style renders text boxes containing digressions and observations
+related to the main narrative flow.
+
+{sidebar-example} = '.sidebar
+Sidebar styled paragraph.
+Nunc mauris tempor.
+Pede mauris sed.
+
+..sidebar
+#### Sidebar styled Division Block
 Neque a massa.
 Porttitor consectetuer commodo.
 
@@ -450,7 +467,28 @@ Pede mauris sed.
 Scelerisque feugiat massa alias.
 ..'
 
-{generate-rendered-example-1|verse-and-sidebar-example}
+{generate-rendered-example-1|sidebar-example}
+
+### verse style
+The `verse` style renders passages of text that retain line breaks.
+See also [Citing quotes and verses](#citing-quotes-and-verses).
+
+{verse-example} = '.verse
+Verse styled paragraph.
+Neque a massa.
+Porttitor consectetuer commodo.
+
+..verse
+#### Verse styled Division Block
+Neque a massa.
+Porttitor consectetuer commodo.
+
+Nunc mauris tempor.
+Pede mauris sed.
+Scelerisque feugiat massa alias.
+..'
+
+{generate-rendered-example-1|verse-example}
 
 
 ## Using Macro, Replacement and Quote definitions in Safe Mode

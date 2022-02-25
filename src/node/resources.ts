@@ -367,20 +367,79 @@ hljs.initHighlightingOnLoad();
   }
   div.verse p, p.verse {
     font-family: {--serif-font};
-    white-space: pre;
+    white-space: pre-wrap;
     margin-top: 0.75rem;
     margin-bottom: 0.75rem;
   }
-  {--!} Apply sidebar class to Normal Paragraphs and Division blocks.
-  .sidebar {
-    border: 1px solid {--border-color};
-    border-radius: {--border-radius};
-    background: {--sidebar-background};
-    padding: 10px;
+  {--!} Apply sidebar and admonition classes to Normal Paragraphs and Division blocks.
+  .sidebar,
+  .important,
+  .note,
+  .tip,
+  .warning {
     margin: 1.5em 0;
+    padding: 10px;
   }
-  div.sidebar *:first-child {
-    margin-top: 0.2rem;
+  div.sidebar *:first-child,
+  div.important *:first-child,
+  div.note *:first-child,
+  div.tip *:first-child,
+  div.warning *:first-child {
+    margin-top: 0.2rem !important;
+  }
+  .note::before,
+  .important::before,
+  .tip::before,
+  .warning::before {
+    font-weight: bold;
+  }
+  .notitle::before {
+    content: "" !important;
+  }
+  .sidebar {
+    background: #ffffee;
+    border: 1px solid #dddddd;
+    border-radius: 0;
+  }
+  .note {
+    background-color: #f0f7fb;
+    border-left: solid 4px #3498db;
+  }
+  div.note::before {
+    content: "Note";
+  }
+  p.note::before {
+    content: "Note: ";
+  }
+  .tip {
+    background-color: #e7f6ef;
+    border-left: solid 4px #32c875;
+  }
+  div.tip::before {
+    content: "Tip";
+  }
+  p.tip::before {
+    content: "Tip: ";
+  }
+  .warning {
+    background-color: #fdf7f2;
+    border-left: solid 4px #d1534a;
+  }
+  div.warning::before {
+    content: "Warning";
+  }
+  p.warning::before {
+    content: "Warning: ";
+  }
+  .important {
+    background-color: #fffbea;
+    border-left: solid 4px #eec51c;
+  }
+  div.important::before {
+    content: "Important";
+  }
+  p.important::before {
+    content: "Important: ";
   }
   {--!} Force page break before the element.
   .page-break {
@@ -406,7 +465,7 @@ hljs.initHighlightingOnLoad();
   }
   {--!} DEPRECATED: Use \x60preserve-breaks\x60 instead.
   .line-breaks {
-    white-space: pre;
+    white-space: pre-wrap;
   }
   {--!} Horizontal labeled list.
   .dl-horizontal:before, .dl-horizontal:after {
@@ -989,20 +1048,79 @@ hljs.initHighlightingOnLoad();
   }
   div.verse p, p.verse {
     font-family: {--serif-font};
-    white-space: pre;
+    white-space: pre-wrap;
     margin-top: 0.75rem;
     margin-bottom: 0.75rem;
   }
-  {--!} Apply sidebar class to Normal Paragraphs and Division blocks.
-  .sidebar {
-    border: 1px solid {--border-color};
-    border-radius: {--border-radius};
-    background: {--sidebar-background};
-    padding: 10px;
+  {--!} Apply sidebar and admonition classes to Normal Paragraphs and Division blocks.
+  .sidebar,
+  .important,
+  .note,
+  .tip,
+  .warning {
     margin: 1.5em 0;
+    padding: 10px;
   }
-  div.sidebar *:first-child {
-    margin-top: 0.2rem;
+  div.sidebar *:first-child,
+  div.important *:first-child,
+  div.note *:first-child,
+  div.tip *:first-child,
+  div.warning *:first-child {
+    margin-top: 0.2rem !important;
+  }
+  .note::before,
+  .important::before,
+  .tip::before,
+  .warning::before {
+    font-weight: bold;
+  }
+  .notitle::before {
+    content: "" !important;
+  }
+  .sidebar {
+    background: #ffffee;
+    border: 1px solid #dddddd;
+    border-radius: 0;
+  }
+  .note {
+    background-color: #f0f7fb;
+    border-left: solid 4px #3498db;
+  }
+  div.note::before {
+    content: "Note";
+  }
+  p.note::before {
+    content: "Note: ";
+  }
+  .tip {
+    background-color: #e7f6ef;
+    border-left: solid 4px #32c875;
+  }
+  div.tip::before {
+    content: "Tip";
+  }
+  p.tip::before {
+    content: "Tip: ";
+  }
+  .warning {
+    background-color: #fdf7f2;
+    border-left: solid 4px #d1534a;
+  }
+  div.warning::before {
+    content: "Warning";
+  }
+  p.warning::before {
+    content: "Warning: ";
+  }
+  .important {
+    background-color: #fffbea;
+    border-left: solid 4px #eec51c;
+  }
+  div.important::before {
+    content: "Important";
+  }
+  p.important::before {
+    content: "Important: ";
   }
   {--!} Force page break before the element.
   .page-break {
@@ -1028,7 +1146,7 @@ hljs.initHighlightingOnLoad();
   }
   {--!} DEPRECATED: Use \x60preserve-breaks\x60 instead.
   .line-breaks {
-    white-space: pre;
+    white-space: pre-wrap;
   }
   {--!} Horizontal labeled list.
   .dl-horizontal:before, .dl-horizontal:after {
@@ -1466,6 +1584,10 @@ LAYOUT CLASSES
   preserve-breaks  Honor line breaks in source text.
   sidebar          Sidebar format (paragraphs, division blocks).
   verse            Verse format (paragraphs, division blocks).
+  important        Admonition (paragraphs, division blocks).
+  note             Admonition (paragraphs, division blocks).
+  tip              Admonition (paragraphs, division blocks).
+  warning          Admonition (paragraphs, division blocks).
   ______________________________________________________________
 
 PREDEFINED MACROS
@@ -1853,16 +1975,75 @@ hljs.initHighlightingOnLoad();
     margin-top: 0.75rem;
     margin-bottom: 0.75rem;
   }
-  {--!} Apply sidebar class to Normal Paragraphs and Division blocks.
-  .sidebar {
-    border: 1px solid {--border-color};
-    border-radius: {--border-radius};
-    background: {--sidebar-background};
-    padding: 10px;
+  {--!} Apply sidebar and admonition classes to Normal Paragraphs and Division blocks.
+  .sidebar,
+  .important,
+  .note,
+  .tip,
+  .warning {
     margin: 1.5em 0;
+    padding: 10px;
   }
-  div.sidebar *:first-child {
-    margin-top: 0.2rem;
+  div.sidebar *:first-child,
+  div.important *:first-child,
+  div.note *:first-child,
+  div.tip *:first-child,
+  div.warning *:first-child {
+    margin-top: 0.2rem !important;
+  }
+  .note::before,
+  .important::before,
+  .tip::before,
+  .warning::before {
+    font-weight: bold;
+  }
+  .notitle::before {
+    content: "" !important;
+  }
+  .sidebar {
+    background: #ffffee;
+    border: 1px solid #dddddd;
+    border-radius: 0;
+  }
+  .note {
+    background-color: #f0f7fb;
+    border-left: solid 4px #3498db;
+  }
+  div.note::before {
+    content: "Note";
+  }
+  p.note::before {
+    content: "Note: ";
+  }
+  .tip {
+    background-color: #e7f6ef;
+    border-left: solid 4px #32c875;
+  }
+  div.tip::before {
+    content: "Tip";
+  }
+  p.tip::before {
+    content: "Tip: ";
+  }
+  .warning {
+    background-color: #fdf7f2;
+    border-left: solid 4px #d1534a;
+  }
+  div.warning::before {
+    content: "Warning";
+  }
+  p.warning::before {
+    content: "Warning: ";
+  }
+  .important {
+    background-color: #fffbea;
+    border-left: solid 4px #eec51c;
+  }
+  div.important::before {
+    content: "Important";
+  }
+  p.important::before {
+    content: "Important: ";
   }
   {--!} Force page break before the element.
   .page-break {
