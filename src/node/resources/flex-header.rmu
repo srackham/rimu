@@ -247,7 +247,7 @@ hljs.initHighlightingOnLoad();
   }
   div.verse p, p.verse {
     font-family: {--serif-font};
-    white-space: pre;
+    white-space: pre-wrap;
     margin-top: 0.75rem;
     margin-bottom: 0.75rem;
   }
@@ -345,7 +345,7 @@ hljs.initHighlightingOnLoad();
   }
   {--!} DEPRECATED: Use `preserve-breaks` instead.
   .line-breaks {
-    white-space: pre;
+    white-space: pre-wrap;
   }
   {--!} Horizontal labeled list.
   .dl-horizontal:before, .dl-horizontal:after {
