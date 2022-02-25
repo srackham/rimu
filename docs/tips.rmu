@@ -1,6 +1,7 @@
 # Rimu Tips
 
-TIP: Click the _Edit icon_ {example-edit-glyph} in the examples below to enable live
+.tip
+Click the _Edit icon_ {example-edit-glyph} in the examples below to enable live
 editing of the Rimu source; click the _Preview icon_&nbsp;{example-preview-glyph} to
 toogle output between _HTML_ and _Preview_.
 
@@ -212,7 +213,8 @@ element with a backslash character.
 
 {generate-rendered-example-1|escaped-elements-example}
 
-NOTE: The text inside _code_ quotes is always rendered verbatim -- to
+.note
+The text inside _code_ quotes is always rendered verbatim -- to
 include backtick characters in code quotes use double-backtick quotes.
 
 
@@ -342,7 +344,8 @@ Green is the color of envy.
 
 . Create new [themes](#themes) and tweak existing themes.
 
-IMPORTANT: The `style` element must not contain any blank lines because
+.important
+The `style` element must not contain any blank lines because
 Rimu HTML block elements are terminated with a blank line
 
 .sidebar
@@ -471,15 +474,16 @@ Scelerisque feugiat massa alias.
 
 ### verse style
 The `verse` style renders passages of text that retain line breaks.
-See also [Citing quotes and verses](#citing-quotes-and-verses).
+See also [Citing quotes and verses](#citing-quotes-and-verses)
+and [Controlling text alignment](#controlling-text-alignment).
 
 {verse-example} = '.verse
 Verse styled paragraph.
 Neque a massa.
 Porttitor consectetuer commodo.
 
-..verse
-#### Verse styled Division Block
+..verse align-center
+#### Centered verse styled Division Block
 Neque a massa.
 Porttitor consectetuer commodo.
 
@@ -597,8 +601,8 @@ Create tables using _Block HTML elements_ (Rimu has no dedicated
 syntax for tables [but you can use macros to simplify table
 creation](#use-macros-to-create-tables)).
 
-NOTE: HTML blocks must start at the left margin and end with a blank
-line.
+.note
+HTML blocks must start at the left margin and end with a blank line.
 
 The {rimuc} `--layout` option includes the `bordered` CSS class for
 styling bordered tables.
@@ -815,7 +819,8 @@ Link to {section1}.'
 
 {generate-rendered-example-2|meta-macros-example}
 
-NOTE: The backslash character is used to continue macro definition
+.note
+The backslash character is used to continue macro definition
 lines that end with a single-quote.
 
 
