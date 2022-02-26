@@ -19,6 +19,7 @@
 
 // Admonishments.
 /\\?\bTODO\b/ = '<b style="color: red; background-color: yellow;">TODO</b>'
+// DEPRECATED: Prefer rimuc important, note, tip and warning layout styles.
 /^\\?(NOTES?|IMPORTANT|WARNINGS?|TIPS?):/ = '<b>$1</b>:'
 
 // Horizontal rule (3 or more underscore, asterisk or hyphen characters).

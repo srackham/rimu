@@ -121,7 +121,7 @@ if x == 1:
 
 
 .#markdown-compatible
-## Syntax shared with Markdown
+## Rimu compatible Markdown
 The following subset of _Rimu_ elements is compatible with Markdown:
 
 Headers:: Headers using `#` character header prefixes.
@@ -159,43 +159,59 @@ _npmjs.org_ README formats.
 
 .#rimuc-html
 ## Processing HTML and Markdown with the `rimuc` command
-{rimuc} passes files with a `.html` extension directly to the output,
+In addition to processing Rimu markup and [Rimu compatible
+Markdown](#markdown-compatible), the {rimuc} command can style raw HTML
+to produce nicely styled HTML documents (like this one) using `rimuc`'s
+built-in themes and document layouts.
+
+{rimuc} passes files with an `.html` extension directly to the output,
 similarly the standard input is passed directly to the output if the
 `--pass` option is specified.
 
-When it comes to processing Markdown there are two options:
+When it comes to processing Markdown with `rimuc` there are two options:
 
 1. If your Markdown file is compatible with the [Rimu Markdown
    subset](#markdown-compatible) then you don't have to do anything,
    {rimuc} will process it just like any other Rimu source file.
 
-2. Otherwise convert the Markdown (or, for that matter, any other
-   text-to-HTML markup) to HTML before processing it using {rimuc}.
+2. Otherwise convert the Markdown (or any other
+   text-to-HTML markup) to HTML before processing it with {rimuc}.
    For example:
 ..
 ``
-  markdown mydoc.md > mydoc.html && rimuc --layout sequel mydoc.html
+cat README.md | marked | rimuc --styled --pass --output README.html
 
-  cat mydoc.md | markdown | rimuc --layout sequel --pass > mydoc.html
+marked README.md > README.html && rimuc --styled README.html
 ``
-The first example works because {rimuc} passes the contents of input
-files with a `.html` extension directly to the output. The second
-example works because the {rimuc} `--pass` option passes the standard
-input verbatim to the output.
+The first example works because the {rimuc} `--pass` option passes the standard
+input verbatim to the output. The second example works because {rimuc} passes
+the contents of input files with a `.html` extension directly to the output.
+Both examples use the [marked](https://marked.js.org/) CLI application to
+convert Markdown to HTML.
 ..
 
 
 ## Converting Rimu to Markdown
-You can use the online [turndown](https://mixmark-io.github.io/turndown/) online
-HTML to Markdown converter to convert arbitrary Rimu source to pure Markdown:
+Arbitrary Rimu source can be converted to pure Markdown by first converting it
+to HTML and then converting the HTML to Markdown.
+
+### Using a CLI converter
+Use a CLI HTML to Markdown converter such as
+[html2md](https://github.com/ff6347/to-markdown-cli) e.g.
+
+  rimuc mydoc.rmu | html2md > mydoc.md
+
+### Using an online converter
+Use an online HTML to  Markdown converter such
+as [turndown](https://mixmark-io.github.io/turndown/):
 
 . First convert Rimu to raw HTML using the
   [rimuc](reference.html#rimuc-command) command e.g.
 
   rimuc mydoc.rmu > mydoc.html
 
-. Then open the HTML file in a text editor and then copy and paste the
-  contents into [turndown](https://mixmark-io.github.io/turndown/).
+. Then then copy and paste the contents of the HTML file into
+  [turndown](https://mixmark-io.github.io/turndown/).
 
 
 ## Escaping Rimu syntax
@@ -300,14 +316,6 @@ The 3\\{sup|rd} H\\{sub|2}O molecule...
 Markdown style horizontal rules.
 
 **********************
-
-IMPORTANT: Admonition.
-
-NOTE: Admonition.
-
-TIP: Admonition.
-
-WARNING: Admonition.
 
 TODO 10 examples +-2'
 
@@ -420,7 +428,7 @@ The CSS class names are injected using the
 [Block Attibutes]({reference}#block-attributes) element or by appending them to
 the opening [block delimiter]({reference}#fenced-blocks).
 
-### important, note, tip and warning styles
+### `important`, `note`, `tip` and `warning` styles
 The `important`, `note`, `tip` and `warning` styles render messages and
 admonitions. The optional `notitle` style class can be used to hide the
 admonition's title.
@@ -451,7 +459,7 @@ Scelerisque feugiat massa alias.
 
 {generate-rendered-example-1|admonition-example}
 
-### sidebar style
+### `sidebar` style
 The `sidebar` style renders text boxes containing digressions and observations
 related to the main narrative flow.
 
@@ -472,7 +480,7 @@ Scelerisque feugiat massa alias.
 
 {generate-rendered-example-1|sidebar-example}
 
-### verse style
+### `verse` style
 The `verse` style renders passages of text that retain line breaks.
 See also [Citing quotes and verses](#citing-quotes-and-verses)
 and [Controlling text alignment](#controlling-text-alignment).
