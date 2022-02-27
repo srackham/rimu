@@ -1562,15 +1562,15 @@ LAYOUT OPTIONS
   macro definitions using the --prepend option.
 
 LAYOUT CLASSES
-  The following CSS classes are available for use in Rimu Block
-  Attributes elements when the --layout option is used:
+  The following CSS classes can be used to style Rimu block
+  elements in conjunction with the --layout option:
 
   CSS class        Description
   ______________________________________________________________
-  align-center     Text alignment center.
-  align-left       Text alignment left.
-  align-right      Text alignment right.
-  bordered         Adds table borders.
+  align-center     Align element content center.
+  align-left       Align element content left.
+  align-right      Align element content right.
+  bordered         Add borders to table element.
   cite             Quote and verse attribution.
   dl-horizontal    Format labeled lists horizontally.
   dl-numbered      Number labeled list items.
@@ -1579,15 +1579,15 @@ LAYOUT CLASSES
   ul-counter       Prepend ul item counter to element content.
   no-auto-toc      Exclude heading from table of contents.
   no-page-break    Avoid page break inside the element.
-  no-print         Do not print.
-  page-break       Force page break before the element.
-  preserve-breaks  Honor line breaks in source text.
-  sidebar          Sidebar format (paragraphs, division blocks).
-  verse            Verse format (paragraphs, division blocks).
-  important        Admonition (paragraphs, division blocks).
-  note             Admonition (paragraphs, division blocks).
-  tip              Admonition (paragraphs, division blocks).
-  warning          Admonition (paragraphs, division blocks).
+  no-print         Do not print element.
+  page-break       Force a page break before the element.
+  preserve-breaks  Honor line breaks in element content.
+  sidebar          Paragraph and division block style.
+  verse            Paragraph and division block style.
+  important        Paragraph and division block style.
+  note             Paragraph and division block style.
+  tip              Paragraph and division block style.
+  warning          Paragraph and division block style.
   ______________________________________________________________
 
 PREDEFINED MACROS

@@ -139,15 +139,74 @@
     margin-top: 0.75rem;
     margin-bottom: 0.75rem;
   }
+  .sidebar,
+  .important,
+  .note,
+  .tip,
+  .warning {
+    margin: 1.5em 0;
+    padding: 10px;
+  }
+  div.sidebar *:first-child,
+  div.important *:first-child,
+  div.note *:first-child,
+  div.tip *:first-child,
+  div.warning *:first-child {
+    margin-top: 0.2rem !important;
+  }
+  .note::before,
+  .important::before,
+  .tip::before,
+  .warning::before {
+    font-weight: bold;
+  }
+  .notitle::before {
+    content: "" !important;
+  }
   .sidebar {
+    background: #ffffee;
     border: 1px solid #dddddd;
     border-radius: 0;
-    background: #ffffee;
-    padding: 10px;
-    margin: 1.5em 0;
   }
-  div.sidebar *:first-child {
-    margin-top: 0.2rem;
+  .note {
+    background-color: #f0f7fb;
+    border-left: solid 4px #3498db;
+  }
+  div.note::before {
+    content: "Note";
+  }
+  p.note::before {
+    content: "Note: ";
+  }
+  .tip {
+    background-color: #e7f6ef;
+    border-left: solid 4px #32c875;
+  }
+  div.tip::before {
+    content: "Tip";
+  }
+  p.tip::before {
+    content: "Tip: ";
+  }
+  .warning {
+    background-color: #fdf7f2;
+    border-left: solid 4px #d1534a;
+  }
+  div.warning::before {
+    content: "Warning";
+  }
+  p.warning::before {
+    content: "Warning: ";
+  }
+  .important {
+    background-color: #fffbea;
+    border-left: solid 4px #eec51c;
+  }
+  div.important::before {
+    content: "Important";
+  }
+  p.important::before {
+    content: "Important: ";
   }
   .page-break {
     page-break-before: always;
@@ -527,7 +586,7 @@ function replaceSpecialChars(s) {
   <div id="auto-toc"></div>
 </div>
 <h1 id="rimu-tips">Rimu Tips</h1>
-<p><b>TIP</b>: Click the <em>Edit icon</em> &#x270e; in the examples below to enable live
+<p class="tip">Click the <em>Edit icon</em> &#x270e; in the examples below to enable live
 editing of the Rimu source; click the <em>Preview icon</em>&nbsp;&#x2b04; to
 toogle output between <em>HTML</em> and <em>Preview</em>.</p>
 <h2 id="html-is-valid-rimu">HTML is valid Rimu</h2>
@@ -691,7 +750,7 @@ if x == 1:
     print "x is 1."</code></pre>
 </div>
 </td></tr></table>
-<h2 id="markdown-compatible">Syntax shared with Markdown</h2>
+<h2 id="markdown-compatible">Rimu compatible Markdown</h2>
 <p>The following subset of <em>Rimu</em> elements is compatible with Markdown:</p>
 <dl><dt>Headers</dt><dd>Headers using <code>#</code> character header prefixes.</dd><dt>Code blocks</dt><dd><ul><li>Indented paragraphs indented with at least four spaces render like
   Markdown code blocks.</li><li>Rimu Fenced Code blocks with three or more backticks are compatible
@@ -704,28 +763,40 @@ rendered like Markdown Blockquotes.</dd><dt>Text formatting</dt><dd><ul><li><cod
 syntaxes plus Github Flavored Markdown <em>URL autolinking</em>.</dd><dt>Images</dt><dd><code>![alt](url)</code> syntax.</dd></dl><p>The Rimu <em>README</em> uses this subset for compatibility with <em>GitHub</em> and
 <em>npmjs.org</em> README formats.</p>
 <h2 id="rimuc-html">Processing HTML and Markdown with the <code>rimuc</code> command</h2>
-<p><a href="reference.html#rimuc-command">rimuc</a> passes files with a <code>.html</code> extension directly to the output,
+<p>In addition to processing Rimu markup and <a href="#markdown-compatible">Rimu compatible
+Markdown</a>, the <a href="reference.html#rimuc-command">rimuc</a> command can style raw HTML
+to produce nicely styled HTML documents (like this one) using <code>rimuc</code>'s
+built-in themes and document layouts.</p>
+<p><a href="reference.html#rimuc-command">rimuc</a> passes files with an <code>.html</code> extension directly to the output,
 similarly the standard input is passed directly to the output if the
 <code>--pass</code> option is specified.</p>
-<p>When it comes to processing Markdown there are two options:</p>
+<p>When it comes to processing Markdown with <code>rimuc</code> there are two options:</p>
 <ol><li>If your Markdown file is compatible with the <a href="#markdown-compatible">Rimu Markdown
    subset</a> then you don't have to do anything,
-   <a href="reference.html#rimuc-command">rimuc</a> will process it just like any other Rimu source file.</li><li>Otherwise convert the Markdown (or, for that matter, any other
-   text-to-HTML markup) to HTML before processing it using <a href="reference.html#rimuc-command">rimuc</a>.
-   For example:<pre><code>  markdown mydoc.md &gt; mydoc.html &amp;&amp; rimuc --layout sequel mydoc.html
+   <a href="reference.html#rimuc-command">rimuc</a> will process it just like any other Rimu source file.</li><li>Otherwise convert the Markdown (or any other
+   text-to-HTML markup) to HTML before processing it with <a href="reference.html#rimuc-command">rimuc</a>.
+   For example:<pre><code>cat README.md | marked | rimuc --styled --pass --output README.html
 
-  cat mydoc.md | markdown | rimuc --layout sequel --pass &gt; mydoc.html</code></pre>
-<p>The first example works because <a href="reference.html#rimuc-command">rimuc</a> passes the contents of input
-files with a <code>.html</code> extension directly to the output. The second
-example works because the <a href="reference.html#rimuc-command">rimuc</a> <code>--pass</code> option passes the standard
-input verbatim to the output.</p>
+marked README.md &gt; README.html &amp;&amp; rimuc --styled README.html</code></pre>
+<p>The first example works because the <a href="reference.html#rimuc-command">rimuc</a> <code>--pass</code> option passes the standard
+input verbatim to the output. The second example works because <a href="reference.html#rimuc-command">rimuc</a> passes
+the contents of input files with a <code>.html</code> extension directly to the output.
+Both examples use the <a href="https://marked.js.org/">marked</a> CLI application to
+convert Markdown to HTML.</p>
 </li></ol><h2 id="converting-rimu-to-markdown">Converting Rimu to Markdown</h2>
-<p>You can use the online <a href="https://mixmark-io.github.io/turndown/">turndown</a> online
-HTML to Markdown converter to convert arbitrary Rimu source to pure Markdown:</p>
+<p>Arbitrary Rimu source can be converted to pure Markdown by first converting it
+to HTML and then converting the HTML to Markdown.</p>
+<h3 id="using-a-cli-converter">Using a CLI converter</h3>
+<p>Use a CLI HTML to Markdown converter such as
+<a href="https://github.com/ff6347/to-markdown-cli">html2md</a> e.g.</p>
+<pre><code>rimuc mydoc.rmu | html2md &gt; mydoc.md</code></pre>
+<h3 id="using-an-online-converter">Using an online converter</h3>
+<p>Use an online HTML to  Markdown converter such
+as <a href="https://mixmark-io.github.io/turndown/">turndown</a>:</p>
 <ol><li>First convert Rimu to raw HTML using the
   <a href="reference.html#rimuc-command">rimuc</a> command e.g.<pre><code>rimuc mydoc.rmu &gt; mydoc.html</code></pre>
-</li><li>Then open the HTML file in a text editor and then copy and paste the
-  contents into <a href="https://mixmark-io.github.io/turndown/">turndown</a>.</li></ol><h2 id="escaping-rimu-syntax">Escaping Rimu syntax</h2>
+</li><li>Then then copy and paste the contents of the HTML file into
+  <a href="https://mixmark-io.github.io/turndown/">turndown</a>.</li></ol><h2 id="escaping-rimu-syntax">Escaping Rimu syntax</h2>
 <p>If you have text that you don't want interpreted as a Rimu
 element then you can render it literally (escape it) by prefixing the
 element with a backslash character.</p>
@@ -761,7 +832,7 @@ Preview
 <p># Escaped header.</p>
 </div>
 </td></tr></table>
-<p><b>NOTE</b>: The text inside <em>code</em> quotes is always rendered verbatim &mdash; to
+<p class="note">The text inside <em>code</em> quotes is always rendered verbatim &mdash; to
 include backtick characters in code quotes use double-backtick quotes.</p>
 <h2 id="passing-macro-values-into-rimu-documents">Passing macro values into Rimu documents</h2>
 <p>You can do this by prepending text containing macro definitions to
@@ -838,14 +909,6 @@ Markdown style horizontal rules.
 
 **********************
 
-IMPORTANT: Admonition.
-
-NOTE: Admonition.
-
-TIP: Admonition.
-
-WARNING: Admonition.
-
 TODO 10 examples +-2</code></pre>
 <textarea id="rimurc-examples-edit" class="edit-source" style="display:none" onkeyup="renderExample('rimurc-examples')"></textarea>
 </td>
@@ -860,10 +923,6 @@ TODO 10 examples +-2</code></pre>
 <p><hr></p>
 <p>Markdown style horizontal rules.</p>
 <p><hr></p>
-<p><b>IMPORTANT</b>: Admonition.</p>
-<p><b>NOTE</b>: Admonition.</p>
-<p><b>TIP</b>: Admonition.</p>
-<p><b>WARNING</b>: Admonition.</p>
 <p><b style="color: red; background-color: yellow;">TODO</b> 10 examples &plusmn;2</p>
 </div>
 </td></tr></table>
@@ -885,7 +944,7 @@ an HTML <code>style</code> element. Here are three use-cases:</p>
 
 .green-border
 Green is the color of envy.</code></pre>
-</li><li>Create new <a href="#themes">themes</a> and tweak existing themes.</li></ol><p><b>IMPORTANT</b>: The <code>style</code> element must not contain any blank lines because
+</li><li>Create new <a href="#themes">themes</a> and tweak existing themes.</li></ol><p class="important">The <code>style</code> element must not contain any blank lines because
 Rimu HTML block elements are terminated with a blank line</p>
 <div class="sidebar"><h4 id="scoped-styling-removed-from-html5-spec-12-may-2016">Scoped styling removed from HTML5 spec 12-May-2016</h4>
 <p>The <code>scoped</code> attribute was <a href="https://github.com/whatwg/html/commit/c2a3b2a2e3db49c14b486a5e99acf7d10cfe8443">removed from the HTML5 spec in May
@@ -927,53 +986,97 @@ by including <a href="#scoped-css">custom CSS style elements</a>.</p>
 <pre><code>rimuc --layout sequel --theme "graystone redheads" document.rmu</code></pre>
 <p>If you specify multiple themes their CSS styles will cascade in the
 order they are processed in the Rimu source documents.</p>
-<h2 id="verse-and-sidebar-styles">Verse and sidebar styles</h2>
-<p>The <a href="reference.html#rimuc-command">rimuc</a> command <code>--layout</code> option includes <em>verse</em> and <em>sidebar</em>
-CSS styles for poetry and highlighted passages of text.</p>
+<h2 id="admonition-sidebar-and-verse-styles">Admonition, sidebar and verse styles</h2>
+<p>The <a href="reference.html#rimuc-command">rimuc</a> command <code>--layout</code> option includes CSS classes for styling
+paragraphs and Division blocks whose content sits outside the main narrative
+flow.</p>
+<p>The CSS class names are injected using the
+<a href="reference.html#block-attributes">Block Attibutes</a> element or by appending them to
+the opening <a href="reference.html#fenced-blocks">block delimiter</a>.</p>
+<h3 id="important-note-tip-and-warning-styles"><code>important</code>, <code>note</code>, <code>tip</code> and <code>warning</code> styles</h3>
+<p>The <code>important</code>, <code>note</code>, <code>tip</code> and <code>warning</code> styles render messages and
+admonitions. The optional <code>notitle</code> style class can be used to hide the
+admonition's title.</p>
 <h4 id="examples-6">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" title="Edit example" onclick="editExample('verse-and-sidebar-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('admonition-example')">&#x270e;</span>
 Rimu Markup</td>
 <td class="example-header">
 HTML
-<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('verse-and-sidebar-example')">&#x2b04;</span>
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('admonition-example')">&#x2b04;</span>
 Preview
 </td>
 </tr>
 <tr>
 <td style="width:50%;">
-<pre class="example-source nohighlight" id="verse-and-sidebar-example-source"><code>Verse styled paragraph:
+<pre class="example-source nohighlight" id="admonition-example-source"><code>.note
+Admonition styled paragraph.
 
-.verse
+.tip notitle
+Admonition styled paragraph without a title.
+
+..warning
+Admonition styled Division Block.
+
 Neque a massa.
-Porttitor consectetuer commodo.
-
-Verse styled Division Block:
-
-.verse
-..
-#### Lorum Ipsum
-Neque a massa.
-Porttitor consectetuer commodo.
-
 Nunc mauris tempor.
 Pede mauris sed.
 Scelerisque feugiat massa alias.
 ..
 
-Sidebar styled paragraph:
+..important notitle
+Admonition styled Division Block without a title.
 
-.sidebar
 Neque a massa.
-Porttitor consectetuer commodo.
+Nunc mauris tempor.
+Pede mauris sed.
+Scelerisque feugiat massa alias.
+..</code></pre>
+<textarea id="admonition-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('admonition-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="admonition-example-errors" class="example-errors"></div>
+<div id="admonition-example-rendered" class="example-rendered">
+<p class="note">Admonition styled paragraph.</p>
+<p class="tip notitle">Admonition styled paragraph without a title.</p>
+<div class="warning"><p>Admonition styled Division Block.</p>
+<p>Neque a massa.
+Nunc mauris tempor.
+Pede mauris sed.
+Scelerisque feugiat massa alias.</p></div>
+<div class="important notitle"><p>Admonition styled Division Block without a title.</p>
+<p>Neque a massa.
+Nunc mauris tempor.
+Pede mauris sed.
+Scelerisque feugiat massa alias.</p></div>
+</div>
+</td></tr></table>
+<h3 id="sidebar-style"><code>sidebar</code> style</h3>
+<p>The <code>sidebar</code> style renders text boxes containing digressions and observations
+related to the main narrative flow.</p>
+<h4 id="examples-7">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('sidebar-example')">&#x270e;</span>
+Rimu Markup</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('sidebar-example')">&#x2b04;</span>
+Preview
+</td>
+</tr>
+<tr>
+<td style="width:50%;">
+<pre class="example-source nohighlight" id="sidebar-example-source"><code>.sidebar
+Sidebar styled paragraph.
+Nunc mauris tempor.
+Pede mauris sed.
 
-Sidebar styled Division Block:
-
-.sidebar
-..
-#### Lorum Ipsum
+..sidebar
+#### Sidebar styled Division Block
 Neque a massa.
 Porttitor consectetuer commodo.
 
@@ -981,26 +1084,63 @@ Nunc mauris tempor.
 Pede mauris sed.
 Scelerisque feugiat massa alias.
 ..</code></pre>
-<textarea id="verse-and-sidebar-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('verse-and-sidebar-example')"></textarea>
+<textarea id="sidebar-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('sidebar-example')"></textarea>
 </td>
 <td style="width:50%;">
-<div id="verse-and-sidebar-example-errors" class="example-errors"></div>
-<div id="verse-and-sidebar-example-rendered" class="example-rendered">
-<p>Verse styled paragraph:</p>
-<p class="verse">Neque a massa.
-Porttitor consectetuer commodo.</p>
-<p>Verse styled Division Block:</p>
-<div class="verse"><h4 id="lorum-ipsum">Lorum Ipsum</h4>
+<div id="sidebar-example-errors" class="example-errors"></div>
+<div id="sidebar-example-rendered" class="example-rendered">
+<p class="sidebar">Sidebar styled paragraph.
+Nunc mauris tempor.
+Pede mauris sed.</p>
+<div class="sidebar"><h4 id="sidebar-styled-division-block">Sidebar styled Division Block</h4>
 <p>Neque a massa.
 Porttitor consectetuer commodo.</p>
 <p>Nunc mauris tempor.
 Pede mauris sed.
 Scelerisque feugiat massa alias.</p></div>
-<p>Sidebar styled paragraph:</p>
-<p class="sidebar">Neque a massa.
+</div>
+</td></tr></table>
+<h3 id="verse-style"><code>verse</code> style</h3>
+<p>The <code>verse</code> style renders passages of text that retain line breaks.
+See also <a href="#citing-quotes-and-verses">Citing quotes and verses</a>
+and <a href="#controlling-text-alignment">Controlling text alignment</a>.</p>
+<h4 id="examples-8">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('verse-example')">&#x270e;</span>
+Rimu Markup</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('verse-example')">&#x2b04;</span>
+Preview
+</td>
+</tr>
+<tr>
+<td style="width:50%;">
+<pre class="example-source nohighlight" id="verse-example-source"><code>.verse
+Verse styled paragraph.
+Neque a massa.
+Porttitor consectetuer commodo.
+
+..verse align-center
+#### Centered verse styled Division Block
+Neque a massa.
+Porttitor consectetuer commodo.
+
+Nunc mauris tempor.
+Pede mauris sed.
+Scelerisque feugiat massa alias.
+..</code></pre>
+<textarea id="verse-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('verse-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="verse-example-errors" class="example-errors"></div>
+<div id="verse-example-rendered" class="example-rendered">
+<p class="verse">Verse styled paragraph.
+Neque a massa.
 Porttitor consectetuer commodo.</p>
-<p>Sidebar styled Division Block:</p>
-<div class="sidebar"><h4 id="lorum-ipsum-2">Lorum Ipsum</h4>
+<div class="verse align-center"><h4 id="centered-verse-styled-division-block">Centered verse styled Division Block</h4>
 <p>Neque a massa.
 Porttitor consectetuer commodo.</p>
 <p>Nunc mauris tempor.
@@ -1019,7 +1159,7 @@ var html = Rimu.render(untrusted_rimu_markup, {safeMode: 5});</code></pre>
 <p>The <a href="reference.html#rimuc-command">rimuc</a> command supports <a href="https://www.mathjax.org/">MathJax</a> LaTeX
 and MathML mathematical formulas.  To include <em>MathJax</em> support use
 the <a href="reference.html#rimuc-command">rimuc</a> command <code>--mathjax</code> option with the <code>--layout</code> option.</p>
-<h4 id="examples-7">Examples</h4>
+<h4 id="examples-9">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
@@ -1113,11 +1253,10 @@ exclusion. Use the <code>+skip</code> block option attribute to exclude the enti
 <p>Create tables using <em>Block HTML elements</em> (Rimu has no dedicated
 syntax for tables <a href="#use-macros-to-create-tables">but you can use macros to simplify table
 creation</a>).</p>
-<p><b>NOTE</b>: HTML blocks must start at the left margin and end with a blank
-line.</p>
+<p class="note">HTML blocks must start at the left margin and end with a blank line.</p>
 <p>The <a href="reference.html#rimuc-command">rimuc</a> <code>--layout</code> option includes the <code>bordered</code> CSS class for
 styling bordered tables.</p>
-<h4 id="examples-8">Examples</h4>
+<h4 id="examples-10">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
@@ -1452,7 +1591,7 @@ consequat quisque duis mollis magna arcu.</p>
 good example of this is the generation of document section headers,
 links and table of contents entries from a section identifier and
 title.</p>
-<h4 id="examples-9">Examples</h4>
+<h4 id="examples-11">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
@@ -1496,7 +1635,7 @@ Preview
 <p>Link to <a href="#section1">Section One</a>.</p>
 </div>
 </td></tr></table>
-<p><b>NOTE</b>: The backslash character is used to continue macro definition
+<p class="note">The backslash character is used to continue macro definition
 lines that end with a single-quote.</p>
 <h2 id="macro-tips">Macro tips</h2>
 <ul><li>Use the <code>&amp;vert;</code> character entity to display a <code>|</code> character inside
@@ -1526,7 +1665,7 @@ lines that end with a single-quote.</p>
 option also includes:</p>
 <ul><li><code>dl-counter</code>, <code>ol-counter</code> and <code>ul-counter</code> CSS classes for
   counting labeled, numbered and bullet list items.</li><li><code>{--dl-counter}</code>, <code>{--ol-counter}</code> and <code>{--ul-counter}</code>
-  counter macros.</li><li>The <code>dl-numbered</code> CSS class for numbering labeled list items.</li></ul><h4 id="examples-10">Examples</h4>
+  counter macros.</li><li>The <code>dl-numbered</code> CSS class for numbering labeled list items.</li></ul><h4 id="examples-12">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1578,7 +1717,7 @@ There are {--ol-counter} ordered list items.</code></pre>
 <h2 id="append-arbitrary-elements-to-list-items">Append arbitrary elements to list items</h2>
 <p>An attached <em>Division Block</em> can be used to group and append arbitrary
 block elements to a list item.</p>
-<h4 id="examples-11">Examples</h4>
+<h4 id="examples-13">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1615,7 +1754,7 @@ will be rendered with the list item.</p>
 <p><a href="reference.html#block-attributes">Block Attribute</a> elements within a list
 are applied to the next list item or attached list item element. This
 facilitates styling and linking within <a href="reference.html#lists">lists</a>.</p>
-<h4 id="examples-12">Examples</h4>
+<h4 id="examples-14">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1681,7 +1820,7 @@ to number top level <em>h2</em> and <em>h3</em> sub-sections. For example:</p>
 <p><a href="reference.html#fenced-blocks">Fenced blocks</a> of the same type can be
 nested by using differing numbers of delimiter characters to
 distinguish between them.</p>
-<h4 id="examples-13">Examples</h4>
+<h4 id="examples-15">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1739,7 +1878,7 @@ Indented paragraph looks like a list item it will be rendered as a
 list item (because Lists take precedence over Indented paragraphs).
 To render an indented list item as an Indented paragraph change it to
 a fenced code block.</p>
-<h4 id="examples-14">Examples</h4>
+<h4 id="examples-16">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1792,7 +1931,7 @@ from being seen as the Inclusion macro's closing brace</p>
 (zero-width space character followed by backslash character). Simply prefixing a
 backslash is insufficent because the unescaped definition will be mismatched
 downstream.</p>
-<h4 id="examples-15">Examples</h4>
+<h4 id="examples-17">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1820,7 +1959,7 @@ Preview
 <ol><li>Terminate lines with a Rimu line break (a space followed by a
   backslash character).</li><li>Terminate lines with an HTML break element (<code>&lt;br&gt;</code>).</li><li>Apply the <code>preserve-breaks</code> class to a Rimu block element and
   compile with the <code>rimuc</code> command <a href="reference.html#layout-option"><code>--layout</code>
-  option</a>.</li></ol><h4 id="examples-16">Examples</h4>
+  option</a>.</li></ol><h4 id="examples-18">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1873,7 +2012,7 @@ this sidebar.
 <code>align-center</code> and <code>align-right</code> CSS classes to apply the CSS
 <code>text-align</code> property.  Use them to control the horizontal alignment
 of flowed inline elements (e.g. text, inline images):</p>
-<h4 id="examples-17">Examples</h4>
+<h4 id="examples-19">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1908,7 +2047,7 @@ Enim odio ultrices</code></pre>
 <h2 id="citing-quotes-and-verses">Citing quotes and verses</h2>
 <p>The <a href="reference.html#rimuc-command">rimuc</a> command <code>--layout</code> option includes the CSS <em>cite</em> class
 for attributing quotes and verses. For example:</p>
-<h4 id="examples-18">Examples</h4>
+<h4 id="examples-20">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1967,7 +2106,7 @@ Augue non egestas amet?</p>
 </td></tr></table>
 <h2 id="an-example-letter">An example letter</h2>
 <p>Here's an example of a personal letter:</p>
-<h4 id="examples-19">Examples</h4>
+<h4 id="examples-21">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
@@ -2093,7 +2232,7 @@ implements keyword comments (it's in the <a href="https://github.com/srackham/ri
 <pre><code>/\\?@(deprecated|fixme|important|note|todo|warning)\b.*/ = ''</code></pre>
 <ul><li>A keyword comment comprises a keyword plus any text following it on the
   same line.</li><li>Keyword comments are ommitted from the Rimu HTML output.</li><li>Prefixing the keyword with an <code>@</code> character is simply a convention to minimise
-  ambiguity.</li></ul><h4 id="examples-20">Examples</h4>
+  ambiguity.</li></ul><h4 id="examples-22">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">

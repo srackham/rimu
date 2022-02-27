@@ -139,15 +139,74 @@
     margin-top: 0.75rem;
     margin-bottom: 0.75rem;
   }
+  .sidebar,
+  .important,
+  .note,
+  .tip,
+  .warning {
+    margin: 1.5em 0;
+    padding: 10px;
+  }
+  div.sidebar *:first-child,
+  div.important *:first-child,
+  div.note *:first-child,
+  div.tip *:first-child,
+  div.warning *:first-child {
+    margin-top: 0.2rem !important;
+  }
+  .note::before,
+  .important::before,
+  .tip::before,
+  .warning::before {
+    font-weight: bold;
+  }
+  .notitle::before {
+    content: "" !important;
+  }
   .sidebar {
+    background: #ffffee;
     border: 1px solid #dddddd;
     border-radius: 0;
-    background: #ffffee;
-    padding: 10px;
-    margin: 1.5em 0;
   }
-  div.sidebar *:first-child {
-    margin-top: 0.2rem;
+  .note {
+    background-color: #f0f7fb;
+    border-left: solid 4px #3498db;
+  }
+  div.note::before {
+    content: "Note";
+  }
+  p.note::before {
+    content: "Note: ";
+  }
+  .tip {
+    background-color: #e7f6ef;
+    border-left: solid 4px #32c875;
+  }
+  div.tip::before {
+    content: "Tip";
+  }
+  p.tip::before {
+    content: "Tip: ";
+  }
+  .warning {
+    background-color: #fdf7f2;
+    border-left: solid 4px #d1534a;
+  }
+  div.warning::before {
+    content: "Warning";
+  }
+  p.warning::before {
+    content: "Warning: ";
+  }
+  .important {
+    background-color: #fffbea;
+    border-left: solid 4px #eec51c;
+  }
+  div.important::before {
+    content: "Important";
+  }
+  p.important::before {
+    content: "Important: ";
   }
   .page-break {
     page-break-before: always;
@@ -418,12 +477,10 @@
 <h1 id="rimu-change-log">Rimu Change Log</h1>
 <p>This is the Rimu TypeScript implementation change log (see also <a href="reference.html#rimu-implementations">other Rimu
 implementations</a>).</p>
-<h2 id="version-11-2-0-2021">Version 11.2.0 (2021-??-??)</h2>
-<ul><li>Added <em>Details</em> fenced block. A <a href="reference.html#details-block">Details Block
-  Block</a> renders enclosed block elements inside an
-  HTML
-  <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details"><code>&lt;details&gt;</code></a>
-  element. Details elements collapse and expand when clicked.</li><li>Added <a href="tips.html#keyword-comments">Keyword comments</a> tip.</li></ul><h2 id="version-11-1-14-2021-04-23">Version 11.1.14 (2021-04-23)</h2>
+<h2 id="version-11-2-0-2022-02-27">Version 11.2.0 (2022-02-27)</h2>
+<ul><li>Added <a href="tips.html#important-note-tip-and-warning-styles"><code>important</code>, <code>note</code>, <code>tip</code> and
+  <code>warning</code></a> admonition classes to
+  <a href="reference.html#rimuc-command">rimuc</a> styled outputs.</li><li>Upgraded dependent dev packages.</li></ul><h2 id="version-11-1-14-2021-04-23">Version 11.1.14 (2021-04-23)</h2>
 <ul><li>Upgrade to Drake 1.4.7.</li><li>Upgrade to Deno 1.9.0.</li><li>Pinned Deno libs to std@v0.93.0.</li></ul><h2 id="version-11-1-13-2021-01-25">Version 11.1.13 (2021-01-25)</h2>
 <ul><li>Use <a href="https://github.com/rollup/rollup">Rollup</a> to bundle Rimu browser ES module library.</li><li>Ported <code>validate-rimu-ports.sh</code> tests to Deno (<code>validate-rimu-ports.ts</code>) and
   added <code>validate-ports</code> build task.</li><li>Upgrade to Drake 1.4.6.</li><li>Upgrade to Deno 1.7.0.</li><li>Pinned Deno libs to std@v0.84.0.</li></ul><h2 id="version-11-1-12-2020-09-17">Version 11.1.12 (2020-09-17)</h2>
@@ -555,8 +612,7 @@ diagnostic messages from the Rimu library.</p>
   existing target HTML <code>style</code> attribute.</li><li><strong>FIXED</strong>: CSS properties from multiple <a href="reference.html#block-attributes">Block
   Attributes</a> elements are now accumulated
   prior to being consumed by the target block element (previously only
-  the last CSS properties was used).</li></ul><p><b>NOTE</b>: The deprecations and breaking changes below relate to the
-<code>rimuc</code> command:</p>
+  the last CSS properties was used).</li></ul><p class="note">The deprecations and breaking changes below relate to the <code>rimuc</code> command:</p>
 <ul><li><strong>DEPRECATED</strong>: The <code>--lint</code> option has been deprecated, lint checks
   are enabled by default.</li><li><strong>DEPRECATED</strong>: The confusingly named <code>line-breaks</code> CSS class has
   been renamed to <code>preserve-breaks</code>.</li><li><strong>DEPRECATED</strong>: The <code>--styled</code> and <code>--styled-name</code> options have been
