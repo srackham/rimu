@@ -3,10 +3,11 @@
 This is the Rimu TypeScript implementation change log (see also [other Rimu
 implementations]({reference}#rimu-implementations)).
 
-## Version 11.2.0 (2021-??-??)
+## Version 11.2.0 (2022-02-27)
 - Added [`important`, `note`, `tip` and
   `warning`]({tips}#important-note-tip-and-warning-styles) admonition classes to
   [rimuc]({reference}#rimuc-command) styled outputs.
+- Upgraded dependent dev packages.
 
 
 ## Version 11.1.14 (2021-04-23)
@@ -307,8 +308,8 @@ diagnostic messages from the Rimu library.
   prior to being consumed by the target block element (previously only
   the last CSS properties was used).
 
-NOTE: The deprecations and breaking changes below relate to the
-`rimuc` command:
+.note
+The deprecations and breaking changes below relate to the `rimuc` command:
 
 - **DEPRECATED**: The `--lint` option has been deprecated, lint checks
   are enabled by default.
