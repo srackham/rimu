@@ -64,7 +64,7 @@ Deno modules don't need explicit installation just import the module
 URL, for example:
 
 ``` javascript
-import * as rimu from "https://deno.land/x/rimu@11.1.14/mod.ts";
+import * as rimu from "https://deno.land/x/rimu@11.2.0/mod.ts";
 
 console.log(rimu.render("Hello *Rimu*!"));
 ```
@@ -73,7 +73,7 @@ Use the Deno `install` command to install the Rimu CLI executable.
 The following example creates the CLI executable named `rimudeno`
 in `$HOME/.deno/bin/rimudeno`:
 
-    deno install -A --name rimudeno https://deno.land/x/rimu@11.1.14/src/deno/rimuc.ts
+    deno install -A --name rimudeno https://deno.land/x/rimu@11.2.0/src/deno/rimuc.ts
 
 **Browser**
 
