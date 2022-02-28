@@ -52,7 +52,7 @@ CLI:
 Run a test from the command prompt to check the `rimuc` CLI command is
 working:
 
-    echo "Hello *Rimu*!" | rimuc
+    echo 'Hello *Rimu*!' | rimuc
 
 This should print:
 
