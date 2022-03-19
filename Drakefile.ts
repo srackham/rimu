@@ -148,7 +148,7 @@ function addModulePathExt(
 }
 
 // Create tasks for Deno source files.
-// Add a.ts extension to TypeScript module paths and copy to Deno source directory.
+// Add a .ts extension to TypeScript module paths and copy to Deno source directory.
 for (const prereq of glob("src/node/!(rimuc).ts")) {
   const target = path.join("src/deno", path.basename(prereq));
   task(target, [prereq], function () {
