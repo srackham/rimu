@@ -183,6 +183,7 @@ hljs.highlightAll();
   }
   table {
     border-collapse: collapse;
+    table-layout: fixed;
     width: 100%;
   }
   td, th {
@@ -255,9 +256,6 @@ hljs.highlightAll();
     background-color: {--code-background};
     border: none;
     white-space: pre-wrap;
-  }
-  *:not(pre) > code {
-    white-space: nowrap;
   }
   .dl-horizontal > dd {
     margin-top: 1.0rem;
@@ -593,6 +591,9 @@ hljs.highlightAll();
   @media screen and {--small-screen} {
     body {
       font-size: 20px;
+    }
+    * {
+      overflow-wrap: break-word;
     }
   }
   @media print {
