@@ -257,6 +257,35 @@ Other macro shortcut options can be found in the {rimuc}
 documentation.
 
 
+## Source file inclusion
+To avoid duplication it is useful to be able to include common blocks of text in
+multiple source files. Direct file inclusion is not possible because Rimu markup
+has no mechanisms for file-system access (a design feature to ensure Rimu source is
+operating system independent). An idomatic solution is to use [Rimu
+macros]({reference}#macros). For example, the following file, containing shared
+Rimu macro definitions can be compiled into each document:
+
+```
+// Block macro definition containing multi-line text.
+{common-text} = 'Lectus cursus porttitor sed lectus nisi est ac vel scelerisque natoque
+scelerisque lorem porttitor est scelerisque natoque vel.
+
+Hac scelerisque parturient a sed natoque pulvinar tincidunt integer
+parturient ac porttitor pulvinar.
+'
+```
+Include the common source when you run the `rimuc` command e.g.
+
+    rimuc common.rmu mydocument.rmu
+
+- The common text is included in `mydocument.rmu` by invoking the
+  `\{common-text}` macro.
+- You can disable macro expansion inside the text by preceeding the block macro
+  definition with the line:
+
+    .-macros
+
+
 ## The Rimu markup looks correct but the generated HTML is wrong
 Using an editor with Rimu syntax highlighting support (see previous
 topic) makes it much easier to spot syntax errors.  Rimu includes a
@@ -329,7 +358,7 @@ an HTML `style` element. Here are three use-cases:
 
 . Change existing styling. The following example changes the color of
   all headers to red:
-``
+``css
 <style>
   h1, h2, h3, h4, h5, h6 {
     color: red;
@@ -339,7 +368,7 @@ an HTML `style` element. Here are three use-cases:
 
 . Add a new block style. The following example puts a green border
   around blocks with the `green-border` class:
-``
+``css
 <style>
   .green-border {
     border: 5px solid green;
@@ -397,7 +426,7 @@ by including [custom CSS style elements](#scoped-css).
 
 Here is an example theme named _redheads_:
 
-``
+``css
 {--theme!.*\bredheads\b.*}.+skip
 <style>
   h1, h2, h3, h4, h5, h6 {
