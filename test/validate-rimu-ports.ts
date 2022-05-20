@@ -1,7 +1,7 @@
 #!/usr/bin/env -S deno run --allow-all
 
-import { existsSync } from "https://deno.land/std@0.127.0/fs/exists.ts";
-import * as path from "https://deno.land/std@0.127.0/path/mod.ts";
+import { existsSync } from "https://deno.land/std@0.140.0/fs/exists.ts";
+import * as path from "https://deno.land/std@0.140.0/path/mod.ts";
 import {
   abort,
   env,
