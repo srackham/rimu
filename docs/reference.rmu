@@ -1077,12 +1077,14 @@ layout.
 
 classic:: Desktop-centric layout.
 
+  - Not suitable for small screens (the TOC sidebar is hidden on small screens).
   - Set the `--dropdown-toc` macro to a non-blank value to place the
     table of contents in a popup.
 
-flex:: Experimental flexbox layout. It currently works best on mobile
-devices.
+flex:: Flexbox layout. Works nicely with small screens.
 
+  - The menu bar automatically positions along the top when the device
+    orientation is portrait.
   - Set the `--top-bar` macro to a non-blank value to place the
     navigation bar along the top of the document.
 
@@ -1208,7 +1210,7 @@ var html= rimu.render('Hello *Rimu*!');
 See [Rimu README]({github-rimu}).
 
 #### Deno
-``` javascript
+``` typescript
 import * as rimu from "https://raw.github.com/srackham/rimu/master/mod.ts";
 
 console.log(rimu.render("Hello *Rimu*!"));
@@ -1243,7 +1245,7 @@ func main() {
 See the [Go README]({github-go}).
 
 #### Dart
-``` dart
+``` typescript
 import 'package:rimu/rimu.dart';
 
 main(List<String> arguments) {

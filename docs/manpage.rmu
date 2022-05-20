@@ -128,31 +128,30 @@ LAYOUT CLASSES
   The following CSS classes can be used to style Rimu block
   elements in conjunction with the --layout option:
 
-  CSS class          Description
-  ________________________________________________________________
-  align-center       Align element content center.
-  align-left         Align element content left.
-  align-right        Align element content right.
-  bordered           Add borders to table element.
-  cite               Quote and verse attribution.
-  dl-horizontal      Format labeled lists horizontally.
-  dl-numbered        Number labeled list items.
-  dl-counter         Prepend dl item counter to element content.
-  ol-counter         Prepend ol item counter to element content.
-  ul-counter         Prepend ul item counter to element content.
-  light-background   Light-gray borderless block.
-  no-auto-toc        Exclude heading from table of contents.
-  no-page-break      Avoid page break inside the element.
-  no-print           Do not print element.
-  page-break         Force a page break before the element.
-  preserve-breaks    Honor line breaks in element content.
-  sidebar            Paragraph and division block sidebar.
-  verse              Paragraph and division block verse.
-  important          Paragraph and division block admonition.
-  note               Paragraph and division block admonition.
-  tip                Paragraph and division block admonition.
-  warning            Paragraph and division block admonition.
-  ________________________________________________________________
+  CSS class        Description
+  ______________________________________________________________
+  align-center     Align element content center.
+  align-left       Align element content left.
+  align-right      Align element content right.
+  bordered         Add borders to table element.
+  cite             Quote and verse attribution.
+  dl-horizontal    Format labeled lists horizontally.
+  dl-numbered      Number labeled list items.
+  dl-counter       Prepend dl item counter to element content.
+  ol-counter       Prepend ol item counter to element content.
+  ul-counter       Prepend ul item counter to element content.
+  no-auto-toc      Exclude heading from table of contents.
+  no-page-break    Avoid page break inside the element.
+  no-print         Do not print element.
+  page-break       Force a page break before the element.
+  preserve-breaks  Honor line breaks in element content.
+  sidebar          Paragraph and division block style.
+  verse            Paragraph and division block style.
+  important        Paragraph and division block style.
+  note             Paragraph and division block style.
+  tip              Paragraph and division block style.
+  warning          Paragraph and division block style.
+  ______________________________________________________________
 
 PREDEFINED MACROS
   Macro name         Description
