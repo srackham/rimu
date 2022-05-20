@@ -144,6 +144,6 @@ export function setDefinition(
       return;
     }
   }
-  // Append new definition to end of defs list (custom definitons have lower precedence).
+  // Append new definition to end of defs list (custom definitions have lower precedence).
   defs.push({ match: new RegExp(regexp, flags), replacement: replacement });
 }
