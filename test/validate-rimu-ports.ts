@@ -204,7 +204,7 @@ function copyAndCompare(srcFile: string, dstFile: string): void {
     Deno.copyFileSync(srcFile, dstFile);
   } else if (!Deno.args.includes("--skip-fixtures")) {
     if (readFile(srcFile) !== readFile(dstFile)) {
-      abort(`file contents differ: ${srcFile}: ${dstFile}`);
+      abort(`file contents differ: ${srcFile} ${dstFile}`);
     }
   }
 }
