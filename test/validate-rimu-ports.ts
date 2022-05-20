@@ -256,11 +256,11 @@ for (const id of portIds) {
   const port = ports[id];
   const startTime = new Date().getTime();
   for (const doc of ["reference", "tips", "changelog"]) {
-    const srcFile = path.join("docs", `${doc}.rmu`);
+    const srcFile = path.join("docsrc", `${doc}.rmu`);
     const dstFile = path.join(tmpDir, `${doc}-${id}.html`);
     const cmpFile = path.join(tmpDir, `${doc}-ts.html`);
     const args =
-      `--no-rimurc --theme legend --custom-toc --header-links --layout sequel --lang en --title "Rimu Reference" --highlightjs --prepend "{generate-examples}='yes'"  ./examples/example-rimurc.rmu ./docs/manpage.rmu ./docs/doc-header.rmu`;
+      `--no-rimurc --theme legend --custom-toc --header-links --layout sequel --lang en --title "Rimu Reference" --highlightjs --prepend "{generate-examples}='yes'"  ./examples/example-rimurc.rmu ./docsrc/manpage.rmu ./docsrc/doc-header.rmu`;
     const cmd = `${port.rimucExe} --output ${dstFile} ${args} ${srcFile}`;
     await sh(cmd);
     if (id === "ts") {

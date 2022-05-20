@@ -25,10 +25,10 @@ const isWindows = Deno.build.os === "windows";
 
 const ALL_TS_SRC = glob("*.ts", "src/**/*.ts", "test/*.ts");
 const GALLERY_INDEX_DST = "docs/gallery.html";
-const GALLERY_INDEX_SRC = "docs/gallery.rmu";
+const GALLERY_INDEX_SRC = "docsrc/gallery.rmu";
 const DOCS_INDEX = "docs/index.html";
-const DOCS_SRC = glob("README.md", "docs/*.rmu", "src/**/*.rmu");
-const MANPAGE_RMU = "docs/manpage.rmu";
+const DOCS_SRC = glob("README.md", "docsrc/*.rmu", "src/**/*.rmu");
+const MANPAGE_RMU = "docsrc/manpage.rmu";
 const MANPAGE_TXT = "src/node/resources/manpage.txt";
 const PKG_FILE = "package.json";
 const RESOURCE_FILES = glob("src/node/resources/*");
@@ -54,13 +54,13 @@ const DOCS = [
     rimucOptions: "--highlightjs",
   },
   {
-    src: "docs/changelog.rmu",
+    src: "docsrc/changelog.rmu",
     dst: "docs/changelog.html",
     title: "Rimu Change Log",
     rimucOptions: "--highlightjs",
   },
   {
-    src: "docs/reference.rmu",
+    src: "docsrc/reference.rmu",
     dst: "docs/reference.html",
     title: "Rimu Reference",
     rimucOptions:
@@ -68,14 +68,14 @@ const DOCS = [
       MANPAGE_RMU,
   },
   {
-    src: "docs/tips.rmu",
+    src: "docsrc/tips.rmu",
     dst: "docs/tips.html",
     title: "Rimu Tips",
     rimucOptions:
       "--highlightjs --mathjax --prepend \"{generate-examples}='yes'\"",
   },
   {
-    src: "docs/rimuplayground.rmu",
+    src: "docsrc/rimuplayground.rmu",
     dst: "docs/rimuplayground.html",
     title: "Rimu Playground",
     rimucOptions: "--prepend \"{generate-examples}='yes'\"",
@@ -228,7 +228,7 @@ task(
       " --lang en" +
       ' --title "' + doc.title + '"' +
       " " + doc.rimucOptions + " " +
-      " examples/example-rimurc.rmu " + "docs/doc-header.rmu " +
+      " examples/example-rimurc.rmu " + "docsrc/doc-header.rmu " +
       doc.src
     );
     if (isWindows) {
@@ -244,8 +244,8 @@ task(
   [
     ...DENO_TS_SRC,
     "examples/example-rimurc.rmu",
-    "docs/doc-header.rmu",
-    "docs/gallery-example-template.rmu",
+    "docsrc/doc-header.rmu",
+    "docsrc/gallery-example-template.rmu",
   ],
   async function () {
     galleryIndex();
@@ -261,8 +261,8 @@ task(
           options.replace(/(["{])/g, "\\$1") +
           "'\"" +
           " examples/example-rimurc.rmu" +
-          " " + "docs/doc-header.rmu" +
-          " " + "docs/gallery-example-template.rmu";
+          " " + "docsrc/doc-header.rmu" +
+          " " + "docsrc/gallery-example-template.rmu";
         commands.push(command);
       },
       null,
