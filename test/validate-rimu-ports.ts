@@ -24,7 +24,7 @@ NAME
 validate-rimu-ports - verify all Rimu ports are congruent.
 
 SYNOPSIS
-validate-rimu-ports.ts [--update-resources] [--check-resources] [--skip-tests] [--help] [PORTID]
+validate-rimu-ports.ts [--update-resources] [--check-resources] [--benchmark] [--help] [PORTID]
 
 DESCRIPTION
 This script is used to test and verify all Rimu ports are congruent.
@@ -38,8 +38,8 @@ OPTIONS
   and test fixtures from the Rimu TypeScript implementation to the other ports.
 - If invoked with \`--check-resources\` argument the resources and test fixtures
   are compared, if there are detected there is an immediate exit.
-- If invoked with \`--skip-tests\` argument both the resources and fixtures
-  comparison and the tests are skipped.
+- If invoked with \`--benchmark\` argument then only the documentation compilation
+  is executed (projects are not built or tested).
 `);
   Deno.exit();
 }
@@ -207,33 +207,33 @@ function copyAndCompare(srcFile: string, dstFile: string): void {
   }
 }
 
-const srcPort = ports["ts"];
-for (const id of portIds) {
-  const dstPort = ports[id];
-  if (id === "ts" || id == "deno") {
-    continue;
+if (!Deno.args.includes("--benchmark")) {
+  const srcPort = ports["ts"];
+  for (const id of portIds) {
+    const dstPort = ports[id];
+    if (id === "ts" || id == "deno") {
+      continue;
+    }
+
+    // Copy and compare test fixtures.
+    for (const i in srcPort.fixtures) {
+      const srcFile = path.join(srcPort.projectDir, srcPort.fixtures[i]);
+      const dstFile = path.join(dstPort.projectDir, dstPort.fixtures[i]);
+      copyAndCompare(srcFile, dstFile);
+    }
+
+    // Copy and compare resources.
+    for (const srcFile of glob(`${srcPort.resourcesDir}/*`)) {
+      const dstFile = path.join(
+        dstPort.projectDir,
+        dstPort.resourcesDir,
+        path.basename(srcFile),
+      );
+      copyAndCompare(srcFile, dstFile);
+    }
   }
 
-  // Copy and compare test fixtures.
-  for (const i in srcPort.fixtures) {
-    const srcFile = path.join(srcPort.projectDir, srcPort.fixtures[i]);
-    const dstFile = path.join(dstPort.projectDir, dstPort.fixtures[i]);
-    copyAndCompare(srcFile, dstFile);
-  }
-
-  // Copy and compare resources.
-  for (const srcFile of glob(`${srcPort.resourcesDir}/*`)) {
-    const dstFile = path.join(
-      dstPort.projectDir,
-      dstPort.resourcesDir,
-      path.basename(srcFile),
-    );
-    copyAndCompare(srcFile, dstFile);
-  }
-}
-
-// Build and test all ports.
-if (!Deno.args.includes("--skip-tests")) {
+  // Build and test all ports.
   for (const id of portIds) {
     const port = ports[id];
     const savedCwd = Deno.cwd();
@@ -264,14 +264,16 @@ for (const id of portIds) {
     if (id === "ts") {
       srcCount += readFile(srcFile).split("\n").length - 1;
     } else {
-      if (readFile(cmpFile) !== readFile(dstFile)) {
-        abort(`file contents differ: ${cmpFile}: ${dstFile}`);
+      if (!Deno.args.includes("--benchmark")) {
+        if (readFile(cmpFile) !== readFile(dstFile)) {
+          abort(`file contents differ: ${cmpFile}: ${dstFile}`);
+        }
       }
     }
   }
   if (id === "ts") {
     console.log(
-      `Compiling and verifying ${srcCount} lines of Rimu Markup...`,
+      `Compiling ${srcCount} lines of Rimu Markup...`,
     );
   }
   console.log(
