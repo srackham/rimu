@@ -460,7 +460,7 @@ task("lint", [], async function () {
 
 desc("Build and validate other Rimu ports");
 task("validate-ports", [], async function () {
-  await sh(`deno run -A ./test/validate-rimu-ports.ts --check-resources`);
+  await sh(`deno run -A ./test/validate-rimu-ports.ts`);
 });
 
 run();

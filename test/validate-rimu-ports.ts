@@ -24,20 +24,22 @@ NAME
 validate-rimu-ports - verify all Rimu ports are congruent.
 
 SYNOPSIS
-validate-rimu-ports.ts [--update-resources] [--check-resources] [--benchmark] [--help] [PORTID]
+validate-rimu-ports.ts [--update-resources] [--nocheck-resources] [--benchmark] [--help] [PORTID]
 
 DESCRIPTION
 This script is used to test and verify all Rimu ports are congruent.
 
 - Builds, tests and benchmarks all Rimu ports or just one if the PORTID is specified
   (\`ts\`, \`deno\`, \`go\`, \`kt\`, \`dart\` or \`py\`)
+- Compares common resource files and test fixture files with those of the canonical
+  rimu TypeScript port. If they don't compare there is an immediate error exit.
 - Compiles the Rimu documentation with each port and checks they are identical.
 
 OPTIONS
 - If invoked with \`--update-resources\` argument it copies common resource files
   and test fixtures from the Rimu TypeScript implementation to the other ports.
-- If invoked with \`--check-resources\` argument the resources and test fixtures
-  are compared, if there are detected there is an immediate exit.
+- If invoked with \`--nocheck-resources\` argument the resources and test fixtures
+  comparison is skipped.
 - If invoked with \`--benchmark\` argument then only the documentation compilation
   is executed (projects are not built or tested).
 `);
@@ -200,7 +202,7 @@ for (const id of portIds) {
 function copyAndCompare(srcFile: string, dstFile: string): void {
   if (Deno.args.includes("--update-resources")) {
     Deno.copyFileSync(srcFile, dstFile);
-  } else if (Deno.args.includes("--check-resources")) {
+  } else if (!Deno.args.includes("--nocheck-resources")) {
     if (readFile(srcFile) !== readFile(dstFile)) {
       abort(`file contents differ: ${dstFile} ${srcFile}`);
     }
