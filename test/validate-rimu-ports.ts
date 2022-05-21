@@ -24,7 +24,7 @@ NAME
 validate-rimu-ports - verify all Rimu ports are congruent.
 
 SYNOPSIS
-validate-rimu-ports.ts [--update-fixtures] [--skip-fixtures] [--skip-tests] [--help] [PORTID]
+validate-rimu-ports.ts [--update-resources] [--check-resources] [--skip-tests] [--help] [PORTID]
 
 DESCRIPTION
 This script is used to test and verify all Rimu ports are congruent.
@@ -32,14 +32,12 @@ This script is used to test and verify all Rimu ports are congruent.
 - Builds, tests and benchmarks all Rimu ports or just one if the PORTID is specified
   (\`ts\`, \`deno\`, \`go\`, \`kt\`, \`dart\` or \`py\`)
 - Compiles the Rimu documentation with each port and checks they are identical.
-- If any errors or differences in the common test fixtures and resource files
-  are detected it exits immediately.
 
 OPTIONS
-- If invoked with \`--update-fixtures\` argument it copies common test fixtures
-  and resource files from the Rimu TypeScript implementation to the other ports.
-- If invoked with \`--skip-fixtures\` argument the resources and fixtures
-  comparison tests are skipped.
+- If invoked with \`--update-resources\` argument it copies common resource files
+  and test fixtures from the Rimu TypeScript implementation to the other ports.
+- If invoked with \`--check-resources\` argument the resources and test fixtures
+  are compared, if there are detected there is an immediate exit.
 - If invoked with \`--skip-tests\` argument both the resources and fixtures
   comparison and the tests are skipped.
 `);
@@ -200,11 +198,11 @@ for (const id of portIds) {
 
 // Copy and validate test fixture and resource files.
 function copyAndCompare(srcFile: string, dstFile: string): void {
-  if (Deno.args.includes("--update-fixtures")) {
+  if (Deno.args.includes("--update-resources")) {
     Deno.copyFileSync(srcFile, dstFile);
-  } else if (!Deno.args.includes("--skip-fixtures")) {
+  } else if (Deno.args.includes("--check-resources")) {
     if (readFile(srcFile) !== readFile(dstFile)) {
-      abort(`file contents differ: ${srcFile} ${dstFile}`);
+      abort(`file contents differ: ${dstFile} ${srcFile}`);
     }
   }
 }
