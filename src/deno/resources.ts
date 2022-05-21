@@ -102,7 +102,8 @@ window.onclick = function(event) {
 {--no-toc?} = ''
 {--custom-toc?} = ''
 {--header-links?} = ''
-{--small-screen?} = '(max-width: 800px)'
+{--!} The min-width: 1px clause stops page load transitions in IE11 and Edge (https://stackoverflow.com/a/25850649).
+{--small-screen?} = '(min-width: 1px) and (max-width: 800px)'
 {--meta?} = '<meta charset="UTF-8">
   {--!} Make old IE versions use the latest rendering engine.
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -111,11 +112,11 @@ window.onclick = function(event) {
 {--head?} = ''
 
 {--highlightjs?} = ''
-{--highlightjs-css} = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">'
-{--highlightjs-scripts} = '<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+{--highlightjs-css} = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">'
+{--highlightjs-scripts} = '<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
 <script>
 hljs.configure({languages: []});
-hljs.initHighlightingOnLoad();
+hljs.highlightAll();
 </script>'
 
 {--mathjax?} = ''
@@ -251,9 +252,9 @@ hljs.initHighlightingOnLoad();
     margin: 10px 0;
     color: {--primary-color};
   }
-  h1 { font-size: 2.2rem; line-height: 40px;}
+  h1 { font-size: 2.1rem; line-height: 40px;}
   h2 { font-size: 1.5rem; }
-  h3 { font-size: 1.2rem; }
+  h3 { font-size: 1.4rem; }
   h4 { font-size: 1.1rem; }
   h5 { font-size: 1.0rem; }
   h6 { font-size: 0.9rem; }
@@ -271,6 +272,7 @@ hljs.initHighlightingOnLoad();
   }
   table {
     border-collapse: collapse;
+    table-layout: fixed;
     width: 100%;
   }
   td, th {
@@ -330,7 +332,6 @@ hljs.initHighlightingOnLoad();
     font-size: {--mono-size};
     background-color: {--code-background};
   }
-{--highlightjs!}  .hljs { background-color: {--code-background}; }
   pre {
     font-family: {--mono-font};
     line-height: normal;
@@ -338,23 +339,21 @@ hljs.initHighlightingOnLoad();
     background-color: {--code-background};
     border: 1px solid {--border-color};
     border-radius: {--border-radius};
-    padding: 6px;
+    padding: 0;
   }
   .light-background {
     background-color: {--code-background};
     border: none;
     white-space: pre-wrap;
   }
-  *:not(pre) > code {
-    white-space: nowrap;
-  }
   .dl-horizontal > dd {
     margin-top: 1.0rem;
   }
   pre > code {
     background-color: inherit;
-    {--!} highlight.js tweak.
-    padding: 0;
+    display: block;
+    padding: 0.5em !important;
+    border-radius: {--border-radius};
   }
   pre span {
     {--!} highlight.js tweak.
@@ -379,6 +378,7 @@ hljs.initHighlightingOnLoad();
   .warning {
     margin: 1.5em 0;
     padding: 10px;
+    border-radius: {--border-radius};
   }
   div.sidebar *:first-child,
   div.important *:first-child,
@@ -398,8 +398,7 @@ hljs.initHighlightingOnLoad();
   }
   .sidebar {
     background: #ffffee;
-    border: 1px solid #dddddd;
-    border-radius: 0;
+    border: 1px solid {--border-color};
   }
   .note {
     background-color: #f0f7fb;
@@ -682,6 +681,9 @@ hljs.initHighlightingOnLoad();
     body {
       font-size: 20px;
     }
+    * {
+      overflow-wrap: break-word;
+    }
   }
   @media print {
     #article {
@@ -814,7 +816,8 @@ document.onclick = function(event) {
 {--no-toc?} = ''
 {--custom-toc?} = ''
 {--header-links?} = ''
-{--small-screen?} = '(max-width: 800px)'
+{--!} The min-width: 1px clause stops page load transitions in IE11 and Edge (https://stackoverflow.com/a/25850649).
+{--small-screen?} = '(min-width: 1px) and (max-width: 800px)'
 {--meta?} = '<meta charset="UTF-8">
   {--!} Make old IE versions use the latest rendering engine.
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -823,11 +826,11 @@ document.onclick = function(event) {
 {--head?} = ''
 
 {--highlightjs?} = ''
-{--highlightjs-css} = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">'
-{--highlightjs-scripts} = '<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+{--highlightjs-css} = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">'
+{--highlightjs-scripts} = '<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
 <script>
 hljs.configure({languages: []});
-hljs.initHighlightingOnLoad();
+hljs.highlightAll();
 </script>'
 
 {--mathjax?} = ''
@@ -932,9 +935,9 @@ hljs.initHighlightingOnLoad();
     margin: 10px 0;
     color: {--primary-color};
   }
-  h1 { font-size: 2.2rem; line-height: 40px;}
+  h1 { font-size: 2.1rem; line-height: 40px;}
   h2 { font-size: 1.5rem; }
-  h3 { font-size: 1.2rem; }
+  h3 { font-size: 1.4rem; }
   h4 { font-size: 1.1rem; }
   h5 { font-size: 1.0rem; }
   h6 { font-size: 0.9rem; }
@@ -952,6 +955,7 @@ hljs.initHighlightingOnLoad();
   }
   table {
     border-collapse: collapse;
+    table-layout: fixed;
     width: 100%;
   }
   td, th {
@@ -1011,7 +1015,6 @@ hljs.initHighlightingOnLoad();
     font-size: {--mono-size};
     background-color: {--code-background};
   }
-{--highlightjs!}  .hljs { background-color: {--code-background}; }
   pre {
     font-family: {--mono-font};
     line-height: normal;
@@ -1019,23 +1022,21 @@ hljs.initHighlightingOnLoad();
     background-color: {--code-background};
     border: 1px solid {--border-color};
     border-radius: {--border-radius};
-    padding: 6px;
+    padding: 0;
   }
   .light-background {
     background-color: {--code-background};
     border: none;
     white-space: pre-wrap;
   }
-  *:not(pre) > code {
-    white-space: nowrap;
-  }
   .dl-horizontal > dd {
     margin-top: 1.0rem;
   }
   pre > code {
     background-color: inherit;
-    {--!} highlight.js tweak.
-    padding: 0;
+    display: block;
+    padding: 0.5em !important;
+    border-radius: {--border-radius};
   }
   pre span {
     {--!} highlight.js tweak.
@@ -1060,6 +1061,7 @@ hljs.initHighlightingOnLoad();
   .warning {
     margin: 1.5em 0;
     padding: 10px;
+    border-radius: {--border-radius};
   }
   div.sidebar *:first-child,
   div.important *:first-child,
@@ -1079,8 +1081,7 @@ hljs.initHighlightingOnLoad();
   }
   .sidebar {
     background: #ffffee;
-    border: 1px solid #dddddd;
-    border-radius: 0;
+    border: 1px solid {--border-color};
   }
   .note {
     background-color: #f0f7fb;
@@ -1402,6 +1403,9 @@ hljs.initHighlightingOnLoad();
     body {
       font-size: 20px;
     }
+    * {
+      overflow-wrap: break-word;
+    }
   }
 </style>
 
@@ -1551,8 +1555,8 @@ LAYOUT OPTIONS
                      highlighting with Highlight.js.
   --lang             HTML document language attribute value.
   --mathjax          Set to a non-blank value to enable MathJax.
-  --no-toc           Set to a non-blank value to suppress table of
-                     contents generation.
+  --no-toc           Set to a non-blank value to suppress table
+                     of contents generation.
   --section-numbers  Apply h2 and h3 section numbering.
   --theme            Styling theme. Theme names:
                      'legend', 'graystone', 'vintage'.
@@ -1566,7 +1570,7 @@ LAYOUT CLASSES
   elements in conjunction with the --layout option:
 
   CSS class        Description
-  ______________________________________________________________
+  _______________________________________________________________
   align-center     Align element content center.
   align-left       Align element content left.
   align-right      Align element content right.
@@ -1588,7 +1592,7 @@ LAYOUT CLASSES
   note             Paragraph and division block style.
   tip              Paragraph and division block style.
   warning          Paragraph and division block style.
-  ______________________________________________________________
+  _______________________________________________________________
 
 PREDEFINED MACROS
   Macro name         Description
@@ -1738,11 +1742,11 @@ function appendTocEntry(heading) {
 {--head?} = ''
 
 {--highlightjs?} = ''
-{--highlightjs-css} = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">'
-{--highlightjs-scripts} = '<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+{--highlightjs-css} = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">'
+{--highlightjs-scripts} = '<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
 <script>
 hljs.configure({languages: []});
-hljs.initHighlightingOnLoad();
+hljs.highlightAll();
 </script>'
 
 {--mathjax?} = ''
@@ -1853,9 +1857,9 @@ hljs.initHighlightingOnLoad();
     margin: 10px 0;
     color: {--primary-color};
   }
-  h1 { font-size: 2.2rem; line-height: 40px;}
+  h1 { font-size: 2.1rem; line-height: 40px;}
   h2 { font-size: 1.5rem; }
-  h3 { font-size: 1.2rem; }
+  h3 { font-size: 1.4rem; }
   h4 { font-size: 1.1rem; }
   h5 { font-size: 1.0rem; }
   h6 { font-size: 0.9rem; }
@@ -1933,7 +1937,6 @@ hljs.initHighlightingOnLoad();
     font-size: {--mono-size};
     background-color: {--code-background};
   }
-{--highlightjs!}  .hljs { background-color: {--code-background}; }
   pre {
     font-family: {--mono-font};
     line-height: normal;
@@ -1941,7 +1944,7 @@ hljs.initHighlightingOnLoad();
     background-color: {--code-background};
     border: 1px solid {--border-color};
     border-radius: {--border-radius};
-    padding: 6px;
+    padding: 0;
   }
   .light-background {
     background-color: {--code-background};
@@ -1957,8 +1960,9 @@ hljs.initHighlightingOnLoad();
   }
   pre > code {
     background-color: inherit;
-    {--!} highlight.js tweak.
-    padding: 0;
+    display: block;
+    padding: 0.5em !important;
+    border-radius: {--border-radius};
   }
   pre span {
     {--!} highlight.js tweak.
@@ -1983,6 +1987,7 @@ hljs.initHighlightingOnLoad();
   .warning {
     margin: 1.5em 0;
     padding: 10px;
+    border-radius: {--border-radius};
   }
   div.sidebar *:first-child,
   div.important *:first-child,
@@ -2002,8 +2007,7 @@ hljs.initHighlightingOnLoad();
   }
   .sidebar {
     background: #ffffee;
-    border: 1px solid #dddddd;
-    border-radius: 0;
+    border: 1px solid {--border-color};
   }
   .note {
     background-color: #f0f7fb;
