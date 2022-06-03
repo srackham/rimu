@@ -616,33 +616,36 @@ Syntax:
 .light-background
 ``
 Rimu                Rendered HTML
-______________________________________________________
-url                 <a href="url">url</a>       Note 1
+______________________________________________________________________
+url                 <a href="url">url</a>                       Note 1
 <url>               <a href="url">url</a>
 <url|caption>       <a href="url">caption</a>
-[caption](url)      <a href="url">caption</a>   Note 2
+[caption](url)      <a href="url">caption</a>                   Note 2
+^[caption](url)     <a href="url" target="_blank">caption</a>   Note 3
 <email>             <a href="mailto:email">email</a>
 <email|caption>     <a href="mailto:email">caption</a>
-______________________________________________________
+______________________________________________________________________
 ``
 
 Notes:
 
 1. Only HTTP and HTTPS raw URLs are auto-encoded.
 2. The `[caption](url)` syntax is Markdown compatible.
+3. Opens the link in a new browser tab.
 
 {urls-example} = '1. http://example.com
 2. <http://example.com>
-3. <http://example.com|Foo home>
-4. [Foo home](http://example.com)
-5. <example.html>
-6. <example.html#basics|The basics>
-7. <#api-options|API Options>
-8. <file:///example/user-guide.pdf|User Guide>
-9. <file:///downloads/>
-10. <ftp://example.com/rfc959.txt|rfc959.txt>
-11. <joe@example.com>
-12. <joe@example.org|Joe Bloggs>'
+3. <http://example.com|Example>
+4. [Example](http://example.com)
+5. ^[Example](http://example.com)
+6. <example.html>
+7. <example.html#basics|The basics>
+8. <#api-options|API Options>
+9. <file:///example/user-guide.pdf|User Guide>
+10. <file:///downloads/>
+11. <ftp://example.com/rfc959.txt|rfc959.txt>
+12. <joe@example.com>
+13. <joe@example.org|Joe Bloggs>'
 
 {generate-rendered-example-1|urls-example}
 
