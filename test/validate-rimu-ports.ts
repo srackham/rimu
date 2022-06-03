@@ -100,9 +100,6 @@ const ports: Ports = {
     ],
     resourcesDir: "rimugo/resources",
     make: async function () {
-      Deno.chdir("rimugo");
-      await sh("go-bindata -o bindata.go resources");
-      Deno.chdir("..");
       await sh("go install ./...");
       await sh("go test ./...");
     },
