@@ -59,6 +59,12 @@ const DEFAULT_DEFS: Definition[] = [
     match: /\\?<(\S+@[\w.\-]+)>/g,
     replacement: '<a href="mailto:$1">$1</a>',
   },
+  // Open link in new window: ^[caption](url)
+  // caption = $1, url = $2
+  {
+    match: /\\?\^\[([^[]*?)]\((\S+?)\)/g,
+    replacement: '<a href="$2" target="_blank">$$1</a>',
+  },
   // Link: [caption](url)
   // caption = $1, url = $2
   {

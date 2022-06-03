@@ -189,6 +189,15 @@
     }
   },
   {
+    "description": "urls in new window",
+    "input": "^[example\\nurl](http://example.com) ^[](http://example.com)",
+    "expectedOutput": "<p><a href=\"http://example.com\" target=\"_blank\">example\\nurl</a> <a href=\"http://example.com\" target=\"_blank\"></a></p>",
+    "expectedCallback": "",
+    "options": {
+      "reset": true
+    }
+  },
+  {
     "description": "url with empty caption",
     "input": "<http://example.com|>",
     "expectedOutput": "<p><a href=\"http://example.com\"></a></p>",
