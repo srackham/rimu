@@ -463,4 +463,9 @@ task("validate-ports", [], async function () {
   await sh(`deno run -A ./test/validate-rimu-ports.ts`);
 });
 
+desc("Watch documentation source files and rebuild when they are updated");
+task("docs-auto-build", [], async function () {
+  await sh(`ls docsrc/* | entr deno run -A Drakefile.ts build-docs`);
+});
+
 run();
