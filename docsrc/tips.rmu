@@ -1063,6 +1063,26 @@ a fenced code block.
 
 {generate-rendered-example-1|list-ambiguity-example}
 
+### Labelled list and delimited block ambiguity
+If the first line of a delimited block ends with two colons it will be mistaken
+for a labelled list. For example, enclosing a labelled list in an HTML block
+comment. The problem arises because lists take precedence over delimited blocks.
+The work-around is to put the opening block delimiter on a separate line.
+
+{html-comment-ambiguity-example} = '
+<!-- foobar::
+Rendered as labelled list. -->
+
+<!--
+foobar::
+Rendered as HTML block comment. -->
+'
+
+{generate-rendered-example-1|html-comment-ambiguity-example}
+
+This issue only applies to _HTML Block_, _Macro Definition_ and _Normal
+Paragraph_ delimited blocks.
+
 ### URLs
 - To include a `[` character in a Markdown URL or image captions, use
   a `&#91;` entity instead of the `[` character.
