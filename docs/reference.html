@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <title>Rimu Reference</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
 <style>
   :root {
     font-size: 16px;
@@ -24,9 +24,9 @@
     margin: 10px 0;
     color: #34495e;
   }
-  h1 { font-size: 2.2rem; line-height: 40px;}
+  h1 { font-size: 2.1rem; line-height: 40px;}
   h2 { font-size: 1.5rem; }
-  h3 { font-size: 1.2rem; }
+  h3 { font-size: 1.4rem; }
   h4 { font-size: 1.1rem; }
   h5 { font-size: 1.0rem; }
   h6 { font-size: 0.9rem; }
@@ -102,7 +102,6 @@
     font-size: 90%;
     background-color: #f8f8f8;
   }
-  .hljs { background-color: #f8f8f8; }
   pre {
     font-family: Consolas, "Andale Mono", Monaco, monospace;
     line-height: normal;
@@ -110,7 +109,7 @@
     background-color: #f8f8f8;
     border: 1px solid #dddddd;
     border-radius: 0;
-    padding: 6px;
+    padding: 0;
   }
   .light-background {
     background-color: #f8f8f8;
@@ -125,7 +124,9 @@
   }
   pre > code {
     background-color: inherit;
-    padding: 0;
+    display: block;
+    padding: 0.5em !important;
+    border-radius: 0;
   }
   pre span {
     opacity: 1 !important;
@@ -146,6 +147,7 @@
   .warning {
     margin: 1.5em 0;
     padding: 10px;
+    border-radius: 0;
   }
   div.sidebar *:first-child,
   div.important *:first-child,
@@ -166,7 +168,6 @@
   .sidebar {
     background: #ffffee;
     border: 1px solid #dddddd;
-    border-radius: 0;
   }
   .note {
     background-color: #f0f7fb;
@@ -676,8 +677,8 @@ Invocations</a>, <a href="#quotes">Quotes</a> and
 <h3 id="document-processing">Document processing</h3>
 <p>Rimu scans the input text for block elements. When a block element is
 matched it is converted to HTML on the output.</p>
-<p>Block elements in the source markup are matched in the following order
-(first to last):</p>
+<p>Block elements in the source markup are matched in the following order of
+precedence (first to last):</p>
 <ol><li><a href="#line-blocks">Line Blocks</a></li><li><a href="#lists">Lists</a></li><li><a href="#delimited-blocks">Delimited Blocks</a></li></ol><p>Inline elements are processed in the following order (first to last):</p>
 <ol><li><a href="#macro-invocations">Macro invocations</a></li><li><a href="#replacements">Replacements</a></li><li><a href="#quotes">Quotes</a></li></ol><p>Special character substitution takes place last.  Inline substitutions
 in <a href="#delimited-blocks">Delimited Block</a> elements can be controlled
@@ -1363,16 +1364,17 @@ images</a>, <a href="#html-elements">inline HTML tags</a>.</p>
 <a href="#replacements">Replacements</a>.</p>
 <p>Syntax:</p>
 <pre class="light-background"><code>Rimu                Rendered HTML
-______________________________________________________
-url                 &lt;a href="url"&gt;url&lt;/a&gt;       Note 1
+______________________________________________________________________
+url                 &lt;a href="url"&gt;url&lt;/a&gt;                       Note 1
 &lt;url&gt;               &lt;a href="url"&gt;url&lt;/a&gt;
 &lt;url|caption&gt;       &lt;a href="url"&gt;caption&lt;/a&gt;
-[caption](url)      &lt;a href="url"&gt;caption&lt;/a&gt;   Note 2
+[caption](url)      &lt;a href="url"&gt;caption&lt;/a&gt;                   Note 2
+^[caption](url)     &lt;a href="url" target="_blank"&gt;caption&lt;/a&gt;   Note 3
 &lt;email&gt;             &lt;a href="mailto:email"&gt;email&lt;/a&gt;
 &lt;email|caption&gt;     &lt;a href="mailto:email"&gt;caption&lt;/a&gt;
-______________________________________________________</code></pre>
+______________________________________________________________________</code></pre>
 <p>Notes:</p>
-<ol><li>Only HTTP and HTTPS raw URLs are auto-encoded.</li><li>The <code>[caption](url)</code> syntax is Markdown compatible.</li></ol><h4 id="examples-14">Examples</h4>
+<ol><li>Only HTTP and HTTPS raw URLs are auto-encoded.</li><li>The <code>[caption](url)</code> syntax is Markdown compatible.</li><li>Opens the link in a new browser tab.</li></ol><h4 id="examples-14">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1388,22 +1390,23 @@ Preview
 <td style="width:50%;">
 <pre class="example-source nohighlight" id="urls-example-source"><code>1. http://example.com
 2. &lt;http://example.com&gt;
-3. &lt;http://example.com|Foo home&gt;
-4. [Foo home](http://example.com)
-5. &lt;example.html&gt;
-6. &lt;example.html#basics|The basics&gt;
-7. &lt;#api-options|API Options&gt;
-8. &lt;file:///example/user-guide.pdf|User Guide&gt;
-9. &lt;file:///downloads/&gt;
-10. &lt;ftp://example.com/rfc959.txt|rfc959.txt&gt;
-11. &lt;joe@example.com&gt;
-12. &lt;joe@example.org|Joe Bloggs&gt;</code></pre>
+3. &lt;http://example.com|Example&gt;
+4. [Example](http://example.com)
+5. ^[Example](http://example.com)
+6. &lt;example.html&gt;
+7. &lt;example.html#basics|The basics&gt;
+8. &lt;#api-options|API Options&gt;
+9. &lt;file:///example/user-guide.pdf|User Guide&gt;
+10. &lt;file:///downloads/&gt;
+11. &lt;ftp://example.com/rfc959.txt|rfc959.txt&gt;
+12. &lt;joe@example.com&gt;
+13. &lt;joe@example.org|Joe Bloggs&gt;</code></pre>
 <textarea id="urls-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('urls-example')"></textarea>
 </td>
 <td style="width:50%;">
 <div id="urls-example-errors" class="example-errors"></div>
 <div id="urls-example-rendered" class="example-rendered">
-<ol><li><a href="http://example.com">http://example.com</a></li><li><a href="http://example.com">http://example.com</a></li><li><a href="http://example.com">Foo home</a></li><li><a href="http://example.com">Foo home</a></li><li><a href="example.html">example.html</a></li><li><a href="example.html#basics">The basics</a></li><li><a href="#api-options">API Options</a></li><li><a href="file:///example/user-guide.pdf">User Guide</a></li><li><a href="file:///downloads/">file:///downloads/</a></li><li><a href="ftp://example.com/rfc959.txt">rfc959.txt</a></li><li><a href="mailto:joe@example.com">joe@example.com</a></li><li><a href="mailto:joe@example.org">Joe Bloggs</a></li></ol></div>
+<ol><li><a href="http://example.com">http://example.com</a></li><li><a href="http://example.com">http://example.com</a></li><li><a href="http://example.com">Example</a></li><li><a href="http://example.com">Example</a></li><li><a href="http://example.com" target="_blank">Example</a></li><li><a href="example.html">example.html</a></li><li><a href="example.html#basics">The basics</a></li><li><a href="#api-options">API Options</a></li><li><a href="file:///example/user-guide.pdf">User Guide</a></li><li><a href="file:///downloads/">file:///downloads/</a></li><li><a href="ftp://example.com/rfc959.txt">rfc959.txt</a></li><li><a href="mailto:joe@example.com">joe@example.com</a></li><li><a href="mailto:joe@example.org">Joe Bloggs</a></li></ol></div>
 </td></tr></table>
 <h2 id="images">Images</h2>
 <p>Syntax:</p>
@@ -1816,8 +1819,8 @@ LAYOUT OPTIONS
                      highlighting with Highlight.js.
   --lang             HTML document language attribute value.
   --mathjax          Set to a non-blank value to enable MathJax.
-  --no-toc           Set to a non-blank value to suppress table of
-                     contents generation.
+  --no-toc           Set to a non-blank value to suppress table
+                     of contents generation.
   --section-numbers  Apply h2 and h3 section numbering.
   --theme            Styling theme. Theme names:
                      'legend', 'graystone', 'vintage'.
@@ -1831,7 +1834,7 @@ LAYOUT CLASSES
   elements in conjunction with the --layout option:
 
   CSS class        Description
-  ______________________________________________________________
+  _______________________________________________________________
   align-center     Align element content center.
   align-left       Align element content left.
   align-right      Align element content right.
@@ -1853,7 +1856,7 @@ LAYOUT CLASSES
   note             Paragraph and division block style.
   tip              Paragraph and division block style.
   warning          Paragraph and division block style.
-  ______________________________________________________________
+  _______________________________________________________________
 
 PREDEFINED MACROS
   Macro name         Description
@@ -1884,9 +1887,9 @@ rimuc --output sites.html sequel-header.rmu sites.rmu sequel-footer.rmu</code></
 <p>You can choose from the following built-in layouts:</p>
 <dl><dt>sequel</dt><dd>Responsive cross-device layout designed to render nicely on
 desktops, laptops, tablets and phones. This website uses the <em>sequel</em>
-layout.</dd><dt>classic</dt><dd>Desktop-centric layout.<ul><li>Set the <code>--dropdown-toc</code> macro to a non-blank value to place the
-    table of contents in a popup.</li></ul></dd><dt>flex</dt><dd>Experimental flexbox layout. It currently works best on mobile
-devices.<ul><li>Set the <code>--top-bar</code> macro to a non-blank value to place the
+layout.</dd><dt>classic</dt><dd>Desktop-centric layout.<ul><li>Not suitable for small screens (the TOC sidebar is hidden on small screens).</li><li>Set the <code>--dropdown-toc</code> macro to a non-blank value to place the
+    table of contents in a popup.</li></ul></dd><dt>flex</dt><dd>Flexbox layout. Works nicely with small screens.<ul><li>The menu bar automatically positions along the top when the device
+    orientation is portrait.</li><li>Set the <code>--top-bar</code> macro to a non-blank value to place the
     navigation bar along the top of the document.</li></ul></dd><dt>plain</dt><dd>Unstyled HTML layout.<ul><li>Does not support any layout classes or layout options.</li></ul></dd><dt>v8</dt><dd>Deprecated Rimu version 8 layout.</dd></dl><p>Examples of the built-in layouts can be viewed in the <a href="gallery.html">Rimu
 Gallery</a>.</p>
 <p>The built-in layouts:</p>
@@ -1945,7 +1948,7 @@ Use the <code>reset</code> option to restore the default state.</p>
 var html= rimu.render('Hello *Rimu*!');</code></pre>
 <p>See <a href="https://github.com/srackham/rimu">Rimu README</a>.</p>
 <h4 id="deno">Deno</h4>
-<pre class="javascript"><code>import * as rimu from "https://raw.github.com/srackham/rimu/master/mod.ts";
+<pre class="typescript"><code>import * as rimu from "https://raw.github.com/srackham/rimu/master/mod.ts";
 
 console.log(rimu.render("Hello *Rimu*!"));</code></pre>
 <p>See <a href="https://github.com/srackham/rimu">Rimu README</a>.</p>
@@ -1971,7 +1974,7 @@ func main() {
 }</code></pre>
 <p>See the <a href="https://github.com/srackham/go-rimu">Go README</a>.</p>
 <h4 id="dart">Dart</h4>
-<pre class="dart"><code>import 'package:rimu/rimu.dart';
+<pre class="typescript"><code>import 'package:rimu/rimu.dart';
 
 main(List&lt;String&gt; arguments) {
   print(render('Hello *Rimu*!', RenderOptions(reset: true)));
@@ -2070,13 +2073,10 @@ common to all platforms:</p>
   compatible subset then use <code>.md</code> to signal your intent.</li></ul>
 </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/dart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
 <script>
 hljs.configure({languages: []});
-hljs.initHighlightingOnLoad();
+hljs.highlightAll();
 </script>
 <script>
 window.onload = function() {

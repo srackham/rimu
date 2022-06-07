@@ -23,9 +23,9 @@
     margin: 10px 0;
     color: #888;
   }
-  h1 { font-size: 2.2rem; line-height: 40px;}
+  h1 { font-size: 2.1rem; line-height: 40px;}
   h2 { font-size: 1.5rem; }
-  h3 { font-size: 1.2rem; }
+  h3 { font-size: 1.4rem; }
   h4 { font-size: 1.1rem; }
   h5 { font-size: 1.0rem; }
   h6 { font-size: 0.9rem; }
@@ -43,6 +43,7 @@
   }
   table {
     border-collapse: collapse;
+    table-layout: fixed;
     width: 100%;
   }
   td, th {
@@ -107,22 +108,21 @@
     background-color: #f8f8f8;
     border: 1px solid #dddddd;
     border-radius: 0;
-    padding: 6px;
+    padding: 0;
   }
   .light-background {
     background-color: #f8f8f8;
     border: none;
     white-space: pre-wrap;
   }
-  *:not(pre) > code {
-    white-space: nowrap;
-  }
   .dl-horizontal > dd {
     margin-top: 1.0rem;
   }
   pre > code {
     background-color: inherit;
-    padding: 0;
+    display: block;
+    padding: 0.5em !important;
+    border-radius: 0;
   }
   pre span {
     opacity: 1 !important;
@@ -143,6 +143,7 @@
   .warning {
     margin: 1.5em 0;
     padding: 10px;
+    border-radius: 0;
   }
   div.sidebar *:first-child,
   div.important *:first-child,
@@ -163,7 +164,6 @@
   .sidebar {
     background: #ffffee;
     border: 1px solid #dddddd;
-    border-radius: 0;
   }
   .note {
     background-color: #f0f7fb;
@@ -295,7 +295,7 @@
     padding-left: 1rem;
     padding-right: 1rem;
   }
-  @media screen and (max-width: 800px) {
+  @media screen and (min-width: 1px) and (max-width: 800px) {
     #article, #toc {
       padding-left: 10px;
       padding-right: 10px;
@@ -303,9 +303,12 @@
   }
 </style>
 <style>
-  @media screen and (max-width: 800px) {
+  @media screen and (min-width: 1px) and (max-width: 800px) {
     body {
       font-size: 20px;
+    }
+    * {
+      overflow-wrap: break-word;
     }
   }
 </style>

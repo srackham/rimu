@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <title>Rimu Tips</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
 <style>
   :root {
     font-size: 16px;
@@ -24,9 +24,9 @@
     margin: 10px 0;
     color: #34495e;
   }
-  h1 { font-size: 2.2rem; line-height: 40px;}
+  h1 { font-size: 2.1rem; line-height: 40px;}
   h2 { font-size: 1.5rem; }
-  h3 { font-size: 1.2rem; }
+  h3 { font-size: 1.4rem; }
   h4 { font-size: 1.1rem; }
   h5 { font-size: 1.0rem; }
   h6 { font-size: 0.9rem; }
@@ -102,7 +102,6 @@
     font-size: 90%;
     background-color: #f8f8f8;
   }
-  .hljs { background-color: #f8f8f8; }
   pre {
     font-family: Consolas, "Andale Mono", Monaco, monospace;
     line-height: normal;
@@ -110,7 +109,7 @@
     background-color: #f8f8f8;
     border: 1px solid #dddddd;
     border-radius: 0;
-    padding: 6px;
+    padding: 0;
   }
   .light-background {
     background-color: #f8f8f8;
@@ -125,7 +124,9 @@
   }
   pre > code {
     background-color: inherit;
-    padding: 0;
+    display: block;
+    padding: 0.5em !important;
+    border-radius: 0;
   }
   pre span {
     opacity: 1 !important;
@@ -146,6 +147,7 @@
   .warning {
     margin: 1.5em 0;
     padding: 10px;
+    border-radius: 0;
   }
   div.sidebar *:first-child,
   div.important *:first-child,
@@ -166,7 +168,6 @@
   .sidebar {
     background: #ffffee;
     border: 1px solid #dddddd;
-    border-radius: 0;
   }
   .note {
     background-color: #f0f7fb;
@@ -849,7 +850,26 @@ use-case:</p>
 <pre><code>rimuc --layout sequel --title "Kotlin Notes" kotlin-notes.rmu</code></pre>
 <p>Other macro shortcut options can be found in the <a href="reference.html#rimuc-command">rimuc</a>
 documentation.</p>
-<h2 id="the-rimu-markup-looks-correct-but-the-generated-html-is-wrong">The Rimu markup looks correct but the generated HTML is wrong</h2>
+<h2 id="source-file-inclusion">Source file inclusion</h2>
+<p>To avoid duplication it is useful to be able to include common blocks of text in
+multiple source files. Direct file inclusion is not possible because Rimu markup
+has no mechanisms for file-system access (a design feature to ensure Rimu source is
+operating system independent). An idomatic solution is to use <a href="reference.html#macros">Rimu
+macros</a>. For example, the following file, containing shared
+Rimu macro definitions can be compiled into each document:</p>
+<pre><code>// Block macro definition containing multi-line text.
+{common-text} = 'Lectus cursus porttitor sed lectus nisi est ac vel scelerisque natoque
+scelerisque lorem porttitor est scelerisque natoque vel.
+
+Hac scelerisque parturient a sed natoque pulvinar tincidunt integer
+parturient ac porttitor pulvinar.
+'</code></pre>
+<p>Include the common source when you run the <code>rimuc</code> command e.g.</p>
+<pre><code>rimuc common.rmu mydocument.rmu</code></pre>
+<ul><li>The common text is included in <code>mydocument.rmu</code> by invoking the
+  <code>{common-text}</code> macro.</li><li>You can disable macro expansion inside the text by preceeding the block macro
+  definition with the line:<pre><code>.-macros</code></pre>
+</li></ul><h2 id="the-rimu-markup-looks-correct-but-the-generated-html-is-wrong">The Rimu markup looks correct but the generated HTML is wrong</h2>
 <p>Using an editor with Rimu syntax highlighting support (see previous
 topic) makes it much easier to spot syntax errors.  Rimu includes a
 Vim editor syntax highlighter, see the <a href="https://srackham.github.io/rimu/reference.html#vim-syntax-file">Vim syntax
@@ -903,11 +923,11 @@ Copyright (C) 2015 -- trademarked(TM).
 
 The 3{sup|rd} H{sub|2}O molecule...
 
-**********************
+**************************
 
-Markdown style horizontal rules.
+Markdown horizontal rules.
 
-**********************
+**************************
 
 TODO 10 examples +-2</code></pre>
 <textarea id="rimurc-examples-edit" class="edit-source" style="display:none" onkeyup="renderExample('rimurc-examples')"></textarea>
@@ -921,7 +941,7 @@ TODO 10 examples +-2</code></pre>
 <p><del>Strikethrough</del> and <u>underlining</u>.</p>
 <p>The 3<sup>rd</sup> H<sub>2</sub>O molecule&hellip;</p>
 <p><hr></p>
-<p>Markdown style horizontal rules.</p>
+<p>Markdown horizontal rules.</p>
 <p><hr></p>
 <p><b style="color: red; background-color: yellow;">TODO</b> 10 examples &plusmn;2</p>
 </div>
@@ -930,13 +950,13 @@ TODO 10 examples +-2</code></pre>
 <p>You can include custom CSS styles in the body of a Rimu document using
 an HTML <code>style</code> element. Here are three use-cases:</p>
 <ol><li>Change existing styling. The following example changes the color of
-  all headers to red:<pre><code>&lt;style&gt;
+  all headers to red:<pre class="css"><code>&lt;style&gt;
   h1, h2, h3, h4, h5, h6 {
     color: red;
   }
 &lt;/style&gt;</code></pre>
 </li><li>Add a new block style. The following example puts a green border
-  around blocks with the <code>green-border</code> class:<pre><code>&lt;style&gt;
+  around blocks with the <code>green-border</code> class:<pre class="css"><code>&lt;style&gt;
   .green-border {
     border: 5px solid green;
   }
@@ -973,7 +993,7 @@ to. This will not change.</p></blockquote>
 themes</a>. You can create your own themes
 by including <a href="#scoped-css">custom CSS style elements</a>.</p>
 <p>Here is an example theme named <em>redheads</em>:</p>
-<pre><code>{--theme!.*\bredheads\b.*}.+skip
+<pre class="css"><code>{--theme!.*\bredheads\b.*}.+skip
 &lt;style&gt;
   h1, h2, h3, h4, h5, h6 {
     color: red;
@@ -1908,6 +1928,44 @@ Preview
 <ul><li>List item.<ul><li>Rendered as nested list item.</li></ul></li><li>List item.<pre><code>* Rendered as code block.</code></pre>
 </li></ul></div>
 </td></tr></table>
+<h3 id="labelled-list-and-delimited-block-ambiguity">Labelled list and delimited block ambiguity</h3>
+<p>If the first line of a delimited block ends with two colons it will be mistaken
+for a labelled list. For example, enclosing a labelled list in an HTML block
+comment. The problem arises because lists take precedence over delimited blocks.
+The work-around is to put the opening block delimiter on a separate line.</p>
+<h4 id="examples-17">Examples</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('html-comment-ambiguity-example')">&#x270e;</span>
+Rimu Markup</td>
+<td class="example-header">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('html-comment-ambiguity-example')">&#x2b04;</span>
+Preview
+</td>
+</tr>
+<tr>
+<td style="width:50%;">
+<pre class="example-source nohighlight" id="html-comment-ambiguity-example-source"><code>&lt;!-- foobar::
+Rendered as labelled list. --&gt;
+
+&lt;!--
+foobar::
+Rendered as HTML block comment. --&gt;
+</code></pre>
+<textarea id="html-comment-ambiguity-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('html-comment-ambiguity-example')"></textarea>
+</td>
+<td style="width:50%;">
+<div id="html-comment-ambiguity-example-errors" class="example-errors"></div>
+<div id="html-comment-ambiguity-example-rendered" class="example-rendered">
+<dl><dt>&lt;!&mdash; foobar</dt><dd>Rendered as labelled list. &mdash;&gt;</dd></dl><!--
+foobar::
+Rendered as HTML block comment. -->
+</div>
+</td></tr></table>
+<p>This issue only applies to <em>HTML Block</em>, <em>Macro Definition</em> and <em>Normal
+Paragraph</em> delimited blocks.</p>
 <h3 id="urls">URLs</h3>
 <ul><li>To include a <code>[</code> character in a Markdown URL or image captions, use
   a <code>&amp;#91;</code> entity instead of the <code>[</code> character.<p>The caption in the following example displays as <code>the [Main] section</code>
@@ -1931,7 +1989,7 @@ from being seen as the Inclusion macro's closing brace</p>
 (zero-width space character followed by backslash character). Simply prefixing a
 backslash is insufficent because the unescaped definition will be mismatched
 downstream.</p>
-<h4 id="examples-17">Examples</h4>
+<h4 id="examples-18">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1954,12 +2012,12 @@ Preview
 <p>&#8203;{macro} = 'escaped definition'</p>
 </div>
 </td></tr></table>
-<h2 id="controlling-line-breaks">Controlling line breaks</h2>
+<h2 id="preserving-line-breaks">Preserving line breaks</h2>
 <p>There are three ways to preserve line breaks:</p>
 <ol><li>Terminate lines with a Rimu line break (a space followed by a
   backslash character).</li><li>Terminate lines with an HTML break element (<code>&lt;br&gt;</code>).</li><li>Apply the <code>preserve-breaks</code> class to a Rimu block element and
   compile with the <code>rimuc</code> command <a href="reference.html#layout-option"><code>--layout</code>
-  option</a>.</li></ol><h4 id="examples-18">Examples</h4>
+  option</a>.</li></ol><h4 id="examples-19">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -2012,7 +2070,7 @@ this sidebar.
 <code>align-center</code> and <code>align-right</code> CSS classes to apply the CSS
 <code>text-align</code> property.  Use them to control the horizontal alignment
 of flowed inline elements (e.g. text, inline images):</p>
-<h4 id="examples-19">Examples</h4>
+<h4 id="examples-20">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -2047,7 +2105,7 @@ Enim odio ultrices</code></pre>
 <h2 id="citing-quotes-and-verses">Citing quotes and verses</h2>
 <p>The <a href="reference.html#rimuc-command">rimuc</a> command <code>--layout</code> option includes the CSS <em>cite</em> class
 for attributing quotes and verses. For example:</p>
-<h4 id="examples-20">Examples</h4>
+<h4 id="examples-21">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -2106,7 +2164,7 @@ Augue non egestas amet?</p>
 </td></tr></table>
 <h2 id="an-example-letter">An example letter</h2>
 <p>Here's an example of a personal letter:</p>
-<h4 id="examples-21">Examples</h4>
+<h4 id="examples-22">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
@@ -2232,7 +2290,7 @@ implements keyword comments (it's in the <a href="https://github.com/srackham/ri
 <pre><code>/\\?@(deprecated|fixme|important|note|todo|warning)\b.*/ = ''</code></pre>
 <ul><li>A keyword comment comprises a keyword plus any text following it on the
   same line.</li><li>Keyword comments are ommitted from the Rimu HTML output.</li><li>Prefixing the keyword with an <code>@</code> character is simply a convention to minimise
-  ambiguity.</li></ul><h4 id="examples-22">Examples</h4>
+  ambiguity.</li></ul><h4 id="examples-23">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -2264,13 +2322,10 @@ magna arcu.</p>
 </td></tr></table>
 </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/dart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
 <script>
 hljs.configure({languages: []});
-hljs.initHighlightingOnLoad();
+hljs.highlightAll();
 </script>
 <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 <script>

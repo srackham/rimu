@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <title>Rimu Change Log</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
 <style>
   :root {
     font-size: 16px;
@@ -24,9 +24,9 @@
     margin: 10px 0;
     color: #34495e;
   }
-  h1 { font-size: 2.2rem; line-height: 40px;}
+  h1 { font-size: 2.1rem; line-height: 40px;}
   h2 { font-size: 1.5rem; }
-  h3 { font-size: 1.2rem; }
+  h3 { font-size: 1.4rem; }
   h4 { font-size: 1.1rem; }
   h5 { font-size: 1.0rem; }
   h6 { font-size: 0.9rem; }
@@ -102,7 +102,6 @@
     font-size: 90%;
     background-color: #f8f8f8;
   }
-  .hljs { background-color: #f8f8f8; }
   pre {
     font-family: Consolas, "Andale Mono", Monaco, monospace;
     line-height: normal;
@@ -110,7 +109,7 @@
     background-color: #f8f8f8;
     border: 1px solid #dddddd;
     border-radius: 0;
-    padding: 6px;
+    padding: 0;
   }
   .light-background {
     background-color: #f8f8f8;
@@ -125,7 +124,9 @@
   }
   pre > code {
     background-color: inherit;
-    padding: 0;
+    display: block;
+    padding: 0.5em !important;
+    border-radius: 0;
   }
   pre span {
     opacity: 1 !important;
@@ -146,6 +147,7 @@
   .warning {
     margin: 1.5em 0;
     padding: 10px;
+    border-radius: 0;
   }
   div.sidebar *:first-child,
   div.important *:first-child,
@@ -166,7 +168,6 @@
   .sidebar {
     background: #ffffee;
     border: 1px solid #dddddd;
-    border-radius: 0;
   }
   .note {
     background-color: #f0f7fb;
@@ -477,7 +478,8 @@
 <h1 id="rimu-change-log">Rimu Change Log</h1>
 <p>This is the Rimu TypeScript implementation change log (see also <a href="reference.html#rimu-implementations">other Rimu
 implementations</a>).</p>
-<h2 id="version-11-2-0-2022-02-27">Version 11.2.0 (2022-02-27)</h2>
+<h2 id="version-11-3-0-2022-06-07">Version 11.3.0 (2022-06-07)</h2>
+<ul><li>Added <code>^[caption](url)</code> link syntax which opens the link in a new browser tab.</li><li>Moved documentation source from <code>./docs</code> to separate <code>/.docsrc</code> directory.</li><li>Upgrade to Drake 1.5.2.</li><li>Upgrade to Deno 1.22.0.</li><li>Pinned Deno libs to std@v0.140.0.</li></ul><h2 id="version-11-2-0-2022-02-27">Version 11.2.0 (2022-02-27)</h2>
 <ul><li>Added <a href="tips.html#important-note-tip-and-warning-styles"><code>important</code>, <code>note</code>, <code>tip</code> and
   <code>warning</code></a> admonition classes to
   <a href="reference.html#rimuc-command">rimuc</a> styled outputs.</li><li>Upgraded dependent dev packages.</li></ul><h2 id="version-11-1-14-2021-04-23">Version 11.1.14 (2021-04-23)</h2>
@@ -860,13 +862,10 @@ compatibility. It also includes some breaking changes.</p>
 <ul><li>Added Quote and Replacements definitions.</li><li>A number of other enhancements, additions and documentation updates.</li></ul>
 </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/dart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
 <script>
 hljs.configure({languages: []});
-hljs.initHighlightingOnLoad();
+hljs.highlightAll();
 </script>
 <script>
 window.onload = function() {
