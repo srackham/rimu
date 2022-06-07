@@ -400,6 +400,15 @@ task("version", [], async function () {
     }
     if (
       !updateFile(
+        "package-lock.json",
+        /(\s*"version"\s*:\s*)"\d+\.\d+\.\d+"/,
+        `$1"${vers}"`,
+      )
+    ) {
+      abort("version number not updated: package-lock.json");
+    }
+    if (
+      !updateFile(
         NODE_RIMUC_TS,
         /(const VERSION = )"\d+\.\d+\.\d+"/,
         `$1"${vers}"`,
@@ -417,7 +426,7 @@ task("version", [], async function () {
       abort(`version number not updated: ${DENO_RIMUC_TS}`);
     }
     env("vers", vers);
-    await sh('git commit --all -m "Bump version number."');
+    await sh('git commit --all -m "chore: bump version number."');
   }
 });
 
