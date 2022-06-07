@@ -121,8 +121,8 @@ Rimu markup elements are categorized as follows:
 Rimu scans the input text for block elements. When a block element is
 matched it is converted to HTML on the output.
 
-Block elements in the source markup are matched in the following order
-(first to last):
+Block elements in the source markup are matched in the following order of
+precedence (first to last):
 
 . [Line Blocks](#line-blocks)
 . [Lists](#lists)

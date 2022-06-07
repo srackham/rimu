@@ -1128,7 +1128,7 @@ downstream.
 {generate-rendered-example-1|escaped-macro-definition-example}
 
 
-## Controlling line breaks
+## Preserving line breaks
 There are three ways to preserve line breaks:
 
 . Terminate lines with a Rimu line break (a space followed by a
