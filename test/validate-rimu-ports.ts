@@ -48,6 +48,8 @@ OPTIONS
 
 const isWindows = Deno.build.os === "windows";
 
+const tmpDir = Deno.makeTempDirSync({ prefix: "rimu-validate-" });
+
 type PortId = "ts" | "go" | "kt" | "dart" | "py" | "deno";
 const portIds: PortId[] = ["ts", "deno", "go", "kt", "dart", "py"];
 interface Port {
@@ -56,7 +58,7 @@ interface Port {
   fixtures: string[];
   resourcesDir: string;
   make: () => void;
-  rimucExe: string;
+  rimucExe: () => string;
 }
 
 type Ports = {
@@ -76,7 +78,7 @@ const ports: Ports = {
     make: async function () {
       await sh("deno run -A Drakefile.ts test");
     },
-    rimucExe: "node lib/cjs/rimuc.js",
+    rimucExe: () => "node lib/cjs/rimuc.js",
   },
 
   "deno": {
@@ -87,7 +89,7 @@ const ports: Ports = {
     make: function () {
       sh("deno run -A Drakefile.ts install-deno");
     },
-    rimucExe: "deno run -A src/deno/rimuc.ts",
+    rimucExe: () => "deno run -A src/deno/rimuc.ts",
   },
 
   "go": {
@@ -103,7 +105,7 @@ const ports: Ports = {
       await sh("go install ./...");
       await sh("go test ./...");
     },
-    rimucExe: "rimugo",
+    rimucExe: () => "rimugo",
   },
 
   "kt": {
@@ -118,7 +120,7 @@ const ports: Ports = {
     make: async function () {
       await sh("./gradlew --console plain test installDist");
     },
-    rimucExe: path.join(ktDir, "build/install/rimu-kt/bin/rimukt"),
+    rimucExe: () => path.join(ktDir, "build/install/rimu-kt/bin/rimukt"),
   },
 
   "dart": {
@@ -139,7 +141,7 @@ const ports: Ports = {
       );
       await sh("dart test test/*.dart");
     },
-    rimucExe: path.join(dartDir, "build/rimuc"),
+    rimucExe: () => path.join(dartDir, "build/rimuc"),
   },
 
   "py": {
@@ -152,12 +154,34 @@ const ports: Ports = {
     ],
     resourcesDir: "src/rimuc/resources",
     make: async function () {
-      await sh("source .venv/bin/activate");
-      await sh("source .venv/bin/activate; pylint src tests");
-      await sh("source .venv/bin/activate; mypy src tests");
-      await sh("source .venv/bin/activate; pytest tests");
+      const distFile = path.join(tmpDir, "rimu-latest-py3-none-any.whl");
+      await sh(
+        // Rebuild image.
+        "docker build --tag rimu-py .",
+      );
+      await sh(
+        // Run tests and build distribution.
+        "docker run -it --name rimu-py rimu-py make build",
+      );
+      await sh(
+        // Copy distribution to /tmp on host machine.
+        `docker cp rimu-py:/workspaces/rimu-py/dist/rimu-latest-py3-none-any.whl ${distFile}`,
+      );
+      await sh(
+        // Delete container.
+        "docker rm rimu-py",
+      );
+      await sh(
+        // Install distribution on host machine.
+        `python3 -m pip install --upgrade --target ${
+          path.join(tmpDir, "rimu-py")
+        } ${distFile}`,
+      );
     },
-    rimucExe: path.join(pyDir, ".venv/bin/rimupy"),
+    rimucExe: () =>
+      `PYTHONPATH=${path.join(tmpDir, "rimu-py")} ${
+        path.join(tmpDir, "rimu-py", "bin", "rimupy")
+      }`,
   },
 };
 
@@ -170,16 +194,6 @@ if (Deno.args.length > 0) {
     if (port !== "ts") {
       portIds.push(port);
     }
-  }
-}
-
-// Don't process Python port on Windows platform.
-// TODO: Drop this once python build has been ported from Make.
-if (isWindows) {
-  const pyIdx = portIds.indexOf("py");
-  if (pyIdx !== -1) {
-    console.warn("WARNING: python port is excluded from validation on Windows");
-    portIds.splice(pyIdx, 1);
   }
 }
 
@@ -245,8 +259,7 @@ if (!Deno.args.includes("--benchmark")) {
   }
 }
 
-// Compile and compare documentation."
-const tmpDir = Deno.makeTempDirSync({ prefix: "rimu-validate-" });
+// Compile and compare documentation.
 let srcCount = 0;
 Deno.chdir(ports["ts"].projectDir);
 for (const id of portIds) {
@@ -258,7 +271,7 @@ for (const id of portIds) {
     const cmpFile = path.join(tmpDir, `${doc}-ts.html`);
     const args =
       `--no-rimurc --theme legend --custom-toc --header-links --layout sequel --lang en --title "Rimu Reference" --highlightjs --prepend "{generate-examples}='yes'"  ./examples/example-rimurc.rmu ./docsrc/manpage.rmu ./docsrc/doc-header.rmu`;
-    const cmd = `${port.rimucExe} --output ${dstFile} ${args} ${srcFile}`;
+    const cmd = `${port.rimucExe()} --output ${dstFile} ${args} ${srcFile}`;
     await sh(cmd);
     if (id === "ts") {
       srcCount += readFile(srcFile).split("\n").length - 1;
