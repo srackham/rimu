@@ -171,17 +171,11 @@ const ports: Ports = {
         // Delete container.
         "docker rm rimu-py",
       );
-      await sh(
-        // Install distribution on host machine.
-        `python3 -m pip install --upgrade --target ${
-          path.join(tmpDir, "rimu-py")
-        } ${distFile}`,
-      );
+      // Install distribution on host machine.
+      await sh(`pip uninstall -y rimu`);
+      await sh(`pip install ${distFile}`);
     },
-    rimucExe: () =>
-      `PYTHONPATH=${path.join(tmpDir, "rimu-py")} ${
-        path.join(tmpDir, "rimu-py", "bin", "rimupy")
-      }`,
+    rimucExe: () => "rimupy",
   },
 };
 
