@@ -154,7 +154,9 @@ const ports: Ports = {
     ],
     resourcesDir: "src/rimuc/resources",
     make: async function () {
-      const distFile = path.join(tmpDir, "rimu-latest-py3-none-any.whl");
+      const containerDist =
+        "/workspaces/rimu-py/dist/rimu-latest-py3-none-any.whl";
+      const hostDist = path.join(tmpDir, "rimu-latest-py3-none-any.whl");
       await sh(
         // Rebuild image.
         "docker build --tag rimu-py .",
@@ -164,8 +166,8 @@ const ports: Ports = {
         "docker run -it --name rimu-py rimu-py make build",
       );
       await sh(
-        // Copy distribution to /tmp on host machine.
-        `docker cp rimu-py:/workspaces/rimu-py/dist/rimu-latest-py3-none-any.whl ${distFile}`,
+        // Copy distribution to host machine.
+        `docker cp rimu-py:${containerDist} ${hostDist}`,
       );
       await sh(
         // Delete container.
@@ -173,7 +175,7 @@ const ports: Ports = {
       );
       // Install distribution on host machine.
       await sh(`pip uninstall -y rimu`);
-      await sh(`pip install ${distFile}`);
+      await sh(`pip install ${hostDist}`);
     },
     rimucExe: () => "rimupy",
   },
