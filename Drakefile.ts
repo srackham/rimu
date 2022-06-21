@@ -149,17 +149,19 @@ function addModulePathExt(
 
 // Create tasks for Deno source files.
 // Add a .ts extension to TypeScript module paths and copy to Deno source directory.
+const DENO_BUILD_FILES: string[] = [];
 for (const prereq of glob("src/node/!(rimuc).ts")) {
   const target = path.join("src/deno", path.basename(prereq));
   task(target, [prereq], function () {
     addModulePathExt(this.prereqs[0], this.name, ".ts");
   });
+  DENO_BUILD_FILES.push(target);
 }
 
 desc(
   "Copy shared node source modules and add .ts extensions",
 );
-task("build-deno", glob("src/deno/!(deps|rimuc).ts"));
+task("build-deno", DENO_BUILD_FILES);
 
 desc("Install executable wrapper for rimudeno CLI");
 task("install-deno", ["build-deno"], async function () {
