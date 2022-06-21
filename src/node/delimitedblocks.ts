@@ -256,10 +256,8 @@ export function render(
           `unterminated ${def.name} block: ${match[0]}`,
         );
       }
+      lines = [...lines, ...content];
       reader.next(); // Skip closing delimiter.
-      if (content) {
-        lines = [...lines, ...content];
-      }
       // Calculate block expansion options.
       const expansionOptions: Utils.ExpansionOptions = {
         macros: false,
