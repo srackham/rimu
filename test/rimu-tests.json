@@ -2326,8 +2326,8 @@
   {
     "description": "callback api: unterminated delimited block",
     "input": "..\nLorum ipsum",
-    "expectedOutput": "",
-    "expectedCallback": "error: unterminated delimited block: ..",
+    "expectedOutput": "<p>Lorum ipsum</p>",
+    "expectedCallback": "error: unterminated division block: ..",
     "options": {
       "reset": true
     }

@@ -12,7 +12,7 @@ const MATCH_INLINE_TAG =
 
 // Multi-line block element definition.
 export interface Definition {
-  name?: string; // Optional unique identifier.
+  name: string; // Unique identifier.
   openMatch: RegExp;
   closeMatch?: RegExp; // $1 (if defined) is appended to block content.
   openTag: string;
@@ -35,6 +35,7 @@ const DEFAULT_DEFS: Definition[] = [
 
   // Multi-line macro literal value definition.
   {
+    name: "macro-definition",
     openMatch: Macros.LITERAL_DEF_OPEN, // $1 is first line of macro.
     closeMatch: Macros.LITERAL_DEF_CLOSE,
     openTag: "",
@@ -48,6 +49,7 @@ const DEFAULT_DEFS: Definition[] = [
   // Multi-line macro expression value definition.
   // DEPRECATED as of 11.0.0.
   {
+    name: "deprecated-macro-expression",
     openMatch: Macros.EXPRESSION_DEF_OPEN, // $1 is first line of macro.
     closeMatch: Macros.EXPRESSION_DEF_CLOSE,
     openTag: "",
@@ -118,7 +120,7 @@ const DEFAULT_DEFS: Definition[] = [
     // $2 is the alphanumeric tag name.
     openMatch:
       /^(<!--.*|<!DOCTYPE(?:\s.*)?|<\/?([a-z][a-z0-9]*)(?:[\s>].*)?)$/i,
-    closeMatch: /^$/, // Blank line or EOF.
+    closeMatch: /^$/,
     openTag: "",
     closeTag: "",
     expansionOptions: {
@@ -139,7 +141,7 @@ const DEFAULT_DEFS: Definition[] = [
   {
     name: "indented",
     openMatch: /^\\?(\s+\S.*)$/, // $1 is first line of block.
-    closeMatch: /^$/, // Blank line or EOF.
+    closeMatch: /^$/,
     openTag: "<pre><code>",
     closeTag: "</code></pre>",
     expansionOptions: {
@@ -164,7 +166,7 @@ const DEFAULT_DEFS: Definition[] = [
   {
     name: "quote-paragraph",
     openMatch: /^\\?(>[^>].*)$/, // $1 is first line of block.
-    closeMatch: /^$/, // Blank line or EOF.
+    closeMatch: /^$/,
     openTag: "<blockquote><p>",
     closeTag: "</p></blockquote>",
     expansionOptions: {
@@ -188,7 +190,7 @@ const DEFAULT_DEFS: Definition[] = [
   {
     name: "paragraph",
     openMatch: /(.*)/, // $1 is first line of block.
-    closeMatch: /^$/, // Blank line or EOF.
+    closeMatch: /^$/,
     openTag: "<p>",
     closeTag: "</p>",
     expansionOptions: {
@@ -219,7 +221,7 @@ export function render(
   if (reader.eof()) Options.panic("premature eof");
   for (const def of defs) {
     if (
-      allowed.length > 0 && allowed.indexOf(def.name ? def.name : "") === -1
+      allowed.length > 0 && allowed.indexOf(def.name) === -1
     ) {
       continue;
     }
@@ -246,9 +248,15 @@ export function render(
       // Read content up to the closing delimiter.
       reader.next();
       const content = reader.readTo(def.closeMatch as RegExp);
-      if (content === null) {
-        Options.errorCallback("unterminated delimited block: " + match[0]);
+      if (
+        reader.eof() &&
+        ["code", "comment", "division", "quote"].indexOf(def.name) > -1
+      ) {
+        Options.errorCallback(
+          `unterminated ${def.name} block: ${match[0]}`,
+        );
       }
+      reader.next(); // Skip closing delimiter.
       if (content) {
         lines = [...lines, ...content];
       }

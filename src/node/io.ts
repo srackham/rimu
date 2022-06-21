@@ -36,9 +36,9 @@ export class Reader {
   // Read to the first line matching the re.
   // Return the array of lines preceding the match plus a line containing
   // the $1 match group (if it exists).
-  // Return null if an EOF is encountered.
-  // Exit with the reader pointing to the line following the match.
-  readTo(find: RegExp): string[] | null {
+  // If an EOF is encountered return all lines.
+  // Exit with the reader pointing to the line containing the matched line.
+  readTo(find: RegExp): string[] {
     const result: string[] = [];
     let match: string[] | null = null;
     while (!this.eof()) {
@@ -47,18 +47,12 @@ export class Reader {
         if (match[1] !== undefined) {
           result.push(match[1]); // $1
         }
-        this.next();
         break;
       }
       result.push(this.cursor);
       this.next();
     }
-    // Blank line matches EOF.
-    if (match || (find.toString() === "/^$/" && this.eof())) {
-      return result;
-    } else {
-      return null;
-    }
+    return result;
   }
 
   skipBlankLines(): void {
