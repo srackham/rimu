@@ -120,7 +120,7 @@ const ports: Ports = {
     make: async function () {
       await sh("./gradlew --console plain clean test installDist");
     },
-    rimucExe: () => path.join(ktDir, "build/install/rimu-kt/bin/rimukt"),
+    rimucExe: () => path.join(ktDir, "build/install/rimukt/bin/rimukt"),
   },
 
   "dart": {
