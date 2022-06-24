@@ -49,7 +49,7 @@ function testShOut(
   shout: ShOutput,
   test: RimucTest,
 ): void {
-  const out = shout.output + shout.error;
+  const out = shout.error + shout.output;
   const msg = `${test.description}: ${JSON.stringify(test)}: ${
     JSON.stringify(
       shout,

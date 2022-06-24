@@ -161,7 +161,7 @@
     "description": "rimuc --lint (DEPRECATED OPTION)",
     "args": "--lint",
     "input": "{x}",
-    "expectedOutput": "<p>{x}</p>error: /dev/stdin: undefined macro: {x}: {x}\n",
+    "expectedOutput": "error: /dev/stdin: undefined macro: {x}: {x}\n<p>{x}</p>",
     "exitCode": 1,
     "predicate": "equals"
   },
@@ -169,7 +169,7 @@
     "description": "rimuc undefined macro",
     "args": "",
     "input": "{x}",
-    "expectedOutput": "<p>{x}</p>error: /dev/stdin: undefined macro: {x}: {x}\n",
+    "expectedOutput": "error: /dev/stdin: undefined macro: {x}: {x}\n<p>{x}</p>",
     "exitCode": 1,
     "predicate": "equals"
   },
@@ -236,7 +236,7 @@
     "description": "rimuc --prepend option error",
     "args": "--prepend \"{x}\"",
     "input": "",
-    "expectedOutput": "<p>{x}</p>error: --prepend options: undefined macro: {x}: {x}\n",
+    "expectedOutput": "error: --prepend options: undefined macro: {x}: {x}\n<p>{x}</p>",
     "exitCode": 1,
     "predicate": "equals"
   },
