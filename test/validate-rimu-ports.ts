@@ -118,7 +118,7 @@ const ports: Ports = {
     ],
     resourcesDir: "src/main/resources/org/rimumarkup",
     make: async function () {
-      await sh("./gradlew --console plain test installDist");
+      await sh("./gradlew --console plain clean test installDist");
     },
     rimucExe: () => path.join(ktDir, "build/install/rimu-kt/bin/rimukt"),
   },
