@@ -41,13 +41,17 @@ Deno.test("rimuTest", function (): void {
   // Execute tests specified in JSON file.
   const data = readFile("./test/rimu-tests.json");
   const tests: RimuTest[] = JSON.parse(data);
+  let i = 0;
   for (const test of tests) {
-    let msg = "";
+    i++;
+    const msg = `${i}: ${test.description}`;
+    console.log(msg);
+    let callbackMsg = "";
     if (test.expectedCallback === "") {
       test.options.callback = catchLint;
     } else {
       test.options.callback = function (message: CallbackMessage): void {
-        msg += message.type + ": " + message.text + "\n";
+        callbackMsg += message.type + ": " + message.text + "\n";
       };
     }
     const rendered = rimu.render(test.input, test.options);
@@ -58,9 +62,9 @@ Deno.test("rimuTest", function (): void {
     );
     if (test.expectedCallback !== "") {
       assertEquals(
-        msg.trim(),
+        callbackMsg.trim(),
         test.expectedCallback,
-        `${test.description}: actual: "${msg.trimEnd()}": expected: "${test.expectedCallback}"`,
+        `${test.description}: actual: "${callbackMsg.trimEnd()}": expected: "${test.expectedCallback}"`,
       );
     }
   }
