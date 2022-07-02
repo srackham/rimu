@@ -4,7 +4,7 @@
  * Drakefile for Rimu Markup (http://github.com/srackham/rimu).
  */
 
-import * as path from "https://deno.land/std@0.140.0/path/mod.ts";
+import * as path from "https://deno.land/std@0.146.0/path/mod.ts";
 import {
   abort,
   desc,
@@ -96,7 +96,7 @@ const HTML = DOCS.map((doc) => doc.dst);
 desc(
   "build and test Rimu modules and CLIs for Deno and Node.js; build Rimu documentation",
 );
-task("build", ["fmt", "compile", "build-deno", "build-docs"]);
+task("build", ["lint", "fmt", "compile", "build-deno", "build-docs"]);
 
 desc(
   "Compile Rimu to CommonJS (for Node.js), ES modules, bundled ES modules (for browser)",
@@ -171,7 +171,7 @@ task("install-deno", ["build-deno"], async function () {
 });
 
 desc("Run rimu and rimuc CLI tests on Deno and NodeJS");
-task("test", ["lint", "fmt"], async function () {
+task("test", ["lint", "fmt", "compile", "build-deno"], async function () {
   await sh(`${TEST_EXE} test/`);
 });
 
