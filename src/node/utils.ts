@@ -90,32 +90,41 @@ export function replaceInline(
   return text;
 }
 
-// Global Block Attributes state (namespace "singleton", see http://stackoverflow.com/a/30174360).
-// deno-lint-ignore no-namespace
-export namespace BlockAttributes {
-  export let classes: string // Space separated HTML class names.
-  ;
-  export let id: string // HTML element id.
-  ;
-  export let css: string // HTML CSS styles.
-  ;
-  export let attributes: string // Other HTML element attributes.
-  ;
-  export let options: ExpansionOptions;
+class BlockAttributesSingleton {
+  private static instance: BlockAttributesSingleton;
 
-  let ids: string[] // List of allocated HTML ids.
-  ;
+  public classes = ""; // Space separated HTML class names.
+  public id = ""; // HTML element id.
+  public css = ""; // HTML CSS styles.
+  public attributes = ""; // Other HTML element attributes.
+  public options: ExpansionOptions = {};
+  public ids: string[] = []; // List of allocated HTML ids.
 
-  export function init(): void {
-    classes = "";
-    id = "";
-    css = "";
-    attributes = "";
-    options = {};
-    ids = [];
+  constructor() {
+    if (BlockAttributesSingleton.instance) {
+      throw new Error(
+        "BlockAttributesSingleton instantiation failed: use getInstance() instead of new",
+      );
+    }
+    BlockAttributesSingleton.instance = this;
   }
 
-  export function parse(match: RegExpExecArray): boolean {
+  static getInstance(): BlockAttributesSingleton {
+    BlockAttributesSingleton.instance = BlockAttributesSingleton.instance ||
+      new BlockAttributesSingleton();
+    return BlockAttributesSingleton.instance;
+  }
+
+  init(): void {
+    this.classes = "";
+    this.id = "";
+    this.css = "";
+    this.attributes = "";
+    this.options = {};
+    this.ids = [];
+  }
+
+  parse(match: RegExpExecArray): boolean {
     // Parse Block Attributes.
     // class names = $1, id = $2, css-properties = $3, html-attributes = $4, block-options = $5
     let text = match[0];
@@ -128,72 +137,72 @@ export namespace BlockAttributes {
     }
     if (!Options.skipBlockAttributes()) {
       if (m[1]) { // HTML element class names.
-        classes += " " + m[1].trim();
-        classes = classes.trim();
+        this.classes += " " + m[1].trim();
+        this.classes = this.classes.trim();
       }
       if (m[2]) { // HTML element id.
-        id = m[2].trim().slice(1);
+        this.id = m[2].trim().slice(1);
       }
       if (m[3]) { // CSS properties.
-        if (css && css.substr(-1) !== ";") css += ";";
-        css += " " + m[3].trim();
-        css = css.trim();
+        if (this.css && this.css.slice(-1) !== ";") this.css += ";";
+        this.css += " " + m[3].trim();
+        this.css = this.css.trim();
       }
       if (m[4] && !Options.isSafeModeNz()) { // HTML attributes.
-        attributes += " " + m[4].slice(1, m[4].length - 1).trim();
-        attributes = attributes.trim();
+        this.attributes += " " + m[4].slice(1, m[4].length - 1).trim();
+        this.attributes = this.attributes.trim();
       }
-      DelimitedBlocks.setBlockOptions(options, m[5]);
+      DelimitedBlocks.setBlockOptions(this.options, m[5]);
     }
     return true;
   }
 
   // Inject HTML attributes from attrs into the opening tag.
   // Consume HTML attributes unless the 'tag' argument is blank.
-  export function inject(tag: string, consume = true): string {
+  inject(tag: string, consume = true): string {
     if (!tag) {
       return tag;
     }
     let attrs = "";
-    if (classes) {
+    if (this.classes) {
       const re = /^(<[^>]*class=")(.*?)"/i;
       if (re.test(tag)) {
         // Inject class names into first existing class attribute in first tag.
-        tag = tag.replace(re, `$1${classes} $2"`);
+        tag = tag.replace(re, `$1${this.classes} $2"`);
       } else {
-        attrs = `class="${classes}"`;
+        attrs = `class="${this.classes}"`;
       }
     }
-    if (id) {
-      id = id.toLowerCase();
+    if (this.id) {
+      this.id = this.id.toLowerCase();
       const hasId = /^<[^<]*id=".*?"/i.test(tag);
-      if (hasId || ids.indexOf(id) > -1) {
-        Options.errorCallback(`duplicate 'id' attribute: ${id}`);
+      if (hasId || this.ids.indexOf(this.id) > -1) {
+        Options.errorCallback(`duplicate 'id' attribute: ${this.id}`);
       } else {
-        ids.push(id);
+        this.ids.push(this.id);
       }
       if (!hasId) {
-        attrs += ` id="${id}"`;
+        attrs += ` id="${this.id}"`;
       }
     }
-    if (css) {
+    if (this.css) {
       const re = /^(<[^>]*style=")(.*?)"/i;
       if (re.test(tag)) {
         // Inject CSS styles into first existing style attribute in first tag.
         tag = tag.replace(
           re,
-          function (match: string, p1: string, p2: string): string {
+          (_match: string, p1: string, p2: string): string => {
             p2 = p2.trim();
-            if (p2 && p2.substr(-1) !== ";") p2 += ";";
-            return `${p1}${p2} ${css}"`;
+            if (p2 && p2.slice(-1) !== ";") p2 += ";";
+            return `${p1}${p2} ${this.css}"`;
           },
         );
       } else {
-        attrs += ` style="${css}"`;
+        attrs += ` style="${this.css}"`;
       }
     }
-    if (attributes) {
-      attrs += " " + attributes;
+    if (this.attributes) {
+      attrs += " " + this.attributes;
     }
     attrs = attrs.trim();
     if (attrs) {
@@ -206,23 +215,23 @@ export namespace BlockAttributes {
     }
     // Consume the attributes.
     if (consume) {
-      classes = "";
-      id = "";
-      css = "";
-      attributes = "";
+      this.classes = "";
+      this.id = "";
+      this.css = "";
+      this.attributes = "";
     }
     return tag;
   }
 
-  export function slugify(text: string): string {
+  slugify(text: string): string {
     let slug = text.replace(/\W+/g, "-") // Replace non-alphanumeric characters with dashes.
       .replace(/-+/g, "-") // Replace multiple dashes with single dash.
       .replace(/(^-)|(-$)/g, "") // Trim leading and trailing dashes.
       .toLowerCase();
     if (!slug) slug = "x";
-    if (ids.indexOf(slug) > -1) { // Another element already has that id.
+    if (this.ids.indexOf(slug) > -1) { // Another element already has that id.
       let i = 2;
-      while (ids.indexOf(slug + "-" + i) > -1) {
+      while (this.ids.indexOf(slug + "-" + i) > -1) {
         i++;
       }
       slug += "-" + i;
@@ -230,3 +239,5 @@ export namespace BlockAttributes {
     return slug;
   }
 }
+
+export const BlockAttributes = BlockAttributesSingleton.getInstance();
