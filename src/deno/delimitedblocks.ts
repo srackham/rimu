@@ -87,7 +87,7 @@ const DEFAULT_DEFS: Definition[] = [
   // Quote block.
   {
     name: "quote",
-    openMatch: /^\\?("{2,})([\w\s-]*)$/, // $1 is delimiter text, $2 is optional class names.
+    openMatch: /^\\?("{2,}|>{2,})([\w\s-]*)$/, // $1 is delimiter text, $2 is optional class names.
     openTag: "<blockquote>",
     closeTag: "</blockquote>",
     expansionOptions: {
