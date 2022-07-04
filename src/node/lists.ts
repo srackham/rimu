@@ -1,9 +1,9 @@
+import { BlockAttributes } from "./blockattributes";
 import * as DelimitedBlocks from "./delimitedblocks";
 import * as Io from "./io";
 import * as LineBlocks from "./lineblocks";
 import * as Options from "./options";
 import * as Utils from "./utils";
-import { BlockAttributes } from "./utils";
 
 interface Definition {
   match: RegExp;

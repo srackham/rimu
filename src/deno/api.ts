@@ -1,3 +1,4 @@
+import { BlockAttributes } from "./blockattributes.ts";
 import * as DelimitedBlocks from "./delimitedblocks.ts";
 import * as Io from "./io.ts";
 import * as LineBlocks from "./lineblocks.ts";
@@ -6,7 +7,6 @@ import * as Macros from "./macros.ts";
 import * as Options from "./options.ts";
 import * as Quotes from "./quotes.ts";
 import * as Replacements from "./replacements.ts";
-import { BlockAttributes } from "./utils.ts";
 
 export function render(source: string): string {
   const reader = new Io.Reader(source);

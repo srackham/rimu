@@ -1,9 +1,9 @@
+import { BlockAttributes } from "./blockattributes.ts";
 import * as DelimitedBlocks from "./delimitedblocks.ts";
 import * as Io from "./io.ts";
 import * as LineBlocks from "./lineblocks.ts";
 import * as Options from "./options.ts";
 import * as Utils from "./utils.ts";
-import { BlockAttributes } from "./utils.ts";
 
 interface Definition {
   match: RegExp;

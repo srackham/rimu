@@ -1,3 +1,4 @@
+import { BlockAttributes } from "./blockattributes";
 import * as DelimitedBlocks from "./delimitedblocks";
 import * as Io from "./io";
 import * as Macros from "./macros";
@@ -5,7 +6,6 @@ import * as Options from "./options";
 import * as Quotes from "./quotes";
 import * as Replacements from "./replacements";
 import * as Utils from "./utils";
-import { BlockAttributes } from "./utils";
 
 export interface Definition {
   match: RegExp;

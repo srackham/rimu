@@ -1,9 +1,9 @@
 import * as Api from "./api";
+import { BlockAttributes } from "./blockattributes";
 import * as Io from "./io";
 import * as Macros from "./macros";
 import * as Options from "./options";
 import * as Utils from "./utils";
-import { BlockAttributes } from "./utils";
 
 /* tslint:disable:max-line-length */
 const MATCH_INLINE_TAG =
