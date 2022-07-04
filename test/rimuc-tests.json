@@ -277,13 +277,6 @@
     "predicate": "equals"
   },
   {
-    "description": "rimuc example horizontal rule",
-    "args": "--prepend-file ./examples/example-rimurc.rmu",
-    "input": "___\n\nHello World!\n\n****",
-    "expectedOutput": "<p><hr></p>\n<p>Hello World!</p>\n<p><hr></p>",
-    "predicate": "equals"
-  },
-  {
     "description": "rimuc example rimurc plural admonishments",
     "args": "--prepend-file ./examples/example-rimurc.rmu",
     "input": "NOTES: foobar\n\nWARNINGS: foobar\n\nTIPS: foobar",

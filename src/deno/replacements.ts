@@ -111,6 +111,11 @@ const DEFAULT_DEFS: Definition[] = [
     match: /[\\ ]\\(\n|$)/g,
     replacement: "<br>$1",
   },
+  // Horizontal rule is three or more underscore, asterisk or hyphen characters (GFM behaviour)).
+  {
+    match: /^(_{3,}|\*{3,}|-{3,})$/g,
+    replacement: "<hr>",
+  },
   // This hack ensures backslashes immediately preceding closing code quotes are rendered
   // verbatim (Markdown behaviour).
   // Works by finding escaped closing code quotes and replacing the backslash and the character
