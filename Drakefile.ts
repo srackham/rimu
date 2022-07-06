@@ -29,10 +29,10 @@ const GALLERY_INDEX_SRC = "docsrc/gallery.rmu";
 const DOCS_INDEX = "docs/index.html";
 const DOCS_SRC = glob("README.md", "docsrc/*.rmu", "src/**/*.rmu");
 const MANPAGE_RMU = "docsrc/manpage.rmu";
-const MANPAGE_TXT = "src/node/resources/manpage.txt";
+const MANPAGE_TXT = "src/resources/manpage.txt";
 const PKG_FILE = "package.json";
-const RESOURCE_FILES = glob("src/node/resources/*");
-const NODE_RESOURCES_TS = "src/node/resources.ts";
+const RESOURCE_FILES = glob("src/resources/*");
+const DENO_RESOURCES_TS = "src/deno/resources.ts";
 const NODE_RIMUC_TS = "src/node/rimuc.ts";
 const NODE_RIMUC_BIN = "lib/cjs/rimuc.js";
 const NODE_TS_SRC = glob("src/node/*.ts");
@@ -96,16 +96,29 @@ const HTML = DOCS.map((doc) => doc.dst);
 desc(
   "build and test Rimu modules and CLIs for Deno and Node.js; build Rimu documentation",
 );
-task("build", ["lint", "fmt", "compile", "build-deno", "build-docs"]);
+task("build", [
+  "lint",
+  "fmt",
+  "build-resources",
+  "build-node",
+  "build-libs",
+  "build-docs",
+]);
 
 desc(
-  "Compile Rimu to CommonJS (for Node.js), ES modules, bundled ES modules (for browser)",
+  "Compile Node TypeScript source to CommonJS (for Node.js), ES modules and bundled ES modules (for browser)",
 );
-task("compile", [NODE_RIMUC_BIN]);
+task("build-libs", [NODE_RIMUC_BIN]);
 task(
   NODE_RIMUC_BIN,
   NODE_TS_SRC,
   async function () {
+    try {
+      Deno.removeSync("./lib/cjs", { recursive: true });
+      Deno.removeSync("./lib/esm", { recursive: true });
+    } catch (_err) {
+      // TODO: Implement Drake function deleteFiles(...patterns: string[])
+    }
     // Compile to JavaScript ES modules and CommonJS modules.
     await sh(
       [`${TSC_EXE} -p tsconfig.json`, `${TSC_EXE} -p tsconfig-cjs.json`],
@@ -147,31 +160,48 @@ function addModulePathExt(
   writeFile(outFile, text);
 }
 
-// Create tasks for Deno source files.
-// Add a .ts extension to TypeScript module paths and copy to Deno source directory.
-const DENO_BUILD_FILES: string[] = [];
-for (const prereq of glob("src/node/!(rimuc).ts")) {
-  const target = path.join("src/deno", path.basename(prereq));
+// Remove a file extension from TypeScript/JavaScript import/export module paths.
+function removeModulePathExt(
+  inFile: string,
+  outFile: string,
+): void {
+  let text = readFile(inFile);
+  text = text.replace(
+    /^((import|export).*from ".*)\.ts";/gm,
+    `$1";`,
+  );
+  text = text.replace(
+    /^(} from ".*)\.ts";/gm,
+    `$1";`,
+  );
+  writeFile(outFile, text);
+}
+
+// Create tasks for Node source files.
+// Remove .ts extension from Deno TypeScript module paths and copy to Node source directory.
+const NODE_BUILD_FILES: string[] = [];
+for (const prereq of glob("src/deno/!(rimuc|deps).ts")) {
+  const target = path.join("src/node", path.basename(prereq));
   task(target, [prereq], function () {
-    addModulePathExt(this.prereqs[0], this.name, ".ts");
+    removeModulePathExt(this.prereqs[0], this.name);
   });
-  DENO_BUILD_FILES.push(target);
+  NODE_BUILD_FILES.push(target);
 }
 
 desc(
-  "Copy shared node source modules and add .ts extensions",
+  "Copy Deno TypeScript source files to Node source directory removing .ts extensions from imported module names",
 );
-task("build-deno", DENO_BUILD_FILES);
+task("build-node", NODE_BUILD_FILES);
 
 desc("Install executable wrapper for rimudeno CLI");
-task("install-deno", ["build-deno"], async function () {
+task("install-deno", [], async function () {
   await sh(
     `deno install -A --force --name rimudeno "${DENO_RIMUC_TS}"`,
   );
 });
 
 desc("Run rimu and rimuc CLI tests on Deno and NodeJS");
-task("test", ["lint", "fmt", "compile", "build-deno"], async function () {
+task("test", ["build"], async function () {
   await sh(`${TEST_EXE} test/`);
 });
 
@@ -191,8 +221,9 @@ ${readFile(MANPAGE_TXT).replace(/^(.*)'$/gm, "$1'\\")}
   );
 });
 
-// Build resources.ts containing rimuc resource files.
-task(NODE_RESOURCES_TS, RESOURCE_FILES, async function () {
+desc("Build /.src/deno/resources.ts containing rimuc resource files");
+task("build-resources", [DENO_RESOURCES_TS]);
+task(DENO_RESOURCES_TS, RESOURCE_FILES, async function () {
   let text = "// Generated automatically from resource files. Do not edit.\n";
   text += "export const resources: { [name: string]: string } = {";
   for (const f of RESOURCE_FILES) {
@@ -203,12 +234,12 @@ task(NODE_RESOURCES_TS, RESOURCE_FILES, async function () {
     text += `String.raw\`${data}\`,\n`;
   }
   text += "};";
-  writeFile(NODE_RESOURCES_TS, text);
-  await sh(`deno fmt --quiet "${NODE_RESOURCES_TS}"`, { stdout: "null" });
+  writeFile(DENO_RESOURCES_TS, text);
+  await sh(`deno fmt --quiet "${DENO_RESOURCES_TS}"`, { stdout: "null" });
 });
 
 desc("Generate documentation");
-task("build-docs", [DOCS_INDEX]);
+task("build-docs", ["build-libs", DOCS_INDEX]);
 task(
   DOCS_INDEX,
   [
@@ -453,7 +484,7 @@ task("push", ["test", "validate-docs"], async function () {
 });
 
 desc("Publish to npm");
-task("publish-npm", ["test", "compile"], async function () {
+task("publish-npm", ["test", "build-libs"], async function () {
   await sh("npm publish");
 });
 
