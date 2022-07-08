@@ -247,8 +247,8 @@ Scelerisque feugiat massa alias.
 
 ### Quote Block
 A _Quote Block_ renders the enclosed block elements inside an HTML
-`<blockquote>` element.  The Quote Block delimiter character is a
-double-quote.
+`<blockquote>` element.  The Quote Block delimiter character can be
+either a double-quote or a greater-than symbol.
 
 {quote-block-example} = '""
 Nunc mauris tempor.
@@ -256,7 +256,12 @@ Scelerisque feugiat massa alias.
 
 .cite
 Anonymous
-""'
+""
+
+>>>
+Nunc mauris tempor.
+Scelerisque feugiat massa alias.
+>>>'
 {generate-rendered-example-1|quote-block-example}
 
 The above example uses the [rimuc](#rimuc-command) command `--layout`
