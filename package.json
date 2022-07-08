@@ -11,16 +11,16 @@
   ],
   "license": "MIT",
   "homepage": "https://srackham.github.io/rimu/",
-  "main": "lib/cjs/rimu.js",
-  "types": "lib/cjs/rimu.d.ts",
-  "module": "lib/esm/rimu.js",
+  "main": "out/cjs/rimu.js",
+  "types": "out/cjs/rimu.d.ts",
+  "module": "out/esm/rimu.js",
   "bin": {
-    "rimuc": "lib/cjs/rimuc.js"
+    "rimuc": "out/cjs/rimuc.js"
   },
   "files": [
     "LICENSE",
     "README.md",
-    "lib/"
+    "out/"
   ],
   "repository": {
     "type": "git",

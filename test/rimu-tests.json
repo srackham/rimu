@@ -324,7 +324,7 @@
     }
   },
   {
-    "description": "horizontal rule",
+    "description": "horizontal rule (GFM)",
     "input": "___\n\nHello World!\n\n****",
     "expectedOutput": "<p><hr></p>\n<p>Hello World!</p>\n<p><hr></p>",
     "expectedCallback": "",
@@ -586,7 +586,7 @@
     }
   },
   {
-    "description": "quote block (GFM multiline blockquote",
+    "description": "quote block (GFM multiline blockquote)",
     "input": ">>>\nTo be...\n\nor not to be!\n>>>",
     "expectedOutput": "<blockquote><p>To be...</p>\n<p>or not to be!</p></blockquote>",
     "expectedCallback": "",

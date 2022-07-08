@@ -3,5 +3,5 @@
 .vscode/
 .drake.cache.json
 tmp/
-lib/
 node_modules/
+out/
