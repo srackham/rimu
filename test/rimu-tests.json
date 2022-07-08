@@ -324,15 +324,6 @@
     }
   },
   {
-    "description": "horizontal rule (GFM)",
-    "input": "___\n\nHello World!\n\n****",
-    "expectedOutput": "<p><hr></p>\n<p>Hello World!</p>\n<p><hr></p>",
-    "expectedCallback": "",
-    "options": {
-      "reset": true
-    }
-  },
-  {
     "description": "inline links",
     "input": "<#x1|lorum link> \\<#x1|lorum link>",
     "expectedOutput": "<p><a href=\"#x1\">lorum link</a> &lt;#x1|lorum link&gt;</p>",

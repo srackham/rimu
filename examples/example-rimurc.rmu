@@ -22,6 +22,9 @@
 // DEPRECATED: Prefer rimuc important, note, tip and warning layout styles.
 /^\\?(NOTES?|IMPORTANT|WARNINGS?|TIPS?):/ = '<b>$1</b>:'
 
+// Horizontal rule (3 or more underscore, asterisk or hyphen characters).
+/^(_{3,}|\*{3,}|-{3,})$/ = '<hr>'
+
 // Keyword comments.
 /\\?@(deprecated|fixme|important|note|todo|warning)\b.*/ = ''
 
