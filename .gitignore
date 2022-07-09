@@ -5,3 +5,6 @@
 tmp/
 node_modules/
 out/
+src/node/
+!src/node/rimuc.ts
+!src/node/README
