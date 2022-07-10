@@ -129,10 +129,12 @@ Headers:: Headers using `#` character header prefixes.
 Code blocks::
 - Indented paragraphs indented with at least four spaces render like
   Markdown code blocks.
-- Rimu Fenced Code blocks with three or more backticks are compatible
-  with [GitHub Flavored
-  Markdown](https://help.github.com/articles/github-flavored-markdown/)
-  _Fenced Blocks_.
+- Rimu code blocks fenced with three or more backticks behave like
+  GitHub Flavored Markdown Fenced code blocks.
+
+Multi-line blockquotes:: GitLab Flavored Markdown
+^[Multi-line blockquotes](https://docs.gitlab.com/ee/user/markdown.html#multiline-blockquote)
+fenced by `>>>`.
 
 Quote paragraphs:: Paragraphs starting with a `>` character are
 rendered like Markdown Blockquotes.
@@ -152,6 +154,9 @@ URLs and Email addresses:: `[caption](url)`, `<url>` and `<email>`
 syntaxes plus Github Flavored Markdown _URL autolinking_.
 
 Images:: `![alt](url)` syntax.
+
+Regular paragraphs:: Rimu regular paragraphs must be terminated by a blank line.
+This is not always enforced by Markdown but is considered good style nonetheless.
 
 The Rimu _README_ uses this subset for compatibility with _GitHub_ and
 _npmjs.org_ README formats.
@@ -1008,7 +1013,7 @@ to number top level _h2_ and _h3_ sub-sections. For example:
   rimuc --layout sequel --section-numbers mydoc.rmu
 
 The  {rimuc} `--section-numbers` option is a shortcut for
-`--prepend \{--section-numbers} = 'yes'`.
+`--prepend "\{--section-numbers} = 'yes'"`.
 
 
 ## Nested Fenced Blocks
