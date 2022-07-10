@@ -238,7 +238,7 @@ Preview
   <div class="h2"><a href="{tips}">Rimu Tips</a></div>
   <div class="h2"><a href="{gallery}">Rimu Gallery</a></div>
   <div class="h2"><a href="{changelog}">Change Log</a></div>
-  <div class="h2"><a href="{github-rimu}">Github</a></div>
+  <div class="h2"><a href="{github-rimu}">GitHub</a></div>
   <div class="h2"><a href="{npm-rimu}">npm</a></div>
   <h2>Table of Contents</h2>
   <div id="auto-toc"></div>

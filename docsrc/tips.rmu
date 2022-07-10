@@ -96,7 +96,7 @@ command `--highlightjs` option with the `--layout` option.
 
 Set the language you want to highlight by injecting the language CSS
 class name into the code block.  Here are two examples, the first uses
-Github Flavored Markdown style syntax, the second uses Rimu's _Block
+GitHub Flavored Markdown style syntax, the second uses Rimu's _Block
 Attributes_ element:
 
 {highlightjs-example} = 'Some JavaScript code:
@@ -134,7 +134,7 @@ Code blocks::
 
 Multi-line blockquotes:: GitLab Flavored Markdown
 ^[Multi-line blockquotes](https://docs.gitlab.com/ee/user/markdown.html#multiline-blockquote)
-fenced by `>>>`.
+fenced by `>>>` are rendered as Quote blocks.
 
 Quote paragraphs:: Paragraphs starting with a `>` character are
 rendered like Markdown Blockquotes.
@@ -144,14 +144,14 @@ Text formatting::
   ```code``` , ````code```` quoting.
 - `~~strikethrough~~` quotes (GitHub Flavored Markdown behaviour).
 - Underscores within words rendered verbatim and are not treated as
-  underscore emphasis quotes (Github Flavored Markdown behaviour).
+  underscore emphasis quotes (GitHub Flavored Markdown behaviour).
 
 Lists::
 - Bullet lists with `-`, `+`  and `*` list item prefixes.
 - Numbered lists with explicit numbering.
 
 URLs and Email addresses:: `[caption](url)`, `<url>` and `<email>`
-syntaxes plus Github Flavored Markdown _URL autolinking_.
+syntaxes plus GitHub Flavored Markdown _URL autolinking_.
 
 Images:: `![alt](url)` syntax.
 

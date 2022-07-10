@@ -4,7 +4,7 @@ This is the Rimu TypeScript implementation change log (see also [other Rimu
 implementations]({reference}#rimu-implementations)).
 
 ## Version 11.4.0 (2022-??-??)
-- Added GFM (Github Flavored Markdown) multiline blockquote delimited block syntax.
+- Added GFM (GitHub Flavored Markdown) multiline blockquote delimited block syntax.
 
 ## Version 11.3.0 (2022-06-07)
 - Added `^[caption](url)` link syntax which opens the link in a new browser tab.
@@ -120,7 +120,7 @@ if you want them to still be escaped when the macro definition is invoked.
 
 
 ## Version 11.1.1 (2018-12-17)
-- Changed Github documentation publication method from _gh-pages branch_ to
+- Changed GitHub documentation publication method from _gh-pages branch_ to
   _master branch /docs folder_.
 - Vim syntax highlighter tweaks.
 
@@ -284,7 +284,7 @@ diagnostic messages from the Rimu library.
   built-in themes, you can view layout and theme examples in the new
   [Rimu Gallery]({gallery}). Layouts and themes are implemented purely
   with Rimu markup, you can view the [sources on
-  Github]({github-rimu}/tree/master/src/rimuc/resources).
+  GitHub]({github-rimu}/tree/master/src/rimuc/resources).
 
 - `rimuc` layouts have been refactored:
 
@@ -706,7 +706,7 @@ New features:
 - You can append CSS class names to Delimited Block opening delimiter lines and they
   will be injected into the block's opening HTML tag (this is
   an alternative to using a _Block Attributes_ element and was
-  added primarily for compatibility with Github Flavored Markdown's code block highlighting).
+  added primarily for compatibility with GitHub Flavored Markdown's code block highlighting).
   For example:
 
         ``` javascript
@@ -716,7 +716,7 @@ New features:
         ```
 
 - Underscores within words rendered verbatim and are not treated as
-  underscore emphasis quotes (Github Flavored Markdown behaviour).
+  underscore emphasis quotes (GitHub Flavored Markdown behaviour).
 - Add `+` bulleted list ID (Markdown syntax).
 - Lists can be terminated by two or more blank lines.
 - Typographical nicities added to the example `.rimurc` file.
@@ -799,7 +799,7 @@ More Markdown compatible syntaxes added to Rimu core
   be dropped). backtick rationale:
 
     1. Consistency: aligned with use of backtick to quote inline code.
-    2. Familarity: looks like a Github Flavored Markdown fenced code block.
+    2. Familarity: looks like a GitHub Flavored Markdown fenced code block.
 
 
 ## Version 3.0 (2013-10-28)
