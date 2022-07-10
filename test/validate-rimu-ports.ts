@@ -78,7 +78,7 @@ const ports: Ports = {
     make: async function () {
       await sh("deno run -A Drakefile.ts test");
     },
-    rimucExe: () => "node out/cjs/rimuc.js",
+    rimucExe: () => "node lib/cjs/rimuc.js",
   },
 
   "deno": {
@@ -131,7 +131,7 @@ const ports: Ports = {
       "test/rimuc-tests.json",
       "test/fixtures/example-rimurc.rmu",
     ],
-    resourcesDir: "out/resources",
+    resourcesDir: "lib/resources",
     make: async function () {
       makeDir("build");
       await sh(

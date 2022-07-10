@@ -77,8 +77,8 @@ in `$HOME/.deno/bin/rimudeno`:
 
 **Browser**
 
-Rimu builds JavaScript ES module files in the `./out/esm` directory along with a
-bundled version `./out/esm/rimu.min.js`. The `rimu.min.js` ES module file was
+Rimu builds JavaScript ES module files in the `./lib/esm` directory along with a
+bundled version `./lib/esm/rimu.min.js`. The `rimu.min.js` ES module file was
 bundled by [Rollup](https://github.com/rollup/rollup) and minimized with
 [terser](https://github.com/terser/terser). Example usage:
 

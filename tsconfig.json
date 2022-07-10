@@ -5,7 +5,7 @@
     "strict": true,
     "useUnknownInCatchVariables": false,
     "declaration": true,
-    "outDir": "./out/esm"
+    "outDir": "./lib/esm"
   },
   "include": [
     "./src/node"

@@ -34,12 +34,12 @@ const PKG_FILE = "package.json";
 const RESOURCE_FILES = glob("src/resources/*");
 const DENO_RESOURCES_TS = "src/deno/resources.ts";
 const NODE_RIMUC_TS = "src/node/rimuc.ts";
-const NODE_RIMUC_BIN = "out/cjs/rimuc.js";
+const NODE_RIMUC_BIN = "lib/cjs/rimuc.js";
 const NODE_TS_SRC = glob("src/node/*.ts");
 const DENO_TS_SRC = glob("src/deno/*.ts");
 const DENO_RIMUC_TS = "src/deno/rimuc.ts";
-const ESM_RIMU_JS = "out/esm/rimu.js";
-const MIN_RIMU_JS = "out/esm/rimu.min.js";
+const ESM_RIMU_JS = "lib/esm/rimu.js";
+const MIN_RIMU_JS = "lib/esm/rimu.min.js";
 const RIMUC_EXE = `deno run -A ${DENO_RIMUC_TS}`;
 const TEST_EXE = `deno test -A`;
 const TSC_EXE = "./node_modules/.bin/tsc";
@@ -114,8 +114,8 @@ task(
   NODE_TS_SRC,
   async function () {
     try {
-      Deno.removeSync("./out/cjs", { recursive: true });
-      Deno.removeSync("./out/esm", { recursive: true });
+      Deno.removeSync("./lib/cjs", { recursive: true });
+      Deno.removeSync("./lib/esm", { recursive: true });
     } catch (_err) {
       // TODO: Implement Drake function deleteFiles(...patterns: string[])
     }
@@ -125,7 +125,7 @@ task(
     );
     // Add .js extension to ES module path names.
     // See https://stackoverflow.com/questions/45932526/how-to-make-typescript-output-valid-es6-module-import-statements
-    for (const f of glob("out/esm/*.js")) {
+    for (const f of glob("lib/esm/*.js")) {
       addModulePathExt(f, f, ".js");
     }
     // Add shebang line to Node.js rimuc executable.

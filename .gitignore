@@ -4,7 +4,7 @@
 .drake.cache.json
 tmp/
 node_modules/
-out/
+lib/
 src/node/
 !src/node/rimuc.ts
 !src/node/README

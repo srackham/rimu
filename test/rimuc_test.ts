@@ -28,7 +28,7 @@ async function runTest(test: RimucTest, buildTarget: BuiltTarget): Promise<
   let shout: ShOutput;
   if (!buildTarget || buildTarget === "node") {
     shout = await shCapture(
-      `node ./out/cjs/rimuc.js --no-rimurc ${test.args ?? ""}`,
+      `node ./lib/cjs/rimuc.js --no-rimurc ${test.args ?? ""}`,
       { input: test.input, stderr: "piped" },
     );
     testShOut(shout, test);
