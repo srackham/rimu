@@ -4,7 +4,7 @@
 " it will be automatically sourced by Vim.
 "
 " NOTE: This file is sourced after the default ~/.vim/syntax/rimu.vim
-"       syntax file (which is distributed in ./src/vim/syntax/).
+"       syntax file (which is distributed in ./examples/vim/).
 "
 
 " Admonishments.

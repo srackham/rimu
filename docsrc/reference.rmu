@@ -1368,7 +1368,7 @@ callback). The `reset` option is processed before other options.
 .#vim-syntax-file
 ## Vim syntax file
 The Rimu distribution includes a
-<https://github.com/srackham/rimu/blob/master/src/vim/syntax/rimu.vim|syntax
+<https://github.com/srackham/rimu/blob/master/examples/vim/rimu.vim|syntax
 highlighter> for the Vim editor. Copy `rimu.vim` to your
 `$HOME/.vim/syntax` directory and then use the Vim `:set syn=rimu`
 command or put this line in your `$HOME/.vimrc` file to enable Rimu
