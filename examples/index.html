@@ -1,4 +1,9 @@
-<!-- Minimal Rimu Web page -->
+<!--
+    Minimal Rimu Web page
+
+    NOTE: The bundled minimized rimu.miin.js module is built
+    by the Drake `build-lib` task to `./lib/esm/rimu.min.js`
+-->
 <!doctype html>
 <html>
 
@@ -9,7 +14,7 @@
 
 <body>
     <script type="module">
-        import * as rimu from "./rimu.esm.js";
+        import * as rimu from "./rimu.min.js"
         alert(rimu.render("Hello *Rimu*!"));
     </script>
 </body>
