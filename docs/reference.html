@@ -581,7 +581,7 @@ function replaceSpecialChars(s) {
   <div class="h2"><a href="tips.html">Rimu Tips</a></div>
   <div class="h2"><a href="gallery.html">Rimu Gallery</a></div>
   <div class="h2"><a href="changelog.html">Change Log</a></div>
-  <div class="h2"><a href="https://github.com/srackham/rimu">Github</a></div>
+  <div class="h2"><a href="https://github.com/srackham/rimu">GitHub</a></div>
   <div class="h2"><a href="https://npmjs.org/package/rimu">npm</a></div>
   <h2>Table of Contents</h2>
   <div id="auto-toc"></div>
@@ -849,8 +849,8 @@ Scelerisque feugiat massa alias.</code></pre>
 </td></tr></table>
 <h3 id="quote-block">Quote Block</h3>
 <p>A <em>Quote Block</em> renders the enclosed block elements inside an HTML
-<code>&lt;blockquote&gt;</code> element.  The Quote Block delimiter character is a
-double-quote.</p>
+<code>&lt;blockquote&gt;</code> element.  The Quote Block delimiter character can be
+either a double-quote or a greater-than symbol.</p>
 <h4 id="examples-5">Examples</h4>
 <table class="example bordered">
 <tr>
@@ -871,7 +871,12 @@ Scelerisque feugiat massa alias.
 
 .cite
 Anonymous
-""</code></pre>
+""
+
+&gt;&gt;&gt;
+Nunc mauris tempor.
+Scelerisque feugiat massa alias.
+&gt;&gt;&gt;</code></pre>
 <textarea id="quote-block-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('quote-block-example')"></textarea>
 </td>
 <td style="width:50%;">
@@ -880,6 +885,8 @@ Anonymous
 <blockquote><p>Nunc mauris tempor.
 Scelerisque feugiat massa alias.</p>
 <p class="cite">Anonymous</p></blockquote>
+<blockquote><p>Nunc mauris tempor.
+Scelerisque feugiat massa alias.</p></blockquote>
 </div>
 </td></tr></table>
 <p>The above example uses the <a href="#rimuc-command">rimuc</a> command <code>--layout</code>
@@ -2041,7 +2048,7 @@ state (default option values; default Quotes, Replacements and
 Delimited Block definitions; predefined macro definitions only; no
 callback). The <code>reset</code> option is processed before other options.</dd></dl><h2 id="vim-syntax-file">Vim syntax file</h2>
 <p>The Rimu distribution includes a
-<a href="https://github.com/srackham/rimu/blob/master/src/vim/syntax/rimu.vim">syntax
+<a href="https://github.com/srackham/rimu/blob/master/examples/vim/rimu.vim">syntax
 highlighter</a> for the Vim editor. Copy <code>rimu.vim</code> to your
 <code>$HOME/.vim/syntax</code> directory and then use the Vim <code>:set syn=rimu</code>
 command or put this line in your <code>$HOME/.vimrc</code> file to enable Rimu

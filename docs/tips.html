@@ -581,7 +581,7 @@ function replaceSpecialChars(s) {
   <div class="h2"><a href="tips.html">Rimu Tips</a></div>
   <div class="h2"><a href="gallery.html">Rimu Gallery</a></div>
   <div class="h2"><a href="changelog.html">Change Log</a></div>
-  <div class="h2"><a href="https://github.com/srackham/rimu">Github</a></div>
+  <div class="h2"><a href="https://github.com/srackham/rimu">GitHub</a></div>
   <div class="h2"><a href="https://npmjs.org/package/rimu">npm</a></div>
   <h2>Table of Contents</h2>
   <div id="auto-toc"></div>
@@ -706,7 +706,7 @@ highlighter.  To include <em>Highlight.js</em> support use the <a href="referenc
 command <code>--highlightjs</code> option with the <code>--layout</code> option.</p>
 <p>Set the language you want to highlight by injecting the language CSS
 class name into the code block.  Here are two examples, the first uses
-Github Flavored Markdown style syntax, the second uses Rimu's <em>Block
+GitHub Flavored Markdown style syntax, the second uses Rimu's <em>Block
 Attributes</em> element:</p>
 <h4 id="examples-3">Examples</h4>
 <table class="example bordered">
@@ -754,14 +754,15 @@ if x == 1:
 <h2 id="markdown-compatible">Rimu compatible Markdown</h2>
 <p>The following subset of <em>Rimu</em> elements is compatible with Markdown:</p>
 <dl><dt>Headers</dt><dd>Headers using <code>#</code> character header prefixes.</dd><dt>Code blocks</dt><dd><ul><li>Indented paragraphs indented with at least four spaces render like
-  Markdown code blocks.</li><li>Rimu Fenced Code blocks with three or more backticks are compatible
-  with <a href="https://help.github.com/articles/github-flavored-markdown/">GitHub Flavored
-  Markdown</a>
-  <em>Fenced Blocks</em>.</li></ul></dd><dt>Quote paragraphs</dt><dd>Paragraphs starting with a <code>&gt;</code> character are
+  Markdown code blocks.</li><li>Rimu code blocks fenced with three or more backticks behave like
+  GitHub Flavored Markdown Fenced code blocks.</li></ul></dd><dt>Multi-line blockquotes</dt><dd>GitLab Flavored Markdown
+<a href="https://docs.gitlab.com/ee/user/markdown.html#multiline-blockquote" target="_blank">Multi-line blockquotes</a>
+fenced by <code>&gt;&gt;&gt;</code> are rendered as Quote blocks.</dd><dt>Quote paragraphs</dt><dd>Paragraphs starting with a <code>&gt;</code> character are
 rendered like Markdown Blockquotes.</dd><dt>Text formatting</dt><dd><ul><li><code>_emphasis_</code>, <code>*emphasis*</code>, <code>__bold__</code>, <code>**bold**</code>,
   <code>`code`</code> , <code>``code``</code> quoting.</li><li><code>~~strikethrough~~</code> quotes (GitHub Flavored Markdown behaviour).</li><li>Underscores within words rendered verbatim and are not treated as
-  underscore emphasis quotes (Github Flavored Markdown behaviour).</li></ul></dd><dt>Lists</dt><dd><ul><li>Bullet lists with <code>-</code>, <code>+</code>  and <code>*</code> list item prefixes.</li><li>Numbered lists with explicit numbering.</li></ul></dd><dt>URLs and Email addresses</dt><dd><code>[caption](url)</code>, <code>&lt;url&gt;</code> and <code>&lt;email&gt;</code>
-syntaxes plus Github Flavored Markdown <em>URL autolinking</em>.</dd><dt>Images</dt><dd><code>![alt](url)</code> syntax.</dd></dl><p>The Rimu <em>README</em> uses this subset for compatibility with <em>GitHub</em> and
+  underscore emphasis quotes (GitHub Flavored Markdown behaviour).</li></ul></dd><dt>Lists</dt><dd><ul><li>Bullet lists with <code>-</code>, <code>+</code>  and <code>*</code> list item prefixes.</li><li>Numbered lists with explicit numbering.</li></ul></dd><dt>URLs and Email addresses</dt><dd><code>[caption](url)</code>, <code>&lt;url&gt;</code> and <code>&lt;email&gt;</code>
+syntaxes plus GitHub Flavored Markdown <em>URL autolinking</em>.</dd><dt>Images</dt><dd><code>![alt](url)</code> syntax.</dd><dt>Regular paragraphs</dt><dd>Rimu regular paragraphs must be terminated by a blank line.
+This is not always enforced by Markdown but is considered good style nonetheless.</dd></dl><p>The Rimu <em>README</em> uses this subset for compatibility with <em>GitHub</em> and
 <em>npmjs.org</em> README formats.</p>
 <h2 id="rimuc-html">Processing HTML and Markdown with the <code>rimuc</code> command</h2>
 <p>In addition to processing Rimu markup and <a href="#markdown-compatible">Rimu compatible
@@ -1835,7 +1836,7 @@ lacus!</code></pre>
 to number top level <em>h2</em> and <em>h3</em> sub-sections. For example:</p>
 <pre><code>rimuc --layout sequel --section-numbers mydoc.rmu</code></pre>
 <p>The  <a href="reference.html#rimuc-command">rimuc</a> <code>--section-numbers</code> option is a shortcut for
-<code>--prepend {--section-numbers} = 'yes'</code>.</p>
+<code>--prepend "{--section-numbers} = 'yes'"</code>.</p>
 <h2 id="nested-fenced-blocks">Nested Fenced Blocks</h2>
 <p><a href="reference.html#fenced-blocks">Fenced blocks</a> of the same type can be
 nested by using differing numbers of delimiter characters to

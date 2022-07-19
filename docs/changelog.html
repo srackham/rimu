@@ -470,7 +470,7 @@
   <div class="h2"><a href="tips.html">Rimu Tips</a></div>
   <div class="h2"><a href="gallery.html">Rimu Gallery</a></div>
   <div class="h2"><a href="changelog.html">Change Log</a></div>
-  <div class="h2"><a href="https://github.com/srackham/rimu">Github</a></div>
+  <div class="h2"><a href="https://github.com/srackham/rimu">GitHub</a></div>
   <div class="h2"><a href="https://npmjs.org/package/rimu">npm</a></div>
   <h2>Table of Contents</h2>
   <div id="auto-toc"></div>
@@ -478,7 +478,8 @@
 <h1 id="rimu-change-log">Rimu Change Log</h1>
 <p>This is the Rimu TypeScript implementation change log (see also <a href="reference.html#rimu-implementations">other Rimu
 implementations</a>).</p>
-<h2 id="version-11-3-0-2022-06-07">Version 11.3.0 (2022-06-07)</h2>
+<h2 id="version-11-4-0-2022">Version 11.4.0 (2022-??-??)</h2>
+<ul><li>Added GFM (GitHub Flavored Markdown) multiline blockquote delimited block syntax.</li></ul><h2 id="version-11-3-0-2022-06-07">Version 11.3.0 (2022-06-07)</h2>
 <ul><li>Added <code>^[caption](url)</code> link syntax which opens the link in a new browser tab.</li><li>Moved documentation source from <code>./docs</code> to separate <code>/.docsrc</code> directory.</li><li>Upgrade to Drake 1.5.2.</li><li>Upgrade to Deno 1.22.0.</li><li>Pinned Deno libs to std@v0.140.0.</li></ul><h2 id="version-11-2-0-2022-02-27">Version 11.2.0 (2022-02-27)</h2>
 <ul><li>Added <a href="tips.html#important-note-tip-and-warning-styles"><code>important</code>, <code>note</code>, <code>tip</code> and
   <code>warning</code></a> admonition classes to
@@ -526,7 +527,7 @@ build tools and tests but makes no changes to Rimu markup.</p>
 unescaped when the definition is processed, so they now need to double-escaped
 if you want them to still be escaped when the macro definition is invoked.</p>
 <h2 id="version-11-1-1-2018-12-17">Version 11.1.1 (2018-12-17)</h2>
-<ul><li>Changed Github documentation publication method from <em>gh-pages branch</em> to
+<ul><li>Changed GitHub documentation publication method from <em>gh-pages branch</em> to
   <em>master branch /docs folder</em>.</li><li>Vim syntax highlighter tweaks.</li></ul><p>No new features have been added to the Rimu markup language.</p>
 <h2 id="version-11-1-0-2018-09-01">Version 11.1.0 (2018-09-01)</h2>
 <ul><li>Add builtin <code>plain</code> <a href="reference.html#rimuc-command">rimuc</a> layout to all Rimu
@@ -600,7 +601,7 @@ diagnostic messages from the Rimu library.</p>
   built-in themes, you can view layout and theme examples in the new
   <a href="gallery.html">Rimu Gallery</a>. Layouts and themes are implemented purely
   with Rimu markup, you can view the <a href="https://github.com/srackham/rimu/tree/master/src/rimuc/resources">sources on
-  Github</a>.</li><li><code>rimuc</code> layouts have been refactored:<ul><li>Layout macros now use <a href="reference.html#reserved-macro-names">reserved
+  GitHub</a>.</li><li><code>rimuc</code> layouts have been refactored:<ul><li>Layout macros now use <a href="reference.html#reserved-macro-names">reserved
     names</a>.</li><li><a href="https://github.com/srackham/rimu/tree/master/src/rimuc/resources">Layout header files</a>
     expose a consistent set of layout and theme macros that can be
     <a href="reference.html#layout-customization">user customized</a>.</li><li>They now import the latest versions of MathJax and HighlightJS.</li><li>They include a number of CSS tweaks.</li></ul></li><li>Use the new <code>rimuc</code> command <code>--no-toc</code> macro to disable table of
@@ -808,14 +809,14 @@ For example:</p>
 <ul><li>You can append CSS class names to Delimited Block opening delimiter lines and they
   will be injected into the block's opening HTML tag (this is
   an alternative to using a <em>Block Attributes</em> element and was
-  added primarily for compatibility with Github Flavored Markdown's code block highlighting).
+  added primarily for compatibility with GitHub Flavored Markdown's code block highlighting).
   For example:<pre><code>``` javascript
 if (message) {
   console.error('Error: ' + message);
 }
 ```</code></pre>
 </li><li>Underscores within words rendered verbatim and are not treated as
-  underscore emphasis quotes (Github Flavored Markdown behaviour).</li><li>Add <code>+</code> bulleted list ID (Markdown syntax).</li><li>Lists can be terminated by two or more blank lines.</li><li>Typographical nicities added to the example <code>.rimurc</code> file.</li></ul><h2 id="version-5-0-0-2015-06-07">Version 5.0.0 (2015-06-07)</h2>
+  underscore emphasis quotes (GitHub Flavored Markdown behaviour).</li><li>Add <code>+</code> bulleted list ID (Markdown syntax).</li><li>Lists can be terminated by two or more blank lines.</li><li>Typographical nicities added to the example <code>.rimurc</code> file.</li></ul><h2 id="version-5-0-0-2015-06-07">Version 5.0.0 (2015-06-07)</h2>
 <p>This version adds new API options, an <em>API Options</em> element and more Markdown
 compatibility. It also includes some breaking changes.</p>
 <ul><li>Added <code>macroMode</code> API option to specify which macro invocations are processed.</li><li>Added <code>reset</code> API option to reset the API to its default state.</li><li>Added Markdown compatible double back-tick <code>``code quotes``</code> and double
@@ -848,7 +849,7 @@ compatibility. It also includes some breaking changes.</p>
 <ul><li>Auto-encode (most) raw HTTP URLs as links.</li><li>Added Markdown compatible Quote Paragraphs (paragraphs starting with <code>&gt;</code>
   rendered inside a <code>&lt;blockquote&gt;</code> HTML element).</li><li>Added backtick delimiter for code blocks - - backtick is now the normative
   code block delimiter (the older dash delimiter is deprecated but will never
-  be dropped). backtick rationale:<ol><li>Consistency: aligned with use of backtick to quote inline code.</li><li>Familarity: looks like a Github Flavored Markdown fenced code block.</li></ol></li></ul><h2 id="version-3-0-2013-10-28">Version 3.0 (2013-10-28)</h2>
+  be dropped). backtick rationale:<ol><li>Consistency: aligned with use of backtick to quote inline code.</li><li>Familarity: looks like a GitHub Flavored Markdown fenced code block.</li></ol></li></ul><h2 id="version-3-0-2013-10-28">Version 3.0 (2013-10-28)</h2>
 <ul><li>Added <em>Delimited Block</em> definitions.</li><li>Enhanced and refined Macros.</li><li>Many other enhancements, additions and documentation updates.</li><li><em>Indented Paragraphs</em> and <em>Code Blocks</em> no longer expand macro
   invocations by default. To reinstate old behavior use these delimited
   block definitions:<pre><code>|code| = '+macros'
