@@ -12,12 +12,13 @@ import {
   glob,
   quote,
   readFile,
+  remove,
   run,
   sh,
   task,
   updateFile,
   writeFile,
-} from "https://deno.land/x/drake@v1.5.2/mod.ts";
+} from "https://deno.land/x/drake@v1.6.0/mod.ts";
 
 const isWindows = Deno.build.os === "windows";
 
@@ -113,12 +114,7 @@ task(
   NODE_RIMUC_BIN,
   NODE_TS_SRC,
   async function () {
-    try {
-      Deno.removeSync("./lib/cjs", { recursive: true });
-      Deno.removeSync("./lib/esm", { recursive: true });
-    } catch (_err) {
-      // TODO: Implement Drake function deleteFiles(...patterns: string[])
-    }
+    remove("./lib/cjs/*", "./lib/esm/*");
     // Compile to JavaScript ES modules and CommonJS modules.
     await sh(
       [`${TSC_EXE} -p tsconfig.json`, `${TSC_EXE} -p tsconfig-cjs.json`],
