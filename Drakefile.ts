@@ -406,7 +406,7 @@ function getPackageVers(): string {
 desc(
   "Display or update the project version number. Set 'vers' to update version e.g. vers=1.0.0",
 );
-task("version", [], async function () {
+task("version", [], function () {
   const vers = env("vers");
   const currentVers = getPackageVers();
   if (!vers) {
@@ -454,8 +454,6 @@ task("version", [], async function () {
     ) {
       abort(`version number not updated: ${DENO_RIMUC_TS}`);
     }
-    env("vers", vers);
-    await sh('git commit --all -m "chore: bump version number."');
   }
 });
 
