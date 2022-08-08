@@ -1172,27 +1172,27 @@ Definition for second term.</code></pre>
 <table class="example bordered">
 <tr>
 <td class="example-header">
-<span class="edit-icon no-print" title="Edit example" onclick="editExample('list-item-example')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('attached-element-example')">&#x270e;</span>
 Rimu Markup</td>
 <td class="example-header">
 HTML
-<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('list-item-example')">&#x2b04;</span>
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('attached-element-example')">&#x2b04;</span>
 Preview
 </td>
 </tr>
 <tr>
 <td style="width:50%;">
-<pre class="example-source nohighlight" id="list-item-example-source"><code>- First line.
+<pre class="example-source nohighlight" id="attached-element-example-source"><code>- First line.
   Second line.
 ""
 Optional attached Quote block.
 ""
   * Optional child list.</code></pre>
-<textarea id="list-item-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('list-item-example')"></textarea>
+<textarea id="attached-element-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('attached-element-example')"></textarea>
 </td>
 <td style="width:50%;">
-<div id="list-item-example-errors" class="example-errors"></div>
-<div id="list-item-example-rendered" class="example-rendered">
+<div id="attached-element-example-errors" class="example-errors"></div>
+<div id="attached-element-example-rendered" class="example-rendered">
 <ul><li>First line.
   Second line.<blockquote><p>Optional attached Quote block.</p></blockquote>
 <ul><li>Optional child list.</li></ul></li></ul></div>
@@ -1599,7 +1599,7 @@ promote clarity and eliminate repetition (see <a href="#macro-examples">Macro
 Examples</a>).</p>
 <p>Rimu provides elements for defining and invoking macros and includes
 features like macro parametrization, conditional processing and
-meta-programming.</p>
+meta macros.</p>
 <h3 id="macro-definitions">Macro definitions</h3>
 <p>A macro definition assigns one or more lines of Rimu markup to a macro
 name.</p>
@@ -1673,7 +1673,7 @@ name.</p>
     take a look at the <code>{sidebar}</code> macro in <a href="tips.html#using-rimu-macros">these
     examples</a>, it generates a <em>Header</em> block
     element followed by a <em>Block Attributes</em> block element.</li></ol></li></ul><h3 id="macro-examples">Macro examples</h3>
-<ul><li><a href="tips.html#using-rimu-macros">Using Rimu Macros</a>.</li><li><a href="tips.html#use-macros-to-create-tables">Use macros to create tables</a>.</li><li><a href="tips.html#macro-meta-programming">Macro meta-programming</a>.</li><li><a href="tips.html#macro-tips">Macro tips</a>.</li><li><a href="tips.html#general-purpose-macro-processor">General purpose macro processor</a>.</li></ul><h3 id="reserved-macro-names">Reserved macro names</h3>
+<ul><li><a href="tips.html#using-rimu-macros">Using Rimu Macros</a>.</li><li><a href="tips.html#use-macros-to-create-tables">Use macros to create tables</a>.</li><li><a href="tips.html#meta-macros">Meta macros</a>.</li><li><a href="tips.html#macro-tips">Macro tips</a>.</li><li><a href="tips.html#general-purpose-macro-processor">General purpose macro processor</a>.</li></ul><h3 id="reserved-macro-names">Reserved macro names</h3>
 <p>Macros with names starting with two hyphen characters are reserved for
 use by Rimu. Reserved macros are used by the Rimu library and by the
 <a href="#rimuc-command">rimuc command</a>.</p>

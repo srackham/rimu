@@ -661,7 +661,7 @@ experimentation.</p>
   <em>Division Block</em> (you can also use use <a href="#scoped-css">HTML &lt;style&gt;
   elements</a> to style the output).</li><li>Note how macro definitions can span multiple lines and can contain
   any valid Rimu markup (including HTML and blank lines).</li></ul><p>See also:</p>
-<ul><li><a href="#use-macros-to-create-tables">Use macros to create tables</a>.</li><li><a href="#macro-meta-programming">Macro meta-programming</a>.</li><li><a href="#macro-tips">Macro tips</a>.</li><li><a href="#general-purpose-macro-processor">General purpose macro processor</a>.</li></ul><h2 id="intra-document-links">Intra-document Links</h2>
+<ul><li><a href="#use-macros-to-create-tables">Use macros to create tables</a>.</li><li><a href="#meta-macros">Meta macros</a>.</li><li><a href="#macro-tips">Macro tips</a>.</li><li><a href="#general-purpose-macro-processor">General purpose macro processor</a>.</li></ul><h2 id="intra-document-links">Intra-document Links</h2>
 <p>To link to another place within a document:</p>
 <ol><li>Create an ID for the element you want to link to using the Rimu
   <em>Block Attribute</em> element.</li><li>Link to it using a fragment identifier URL.</li></ol><h4 id="examples-2">Examples</h4>
@@ -1607,12 +1607,52 @@ consequat quisque duis mollis magna arcu.</p>
 </td></tr></table>
 </div>
 </td></tr></table>
-<h2 id="macro-meta-programming">Macro meta-programming</h2>
-<p>You can define macros which, when invoked, generate other macros. A
-good example of this is the generation of document section headers,
-links and table of contents entries from a section identifier and
-title.</p>
-<h4 id="examples-11">Examples</h4>
+<h2 id="meta-macros">Meta Macros</h2>
+<p>You can define macros which, when invoked, generate other macros.</p>
+<p>The <em>Footnotes macros</em> example generates footnote links and footnotes. The
+<em>Table of contents macros</em> example generates document section headers, links and
+table of contents entries from a section identifier and title.</p>
+<h4 id="footnotes-macros">Footnotes macros</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header" style="width:10%;">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('meta-macros-example-2')">&#x270e;</span>
+Rimu Markup</td>
+<td>
+<pre class="example-source nohighlight" id="meta-macros-example-2-source"><code>// footnote generates two macros: a superscript link and the footnote.
+{footnote} = '{$1} = '&lt;sup&gt;&lt;a href="#footnote-$1"&gt;$1&lt;/a&gt;&lt;/sup&gt;' \
+{footnote-$1} = '&lt;span id="footnote-$1"&gt;$2&lt;/span&gt;' \
+'
+
+{footnote|1|Ac _lacinia mi_.}
+{footnote|2|[Egestas](https://example.com) congue.}
+
+Purus aliquam mauris a aliquam orci{1}.
+Massa sit sit. Penatibus.
+
+Maecenas at tellus. Sapien quam mauris{2}.
+Non a pede in.
+
+. {footnote-1}
+. {footnote-2}</code></pre>
+<textarea id="meta-macros-example-2-edit" class="edit-source" style="display:none" onkeyup="renderExample('meta-macros-example-2')"></textarea>
+</td>
+</tr>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('meta-macros-example-2')">&#x2b04;</span>
+Preview
+</td>
+<td>
+<div id="meta-macros-example-2-errors" class="example-errors"></div>
+<div id="meta-macros-example-2-rendered" class="example-rendered">
+<p>Purus aliquam mauris a aliquam orci<sup><a href="#footnote-1">1</a></sup>.
+Massa sit sit. Penatibus.</p>
+<p>Maecenas at tellus. Sapien quam mauris<sup><a href="#footnote-2">2</a></sup>.
+Non a pede in.</p>
+<ol><li><span id="footnote-1">Ac <em>lacinia mi</em>.</span></li><li><span id="footnote-2"><a href="https://example.com">Egestas</a> congue.</span></li></ol></div>
+</td></tr></table>
+<h4 id="table-of-contents-macros">Table of contents macros</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
@@ -1686,7 +1726,7 @@ lines that end with a single-quote.</p>
 option also includes:</p>
 <ul><li><code>dl-counter</code>, <code>ol-counter</code> and <code>ul-counter</code> CSS classes for
   counting labeled, numbered and bullet list items.</li><li><code>{--dl-counter}</code>, <code>{--ol-counter}</code> and <code>{--ul-counter}</code>
-  counter macros.</li><li>The <code>dl-numbered</code> CSS class for numbering labeled list items.</li></ul><h4 id="examples-12">Examples</h4>
+  counter macros.</li><li>The <code>dl-numbered</code> CSS class for numbering labeled list items.</li></ul><h4 id="examples-11">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1738,7 +1778,7 @@ There are {--ol-counter} ordered list items.</code></pre>
 <h2 id="append-arbitrary-elements-to-list-items">Append arbitrary elements to list items</h2>
 <p>An attached <em>Division Block</em> can be used to group and append arbitrary
 block elements to a list item.</p>
-<h4 id="examples-13">Examples</h4>
+<h4 id="examples-12">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1775,7 +1815,7 @@ will be rendered with the list item.</p>
 <p><a href="reference.html#block-attributes">Block Attribute</a> elements within a list
 are applied to the next list item or attached list item element. This
 facilitates styling and linking within <a href="reference.html#lists">lists</a>.</p>
-<h4 id="examples-14">Examples</h4>
+<h4 id="examples-13">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1841,7 +1881,7 @@ to number top level <em>h2</em> and <em>h3</em> sub-sections. For example:</p>
 <p><a href="reference.html#fenced-blocks">Fenced blocks</a> of the same type can be
 nested by using differing numbers of delimiter characters to
 distinguish between them.</p>
-<h4 id="examples-15">Examples</h4>
+<h4 id="examples-14">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1899,7 +1939,7 @@ Indented paragraph looks like a list item it will be rendered as a
 list item (because Lists take precedence over Indented paragraphs).
 To render an indented list item as an Indented paragraph change it to
 a fenced code block.</p>
-<h4 id="examples-16">Examples</h4>
+<h4 id="examples-15">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1934,7 +1974,7 @@ Preview
 for a labelled list. For example, enclosing a labelled list in an HTML block
 comment. The problem arises because lists take precedence over delimited blocks.
 The work-around is to put the opening block delimiter on a separate line.</p>
-<h4 id="examples-17">Examples</h4>
+<h4 id="examples-16">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -1990,7 +2030,7 @@ from being seen as the Inclusion macro's closing brace</p>
 (zero-width space character followed by backslash character). Simply prefixing a
 backslash is insufficent because the unescaped definition will be mismatched
 downstream.</p>
-<h4 id="examples-18">Examples</h4>
+<h4 id="examples-17">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -2018,7 +2058,7 @@ Preview
 <ol><li>Terminate lines with a Rimu line break (a space followed by a
   backslash character).</li><li>Terminate lines with an HTML break element (<code>&lt;br&gt;</code>).</li><li>Apply the <code>preserve-breaks</code> class to a Rimu block element and
   compile with the <code>rimuc</code> command <a href="reference.html#layout-option"><code>--layout</code>
-  option</a>.</li></ol><h4 id="examples-19">Examples</h4>
+  option</a>.</li></ol><h4 id="examples-18">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -2071,7 +2111,7 @@ this sidebar.
 <code>align-center</code> and <code>align-right</code> CSS classes to apply the CSS
 <code>text-align</code> property.  Use them to control the horizontal alignment
 of flowed inline elements (e.g. text, inline images):</p>
-<h4 id="examples-20">Examples</h4>
+<h4 id="examples-19">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -2106,7 +2146,7 @@ Enim odio ultrices</code></pre>
 <h2 id="citing-quotes-and-verses">Citing quotes and verses</h2>
 <p>The <a href="reference.html#rimuc-command">rimuc</a> command <code>--layout</code> option includes the CSS <em>cite</em> class
 for attributing quotes and verses. For example:</p>
-<h4 id="examples-21">Examples</h4>
+<h4 id="examples-20">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
@@ -2165,7 +2205,7 @@ Augue non egestas amet?</p>
 </td></tr></table>
 <h2 id="an-example-letter">An example letter</h2>
 <p>Here's an example of a personal letter:</p>
-<h4 id="examples-22">Examples</h4>
+<h4 id="examples-21">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
@@ -2291,7 +2331,7 @@ implements keyword comments (it's in the <a href="https://github.com/srackham/ri
 <pre><code>/\\?@(deprecated|fixme|important|note|todo|warning)\b.*/ = ''</code></pre>
 <ul><li>A keyword comment comprises a keyword plus any text following it on the
   same line.</li><li>Keyword comments are ommitted from the Rimu HTML output.</li><li>Prefixing the keyword with an <code>@</code> character is simply a convention to minimise
-  ambiguity.</li></ul><h4 id="examples-23">Examples</h4>
+  ambiguity.</li></ul><h4 id="examples-22">Examples</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header">
