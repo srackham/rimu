@@ -9,6 +9,7 @@ import {
   makeDir,
   readFile,
   sh,
+  shCapture,
 } from "https://deno.land/x/drake@v1.5.2/lib.ts";
 
 env("--abort-exits", true);
@@ -154,9 +155,10 @@ const ports: Ports = {
     ],
     resourcesDir: "src/rimuc/resources",
     make: async function () {
+      const vers = (await shCapture("make version")).output.trim();
       const containerDist =
-        "/workspaces/rimu-py/dist/rimu-latest-py3-none-any.whl";
-      const hostDist = path.join(tmpDir, "rimu-latest-py3-none-any.whl");
+        `/workspaces/rimu-py/dist/rimu-${vers}-py3-none-any.whl`;
+      const hostDist = path.join(tmpDir, `rimu-${vers}-py3-none-any.whl`);
       await sh(
         // Rebuild image.
         "docker build --tag rimu-py .",
