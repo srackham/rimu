@@ -62,7 +62,7 @@ experimentation.
 See also:
 
 - [Use macros to create tables](#use-macros-to-create-tables).
-- [Macro meta-programming](#macro-meta-programming).
+- [Meta macros](#meta-macros).
 - [Macro tips](#macro-tips).
 - [General purpose macro processor](#general-purpose-macro-processor).
 
@@ -834,11 +834,32 @@ consequat quisque duis mollis magna arcu.
 {generate-rendered-example-2|columnar-text-example|Columnar text layouts}
 
 
-## Macro meta-programming
-You can define macros which, when invoked, generate other macros. A
-good example of this is the generation of document section headers,
-links and table of contents entries from a section identifier and
-title.
+## Meta Macros
+You can define macros which, when invoked, generate other macros.
+
+The _Footnotes macros_ example generates footnote links and footnotes. The
+_Table of contents macros_ example generates document section headers, links and
+table of contents entries from a section identifier and title.
+
+.-macros
+{meta-macros-example-2} = '// footnote generates two macros: a superscript link and the footnote.
+{footnote} = '{$1} = '<sup><a href="#footnote-$1">$1</a></sup>' \\
+{footnote-$1} = '<span id="footnote-$1">$2</span>' \\
+'\
+
+\{footnote|1|Ac _lacinia mi_.}
+\{footnote|2|[Egestas](https://example.com) congue.}
+
+Purus aliquam mauris a aliquam orci{1}.
+Massa sit sit. Penatibus.
+
+Maecenas at tellus. Sapien quam mauris{2}.
+Non a pede in.
+
+. {footnote-1}
+. {footnote-2}'
+
+{generate-rendered-example-2|meta-macros-example-2|Footnotes macros}
 
 .-macros
 {meta-macros-example} = '// toc macro generates section TOC entry, link macro and header macro.
@@ -859,7 +880,7 @@ Link to {section2}.
 {section2-header}
 Link to {section1}.'
 
-{generate-rendered-example-2|meta-macros-example}
+{generate-rendered-example-2|meta-macros-example|Table of contents macros}
 
 .note
 The backslash character is used to continue macro definition

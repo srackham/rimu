@@ -398,7 +398,7 @@ First term:: Definition one.
 Second term::
 Definition for second term.'
 
-{list-item-example} = '
+{attached-element-example} = '
 - First line.
   Second line.
 ""
@@ -422,7 +422,7 @@ Optional attached Quote block.
   element](#attached-list-item-elements), followed by an optional
   child list.
 ..
-{generate-rendered-example-1|list-item-example|List item}
+{generate-rendered-example-1|attached-element-example|List item}
 ..
 - List items and attached elements can be preceded by [Block
   Attribute]({reference}#block-attributes) elements.  This facilitates
@@ -825,7 +825,7 @@ Examples](#macro-examples)).
 
 Rimu provides elements for defining and invoking macros and includes
 features like macro parametrization, conditional processing and
-meta-programming.
+meta macros.
 
 ### Macro definitions
 A macro definition assigns one or more lines of Rimu markup to a macro
@@ -957,7 +957,7 @@ Invocation syntax:
 
 - [Using Rimu Macros]({tips}#using-rimu-macros).
 - [Use macros to create tables]({tips}#use-macros-to-create-tables).
-- [Macro meta-programming]({tips}#macro-meta-programming).
+- [Meta macros]({tips}#meta-macros).
 - [Macro tips]({tips}#macro-tips).
 - [General purpose macro processor]({tips}#general-purpose-macro-processor).
 

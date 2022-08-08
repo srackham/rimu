@@ -7,14 +7,11 @@ At its core Rimu is a simple readable-text markup similar in scope to
 Markdown, but with two additional areas of functionality (both built
 into the Rimu markup syntax):
 
-- Markup generation can be customized and extended.
-- Rimu includes a simple, flexible macro language.
-- A subset of Rimu syntax is [Markdown
-  compatible](https://srackham.github.io/rimu/tips.html#markdown-compatible).
-- The generated HTML is compatible with all modern browsers.
-- A number of [Rimu
-  implementations](https://srackham.github.io/rimu/reference.html#rimu-implementations)
-  are available for various languages and runtime environments.
+1. Markup generation can be customized and extended.
+2. Rimu includes a simple, flexible macro language.
+
+In addition, a subset of Rimu is compatible with a [subset of Markdown](https://srackham.github.io/rimu/tips.html#markdown-compatible)
+and Rimu has been ported to a number of [languages and runtime environments](https://srackham.github.io/rimu/reference.html#rimu-implementations).
 
 
 ## Learn more
