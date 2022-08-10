@@ -834,6 +834,27 @@ consequat quisque duis mollis magna arcu.
 {generate-rendered-example-2|columnar-text-example|Columnar text layouts}
 
 
+## Inline citations
+The following example shows how macros can be used to generate inline citations.
+
+.-macros
+{tooltips-example-2} = '{LFB} = '<sup>
+<abbr title="Latin for Beginners (D'Ooge) §$1">[LFB$1]</abbr>
+</sup>'\
+
+Purus aliquam mauris a aliquam orci \{LFB|42}.
+Massa sit sit. Penatibus.
+
+Maecenas at tellus \{LFB|28}. Sapien quam mauris.
+Non a pede in.'
+
+{generate-rendered-example-2|tooltips-example-2|Inline citations}
+
+The `\{LBF}` parameterised macro cites numbered sections from a publication using the
+[HTML `abbr` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/abbr)
+to create tooltips.
+
+
 ## Meta Macros
 You can define macros which, when invoked, generate other macros.
 
@@ -846,15 +867,18 @@ table of contents entries from a section identifier and title.
 {footnote} = '{$1} = '<sup><a href="#footnote-$1">$1</a></sup>' \\
 {footnote-$1} = '<span id="footnote-$1">$2</span>' \\
 '\
-
 \{footnote|1|Ac _lacinia mi_.}
 \{footnote|2|[Egestas](https://example.com) congue.}
 
+#### Lorum Ipsum
 Purus aliquam mauris a aliquam orci{1}.
 Massa sit sit. Penatibus.
 
 Maecenas at tellus. Sapien quam mauris{2}.
 Non a pede in.
+
+."margin-top: 1.5em"
+<hr>
 
 . {footnote-1}
 . {footnote-2}'
