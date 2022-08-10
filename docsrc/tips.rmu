@@ -834,11 +834,28 @@ consequat quisque duis mollis magna arcu.
 {generate-rendered-example-2|columnar-text-example|Columnar text layouts}
 
 
+## Image links
+Use raw HTML:
+
+```
+<a href="#link-url"><img src="image.png"></a>
+```
+
+Or a macro:
+
+```
+// Size image and open the link in a new browser tab.
+{linked-image}='<a href="$2" target="_blank"><img src="$1" width="500"></a>'
+
+{linked-image|image.png|#link}
+```
+
+
 ## Inline citations
 The following example shows how macros can be used to generate inline citations.
 
 .-macros
-{tooltips-example-2} = '{LFB} = '<sup>
+{tooltips-example} = '{LFB} = '<sup>
 <abbr title="Latin for Beginners (D'Ooge) §$1">[LFB$1]</abbr>
 </sup>'\
 
@@ -848,7 +865,7 @@ Massa sit sit. Penatibus.
 Maecenas at tellus \{LFB|28}. Sapien quam mauris.
 Non a pede in.'
 
-{generate-rendered-example-2|tooltips-example-2|Inline citations}
+{generate-rendered-example-2|tooltips-example|Inline citations}
 
 The `\{LBF}` parameterised macro cites numbered sections from a publication using the
 [HTML `abbr` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/abbr)
