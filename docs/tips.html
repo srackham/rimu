@@ -1607,16 +1607,24 @@ consequat quisque duis mollis magna arcu.</p>
 </td></tr></table>
 </div>
 </td></tr></table>
+<h2 id="image-links">Image links</h2>
+<p>Use raw HTML:</p>
+<pre><code>&lt;a href="#link-url"&gt;&lt;img src="image.png"&gt;&lt;/a&gt;</code></pre>
+<p>Or a macro:</p>
+<pre><code>// Size image and open the link in a new browser tab.
+{linked-image}='&lt;a href="$2" target="_blank"&gt;&lt;img src="$1" width="500"&gt;&lt;/a&gt;'
+
+{linked-image|image.png|#link}</code></pre>
 <h2 id="inline-citations">Inline citations</h2>
 <p>The following example shows how macros can be used to generate inline citations.</p>
 <h4 id="inline-citations-2">Inline citations</h4>
 <table class="example bordered">
 <tr>
 <td class="example-header" style="width:10%;">
-<span class="edit-icon no-print" title="Edit example" onclick="editExample('tooltips-example-2')">&#x270e;</span>
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('tooltips-example')">&#x270e;</span>
 Rimu Markup</td>
 <td>
-<pre class="example-source nohighlight" id="tooltips-example-2-source"><code>{LFB} = '&lt;sup&gt;
+<pre class="example-source nohighlight" id="tooltips-example-source"><code>{LFB} = '&lt;sup&gt;
 &lt;abbr title="Latin for Beginners (D'Ooge) §$1"&gt;[LFB$1]&lt;/abbr&gt;
 &lt;/sup&gt;'
 
@@ -1625,17 +1633,17 @@ Massa sit sit. Penatibus.
 
 Maecenas at tellus {LFB|28}. Sapien quam mauris.
 Non a pede in.</code></pre>
-<textarea id="tooltips-example-2-edit" class="edit-source" style="display:none" onkeyup="renderExample('tooltips-example-2')"></textarea>
+<textarea id="tooltips-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('tooltips-example')"></textarea>
 </td>
 </tr>
 <tr><td class="example-header" style="width:10%;">
 HTML
-<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('tooltips-example-2')">&#x2b04;</span>
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('tooltips-example')">&#x2b04;</span>
 Preview
 </td>
 <td>
-<div id="tooltips-example-2-errors" class="example-errors"></div>
-<div id="tooltips-example-2-rendered" class="example-rendered">
+<div id="tooltips-example-errors" class="example-errors"></div>
+<div id="tooltips-example-rendered" class="example-rendered">
 <p>Purus aliquam mauris a aliquam orci <sup>
 <abbr title="Latin for Beginners (D'Ooge) §42">[LFB42]</abbr>
 </sup>.
