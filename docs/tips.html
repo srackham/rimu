@@ -1607,6 +1607,48 @@ consequat quisque duis mollis magna arcu.</p>
 </td></tr></table>
 </div>
 </td></tr></table>
+<h2 id="inline-citations">Inline citations</h2>
+<p>The following example shows how macros can be used to generate inline citations.</p>
+<h4 id="inline-citations-2">Inline citations</h4>
+<table class="example bordered">
+<tr>
+<td class="example-header" style="width:10%;">
+<span class="edit-icon no-print" title="Edit example" onclick="editExample('tooltips-example-2')">&#x270e;</span>
+Rimu Markup</td>
+<td>
+<pre class="example-source nohighlight" id="tooltips-example-2-source"><code>{LFB} = '&lt;sup&gt;
+&lt;abbr title="Latin for Beginners (D'Ooge) §$1"&gt;[LFB$1]&lt;/abbr&gt;
+&lt;/sup&gt;'
+
+Purus aliquam mauris a aliquam orci {LFB|42}.
+Massa sit sit. Penatibus.
+
+Maecenas at tellus {LFB|28}. Sapien quam mauris.
+Non a pede in.</code></pre>
+<textarea id="tooltips-example-2-edit" class="edit-source" style="display:none" onkeyup="renderExample('tooltips-example-2')"></textarea>
+</td>
+</tr>
+<tr><td class="example-header" style="width:10%;">
+HTML
+<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('tooltips-example-2')">&#x2b04;</span>
+Preview
+</td>
+<td>
+<div id="tooltips-example-2-errors" class="example-errors"></div>
+<div id="tooltips-example-2-rendered" class="example-rendered">
+<p>Purus aliquam mauris a aliquam orci <sup>
+<abbr title="Latin for Beginners (D'Ooge) §42">[LFB42]</abbr>
+</sup>.
+Massa sit sit. Penatibus.</p>
+<p>Maecenas at tellus <sup>
+<abbr title="Latin for Beginners (D'Ooge) §28">[LFB28]</abbr>
+</sup>. Sapien quam mauris.
+Non a pede in.</p>
+</div>
+</td></tr></table>
+<p>The <code>{LBF}</code> parameterised macro cites numbered sections from a publication using the
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/abbr">HTML <code>abbr</code> element</a>
+to create tooltips.</p>
 <h2 id="meta-macros">Meta Macros</h2>
 <p>You can define macros which, when invoked, generate other macros.</p>
 <p>The <em>Footnotes macros</em> example generates footnote links and footnotes. The
@@ -1623,15 +1665,18 @@ Rimu Markup</td>
 {footnote} = '{$1} = '&lt;sup&gt;&lt;a href="#footnote-$1"&gt;$1&lt;/a&gt;&lt;/sup&gt;' \
 {footnote-$1} = '&lt;span id="footnote-$1"&gt;$2&lt;/span&gt;' \
 '
-
 {footnote|1|Ac _lacinia mi_.}
 {footnote|2|[Egestas](https://example.com) congue.}
 
+#### Lorum Ipsum
 Purus aliquam mauris a aliquam orci{1}.
 Massa sit sit. Penatibus.
 
 Maecenas at tellus. Sapien quam mauris{2}.
 Non a pede in.
+
+."margin-top: 1.5em"
+&lt;hr&gt;
 
 . {footnote-1}
 . {footnote-2}</code></pre>
@@ -1646,10 +1691,12 @@ Preview
 <td>
 <div id="meta-macros-example-2-errors" class="example-errors"></div>
 <div id="meta-macros-example-2-rendered" class="example-rendered">
+<h4 id="lorum-ipsum">Lorum Ipsum</h4>
 <p>Purus aliquam mauris a aliquam orci<sup><a href="#footnote-1">1</a></sup>.
 Massa sit sit. Penatibus.</p>
 <p>Maecenas at tellus. Sapien quam mauris<sup><a href="#footnote-2">2</a></sup>.
 Non a pede in.</p>
+<hr style="margin-top: 1.5em">
 <ol><li><span id="footnote-1">Ac <em>lacinia mi</em>.</span></li><li><span id="footnote-2"><a href="https://example.com">Egestas</a> congue.</span></li></ol></div>
 </td></tr></table>
 <h4 id="table-of-contents-macros">Table of contents macros</h4>
