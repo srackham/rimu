@@ -248,6 +248,10 @@ task(
       MIN_RIMU_JS,
       `docs/${path.basename(MIN_RIMU_JS)}`,
     );
+    await Deno.copyFile(
+      "docsrc/image.jpg",
+      `docs/image.jpg`,
+    );
     let commands: any[] = [];
     commands = DOCS.map((doc) =>
       RIMUC_EXE +
