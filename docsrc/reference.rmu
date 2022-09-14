@@ -678,15 +678,14 @@ Notes:
 
 {images-example} = 'An image can be rendered as a block element:
 
-<image:https://www.w3.org/Icons/w3c_home.png|W3C logo>
+<image:image-2.jpg|Red hot pokers>
 
-Centered using [rimuc](#rimuc-command) `--layout` option CSS class:
+Centered using the [rimuc](#rimuc-command) `align-center` CSS class:
 
 .align-center
-![W3C logo](https://www.w3.org/Icons/w3c_home.png)
+![Red hot pokers](image-2.jpg)
 
-Or an image can be <image:https://www.w3.org/Icons/w3c_home.png> an
-inline element.'
+Or rendered ![Red hot pokers](image-2.jpg) inline.'
 
 {generate-rendered-example-1|images-example}
 

@@ -839,14 +839,14 @@ Use raw HTML or a macro:
 
 .-macros
 {image-links-example} = '// Raw HTML.
-<a href="https://example.com"><img src="image.jpg"></a>
+<a href="https://example.com"><img src="image-1.jpg"></a>
 
 // Size image and open the link in a new browser tab.
 {linked-image}='<a href="$3" target="_blank"><img src="$1" width="$2"></a>'\
 
-\{linked-image|image.jpg|150|image.jpg}
+\{linked-image|image-1.jpg|150|image-1.jpg}
 
-\{linked-image|image.jpg|300|https://example.com}'
+\{linked-image|image-1.jpg|300|https://example.com}'
 
 {generate-rendered-example-2|image-links-example|Image links}
 

@@ -1617,14 +1617,14 @@ consequat quisque duis mollis magna arcu.</p>
 Rimu Markup</td>
 <td>
 <pre class="example-source nohighlight" id="image-links-example-source"><code>// Raw HTML.
-&lt;a href="https://example.com"&gt;&lt;img src="image.jpg"&gt;&lt;/a&gt;
+&lt;a href="https://example.com"&gt;&lt;img src="image-1.jpg"&gt;&lt;/a&gt;
 
 // Size image and open the link in a new browser tab.
 {linked-image}='&lt;a href="$3" target="_blank"&gt;&lt;img src="$1" width="$2"&gt;&lt;/a&gt;'
 
-{linked-image|image.jpg|150|image.jpg}
+{linked-image|image-1.jpg|150|image-1.jpg}
 
-{linked-image|image.jpg|300|https://example.com}</code></pre>
+{linked-image|image-1.jpg|300|https://example.com}</code></pre>
 <textarea id="image-links-example-edit" class="edit-source" style="display:none" onkeyup="renderExample('image-links-example')"></textarea>
 </td>
 </tr>
@@ -1636,9 +1636,9 @@ Preview
 <td>
 <div id="image-links-example-errors" class="example-errors"></div>
 <div id="image-links-example-rendered" class="example-rendered">
-<p><a href="https://example.com"><img src="image.jpg"></a></p>
-<p><a href="image.jpg" target="_blank"><img src="image.jpg" width="150"></a></p>
-<p><a href="https://example.com" target="_blank"><img src="image.jpg" width="300"></a></p>
+<p><a href="https://example.com"><img src="image-1.jpg"></a></p>
+<p><a href="image-1.jpg" target="_blank"><img src="image-1.jpg" width="150"></a></p>
+<p><a href="https://example.com" target="_blank"><img src="image-1.jpg" width="300"></a></p>
 </div>
 </td></tr></table>
 <h2 id="inline-citations">Inline citations</h2>

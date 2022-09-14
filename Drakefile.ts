@@ -249,8 +249,12 @@ task(
       `docs/${path.basename(MIN_RIMU_JS)}`,
     );
     await Deno.copyFile(
-      "docsrc/image.jpg",
-      `docs/image.jpg`,
+      "docsrc/image-1.jpg",
+      `docs/image-1.jpg`,
+    );
+    await Deno.copyFile(
+      "docsrc/image-2.jpg",
+      `docs/image-2.jpg`,
     );
     let commands: any[] = [];
     commands = DOCS.map((doc) =>
