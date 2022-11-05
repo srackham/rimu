@@ -18,6 +18,7 @@ const ktDir = "../rimu-kt";
 const goDir = "../go-rimu";
 const dartDir = "../rimu-dart";
 const pyDir = "../rimu-py";
+const vDir = "../rimu-v";
 
 if (Deno.args.includes("--help") || Deno.args.includes("-h")) {
   console.log(`
@@ -51,8 +52,8 @@ const isWindows = Deno.build.os === "windows";
 
 const tmpDir = Deno.makeTempDirSync({ prefix: "rimu-validate-" });
 
-type PortId = "ts" | "go" | "kt" | "dart" | "py" | "deno";
-const portIds: PortId[] = ["ts", "deno", "go", "kt", "dart", "py"];
+type PortId = "ts" | "go" | "kt" | "dart" | "py" | "deno" | "v";
+const portIds: PortId[] = ["ts", "deno", "go", "kt", "dart", "py", "v"];
 interface Port {
   name: string;
   projectDir: string;
@@ -180,6 +181,22 @@ const ports: Ports = {
       await sh(`pip install ${hostDist}`);
     },
     rimucExe: () => "rimupy",
+  },
+
+  "v": {
+    name: "V",
+    projectDir: vDir,
+    fixtures: [
+      "rimu/testdata/rimu-tests.json",
+      "testdata/rimuc-tests.json",
+      "testdata/example-rimurc.rmu",
+    ],
+    resourcesDir: "resources",
+    make: async function () {
+      await sh("make test");
+      await sh("make build-optimized");
+    },
+    rimucExe: () => path.join(vDir, "bin/rimuv"),
   },
 };
 
