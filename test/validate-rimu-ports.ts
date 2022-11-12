@@ -18,7 +18,7 @@ const ktDir = "../rimu-kt";
 const goDir = "../go-rimu";
 const dartDir = "../rimu-dart";
 const pyDir = "../rimu-py";
-const vDir = "../rimu-v";
+const vDir = "../v-rimu";
 
 if (Deno.args.includes("--help") || Deno.args.includes("-h")) {
   console.log(`
@@ -187,14 +187,14 @@ const ports: Ports = {
     name: "V",
     projectDir: vDir,
     fixtures: [
-      "rimu/testdata/rimu-tests.json",
+      "testdata/rimu-tests.json",
       "testdata/rimuc-tests.json",
       "testdata/example-rimurc.rmu",
     ],
     resourcesDir: "resources",
     make: async function () {
       await sh("make test");
-      await sh("make build-optimized");
+      await sh("make build-rimuv-optimized");
     },
     rimucExe: () => path.join(vDir, "bin/rimuv"),
   },
@@ -229,7 +229,7 @@ function copyAndCompare(srcFile: string, dstFile: string): void {
   if (Deno.args.includes("--update-resources")) {
     Deno.copyFileSync(srcFile, dstFile);
   } else if (!Deno.args.includes("--nocheck-resources")) {
-    if (readFile(srcFile) !== readFile(dstFile)) {
+    if (readFile(srcFile).trimEnd() !== readFile(dstFile).trimEnd()) {
       abort(`file contents differ: ${dstFile} ${srcFile}`);
     }
   }
