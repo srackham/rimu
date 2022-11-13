@@ -1447,6 +1447,19 @@ Here is a list of Rimu implementations:
 - A ^[Python port]({pypi-rimu}).
 - A ^[V language port]({github-v}).
 
+Time taken to compile 3,719 lines of Rimu Markup:
+
+.light-background
+```
+TypeScript   455ms
+Deno         257ms
+Go           289ms
+Kotlin       1032ms
+Dart         114ms
+Python       262ms
+V            79ms
+```
+
 ### Version numbering
 
 - All implementations use [semantic version numbers](https://semver.org/).
