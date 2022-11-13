@@ -224,6 +224,7 @@ Preview
 {github-dart} = 'https://github.com/srackham/rimu-dart'
 {pubdev-rimu} = 'https://pub.dev/packages/rimu'
 {github-py} = 'https://github.com/srackham/rimu-py'
+{github-v} = 'https://github.com/srackham/v-rimu'
 {pypi-rimu} = 'https://pypi.org/project/rimu/'
 {npm-rimu} = 'https://npmjs.org/package/rimu'
 {example-rimurc} = 'https://github.com/srackham/rimu/blob/master/examples/example-rimurc.rmu'

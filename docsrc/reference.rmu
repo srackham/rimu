@@ -1026,7 +1026,7 @@ raw HTML is not passed to the output:
 Rimu includes a command-line tool that converts Rimu markup to HTML. There are
 four functionally identical implementations: _rimuc_ (JavaScript
 implementation), _rimukt_ (Kotlin implementation), _rimugo_ (Go implementation),
-_rimuc_ (Dart implementation) and _rimupy_ (Python implementation).
+_rimuc_ (Dart implementation) and _rimupy_ (Python implementation), _rimuv_ (V implementation).
 
 In the documentation the name _rimuc_ refers to all four implementations
 (unless stated otherwise).
@@ -1233,7 +1233,7 @@ fun main(args: Array<String>) {
     println(render("Hello *Rimu*!", RenderOptions(reset = true))
 }
 ```
-See the [Kotlin README]({github-kt}).
+See the [Rimu Kotlin README]({github-kt}).
 
 #### Go
 ``` go
@@ -1249,7 +1249,7 @@ func main() {
     fmt.Println(rimu.Render("*Hello Rimu*!", rimu.RenderOptions{Reset: true}))
 }
 ```
-See the [Go README]({github-go}).
+See the [Rimu Go README]({github-go}).
 
 #### Dart
 ``` typescript
@@ -1259,7 +1259,7 @@ main(List<String> arguments) {
   print(render('Hello *Rimu*!', RenderOptions(reset: true)));
 }
 ```
-See the [Dart README]({pubdev-rimu}).
+See the [Rimu Dart README]({pubdev-rimu}).
 
 #### Python
 ``` python
@@ -1267,7 +1267,19 @@ import rimu
 
 print(rimu.render('*Hello World*!', rimu.RenderOptions(reset=True)))
 ```
-See the [Python README]({pypi-rimu}).
+See the [Rimu Python README]({pypi-rimu}).
+
+#### V
+``` v
+module main
+
+import srackham.rimu
+
+fn main() {
+	println(rimu.render('*Hello Rimu*!', rimu.RenderOptions{}))
+}
+```
+See the [Rimu V README]({github-v}).
 
 ### API options
 The API `options` argument is an object with zero or more of the
@@ -1355,6 +1367,25 @@ fun callback(message: CallbackMessage) {
 
 var html = render("Hello *Rimu*!", RenderOptions(callback = callback))
 ``
+
+`` go
+// Go.
+opts := rimu.RenderOptions{}
+opts.Callback = func(message rimu.CallbackMessage) {
+    fmt.Println(message.Kind + ": " + message.Text)
+}
+html := rimu.Render("{undefined-macro}", opts)
+``
+
+`` v
+// V.
+mut opts := rimu.RenderOptions{}
+opts.callback = fn (message rimu.CallbackMessage) {
+    println(message.kind + ': ' + message.text)
+}
+html := rimu.render('\{undefined-macro}', opts)
+``
+
 ..
 
 `reset`::
@@ -1408,12 +1439,13 @@ Guidelines:
 ## Rimu implementations
 Here is a list of Rimu implementations:
 
-- The canonical [TypeScript version]({github-ts})
+- The canonical ^[TypeScript version]({github-ts})
   for Deno, Node.js and browser runtime environments.
-- A [Kotlin port]({github-kt}) for the JVM platform.
-- A [Go language port]({github-go}).
-- A [Dart port]({pubdev-rimu}).
-- A [Python port]({pypi-rimu}).
+- A ^[Kotlin port]({github-kt}) for the JVM platform.
+- A ^[Go language port]({github-go}).
+- A ^[Dart port]({pubdev-rimu}).
+- A ^[Python port]({pypi-rimu}).
+- A ^[V language port]({github-v}).
 
 ### Version numbering
 
