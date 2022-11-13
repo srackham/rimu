@@ -1706,7 +1706,7 @@ raw HTML is not passed to the output:</p>
 <p>Rimu includes a command-line tool that converts Rimu markup to HTML. There are
 four functionally identical implementations: <em>rimuc</em> (JavaScript
 implementation), <em>rimukt</em> (Kotlin implementation), <em>rimugo</em> (Go implementation),
-<em>rimuc</em> (Dart implementation) and <em>rimupy</em> (Python implementation).</p>
+<em>rimuc</em> (Dart implementation) and <em>rimupy</em> (Python implementation), <em>rimuv</em> (V implementation).</p>
 <p>In the documentation the name <em>rimuc</em> refers to all four implementations
 (unless stated otherwise).</p>
 <p><em>rimuc</em> has options to generate stand-alone styled HTML documents, either from
@@ -1964,7 +1964,7 @@ import org.rimumarkup.render
 fun main(args: Array&lt;String&gt;) {
     println(render("Hello *Rimu*!", RenderOptions(reset = true))
 }</code></pre>
-<p>See the <a href="https://github.com/srackham/rimu-kt">Kotlin README</a>.</p>
+<p>See the <a href="https://github.com/srackham/rimu-kt">Rimu Kotlin README</a>.</p>
 <h4 id="go">Go</h4>
 <pre class="go"><code>package main
 
@@ -1977,19 +1977,28 @@ import (
 func main() {
     fmt.Println(rimu.Render("*Hello Rimu*!", rimu.RenderOptions{Reset: true}))
 }</code></pre>
-<p>See the <a href="https://github.com/srackham/go-rimu">Go README</a>.</p>
+<p>See the <a href="https://github.com/srackham/go-rimu">Rimu Go README</a>.</p>
 <h4 id="dart">Dart</h4>
 <pre class="typescript"><code>import 'package:rimu/rimu.dart';
 
 main(List&lt;String&gt; arguments) {
   print(render('Hello *Rimu*!', RenderOptions(reset: true)));
 }</code></pre>
-<p>See the <a href="https://pub.dev/packages/rimu">Dart README</a>.</p>
+<p>See the <a href="https://pub.dev/packages/rimu">Rimu Dart README</a>.</p>
 <h4 id="python">Python</h4>
 <pre class="python"><code>import rimu
 
 print(rimu.render('*Hello World*!', rimu.RenderOptions(reset=True)))</code></pre>
-<p>See the <a href="https://pypi.org/project/rimu/">Python README</a>.</p>
+<p>See the <a href="https://pypi.org/project/rimu/">Rimu Python README</a>.</p>
+<h4 id="v">V</h4>
+<pre class="v"><code>module main
+
+import srackham.rimu
+
+fn main() {
+	println(rimu.render('*Hello Rimu*!', rimu.RenderOptions{}))
+}</code></pre>
+<p>See the <a href="https://github.com/srackham/v-rimu">Rimu V README</a>.</p>
 <h3 id="api-options">API options</h3>
 <p>The API <code>options</code> argument is an object with zero or more of the
 following properties:</p>
@@ -2041,6 +2050,19 @@ fun callback(message: CallbackMessage) {
 }
 
 var html = render("Hello *Rimu*!", RenderOptions(callback = callback))</code></pre>
+<pre class="go"><code>// Go.
+opts := rimu.RenderOptions{}
+opts.Callback = func(message rimu.CallbackMessage) {
+    fmt.Println(message.Kind + ": " + message.Text)
+}
+html := rimu.Render("{undefined-macro}", opts)</code></pre>
+<pre class="v"><code>// V.
+mut opts := rimu.RenderOptions{}
+opts.callback = fn (message rimu.CallbackMessage) {
+    println(message.kind + ': ' + message.text)
+}
+html := rimu.render('\{undefined-macro}', opts)</code></pre>
+
 </dd><dt><code>reset</code></dt><dd>This boolean option causes the render API to be set to its default
 state (default option values; default Quotes, Replacements and
 Delimited Block definitions; predefined macro definitions only; no
@@ -2067,8 +2089,16 @@ common to all platforms:</p>
   expressions</a>.</li><li><a href="https://github.com/google/re2/wiki/Syntax">Go regular expressions</a>.</li><li><a href="https://docs.python.org/3/library/re.html">Python regular expressions</a>.</li></ul><p>Guidelines:</p>
 <ul><li>No named groups.</li><li>No look-ahead or look-behind groups.</li><li>No backreferences (<code>\1, \2, ...</code>).</li><li>Use only the <code>i</code> flag in replacement definitions.</li><li>No embedded flags.</li></ul><h2 id="rimu-implementations">Rimu implementations</h2>
 <p>Here is a list of Rimu implementations:</p>
-<ul><li>The canonical <a href="https://github.com/srackham/rimu">TypeScript version</a>
-  for Deno, Node.js and browser runtime environments.</li><li>A <a href="https://github.com/srackham/rimu-kt">Kotlin port</a> for the JVM platform.</li><li>A <a href="https://github.com/srackham/go-rimu">Go language port</a>.</li><li>A <a href="https://pub.dev/packages/rimu">Dart port</a>.</li><li>A <a href="https://pypi.org/project/rimu/">Python port</a>.</li></ul><h3 id="version-numbering">Version numbering</h3>
+<ul><li>The canonical <a href="https://github.com/srackham/rimu" target="_blank">TypeScript version</a>
+  for Deno, Node.js and browser runtime environments.</li><li>A <a href="https://github.com/srackham/rimu-kt" target="_blank">Kotlin port</a> for the JVM platform.</li><li>A <a href="https://github.com/srackham/go-rimu" target="_blank">Go language port</a>.</li><li>A <a href="https://pub.dev/packages/rimu" target="_blank">Dart port</a>.</li><li>A <a href="https://pypi.org/project/rimu/" target="_blank">Python port</a>.</li><li>A <a href="https://github.com/srackham/v-rimu" target="_blank">V language port</a>.</li></ul><p>Time taken to compile 3,719 lines of Rimu Markup:</p>
+<pre class="light-background"><code>TypeScript   455ms
+Deno         257ms
+Go           289ms
+Kotlin       1032ms
+Dart         114ms
+Python       262ms
+V            79ms</code></pre>
+<h3 id="version-numbering">Version numbering</h3>
 <ul><li>All implementations use <a href="https://semver.org/">semantic version numbers</a>.</li><li>Implementations with the same major and minor version numbers are functionally
   identical.</li><li>The patch version numbers are port specific.</li><li>Changes to one implementation will normally be propagated to the next release
   of other Rimu implementations but there is no implied equivalence of the
