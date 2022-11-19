@@ -1374,7 +1374,7 @@ opts := rimu.RenderOptions{}
 opts.Callback = func(message rimu.CallbackMessage) {
     fmt.Println(message.Kind + ": " + message.Text)
 }
-html := rimu.Render("{undefined-macro}", opts)
+html := rimu.Render("Hello *Rimu*!", opts)
 ``
 
 `` v
@@ -1383,7 +1383,7 @@ mut opts := rimu.RenderOptions{}
 opts.callback = fn (message rimu.CallbackMessage) {
     println(message.kind + ': ' + message.text)
 }
-html := rimu.render('\{undefined-macro}', opts)
+html := rimu.render('Hello *Rimu*!', opts)
 ``
 
 ..
