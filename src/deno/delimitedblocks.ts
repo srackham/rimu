@@ -1,5 +1,5 @@
-import * as Api from "./api.ts";
 import { BlockAttributes } from "./blockattributes.ts";
+import * as Document from "./document.ts";
 import * as Io from "./io.ts";
 import * as Macros from "./macros.ts";
 import * as Options from "./options.ts";
@@ -282,7 +282,7 @@ export function render(
         }
         if (expansionOptions.container) {
           delete BlockAttributes.options.container; // Consume before recursion.
-          text = Api.render(text);
+          text = Document.render(text);
         } else {
           text = Utils.replaceInline(text, expansionOptions);
         }

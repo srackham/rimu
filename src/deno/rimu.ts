@@ -5,7 +5,7 @@
  formatted libraries.
  */
 
-import * as Api from "./api.ts";
+import * as Document from "./document.ts";
 import * as Options from "./options.ts";
 
 export type {
@@ -24,8 +24,8 @@ export function render(
   opts: Options.RenderOptions = {},
 ): string {
   Options.updateOptions(opts);
-  return Api.render(source);
+  return Document.render(source);
 }
 
 // Load-time initialization.
-Api.init();
+Document.init();

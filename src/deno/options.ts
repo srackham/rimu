@@ -1,4 +1,4 @@
-import * as Api from "./api.ts";
+import * as Document from "./document.ts";
 import * as Utils from "./utils.ts";
 
 /**
@@ -72,7 +72,7 @@ function setReset(value: boolean | string | undefined): void {
   if (value === false || value === "false") {
     return;
   } else if (value === true || value === "true") {
-    Api.init();
+    Document.init();
   } else {
     errorCallback("illegal reset API option value: " + value);
   }
