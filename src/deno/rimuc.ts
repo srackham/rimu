@@ -123,7 +123,7 @@ while ((arg = argv.shift())) {
     case "--sidebar-toc": // Deprecated in Rimu 10.0.0
     case "--dropdown-toc": // Deprecated in Rimu 10.0.0
     case "--custom-toc":
-    case "--header-ids":/* falls through */
+    case "--header-ids": /* falls through */
     // deno-lint-ignore no-case-declarations
     case "--header-links":
       const macroValue = ["--lang", "--title", "--theme"].indexOf(arg) > -1
