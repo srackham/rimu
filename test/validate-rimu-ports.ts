@@ -9,11 +9,11 @@ import {
   makeDir,
   readFile,
   sh,
-  shCapture,
 } from "https://deno.land/x/drake@v1.5.2/lib.ts";
 
 env("--abort-exits", true);
 
+const homeDir = Deno.env.get("HOME");
 const ktDir = "../rimu-kt";
 const goDir = "../go-rimu";
 const dartDir = "../rimu-dart";
@@ -156,31 +156,10 @@ const ports: Ports = {
     ],
     resourcesDir: "src/rimuc/resources",
     make: async function () {
-      const vers = (await shCapture("make version")).output.trim();
-      const containerDist =
-        `/workspaces/rimu-py/dist/rimu-${vers}-py3-none-any.whl`;
-      const hostDist = path.join(tmpDir, `rimu-${vers}-py3-none-any.whl`);
-      await sh(
-        // Rebuild image.
-        "docker build --tag rimu-py .",
-      );
-      await sh(
-        // Run tests and build distribution.
-        "docker run -it --name rimu-py rimu-py make build",
-      );
-      await sh(
-        // Copy distribution to host machine.
-        `docker cp rimu-py:${containerDist} ${hostDist}`,
-      );
-      await sh(
-        // Delete container.
-        "docker rm rimu-py",
-      );
-      // Install distribution on host machine.
-      await sh(`pip uninstall -y rimu`);
-      await sh(`pip install ${hostDist}`);
+      await sh(`conda run --name rimu-py make install`);
     },
-    rimucExe: () => "rimupy",
+    rimucExe: () =>
+      path.join(homeDir ?? "", "miniconda3/envs/rimu-py/bin/rimupy"),
   },
 
   "v": {
