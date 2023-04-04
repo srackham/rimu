@@ -45,7 +45,7 @@ class BlockAttributesSingleton {
     let text = match[0];
     text = replaceInline(text, { macros: true });
     const m =
-      /^\\?\.((?:\s*[a-zA-Z][\w\-]*)+)*(?:\s*)?(#[a-zA-Z][\w\-]*\s*)?(?:\s*)?(?:"(.+?)")?(?:\s*)?(\[.+])?(?:\s*)?([+-][ \w+-]+)?$/
+      /^\\?\.((?:[a-zA-Z][\w-]*\s*)+)?(#[a-zA-Z][\w-]*)?(?:\s*"([^"]+?)")?(?:\s*\[([^\]]+)\])?(\s*[+-][\w\s+-]+)?$/
         .exec(text);
     if (!m) {
       return false;
@@ -64,7 +64,7 @@ class BlockAttributesSingleton {
         this.css = this.css.trim();
       }
       if (m[4] && !Options.isSafeModeNz()) { // HTML attributes.
-        this.attributes += " " + m[4].slice(1, m[4].length - 1).trim();
+        this.attributes += " " + m[4];
         this.attributes = this.attributes.trim();
       }
       DelimitedBlocks.setBlockOptions(this.options, m[5]);
