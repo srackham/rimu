@@ -126,7 +126,7 @@ function replaceSpecialChars(s) {
 {example-edit-glyph} = '&#x270e;'
 {example-edit-button} = '<span class="edit-icon no-print" title="Edit example" onclick="editExample('$1')">{example-edit-glyph}</span>'
 
-{example-preview-glyph} = '&#x2b04;'
+{example-preview-glyph} = '&#x1f50e;'
 {example-preview-button} = '<span class="preview-icon no-print" title="Toggle preview mode" onclick="toggleExample('$1')">{example-preview-glyph}</span>'
 
 // Macro to generate Rimu markup and rendered example (stacked horizontally).
@@ -142,10 +142,8 @@ function replaceSpecialChars(s) {
 {--=$3}{example-edit-button|$1}
 Rimu Markup</td>
 <td class="example-header">
-HTML
 {--=$3}{example-preview-button|$1}
-Preview
-</td>
+HTML Preview</td>
 </tr>
 <tr>
 <td style="width:50%;">
@@ -176,7 +174,7 @@ Preview
 {generate-rendered-example-2} = '#### $2:Examples$
 <table class="example bordered">
 <tr>
-<td class="example-header" style="width:10%;">
+<td class="example-header" style="width:12%;">
 {--=$3}{example-edit-button|$1}
 Rimu Markup</td>
 <td>
@@ -188,11 +186,9 @@ Rimu Markup</td>
 <textarea id="$1-edit" class="edit-source" style="display:none" onkeyup="renderExample('$1')"></textarea>
 </td>
 </tr>
-<tr><td class="example-header" style="width:10%;">
-HTML
+<tr><td class="example-header" style="width:12%;">
 {--=$3}{example-preview-button|$1}
-Preview
-</td>
+HTML Preview</td>
 <td>
 <div id="$1-errors" class="example-errors"></div>
 <div id="$1-rendered" class="example-rendered">
