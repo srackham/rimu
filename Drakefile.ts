@@ -18,7 +18,7 @@ import {
   task,
   updateFile,
   writeFile,
-} from "https://deno.land/x/drake@v1.6.0/mod.ts";
+} from "https://deno.land/x/drake@v1.7.0/mod.ts";
 
 const isWindows = Deno.build.os === "windows";
 
@@ -499,7 +499,7 @@ task("fmt", [], async function () {
 
 desc("Lint source files");
 task("lint", [], async function () {
-  await sh(`deno lint --unstable src/deno/ test/ Drakefile.ts`);
+  await sh(`deno lint src/deno/ test/ Drakefile.ts`);
 });
 
 desc("Build and validate other Rimu ports");
