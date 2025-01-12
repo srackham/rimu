@@ -38,7 +38,7 @@ function fileExists(filename: string): boolean {
   try {
     return !!Deno.statSync(filename)?.isFile;
   } catch (err) {
-    if (err.code === "ENOENT") {
+    if (err instanceof Deno.errors.NotFound) {
       return false;
     } else {
       throw err;
@@ -58,8 +58,7 @@ let prepend = "";
 let outfile: string | undefined;
 let arg: string | undefined;
 const argv = [...Deno.args];
-outer:
-while ((arg = argv.shift())) {
+outer: while ((arg = argv.shift())) {
   switch (arg) {
     case "--": // Ignore this option (see https://github.com/denoland/deno/issues/3795).
       break;
@@ -67,11 +66,11 @@ while ((arg = argv.shift())) {
     case "-h":
       console.log("\n" + readResourceFile("manpage.txt"));
       Deno.exit();
-      break;
+    /* falls through */
     case "--version":
       console.log(VERSION);
       Deno.exit();
-      break;
+    /* falls through */
     case "--lint": // Deprecated in Rimu 10.0.0
     case "-l":
       break;
@@ -202,7 +201,11 @@ for (let infile of files) {
       try {
         source = new TextDecoder().decode(await readAll(Deno.stdin));
       } catch (e) {
-        die(`error reading stdin: ${e.message}`);
+        if (e instanceof Error) {
+          die(`error reading stdin: ${e.message}`);
+        } else {
+          die(`error reading stdin: ${String(e)}`);
+        }
       }
     } else {
       if (!fileExists(infile)) {

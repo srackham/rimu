@@ -60,9 +60,8 @@ export function setValue(name: string, value: string, quote: string): void {
     try {
       value = eval(value); // tslint:disable-line no-eval
     } catch (e) {
-      Options.errorCallback(
-        `illegal macro expression: ${e.message}: ${value}`,
-      );
+      const msg = e instanceof Error ? e.message : String(e);
+      Options.errorCallback(`illegal macro expression: ${msg}: ${value}`);
     }
   }
   for (const def of defs) {
@@ -91,7 +90,8 @@ export function render(text: string, silent = false): string {
         }
         const name = submatches[0];
         let params = submatches[1] || "";
-        if (params[0] === "?") { // DEPRECATED: Existential macro invocation.
+        if (params[0] === "?") {
+          // DEPRECATED: Existential macro invocation.
           if (!silent) {
             Options.errorCallback(
               "existential macro invocations are deprecated: " + match,
@@ -128,7 +128,8 @@ export function render(text: string, silent = false): string {
                 p3: string | undefined,
                 p4: string,
               ): string {
-                if (match[0] === "\\") { // Unescape escaped macro parameters.
+                if (match[0] === "\\") {
+                  // Unescape escaped macro parameters.
                   return match.slice(1);
                 }
                 if (Number(p2) === 0) {
@@ -137,7 +138,8 @@ export function render(text: string, silent = false): string {
                 let param: string | undefined = paramsList[Number(p2) - 1];
                 param = param === undefined ? "" : param; // Unassigned parameters are replaced with a blank string.
                 if (p3 !== undefined) {
-                  if (p3[0] === "\\") { // Unescape escaped default parameter.
+                  if (p3[0] === "\\") {
+                    // Unescape escaped default parameter.
                     param += p3.slice(1);
                   } else {
                     if (param === "") {
@@ -182,7 +184,8 @@ export function render(text: string, silent = false): string {
   });
   // Delete lines flagged by Inclusion/Exclusion macros.
   if (result.indexOf("\u0002") !== -1) {
-    result = result.split("\n")
+    result = result
+      .split("\n")
       .filter((line) => line.indexOf("\u0002") === -1)
       .join("\n");
   }
