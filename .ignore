@@ -1,0 +1,3 @@
+# Honored by fd and rg and consequentially by the Neovim Telescope find and grep commands.
+# Takes precedence over .gitignore
+!tmp/
