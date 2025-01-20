@@ -25,16 +25,14 @@ type RimuTest = {
   options: { reset: boolean; callback: CallbackFunction };
 };
 
-function catchLint(message: CallbackMessage): never { // Should never be called.
+function catchLint(message: CallbackMessage): never {
+  // Should never be called.
   console.log(message.type + ": " + message.text);
   throw new Error();
 }
 
 Deno.test("rimuApiTest", function (): void {
-  assert(
-    rimu.render.constructor === Function,
-    "Rimu.render is a function",
-  );
+  assert(rimu.render.constructor === Function, "Rimu.render is a function");
 });
 
 Deno.test("rimuTest", function (): void {
