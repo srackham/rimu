@@ -29,4 +29,5 @@ jobs:
         run: |
           npm install
           deno cache src/deno/rimuc.ts
-          deno run -A Drakefile.ts build test
+          deno run -A Drakefile.ts build
+          deno test -A test/
